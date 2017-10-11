@@ -1,0 +1,48 @@
+<!-- the register component template contains a simple registration form with fields for
+first name, last name, username and password. It displays validation messages for invalid fields
+when the submit button is clocked. On submit the register() method is called if the form is valid. -->
+<div class="col-md-6 col-md-offset-3">
+  <h2>Register</h2>
+  <form
+    [formGroup]="registerForm"
+    (ngSubmit)="register()">
+    <div class="form-group">
+      <label for="firstName">First Name</label>
+      <input
+        type="text"
+        id="firstName"
+        class="form-control"
+        formControlName="firstName"/>
+    </div>
+    <div class="form-group">
+      <label for="lastName">Last Name</label>
+      <input
+        type="text"
+        id="lastName"
+        class="form-control"
+        formControlName="lastName"/>
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input
+        type="email"
+        id="email"
+        class="form-control"
+        formControlName="email"/>
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input
+        type="password"
+        id="password"
+        class="form-control"
+        formControlName="password"/>
+    </div>
+    <button
+      class="btn btn-primary"
+      type = "submit"
+      [disabled]="!registerForm.valid">Submit</button>
+  </form>
+</div>
+
+
