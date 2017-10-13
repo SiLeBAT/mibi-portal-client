@@ -12,6 +12,7 @@ import { UserService } from './auth/services/user.service';
 import { routing } from './route/app.routing';
 import { HomeComponent } from './auth/home/home.component';
 import { LoginComponent } from './auth/login/login.component';
+import { AuthGuard } from './auth/guards/auth.guard';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { LoginComponent } from './auth/login/login.component';
   providers: [
     AuthService,
     AlertService,
-    UserService
+    UserService,
+    AuthGuard
   ],
   bootstrap: [AppComponent]
 })

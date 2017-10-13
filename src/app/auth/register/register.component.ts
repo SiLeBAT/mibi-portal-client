@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { UserService } from './../services/user.service';
+import { AlertService } from './../services/alert.service';
 import { User } from '../../models/user.model';
 
 @Component({
@@ -11,8 +13,12 @@ import { User } from '../../models/user.model';
 })
 export class RegisterComponent implements OnInit {
   private registerForm: FormGroup;
+  loading = false;
 
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private alertService: AlertService,
+    private router: Router) {}
 
   ngOnInit() {
     this.registerForm = new FormGroup({
@@ -27,6 +33,8 @@ export class RegisterComponent implements OnInit {
   }
 
   register() {
+    this.loading = true;
+
     const user = new User(
       this.registerForm.value.email,
       this.registerForm.value.password,
@@ -37,45 +45,15 @@ export class RegisterComponent implements OnInit {
     this.userService.create(user)
       .subscribe((data) => {
         console.log('success: ', data);
+        this.alertService.success('Registration successful', true);
+        this.router.navigate(['user/login']);
       }, (error) => {
         console.error('error: ', error);
+        this.alertService.error(error);
+        this.loading = false;
       });
 
     this.registerForm.reset();
   }
 
 }
-
-/*
-import { AlertService, UserService } from '../_services/index';
-
-@Component({
-    moduleId: module.id,
-    templateUrl: 'register.component.html'
-})
-
-export class RegisterComponent {
-    model: any = {};
-    loading = false;
-
-    constructor(
-        private router: Router,
-        private userService: UserService,
-        private alertService: AlertService) { }
-
-    register() {
-        this.loading = true;
-        this.userService.create(this.model)
-            .subscribe(
-                data => {
-                    this.alertService.success('Registration successful', true);
-                    this.router.navigate(['/login']);
-                },
-                error => {
-                    this.alertService.error(error);
-                    this.loading = false;
-                });
-    }
-}
-
-*/

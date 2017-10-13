@@ -2224,6 +2224,10 @@ html-webpack-plugin@^2.19.0:
     pretty-error "^2.0.2"
     toposort "^1.0.0"
 
+html5-history-api@^4.2.8:
+  version "4.2.8"
+  resolved "https://registry.yarnpkg.com/html5-history-api/-/html5-history-api-4.2.8.tgz#3ebbc38e36cae0dc410f74c20fdd5d76d93e96a8"
+
 htmlparser2@~3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/htmlparser2/-/htmlparser2-3.3.0.tgz#cc70d05a59f6542e43f0e685c982e14c924a9efe"

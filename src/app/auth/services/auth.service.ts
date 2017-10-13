@@ -20,7 +20,21 @@ export class AuthService {
 
       return this.http
         .post('/user/login', body, {headers: headers})
-        .map((response: Response) =>  response.json())
+        .map((response: Response) =>  {
+          // login successful if there's a jwt token in the response
+          const responseObj = response.json();
+          const user = responseObj.obj;
+
+          console.log('AuthService.login response responseObj: ', responseObj);
+          console.log('AuthService.login response user: ', user);
+
+          if (user && user.token) {
+              // store user details and jwt token in local storage to keep user logged in between page refreshes
+              localStorage.setItem('currentUser', JSON.stringify(user));
+          }
+
+          return user;
+        })
         .catch((error: Response) => Observable.throw(error.json()));
 
   }
@@ -30,34 +44,3 @@ export class AuthService {
     localStorage.removeItem('currentUser');
   }
 }
-
-/*
-import { Injectable } from '@angular/core';
-import { Http, Headers, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map'
-
-@Injectable()
-export class AuthenticationService {
-    constructor(private http: Http) { }
-
-    login(username: string, password: string) {
-        return this.http.post('/users/authenticate', { username: username, password: password })
-            .map((response: Response) => {
-                // login successful if there's a jwt token in the response
-                let user = response.json();
-                if (user && user.token) {
-                    // store user details and jwt token in local storage to keep user logged in between page refreshes
-                    localStorage.setItem('currentUser', JSON.stringify(user));
-                }
-
-                return user;
-            });
-    }
-
-    logout() {
-        // remove user from local storage to log user out
-        localStorage.removeItem('currentUser');
-    }
-}
-*/

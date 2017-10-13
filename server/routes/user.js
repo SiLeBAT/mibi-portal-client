@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const argon2 = require('argon2');
 const jwt = require('jsonwebtoken');
+const _ = require('lodash');
 
 var User = require('./../models/user');
 // var userService = require('./../services/user.service');
@@ -11,6 +12,43 @@ console.log('user.js: nach den requires');
 
 router.post('/register', register);
 router.post('/login', login);
+router.get('/', getAllUser);
+router.delete('/:_id', deleteUser);
+
+
+function deleteUser(req, res, next) {
+  const id = req.params._id;
+
+  User.remove({_id: id})
+      .then(function (result) {
+          res.sendStatus(200);
+      })
+      .catch(function (err) {
+          res.status(400).send(err);
+      });
+}
+
+function getAllUser(req, res, next) {
+  User.find().lean()
+  .then((result) => {
+    // console.log('User.find(): ', result);
+
+    const users = _.map(result, function (user) {
+      return _.pick(user, '_id', 'firstName', 'lastName', 'email');
+    });
+
+    return res
+    .status(200)
+    .json({
+      title: 'Got all user',
+      obj: users
+    });
+  })
+  .catch((err) => {
+    console.log('Error during getting all users: ', err);
+  });
+
+}
 
 
 function register(req, res, next) {
