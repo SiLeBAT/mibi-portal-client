@@ -7,8 +7,6 @@ const _ = require('lodash');
 var User = require('./../models/user');
 // var userService = require('./../services/user.service');
 
-console.log('user.js: nach den requires');
-
 
 router.post('/register', register);
 router.post('/login', login);
@@ -31,8 +29,6 @@ function deleteUser(req, res, next) {
 function getAllUser(req, res, next) {
   User.find().lean()
   .then((result) => {
-    // console.log('User.find(): ', result);
-
     const users = _.map(result, function (user) {
       return _.pick(user, '_id', 'firstName', 'lastName', 'email');
     });
@@ -54,15 +50,12 @@ function getAllUser(req, res, next) {
 function register(req, res, next) {
 
   var body = req.body;
-  console.log(body);
 
   User.findOne({email: body.email})
   .then((user) => {
-    console.log('user findOne() in mongo: ', user);
 
     if (user) {
       // user already registered, registration failed
-      console.log('User found, registrations failed');
       return res
       .status(409)
       .json({
@@ -95,7 +88,6 @@ function register(req, res, next) {
     return user.save();
   })
   .then((result) => {
-    console.log(' user for registration saved: ', result);
 
     return res
     .status(201)
@@ -104,7 +96,6 @@ function register(req, res, next) {
     });
   })
   .catch((err) => {
-    console.log('Server error during registration occured: ', err);
 
     return res
     .status(500)
@@ -119,15 +110,9 @@ function register(req, res, next) {
 function login(req, res, next) {
   const body = req.body;
   let user;
-  console.log('login body:');
-  console.log(body);
-  console.log('login body.password:');
-  console.log(body.password);
-  console.log('this.user: ', this.user);
 
   User.findOne({email: body.email})
   .then((user) => {
-    console.log('user findOne() in mongo: ', user);
 
     if (!user) {
       // login failed
@@ -152,7 +137,6 @@ function login(req, res, next) {
   .then((match) => {
     if (match) {
       // password matches
-      console.log('password matches!');
 
       return res
       .status(200)
@@ -168,7 +152,6 @@ function login(req, res, next) {
       })
     } else {
       // password does not match
-      console.log('password does not match!');
 
       return res
       .status(401)
