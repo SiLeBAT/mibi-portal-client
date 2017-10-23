@@ -12,7 +12,7 @@ export class AuthService {
 
   login(user: User) {
       return this.httpClient
-        .post('/user/login', user);
+        .post('/users/login', user);
   }
 
   logout() {

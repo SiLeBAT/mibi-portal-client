@@ -8,8 +8,8 @@ import { AuthGuard } from './../auth/guards/auth.guard';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthGuard] },
-  { path: 'user/login', component: LoginComponent },
-  { path: 'user/register', component: RegisterComponent },
+  { path: 'users/login', component: LoginComponent },
+  { path: 'users/register', component: RegisterComponent },
 
   // otherwise redirect to home
   { path: '**', redirectTo: '' }

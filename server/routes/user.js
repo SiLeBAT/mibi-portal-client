@@ -31,7 +31,7 @@ function deleteUser(req, res, next) {
       });
     })
     .catch(function (err) {
-      console.log('user removed, err:', err);
+      console.log('User deleted, err:', err);
 
       return res
       .status(400)

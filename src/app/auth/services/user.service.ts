@@ -15,7 +15,7 @@ export class UserService {
     const options = this.getJwtHeaders();
 
     return this.httpClient
-      .get('/user', options);
+      .get('/users', options);
   }
 
   // getById(_id: string) {
@@ -31,12 +31,12 @@ export class UserService {
     const options = this.getJwtHeaders();
 
     return this.httpClient
-      .delete('/user/' + _id, options);
+      .delete('/users/' + _id, options);
   }
 
   create(user: User) {
     return this.httpClient
-      .post('/user/register', user);
+      .post('/users/register', user);
   }
 
 

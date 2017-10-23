@@ -30,8 +30,8 @@ app.use(expressJwt({
     return null;
   }
 }).unless({ path: [
-    '/user/login',
-    '/user/register'
+    '/users/login',
+    '/users/register'
   ]
 }));
 
@@ -46,7 +46,7 @@ app.use(express.static(path.join(__dirname, 'dist')));
 
 
 // Set api routes, forwards any request to the routes
-app.use('/user',userRoutes);
+app.use('/users',userRoutes);
 app.use('/', apiRoutes);
 
 

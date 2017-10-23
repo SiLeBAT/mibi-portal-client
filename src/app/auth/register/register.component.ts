@@ -46,7 +46,7 @@ export class RegisterComponent implements OnInit {
     this.userService.create(user)
       .subscribe((data) => {
         this.alertService.success(data['title'], true);
-        this.router.navigate(['user/login']);
+        this.router.navigate(['users/login']);
       }, (err: HttpErrorResponse) => {
         const errObj = JSON.parse(err.error);
         this.alertService.error(errObj.title, true);
