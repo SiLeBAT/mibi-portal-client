@@ -1,7 +1,7 @@
-import { HttpModule } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { AlertComponent } from './auth/alert/alert.component';
@@ -27,7 +27,7 @@ import { AuthGuard } from './auth/guards/auth.guard';
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpModule,
+    HttpClientModule,
     routing
   ],
   providers: [

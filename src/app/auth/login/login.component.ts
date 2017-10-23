@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
 import { AuthService } from './../services/auth.service';
 import { AlertService } from './../services/alert.service';
@@ -27,8 +28,6 @@ export class LoginComponent implements OnInit {
     this.authService.logout();
 
     // get return url from route parameters or default to '/'
-    console.log('LoginComponent.ngOnInit route: ', this.route);
-
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
 
     this.loginForm = new FormGroup({
@@ -50,11 +49,15 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(user)
       .subscribe((data) => {
-        console.log(data);
+        const currentUser = data['obj'];
+        if (currentUser && currentUser.token) {
+          // store user details and jwt token in local storage to keep user logged in between page refreshes
+          localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        }
         this.router.navigate([this.returnUrl]);
-      }, (error) => {
-        console.error('login error: ', error);
-        const message = error.title + ': ' + error.error.message;
+      }, (err: HttpErrorResponse) => {
+        const errObj = JSON.parse(err.error);
+        const message = errObj.title + ': ' + errObj.error.message;
         this.alertService.error(message);
         this.loading = false;
       });
@@ -63,6 +66,4 @@ export class LoginComponent implements OnInit {
   }
 
 }
-
-
 

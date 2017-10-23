@@ -17,13 +17,29 @@ router.delete('/:_id', deleteUser);
 function deleteUser(req, res, next) {
   const id = req.params._id;
 
+  console.log('deleteUser id: ', id);
+
   User.remove({_id: id})
-      .then(function (result) {
-          res.sendStatus(200);
-      })
-      .catch(function (err) {
-          res.status(400).send(err);
+    .then(function (result) {
+      console.log('user removed, result: ', result);
+      // res.sendStatus(200);
+
+      return res
+      .status(204)
+      .json({
+        title: 'User deleted successfully'
       });
+    })
+    .catch(function (err) {
+      console.log('user removed, err:', err);
+
+      return res
+      .status(400)
+      .json({
+        title: 'Error during deleting the user',
+        obj: err
+      });
+    });
 }
 
 function getAllUser(req, res, next) {
@@ -36,12 +52,19 @@ function getAllUser(req, res, next) {
     return res
     .status(200)
     .json({
-      title: 'Got all user',
+      title: 'Got all users',
       obj: users
     });
   })
   .catch((err) => {
     console.log('Error during getting all users: ', err);
+
+    return res
+    .status(400)
+    .json({
+      title: 'Error during getting all users',
+      obj: err
+    });
   });
 
 }
@@ -50,6 +73,8 @@ function getAllUser(req, res, next) {
 function register(req, res, next) {
 
   var body = req.body;
+
+  console.log('register body: ', body);
 
   User.findOne({email: body.email})
   .then((user) => {

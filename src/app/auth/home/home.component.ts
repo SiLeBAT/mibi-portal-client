@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 
 import { User } from './../../models/user.model';
 import { UserService } from './../services/user.service';
@@ -24,15 +25,21 @@ export class HomeComponent implements OnInit {
   }
 
   deleteUser(user: User) {
-    let _id = user._id;
+    const _id = user._id;
+
     this.userService.delete(_id)
     .subscribe((data) => {
-      console.log('deleted user ' + _id, + ': ', data);
       this.alertService.success('User ' + user.firstName + ' ' + user.lastName + ' deleted', true);
       this.loadAllUsers();
-    }, (error) => {
-      console.error(error);
-      this.alertService.error(error);
+    }, (err: HttpErrorResponse) => {
+      const errObj = JSON.parse(err.error);
+      if (err.error instanceof Error) {
+        console.error('deleteUser client-side or network error: ', errObj);
+      } else {
+        console.error(`deleteUser error status ${err.status}: `, errObj);
+      }
+
+      this.alertService.error(errObj.title);
       this.loadAllUsers();
     });
 
@@ -41,7 +48,12 @@ export class HomeComponent implements OnInit {
   private loadAllUsers() {
     this.userService.getAll()
     .subscribe((data) => {
-      this.users = data.obj;
+      this.alertService.success(data['title']);
+      this.users = data['obj'];
+    }, (err: HttpErrorResponse) => {
+      const errObj = JSON.parse(err.error);
+      console.log('error loadAllUsers: ', errObj);
+      this.alertService.error(errObj.title);
     });
   }
 }

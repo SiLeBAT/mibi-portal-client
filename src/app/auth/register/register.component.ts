@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
 import { UserService } from './../services/user.service';
 import { AlertService } from './../services/alert.service';
@@ -44,12 +45,11 @@ export class RegisterComponent implements OnInit {
 
     this.userService.create(user)
       .subscribe((data) => {
-        console.log('success: ', data);
-        this.alertService.success('Registration successful', true);
+        this.alertService.success(data['title'], true);
         this.router.navigate(['user/login']);
-      }, (error) => {
-        console.error('error: ', error);
-        this.alertService.error(error);
+      }, (err: HttpErrorResponse) => {
+        const errObj = JSON.parse(err.error);
+        this.alertService.error(errObj.title, true);
         this.loading = false;
       });
 

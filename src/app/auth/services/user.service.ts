@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs/Observable';
-import { Http, Response, Headers } from '@angular/http';
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import 'rxjs/Rx';
 
 import { User } from './../../models/user.model';
@@ -9,15 +9,13 @@ import { User } from './../../models/user.model';
 @Injectable()
 export class UserService {
 
-  constructor(private http: Http) { }
+  constructor(private httpClient: HttpClient) { }
 
   getAll() {
-    const headers = this.getJsonAndJwtHeaders();
+    const options = this.getJwtHeaders();
 
-    return this.http
-      .get('/user', {headers: headers})
-      .map((response: Response) => response.json())
-      .catch((error: Response) => Observable.throw(error.json()));
+    return this.httpClient
+      .get('/user', options);
   }
 
   // getById(_id: string) {
@@ -30,63 +28,29 @@ export class UserService {
   // }
 
   delete(_id: string) {
-    const headers = this.getJsonAndJwtHeaders();
+    const options = this.getJwtHeaders();
 
-    return this.http
-      .delete('/user/' + _id, {headers: headers});
+    return this.httpClient
+      .delete('/user/' + _id, options);
   }
 
   create(user: User) {
-    console.log(user);
-
-    const body = JSON.stringify(user);
-    // const headers = new Headers({
-    //   'content-type': 'application/json'
-    // });
-    const headers = this.getJsonHeaders();
-
-    return this.http
-      .post('/user/register', body, {headers: headers})
-      .map((response: Response) =>  response.json())
-      .catch((error: Response) => Observable.throw(error.json()));
-
+    return this.httpClient
+      .post('/user/register', user);
   }
 
-  private getJsonHeaders() {
-    const headers = new Headers({
-      'Content-Type': 'application/json'
-    });
 
-    return headers;
-  }
+  private getJwtHeaders() {
+    let options = {};
 
-  private getJsonAndJwtHeaders() {
-    const headers = this.getJsonHeaders();
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-
     if (currentUser && currentUser.token) {
-      headers.append('Authorization', 'Bearer ' + currentUser.token);
+      options = {
+        headers: new HttpHeaders().set('Authorization', 'Bearer ' + currentUser.token)
+      };
     }
 
-    return headers;
+    return options;
   }
-
-
-
-  // private addJwt(options?: RequestOptionsArgs): RequestOptionsArgs {
-  //   // ensure request options and headers are not null
-  //   options = options || new RequestOptions();
-  //   options.headers = options.headers || new Headers();
-
-  //   // add authorization header with jwt token
-  //   let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-  //   if (currentUser && currentUser.token) {
-  //       options.headers.append('Authorization', 'Bearer ' + currentUser.token);
-  //   }
-
-  //   return options;
-  // }
-
-
 
 }
