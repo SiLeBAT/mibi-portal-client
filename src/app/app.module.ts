@@ -13,6 +13,8 @@ import { routing } from './route/app.routing';
 import { HomeComponent } from './auth/home/home.component';
 import { LoginComponent } from './auth/login/login.component';
 import { AuthGuard } from './auth/guards/auth.guard';
+import { RecoveryComponent } from './auth/recovery/recovery.component';
+import { ResetComponent } from './auth/reset/reset.component';
 
 
 @NgModule({
@@ -21,7 +23,9 @@ import { AuthGuard } from './auth/guards/auth.guard';
     RegisterComponent,
     AlertComponent,
     HomeComponent,
-    LoginComponent
+    LoginComponent,
+    RecoveryComponent,
+    ResetComponent
   ],
   imports: [
     BrowserModule,

@@ -29,7 +29,8 @@ export class RegisterComponent implements OnInit {
         Validators.required,
         Validators.email
       ]),
-      password: new FormControl(null, Validators.required),
+      password1: new FormControl(null, Validators.required),
+      password2: new FormControl(null, Validators.required),
     });
   }
 
@@ -38,7 +39,7 @@ export class RegisterComponent implements OnInit {
 
     const user = new User(
       this.registerForm.value.email,
-      this.registerForm.value.password,
+      this.registerForm.value.password1,
       this.registerForm.value.firstName,
       this.registerForm.value.lastName,
     );

@@ -1,0 +1,41 @@
+<div class="col-md-6 col-md-offset-3">
+  <h2>Reset Password</h2>
+  <hr>
+  <br>
+  <p>Please reset your password</p>
+  <br>
+
+  <form
+    [formGroup]="resetForm"
+    (ngSubmit)="reset()">
+    <div class="form-group">
+      <label for="password1">New Password</label>
+      <input
+        type="password"
+        id="password1"
+        class="form-control"
+        formControlName="password1"/>
+      <!-- <div *ngIf="f.submitted && !username.valid" class="help-block">Username is required</div> -->
+    </div>
+    <div class="form-group">
+      <label for="password2">Confirm Password</label>
+      <input
+        type="password"
+        id="password2"
+        class="form-control"
+        formControlName="password2"/>
+      <!-- <div *ngIf="f.submitted && !username.valid" class="help-block">Username is required</div> -->
+    </div>
+    <div class="form-group">
+      <button
+        class="btn btn-primary"
+        type="submit"
+        [disabled]="!resetForm.valid">Reset Password</button>
+      <a
+        [routerLink]="['/']"
+        class="btn btn-link">
+          Cancel
+      </a>
+    </div>
+  </form>
+</div>

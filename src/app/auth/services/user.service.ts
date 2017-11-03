@@ -39,6 +39,17 @@ export class UserService {
       .post('/users/register', user);
   }
 
+  recoveryPassword(email: String) {
+    return this.httpClient
+      .post('users/recovery', {email: email});
+  }
+
+  resetPassword(newPw: String, token: String) {
+    return this.httpClient
+      .post('users/reset/' + token, {newPw: newPw});
+  }
+
+
 
   private getJwtHeaders() {
     let options = {};

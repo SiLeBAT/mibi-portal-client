@@ -3,13 +3,38 @@ const router = express.Router();
 const argon2 = require('argon2');
 const jwt = require('jsonwebtoken');
 const _ = require('lodash');
+const fs = require('fs');
+const handlebars = require('handlebars');
+
+// const sendmail = require('sendmail');
+
+const sendmail = require('sendmail')({
+  logger: {
+    debug: console.log,
+    info: console.info,
+    warn: console.warn,
+    error: console.error
+  },
+  silent: false
+  // dkim: { // Default: False
+  //   privateKey: fs.readFileSync('./dkim-private.pem', 'utf8'),
+  //   keySelector: 'mydomainkey'
+  // },
+  // devPort: 1025 // Default: False
+  // devHost: 'localhost' // Default: localhost
+})
 
 var User = require('./../models/user');
+var ResetToken = require('./../models/resetToken');
 // var userService = require('./../services/user.service');
+
+const viewsPath = '../views/';
 
 
 router.post('/register', register);
 router.post('/login', login);
+router.post('/recovery', recovery);
+router.post('/reset/:token', reset);
 router.get('/', getAllUser);
 router.delete('/:_id', deleteUser);
 
@@ -129,6 +154,253 @@ function register(req, res, next) {
       error: err
     })
   });
+}
+
+
+function hashPw(password) {
+  const options = {
+    hashLength: 128,
+    timeCost: 10,
+    memoryCost: 15,
+    parallelism: 100,
+    type: argon2.argon2id
+  }
+
+  return argon2.hash(password, options);
+}
+
+function reset(req, res, next) {
+  let sentResetToken = req.params.token;
+  let dbResetToken;
+
+  ResetToken
+    .find()
+    .lean()
+    .where('token').equals(sentResetToken)
+    .then((results) => {
+      console.log('searching the transfered reset token, results: ', results);
+
+      if (results.length === 0) {
+        console.log('sent reset token not found');
+
+        return res
+        .status(400)
+        .json({
+          title: 'Reset password request expired, please try again'
+        });
+
+      }
+      this.dbResetToken = results[0];
+      this.dbResetToken.user = String(this.dbResetToken.user);
+
+      // verify that sent token has correct user id
+      let userId = this.dbResetToken.user;
+
+      try {
+        let decoded = jwt.verify(sentResetToken, process.env.JWT_SECRET, {subject: userId});
+        // console.log('decoded token result: ', decoded);
+      } catch(err) {
+        console.log('catch error while jwt.verify');
+
+        if (err.name === 'JsonWebTokenError') {
+          console.log(err.name, err.message);
+        }
+        if (err.name === 'TokenExpiredError') {
+          console.log(err.name, err.message, err.expiredAt);
+        }
+
+        return res
+        .status(400)
+        .json({
+          title: 'Reset password request expired, please try again'
+        });
+      }
+
+      // sent token ok, start to reset user password
+      // hash new password
+      return hashPw(req.body.newPw);
+    })
+    .then((hash) => {
+      // password hashing ok
+      // update user password
+
+      let userId = this.dbResetToken.user;
+      return User.findByIdAndUpdate(userId, {password: hash, updated: Date.now()});
+    })
+    .then((result) => {
+
+      if (!result) {
+        // user password was not updated
+        console.log('user password was not updated');
+
+        return res
+        .status(400)
+        .json({
+          title: 'Reset password request expired, please try again'
+        });
+
+      }
+
+      // password update ok
+      // delete reset token
+      let userId = this.dbResetToken.user;
+
+      ResetToken
+      .remove()
+      .where('user').equals(userId)
+      .then((opResult) => {
+        // delete reset token ok
+        // send password update verification email
+        console.log('still to do: send password reset verification email!!!');
+
+        return res
+        .status(200)
+        .json({
+          title: 'Please login with your new password'
+        });
+
+      })
+      .catch((err) => {
+        console.log('remove reset tokens for user ' + user._id +', err: ', err);
+
+        return res
+        .status(400)
+        .json({
+          title: 'Reset password request expired, please try again'
+        });
+      });
+    })
+    .catch((err) => {
+      console.log('error during password reset: ', err);
+
+      return res
+      .status(400)
+      .json({
+        title: 'Reset password request expired, please try again'
+      });
+
+    })
+}
+
+
+function recovery(req, res, next) {
+  const body = req.body;
+  console.log('recovery body: ', body);
+
+  let user;
+  let resetToken;
+  const message = `An email has been sent to ${body.email} with further instructions`;
+
+  User.findOne({email: body.email})
+  .then((user) => {
+
+    if (!user) {
+      // user not found, send password reset help mail
+      let resetHelpData = {
+        "email_address": body.email,
+        "operating_system": req.headers['host'],
+        "browser_name": req.headers['user-agent'],
+        "action_url": "http://localhost:4200/users/recovery",
+        "support_url": "http://localhost:4200/users/recovery"
+      }
+
+      let readFile = fs.readFileSync(__dirname + '/../views/pwresethelp.html').toString('utf-8');
+      let template = handlebars.compile(readFile);
+      let result = template(resetHelpData);
+
+      // console.log('result: ', result);
+
+      sendmail({
+        from: 'no-reply@bfr.bund.de',
+        to: 'lewicki.birgit@gmail.com',
+        subject: 'Reset Password for Epi-Lab',
+        html: result
+      }, function(err, reply) {
+        console.log('sendmail err: ', err);
+        console.dir('sendmail reply: ', reply);
+      });
+
+      return res
+      .status(200)
+      .json({
+        title: message
+      });
+    }
+
+    // user found, send password reset mail
+    this.user = user;
+
+    // delete any existing reset tokens for the user
+    ResetToken
+      .remove()
+      .where('user').equals(user._id)
+      .then((opResult) => {
+        console.log('remove reset tokens for user ' + user._id +', opResult.results: ', opResult.result);
+
+      })
+      .catch((err) => {
+        console.log('remove reset tokens for user ' + user._id +', err: ', err);
+      });
+
+    // create new resetToken for the user
+    const token = jwt.sign({sub: this.user._id}, process.env.JWT_SECRET);
+
+    var resetToken = new ResetToken({
+      token: token,
+      user: this.user._id
+    });
+
+    return resetToken.save();
+
+
+  })
+  .then((resetToken) => {
+    console.log('result after saving reset token: ', resetToken);
+    console.log('thus.user after saving reset token: ', this.user);
+    let name = this.user.firstName + ' ' + this.user.lastName;
+    let resetUrl = "http://localhost:4200/users/reset/" + resetToken.token;
+
+    let resetData = {
+      "name": name,
+      "action_url": resetUrl,
+      "operating_system": req.headers['user-agent']
+    }
+
+    let readFile = fs.readFileSync(__dirname + '/../views/pwreset.html').toString('utf-8');
+    let template = handlebars.compile(readFile);
+
+    let result = template(resetData);
+
+    // console.log('result: ', result);
+
+    sendmail({
+      from: 'no-reply@bfr.bund.de',
+      to: 'lewicki.birgit@gmail.com',
+      subject: 'Reset Password',
+      html: result,
+    }, function(err, reply) {
+      console.log('sendmail err: ', err);
+      console.dir('sendmail reply: ', reply);
+    });
+
+    return res
+    .status(200)
+    .json({
+      title: message
+    });
+})
+  .catch((err) => {
+    console.log('error during saving reset token: ', err);
+    const errMessage = `An error occured while sending an email to ${body.email} with further instructions. Please try again`;
+
+    return res
+    .status(400)
+    .json({
+      title: errMessage
+    });
+
+  });
+
 }
 
 

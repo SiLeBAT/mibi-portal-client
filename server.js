@@ -31,7 +31,9 @@ app.use(expressJwt({
   }
 }).unless({ path: [
     '/users/login',
-    '/users/register'
+    '/users/register',
+    '/users/recovery',
+    /\/users\/reset\/*/
   ]
 }));
 
