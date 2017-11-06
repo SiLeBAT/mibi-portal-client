@@ -246,6 +246,7 @@ function reset(req, res, next) {
       // password update ok
       // delete reset token
       let userId = res.locals.dbResetToken.user;
+      res.locals.user = result;
 
       ResetToken
       .remove()
@@ -254,6 +255,32 @@ function reset(req, res, next) {
         // delete reset token ok
         // send password update verification email
         console.log('still to do: send password reset verification email!!!');
+
+
+        let name = res.locals.user.firstName + ' ' + res.locals.user.lastName;
+
+        let notificationData = {
+          "name": name,
+          "email": res.locals.user.email,
+          "action_url": "http://localhost:4200/users/recovery"
+        }
+
+        let readFile = fs.readFileSync(__dirname + '/../views/pwnotification.html').toString('utf-8');
+        let template = handlebars.compile(readFile);
+
+        let result = template(notificationData);
+
+        // console.log('result: ', result);
+
+        sendmail({
+          from: 'no-reply@bfr.bund.de',
+          to: 'lewicki.birgit@gmail.com',
+          subject: 'Reset Password Successful',
+          html: result,
+        }, function(err, reply) {
+          console.log('sendmail err: ', err);
+          console.dir('sendmail reply: ', reply);
+        });
 
         return res
         .status(200)
