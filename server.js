@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 
-// use JWT auth to secure the api, the token can be passed in the authorization header or querystring
+// use JWT auth to secure the api, the token is passed in the authorization header
 app.use(expressJwt({
   secret: process.env.JWT_SECRET,
   getToken: function (req) {

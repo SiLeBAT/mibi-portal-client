@@ -6,8 +6,6 @@ const _ = require('lodash');
 const fs = require('fs');
 const handlebars = require('handlebars');
 
-// const sendmail = require('sendmail');
-
 const sendmail = require('sendmail')({
   logger: {
     debug: console.log,
@@ -68,6 +66,9 @@ function deleteUser(req, res, next) {
 }
 
 function getAllUser(req, res, next) {
+
+  console.log('getAllUser req.user.sub: ', req.user.sub);
+
   User.find().lean()
   .then((result) => {
     const users = _.map(result, function (user) {
@@ -170,13 +171,14 @@ function hashPw(password) {
 }
 
 function reset(req, res, next) {
-  let sentResetToken = req.params.token;
-  let dbResetToken;
+  // let sentResetToken = req.params.token;
+  // let dbResetToken;
+  res.locals.sentResetToken = req.params.token;
 
   ResetToken
     .find()
     .lean()
-    .where('token').equals(sentResetToken)
+    .where('token').equals(res.locals.sentResetToken)
     .then((results) => {
       console.log('searching the transfered reset token, results: ', results);
 
@@ -190,14 +192,14 @@ function reset(req, res, next) {
         });
 
       }
-      this.dbResetToken = results[0];
-      this.dbResetToken.user = String(this.dbResetToken.user);
+      res.locals.dbResetToken = results[0];
+      res.locals.dbResetToken.user = String(res.locals.dbResetToken.user);
 
       // verify that sent token has correct user id
-      let userId = this.dbResetToken.user;
+      let userId = res.locals.dbResetToken.user;
 
       try {
-        let decoded = jwt.verify(sentResetToken, process.env.JWT_SECRET, {subject: userId});
+        let decoded = jwt.verify(res.locals.sentResetToken, process.env.JWT_SECRET, {subject: userId});
         // console.log('decoded token result: ', decoded);
       } catch(err) {
         console.log('catch error while jwt.verify');
@@ -224,7 +226,7 @@ function reset(req, res, next) {
       // password hashing ok
       // update user password
 
-      let userId = this.dbResetToken.user;
+      let userId = res.locals.dbResetToken.user;
       return User.findByIdAndUpdate(userId, {password: hash, updated: Date.now()});
     })
     .then((result) => {
@@ -243,7 +245,7 @@ function reset(req, res, next) {
 
       // password update ok
       // delete reset token
-      let userId = this.dbResetToken.user;
+      let userId = res.locals.dbResetToken.user;
 
       ResetToken
       .remove()
@@ -261,7 +263,8 @@ function reset(req, res, next) {
 
       })
       .catch((err) => {
-        console.log('remove reset tokens for user ' + user._id +', err: ', err);
+        // console.log('remove reset tokens for user ' + user._id +', err: ', err);
+        console.log('remove reset tokens for user ' + userId +', err: ', err);
 
         return res
         .status(400)
@@ -287,7 +290,8 @@ function recovery(req, res, next) {
   const body = req.body;
   console.log('recovery body: ', body);
 
-  let user;
+  // let user;
+
   let resetToken;
   const message = `An email has been sent to ${body.email} with further instructions`;
 
@@ -328,7 +332,7 @@ function recovery(req, res, next) {
     }
 
     // user found, send password reset mail
-    this.user = user;
+    res.locals.user = user;
 
     // delete any existing reset tokens for the user
     ResetToken
@@ -343,11 +347,11 @@ function recovery(req, res, next) {
       });
 
     // create new resetToken for the user
-    const token = jwt.sign({sub: this.user._id}, process.env.JWT_SECRET);
+    const token = jwt.sign({sub: res.locals.user._id}, process.env.JWT_SECRET);
 
     var resetToken = new ResetToken({
       token: token,
-      user: this.user._id
+      user: res.locals.user._id
     });
 
     return resetToken.save();
@@ -356,8 +360,8 @@ function recovery(req, res, next) {
   })
   .then((resetToken) => {
     console.log('result after saving reset token: ', resetToken);
-    console.log('thus.user after saving reset token: ', this.user);
-    let name = this.user.firstName + ' ' + this.user.lastName;
+    console.log('thus.user after saving reset token: ', res.locals.user);
+    let name = res.locals.user.firstName + ' ' + res.locals.user.lastName;
     let resetUrl = "http://localhost:4200/users/reset/" + resetToken.token;
 
     let resetData = {
