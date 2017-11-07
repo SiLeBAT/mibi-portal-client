@@ -475,7 +475,11 @@ function login(req, res, next) {
           firstName: this.user.firstName,
           lastName: this.user.lastName,
           email: body.email,
-          token: jwt.sign({sub: this.user._id}, process.env.JWT_SECRET)
+          token: jwt.sign(
+            {sub: this.user._id},
+            process.env.JWT_SECRET,
+            {expiresIn: 10}
+          )
         }
       })
     } else {

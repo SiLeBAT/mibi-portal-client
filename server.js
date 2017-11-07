@@ -5,6 +5,7 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const expressJwt = require('express-jwt');
+const jwt = require('jsonwebtoken');
 
 var {mongoose} = require('./server/db/mongoose');
 
@@ -36,6 +37,22 @@ app.use(expressJwt({
     /\/users\/reset\/*/
   ]
 }));
+
+// verify token
+app.use((err, req, res, next) => {
+  console.log('this route is run always before all others!');
+  if (err.status === 401) {
+    console.log('always err: ', err);
+
+    return res
+    .status(401)
+    .json({
+      title: 'Not authorized, please login'
+    });
+}
+
+  // next();
+});
 
 
 // get api routes
