@@ -12,11 +12,9 @@ export class JwtInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>,
             next: HttpHandler): Observable<HttpEvent<any>> {
 
-    console.log('JwtInterceptor req: ', req);
-
     return next.handle(req).do(
       (event: HttpEvent<any>) => {
-        console.log('JwtInterceptor event: ', event);
+        // doing nothing
       },
       (err: any) => {
         if (err instanceof HttpErrorResponse) {

@@ -38,20 +38,15 @@ app.use(expressJwt({
   ]
 }));
 
-// verify token
+// verify token expiration
 app.use((err, req, res, next) => {
-  console.log('this route is run always before all others!');
   if (err.status === 401) {
-    console.log('always err: ', err);
-
     return res
     .status(401)
     .json({
       title: 'Not authorized, please login'
     });
-}
-
-  // next();
+  }
 });
 
 
