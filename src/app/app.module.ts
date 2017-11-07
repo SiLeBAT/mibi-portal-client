@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { AlertComponent } from './auth/alert/alert.component';
@@ -15,6 +15,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { AuthGuard } from './auth/guards/auth.guard';
 import { RecoveryComponent } from './auth/recovery/recovery.component';
 import { ResetComponent } from './auth/reset/reset.component';
+import { JwtInterceptor } from './auth/interceptors/jwt.interceptor';
 
 
 @NgModule({
@@ -38,7 +39,12 @@ import { ResetComponent } from './auth/reset/reset.component';
     AuthService,
     AlertService,
     UserService,
-    AuthGuard
+    AuthGuard,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })
