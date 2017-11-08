@@ -31,6 +31,7 @@ app.use(expressJwt({
     return null;
   }
 }).unless({ path: [
+    '/api',
     '/users/login',
     '/users/register',
     '/users/recovery',
@@ -43,9 +44,7 @@ app.use((err, req, res, next) => {
   if (err.status === 401) {
     return res
     .status(401)
-    .json({
-      title: 'Not authorized, please login'
-    });
+    .sendFile(path.join(__dirname, 'dist/index.html'));
   }
 });
 

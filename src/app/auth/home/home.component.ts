@@ -32,14 +32,17 @@ export class HomeComponent implements OnInit {
       this.alertService.success('User ' + user.firstName + ' ' + user.lastName + ' deleted', true);
       this.loadAllUsers();
     }, (err: HttpErrorResponse) => {
-      const errObj = JSON.parse(err.error);
-      if (err.error instanceof Error) {
-        console.error('deleteUser client-side or network error: ', errObj);
-      } else {
-        console.error(`deleteUser error status ${err.status}: `, errObj);
-      }
+      try {
+        const errObj = JSON.parse(err.error);
+        if (err.error instanceof Error) {
+          console.error('deleteUser client-side or network error: ', errObj);
+        } else {
+          console.error(`deleteUser error status ${err.status}: `, errObj);
+        }
 
-      this.alertService.error(errObj.title);
+        this.alertService.error(errObj.title);
+      } catch (e) {}
+
       this.loadAllUsers();
     });
 
@@ -51,9 +54,11 @@ export class HomeComponent implements OnInit {
       this.alertService.success(data['title']);
       this.users = data['obj'];
     }, (err: HttpErrorResponse) => {
-      const errObj = JSON.parse(err.error);
-      console.log('error loadAllUsers: ', errObj);
-      this.alertService.error(errObj.title);
+      try {
+        const errObj = JSON.parse(err.error);
+        console.log('error loadAllUsers: ', errObj);
+        this.alertService.error(errObj.title);
+      } catch (e) {}
     });
   }
 }
