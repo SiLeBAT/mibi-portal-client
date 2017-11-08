@@ -66,9 +66,6 @@ function deleteUser(req, res, next) {
 }
 
 function getAllUser(req, res, next) {
-
-  console.log('getAllUser req.user.sub: ', req.user.sub);
-
   User.find().lean()
   .then((result) => {
     const users = _.map(result, function (user) {

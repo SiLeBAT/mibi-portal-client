@@ -15,6 +15,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { AuthGuard } from './auth/guards/auth.guard';
 import { RecoveryComponent } from './auth/recovery/recovery.component';
 import { ResetComponent } from './auth/reset/reset.component';
+import { TokenInterceptor } from './auth/interceptors/token.interceptor';
 import { JwtInterceptor } from './auth/interceptors/jwt.interceptor';
 
 
@@ -40,6 +41,11 @@ import { JwtInterceptor } from './auth/interceptors/jwt.interceptor';
     AlertService,
     UserService,
     AuthGuard,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: JwtInterceptor,

@@ -22,13 +22,12 @@ export class AuthService {
   }
 
   loggedIn() {
-
     if (localStorage.getItem('currentUser')) {
       const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-
       return tokenNotExpired(null, currentUser.token);
     }
 
     return false;
   }
+
 }

@@ -12,10 +12,14 @@ export class UserService {
   constructor(private httpClient: HttpClient) { }
 
   getAll() {
-    const options = this.getJwtHeaders();
+    // const options = this.getJwtHeaders();
+
+    // return this.httpClient
+    //   .get('/users', options);
 
     return this.httpClient
-      .get('/users', options);
+      .get('/users');
+
   }
 
   // getById(_id: string) {
@@ -28,11 +32,14 @@ export class UserService {
   // }
 
   delete(_id: string) {
-    const options = this.getJwtHeaders();
+    // const options = this.getJwtHeaders();
+
+    // return this.httpClient
+    //   .delete('/users/' + _id, options);
 
     return this.httpClient
-      .delete('/users/' + _id, options);
-  }
+      .delete('/users/' + _id);
+}
 
   create(user: User) {
     return this.httpClient
