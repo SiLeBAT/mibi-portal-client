@@ -36,6 +36,16 @@ var userSchema = new Schema({
   }]
 });
 
-userSchema.plugin(mongooseUniqueValidator)
+userSchema.plugin(mongooseUniqueValidator);
+
+// does not execute
+// userSchema.pre('update', (next) => {
+//   // update the time stamp
+//   this.updated = Date.now();
+
+//   console.log('userSchema.pre running');
+
+//   return next();
+// })
 
 module.exports = mongoose.model('User', userSchema);

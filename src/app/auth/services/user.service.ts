@@ -57,18 +57,4 @@ export class UserService {
   }
 
 
-
-  private getJwtHeaders() {
-    let options = {};
-
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    if (currentUser && currentUser.token) {
-      options = {
-        headers: new HttpHeaders().set('Authorization', 'Bearer ' + currentUser.token)
-      };
-    }
-
-    return options;
-  }
-
 }

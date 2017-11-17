@@ -6,6 +6,9 @@ const _ = require('lodash');
 const fs = require('fs');
 const handlebars = require('handlebars');
 
+const expirationTime = 60 * 60 * 12;
+// const expirationTime = 10;
+
 const sendmail = require('sendmail')({
   logger: {
     debug: console.log,
@@ -225,6 +228,7 @@ function reset(req, res, next) {
 
       let userId = res.locals.dbResetToken.user;
       return User.findByIdAndUpdate(userId, {password: hash, updated: Date.now()});
+      // return User.findByIdAndUpdate(userId, {password: hash});
     })
     .then((result) => {
 
@@ -475,7 +479,7 @@ function login(req, res, next) {
           token: jwt.sign(
             {sub: this.user._id},
             process.env.JWT_SECRET,
-            {expiresIn: 10}
+            {expiresIn: expirationTime}
           )
         }
       })

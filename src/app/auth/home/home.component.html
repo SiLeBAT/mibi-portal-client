@@ -1,12 +1,16 @@
 <div class="col-md-6 col-md-offset-3">
     <h2>Hello {{ currentUser.firstName }} {{ currentUser.lastName }} !</h2>
     <p>Welcome to Epi-Lab !</p>
-    <h3>All registered users:</h3>
+
+    <!-- <app-upload></app-upload> -->
+    <router-outlet></router-outlet>
+
+    <!-- <h3>All registered users:</h3>
     <ul>
         <li *ngFor="let user of users">
             {{user.email}} ({{user.firstName}} {{user.lastName}})
             - <a (click)="deleteUser(user)">Delete</a>
         </li>
     </ul>
-    <p><a [routerLink]="['/users/login']">Logout</a></p>
+    <p><a [routerLink]="['/users/login']">Logout</a></p> -->
 </div>

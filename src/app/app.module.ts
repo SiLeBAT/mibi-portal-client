@@ -9,6 +9,7 @@ import { RegisterComponent } from './auth/register/register.component';
 import { AuthService } from './auth/services/auth.service';
 import { AlertService } from './auth/services/alert.service';
 import { UserService } from './auth/services/user.service';
+import { UploadService } from './services/upload.service';
 import { routing } from './route/app.routing';
 import { HomeComponent } from './auth/home/home.component';
 import { LoginComponent } from './auth/login/login.component';
@@ -17,6 +18,10 @@ import { RecoveryComponent } from './auth/recovery/recovery.component';
 import { ResetComponent } from './auth/reset/reset.component';
 import { TokenInterceptor } from './auth/interceptors/token.interceptor';
 import { JwtInterceptor } from './auth/interceptors/jwt.interceptor';
+import { HeaderComponent } from './header/header.component';
+import { UploadComponent } from './upload/upload.component';
+import { MainAuthComponent } from './auth/main-auth/main-auth.component';
+import { MainDashComponent } from './main-dash/main-dash.component';
 
 
 @NgModule({
@@ -27,7 +32,11 @@ import { JwtInterceptor } from './auth/interceptors/jwt.interceptor';
     HomeComponent,
     LoginComponent,
     RecoveryComponent,
-    ResetComponent
+    ResetComponent,
+    HeaderComponent,
+    UploadComponent,
+    MainAuthComponent,
+    MainDashComponent,
   ],
   imports: [
     BrowserModule,
@@ -40,6 +49,7 @@ import { JwtInterceptor } from './auth/interceptors/jwt.interceptor';
     AuthService,
     AlertService,
     UserService,
+    UploadService,
     AuthGuard,
     {
       provide: HTTP_INTERCEPTORS,

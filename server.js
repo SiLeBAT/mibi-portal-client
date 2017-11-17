@@ -31,7 +31,7 @@ app.use(expressJwt({
     return null;
   }
 }).unless({ path: [
-    '/api',
+    '/api/v1/knime',
     '/users/login',
     '/users/register',
     '/users/recovery',
@@ -50,7 +50,7 @@ app.use((err, req, res, next) => {
 
 
 // get api routes
-const apiRoutes = require('./server/routes/api');
+// const apiRoutes = require('./server/routes/api');
 const userRoutes = require('./server/routes/user');
 
 
@@ -60,7 +60,8 @@ app.use(express.static(path.join(__dirname, 'dist')));
 
 // Set api routes, forwards any request to the routes
 app.use('/users',userRoutes);
-app.use('/', apiRoutes);
+// app.use('/', apiRoutes);
+app.use('/api', require('./server/api'));
 
 
 // Catch all other routes and return the index file, angular handles all errors

@@ -23,6 +23,11 @@ var resetTokenSchema = new Schema({
   }
 });
 
-// userSchema.plugin(mongooseUniqueValidator)
+resetTokenSchema.pre('save', (next) => {
+  // update the time stamp
+  this.updated = Date.now();
+
+  return next();
+})
 
 module.exports = mongoose.model('ResetToken', resetTokenSchema);
