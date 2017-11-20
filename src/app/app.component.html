@@ -27,14 +27,6 @@
   <nav
     id="sidebar"
     [ngClass]="{active: isSidebarActive()}">
-    <!-- <div id="dismiss">
-      <button
-        id="menuclose"
-        class="btn btn-primary"
-        (click)="deactivateSidebar()">
-        <i class="glyphicon glyphicon-arrow-left"></i>
-      </button>
-    </div> -->
 
     <div class="container-fluid">
       <div class="row dismiss">
@@ -49,19 +41,21 @@
       </div>
       <div class="text-center">
 
-        <div class="row brand">
+        <div class="row">
           <div class="col-md-12">
             <a
-              [routerLink]="['/']"
-              (click)="deactivateSidebar()">
-              <img src="../assets/network.jpg" alt="Epi-Lab">
+              [routerLink]="authService.loggedIn() ? ['/main'] : ['/']"
+              (click)="deactivateSidebar()"
+              class="brand">
+              <!-- <img src="../assets/network.jpg" alt="Epi-Lab"> -->
+              <i class="glyphicon glyphicon-asterisk logo"></i>
               Epi-Lab
             </a>
           </div>
         </div>
 
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-12">
               <hr>
             </div>
         </div>
@@ -111,8 +105,11 @@
         </div>
 
         <div class="navbar-header navbar-brand">
-          <a [routerLink]="['/']">
-            <img src="../assets/network.jpg" alt="Epi-Lab">
+          <a
+            [routerLink]="authService.loggedIn() ? ['/main'] : ['/']"
+            class="brand">
+            <!-- <img src="../assets/network.jpg" alt="Epi-Lab"> -->
+            <i class="glyphicon glyphicon-asterisk logo"></i>
             Epi-Lab
           </a>
         </div>
