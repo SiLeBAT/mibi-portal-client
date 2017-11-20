@@ -60,45 +60,62 @@
             </div>
         </div>
 
-        <!-- <div class="menuitem"> -->
+        <div class="row menuitem">
+          <div class="col-md-12">
+            <a
+              routerLink="/users/login"
+              (click)="deactivateSidebar()"
+              *ngIf="!authService.loggedIn()">
+              Login/Register
+            </a>
+          </div>
 
           <div class="row menuitem">
             <div class="col-md-12">
               <a
-                routerLink="/users/login"
-                (click)="deactivateSidebar()"
-                *ngIf="!authService.loggedIn()">
-                Login/Register
+                routerLink="/upload"
+                style="cursor: pointer;"
+                (click)="onUpload()"
+                *ngIf="authService.loggedIn()">
+                Upload
               </a>
-            </div>
-
-            <div class="row menuitem">
-              <div class="col-md-12">
-                <a
-                  routerLink="/upload"
-                  style="cursor: pointer;"
-                  (click)="onUpload()"
-                  *ngIf="authService.loggedIn()">
-                  Upload
-                </a>
-              </div>
-            </div>
-
-            <div class="row menuitem">
-              <div class="col-md-12">
-                <a
-                    routerLink="/users/login"
-                    style="cursor: pointer;"
-                    (click)="onLogout()"
-                    *ngIf="authService.loggedIn()">
-                  Logout
-                </a>
-              </div>
             </div>
           </div>
 
+          <div class="row menuitem">
+            <div class="col-md-12">
+              <a
+                  routerLink="/users/login"
+                  style="cursor: pointer;"
+                  (click)="onLogout()"
+                  *ngIf="authService.loggedIn()">
+                Logout
+              </a>
+            </div>
+          </div>
+        </div>
 
-        <!-- </div> -->
+
+        <div class="row">
+            <div class="col-md-12">
+              <hr>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+              <a
+                href="https://www.bfr.bund.de"
+                (click)="deactivateSidebar()">
+                <img
+                  src="../assets/bfr_logo.gif"
+                  alt="BfR"
+                  class="bfrlogo">
+                <!-- <i class="glyphicon glyphicon-asterisk logo"></i> -->
+              </a>
+            </div>
+          </div>
+
 
 
       </div>
