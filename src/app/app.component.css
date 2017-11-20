@@ -69,10 +69,6 @@ a > i {
   color: darkred;
 }
 
-/* .logo {
-  color: darkred;
-  font-size: 2em
-} */
 
 /* ---------------------------------------------------
     SIDEBAR STYLE
@@ -113,6 +109,10 @@ a > i {
     -o-transition: all 0.3s;
     transition: all 0.3s;
 
+}
+
+.menuitem {
+  padding: 1em;
 }
 
 #menuclose {

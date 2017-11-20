@@ -42,6 +42,7 @@ export class AppComponent {
 
   onUpload() {
     console.log('Upload clicked');
+    this.deactivateSidebar();
   }
 
 }
