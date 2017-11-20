@@ -1,12 +1,9 @@
-/*
-    DEMO STYLE
-*/
 @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
-
 
 body {
     font-family: 'Poppins', sans-serif;
     background: #fafafa;
+    margin-bottom: 60px;
 }
 
 p {
@@ -17,19 +14,32 @@ p {
     color: #999;
 }
 
-a, a:hover, a:focus {
+/* a, a:hover, a:focus { */
+a {
+
     color: inherit;
     text-decoration: none;
-    transition: all 0.3s;
+    /* transition: all 0.3s; */
 }
+
+a:hover {
+  background: #fff;
+  color: #337ab7;
+  transition: all 0.3s;
+  /* transform: scale(1.1); */
+  padding: 20px;
+}
+
 
 .navbar {
     padding: 15px 10px;
     background: #fff;
-    border: none;
+    border: 1px solid rgb(218, 218, 218);;
     border-radius: 0;
     margin-bottom: 40px;
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    /* box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1); */
+    box-shadow: 5px 5px 5px rgb(218, 218, 218);
+
 }
 
 .navbar-btn {
@@ -45,9 +55,23 @@ a, a:hover, a:focus {
     margin: 40px 0;
 }
 
+a > img {
+  height: 2em;
+  margin-left: 30px;
+  margin-right: 10px;
+}
+
+.brand {
+  font-size: 150%;
+  /* padding: 2em; */
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
 /* ---------------------------------------------------
     SIDEBAR STYLE
 ----------------------------------------------------- */
+
 #sidebar {
     width: 250px;
     position: fixed;
@@ -55,7 +79,8 @@ a, a:hover, a:focus {
     left: -250px;
     height: 100vh;
     z-index: 999;
-    background: #7386D5;
+    /* background: #7386D5; */
+    background: #337ab7;
     color: #fff;
     transition: all 0.3s;
     overflow-y: scroll;
@@ -66,12 +91,14 @@ a, a:hover, a:focus {
     left: 0;
 }
 
+
 #dismiss {
     width: 35px;
     height: 35px;
     line-height: 35px;
     text-align: center;
-    background: #7386D5;
+    padding: 2em;
+    /* background: #337ab7; */
     position: absolute;
     top: 10px;
     right: 10px;
@@ -79,10 +106,19 @@ a, a:hover, a:focus {
     -webkit-transition: all 0.3s;
     -o-transition: all 0.3s;
     transition: all 0.3s;
+
 }
-#dismiss:hover {
-    background: #fff;
-    color: #7386D5;
+
+#menuclose {
+  margin: 1em 0em 2em 12em;
+
+}
+
+#menuclose:hover {
+  background: #fff;
+  color: #337ab7;
+  transition: all 0.3s;
+  transform: scale(1.2,1.2);
 }
 
 .overlay {
@@ -96,7 +132,8 @@ a, a:hover, a:focus {
 
 #sidebar .sidebar-header {
     padding: 20px;
-    background: #6d7fcc;
+    /* background: #6d7fcc; */
+    background: #0065b8
 }
 
 #sidebar ul.components {
@@ -115,13 +152,15 @@ a, a:hover, a:focus {
     display: block;
 }
 #sidebar ul li a:hover {
-    color: #7386D5;
+    /* color: #7386D5; */
+    color: #337ab7;
     background: #fff;
 }
 
 #sidebar ul li.active > a, a[aria-expanded="true"] {
     color: #fff;
-    background: #6d7fcc;
+    /* background: #6d7fcc; */
+    background: #0065b8;
 }
 
 
@@ -145,7 +184,8 @@ a[aria-expanded="true"]::before {
 ul ul a {
     font-size: 0.9em !important;
     padding-left: 30px !important;
-    background: #6d7fcc;
+    /* background: #6d7fcc; */
+    background: #0065b8;
 }
 
 ul.CTAs {
@@ -161,10 +201,12 @@ ul.CTAs a {
 }
 a.download {
     background: #fff;
-    color: #7386D5;
+    /* color: #7386D5; */
+    color: #337ab7;
 }
 a.article, a.article:hover {
-    background: #6d7fcc !important;
+    /* background: #6d7fcc !important; */
+    background: #0065b8 !important;
     color: #fff !important;
 }
 
@@ -180,4 +222,13 @@ a.article, a.article:hover {
     position: absolute;
     top: 0;
     right: 0;
+}
+
+
+/* ---------------------------------------------------
+    STICKY FOOTER
+----------------------------------------------------- */
+
+footer {
+  margin-top: 50px;
 }

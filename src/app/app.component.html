@@ -27,82 +27,143 @@
   <nav
     id="sidebar"
     [ngClass]="{active: isSidebarActive()}">
-    <div id="dismiss">
-      <i
-        class="glyphicon glyphicon-arrow-left"
+    <!-- <div id="dismiss">
+      <button
+        id="menuclose"
+        class="btn btn-primary"
         (click)="deactivateSidebar()">
-      </i>
+        <i class="glyphicon glyphicon-arrow-left"></i>
+      </button>
+    </div> -->
+
+    <div class="container-fluid">
+      <div class="row dismiss">
+        <div class="col-md-1">
+          <button
+            id="menuclose"
+            class="btn btn-primary"
+            (click)="deactivateSidebar()">
+            <i class="glyphicon glyphicon-arrow-left"></i>
+          </button>
+        </div>
+      </div>
+      <div class="text-center">
+
+        <div class="row brand">
+          <div class="col-md-12">
+            <a
+              [routerLink]="['/']"
+              (click)="deactivateSidebar()">
+              <img src="../assets/network.jpg" alt="Epi-Lab">
+              Epi-Lab
+            </a>
+          </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-2">
+              <hr>
+            </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <a
+              routerLink="/users/login"
+              (click)="deactivateSidebar()"
+              *ngIf="!authService.loggedIn()">
+              Login/Register
+            </a>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <a
+                  routerLink="/users/login"
+                  style="cursor: pointer;"
+                  (click)="onLogout()"
+                  *ngIf="authService.loggedIn()">
+                Logout
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
 
-    <div class="sidebar-header">
-      <h3>Bootstrap Sidebar</h3>
-    </div>
-
-    <ul class="list-unstyled components">
-      <p>Dummy Heading</p>
-      <li class="active">
-        <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">Home</a>
-        <ul class="collapse list-unstyled" id="homeSubmenu">
-          <li><a href="#">Home 1</a></li>
-          <li><a href="#">Home 2</a></li>
-          <li><a href="#">Home 3</a></li>
-        </ul>
-      </li>
-      <li>
-        <a href="#">About</a>
-        <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">Pages</a>
-        <ul class="collapse list-unstyled" id="pageSubmenu">
-          <li><a href="#">Page 1</a></li>
-          <li><a href="#">Page 2</a></li>
-          <li><a href="#">Page 3</a></li>
-        </ul>
-      </li>
-      <li>
-          <a href="#">Portfolio</a>
-      </li>
-      <li>
-          <a href="#">Contact</a>
-      </li>
-    </ul>
-
-    <ul class="list-unstyled CTAs">
-        <li><a href="https://bootstrapious.com/tutorial/files/sidebar.zip" class="download">Download source</a></li>
-        <li><a href="https://bootstrapious.com/p/bootstrap-sidebar" class="article">Back to article</a></li>
-    </ul>
   </nav>
 
   <!-- Page Content Holder -->
   <div id="content">
 
-    <nav class="navbar navbar-ollapse">
+    <nav class="navbar navbar-collapse">
       <div class="container-fluid">
 
         <div class="navbar-header">
           <button
             type="button"
             id="sidebarCollapse"
-            class="btn btn-primary navbar-btn"
+            class="btn btn-default navbar-btn"
             (click)="activateSidebar()">
-            <i class="glyphicon glyphicon-align-left"></i>
-            <span>Menu</span>
+            <i class="glyphicon glyphicon-align-justify"></i>
           </button>
         </div>
 
+        <div class="navbar-header navbar-brand">
+          <a [routerLink]="['/']">
+            <img src="../assets/network.jpg" alt="Epi-Lab">
+            Epi-Lab
+          </a>
+        </div>
+
+
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Page</a></li>
-            <li><a href="#">Page</a></li>
-            <li><a href="#">Page</a></li>
-            <li><a href="#">Page</a></li>
+            <li>
+              <!-- <ng-template [ngIf]="!authService.loggedIn()"> -->
+                <a
+                  routerLink="/users/login"
+                  (click)="deactivateSidebar()"
+                  *ngIf="!authService.loggedIn()">
+                  Login/Register
+                </a>
+              <!-- </ng-template> -->
+            </li>
+
+            <li><a
+              routerLink="/upload"
+              style="cursor: pointer;"
+              (click)="onUpload()"
+              *ngIf="authService.loggedIn()">Upload</a>
+            </li>
+            <li><a
+                  routerLink="/users/login"
+                  style="cursor: pointer;"
+                  (click)="onLogout()"
+                  *ngIf="authService.loggedIn()">Logout</a>
+            </li>
           </ul>
         </div>
       </div>
     </nav>
 
-    <!-- <h1>Welcome to Epi-Lab</h1> -->
+    <app-alert><</app-alert>
+    <router-outlet></router-outlet>
 
-    <app-main-dash></app-main-dash>
+    <footer class="container-fluid">
+      <div class="text-center">
+        <hr>
+        <p>
+          <a href="https://www.bfr.bund.de" target="_top">
+            BfR - Bundesinstitut für Risikobewertung</a>
+        </p>
+        <p>
+          <a href="https://foodrisklabs.bfr.bund.de" target="_top">FoodRisk - Labs</a>
+        </p>
 
+      </div>
+    </footer>
   </div>
 </div>
 
@@ -110,5 +171,6 @@
   class="overlay"
   [ngStyle]="{display: getDisplayMode()}">
 </div>
+
 
 

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from './auth/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -9,6 +10,8 @@ export class AppComponent {
   title = 'Epi-Lab';
 
   private isActive = false;
+
+  constructor(private authService: AuthService) {}
 
   activateSidebar() {
     this.isActive = true;
@@ -31,4 +34,14 @@ export class AppComponent {
 
     return displayMode;
   }
+
+  onLogout() {
+    this.deactivateSidebar();
+    this.authService.logout();
+  }
+
+  onUpload() {
+    console.log('Upload clicked');
+  }
+
 }

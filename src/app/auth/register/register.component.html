@@ -1,66 +1,72 @@
 <!-- the register component template contains a simple registration form with fields for
 first name, last name, username and password. It displays validation messages for invalid fields
 when the submit button is clocked. On submit the register() method is called if the form is valid. -->
-<div class="col-md-6 col-md-offset-3">
-  <h2>Register</h2>
-  <hr>
-  <form
-    [formGroup]="registerForm"
-    (ngSubmit)="register()">
-    <div class="form-group">
-      <label for="firstName">First Name</label>
-      <input
-        type="text"
-        id="firstName"
-        class="form-control"
-        formControlName="firstName"/>
-    </div>
-    <div class="form-group">
-      <label for="lastName">Last Name</label>
-      <input
-        type="text"
-        id="lastName"
-        class="form-control"
-        formControlName="lastName"/>
-    </div>
-    <div class="form-group">
-      <label for="email">Email</label>
-      <input
-        type="email"
-        id="email"
-        class="form-control"
-        formControlName="email"/>
-    </div>
-    <div class="form-group">
-      <label for="password1">Password</label>
-      <input
-        type="password"
-        id="password1"
-        class="form-control"
-        formControlName="password1"/>
-    </div>
-    <div class="form-group">
-      <label for="password2">Confirm Password</label>
-      <input
-        type="password"
-        id="password2"
-        class="form-control"
-        formControlName="password2"/>
-    </div>
+<div class="jumbotron">
+  <div class="container-fluid">
+    <div class="col-md-6 col-md-offset-3">
+      <h2>Register</h2>
+      <hr>
+      <form
+        [formGroup]="registerForm"
+        (ngSubmit)="register()">
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input
+            type="text"
+            id="firstName"
+            class="form-control"
+            formControlName="firstName"/>
+        </div>
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input
+            type="text"
+            id="lastName"
+            class="form-control"
+            formControlName="lastName"/>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            class="form-control"
+            formControlName="email"/>
+        </div>
+        <div class="form-group">
+          <label for="password1">Password</label>
+          <input
+            type="password"
+            id="password1"
+            class="form-control"
+            formControlName="password1"/>
+        </div>
+        <div class="form-group">
+          <label for="password2">Confirm Password</label>
+          <input
+            type="password"
+            id="password2"
+            class="form-control"
+            formControlName="password2"/>
+        </div>
 
-    <div class="form-group">
-      <button
-        class="btn btn-primary"
-        type="submit"
-        [disabled]="!registerForm.valid">Submit</button>
-        <!-- <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" /> -->
-      <a
-        [routerLink]="['/']"
-        class="btn btn-link">
-          Cancel
-      </a>
+        <div class="form-group">
+          <button
+            class="btn btn-primary"
+            type="submit"
+            [disabled]="!registerForm.valid">Submit</button>
+            <!-- <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" /> -->
+          <a
+            [routerLink]="['/main']"
+            class="btn btn-link">
+              Cancel
+          </a>
+        </div>
+      </form>
     </div>
-  </form>
+  </div>
 </div>
+
+
 
 
