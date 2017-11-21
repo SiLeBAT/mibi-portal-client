@@ -29,7 +29,7 @@
     [ngClass]="{active: isSidebarActive()}">
 
     <div class="container-fluid">
-      <div class="row dismiss">
+      <div class="row">
         <div class="col-md-1">
           <button
             id="menuclose"
@@ -55,6 +55,22 @@
         </div>
 
         <div class="row">
+            <div class="col-md-12">
+              <hr>
+            </div>
+        </div>
+
+        <div
+          class="row"
+          *ngIf="authService.loggedIn()">
+          <div class="col-md-12">
+            <p>{{ getCurrentUser() }}</p>
+          </div>
+        </div>
+
+        <div
+          class="row"
+          *ngIf="authService.loggedIn()">
             <div class="col-md-12">
               <hr>
             </div>

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from './auth/services/auth.service';
+import { User } from './models/user.model';
 
 @Component({
   selector: 'app-root',
@@ -7,11 +8,17 @@ import { AuthService } from './auth/services/auth.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Epi-Lab';
-
   private isActive = false;
 
   constructor(private authService: AuthService) {}
+
+  getCurrentUser() {
+    if (this.authService.loggedIn()) {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      return currentUser.email;
+    }
+
+  }
 
   activateSidebar() {
     this.isActive = true;

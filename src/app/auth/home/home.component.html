@@ -1,9 +1,14 @@
 <!-- <div class="col-md-6 col-md-offset-3"> -->
 <div class="container-fluid">
 
-  <h2>Hello {{ currentUser.firstName }} {{ currentUser.lastName }} !</h2>
-    <p>Welcome to Epi-Lab !</p>
-
+  <h4>Signed in as {{ currentUser.firstName }} {{ currentUser.lastName }}, {{ currentUser.email }}</h4>
+  <h4>
+    <a
+      [routerLink]="['/users/login']"
+      (click)="logout()">
+      Logout
+    </a>
+  </h4>
     <!-- <app-upload></app-upload> -->
     <!-- <router-outlet></router-outlet> -->
 
