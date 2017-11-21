@@ -18,9 +18,7 @@ import { RecoveryComponent } from './auth/recovery/recovery.component';
 import { ResetComponent } from './auth/reset/reset.component';
 import { TokenInterceptor } from './auth/interceptors/token.interceptor';
 import { JwtInterceptor } from './auth/interceptors/jwt.interceptor';
-import { HeaderComponent } from './header/header.component';
 import { UploadComponent } from './upload/upload.component';
-import { MainAuthComponent } from './auth/main-auth/main-auth.component';
 import { MainDashComponent } from './main-dash/main-dash.component';
 
 
@@ -33,9 +31,7 @@ import { MainDashComponent } from './main-dash/main-dash.component';
     LoginComponent,
     RecoveryComponent,
     ResetComponent,
-    HeaderComponent,
     UploadComponent,
-    MainAuthComponent,
     MainDashComponent,
   ],
   imports: [
