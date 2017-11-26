@@ -22,6 +22,11 @@ export class UserService {
 
   }
 
+  getAllInstitutions() {
+    return this.httpClient
+      .get('/institutions');
+  }
+
   // getById(_id: string) {
   //     return this.http.get('/user/' + _id).map((response: Response) => response.json());
   // }

@@ -20,6 +20,8 @@ import { TokenInterceptor } from './auth/interceptors/token.interceptor';
 import { JwtInterceptor } from './auth/interceptors/jwt.interceptor';
 import { UploadComponent } from './upload/upload.component';
 import { MainDashComponent } from './main-dash/main-dash.component';
+import { MyaccountComponent } from './myaccount/myaccount.component';
+import { UserdataComponent } from './myaccount/userdata/userdata.component';
 
 
 @NgModule({
@@ -33,6 +35,8 @@ import { MainDashComponent } from './main-dash/main-dash.component';
     ResetComponent,
     UploadComponent,
     MainDashComponent,
+    MyaccountComponent,
+    UserdataComponent,
   ],
   imports: [
     BrowserModule,

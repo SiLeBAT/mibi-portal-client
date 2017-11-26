@@ -8,11 +8,15 @@ import { ResetComponent } from './../auth/reset/reset.component';
 import { AuthGuard } from './../auth/guards/auth.guard';
 import { UploadComponent } from '../upload/upload.component';
 import { MainDashComponent } from '../main-dash/main-dash.component';
+import { MyaccountComponent } from '../myaccount/myaccount.component';
+import { UserdataComponent } from '../myaccount/userdata/userdata.component';
 
 const appRoutes: Routes = [
   { path: '', component: MainDashComponent},
   { path: 'main', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'upload', component: UploadComponent, canActivate: [AuthGuard] },
+  { path: 'myaccount', component: MyaccountComponent, canActivate: [AuthGuard] },
+  { path: 'userdata', component: UserdataComponent, canActivate: [AuthGuard] },
   { path: 'users/login', component: LoginComponent },
   { path: 'users/register', component: RegisterComponent },
   { path: 'users/recovery', component: RecoveryComponent },

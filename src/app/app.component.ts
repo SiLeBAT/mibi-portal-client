@@ -47,9 +47,4 @@ export class AppComponent {
     this.authService.logout();
   }
 
-  onUpload() {
-    console.log('Upload clicked');
-    this.deactivateSidebar();
-  }
-
 }

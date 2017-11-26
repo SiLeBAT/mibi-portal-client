@@ -90,8 +90,7 @@
             <div class="col-md-12">
               <a
                 routerLink="/upload"
-                style="cursor: pointer;"
-                (click)="onUpload()"
+                (click)="deactivateSidebar()"
                 *ngIf="authService.loggedIn()">
                 Upload
               </a>
@@ -101,8 +100,18 @@
           <div class="row menuitem">
             <div class="col-md-12">
               <a
+                routerLink="/myaccount"
+                (click)="deactivateSidebar()"
+                *ngIf="authService.loggedIn()">
+                My Account
+              </a>
+            </div>
+          </div>
+
+          <div class="row menuitem">
+            <div class="col-md-12">
+              <a
                   routerLink="/users/login"
-                  style="cursor: pointer;"
                   (click)="onLogout()"
                   *ngIf="authService.loggedIn()">
                 Logout
@@ -127,7 +136,6 @@
                   src="../assets/bfr_logo.gif"
                   alt="BfR"
                   class="bfrlogo">
-                <!-- <i class="glyphicon glyphicon-asterisk logo"></i> -->
               </a>
             </div>
           </div>
@@ -169,25 +177,26 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav navbar-right">
             <li>
-              <!-- <ng-template [ngIf]="!authService.loggedIn()"> -->
-                <a
-                  routerLink="/users/login"
-                  (click)="deactivateSidebar()"
-                  *ngIf="!authService.loggedIn()">
-                  Login/Register
-                </a>
-              <!-- </ng-template> -->
+              <a
+                routerLink="/users/login"
+                (click)="deactivateSidebar()"
+                *ngIf="!authService.loggedIn()">
+                Login/Register
+              </a>
             </li>
 
             <li><a
               routerLink="/upload"
-              style="cursor: pointer;"
-              (click)="onUpload()"
               *ngIf="authService.loggedIn()">Upload</a>
             </li>
+
+            <li><a
+              routerLink="/myaccount"
+              *ngIf="authService.loggedIn()">My Account</a>
+            </li>
+
             <li><a
                   routerLink="/users/login"
-                  style="cursor: pointer;"
                   (click)="onLogout()"
                   *ngIf="authService.loggedIn()">Logout</a>
             </li>

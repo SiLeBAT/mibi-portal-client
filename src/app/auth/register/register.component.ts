@@ -22,6 +22,7 @@ export class RegisterComponent implements OnInit {
     private router: Router) {}
 
   ngOnInit() {
+    this.loadInstitutions();
     this.registerForm = new FormGroup({
       firstName: new FormControl(null, Validators.required),
       lastName: new FormControl(null, Validators.required),
@@ -32,6 +33,20 @@ export class RegisterComponent implements OnInit {
       password1: new FormControl(null, Validators.required),
       password2: new FormControl(null, Validators.required),
     });
+  }
+
+  private loadInstitutions() {
+    // this.userService.getAll()
+    // .subscribe((data) => {
+    //   this.alertService.success(data['title']);
+    //   this.users = data['obj'];
+    // }, (err: HttpErrorResponse) => {
+    //   try {
+    //     const errObj = JSON.parse(err.error);
+    //     console.log('error loadAllUsers: ', errObj);
+    //     this.alertService.error(errObj.title);
+    //   } catch (e) {}
+    // });
   }
 
   register() {
