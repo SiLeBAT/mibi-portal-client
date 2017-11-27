@@ -6,6 +6,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { UserService } from './../services/user.service';
 import { AlertService } from './../services/alert.service';
 import { User } from '../../models/user.model';
+import { Institution } from '../../models/institution.model';
+
 
 @Component({
   selector: 'app-register',
@@ -15,6 +17,7 @@ import { User } from '../../models/user.model';
 export class RegisterComponent implements OnInit {
   private registerForm: FormGroup;
   loading = false;
+  institutions: Institution[] = [];
 
   constructor(
     private userService: UserService,
@@ -22,8 +25,10 @@ export class RegisterComponent implements OnInit {
     private router: Router) {}
 
   ngOnInit() {
+    console.log('RegisterComponent ngOnInit() called');
     this.loadInstitutions();
     this.registerForm = new FormGroup({
+      institution: new FormControl('0', Validators.required),
       firstName: new FormControl(null, Validators.required),
       lastName: new FormControl(null, Validators.required),
       email: new FormControl(null, [
@@ -35,22 +40,36 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  private loadInstitutions() {
-    // this.userService.getAll()
-    // .subscribe((data) => {
-    //   this.alertService.success(data['title']);
-    //   this.users = data['obj'];
-    // }, (err: HttpErrorResponse) => {
-    //   try {
-    //     const errObj = JSON.parse(err.error);
-    //     console.log('error loadAllUsers: ', errObj);
-    //     this.alertService.error(errObj.title);
-    //   } catch (e) {}
-    // });
+  getInstitutionName(institution: Institution): string {
+    let name = institution.name1;
+    if (institution.name2.length > 0) {
+      name = name + ', ' + institution.name2;
+    }
+    name = name + ', ' + institution.location;
+    return name;
+  }
+
+  loadInstitutions() {
+    this.userService.getAllInstitutions()
+    .subscribe((data) => {
+      for (const entry of data as Array<any>) {
+        const institution = new Institution(entry);
+        // console.log('institution: ', institution);
+        this.institutions.push(institution);
+      }
+    }, (err: HttpErrorResponse) => {
+      try {
+        const errObj = JSON.parse(err.error);
+        console.log('error loadInstitutions: ', errObj);
+        this.alertService.error(errObj.title);
+      } catch (e) {}
+    });
   }
 
   register() {
     this.loading = true;
+
+    console.log('this.registerForm.value.institution: ', this.registerForm.value.institution);
 
     const user = new User(
       this.registerForm.value.email,
@@ -58,6 +77,7 @@ export class RegisterComponent implements OnInit {
       this.registerForm.value.firstName,
       this.registerForm.value.lastName,
     );
+    user.institution_id = this.registerForm.value.institution;
 
     this.userService.create(user)
       .subscribe((data) => {

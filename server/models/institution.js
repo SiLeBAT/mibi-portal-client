@@ -2,29 +2,56 @@
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const ObjectId = Schema.ObjectId;
 const mongooseUniqueValidator = require('mongoose-unique-validator');
 
-var userSchema = new Schema({
-  firstName: {
+var institutionSchema = new Schema({
+  short: {
     type: String,
     required: true
   },
-  lastName: {
+  name1: {
     type: String,
     required: true
   },
-  email: {
-    type: String,
-    required: true,
-    unique: true
+  name2: {
+    type: String
   },
-  password: {
+  location: {
     type: String,
     required: true
   },
-  institution_id: {
-    type: Schema.Types.ObjectId,
-    ref: 'Institution'
+  address1: {
+    street: {
+      type: String
+    },
+    city: {
+      type: String
+    }
+  },
+  address2: {
+    street: {
+      type: String
+    },
+    city: {
+      type: String
+    }
+  },
+  phone: {
+    type: String,
+    required: true
+  },
+  fax: {
+    type: String,
+    required: true
+  },
+
+  email: [{
+    type: String
+  }],
+  state_id: {
+    type: ObjectId,
+    ref: 'State'
   },
   created: {
     type: Date,
@@ -35,15 +62,10 @@ var userSchema = new Schema({
     type: Date,
     default: Date.now,
     required: true
-  },
-  orders: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Order'
-  }]
+  }
 });
 
-
-userSchema.plugin(mongooseUniqueValidator);
+// institutionSchema.plugin(mongooseUniqueValidator);
 
 // does not execute
 // userSchema.pre('update', (next) => {
@@ -55,4 +77,4 @@ userSchema.plugin(mongooseUniqueValidator);
 //   return next();
 // })
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('Institution', institutionSchema);

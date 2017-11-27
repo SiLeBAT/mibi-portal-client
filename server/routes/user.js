@@ -133,7 +133,8 @@ function register(req, res, next) {
       firstName: body.firstName,
       lastName: body.lastName,
       email: body.email,
-      password: hash
+      password: hash,
+      institution_id: body.institution_id
     });
 
     return user.save();

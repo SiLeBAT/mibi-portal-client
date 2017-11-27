@@ -31,7 +31,7 @@ app.use(expressJwt({
     return null;
   }
 }).unless({ path: [
-    '/api/v1/knime',
+    '/api/v1/institutions',
     '/users/login',
     '/users/register',
     '/users/recovery',

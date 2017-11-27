@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import 'rxjs/Rx';
 
 import { User } from './../../models/user.model';
+import { Institution } from '../../models/institution.model';
 
 
 @Injectable()
@@ -24,7 +25,7 @@ export class UserService {
 
   getAllInstitutions() {
     return this.httpClient
-      .get('/institutions');
+      .get('api/v1/institutions');
   }
 
   // getById(_id: string) {
