@@ -56,7 +56,6 @@ export class UserService {
   }
 
   addUserData(user: User, userData: UserData) {
-
     return this.httpClient
       .post('users/userdata', {user: user, userdata: userData});
   }
