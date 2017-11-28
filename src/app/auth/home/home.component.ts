@@ -5,6 +5,7 @@ import { User } from './../../models/user.model';
 import { UserService } from './../services/user.service';
 import { AlertService } from './../services/alert.service';
 import { AuthService } from '../services/auth.service';
+import { Institution } from '../../models/institution.model';
 
 
 @Component({
@@ -51,6 +52,15 @@ export class HomeComponent implements OnInit {
       this.loadAllUsers();
     });
 
+  }
+
+  getInstitutionName() {
+    let name = this.currentUser.institution['name1'];
+    if (this.currentUser.institution['name2']) {
+      name = name + ', ' + this.currentUser.institution['name2'];
+    }
+
+    return name;
   }
 
   private loadAllUsers() {

@@ -12,12 +12,23 @@ export class AppComponent {
 
   constructor(private authService: AuthService) {}
 
-  getCurrentUser() {
+
+  getCurrentUserEmail() {
     if (this.authService.loggedIn()) {
       const currentUser = JSON.parse(localStorage.getItem('currentUser'));
       return currentUser.email;
     }
+  }
 
+  getUserInstitution() {
+    if (this.authService.loggedIn()) {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      let name = currentUser.institution.name1;
+      if (currentUser.institution.name2) {
+        name = name + ', ' + currentUser.institution.name2;
+      }
+      return name;
+    }
   }
 
   activateSidebar() {

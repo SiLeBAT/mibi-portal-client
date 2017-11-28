@@ -77,7 +77,7 @@ export class RegisterComponent implements OnInit {
       this.registerForm.value.firstName,
       this.registerForm.value.lastName,
     );
-    user.institution_id = this.registerForm.value.institution;
+    user.institution = this.registerForm.value.institution;
 
     this.userService.create(user)
       .subscribe((data) => {

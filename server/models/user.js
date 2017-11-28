@@ -22,7 +22,7 @@ var userSchema = new Schema({
     type: String,
     required: true
   },
-  institution_id: {
+  institution: {
     type: Schema.Types.ObjectId,
     ref: 'Institution'
   },

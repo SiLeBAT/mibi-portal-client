@@ -8,7 +8,7 @@ export class User {
     public lastName?: string,
     public _id?: string,
     public userData?: UserData[],
-    public institution_id?: string
+    public institution?: string
   ) {
     this.userData = [];
   }

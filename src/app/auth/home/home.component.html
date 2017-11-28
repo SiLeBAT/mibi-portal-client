@@ -1,5 +1,8 @@
 <div class="container-fluid">
-  <h4>Signed in as {{ currentUser.firstName }} {{ currentUser.lastName }}, {{ currentUser.email }}</h4>
+  <h4>Signed in as:</h4>
+  <p> {{ currentUser.firstName }} {{ currentUser.lastName }}</p>
+  <p>{{ currentUser.email }}</p>
+  <p>{{ getInstitutionName() }}</p>
   <h4>
     <a
       [routerLink]="['/users/login']"

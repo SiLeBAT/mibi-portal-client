@@ -97,10 +97,7 @@ function getAllUser(req, res, next) {
 
 
 function register(req, res, next) {
-
   var body = req.body;
-
-  console.log('register body: ', body);
 
   User.findOne({email: body.email})
   .then((user) => {
@@ -134,7 +131,7 @@ function register(req, res, next) {
       lastName: body.lastName,
       email: body.email,
       password: hash,
-      institution_id: body.institution_id
+      institution: body.institution
     });
 
     return user.save();
@@ -442,6 +439,7 @@ function login(req, res, next) {
   let user;
 
   User.findOne({email: body.email})
+  .populate('institution')
   .then((user) => {
 
     if (!user) {
@@ -481,7 +479,9 @@ function login(req, res, next) {
             {sub: this.user._id},
             process.env.JWT_SECRET,
             {expiresIn: expirationTime}
-          )
+          ),
+          institution: this.user.institution
+
         }
       })
     } else {
