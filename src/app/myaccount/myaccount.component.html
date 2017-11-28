@@ -4,7 +4,7 @@
     <div class="col-md-6 col-md-offset-3">
       <div class="thumbnail">
         <div class="caption add">
-          <h4>Add new user data set</h4>
+          <h4>Add new user data set for {{ currentUser.email }}</h4>
           <button
             type="button"
             class="btn btn-default btn-lg"
@@ -18,22 +18,24 @@
 
 
 
-  <div class="row">
+  <div
+    class="row"
+    *ngIf="hasUserData()">
     <div class="col-md-6 col-md-offset-3">
       <div class="thumbnail">
         <div class="caption">
           <p class="standard">Standard</p>
           <hr>
-          <p>Landesuntersuchungsamt Rheinland-Pfalz<br>
-             Institut für Lebensmittel tierischen Ursprungs</p>
-          <p>Abt. Mikrobiologie</p>
-          <p>Blücherstr. 34</p>
-          <p>56073 Koblenz</p>
-          <p>Dr. Hassel</p>
-          <p>0261 1234567</p>
-          <p>melanie.hassel@lua.rlp.de</p>
+          <p>{{ currentUser.institution.name1 }}</p>
+          <p *ngIf="currentUser.institution.name2">{{ currentUser.institution.name2 }}</p>
+          <p>{{ currentUser.userdata[0].department }}</p>
+          <p>{{ currentUser.institution.address1.street }}</p>
+          <p>{{ currentUser.institution.address1.city }}</p>
+          <p>{{ currentUser.userdata[0].contact }}</p>
+          <p>{{ currentUser.userdata[0].phone }}</p>
+          <p>{{ currentUser.userdata[0].email }}</p>
           <hr>
-          <a href="">Edit</a> | <a href="">Delete</a>
+          <a [routerLink]="['/userdata']">Edit</a> | <a (click)="deleteUserData()">Delete</a>
         </div>
       </div>
     </div>
@@ -41,12 +43,10 @@
 
 
 
-  <div class="row">
+  <!-- <div class="row">
     <div class="col-md-6 col-md-offset-3">
       <div class="thumbnail">
         <div class="caption">
-          <!-- <p class="standard">Standard</p> -->
-          <!-- <hr> -->
           <p>Landesuntersuchungsamt Rheinland-Pfalz</p>
           <p>Abt. Mikrobiologie</p>
           <p>Blücherstr. 34</p>
@@ -67,8 +67,6 @@
     <div class="col-md-6 col-md-offset-3">
       <div class="thumbnail">
         <div class="caption">
-          <!-- <p class="standard">Standard</p> -->
-          <!-- <hr> -->
           <p>Landesuntersuchungsamt Rheinland-Pfalz<br>
              Institut für Lebensmittel tierischen Ursprungs</p>
           <p>Abt. Mikrobiologie</p>
@@ -90,8 +88,6 @@
     <div class="col-md-6 col-md-offset-3">
       <div class="thumbnail">
         <div class="caption">
-          <!-- <p class="standard">Standard</p> -->
-          <!-- <hr> -->
           <p>Landesuntersuchungsamt Rheinland-Pfalz<br>
              Institut für Lebensmittel tierischen Ursprungs</p>
           <p>Abt. Mikrobiologie</p>
@@ -113,8 +109,6 @@
     <div class="col-md-6 col-md-offset-3">
       <div class="thumbnail">
         <div class="caption">
-          <!-- <p class="standard">Standard</p> -->
-          <!-- <hr> -->
           <p>Landesuntersuchungsamt Rheinland-Pfalz<br>
              Institut für Lebensmittel tierischen Ursprungs</p>
           <p>Abt. Mikrobiologie</p>
@@ -129,4 +123,4 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->

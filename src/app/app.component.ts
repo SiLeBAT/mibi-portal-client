@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from './auth/services/auth.service';
 import { User } from './models/user.model';
 
@@ -7,11 +7,14 @@ import { User } from './models/user.model';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   private isActive = false;
+  currentUser;
 
   constructor(private authService: AuthService) {}
 
+  ngOnInit() {
+  }
 
   getCurrentUserEmail() {
     if (this.authService.loggedIn()) {

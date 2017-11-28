@@ -1,11 +1,9 @@
-<p>
-  userdata works!
-</p>
 
 <div class="jumbotron">
   <div class="container-fluid">
     <div class="col-md-6 col-md-offset-3">
       <h2>Stammdaten</h2>
+      <p>Fill in the missing fields</p>
       <hr>
       <form
         [formGroup]="myaccountForm"
@@ -39,7 +37,9 @@
             type="text"
             id="institute"
             class="form-control"
-            formControlName="institute"/>
+            formControlName="institute"
+            [placeholder]="getInstitutionName()"
+            readonly>
         </div>
 
         <div class="form-group">
@@ -57,7 +57,9 @@
             type="text"
             id="street"
             class="form-control"
-            formControlName="street"/>
+            formControlName="street"
+            [placeholder]="getCurrentUser().institution.address1.street"
+            readonly>
         </div>
 
         <div class="form-group">
@@ -66,7 +68,9 @@
             type="text"
             id="city"
             class="form-control"
-            formControlName="city"/>
+            formControlName="city"
+            [placeholder]="getCurrentUser().institution.address1.city"
+            readonly>
         </div>
 
         <div class="form-group">
@@ -94,7 +98,7 @@
             id="email"
             class="form-control"
             formControlName="email"
-            [placeholder]="getCurrentUser().email"/>
+            [ngModel]="getCurrentUser().email"/>
         </div>
 
         <div class="form-group">

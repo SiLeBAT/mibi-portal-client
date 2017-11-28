@@ -1,12 +1,20 @@
 export class UserData {
+  _id: string;
+  department: string;
+  contact: string;
+  phone: string;
+  email: string;
+
   constructor(
-    public institute: string,
-    public department: string,
-    public street: string,
-    public city: string,
-    public contact: string,
-    public phone: string,
-    public email: string
-  ) {}
+    department: string,
+    contact: string,
+    phone: string,
+    email: string
+  ) {
+    this.department = department;
+    this.contact = contact;
+    this.phone = phone;
+    this.email = email;
+  }
 
 }

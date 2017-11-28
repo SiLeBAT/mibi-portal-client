@@ -26,8 +26,8 @@ const sendmail = require('sendmail')({
 })
 
 var User = require('./../models/user');
+var Userdata = require('./../models/userdata');
 var ResetToken = require('./../models/resetToken');
-// var userService = require('./../services/user.service');
 
 const viewsPath = '../views/';
 
@@ -36,8 +36,10 @@ router.post('/register', register);
 router.post('/login', login);
 router.post('/recovery', recovery);
 router.post('/reset/:token', reset);
+router.post('/userdata', addUserdata);
 router.get('/', getAllUser);
 router.delete('/:_id', deleteUser);
+
 
 
 function deleteUser(req, res, next) {
@@ -439,7 +441,7 @@ function login(req, res, next) {
   let user;
 
   User.findOne({email: body.email})
-  .populate('institution')
+  .populate({path: 'institution userdata'})
   .then((user) => {
 
     if (!user) {
@@ -480,8 +482,8 @@ function login(req, res, next) {
             process.env.JWT_SECRET,
             {expiresIn: expirationTime}
           ),
-          institution: this.user.institution
-
+          institution: this.user.institution,
+          userdata: this.user.userdata
         }
       })
     } else {
@@ -501,6 +503,60 @@ function login(req, res, next) {
     console.log('error during authentication! ', err);
   });
 };
+
+
+function addUserdata(req, res, next) {
+  const body = req.body;
+
+  // console.log('body: ', body);
+  // console.log('user: ', body.user);
+  // console.log('userdata: ', body.userdata);
+
+  var userdata = new Userdata(body.userdata);
+  userdata
+  .save()
+  .then((userdata) => {
+    console.log('saved userdata: ', userdata);
+
+    return User.findByIdAndUpdate(body.user._id, {userdata: [userdata._id], updated: Date.now()})
+    .then((user) => {
+      console.log('user saved: ', user);
+      next();
+    })
+    .catch((err) => {
+      return res
+      .status(400)
+      .json({
+        title: 'Error saving user',
+        obj: err
+      });
+    })
+
+  })
+  .then((result) => {
+
+    console.log('result: ', result);
+
+    next();
+  })
+  .catch((err) => {
+    return res
+    .status(400)
+    .json({
+      title: 'Error saving userdata',
+      obj: err
+    });
+  })
+
+
+
+
+  return res
+  .status(200)
+  .json({
+    title: 'Adding userdata ok'
+  });
+}
 
 
 

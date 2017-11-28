@@ -29,16 +29,17 @@ export class UserdataComponent implements OnInit {
     this.myaccountForm = new FormGroup({
       firstName: new FormControl(null),
       lastName: new FormControl(null),
-      institute: new FormControl(null, Validators.required),
-      department: new FormControl(null, Validators.required),
-      street: new FormControl(null, Validators.required),
-      city: new FormControl(null, Validators.required),
-      contact: new FormControl(null, Validators.required),
-      phone: new FormControl(null, Validators.required),
-      email: new FormControl(null, [
-        Validators.required,
-        Validators.email
-      ])
+      institute: new FormControl(null),
+      department: new FormControl(null),
+      street: new FormControl(null),
+      city: new FormControl(null),
+      contact: new FormControl(null),
+      phone: new FormControl(null),
+      // email: new FormControl(null, [
+      //   Validators.required,
+      //   Validators.email
+      // ])
+      email: new FormControl(null)
     });
   }
 
@@ -46,30 +47,44 @@ export class UserdataComponent implements OnInit {
     return this.currentUser;
   }
 
+  getInstitutionName() {
+    const institution = this.getCurrentUser().institution;
+    let name = institution.name1;
+    if (institution.name2) {
+      name = name + ', ' + institution.name2;
+    }
+
+    return name;
+  }
+
   saveMyData() {
 
   console.log('saveMyData clicked');
 
-    // this.loading = true;
+    this.loading = true;
 
-    // const user = new User(
-    //   this.registerForm.value.email,
-    //   this.registerForm.value.password1,
-    //   this.registerForm.value.firstName,
-    //   this.registerForm.value.lastName,
-    // );
+    console.log('myaccountForm.value.email: ', this.myaccountForm.value.email);
+    console.log('this.currentUser.email: ', this.currentUser.email);
 
-    // this.userService.create(user)
-    //   .subscribe((data) => {
-    //     this.alertService.success(data['title'], true);
-    //     this.router.navigate(['users/login']);
-    //   }, (err: HttpErrorResponse) => {
-    //     const errObj = JSON.parse(err.error);
-    //     this.alertService.error(errObj.title, true);
-    //     this.loading = false;
-    //   });
+    const userData = new UserData(
+      this.myaccountForm.value.department,
+      this.myaccountForm.value.contact,
+      this.myaccountForm.value.phone,
+      this.myaccountForm.value.email
+    );
 
-    // this.registerForm.reset();
+    this.userService.addUserData(this.currentUser, userData)
+      .subscribe((data) => {
+        console.log('addUserdata data: ', data)
+        // this.alertService.success(data['title'], true);
+        // this.router.navigate(['users/login']);
+      }, (err: HttpErrorResponse) => {
+        const errObj = JSON.parse(err.error);
+        this.alertService.error(errObj.title, true);
+        this.loading = false;
+      });
+
+    this.myaccountForm.reset();
   }
 
 }

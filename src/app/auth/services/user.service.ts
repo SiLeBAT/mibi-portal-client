@@ -3,8 +3,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import 'rxjs/Rx';
 
-import { User } from './../../models/user.model';
+import { User } from '../../models/user.model';
 import { Institution } from '../../models/institution.model';
+import { UserData } from '../../models/userdata.model';
 
 
 @Injectable()
@@ -28,14 +29,6 @@ export class UserService {
       .get('api/v1/institutions');
   }
 
-  // getById(_id: string) {
-  //     return this.http.get('/user/' + _id).map((response: Response) => response.json());
-  // }
-
-
-  // update(user: User) {
-  //     return this.http.put('/user/' + user._id, user);
-  // }
 
   delete(_id: string) {
     // const options = this.getJwtHeaders();
@@ -60,6 +53,12 @@ export class UserService {
   resetPassword(newPw: String, token: String) {
     return this.httpClient
       .post('users/reset/' + token, {newPw: newPw});
+  }
+
+  addUserData(user: User, userData: UserData) {
+
+    return this.httpClient
+      .post('users/userdata', {user: user, userdata: userData});
   }
 
 

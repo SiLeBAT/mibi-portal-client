@@ -4,32 +4,23 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const mongooseUniqueValidator = require('mongoose-unique-validator');
 
-var userSchema = new Schema({
-  firstName: {
+var userdataSchema = new Schema({
+  department: {
     type: String,
     required: true
   },
-  lastName: {
+  contact: {
+    type: String,
+    required: true
+  },
+  phone: {
     type: String,
     required: true
   },
   email: {
     type: String,
-    required: true,
-    unique: true
-  },
-  password: {
-    type: String,
     required: true
   },
-  institution: {
-    type: Schema.Types.ObjectId,
-    ref: 'Institution'
-  },
-  userdata: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Userdata'
-  }],
   created: {
     type: Date,
     default: Date.now,
@@ -43,6 +34,6 @@ var userSchema = new Schema({
 });
 
 
-userSchema.plugin(mongooseUniqueValidator);
+userdataSchema.plugin(mongooseUniqueValidator);
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('Userdata', userdataSchema);

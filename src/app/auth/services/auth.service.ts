@@ -9,6 +9,7 @@ import { User } from './../../models/user.model';
 
 @Injectable()
 export class AuthService {
+  currentUser;
 
   constructor(private httpClient: HttpClient,
               private router: Router) { }
@@ -27,10 +28,15 @@ export class AuthService {
   loggedIn() {
     if (localStorage.getItem('currentUser')) {
       const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      this.currentUser = currentUser;
       return tokenNotExpired(null, currentUser.token);
     }
 
     return false;
+  }
+
+  getCurrentUser() {
+    return this.currentUser;
   }
 
 }
