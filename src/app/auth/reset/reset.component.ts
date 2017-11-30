@@ -30,8 +30,6 @@ export class ResetComponent implements OnInit {
   }
 
   reset() {
-
-    //http://localhost:4200/users/reset/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1OWZhMjY1NjM5MmRmNDdhYzc0ZTg3MTYiLCJpYXQiOjE1MDk1NzIzNTl9.-ezjdweLBB5So-B0Whjf6CB6jOnNRSAkWmjA5bTv6kc
     this.loading = true;
 
     const password = this.resetForm.value.password1;

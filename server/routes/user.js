@@ -39,6 +39,7 @@ router.post('/reset/:token', reset);
 router.post('/userdata', addUserdata);
 router.get('/', getAllUser);
 router.delete('/:_id', deleteUser);
+// router.get('/:_id', getUser);
 
 
 
@@ -556,6 +557,41 @@ function addUserdata(req, res, next) {
   })
 
 }
+
+
+// function getUser(req, res, next) {
+//   const id = req.params._id;
+
+//     console.log('getUser id: ', id);
+
+//     User.findById({_id: id})
+//       .populate({path: 'institution userdata'})
+//       .lean()
+//       .then(function (user) {
+
+//         let pureUser = _.pick(user, '_id', 'firstName', 'lastName', 'email', 'institution', 'userdata');
+//         // console.log('user removed, result: ', result);
+//         // res.sendStatus(200);
+
+//         return res
+//         .status(201)
+//         .json({
+//           title: 'got user',
+//           obj: pureUser
+//         });
+//       })
+//       .catch(function (err) {
+//         console.log('Error getting user:', err);
+
+//         return res
+//         .status(400)
+//         .json({
+//           title: 'Error getting user',
+//           obj: err
+//         });
+//       });
+
+// }
 
 
 

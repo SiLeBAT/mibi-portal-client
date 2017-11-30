@@ -73,7 +73,10 @@ export class UserdataComponent implements OnInit {
 
     this.userService.addUserData(this.currentUser, userData)
       .subscribe((data) => {
-        // console.log('addUserdata data: ', data)
+        const localStorageUser = JSON.parse(localStorage.getItem('currentUser'));
+        const updatedUser = data['obj'];
+        localStorageUser.userdata = updatedUser.userdata;
+        localStorage.setItem('currentUser', JSON.stringify(localStorageUser));
         this.authService.setCurrentUser(data['obj']);
         this.router.navigate(['myaccount']);
       }, (err: HttpErrorResponse) => {

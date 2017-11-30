@@ -22,6 +22,7 @@ import { UploadComponent } from './upload/upload.component';
 import { MainDashComponent } from './main-dash/main-dash.component';
 import { MyaccountComponent } from './myaccount/myaccount.component';
 import { UserdataComponent } from './myaccount/userdata/userdata.component';
+import { HttpModule } from '@angular/http';
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import { UserdataComponent } from './myaccount/userdata/userdata.component';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    HttpModule,
     routing
   ],
   providers: [

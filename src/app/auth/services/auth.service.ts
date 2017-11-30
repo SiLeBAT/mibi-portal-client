@@ -28,7 +28,6 @@ export class AuthService {
   loggedIn() {
     if (localStorage.getItem('currentUser')) {
       const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      // this.currentUser = currentUser;
       return tokenNotExpired(null, currentUser.token);
     }
 
@@ -40,9 +39,11 @@ export class AuthService {
   }
 
   getCurrentUser() {
+    console.log('AuthService getCurrentUser: ', this.currentUser);
     if (!this.currentUser) {
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     }
+
     return this.currentUser;
   }
 
