@@ -28,14 +28,21 @@ export class AuthService {
   loggedIn() {
     if (localStorage.getItem('currentUser')) {
       const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      this.currentUser = currentUser;
+      // this.currentUser = currentUser;
       return tokenNotExpired(null, currentUser.token);
     }
 
     return false;
   }
 
+  setCurrentUser(user) {
+    this.currentUser = user;
+  }
+
   getCurrentUser() {
+    if (!this.currentUser) {
+      this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    }
     return this.currentUser;
   }
 

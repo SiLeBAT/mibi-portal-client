@@ -29,18 +29,20 @@
           <button
             class="btn btn-primary"
             type="submit"
-            [disabled]="!loginForm.valid">Login</button>
-            <a
+            [disabled]="!loginForm.valid">
+              Login
+          </button>
+          <a
             [routerLink]="['/users/register']"
             class="btn btn-link">
               Register
           </a>
           <a
-          [routerLink]="['/users/recovery']"
-          class="btn btn-link">
-            Forgot Password?
-        </a>
-      </div>
+            [routerLink]="['/users/recovery']"
+            class="btn btn-link">
+              Forgot Password?
+          </a>
+        </div>
       </form>
     </div>
   </div>

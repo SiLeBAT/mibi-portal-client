@@ -5,6 +5,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 
 import { UserService } from './../../auth/services/user.service';
 import { AlertService } from './../../auth/services/alert.service';
+import { AuthService } from './../../auth/services/auth.service';
 import { User } from './../../models/user.model';
 import { UserData } from './../../models/userdata.model';
 
@@ -15,16 +16,17 @@ import { UserData } from './../../models/userdata.model';
 })
 export class UserdataComponent implements OnInit {
   private myaccountForm: FormGroup;
-  private currentUser;
+  currentUser;
   loading = false;
 
   constructor(
     private userService: UserService,
     private alertService: AlertService,
+    private authService: AuthService,
     private router: Router) {}
 
   ngOnInit() {
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.currentUser = this.authService.getCurrentUser();
 
     this.myaccountForm = new FormGroup({
       firstName: new FormControl(null),
@@ -35,20 +37,16 @@ export class UserdataComponent implements OnInit {
       city: new FormControl(null),
       contact: new FormControl(null),
       phone: new FormControl(null),
-      // email: new FormControl(null, [
-      //   Validators.required,
-      //   Validators.email
-      // ])
-      email: new FormControl(null)
+      email: new FormControl(null, [
+        Validators.required,
+        Validators.email
+      ])
     });
   }
 
-  getCurrentUser() {
-    return this.currentUser;
-  }
 
   getInstitutionName() {
-    const institution = this.getCurrentUser().institution;
+    const institution = this.currentUser.institution;
     let name = institution.name1;
     if (institution.name2) {
       name = name + ', ' + institution.name2;
@@ -57,7 +55,7 @@ export class UserdataComponent implements OnInit {
     return name;
   }
 
-  saveMyData() {
+  saveUserData() {
 
   console.log('saveMyData clicked');
 
@@ -75,9 +73,9 @@ export class UserdataComponent implements OnInit {
 
     this.userService.addUserData(this.currentUser, userData)
       .subscribe((data) => {
-        console.log('addUserdata data: ', data)
-        // this.alertService.success(data['title'], true);
-        // this.router.navigate(['users/login']);
+        // console.log('addUserdata data: ', data)
+        this.authService.setCurrentUser(data['obj']);
+        this.router.navigate(['myaccount']);
       }, (err: HttpErrorResponse) => {
         const errObj = JSON.parse(err.error);
         this.alertService.error(errObj.title, true);

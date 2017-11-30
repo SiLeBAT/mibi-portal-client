@@ -53,6 +53,7 @@ export class LoginComponent implements OnInit {
         if (currentUser && currentUser.token) {
           // store user details and jwt token in local storage to keep user logged in between page refreshes
           localStorage.setItem('currentUser', JSON.stringify(currentUser));
+          this.authService.setCurrentUser(currentUser);
         }
         this.router.navigate([this.returnUrl]);
       }, (err: HttpErrorResponse) => {

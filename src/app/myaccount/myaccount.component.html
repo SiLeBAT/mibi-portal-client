@@ -17,29 +17,81 @@
   </div>
 
 
-
   <div
-    class="row"
-    *ngIf="hasUserData()">
-    <div class="col-md-6 col-md-offset-3">
-      <div class="thumbnail">
-        <div class="caption">
-          <p class="standard">Standard</p>
-          <hr>
-          <p>{{ currentUser.institution.name1 }}</p>
-          <p *ngIf="currentUser.institution.name2">{{ currentUser.institution.name2 }}</p>
-          <p>{{ currentUser.userdata[0].department }}</p>
-          <p>{{ currentUser.institution.address1.street }}</p>
-          <p>{{ currentUser.institution.address1.city }}</p>
-          <p>{{ currentUser.userdata[0].contact }}</p>
-          <p>{{ currentUser.userdata[0].phone }}</p>
-          <p>{{ currentUser.userdata[0].email }}</p>
-          <hr>
-          <a [routerLink]="['/userdata']">Edit</a> | <a (click)="deleteUserData()">Delete</a>
+  *ngFor="let userdata of currentUser.userdata">
+
+
+    <div
+      class="row"
+      >
+      <div class="col-md-6 col-md-offset-3">
+        <div class="thumbnail">
+          <div class="caption">
+            <p class="standard">Standard {{ userdata.contact }}</p>
+            <hr>
+            <p>{{ currentUser.institution.name1 }}</p>
+            <p *ngIf="currentUser.institution.name2">{{ currentUser.institution.name2 }}</p>
+            <p>{{ userdata.department }}</p>
+            <p>{{ currentUser.institution.address1.street }}</p>
+            <p>{{ currentUser.institution.address1.city }}</p>
+            <p>{{ userdata.contact }}</p>
+            <p>{{ userdata.phone }}</p>
+            <p>{{ userdata.email }}</p>
+            <hr>
+            <a [routerLink]="['/userdata']">Edit</a> | <a (click)="deleteUserData()">Delete</a>
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- <div
+      class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <div class="thumbnail">
+          <div class="caption">
+            <p class="standard">Standard {{ userdata.contact }}</p>
+            <hr>
+            <p>{{ currentUser.institution.name1 }}</p>
+            <p *ngIf="currentUser.institution.name2">{{ currentUser.institution.name2 }}</p>
+            <p>{{ currentUser.userdata[0].department }}</p>
+            <p>{{ currentUser.institution.address1.street }}</p>
+            <p>{{ currentUser.institution.address1.city }}</p>
+            <p>{{ currentUser.userdata[0].contact }}</p>
+            <p>{{ currentUser.userdata[0].phone }}</p>
+            <p>{{ currentUser.userdata[0].email }}</p>
+            <hr>
+            <a [routerLink]="['/userdata']">Edit</a> | <a (click)="deleteUserData()">Delete</a>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+
   </div>
+
+
+<!-- <div
+  class="row"
+  *ngIf="hasUserData()">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="thumbnail">
+      <div class="caption">
+        <p class="standard">Standard</p>
+        <hr>
+        <p>{{ currentUser.institution.name1 }}</p>
+        <p *ngIf="currentUser.institution.name2">{{ currentUser.institution.name2 }}</p>
+        <p>{{ currentUser.userdata[0].department }}</p>
+        <p>{{ currentUser.institution.address1.street }}</p>
+        <p>{{ currentUser.institution.address1.city }}</p>
+        <p>{{ currentUser.userdata[0].contact }}</p>
+        <p>{{ currentUser.userdata[0].phone }}</p>
+        <p>{{ currentUser.userdata[0].email }}</p>
+        <hr>
+        <a [routerLink]="['/userdata']">Edit</a> | <a (click)="deleteUserData()">Delete</a>
+      </div>
+    </div>
+  </div>
+</div> -->
 
 
 

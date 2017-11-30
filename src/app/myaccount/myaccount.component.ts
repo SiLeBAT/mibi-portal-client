@@ -9,7 +9,7 @@ import { AuthService } from '../auth/services/auth.service';
   styleUrls: ['./myaccount.component.css']
 })
 export class MyaccountComponent implements OnInit {
-  currentUser = this.authService.getCurrentUser();;
+  currentUser;
 
   constructor(private router: Router,
               private authService: AuthService) { }
@@ -22,13 +22,6 @@ export class MyaccountComponent implements OnInit {
     this.router.navigateByUrl('/userdata');
   }
 
-  hasUserData() {
-    if (this.currentUser.userdata.length > 0) {
-      return true;
-    } else {
-      return false;
-    }
-  }
 
   deleteUserData() {
     console.log('deleteUserData clicked');

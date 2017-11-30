@@ -7,7 +7,7 @@
       <hr>
       <form
         [formGroup]="myaccountForm"
-        (ngSubmit)="saveMyData()">
+        (ngSubmit)="saveUserData()">
 
         <div class="form-group">
           <label for="firstName">Vorname</label>
@@ -16,7 +16,7 @@
             id="firstName"
             class="form-control"
             formControlName="firstName"
-            [placeholder]="getCurrentUser().firstName"
+            [placeholder]="currentUser.firstName"
             readonly>
         </div>
 
@@ -27,7 +27,7 @@
             id="lastName"
             class="form-control"
             formControlName="lastName"
-            [placeholder]="getCurrentUser().lastName"
+            [placeholder]="currentUser.lastName"
             readonly>
         </div>
 
@@ -58,7 +58,7 @@
             id="street"
             class="form-control"
             formControlName="street"
-            [placeholder]="getCurrentUser().institution.address1.street"
+            [placeholder]="currentUser.institution.address1.street"
             readonly>
         </div>
 
@@ -69,7 +69,7 @@
             id="city"
             class="form-control"
             formControlName="city"
-            [placeholder]="getCurrentUser().institution.address1.city"
+            [placeholder]="currentUser.institution.address1.city"
             readonly>
         </div>
 
@@ -98,7 +98,7 @@
             id="email"
             class="form-control"
             formControlName="email"
-            [ngModel]="getCurrentUser().email"/>
+            [ngModel]="currentUser.email"/>
         </div>
 
         <div class="form-group">

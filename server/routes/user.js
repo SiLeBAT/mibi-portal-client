@@ -518,10 +518,23 @@ function addUserdata(req, res, next) {
   .then((userdata) => {
     console.log('saved userdata: ', userdata);
 
-    return User.findByIdAndUpdate(body.user._id, {userdata: [userdata._id], updated: Date.now()})
+    return User.findByIdAndUpdate(
+      body.user._id,
+      {$push: {userdata: userdata._id}, updated: Date.now()},
+      {'new': true}
+    )
+    .populate({path: 'institution userdata'})
+    .lean()
     .then((user) => {
-      console.log('user saved: ', user);
-      next();
+      let pureUser = _.pick(user, '_id', 'firstName', 'lastName', 'email', 'institution', 'userdata');
+
+      return res
+      .status(200)
+      .json({
+        title: 'Adding userdata ok',
+        obj: pureUser
+      });
+
     })
     .catch((err) => {
       return res
@@ -533,12 +546,6 @@ function addUserdata(req, res, next) {
     })
 
   })
-  .then((result) => {
-
-    console.log('result: ', result);
-
-    next();
-  })
   .catch((err) => {
     return res
     .status(400)
@@ -548,14 +555,6 @@ function addUserdata(req, res, next) {
     });
   })
 
-
-
-
-  return res
-  .status(200)
-  .json({
-    title: 'Adding userdata ok'
-  });
 }
 
 
