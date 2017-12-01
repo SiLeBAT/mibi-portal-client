@@ -39,7 +39,7 @@ router.post('/reset/:token', reset);
 router.post('/userdata', addUserdata);
 router.get('/', getAllUser);
 router.delete('/:_id', deleteUser);
-// router.get('/:_id', getUser);
+router.put('/userdata/:_id', updateUserdata);
 
 
 
@@ -559,39 +559,81 @@ function addUserdata(req, res, next) {
 }
 
 
-// function getUser(req, res, next) {
-//   const id = req.params._id;
+function updateUserdata(req, res, next) {
+  const id = req.params._id;
+  const body = req.body;
 
-//     console.log('getUser id: ', id);
+  console.log('updataUserdata id: ', id);
+  console.log('updataUserdata userdata: ', body);
 
-//     User.findById({_id: id})
-//       .populate({path: 'institution userdata'})
-//       .lean()
-//       .then(function (user) {
+  // return User.findByIdAndUpdate(
+  //   body.user._id,
+  //   {$push: {userdata: userdata._id}, updated: Date.now()},
+  //   {'new': true}
+  // )
 
-//         let pureUser = _.pick(user, '_id', 'firstName', 'lastName', 'email', 'institution', 'userdata');
-//         // console.log('user removed, result: ', result);
-//         // res.sendStatus(200);
 
-//         return res
-//         .status(201)
-//         .json({
-//           title: 'got user',
-//           obj: pureUser
-//         });
-//       })
-//       .catch(function (err) {
-//         console.log('Error getting user:', err);
+  return Userdata.findByIdAndUpdate(
+    id,
+    {$set: {department: body.department,
+            contact: body.contact,
+            phone: body.phone,
+            email: body.email,
+            updated: Date.now() }},
+    {'new': true}
+  )
+  .then((userdata) => {
+    console.log('updated userdata: ', userdata);
 
-//         return res
-//         .status(400)
-//         .json({
-//           title: 'Error getting user',
-//           obj: err
-//         });
-//       });
+    return res
+    .status(200)
+    .json({
+      title: 'update userdata ok',
+      obj: userdata
+    });
 
-// }
+  })
+  .catch((err) => {
+    return res
+      .status(400)
+      .json({
+        title: 'err updating userdata',
+        obj: err
+      });
+  })
+
+
+
+
+  // User.findById({_id: id})
+  //   .populate({path: 'institution userdata'})
+  //   .lean()
+  //   .then(function (user) {
+
+  //     let pureUser = _.pick(user, '_id', 'firstName', 'lastName', 'email', 'institution', 'userdata');
+  //     // console.log('user removed, result: ', result);
+  //     // res.sendStatus(200);
+
+  //     return res
+  //     .status(201)
+  //     .json({
+  //       title: 'got user',
+  //       obj: pureUser
+  //     });
+  //   })
+  //   .catch(function (err) {
+  //     console.log('Error getting user:', err);
+
+  //     return res
+  //     .status(400)
+  //     .json({
+  //       title: 'Error getting user',
+  //       obj: err
+  //     });
+  //   });
+
+
+}
 
 
 

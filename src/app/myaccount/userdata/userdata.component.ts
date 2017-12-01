@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 
 import { UserService } from './../../auth/services/user.service';
@@ -18,15 +18,22 @@ export class UserdataComponent implements OnInit {
   private myaccountForm: FormGroup;
   currentUser;
   loading = false;
+  currentUserdata;
+  index;
 
   constructor(
     private userService: UserService,
     private alertService: AlertService,
     private authService: AuthService,
-    private router: Router) {}
+    private router: Router,
+    private activeRoute: ActivatedRoute) {}
 
   ngOnInit() {
     this.currentUser = this.authService.getCurrentUser();
+
+    const index = this.activeRoute.snapshot.params['index'];
+    this.index = index;
+    this.currentUserdata = this.currentUser.userdata[index];
 
     this.myaccountForm = new FormGroup({
       firstName: new FormControl(null),
@@ -56,13 +63,7 @@ export class UserdataComponent implements OnInit {
   }
 
   saveUserData() {
-
-  console.log('saveMyData clicked');
-
     this.loading = true;
-
-    console.log('myaccountForm.value.email: ', this.myaccountForm.value.email);
-    console.log('this.currentUser.email: ', this.currentUser.email);
 
     const userData = new UserData(
       this.myaccountForm.value.department,
@@ -71,19 +72,37 @@ export class UserdataComponent implements OnInit {
       this.myaccountForm.value.email
     );
 
-    this.userService.addUserData(this.currentUser, userData)
-      .subscribe((data) => {
-        const localStorageUser = JSON.parse(localStorage.getItem('currentUser'));
-        const updatedUser = data['obj'];
-        localStorageUser.userdata = updatedUser.userdata;
-        localStorage.setItem('currentUser', JSON.stringify(localStorageUser));
-        this.authService.setCurrentUser(data['obj']);
-        this.router.navigate(['myaccount']);
-      }, (err: HttpErrorResponse) => {
-        const errObj = JSON.parse(err.error);
-        this.alertService.error(errObj.title, true);
-        this.loading = false;
-      });
+    if (this.currentUserdata) {
+        // update the current userdata
+        this.userService.updateUserData(this.currentUserdata._id, userData)
+          .subscribe((data) => {
+            const localUser = JSON.parse(localStorage.getItem('currentUser'));
+            const updatedUserdata = data['obj'];
+            localUser.userdata[this.index] = updatedUserdata;
+            localStorage.setItem('currentUser', JSON.stringify(localUser));
+            this.authService.setCurrentUser(localUser);
+            this.router.navigate(['myaccount']);
+          }, (err: HttpErrorResponse) => {
+            const errObj = JSON.parse(err.error);
+            this.alertService.error(errObj.title, true);
+            this.loading = false;
+          });
+        } else {
+        // add new userdata
+        this.userService.addUserData(this.currentUser, userData)
+          .subscribe((data) => {
+            const localStorageUser = JSON.parse(localStorage.getItem('currentUser'));
+            const updatedUser = data['obj'];
+            localStorageUser.userdata = updatedUser.userdata;
+            localStorage.setItem('currentUser', JSON.stringify(localStorageUser));
+            this.authService.setCurrentUser(data['obj']);
+            this.router.navigate(['myaccount']);
+          }, (err: HttpErrorResponse) => {
+            const errObj = JSON.parse(err.error);
+            this.alertService.error(errObj.title, true);
+            this.loading = false;
+          });
+        }
 
     this.myaccountForm.reset();
   }

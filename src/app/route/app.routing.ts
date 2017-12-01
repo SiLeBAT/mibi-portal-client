@@ -17,6 +17,7 @@ const appRoutes: Routes = [
   { path: 'upload', component: UploadComponent, canActivate: [AuthGuard] },
   { path: 'myaccount', component: MyaccountComponent, canActivate: [AuthGuard] },
   { path: 'userdata', component: UserdataComponent, canActivate: [AuthGuard] },
+  { path: 'userdata/:index', component: UserdataComponent, canActivate: [AuthGuard] },
   { path: 'users/login', component: LoginComponent },
   { path: 'users/register', component: RegisterComponent },
   { path: 'users/recovery', component: RecoveryComponent },

@@ -18,16 +18,14 @@
 
 
   <div
-  *ngFor="let userdata of currentUser.userdata">
-
-
+  *ngFor="let userdata of currentUser.userdata; let i = index">
     <div
       class="row"
       >
       <div class="col-md-6 col-md-offset-3">
         <div class="thumbnail">
           <div class="caption">
-            <p class="standard">Standard {{ userdata.contact }}</p>
+            <p class="standard">Standard</p>
             <hr>
             <p>{{ currentUser.institution.name1 }}</p>
             <p *ngIf="currentUser.institution.name2">{{ currentUser.institution.name2 }}</p>
@@ -38,141 +36,12 @@
             <p>{{ userdata.phone }}</p>
             <p>{{ userdata.email }}</p>
             <hr>
-            <a [routerLink]="['/userdata']">Edit</a> | <a (click)="deleteUserData()">Delete</a>
+            <a [routerLink]="['/userdata', i]">Edit</a> | <a (click)="deleteUserData()">Delete</a>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- <div
-      class="row">
-      <div class="col-md-6 col-md-offset-3">
-        <div class="thumbnail">
-          <div class="caption">
-            <p class="standard">Standard {{ userdata.contact }}</p>
-            <hr>
-            <p>{{ currentUser.institution.name1 }}</p>
-            <p *ngIf="currentUser.institution.name2">{{ currentUser.institution.name2 }}</p>
-            <p>{{ currentUser.userdata[0].department }}</p>
-            <p>{{ currentUser.institution.address1.street }}</p>
-            <p>{{ currentUser.institution.address1.city }}</p>
-            <p>{{ currentUser.userdata[0].contact }}</p>
-            <p>{{ currentUser.userdata[0].phone }}</p>
-            <p>{{ currentUser.userdata[0].email }}</p>
-            <hr>
-            <a [routerLink]="['/userdata']">Edit</a> | <a (click)="deleteUserData()">Delete</a>
-          </div>
-        </div>
-      </div>
-    </div> -->
-
-
   </div>
 
+</div>
 
-<!-- <div
-  class="row"
-  *ngIf="hasUserData()">
-  <div class="col-md-6 col-md-offset-3">
-    <div class="thumbnail">
-      <div class="caption">
-        <p class="standard">Standard</p>
-        <hr>
-        <p>{{ currentUser.institution.name1 }}</p>
-        <p *ngIf="currentUser.institution.name2">{{ currentUser.institution.name2 }}</p>
-        <p>{{ currentUser.userdata[0].department }}</p>
-        <p>{{ currentUser.institution.address1.street }}</p>
-        <p>{{ currentUser.institution.address1.city }}</p>
-        <p>{{ currentUser.userdata[0].contact }}</p>
-        <p>{{ currentUser.userdata[0].phone }}</p>
-        <p>{{ currentUser.userdata[0].email }}</p>
-        <hr>
-        <a [routerLink]="['/userdata']">Edit</a> | <a (click)="deleteUserData()">Delete</a>
-      </div>
-    </div>
-  </div>
-</div> -->
-
-
-
-  <!-- <div class="row">
-    <div class="col-md-6 col-md-offset-3">
-      <div class="thumbnail">
-        <div class="caption">
-          <p>Landesuntersuchungsamt Rheinland-Pfalz</p>
-          <p>Abt. Mikrobiologie</p>
-          <p>Blücherstr. 34</p>
-          <p>56073 Koblenz</p>
-          <p>Dr. Hassel</p>
-          <p>0261 1234567</p>
-          <p>melanie.hassel@lua.rlp.de</p>
-          <hr>
-          <a href="">Edit</a> | <a href="">Delete</a> | <a href="">Define as Standard</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-
-  <div class="row">
-    <div class="col-md-6 col-md-offset-3">
-      <div class="thumbnail">
-        <div class="caption">
-          <p>Landesuntersuchungsamt Rheinland-Pfalz<br>
-             Institut für Lebensmittel tierischen Ursprungs</p>
-          <p>Abt. Mikrobiologie</p>
-          <p>Blücherstr. 34</p>
-          <p>56073 Koblenz</p>
-          <p>Dr. Hassel</p>
-          <p>0261 1234567</p>
-          <p>melanie.hassel@lua.rlp.de</p>
-          <hr>
-          <a href="">Edit</a> | <a href="">Delete</a> | <a href="">Define as Standard</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-
-  <div class="row">
-    <div class="col-md-6 col-md-offset-3">
-      <div class="thumbnail">
-        <div class="caption">
-          <p>Landesuntersuchungsamt Rheinland-Pfalz<br>
-             Institut für Lebensmittel tierischen Ursprungs</p>
-          <p>Abt. Mikrobiologie</p>
-          <p>Blücherstr. 34</p>
-          <p>56073 Koblenz</p>
-          <p>Dr. Hassel</p>
-          <p>0261 1234567</p>
-          <p>melanie.hassel@lua.rlp.de</p>
-          <hr>
-          <a href="">Edit</a> | <a href="">Delete</a> | <a href="">Define as Standard</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-
-  <div class="row">
-    <div class="col-md-6 col-md-offset-3">
-      <div class="thumbnail">
-        <div class="caption">
-          <p>Landesuntersuchungsamt Rheinland-Pfalz<br>
-             Institut für Lebensmittel tierischen Ursprungs</p>
-          <p>Abt. Mikrobiologie</p>
-          <p>Blücherstr. 34</p>
-          <p>56073 Koblenz</p>
-          <p>Dr. Hassel</p>
-          <p>0261 1234567</p>
-          <p>melanie.hassel@lua.rlp.de</p>
-          <hr>
-          <a href="">Edit</a> | <a href="">Delete</a> | <a href="">Define as Standard</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> -->

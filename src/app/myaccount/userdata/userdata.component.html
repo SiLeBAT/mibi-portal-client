@@ -48,7 +48,8 @@
             type="text"
             id="department"
             class="form-control"
-            formControlName="department"/>
+            formControlName="department"
+            [ngModel]="currentUserdata ? currentUserdata.department : ''"/>
         </div>
 
         <div class="form-group">
@@ -79,7 +80,8 @@
             type="text"
             id="contact"
             class="form-control"
-            formControlName="contact"/>
+            formControlName="contact"
+            [ngModel]="currentUserdata ? currentUserdata.contact : ''"/>
         </div>
 
         <div class="form-group">
@@ -88,7 +90,8 @@
             type="text"
             id="phone"
             class="form-control"
-            formControlName="phone"/>
+            formControlName="phone"
+            [ngModel]="currentUserdata ? currentUserdata.phone : ''"/>
         </div>
 
         <div class="form-group">
@@ -98,7 +101,7 @@
             id="email"
             class="form-control"
             formControlName="email"
-            [ngModel]="currentUser.email"/>
+            [ngModel]="currentUserdata ? currentUserdata.email : currentUser.email"/>
         </div>
 
         <div class="form-group">

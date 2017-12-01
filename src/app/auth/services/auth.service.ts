@@ -39,7 +39,7 @@ export class AuthService {
   }
 
   getCurrentUser() {
-    console.log('AuthService getCurrentUser: ', this.currentUser);
+    // console.log('AuthService getCurrentUser: ', this.currentUser);
     if (!this.currentUser) {
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     }

@@ -6,14 +6,12 @@ import 'rxjs/Rx';
 import { User } from '../../models/user.model';
 import { Institution } from '../../models/institution.model';
 import { UserData } from '../../models/userdata.model';
-import { Http } from '@angular/http';
 
 
 @Injectable()
 export class UserService {
 
-  constructor(private httpClient: HttpClient,
-              private http: Http) { }
+  constructor(private httpClient: HttpClient) { }
 
   getAll() {
     // const options = this.getJwtHeaders();
@@ -60,6 +58,11 @@ export class UserService {
   addUserData(user: User, userData: UserData) {
     return this.httpClient
       .post('users/userdata', {user: user, userdata: userData});
+  }
+
+  updateUserData(_id: string, userData: UserData) {
+    return this.httpClient
+      .put('users/userdata/' + _id, userData);
   }
 
 }
