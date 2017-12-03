@@ -40,6 +40,7 @@ router.post('/userdata', addUserdata);
 router.get('/', getAllUser);
 router.delete('/:_id', deleteUser);
 router.put('/userdata/:_id', updateUserdata);
+router.delete('/userdata/:ids', deleteUserdata);
 
 
 
@@ -509,15 +510,10 @@ function login(req, res, next) {
 function addUserdata(req, res, next) {
   const body = req.body;
 
-  // console.log('body: ', body);
-  // console.log('user: ', body.user);
-  // console.log('userdata: ', body.userdata);
-
   var userdata = new Userdata(body.userdata);
   userdata
   .save()
   .then((userdata) => {
-    console.log('saved userdata: ', userdata);
 
     return User.findByIdAndUpdate(
       body.user._id,
@@ -563,16 +559,6 @@ function updateUserdata(req, res, next) {
   const id = req.params._id;
   const body = req.body;
 
-  console.log('updataUserdata id: ', id);
-  console.log('updataUserdata userdata: ', body);
-
-  // return User.findByIdAndUpdate(
-  //   body.user._id,
-  //   {$push: {userdata: userdata._id}, updated: Date.now()},
-  //   {'new': true}
-  // )
-
-
   return Userdata.findByIdAndUpdate(
     id,
     {$set: {department: body.department,
@@ -583,7 +569,6 @@ function updateUserdata(req, res, next) {
     {'new': true}
   )
   .then((userdata) => {
-    console.log('updated userdata: ', userdata);
 
     return res
     .status(200)
@@ -602,39 +587,57 @@ function updateUserdata(req, res, next) {
       });
   })
 
-
-
-
-  // User.findById({_id: id})
-  //   .populate({path: 'institution userdata'})
-  //   .lean()
-  //   .then(function (user) {
-
-  //     let pureUser = _.pick(user, '_id', 'firstName', 'lastName', 'email', 'institution', 'userdata');
-  //     // console.log('user removed, result: ', result);
-  //     // res.sendStatus(200);
-
-  //     return res
-  //     .status(201)
-  //     .json({
-  //       title: 'got user',
-  //       obj: pureUser
-  //     });
-  //   })
-  //   .catch(function (err) {
-  //     console.log('Error getting user:', err);
-
-  //     return res
-  //     .status(400)
-  //     .json({
-  //       title: 'Error getting user',
-  //       obj: err
-  //     });
-  //   });
-
-
 }
 
+
+function deleteUserdata(req, res, next) {
+  const ids = req.params.ids;
+  const entries = ids.split('&');
+
+  if (entries.length < 2) {
+    return res
+    .status(400)
+    .json({
+      title: 'bad request deleting userdata'
+    });
+
+  }
+  const userdataId = entries[0];
+  const userId = entries[1];
+
+  return Userdata.findByIdAndRemove(
+    userdataId
+  )
+  .then((removedUserdata) => {
+
+    return User.findByIdAndUpdate(
+      userId,
+      {$pull: {userdata: userdataId}, updated: Date.now()},
+      {'new': true}
+    )
+    .populate({path: 'institution userdata'})
+    .lean()
+  })
+  .then((updatedUser) => {
+
+    return res
+      .status(200)
+      .json({
+        title: 'delete userdata ok',
+        obj: updatedUser
+      });
+  })
+  .catch((err) => {
+
+    return res
+    .status(400)
+    .json({
+      title: 'error deleting userdata',
+      obj: err
+    });
+
+  })
+}
 
 
 module.exports = router;

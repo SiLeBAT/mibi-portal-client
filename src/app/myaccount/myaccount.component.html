@@ -36,7 +36,7 @@
             <p>{{ userdata.phone }}</p>
             <p>{{ userdata.email }}</p>
             <hr>
-            <a [routerLink]="['/userdata', i]">Edit</a> | <a (click)="deleteUserData()">Delete</a>
+            <a [routerLink]="['/userdata', i]">Edit</a> | <a (click)="deleteUserData(userdata)">Delete</a>
           </div>
         </div>
       </div>

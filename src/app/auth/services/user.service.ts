@@ -65,4 +65,9 @@ export class UserService {
       .put('users/userdata/' + _id, userData);
   }
 
+  deleteUserData(userdataId: string, userId: string) {
+    return this.httpClient
+      .delete('users/userdata/' + userdataId + '&' + userId);
+  }
+
 }

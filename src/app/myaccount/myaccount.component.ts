@@ -28,8 +28,22 @@ export class MyaccountComponent implements OnInit {
   }
 
 
-  deleteUserData() {
-    console.log('deleteUserData clicked');
+  deleteUserData(userdata) {
+
+    this.userService.deleteUserData(userdata._id, this.currentUser._id)
+    .subscribe((data) => {
+      const localUser = JSON.parse(localStorage.getItem('currentUser'));
+      // const updatedUser = data['obj'];
+      const updatedUserdata = data['obj'].userdata;
+      localUser.userdata = updatedUserdata;
+      localStorage.setItem('currentUser', JSON.stringify(localUser));
+      this.authService.setCurrentUser(localUser);
+      this.currentUser = localUser;
+    }, (err: HttpErrorResponse) => {
+      const errObj = JSON.parse(err.error);
+      this.alertService.error(errObj.title, true);
+    });
+
   }
 
 }
