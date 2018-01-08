@@ -56,6 +56,7 @@ const userRoutes = require('./server/routes/user');
 
 // Point static path to dist = server application, the only folder accessible from outside
 app.use(express.static(path.join(__dirname, 'dist')));
+// app.use(express.static('dist'));
 
 
 // Set api routes, forwards any request to the routes

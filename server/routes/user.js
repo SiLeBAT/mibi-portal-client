@@ -7,30 +7,13 @@ const fs = require('fs');
 const handlebars = require('handlebars');
 
 const expirationTime = 60 * 60 * 12;
-// const expirationTime = 10;
-
-const sendmail = require('sendmail')({
-  logger: {
-    debug: console.log,
-    info: console.info,
-    warn: console.warn,
-    error: console.error
-  },
-  silent: false
-  // dkim: { // Default: False
-  //   privateKey: fs.readFileSync('./dkim-private.pem', 'utf8'),
-  //   keySelector: 'mydomainkey'
-  // },
-  // devPort: 1025 // Default: False
-  // devHost: 'localhost' // Default: localhost
-})
 
 var User = require('./../models/user');
 var Userdata = require('./../models/userdata');
 var ResetToken = require('./../models/resetToken');
 
 const viewsPath = '../views/';
-
+const mailUtil = require('./../utils/mail');
 
 router.post('/register', register);
 router.post('/login', login);
@@ -125,7 +108,7 @@ function register(req, res, next) {
       memoryCost: 15,
       parallelism: 100,
       type: argon2.argon2id
-    }
+    };
 
     return argon2.hash(body.password, options);
   })
@@ -155,7 +138,7 @@ function register(req, res, next) {
     .json({
       title: 'Server error during registration occured',
       error: err
-    })
+    });
   });
 }
 
@@ -167,14 +150,12 @@ function hashPw(password) {
     memoryCost: 15,
     parallelism: 100,
     type: argon2.argon2id
-  }
+  };
 
   return argon2.hash(password, options);
 }
 
 function reset(req, res, next) {
-  // let sentResetToken = req.params.token;
-  // let dbResetToken;
   res.locals.sentResetToken = req.params.token;
 
   ResetToken
@@ -257,33 +238,18 @@ function reset(req, res, next) {
       .then((opResult) => {
         // delete reset token ok
         // send password update verification email
-        console.log('still to do: send password reset verification email!!!');
-
 
         let name = res.locals.user.firstName + ' ' + res.locals.user.lastName;
 
         let notificationData = {
           "name": name,
           "email": res.locals.user.email,
-          "action_url": "http://localhost:4200/users/recovery"
-        }
+          "action_url": "http://localhost:4200/users/login"
+        };
 
-        let readFile = fs.readFileSync(__dirname + '/../views/pwnotification.html').toString('utf-8');
-        let template = handlebars.compile(readFile);
-
-        let result = template(notificationData);
-
-        // console.log('result: ', result);
-
-        sendmail({
-          from: 'no-reply@bfr.bund.de',
-          to: 'lewicki.birgit@gmail.com',
-          subject: 'Reset Password Successful',
-          html: result,
-        }, function(err, reply) {
-          console.log('sendmail err: ', err);
-          console.dir('sendmail reply: ', reply);
-        });
+        let templateFile = fs.readFileSync(__dirname + '/../views/pwnotification.html').toString('utf-8');
+        let subject = 'Reset Password for Epi-Lab Successful';
+        mailUtil.sendMail(notificationData, templateFile, res.locals.user.email, subject);
 
         return res
         .status(200)
@@ -312,7 +278,7 @@ function reset(req, res, next) {
         title: 'Reset password request expired, please try again'
       });
 
-    })
+    });
 }
 
 
@@ -336,23 +302,11 @@ function recovery(req, res, next) {
         "browser_name": req.headers['user-agent'],
         "action_url": "http://localhost:4200/users/recovery",
         "support_url": "http://localhost:4200/users/recovery"
-      }
+      };
 
-      let readFile = fs.readFileSync(__dirname + '/../views/pwresethelp.html').toString('utf-8');
-      let template = handlebars.compile(readFile);
-      let result = template(resetHelpData);
-
-      // console.log('result: ', result);
-
-      sendmail({
-        from: 'no-reply@bfr.bund.de',
-        to: 'lewicki.birgit@gmail.com',
-        subject: 'Reset Password for Epi-Lab',
-        html: result
-      }, function(err, reply) {
-        console.log('sendmail err: ', err);
-        console.dir('sendmail reply: ', reply);
-      });
+      let templateFile = fs.readFileSync(__dirname + '/../views/pwresethelp.html').toString('utf-8');
+      let subject = 'Reset Password for Epi-Lab';
+      mailUtil.sendMail(resetHelpData, templateFile, body.email, subject);
 
       return res
       .status(200)
@@ -376,8 +330,21 @@ function recovery(req, res, next) {
         console.log('remove reset tokens for user ' + user._id +', err: ', err);
       });
 
+
+      // token: jwt.sign(
+      //   {sub: this.user._id},
+      //   process.env.JWT_SECRET,
+      //   {expiresIn: expirationTime}
+      // ),
+
+
+
     // create new resetToken for the user
-    const token = jwt.sign({sub: res.locals.user._id}, process.env.JWT_SECRET);
+    const token = jwt.sign(
+      {sub: res.locals.user._id},
+      process.env.JWT_SECRET,
+      {expiresIn: expirationTime}
+    );
 
     var resetToken = new ResetToken({
       token: token,
@@ -398,24 +365,11 @@ function recovery(req, res, next) {
       "name": name,
       "action_url": resetUrl,
       "operating_system": req.headers['user-agent']
-    }
+    };
 
-    let readFile = fs.readFileSync(__dirname + '/../views/pwreset.html').toString('utf-8');
-    let template = handlebars.compile(readFile);
-
-    let result = template(resetData);
-
-    // console.log('result: ', result);
-
-    sendmail({
-      from: 'no-reply@bfr.bund.de',
-      to: 'lewicki.birgit@gmail.com',
-      subject: 'Reset Password',
-      html: result,
-    }, function(err, reply) {
-      console.log('sendmail err: ', err);
-      console.dir('sendmail reply: ', reply);
-    });
+    let templateFile = fs.readFileSync(__dirname + '/../views/pwreset.html').toString('utf-8');
+    let subject = 'Reset Password for Epi-Lab';
+    mailUtil.sendMail(resetData, templateFile, body.email, subject);
 
     return res
     .status(200)
@@ -455,7 +409,7 @@ function login(req, res, next) {
         error: {
           message: 'Username or password invalid'
         }
-      })
+      });
     }
 
     this.user = user;
@@ -487,7 +441,7 @@ function login(req, res, next) {
           institution: this.user.institution,
           userdata: this.user.userdata
         }
-      })
+      });
     } else {
       // password does not match
 
@@ -540,7 +494,7 @@ function addUserdata(req, res, next) {
         title: 'Error saving user',
         obj: err
       });
-    })
+    });
 
   })
   .catch((err) => {
@@ -550,7 +504,7 @@ function addUserdata(req, res, next) {
       title: 'Error saving userdata',
       obj: err
     });
-  })
+  });
 
 }
 
@@ -585,7 +539,7 @@ function updateUserdata(req, res, next) {
         title: 'err updating userdata',
         obj: err
       });
-  })
+  });
 
 }
 
@@ -616,7 +570,7 @@ function deleteUserdata(req, res, next) {
       {'new': true}
     )
     .populate({path: 'institution userdata'})
-    .lean()
+    .lean();
   })
   .then((updatedUser) => {
 
@@ -636,7 +590,7 @@ function deleteUserdata(req, res, next) {
       obj: err
     });
 
-  })
+  });
 }
 
 
