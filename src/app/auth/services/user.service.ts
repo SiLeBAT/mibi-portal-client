@@ -55,6 +55,11 @@ export class UserService {
       .post('users/reset/' + token, {newPw: newPw});
   }
 
+  activateAccount(token: String) {
+    return this.httpClient
+      .post('users/activate/' + token, null);
+  }
+
   addUserData(user: User, userData: UserData) {
     return this.httpClient
       .post('users/userdata', {user: user, userdata: userData});

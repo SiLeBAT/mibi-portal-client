@@ -35,7 +35,8 @@ app.use(expressJwt({
     '/users/login',
     '/users/register',
     '/users/recovery',
-    /\/users\/reset\/*/
+    /\/users\/reset\/*/,
+    /\/users\/activate\/*/
   ]
 }));
 

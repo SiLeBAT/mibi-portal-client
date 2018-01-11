@@ -5,6 +5,7 @@ import { LoginComponent } from './../auth/login/login.component';
 import { RegisterComponent } from './../auth/register/register.component';
 import { RecoveryComponent } from './../auth/recovery/recovery.component';
 import { ResetComponent } from './../auth/reset/reset.component';
+import { ActivateComponent } from './../auth/activate/activate.component';
 import { AuthGuard } from './../auth/guards/auth.guard';
 import { UploadComponent } from '../upload/upload.component';
 import { MainDashComponent } from '../main-dash/main-dash.component';
@@ -22,6 +23,7 @@ const appRoutes: Routes = [
   { path: 'users/register', component: RegisterComponent },
   { path: 'users/recovery', component: RecoveryComponent },
   { path: 'users/reset/:id', component: ResetComponent },
+  { path: 'users/activate/:id', component: ActivateComponent },
 
   // otherwise redirect to home
   { path: '**', redirectTo: '' }

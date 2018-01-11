@@ -1,0 +1,38 @@
+<div class="jumbotron">
+  <div class="container-fluid">
+    <div class="col-md-6 col-md-offset-3">
+      <h2>Account Activation Process</h2>
+      <hr>
+      <br>
+      <div *ngIf="tokenValid" class="help-block">
+        <p>You have activated your Epi-Lab account.</p>
+        <p>You may now login.</p>
+        <br>
+        <button
+          class="btn btn-primary"
+          type="submit"
+          [routerLink]="['/users/login']">
+          Continue to Login
+        </button>
+      </div>
+
+
+
+      <div *ngIf="!tokenValid" class="help-block">
+        <p>Your account activation failed.</p>
+        <p>Please register again.</p>
+        <br>
+        <button
+          class="btn btn-primary"
+          type="submit"
+          [routerLink]="['/users/register']">
+          Continue to Registration
+        </button>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+

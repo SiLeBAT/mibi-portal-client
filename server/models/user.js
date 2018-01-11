@@ -22,6 +22,11 @@ var userSchema = new Schema({
     type: String,
     required: true
   },
+  enabled: {
+    type: Boolean,
+    default: false,
+    required: true
+  },
   institution: {
     type: Schema.Types.ObjectId,
     ref: 'Institution'

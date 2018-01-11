@@ -19,6 +19,7 @@ router.post('/register', register);
 router.post('/login', login);
 router.post('/recovery', recovery);
 router.post('/reset/:token', reset);
+router.post('/activate/:token', activate);
 router.post('/userdata', addUserdata);
 router.get('/', getAllUser);
 router.delete('/:_id', deleteUser);
@@ -124,14 +125,77 @@ function register(req, res, next) {
     return user.save();
   })
   .then((result) => {
+    // send registration activation mail
+    // let activationToken;
+
+    console.log('user registration, user save, result: ', result);
+
+    res.locals.user = result;
+
+    // delete any existing activation token for the user
+    ResetToken
+      .remove()
+      .where('user').equals(result._id)
+      .then((opResult) => {
+        console.log('remove activation tokens for user ' + result._id +', opResult.results: ', opResult.result);
+
+      })
+      .catch((err) => {
+        console.log('remove activation tokens for user ' + result._id +', err: ', err);
+      });
+
+    // create new activationToken for the user
+    const token = jwt.sign(
+      {sub: result._id},
+      process.env.JWT_SECRET,
+      {expiresIn: expirationTime}
+    );
+
+    var activationToken = new ResetToken({
+      token: token,
+      type: 'activate',
+      user: result._id
+    });
+
+    return activationToken.save();
+
+  })
+  .then((activationToken) => {
+
+    const message = `Please activate your account: An email has been sent to ${body.email} with further instructions`;
+
+    console.log('result after saving activation token: ', activationToken);
+    console.log('registered user after saving activation token: ', res.locals.user);
+    let name = res.locals.user.firstName + ' ' + res.locals.user.lastName;
+    let activationUrl = "http://localhost:4200/users/activate/" + activationToken.token;
+
+    let activationData = {
+      "name": name,
+      "action_url": activationUrl,
+      "operating_system": req.headers['user-agent']
+    };
+
+    let templateFile = fs.readFileSync(__dirname + '/../views/regactivation.html').toString('utf-8');
+    let subject = 'Activate your account for Epi-Lab';
+    mailUtil.sendMail(activationData, templateFile, body.email, subject);
 
     return res
-    .status(201)
+    .status(200)
     .json({
-      title: 'Registration successful'
+      title: message
     });
+
+
+
+    // return res
+    // .status(201)
+    // .json({
+    //   title: 'Registration successful'
+    // });
   })
   .catch((err) => {
+
+    console.log('registration error: ', err);
 
     return res
     .status(500)
@@ -282,6 +346,167 @@ function reset(req, res, next) {
 }
 
 
+
+
+
+
+
+function activate(req, res, next) {
+  res.locals.sentActivationToken = req.params.token;
+
+  console.log('activate called, activation token: ', res.locals.sentActivationToken);
+
+
+  // return res
+  // .status(200)
+  // .json({
+  //   title: 'Account activated!'
+  // });
+
+
+  ResetToken
+    .find()
+    .lean()
+    .where('token').equals(res.locals.sentActivationToken)
+    .then((results) => {
+      console.log('searching the transfered activation token, results: ', results);
+
+      if (results.length === 0) {
+        console.log('sent activation token not found');
+
+        return res
+        .status(400)
+        .json({
+          title: 'Account Activation expired, please try again'
+        });
+
+      }
+      res.locals.dbResetToken = results[0];
+      res.locals.dbResetToken.user = String(res.locals.dbResetToken.user);
+
+      // verify that sent token has correct user id
+      let userId = res.locals.dbResetToken.user;
+
+      try {
+        let decoded = jwt.verify(res.locals.sentActivationToken, process.env.JWT_SECRET, {subject: userId});
+        console.log('decoded token result: ', decoded);
+      } catch(err) {
+        console.log('catch error while jwt.verify');
+
+        if (err.name === 'JsonWebTokenError') {
+          console.log(err.name, err.message);
+        }
+        if (err.name === 'TokenExpiredError') {
+          console.log(err.name, err.message, err.expiredAt);
+        }
+
+        return res
+        .status(400)
+        .json({
+          title: 'Account Activation expired, please try again'
+        });
+      }
+
+      // sent token ok, start to activate user account
+      return User.findByIdAndUpdate(userId, {enabled: true, updated: Date.now()});
+
+
+
+
+
+
+
+
+
+
+
+
+
+    })
+    // .then((hash) => {
+    //   // password hashing ok
+    //   // update user password
+
+    //   let userId = res.locals.dbResetToken.user;
+    //   return User.findByIdAndUpdate(userId, {password: hash, updated: Date.now()});
+    //   // return User.findByIdAndUpdate(userId, {password: hash});
+    // })
+    .then((result) => {
+
+      if (!result) {
+        // user account was not activated
+        console.log('user was not activated');
+
+        return res
+        .status(400)
+        .json({
+          title: 'Account Activation expired, please try again'
+        });
+
+      }
+
+      // account activation ok
+      // delete reset token
+      let userId = res.locals.dbResetToken.user;
+      res.locals.user = result;
+
+      ResetToken
+      .remove()
+      .where('user').equals(userId)
+      .then((opResult) => {
+        // delete reset token ok
+
+
+        // let name = res.locals.user.firstName + ' ' + res.locals.user.lastName;
+
+        // let notificationData = {
+        //   "name": name,
+        //   "email": res.locals.user.email,
+        //   "action_url": "http://localhost:4200/users/login"
+        // };
+
+        // let templateFile = fs.readFileSync(__dirname + '/../views/pwnotification.html').toString('utf-8');
+        // let subject = 'Reset Password for Epi-Lab Successful';
+        // mailUtil.sendMail(notificationData, templateFile, res.locals.user.email, subject);
+
+        return res
+        .status(200)
+        .json({
+          title: 'Account Activation successful!'
+        });
+
+      })
+      .catch((err) => {
+        // console.log('remove reset tokens for user ' + user._id +', err: ', err);
+        console.log('remove reset tokens for user ' + userId +', err: ', err);
+
+        return res
+        .status(400)
+        .json({
+          title: 'Account Activation expired, please try again'
+        });
+      });
+    })
+    .catch((err) => {
+      console.log('error during account activation: ', err);
+
+      return res
+      .status(400)
+      .json({
+        title: 'Account Activation expired, please try again'
+      });
+
+    });
+}
+
+
+
+
+
+
+
+
+
 function recovery(req, res, next) {
   const body = req.body;
   console.log('recovery body: ', body);
@@ -330,15 +555,6 @@ function recovery(req, res, next) {
         console.log('remove reset tokens for user ' + user._id +', err: ', err);
       });
 
-
-      // token: jwt.sign(
-      //   {sub: this.user._id},
-      //   process.env.JWT_SECRET,
-      //   {expiresIn: expirationTime}
-      // ),
-
-
-
     // create new resetToken for the user
     const token = jwt.sign(
       {sub: res.locals.user._id},
@@ -348,6 +564,7 @@ function recovery(req, res, next) {
 
     var resetToken = new ResetToken({
       token: token,
+      type: 'reset',
       user: res.locals.user._id
     });
 
@@ -408,6 +625,19 @@ function login(req, res, next) {
         title: 'Login failed',
         error: {
           message: 'Username or password invalid'
+        }
+      });
+    }
+
+    // check if the user's account is activated
+    if (! user.enabled) {
+      // login failed
+      return res
+      .status(401)
+      .json({
+        title: 'Login failed',
+        error: {
+          message: 'Your account is not yet activated'
         }
       });
     }

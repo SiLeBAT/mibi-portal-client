@@ -7,6 +7,10 @@ var resetTokenSchema = new Schema({
     type: String,
     required: true
   },
+  type: {
+    type: String,
+    required: true
+  },
   created: {
      type: Date,
      default: Date.now,

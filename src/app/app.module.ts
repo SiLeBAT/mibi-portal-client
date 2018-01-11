@@ -23,6 +23,7 @@ import { MainDashComponent } from './main-dash/main-dash.component';
 import { MyaccountComponent } from './myaccount/myaccount.component';
 import { UserdataComponent } from './myaccount/userdata/userdata.component';
 import { HttpModule } from '@angular/http';
+import { ActivateComponent } from './auth/activate/activate.component';
 
 
 @NgModule({
@@ -38,6 +39,7 @@ import { HttpModule } from '@angular/http';
     MainDashComponent,
     MyaccountComponent,
     UserdataComponent,
+    ActivateComponent,
   ],
   imports: [
     BrowserModule,
