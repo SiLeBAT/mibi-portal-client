@@ -13,7 +13,7 @@ import { User } from '../../models/user.model';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  private loginForm: FormGroup;
+  public loginForm: FormGroup;
   loading = false;
   returnUrl: string;
 

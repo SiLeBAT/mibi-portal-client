@@ -11,7 +11,7 @@ export class AppComponent implements OnInit {
   private isActive = false;
   currentUser;
 
-  constructor(private authService: AuthService) {}
+  constructor(public authService: AuthService) {}
 
   ngOnInit() {
   }

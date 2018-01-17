@@ -13,7 +13,7 @@ import { User } from '../../models/user.model';
   styleUrls: ['./reset.component.css']
 })
 export class ResetComponent implements OnInit {
-  private resetForm: FormGroup;
+  public resetForm: FormGroup;
   loading = false;
 
   constructor(

@@ -15,7 +15,7 @@ import { Institution } from '../../models/institution.model';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-  private registerForm: FormGroup;
+  public registerForm: FormGroup;
   loading = false;
   institutions: Institution[] = [];
 

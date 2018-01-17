@@ -15,7 +15,7 @@ import { UserData } from './../../models/userdata.model';
   styleUrls: ['./userdata.component.css']
 })
 export class UserdataComponent implements OnInit {
-  private myaccountForm: FormGroup;
+  public myaccountForm: FormGroup;
   currentUser;
   loading = false;
   currentUserdata;

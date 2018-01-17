@@ -13,7 +13,7 @@ import { User } from '../../models/user.model';
   styleUrls: ['./recovery.component.css']
 })
 export class RecoveryComponent implements OnInit {
-  private recoveryForm: FormGroup;
+  public recoveryForm: FormGroup;
   loading = false;
 
   constructor(
