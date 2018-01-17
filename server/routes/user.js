@@ -167,7 +167,8 @@ function register(req, res, next) {
     console.log('result after saving activation token: ', activationToken);
     console.log('registered user after saving activation token: ', res.locals.user);
     let name = res.locals.user.firstName + ' ' + res.locals.user.lastName;
-    let activationUrl = "http://localhost:4200/users/activate/" + activationToken.token;
+    // let activationUrl = "http://localhost:4200/users/activate/" + activationToken.token;
+    let activationUrl = process.env.API_URL + "/users/activate/" + activationToken.token;
 
     let activationData = {
       "name": name,
@@ -308,7 +309,7 @@ function reset(req, res, next) {
         let notificationData = {
           "name": name,
           "email": res.locals.user.email,
-          "action_url": "http://localhost:4200/users/login"
+          "action_url": process.env.API_URL + "/users/login"
         };
 
         let templateFile = fs.readFileSync(__dirname + '/../views/pwnotification.html').toString('utf-8');
@@ -462,7 +463,7 @@ function activate(req, res, next) {
         // let notificationData = {
         //   "name": name,
         //   "email": res.locals.user.email,
-        //   "action_url": "http://localhost:4200/users/login"
+        //   "action_url": process.env.API_URL + "/users/login"
         // };
 
         // let templateFile = fs.readFileSync(__dirname + '/../views/pwnotification.html').toString('utf-8');
@@ -525,8 +526,8 @@ function recovery(req, res, next) {
         "email_address": body.email,
         "operating_system": req.headers['host'],
         "browser_name": req.headers['user-agent'],
-        "action_url": "http://localhost:4200/users/recovery",
-        "support_url": "http://localhost:4200/users/recovery"
+        "action_url": process.env.API_URL + "/users/recovery",
+        "support_url": process.env.API_URL + "/users/recovery"
       };
 
       let templateFile = fs.readFileSync(__dirname + '/../views/pwresethelp.html').toString('utf-8');
@@ -576,7 +577,7 @@ function recovery(req, res, next) {
     console.log('result after saving reset token: ', resetToken);
     console.log('thus.user after saving reset token: ', res.locals.user);
     let name = res.locals.user.firstName + ' ' + res.locals.user.lastName;
-    let resetUrl = "http://localhost:4200/users/reset/" + resetToken.token;
+    let resetUrl = process.env.API_URL + "/users/reset/" + resetToken.token;
 
     let resetData = {
       "name": name,

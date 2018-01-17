@@ -11,6 +11,10 @@ var {mongoose} = require('./server/db/mongoose');
 
 const app = express();
 
+console.log('process.env.NODE_ENV: ', process.env.NODE_ENV);
+console.log('process.env.NODE_PORT: ', process.env.NODE_PORT);
+console.log('process.env.API_URL: ', process.env.API_URL);
+
 
 // Parsers for POST data
 app.use(bodyParser.json());
@@ -74,7 +78,8 @@ app.get('*', (req, res) => {
 
 // Get port from environment and store in Express
 // const port = process.env.NODE_ENV === 'production' ? 80 : config.port;
-const port = process.env.NODE_ENV === 'production' ? 80 : process.env.NODE_PORT;
+// const port = process.env.NODE_ENV === 'production' ? 80 : process.env.NODE_PORT;
+const port = process.env.NODE_PORT;
 
 
 // const port = process.env.PORT || '3000';
