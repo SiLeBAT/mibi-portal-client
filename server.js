@@ -55,18 +55,25 @@ app.use((err, req, res, next) => {
 
 
 // get api routes
-// const apiRoutes = require('./server/routes/api');
-const userRoutes = require('./server/routes/user');
+// const userRoutes = require('./server/routes/user');
 
 
 // Point static path to dist = server application, the only folder accessible from outside
 app.use(express.static(path.join(__dirname, 'dist')));
-// app.use(express.static('dist'));
+
+app.use(function (req, res, next) {
+  // res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, PUT, GET, PATCH, DELETE, OPTIONS');
+  res.header("Access-Control-Allow-Credentials", true);
+  next();
+});
+
 
 
 // Set api routes, forwards any request to the routes
-app.use('/users',userRoutes);
-// app.use('/', apiRoutes);
+app.use('/users',require('./server/routes/user'));
 app.use('/api', require('./server/api'));
 
 
@@ -77,12 +84,10 @@ app.get('*', (req, res) => {
 
 
 // Get port from environment and store in Express
-// const port = process.env.NODE_ENV === 'production' ? 80 : config.port;
 // const port = process.env.NODE_ENV === 'production' ? 80 : process.env.NODE_PORT;
 const port = process.env.NODE_PORT;
 
 
-// const port = process.env.PORT || '3000';
 app.set('port', port);
 
 

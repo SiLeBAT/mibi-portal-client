@@ -10,7 +10,6 @@ export class UploadService {
   constructor(private httpClient: HttpClient) { }
 
   upload() {
-    const authValue = 'Basic ZXBpbWFuOlVmb2ZhbmFibzMzOA==';
 
     // return this.httpClient
     // .post('/api/v1/knime', {authValue: authValue});
@@ -26,10 +25,16 @@ export class UploadService {
 
      return this.httpClient
      .request(req);
+  }
 
+  uploadFile( sendableFormData: FormData) {
+    const postUrl = 'api/v1/upload';
+    const req = new HttpRequest('POST', postUrl, sendableFormData, {
+      reportProgress: true
+    });
 
-
-
+    return this.httpClient
+    .request(req);
   }
 
 
