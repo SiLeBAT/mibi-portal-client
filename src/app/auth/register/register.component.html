@@ -8,88 +8,58 @@ when the submit button is clocked. On submit the register() method is called if 
       <hr>
 
 
-      <form
-        [formGroup]="registerForm"
-        (ngSubmit)="register()">
+      <form [formGroup]="registerForm" (ngSubmit)="register()" novalidate>
 
-        <div class="form-group">
+        <div class="form-group" [ngClass]="{'error' :  !validateField('institution')}">
           <label for="institutionMenu">Choose your institution</label>
-          <select
-            class="form-control"
-            name="institutionMenu"
-            data-style="btn-primary"
-            id="institutionMenu"
-            formControlName="institution">
+          <select class="form-control" name="institutionMenu" data-style="btn-primary" id="institutionMenu" formControlName="institution">
             <!-- [(ngModel)]="selectedInstitutionId"> -->
-            <option value="0">
+            <option [ngValue]="null" disabled>
               -- Choose Institution --
             </option>
-            <option
-              *ngFor="let institution of institutions"
-              [value]="institution._id">
+            <option *ngFor="let institution of institutions" [value]="institution._id">
               {{ getInstitutionName(institution) }}
             </option>
           </select>
+          <em *ngIf="!validateField('institution')">Required.</em>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" [ngClass]="{'error' :  !validateField('firstName')}">
           <label for="firstName">First Name</label>
-          <input
-            type="text"
-            id="firstName"
-            class="form-control"
-            formControlName="firstName"/>
+          <input type="text" id="firstName" class="form-control" formControlName="firstName" placeholder="First Name..." />
+          <em *ngIf="!validateField('firstName')">Required.</em>
         </div>
-        <div class="form-group">
+        <div class="form-group" [ngClass]="{'error' :  !validateField('lastName')}">
           <label for="lastName">Last Name</label>
-          <input
-            type="text"
-            id="lastName"
-            class="form-control"
-            formControlName="lastName"/>
+          <input type="text" id="lastName" class="form-control" formControlName="lastName" placeholder="Last Name..." />
+          <em *ngIf="!validateField('lastName')">Required.</em>
         </div>
-        <div class="form-group">
+        <div class="form-group" [ngClass]="{'error' :  !validateField('email')}">
           <label for="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            class="form-control"
-            formControlName="email"/>
+          <input type="email" id="email" class="form-control" formControlName="email" placeholder="Email..." />
+          <em *ngIf="!validateField('email') && registerForm.controls.email.errors.email">Must be a valid email.</em>
+          <em *ngIf="!validateField('email') && registerForm.controls.email.errors.required">Required.</em>
         </div>
-        <div class="form-group">
+        <div class="form-group" [ngClass]="{'error' :  !validateField('password1')}">
           <label for="password1">Password</label>
-          <input
-            type="password"
-            id="password1"
-            class="form-control"
-            formControlName="password1"/>
+          <input type="password" id="password1" class="form-control" formControlName="password1" placeholder="Password..." />
+          <em *ngIf="!validateField('password1')">Required.</em>
         </div>
-        <div class="form-group">
+        <div class="form-group" [ngClass]="{'error' : !validateField('password2')}">
           <label for="password2">Confirm Password</label>
-          <input
-            type="password"
-            id="password2"
-            class="form-control"
-            formControlName="password2"/>
+          <input type="password" id="password2" class="form-control" formControlName="password2" placeholder="Confirm Password..."
+          />
+          <em *ngIf="!validateField('password2')  && registerForm.controls.password2.errors.validatePasswordConfirm">Passwords should match.</em>
         </div>
 
         <div class="form-group">
-          <button
-            class="btn btn-primary"
-            type="submit"
-            [disabled]="!registerForm.valid">Submit</button>
-            <!-- <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" /> -->
-          <a
-            [routerLink]="['/main']"
-            class="btn btn-link">
-              Cancel
+          <button class="btn btn-primary" type="submit" [disabled]="!registerForm.valid">Submit</button>
+          <!-- <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" /> -->
+          <a [routerLink]="['/main']" class="btn btn-link">
+            Cancel
           </a>
         </div>
       </form>
     </div>
   </div>
 </div>
-
-
-
-
