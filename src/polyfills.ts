@@ -1,3 +1,6 @@
+
+
+
 /**
  * This file includes polyfills needed by Angular and is loaded before the app.
  * You can add your own extra polyfills to this file.
@@ -49,10 +52,11 @@ import 'core-js/es7/reflect';
 // import 'web-animations-js';  // Run `npm install --save web-animations-js`.
 
 
-
 /***************************************************************************************************
  * Zone JS is required by Angular itself.
  */
+import 'handsontable';
+// import 'angular-handsontable';
 import 'zone.js/dist/zone';  // Included with Angular CLI.
 
 

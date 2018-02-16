@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-// import { FileSelectDirective, FileDropDirective } from 'ng2-file-upload';
 import { ngfModule } from 'angular-file';
 
 
@@ -27,6 +26,10 @@ import { MyaccountComponent } from './myaccount/myaccount.component';
 import { UserdataComponent } from './myaccount/userdata/userdata.component';
 import { HttpModule } from '@angular/http';
 import { ActivateComponent } from './auth/activate/activate.component';
+import { ValidatorComponent } from './validator/validator.component';
+import { HotTableModule } from 'ng2-handsontable';
+import { TooltipModule } from 'ng2-tooltip';
+
 
 
 @NgModule({
@@ -43,15 +46,16 @@ import { ActivateComponent } from './auth/activate/activate.component';
     MyaccountComponent,
     UserdataComponent,
     ActivateComponent,
-    // FileSelectDirective,
-    // FileDropDirective
+    ValidatorComponent
   ],
   imports: [
     BrowserModule,
+    HotTableModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
     HttpModule,
+    TooltipModule,
     ngfModule,
     routing
   ],

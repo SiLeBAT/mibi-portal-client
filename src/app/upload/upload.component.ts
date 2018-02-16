@@ -9,6 +9,7 @@ import { UploadService } from '../services/upload.service';
 import { concat } from 'rxjs/operators/concat';
 import { AlertService } from '../auth/services/alert.service';
 
+
 @Component({
   selector: 'app-upload',
   templateUrl: './upload.component.html',
@@ -43,6 +44,8 @@ export class UploadComponent implements OnInit {
           this.files = [];
           const message = event['body']['title'];
           this.alertService.success(message, true);
+          const jsonResponse = event['body']['obj'];
+          console.log('knime json response: ', jsonResponse);
         }
       }, (err: HttpErrorResponse) => {
         console.log('error upload file, err: ', err);
@@ -50,9 +53,6 @@ export class UploadComponent implements OnInit {
         this.alertService.error(errMessage, true);
         this.files = [];
       });
-
-      this.file = undefined;
-      console.log('upload file, at the end this.file: ', this.file);
   }
 
   fileOverDropZone(event) {

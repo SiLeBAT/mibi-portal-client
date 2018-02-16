@@ -44,3 +44,5 @@ Thumbs.db
 # app
 /server/config/config.json
 /playground
+/uploads
+
