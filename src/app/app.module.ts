@@ -28,7 +28,6 @@ import { HttpModule } from '@angular/http';
 import { ActivateComponent } from './auth/activate/activate.component';
 import { ValidatorComponent } from './validator/validator.component';
 import { HotTableModule } from 'ng2-handsontable';
-import { TooltipModule } from 'ng2-tooltip';
 
 
 
@@ -55,7 +54,6 @@ import { TooltipModule } from 'ng2-tooltip';
     ReactiveFormsModule,
     HttpClientModule,
     HttpModule,
-    TooltipModule,
     ngfModule,
     routing
   ],
