@@ -1,0 +1,4 @@
+table thead th {
+  word-wrap: break-word;
+  /* max-width: 50px; */
+}

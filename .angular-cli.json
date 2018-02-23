@@ -20,11 +20,14 @@
       "prefix": "app",
       "styles": [
         "../node_modules/bootstrap/dist/css/bootstrap.min.css",
+        "../node_modules/tooltipster/dist/css/tooltipster.bundle.min.css",
+        "mytooltipster.css",
         "styles.css"
       ],
       "scripts": [
         "../node_modules/jquery/dist/jquery.min.js",
-        "../node_modules/bootstrap/dist/js/bootstrap.min.js"
+        "../node_modules/bootstrap/dist/js/bootstrap.min.js",
+        "../node_modules/tooltipster/dist/js/tooltipster.bundle.min.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

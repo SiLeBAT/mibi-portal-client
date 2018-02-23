@@ -6,6 +6,7 @@ import 'rxjs/Rx';
 
 @Injectable()
 export class UploadService {
+  currentJsonResponse: object;
 
   constructor(private httpClient: HttpClient) { }
 

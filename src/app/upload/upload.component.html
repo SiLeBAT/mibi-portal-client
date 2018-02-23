@@ -26,11 +26,12 @@
       <div class="uploader"
         ngfDrop
         [selectable]    = "1"
+        [maxSize]       = 2097152
+        accept          = ".xls,.xlsx"
         (fileOver)      = "fileOverDropZone()"
         [ngClass]       = "{'another-file-over-class': validComboDrag}"
         [(files)]       = "files"
         [(file)]        = "file"
-        (init)          = "init()"
         [fileDropDisabled] = "dropDisabled" >
         <label for="file-upload" id="file-drag">
           <img id="file-image" src="#" alt="Preview" class="hidden">
@@ -95,7 +96,7 @@
   <div class="row top-bottom-margin">
     <div class="col-md-10 col-md-offset-1">
       Queue progress:
-      <div class="progress" style="">
+      <div class="progress">
         <div class="progress-bar"
           role="progressbar"
           [ngStyle]="{ 'width': progress + '%' }"
@@ -140,5 +141,19 @@
 
     </div>
   </div>
+
+  <div class="row top-bottom-margin">
+    <div class="col-md-10 col-md-offset-1">
+
+      <button
+        type="button"
+        class="btn btn-success btn-s"
+        [routerLink]="['/validate']">
+        Go to Validator
+      </button>
+
+    </div>
+  </div>
+
 
 </div>
