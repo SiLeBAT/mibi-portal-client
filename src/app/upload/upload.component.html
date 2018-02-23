@@ -32,7 +32,6 @@
         [ngClass]       = "{'another-file-over-class': validComboDrag}"
         [(files)]       = "files"
         [(file)]        = "file"
-
         [fileDropDisabled] = "dropDisabled" >
         <label for="file-upload" id="file-drag">
           <img id="file-image" src="#" alt="Preview" class="hidden">
@@ -97,7 +96,7 @@
   <div class="row top-bottom-margin">
     <div class="col-md-10 col-md-offset-1">
       Queue progress:
-      <div class="progress" style="">
+      <div class="progress">
         <div class="progress-bar"
           role="progressbar"
           [ngStyle]="{ 'width': progress + '%' }"

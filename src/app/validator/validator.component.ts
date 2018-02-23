@@ -3,6 +3,7 @@ import * as Handsontable from 'handsontable';
 import 'tooltipster';
 import { HotTableComponent } from 'ng2-handsontable';
 
+// FIXME
 // import * as data from './../../../playground/utils/jsonOutput/out.postman.v14.test.json';
 import { UploadService } from './../services/upload.service';
 
@@ -82,7 +83,8 @@ export class ValidatorComponent implements OnInit {
 
     }
 
-    // console.log('this.errData: ', JSON.stringify(this.errData));
+    // console.log('this.errData: ', JSON.stringify(this.errData, null, 4));
+
 
     this.options = {
       data: this.data,
@@ -112,36 +114,6 @@ export class ValidatorComponent implements OnInit {
         return cellProperties;
       }
     };
-
-
-    // this.options = {
-    //   height: 396,
-    //   rowHeaders: true,
-    //   stretchH: 'all',
-    //   columnSorting: true,
-    //   colWidths : [ 40 ],
-    //   autoWrapRow : true,
-    //   autoWrapCol : true,
-    //   comments: true,
-    //   debug: true,
-    //   manualColumnResize : true,
-    //   manualRowResize : true,
-    //   wordWrap: true,
-    //   headerTooltips: true,
-    //   cells: (row, col, prop): any => {
-    //     const cellProperties: any = {};
-
-    //     if (this.errData[row]) {
-    //       if (this.errData[row][col]) {
-    //         cellProperties.errObj = this.errData[row][col];
-    //         Object.assign(cellProperties, {renderer: this.cellRenderer});
-    //       }
-    //     }
-
-    //     return cellProperties;
-    //   }
-    // };
-
   }
 
   cellRenderer(instance, td, row, col, prop, value, cellProperties) {
@@ -186,7 +158,7 @@ export class ValidatorComponent implements OnInit {
       }
     }
 
-    // add multiple property to the tooltip options
+    // add multiple property to the tooltip options => set multiple: true except in first option
     if (tooltipOptionList.length > 1) {
       const optionsNum = tooltipOptionList.length;
       tooltipOptionList[1].multiple = true;
@@ -206,10 +178,7 @@ export class ValidatorComponent implements OnInit {
   }
 
 
-  afterChange(event: any) {
-    // console.log('afterChange processed');
-    // console.log('event: ', event);
-  }
+  afterChange(event: any) { }
 
 }
 

@@ -21,6 +21,7 @@
       "styles": [
         "../node_modules/bootstrap/dist/css/bootstrap.min.css",
         "../node_modules/tooltipster/dist/css/tooltipster.bundle.min.css",
+        "mytooltipster.css",
         "styles.css"
       ],
       "scripts": [

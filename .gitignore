@@ -45,4 +45,4 @@ Thumbs.db
 /server/config/config.json
 /playground
 /uploads
-
+server-patch.patch

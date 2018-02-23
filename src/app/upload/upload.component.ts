@@ -53,31 +53,19 @@ export class UploadComponent implements OnInit {
   }
 
   fileOverDropZone(event) {
-    console.log('fileOverDropZone, this.files: ', this.files);
-    console.log('fileOverDropZone, this.file: ', this.file);
-
     this.progress = 0;
     if (this.files.length > 0) {
       this.files.shift();
     }
   }
 
-  // initDropZone() {
-  //   console.log('initDropZone processed!');
-  // }
-
   trashFile() {
     this.progress = 0;
     this.files = [];
   }
 
-  // init() {
-  //   console.log('init done!');
-  // }
 
-  ngOnInit() {
-    // console.log('ngOnInit done!');
-  }
+  ngOnInit() { }
 
   setCurrentJsonResponse(jsonResponse: object) {
     this.uploadService.currentJsonResponse = jsonResponse;
