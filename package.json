@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.config.json",
-    "build:staging": "npm run clean && ng build -op \"public\" -bh \"/public\"",
+    "build:staging": "npm run clean && ng build -op \"public\"",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
