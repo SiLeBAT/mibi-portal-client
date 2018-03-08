@@ -4,10 +4,11 @@ import { HttpClient, HttpRequest, HttpResponse, HttpEvent } from '@angular/commo
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
-
 import { UploadService } from '../services/upload.service';
 import { concat } from 'rxjs/operators/concat';
 import { AlertService } from '../auth/services/alert.service';
+import { ExcelToJsonService, ISample13CollectionDTO, ISample14CollectionDTO } from '../services/excel-to-json.service';
+import { ValidateService } from '../services/validate.service';
 
 
 @Component({
@@ -25,7 +26,10 @@ export class UploadComponent implements OnInit {
   file: File;
   dropDisabled = false;
 
+
   constructor(private uploadService: UploadService,
+              private converterService: ExcelToJsonService,
+              private validateService: ValidateService,
               private alertService: AlertService,
               private router: Router) {}
 
@@ -50,6 +54,45 @@ export class UploadComponent implements OnInit {
         this.alertService.error(errMessage, true);
         this.files = [];
       });
+  }
+
+  async convertToSample() {
+    console.log('convertToJson, this.file: ', this.file);
+    const data: (ISample13CollectionDTO | ISample14CollectionDTO) = await this.converterService.convertExcelToJSJson(this.file);
+    console.log('convertToSample, data: ', data);
+
+    if (data) {
+      this.validateService.validateJs(data)
+      .subscribe((event: HttpEvent<Event>) => {
+
+        console.log('validateJs, event: ', event);
+
+        // if (event.type === HttpEventType.UploadProgress) {
+        //   this.progress = Math.round(100 * event.loaded / event.total);
+          // console.log(`file is ${this.progress}% uploaded.`);
+        // } else if (event instanceof HttpResponse) {
+
+          // console.log('validateJs, event: ', event);
+
+          // this.files = [];
+          // const message = event['body']['title'];
+          // this.alertService.success(message, true);
+          // const jsonResponse = JSON.parse(event['body']['obj']);
+          // this.setCurrentJsonResponse(jsonResponse);
+          // this.router.navigate(['/validate']);
+        // }
+      }, (err: HttpErrorResponse) => {
+        console.log('error validate json, err: ', err);
+        const errMessage = err['error']['title'];
+        this.alertService.error(errMessage, true);
+        this.files = [];
+      });
+    }
+
+  }
+
+  blah(event) {
+    console.log('blah called, event: ', event);
   }
 
   fileOverDropZone(event) {
