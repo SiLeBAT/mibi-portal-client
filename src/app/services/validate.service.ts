@@ -3,23 +3,17 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import 'rxjs/Rx';
 
+import { ISample13CollectionDTO, ISample14CollectionDTO } from './excel-to-json.service';
+
 
 @Injectable()
-export class UploadService {
-  currentJsonResponse: object;
+export class ValidateService {
 
   constructor(private httpClient: HttpClient) { }
 
-  uploadFile( sendableFormData: FormData) {
-    const postUrl = 'api/v1/upload';
-    const req = new HttpRequest('POST', postUrl, sendableFormData, {
-      reportProgress: true
-    });
-
+  validateJs( data: (ISample13CollectionDTO | ISample14CollectionDTO)) {
     return this.httpClient
-    .request(req);
+      .post('/api/v1/upload', data.data);
   }
-
-
 
 }

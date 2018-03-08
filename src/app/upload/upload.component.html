@@ -32,7 +32,8 @@
         [ngClass]       = "{'another-file-over-class': validComboDrag}"
         [(files)]       = "files"
         [(file)]        = "file"
-        [fileDropDisabled] = "dropDisabled" >
+        [fileDropDisabled] = "dropDisabled"
+        (fileChange)           = "blah($event)" >
         <label for="file-upload" id="file-drag">
           <img id="file-image" src="#" alt="Preview" class="hidden">
           <div id="start">
@@ -121,14 +122,14 @@
         Upload all
       </button>
 
-      <!-- <button
+      <button
         type="button"
         class="btn btn-warning btn-s"
-        (click)="cancel()"
-        [disabled]="!httpEmitter">
+        (click)="convertToSample()"
+        [disabled]="!files.length">
         <span class="glyphicon glyphicon-ban-circle"></span>
-        Cancel all
-      </button> -->
+        Convert to Json
+      </button>
 
       <button
         type="button"
