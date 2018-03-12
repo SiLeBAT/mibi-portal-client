@@ -5,7 +5,8 @@ import { AlertService } from '../auth/services/alert.service';
 
 type AOO = any[];
 
-interface ISample13DTO {
+
+interface ISampleDTO {
   sample_id: string;
   sample_id_avv: string;
   pathogen_adv: string;
@@ -23,19 +24,12 @@ interface ISample13DTO {
   sampling_reason_text: string;
   operations_mode_adv: string;
   operations_mode_text: string;
+  vvvo?: string;
   comment: string;
 }
 
-interface ISample14DTO extends ISample13DTO {
-  vvvo: string;
-}
-
-export interface ISample13CollectionDTO {
-  data: ISample13DTO[];
-}
-
-export interface ISample14CollectionDTO {
-  data: ISample14DTO[];
+export interface ISampleCollectionDTO {
+  data: ISampleDTO[];
 }
 
 
@@ -44,16 +38,15 @@ export class ExcelToJsonService {
 
   constructor(private alertService: AlertService,) { }
 
-  async convertExcelToJSJson(file: File): Promise<(ISample13CollectionDTO | ISample14CollectionDTO)> {
+  async convertExcelToJSJson(file: File): Promise<ISampleCollectionDTO> {
     let sampleSheet: WorkSheet;
-    let data: (ISample13CollectionDTO | ISample14CollectionDTO);
+    let data: ISampleCollectionDTO;
     try {
       sampleSheet = await this.fromFileToWorkSheet(file);
       console.log('sampleSheet: ', sampleSheet);
       data = this.fromWorksheetToData(sampleSheet);
       console.log('sampleSheet data: ', data);
 
-      // return JSON.stringify(data, null, 2);
       return data;
 
     } catch (err) {
@@ -86,7 +79,7 @@ export class ExcelToJsonService {
     });
   }
 
-  fromWorksheetToData(workSheet: WorkSheet): (ISample13CollectionDTO | ISample14CollectionDTO) {
+  fromWorksheetToData(workSheet: WorkSheet): ISampleCollectionDTO {
     const headers: string[] = [
       'sample_id',
       'sample_id_avv',
@@ -130,20 +123,12 @@ export class ExcelToJsonService {
     console.log('cleanedSamples: ', cleanedSamples);
 
     // let sampleDTO: ISample14DTO;
-    // const samples = cleanedSamples.map(sample => this.convertToSampleDTO(sample));
-    let samples: Array<(ISample13DTO | ISample14DTO)>;
-    if (this.isVersion14(workSheet)) {
-      samples = cleanedSamples.map(sample => <ISample14DTO>sample);
-    } else {
-      samples = cleanedSamples.map(sample => <ISample13DTO>sample);
-    }
+    let samples: ISampleDTO[] = cleanedSamples;
 
-    let sampleCollectionDTO: (ISample13CollectionDTO | ISample14CollectionDTO) = {
+    let sampleCollectionDTO: ISampleCollectionDTO = {
       data: samples
     };
 
-
-    // const samples = cleanedSamples.map(sample => <ISample14DTO>sample);
     console.log('samples: ', samples);
 
     return sampleCollectionDTO;
@@ -169,14 +154,5 @@ export class ExcelToJsonService {
 
     return cleanedData;
   }
-
-  convertToSample13DTO(sample) {
-    console.log('convertToSampleDTO, sample: ', sample);
-
-    const sampleDTO: ISample14DTO = <ISample14DTO>sample;
-
-    return sample;
-  }
-
 
 }

@@ -7,6 +7,17 @@ import { HotTableComponent } from 'ng2-handsontable';
 // import * as data from './../../../playground/utils/jsonOutput/out.postman.v14.test.json';
 import { UploadService } from './../services/upload.service';
 
+    interface IStatusComments {
+      [code: number]: string[];
+    }
+
+    interface IColumn {
+      [column: number]: IStatusComments;
+    }
+
+    interface IRow {
+      [row: number]: IColumn
+    }
 
 @Component({
   selector: 'app-validator',
@@ -83,7 +94,7 @@ export class ValidatorComponent implements OnInit {
 
     }
 
-    // console.log('this.errData: ', JSON.stringify(this.errData, null, 4));
+    console.log('this.errData: ', JSON.stringify(this.errData, null, 4));
 
 
     this.options = {

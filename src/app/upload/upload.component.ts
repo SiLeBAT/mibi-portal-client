@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { UploadService } from '../services/upload.service';
 import { concat } from 'rxjs/operators/concat';
 import { AlertService } from '../auth/services/alert.service';
-import { ExcelToJsonService, ISample13CollectionDTO, ISample14CollectionDTO } from '../services/excel-to-json.service';
+import { ExcelToJsonService, ISampleCollectionDTO } from '../services/excel-to-json.service';
 import { ValidateService } from '../services/validate.service';
 
 
@@ -58,7 +58,7 @@ export class UploadComponent implements OnInit {
 
   async convertToSample() {
     console.log('convertToJson, this.file: ', this.file);
-    const data: (ISample13CollectionDTO | ISample14CollectionDTO) = await this.converterService.convertExcelToJSJson(this.file);
+    const data: ISampleCollectionDTO = await this.converterService.convertExcelToJSJson(this.file);
     console.log('convertToSample, data: ', data);
 
     if (data) {
