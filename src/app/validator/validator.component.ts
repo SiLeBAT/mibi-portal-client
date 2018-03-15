@@ -3,21 +3,14 @@ import * as Handsontable from 'handsontable';
 import 'tooltipster';
 import { HotTableComponent } from 'ng2-handsontable';
 
+import { UploadService } from './../services/upload.service';
+import { IKnimeOrigdata, IKnimeColHeaders, IKnimeData } from './../upload/upload.component';
+import { oriHeaders } from './../services/excel-to-json.service';
+import { ITableStructureProvider, ITableData, IErrRow } from './../services/json-to-table';
+
 // FIXME
 // import * as data from './../../../playground/utils/jsonOutput/out.postman.v14.test.json';
-import { UploadService } from './../services/upload.service';
 
-    interface IStatusComments {
-      [code: number]: string[];
-    }
-
-    interface IColumn {
-      [column: number]: IStatusComments;
-    }
-
-    interface IRow {
-      [row: number]: IColumn
-    }
 
 @Component({
   selector: 'app-validator',
@@ -28,90 +21,42 @@ export class ValidatorComponent implements OnInit {
 
   // errors = data['outputValues']['json-output-4']['errors'];
   // origdata = data['outputValues']['json-output-4']['origdata'];
-  errors = this.uploadService.currentJsonResponse['outputValues']['json-output-4']['errors'];
-  origdata = this.uploadService.currentJsonResponse['outputValues']['json-output-4']['origdata'];
+  // errors = this.uploadService.currentJsonResponse['outputValues']['json-output-4']['errors'];
+  // origdata = this.uploadService.currentJsonResponse['outputValues']['json-output-4']['origdata'];
 
-  data: any[];
+  tableStructureProvider: ITableStructureProvider = this.uploadService.getCurrentTableStructureProvider();
+  tableStructure: ITableData = this.tableStructureProvider.getTableData();
+  errData: IErrRow = this.tableStructure.errData;
+  origdata: IKnimeOrigdata = this.tableStructure.origdata;
+
+  data: IKnimeData[];
   colHeaders: string[];
-  columns: any[];
+  columns: string[];
   options: any;
-  private errData: any;
 
 
-  constructor(private uploadService: UploadService) {
-  }
+  constructor(private uploadService: UploadService) {}
 
   ngOnInit() {
-
-    // console.log('errors: ', this.errors);
-    // console.log('errors["data"]: ', this.errors['data']);
-    // console.log('origdata: ', this.origdata);
-
     this.data = this.origdata['data'];
-    this.colHeaders = this.origdata['colHeaders'];
+    let headers: string[] = this.origdata['colHeaders'];
+    console.log('headers size: ', headers.length);
 
-    // reorganize error data
-    this.errData = {};
-
-    for (const currentError of this.errors['data']) {
-      // console.log('errData: ', errData);
-      let errRow = currentError['Zeile'];
-      if (errRow !== null) {
-        errRow -= 1;
-        let errCols;
-        if (this.errData[errRow] === undefined) {
-          errCols = {};
-          this.errData[errRow] = errCols;
-        } else {
-          errCols = this.errData[errRow];
-        }
-        const cols = currentError['Spalte'];
-        if (cols !== null) {
-          // console.log('cols: ', cols);
-          const entries = cols.split(';');
-          // console.log('entries: ', entries);
-          for (let errCol of entries) {
-            errCol -= 1;
-            let errObj;
-            if (errCols[errCol] === undefined) {
-              errObj = {};
-              errCols[errCol] = errObj;
-            } else {
-              errObj = errCols[errCol];
-            }
-            let commentList;
-            let status = currentError['Status'];
-            if (errObj[status] === undefined) {
-              commentList = [];
-              errObj[status] = commentList;
-            } else {
-              commentList = errObj[status];
-            }
-            commentList.push(currentError['Kommentar']);
-          }
-        }
-      }
-
-    }
-
-    console.log('this.errData: ', JSON.stringify(this.errData, null, 4));
-
+    this.colHeaders = headers.length === 18 ?
+                        oriHeaders.filter(item => !item.startsWith('VVVO')) :
+                        oriHeaders;
 
     this.options = {
       data: this.data,
-      columns: this.columns,
       colHeaders: this.colHeaders,
-      rowHeaders: true,
       stretchH: 'all',
-      colWidths : [ 40 ],
+      colWidths : [ 50 ],
       autoWrapRow : true,
-      columnHeaderHeight: 20,
       comments: true,
       debug: true,
       manualColumnResize : true,
       manualRowResize : true,
-      wordWrap: true,
-      renderAllRows : this.data.length < 200,
+      renderAllRows : true,
       cells: (row, col, prop): any => {
         const cellProperties: any = {};
 
@@ -188,8 +133,6 @@ export class ValidatorComponent implements OnInit {
     }
   }
 
-
   afterChange(event: any) { }
-
 }
 

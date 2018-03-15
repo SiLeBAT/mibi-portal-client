@@ -6,7 +6,7 @@ import { AlertService } from '../auth/services/alert.service';
 type AOO = any[];
 
 
-interface ISampleDTO {
+export interface ISampleDTO {
   sample_id: string;
   sample_id_avv: string;
   pathogen_adv: string;
@@ -31,6 +31,52 @@ interface ISampleDTO {
 export interface ISampleCollectionDTO {
   data: ISampleDTO[];
 }
+
+
+export const jsHeaders: string[] = [
+  'sample_id',
+  'sample_id_avv',
+  'pathogen_adv',
+  'pathogen_text',
+  'sampling_date',
+  'isolation_date',
+  'sampling_location_adv',
+  'sampling_location_zip',
+  'sampling_location_text',
+  'topic_adv',
+  'matrix_adv',
+  'matrix_text',
+  'process_state',
+  'sampling_reason_adv',
+  'sampling_reason_text',
+  'operations_mode_adv',
+  'operations_mode_text',
+  'vvvo',
+  'comment'
+];
+
+export const oriHeaders: string[] = [
+  "Ihre<br>Proben-<br>ummer",
+  "Probe-<br>nummer<br>nach<br>AVVData",
+  "Erreger<br>(Text aus<br>ADV-Kat-Nr.16)",
+  "Erreger<br>(Textfeld/<br>Ergänzung)",
+  "Datum der<br>Probenahme",
+  "Datum der<br>Isolierung",
+  "Ort der<br>Probe-<br>nahme<br>(Code aus<br>ADV-Kat-<br>Nr.9)",
+  "Ort der<br>Probe-<br>nahme<br>(PLZ)",
+  "Ort der<br>Probe-<br>nahme<br>(Text)",
+  "Oberbe-<br>griff<br>(Kodier-<br>system)<br>der<br>Matrizes<br>(Code aus<br>ADV-Kat-<br>Nr.2)",
+  "Matrix<br>Code<br>(Code<br>aus<br>ADV-<br>Kat-<br>Nr.3)",
+  "Matrix<br>(Textfeld/<br>Ergänzung)",
+  "Ver-<br>arbeitungs-<br>zustand<br>(Code aus<br>ADV-Kat-<br>Nr.12)",
+  "Grund<br>der<br>Probe-<br>nahme<br>(Code<br>aus<br>ADV-Kat-<br>Nr.4)",
+  "Grund der<br>Probe-<br>nahme<br>(Textfeld/<br>Ergänzung)",
+  "Betriebsart<br>(Code aus<br>ADV-Kat-Nr.8)",
+  "Betriebsart<br>(Textfeld/<br>Ergänzung)",
+  "VVVO-Nr /<br>Herde",
+  "Bemerkung<br>(u.a.<br>Untersuchungs-<br>programm)"
+];
+
 
 
 @Injectable()
@@ -80,38 +126,17 @@ export class ExcelToJsonService {
   }
 
   fromWorksheetToData(workSheet: WorkSheet): ISampleCollectionDTO {
-    const headers: string[] = [
-      'sample_id',
-      'sample_id_avv',
-      'pathogen_adv',
-      'pathogen_text',
-      'sampling_date',
-      'isolation_date',
-      'sampling_location_adv',
-      'sampling_location_zip',
-      'sampling_location_text',
-      'topic_adv',
-      'matrix_adv',
-      'matrix_text',
-      'process_state',
-      'sampling_reason_adv',
-      'sampling_reason_text',
-      'operations_mode_adv',
-      'operations_mode_text',
-      'vvvo',
-      'comment'
-    ];
 
     let data: AOO;
     if (this.isVersion14(workSheet)) {
       data = utils.sheet_to_json(workSheet, {
-        header: headers,
+        header: jsHeaders,
         range: this.getVersionDependentLine(workSheet),
         defval: ''
       });
     } else {
       data = utils.sheet_to_json(workSheet, {
-        header: headers.filter(item => item !== 'vvvo'),
+        header: jsHeaders.filter(item => item !== 'vvvo'),
         range: this.getVersionDependentLine(workSheet),
         defval: ''
       });
@@ -122,9 +147,7 @@ export class ExcelToJsonService {
     const cleanedSamples = this.fromDataToCleanedSamples(data);
     console.log('cleanedSamples: ', cleanedSamples);
 
-    // let sampleDTO: ISample14DTO;
     let samples: ISampleDTO[] = cleanedSamples;
-
     let sampleCollectionDTO: ISampleCollectionDTO = {
       data: samples
     };
@@ -156,3 +179,6 @@ export class ExcelToJsonService {
   }
 
 }
+
+
+

@@ -1,12 +1,14 @@
-import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import 'rxjs/Rx';
 
+import { ITableStructureProvider } from './json-to-table';
+
+
 
 @Injectable()
 export class UploadService {
-  currentJsonResponse: object;
+  tableStructureProvider: ITableStructureProvider;
 
   constructor(private httpClient: HttpClient) { }
 
@@ -20,6 +22,13 @@ export class UploadService {
     .request(req);
   }
 
+  setCurrentTableStructureProvider(tableStructureProvider: ITableStructureProvider ) {
+    this.tableStructureProvider = tableStructureProvider;
+  }
 
+  getCurrentTableStructureProvider(): ITableStructureProvider {
+    return this.tableStructureProvider;
+  }
 
 }
+
