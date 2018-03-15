@@ -1,6 +1,6 @@
 import { EpiLabPage } from './app.po';
 
-describe('epi-lab App', () => {
+describe('Mibi-Portal App', () => {
   let page: EpiLabPage;
 
   beforeEach(() => {

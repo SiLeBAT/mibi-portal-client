@@ -5,6 +5,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { UserService } from '../services/user.service';
 import { AlertService } from '../services/alert.service';
+import { environment } from './../../../environments/environment';
 
 @Component({
   selector: 'app-activate',
@@ -14,7 +15,8 @@ import { AlertService } from '../services/alert.service';
 export class ActivateComponent implements OnInit {
   private activateForm: FormGroup;
   tokenValid: boolean;
-
+  appName: string = environment.appName;
+  
   constructor(private activatedRoute: ActivatedRoute,
               private userService: UserService,
               private alertService: AlertService,
