@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from './auth/services/auth.service';
 import { User } from './models/user.model';
+import { environment } from './../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,8 @@ import { User } from './models/user.model';
 export class AppComponent implements OnInit {
   private isActive = false;
   currentUser;
-
+  appName: string = environment.appName;
+  
   constructor(public authService: AuthService) {}
 
   ngOnInit() {

@@ -1,11 +1,11 @@
 {
-  "name": "epi-lab",
+  "name": "mibi-portal-client",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.config.json",
-    "build:staging": "npm run clean && ng build -op \"public\"",
+    "build:qa": "npm run clean && ng build --env=qa -op \"public\"",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
