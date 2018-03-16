@@ -97,7 +97,6 @@ export class ExcelToJsonService {
 
     } catch (err) {
       const errMessage: string = 'error reading excel file';
-      console.log(errMessage, ': ', err);
       this.alertService.error(errMessage, true);
     }
   }

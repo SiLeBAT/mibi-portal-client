@@ -1,15 +1,23 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
+
+import * as _ from 'lodash';
 import * as Handsontable from 'handsontable';
 import 'tooltipster';
 import { HotTableComponent } from 'ng2-handsontable';
 
 import { UploadService } from './../services/upload.service';
-import { IKnimeOrigdata, IKnimeColHeaders, IKnimeData } from './../upload/upload.component';
+import { AlertService } from '../auth/services/alert.service';
+import { IKnimeOrigdata, IKnimeColHeaders, IKnimeData, IJsResponseDTO } from './../upload/upload.component';
 import { oriHeaders } from './../services/excel-to-json.service';
-import { ITableStructureProvider, ITableData, IErrRow } from './../services/json-to-table';
+import { ITableStructureProvider, ITableData, IErrRow, JsToTable } from './../services/json-to-table';
 
 // FIXME
 // import * as data from './../../../playground/utils/jsonOutput/out.postman.v14.test.json';
+import { ISampleCollectionDTO } from '../services/excel-to-json.service';
+import { ValidateService } from '../services/validate.service';
+import { TableToJsonService } from '../services/table-to-json.service';
 
 
 @Component({
@@ -24,23 +32,40 @@ export class ValidatorComponent implements OnInit {
   // errors = this.uploadService.currentJsonResponse['outputValues']['json-output-4']['errors'];
   // origdata = this.uploadService.currentJsonResponse['outputValues']['json-output-4']['origdata'];
 
-  tableStructureProvider: ITableStructureProvider = this.uploadService.getCurrentTableStructureProvider();
-  tableStructure: ITableData = this.tableStructureProvider.getTableData();
-  errData: IErrRow = this.tableStructure.errData;
-  origdata: IKnimeOrigdata = this.tableStructure.origdata;
+  tableStructureProvider: ITableStructureProvider;
+  tableData: ITableData;
+  errData: IErrRow;
+  origdata: IKnimeOrigdata;
 
   data: IKnimeData[];
   colHeaders: string[];
   columns: string[];
   options: any;
 
+  tooltipClass: string = 'tooltipster-text';
 
-  constructor(private uploadService: UploadService) {}
+  constructor(private uploadService: UploadService,
+              private validateService: ValidateService,
+              private tableToJsonService: TableToJsonService,
+              private alertService: AlertService,
+              private router: Router,
+              private elem: ElementRef ) {}
 
   ngOnInit() {
+    this.initializeTable();
+  }
+
+  initializeTable() {
+
+    this.tableStructureProvider = this.uploadService.getCurrentTableStructureProvider();
+    this.tableData = this.tableStructureProvider.getTableData();
+    this.errData = this.tableData.errData;
+    this.origdata = this.tableData.origdata;
     this.data = this.origdata['data'];
+
+    console.log('errData: ', this.errData);
+
     let headers: string[] = this.origdata['colHeaders'];
-    console.log('headers size: ', headers.length);
 
     this.colHeaders = headers.length === 18 ?
                         oriHeaders.filter(item => !item.startsWith('VVVO')) :
@@ -49,6 +74,7 @@ export class ValidatorComponent implements OnInit {
     this.options = {
       data: this.data,
       colHeaders: this.colHeaders,
+      rowHeaders: true,
       stretchH: 'all',
       colWidths : [ 50 ],
       autoWrapRow : true,
@@ -70,6 +96,7 @@ export class ValidatorComponent implements OnInit {
         return cellProperties;
       }
     };
+
   }
 
   cellRenderer(instance, td, row, col, prop, value, cellProperties) {
@@ -89,6 +116,7 @@ export class ValidatorComponent implements OnInit {
 
     for (const status of statusList) {
       if (errObj[status]) {
+        td.classList.add('tooltipster-text');
         td.style.backgroundColor = statusMapper[status][2];
         const commentList = errObj[status];
         let tooltipText = '<ul>';
@@ -133,6 +161,27 @@ export class ValidatorComponent implements OnInit {
     }
   }
 
-  afterChange(event: any) { }
+  afterChange(event: any) {}
+
+  validate() {
+    $('.tooltipster-text').tooltipster('destroy');
+
+    let requestDTO: ISampleCollectionDTO = this.tableToJsonService.fromTableToDTO(this.data);
+
+    this.validateService.validateJs(requestDTO)
+      .subscribe((data: IJsResponseDTO[]) => {
+        this.setCurrentJsResponseDTO(data);
+        this.initializeTable();
+      }, (err: HttpErrorResponse) => {
+        const errMessage = err['error']['title'];
+        this.alertService.error(errMessage, true);
+      });
+  }
+
+  setCurrentJsResponseDTO(responseDTO: IJsResponseDTO[]) {
+    let jsToTable: ITableStructureProvider = new JsToTable(responseDTO);
+    this.uploadService.setCurrentTableStructureProvider(jsToTable);
+  }
+
 }
 

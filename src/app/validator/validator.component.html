@@ -1,11 +1,36 @@
-<hotTable
-  [data]="data"
-  [colHeaders]="colHeaders"
-  [columns]="columns"
-  [options]="options"
-  (afterChange)="afterChange($event)">
-</hotTable>
+<div class="container-fluid">
 
+  <!-- <div class="row top-bottom-margin"> -->
+  <div class="row ">
+      <div class="col-md-2">
+
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="validate()">
+        Validate Data
+      </button>
+
+    </div>
+  </div>
+  <br>
+  <br>
+  <br>
+  <div class="row">
+    <div class="col-md-12">
+
+      <hotTable
+        [data]="data"
+        [colHeaders]="colHeaders"
+        [columns]="columns"
+        [options]="options"
+        (afterChange)="afterChange($event)">
+      </hotTable>
+
+    </div>
+  </div>
+
+</div>
 
 
 

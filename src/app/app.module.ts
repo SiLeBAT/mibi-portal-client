@@ -12,8 +12,9 @@ import { AuthService } from './auth/services/auth.service';
 import { AlertService } from './auth/services/alert.service';
 import { UserService } from './auth/services/user.service';
 import { UploadService } from './services/upload.service';
-import { ExcelToJsonService } from './services/excel-to-json.service';
 import { ValidateService } from './services/validate.service';
+import { ExcelToJsonService } from './services/excel-to-json.service';
+import { TableToJsonService } from './services/table-to-json.service';
 import { routing } from './route/app.routing';
 import { HomeComponent } from './auth/home/home.component';
 import { LoginComponent } from './auth/login/login.component';
@@ -64,8 +65,9 @@ import { HotTableModule } from 'ng2-handsontable';
     AlertService,
     UserService,
     UploadService,
-    ExcelToJsonService,
     ValidateService,
+    ExcelToJsonService,
+    TableToJsonService,
     AuthGuard,
     {
       provide: HTTP_INTERCEPTORS,

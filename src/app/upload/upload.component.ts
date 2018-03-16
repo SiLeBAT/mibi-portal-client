@@ -134,9 +134,7 @@ export class UploadComponent implements OnInit {
   }
 
   async readFileAndValidate() {
-    console.log('readFileAndValidate, this.file: ', this.file);
     const data: ISampleCollectionDTO = await this.excelToJsonService.convertExcelToJSJson(this.file);
-    console.log('readFileAndValidate, data: ', data);
 
     if (data) {
       this.validateService.validateJs(data)
@@ -144,14 +142,13 @@ export class UploadComponent implements OnInit {
         this.setCurrentJsResponseDTO(data);
         this.router.navigate(['/validate']);
       }, (err: HttpErrorResponse) => {
-        console.log('error validate json, err: ', err);
         const errMessage = err['error']['title'];
         this.alertService.error(errMessage, true);
         this.files = [];
       });
     }
-
   }
+
 
   fileOverDropZone(event) {
     this.progress = 0;

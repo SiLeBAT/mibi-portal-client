@@ -1,5 +1,5 @@
 import { IKnimeResponseDTO, IKnimeOrigdata, IJsResponseDTO, IKnimeData } from '../upload/upload.component';
-import { jsHeaders } from './../services/excel-to-json.service';
+import { jsHeaders, ISampleDTO } from './../services/excel-to-json.service';
 
 import * as _ from 'lodash';
 
@@ -34,7 +34,6 @@ export class JsToTable implements ITableStructureProvider {
     let headerNum = Object.keys(this.data[0]['data']).length;
     let colHeaders = headerNum === 18 ? jsHeaders.filter(item => item !== 'vvvo') : jsHeaders;
     let data: IKnimeData[] = [];
-    let errData: IErrRow = {};
     let errors = [];
 
     _.forEach(this.data, (item, i) => {
@@ -46,6 +45,8 @@ export class JsToTable implements ITableStructureProvider {
       colHeaders: colHeaders,
       data: data
     };
+
+    let errData: IErrRow = {};
 
     _.forEach(errors, (error, i) => {
       let row = i;
