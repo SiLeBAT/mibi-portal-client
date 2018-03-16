@@ -15,9 +15,9 @@ import { ITableStructureProvider, ITableData, IErrRow, JsToTable } from './../se
 
 // FIXME
 // import * as data from './../../../playground/utils/jsonOutput/out.postman.v14.test.json';
-import { ISampleCollectionDTO } from '../services/excel-to-json.service';
-import { ValidateService } from '../services/validate.service';
-import { TableToJsonService } from '../services/table-to-json.service';
+import { ISampleCollectionDTO } from './../services/excel-to-json.service';
+import { ValidateService } from './../services/validate.service';
+import { TableToJsonService } from './../services/table-to-json.service';
 
 
 @Component({
@@ -62,8 +62,6 @@ export class ValidatorComponent implements OnInit {
     this.errData = this.tableData.errData;
     this.origdata = this.tableData.origdata;
     this.data = this.origdata['data'];
-
-    console.log('errData: ', this.errData);
 
     let headers: string[] = this.origdata['colHeaders'];
 

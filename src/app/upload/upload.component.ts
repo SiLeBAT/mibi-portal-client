@@ -112,26 +112,28 @@ export class UploadComponent implements OnInit {
               private alertService: AlertService,
               private router: Router) {}
 
-  uploadFileAndValidate(files: File[]) {
-    this.uploadService.uploadFile(this.sendableFormData)
-      .subscribe((event: HttpEvent<Event>) => {
-        if (event.type === HttpEventType.UploadProgress) {
-          this.progress = Math.round(100 * event.loaded / event.total);
-        } else if (event instanceof HttpResponse) {
-          this.files = [];
-          const message = event['body']['title'];
-          this.alertService.success(message, true);
-          let responseDTO: IKnimeResponseDTO = this.fromKnimeToResponseDTO(event);
-          this.setCurrentKnimeResponseDTO(responseDTO);
-          this.router.navigate(['/validate']);
-        }
-      }, (err: HttpErrorResponse) => {
-        console.log('error upload file, err: ', err);
-        const errMessage = err['error']['title'];
-        this.alertService.error(errMessage, true);
-        this.files = [];
-      });
-  }
+  // Kinme validation:
+
+  // uploadFileAndValidate(files: File[]) {
+  //   this.uploadService.uploadFile(this.sendableFormData)
+  //     .subscribe((event: HttpEvent<Event>) => {
+  //       if (event.type === HttpEventType.UploadProgress) {
+  //         this.progress = Math.round(100 * event.loaded / event.total);
+  //       } else if (event instanceof HttpResponse) {
+  //         this.files = [];
+  //         const message = event['body']['title'];
+  //         this.alertService.success(message, true);
+  //         let responseDTO: IKnimeResponseDTO = this.fromKnimeToResponseDTO(event);
+  //         this.setCurrentKnimeResponseDTO(responseDTO);
+  //         this.router.navigate(['/validate']);
+  //       }
+  //     }, (err: HttpErrorResponse) => {
+  //       console.log('error upload file, err: ', err);
+  //       const errMessage = err['error']['title'];
+  //       this.alertService.error(errMessage, true);
+  //       this.files = [];
+  //     });
+  // }
 
   async readFileAndValidate() {
     const data: ISampleCollectionDTO = await this.excelToJsonService.convertExcelToJSJson(this.file);
@@ -149,6 +151,10 @@ export class UploadComponent implements OnInit {
     }
   }
 
+  invokeValidation() {
+    console.log('invokeValidation executed');
+    this.readFileAndValidate();
+  }
 
   fileOverDropZone(event) {
     this.progress = 0;

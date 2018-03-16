@@ -25,15 +25,15 @@
     <div class="col-md-10 col-md-offset-1">
       <div class="uploader"
         ngfDrop
-        [selectable]    = "1"
-        [maxSize]       = 2097152
-        accept          = ".xls,.xlsx"
-        (fileOver)      = "fileOverDropZone()"
-        [ngClass]       = "{'another-file-over-class': validComboDrag}"
-        [(files)]       = "files"
-        [(file)]        = "file"
-        [fileDropDisabled] = "dropDisabled">
-        <!-- (fileChange)           = "blah($event)" > -->
+        [selectable]       = "1"
+        [maxSize]          = 2097152
+        accept             = ".xls,.xlsx"
+        (fileOver)         = "fileOverDropZone()"
+        [ngClass]          = "{'another-file-over-class': validComboDrag}"
+        [(files)]          = "files"
+        [(file)]           = "file"
+        [fileDropDisabled] = "dropDisabled"
+        (fileChange)       = "invokeValidation($event)" >
         <label for="file-upload" id="file-drag">
           <img id="file-image" src="#" alt="Preview" class="hidden">
           <div id="start">
@@ -65,9 +65,7 @@
           </tr>
         </thead>
         <tbody>
-          <!-- <tr *ngFor="let item of files; let i=index"> -->
           <tr *ngIf="files.length > 0">
-          <!-- <tr *ngIf="file"> -->
             <td>
               <div *ngIf="['image/gif','image/png','image/jpeg'].indexOf(files[0].type) >= 0">
                 <div class="previewIcon" [ngfBackground]="files[0]"></div>
@@ -92,67 +90,5 @@
       </table>
     </div>
   </div>
-
-
-  <div class="row top-bottom-margin">
-    <div class="col-md-10 col-md-offset-1">
-      Queue progress:
-      <div class="progress">
-        <div class="progress-bar"
-          role="progressbar"
-          [ngStyle]="{ 'width': progress + '%' }"
-        ></div>
-      </div>
-      <div *ngIf="progress">
-        Upload Progress: {{ progress }}%
-      </div>
-    </div>
-  </div>
-
-
-  <div class="row top-bottom-margin">
-    <div class="col-md-10 col-md-offset-1">
-
-      <!-- <button
-        type="button"
-        class="btn btn-success btn-s"
-        (click)="uploadFileAndValidate(files)"
-        [disabled]="!files.length">
-        Upload File and Validate with Knime
-      </button> -->
-
-      <button
-        type="button"
-        class="btn btn-warning btn-s"
-        (click)="readFileAndValidate()"
-        [disabled]="!files.length">
-        Read File and Validate with Js
-      </button>
-
-      <!-- <button
-        type="button"
-        class="btn btn-danger btn-s"
-        (click)="trashFile()"
-        [disabled]="!files.length">
-        <span class="glyphicon glyphicon-trash"></span>
-        Remove all
-      </button> -->
-
-    </div>
-  </div>
-
-  <!-- <div class="row top-bottom-margin">
-    <div class="col-md-10 col-md-offset-1">
-
-      <button
-        type="button"
-        class="btn btn-success btn-s"
-        [routerLink]="['/validate']">
-        Go to Validator
-      </button>
-
-    </div>
-  </div> -->
-
 
 </div>
