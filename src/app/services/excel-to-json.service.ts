@@ -89,9 +89,9 @@ export class ExcelToJsonService {
     let data: ISampleCollectionDTO;
     try {
       sampleSheet = await this.fromFileToWorkSheet(file);
-      console.log('sampleSheet: ', sampleSheet);
+      // console.log('sampleSheet: ', sampleSheet);
       data = this.fromWorksheetToData(sampleSheet);
-      console.log('sampleSheet data: ', data);
+      // console.log('sampleSheet data: ', data);
 
       return data;
 
@@ -142,16 +142,16 @@ export class ExcelToJsonService {
 
     }
 
-    console.log('data: ', data);
+    // console.log('data: ', data);
     const cleanedSamples = this.fromDataToCleanedSamples(data);
-    console.log('cleanedSamples: ', cleanedSamples);
+    // console.log('cleanedSamples: ', cleanedSamples);
 
     let samples: ISampleDTO[] = cleanedSamples;
     let sampleCollectionDTO: ISampleCollectionDTO = {
       data: samples
     };
 
-    console.log('samples: ', samples);
+    // console.log('samples: ', samples);
 
     return sampleCollectionDTO;
   }
