@@ -5,7 +5,8 @@ import { AlertService } from '../auth/services/alert.service';
 
 type AOO = any[];
 
-interface ISample13DTO {
+
+export interface ISampleDTO {
   sample_id: string;
   sample_id_avv: string;
   pathogen_adv: string;
@@ -23,20 +24,59 @@ interface ISample13DTO {
   sampling_reason_text: string;
   operations_mode_adv: string;
   operations_mode_text: string;
+  vvvo?: string;
   comment: string;
 }
 
-interface ISample14DTO extends ISample13DTO {
-  vvvo: string;
+export interface ISampleCollectionDTO {
+  data: ISampleDTO[];
 }
 
-export interface ISample13CollectionDTO {
-  data: ISample13DTO[];
-}
 
-export interface ISample14CollectionDTO {
-  data: ISample14DTO[];
-}
+export const jsHeaders: string[] = [
+  'sample_id',
+  'sample_id_avv',
+  'pathogen_adv',
+  'pathogen_text',
+  'sampling_date',
+  'isolation_date',
+  'sampling_location_adv',
+  'sampling_location_zip',
+  'sampling_location_text',
+  'topic_adv',
+  'matrix_adv',
+  'matrix_text',
+  'process_state',
+  'sampling_reason_adv',
+  'sampling_reason_text',
+  'operations_mode_adv',
+  'operations_mode_text',
+  'vvvo',
+  'comment'
+];
+
+export const oriHeaders: string[] = [
+  "Ihre<br>Proben-<br>ummer",
+  "Probe-<br>nummer<br>nach<br>AVVData",
+  "Erreger<br>(Text aus<br>ADV-Kat-Nr.16)",
+  "Erreger<br>(Textfeld/<br>Ergänzung)",
+  "Datum der<br>Probenahme",
+  "Datum der<br>Isolierung",
+  "Ort der<br>Probe-<br>nahme<br>(Code aus<br>ADV-Kat-<br>Nr.9)",
+  "Ort der<br>Probe-<br>nahme<br>(PLZ)",
+  "Ort der<br>Probe-<br>nahme<br>(Text)",
+  "Oberbe-<br>griff<br>(Kodier-<br>system)<br>der<br>Matrizes<br>(Code aus<br>ADV-Kat-<br>Nr.2)",
+  "Matrix<br>Code<br>(Code<br>aus<br>ADV-<br>Kat-<br>Nr.3)",
+  "Matrix<br>(Textfeld/<br>Ergänzung)",
+  "Ver-<br>arbeitungs-<br>zustand<br>(Code aus<br>ADV-Kat-<br>Nr.12)",
+  "Grund<br>der<br>Probe-<br>nahme<br>(Code<br>aus<br>ADV-Kat-<br>Nr.4)",
+  "Grund der<br>Probe-<br>nahme<br>(Textfeld/<br>Ergänzung)",
+  "Betriebsart<br>(Code aus<br>ADV-Kat-Nr.8)",
+  "Betriebsart<br>(Textfeld/<br>Ergänzung)",
+  "VVVO-Nr /<br>Herde",
+  "Bemerkung<br>(u.a.<br>Untersuchungs-<br>programm)"
+];
+
 
 
 @Injectable()
@@ -44,21 +84,19 @@ export class ExcelToJsonService {
 
   constructor(private alertService: AlertService,) { }
 
-  async convertExcelToJSJson(file: File): Promise<(ISample13CollectionDTO | ISample14CollectionDTO)> {
+  async convertExcelToJSJson(file: File): Promise<ISampleCollectionDTO> {
     let sampleSheet: WorkSheet;
-    let data: (ISample13CollectionDTO | ISample14CollectionDTO);
+    let data: ISampleCollectionDTO;
     try {
       sampleSheet = await this.fromFileToWorkSheet(file);
       console.log('sampleSheet: ', sampleSheet);
       data = this.fromWorksheetToData(sampleSheet);
       console.log('sampleSheet data: ', data);
 
-      // return JSON.stringify(data, null, 2);
       return data;
 
     } catch (err) {
       const errMessage: string = 'error reading excel file';
-      console.log(errMessage, ': ', err);
       this.alertService.error(errMessage, true);
     }
   }
@@ -86,39 +124,18 @@ export class ExcelToJsonService {
     });
   }
 
-  fromWorksheetToData(workSheet: WorkSheet): (ISample13CollectionDTO | ISample14CollectionDTO) {
-    const headers: string[] = [
-      'sample_id',
-      'sample_id_avv',
-      'pathogen_adv',
-      'pathogen_text',
-      'sampling_date',
-      'isolation_date',
-      'sampling_location_adv',
-      'sampling_location_zip',
-      'sampling_location_text',
-      'topic_adv',
-      'matrix_adv',
-      'matrix_text',
-      'process_state',
-      'sampling_reason_adv',
-      'sampling_reason_text',
-      'operations_mode_adv',
-      'operations_mode_text',
-      'vvvo',
-      'comment'
-    ];
+  fromWorksheetToData(workSheet: WorkSheet): ISampleCollectionDTO {
 
     let data: AOO;
     if (this.isVersion14(workSheet)) {
       data = utils.sheet_to_json(workSheet, {
-        header: headers,
+        header: jsHeaders,
         range: this.getVersionDependentLine(workSheet),
         defval: ''
       });
     } else {
       data = utils.sheet_to_json(workSheet, {
-        header: headers.filter(item => item !== 'vvvo'),
+        header: jsHeaders.filter(item => item !== 'vvvo'),
         range: this.getVersionDependentLine(workSheet),
         defval: ''
       });
@@ -129,21 +146,11 @@ export class ExcelToJsonService {
     const cleanedSamples = this.fromDataToCleanedSamples(data);
     console.log('cleanedSamples: ', cleanedSamples);
 
-    // let sampleDTO: ISample14DTO;
-    // const samples = cleanedSamples.map(sample => this.convertToSampleDTO(sample));
-    let samples: Array<(ISample13DTO | ISample14DTO)>;
-    if (this.isVersion14(workSheet)) {
-      samples = cleanedSamples.map(sample => <ISample14DTO>sample);
-    } else {
-      samples = cleanedSamples.map(sample => <ISample13DTO>sample);
-    }
-
-    let sampleCollectionDTO: (ISample13CollectionDTO | ISample14CollectionDTO) = {
+    let samples: ISampleDTO[] = cleanedSamples;
+    let sampleCollectionDTO: ISampleCollectionDTO = {
       data: samples
     };
 
-
-    // const samples = cleanedSamples.map(sample => <ISample14DTO>sample);
     console.log('samples: ', samples);
 
     return sampleCollectionDTO;
@@ -170,13 +177,7 @@ export class ExcelToJsonService {
     return cleanedData;
   }
 
-  convertToSample13DTO(sample) {
-    console.log('convertToSampleDTO, sample: ', sample);
-
-    const sampleDTO: ISample14DTO = <ISample14DTO>sample;
-
-    return sample;
-  }
-
-
 }
+
+
+

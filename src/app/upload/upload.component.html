@@ -32,8 +32,8 @@
         [ngClass]       = "{'another-file-over-class': validComboDrag}"
         [(files)]       = "files"
         [(file)]        = "file"
-        [fileDropDisabled] = "dropDisabled"
-        (fileChange)           = "blah($event)" >
+        [fileDropDisabled] = "dropDisabled">
+        <!-- (fileChange)           = "blah($event)" > -->
         <label for="file-upload" id="file-drag">
           <img id="file-image" src="#" alt="Preview" class="hidden">
           <div id="start">
@@ -113,37 +113,35 @@
   <div class="row top-bottom-margin">
     <div class="col-md-10 col-md-offset-1">
 
-      <button
+      <!-- <button
         type="button"
         class="btn btn-success btn-s"
-        (click)="uploadFiles(files)"
+        (click)="uploadFileAndValidate(files)"
         [disabled]="!files.length">
-        <span class="glyphicon glyphicon-upload"></span>
-        Upload all
-      </button>
+        Upload File and Validate with Knime
+      </button> -->
 
       <button
         type="button"
         class="btn btn-warning btn-s"
-        (click)="convertToSample()"
+        (click)="readFileAndValidate()"
         [disabled]="!files.length">
-        <span class="glyphicon glyphicon-ban-circle"></span>
-        Convert to Json
+        Read File and Validate with Js
       </button>
 
-      <button
+      <!-- <button
         type="button"
         class="btn btn-danger btn-s"
         (click)="trashFile()"
         [disabled]="!files.length">
         <span class="glyphicon glyphicon-trash"></span>
         Remove all
-      </button>
+      </button> -->
 
     </div>
   </div>
 
-  <div class="row top-bottom-margin">
+  <!-- <div class="row top-bottom-margin">
     <div class="col-md-10 col-md-offset-1">
 
       <button
@@ -154,7 +152,7 @@
       </button>
 
     </div>
-  </div>
+  </div> -->
 
 
 </div>
