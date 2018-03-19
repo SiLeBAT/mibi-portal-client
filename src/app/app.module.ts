@@ -15,6 +15,7 @@ import { UploadService } from './services/upload.service';
 import { ValidateService } from './services/validate.service';
 import { ExcelToJsonService } from './services/excel-to-json.service';
 import { TableToJsonService } from './services/table-to-json.service';
+import { LoadingSpinnerService } from './services/loading-spinner.service';
 import { routing } from './route/app.routing';
 import { HomeComponent } from './auth/home/home.component';
 import { LoginComponent } from './auth/login/login.component';
@@ -31,6 +32,8 @@ import { HttpModule } from '@angular/http';
 import { ActivateComponent } from './auth/activate/activate.component';
 import { ValidatorComponent } from './validator/validator.component';
 import { HotTableModule } from 'ng2-handsontable';
+import { SpinnerContainerComponent } from './shared/spinner-container/spinner-container.component';
+import { GenericSpinnerComponent } from './shared/generic-spinner/generic-spinner.component';
 
 
 
@@ -48,7 +51,9 @@ import { HotTableModule } from 'ng2-handsontable';
     MyaccountComponent,
     UserdataComponent,
     ActivateComponent,
-    ValidatorComponent
+    ValidatorComponent,
+    SpinnerContainerComponent,
+    GenericSpinnerComponent
   ],
   imports: [
     BrowserModule,
@@ -68,6 +73,7 @@ import { HotTableModule } from 'ng2-handsontable';
     ValidateService,
     ExcelToJsonService,
     TableToJsonService,
+    LoadingSpinnerService,
     AuthGuard,
     {
       provide: HTTP_INTERCEPTORS,

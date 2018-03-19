@@ -12,6 +12,8 @@ import { ValidateService } from '../services/validate.service';
 
 import { KnimeToTable, ITableStructureProvider, JsToTable } from './../services/json-to-table';
 
+import { LoadingSpinnerService } from './../services/loading-spinner.service';
+
 
 interface IKnimeError {
   Status: number;
@@ -104,13 +106,14 @@ export class UploadComponent implements OnInit {
   files: File[] = [];
   file: File;
   dropDisabled = false;
-
+  private onUploadSpinner = 'uploadSpinner';
 
   constructor(private uploadService: UploadService,
-              private excelToJsonService: ExcelToJsonService,
-              private validateService: ValidateService,
-              private alertService: AlertService,
-              private router: Router) {}
+    private excelToJsonService: ExcelToJsonService,
+    private validateService: ValidateService,
+    private alertService: AlertService,
+    private router: Router,
+    private spinnerService: LoadingSpinnerService) { }
 
   // Kinme validation:
 
@@ -139,16 +142,24 @@ export class UploadComponent implements OnInit {
     const data: ISampleCollectionDTO = await this.excelToJsonService.convertExcelToJSJson(this.file);
 
     if (data) {
+      this.spinnerService.show(this.onUploadSpinner);
       this.validateService.validateJs(data)
-      .subscribe((data: IJsResponseDTO[]) => {
-        this.setCurrentJsResponseDTO(data);
-        this.router.navigate(['/validate']);
-      }, (err: HttpErrorResponse) => {
-        const errMessage = err['error']['title'];
-        this.alertService.error(errMessage, true);
-        this.files = [];
-      });
+        .subscribe((data: IJsResponseDTO[]) => {
+          this.spinnerService.hide(this.onUploadSpinner);
+          this.setCurrentJsResponseDTO(data);
+          this.router.navigate(['/validate']);
+        }, (err: HttpErrorResponse) => {
+          const errMessage = err['error']['title'];
+          this.alertService.error(errMessage, true);
+          this.files = [];
+          this.spinnerService.hide(this.onUploadSpinner);
+        });
+
     }
+  }
+
+  isUploadSpinnerShowing() {
+    return this.spinnerService.isShowing(this.onUploadSpinner);
   }
 
   invokeValidation() {
