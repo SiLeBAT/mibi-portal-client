@@ -20,10 +20,12 @@
       <hr>
     </div>
   </div>
-
   <div class="row top-bottom-margin">
+      <app-spinner-container name="uploadSpinner">
+          <app-generic-spinner></app-generic-spinner>
+        </app-spinner-container>
     <div class="col-md-10 col-md-offset-1">
-      <div class="uploader"
+      <div *ngIf="!isUploadSpinnerShowing()" class="uploader"
         ngfDrop
         [selectable]       = "1"
         [maxSize]          = 2097152

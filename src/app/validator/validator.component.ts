@@ -18,7 +18,7 @@ import { ITableStructureProvider, ITableData, IErrRow, JsToTable } from './../se
 import { ISampleCollectionDTO } from './../services/excel-to-json.service';
 import { ValidateService } from './../services/validate.service';
 import { TableToJsonService } from './../services/table-to-json.service';
-
+import { LoadingSpinnerService } from './../services/loading-spinner.service';
 
 @Component({
   selector: 'app-validator',
@@ -43,16 +43,22 @@ export class ValidatorComponent implements OnInit {
   options: any;
 
   tooltipClass: string = 'tooltipster-text';
+  private onValidateSpinner = 'validationSpinner';
 
   constructor(private uploadService: UploadService,
               private validateService: ValidateService,
               private tableToJsonService: TableToJsonService,
               private alertService: AlertService,
               private router: Router,
-              private elem: ElementRef ) {}
+              private elem: ElementRef,
+              private spinnerService: LoadingSpinnerService ) {}
 
   ngOnInit() {
     this.initializeTable();
+  }
+
+  isValidateSpinnerShowing() {
+    return this.spinnerService.isShowing(this.onValidateSpinner);
   }
 
   initializeTable() {
@@ -165,12 +171,15 @@ export class ValidatorComponent implements OnInit {
     $('.tooltipster-text').tooltipster('destroy');
 
     let requestDTO: ISampleCollectionDTO = this.tableToJsonService.fromTableToDTO(this.data);
-
+    this.spinnerService.show(this.onValidateSpinner);
     this.validateService.validateJs(requestDTO)
       .subscribe((data: IJsResponseDTO[]) => {
         this.setCurrentJsResponseDTO(data);
+        this.spinnerService.hide(this.onValidateSpinner);
         this.initializeTable();
+       
       }, (err: HttpErrorResponse) => {
+        this.spinnerService.hide(this.onValidateSpinner);
         const errMessage = err['error']['title'];
         this.alertService.error(errMessage, true);
       });
