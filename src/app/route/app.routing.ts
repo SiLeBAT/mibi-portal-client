@@ -16,8 +16,8 @@ import { ValidatorComponent } from '../validator/validator.component';
 const appRoutes: Routes = [
   { path: '', component: MainDashComponent},
   { path: 'main', component: HomeComponent, canActivate: [AuthGuard] },
-  { path: 'upload', component: UploadComponent, canActivate: [AuthGuard] },
-  { path: 'validate', component: ValidatorComponent, canActivate: [AuthGuard] },
+  { path: 'upload', component: UploadComponent},
+  { path: 'validate', component: ValidatorComponent },
   { path: 'myaccount', component: MyaccountComponent, canActivate: [AuthGuard] },
   { path: 'userdata', component: UserdataComponent, canActivate: [AuthGuard] },
   { path: 'userdata/:index', component: UserdataComponent, canActivate: [AuthGuard] },

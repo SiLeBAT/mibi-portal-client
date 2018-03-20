@@ -146,15 +146,18 @@ export class UploadComponent implements OnInit {
 
   set lastInvalids(val: any[]) {
     this._lastInvalids = val;
-    switch (val[0].type) {
-      case 'fileSize':
-        this.alertService.error('File is too large: Files should be less than 2Gb', true);
-        break;
-      case 'accept':
-        this.alertService.error('File is not the correct filetype: Files should be .xls or .xlsx', true);
-        break;
-      default:
-        this.alertService.error('Unable to upload the file ', true);
+    if (val && val[0]) {
+      switch (val[0].type) {
+        case 'fileSize':
+          this.alertService.error('File is too large: Files should be less than 2Gb', true);
+          break;
+        case 'accept':
+          this.alertService.error('File is not the correct filetype: Files should be .xls or .xlsx', true);
+          break;
+        default:
+          this.alertService.error('Unable to upload the file ', true);
+      }
+
     }
   }
 
