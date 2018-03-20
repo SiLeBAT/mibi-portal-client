@@ -28,14 +28,14 @@
       <div *ngIf="!isUploadSpinnerShowing()" class="uploader"
         ngfDrop
         [selectable]       = "1"
-        [maxSize]          = 2097152
+        [maxSize]          = "maxFileSize"
         accept             = ".xls,.xlsx"
-        (fileOver)         = "fileOverDropZone()"
         [ngClass]          = "{'another-file-over-class': validComboDrag}"
         [(files)]          = "files"
         [(file)]           = "file"
         [fileDropDisabled] = "dropDisabled"
-        (fileChange)       = "invokeValidation($event)" >
+        (fileChange)       = "invokeValidation($event)"
+        [(lastInvalids)] = "lastInvalids" >
         <label for="file-upload" id="file-drag">
           <img id="file-image" src="#" alt="Preview" class="hidden">
           <div id="start">

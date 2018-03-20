@@ -107,6 +107,8 @@ export class UploadComponent implements OnInit {
   file: File;
   dropDisabled = false;
   private onUploadSpinner = 'uploadSpinner';
+  private _lastInvalids = [];
+  maxFileSize = 2097152;
 
   constructor(private uploadService: UploadService,
     private excelToJsonService: ExcelToJsonService,
@@ -138,6 +140,24 @@ export class UploadComponent implements OnInit {
   //     });
   // }
 
+  get lastInvalids(): any[] {
+    return this._lastInvalids;
+  }
+
+  set lastInvalids(val: any[]) {
+    this._lastInvalids = val;
+    switch (val[0].type) {
+      case 'fileSize':
+        this.alertService.error('File is too large: Files should be less than 2Gb', true);
+        break;
+      case 'accept':
+        this.alertService.error('File is not the correct filetype: Files should be .xls or .xlsx', true);
+        break;
+      default:
+        this.alertService.error('Unable to upload the file ', true);
+    }
+  }
+
   async readFileAndValidate() {
     const data: ISampleCollectionDTO = await this.excelToJsonService.convertExcelToJSJson(this.file);
 
@@ -165,13 +185,6 @@ export class UploadComponent implements OnInit {
   invokeValidation() {
     console.log('invokeValidation executed');
     this.readFileAndValidate();
-  }
-
-  fileOverDropZone(event) {
-    this.progress = 0;
-    if (this.files.length > 0) {
-      this.files.shift();
-    }
   }
 
   trashFile() {
