@@ -30,5 +30,9 @@ export class UploadService {
     return this.tableStructureProvider;
   }
 
+  isValidationActive() {
+    return this.tableStructureProvider !== undefined;
+  }
+
 }
 

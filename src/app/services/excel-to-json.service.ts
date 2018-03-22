@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { WorkBook, WorkSheet, read, utils } from 'xlsx';
+import { WorkBook, WorkSheet, read, utils, writeFile } from 'xlsx';
 
 import { AlertService } from '../auth/services/alert.service';
+import { JsonToExcelService } from './json-to-excel.service';
 
 type AOO = any[];
 
@@ -77,21 +78,30 @@ export const oriHeaders: string[] = [
   "Bemerkung<br>(u.a.<br>Untersuchungs-<br>programm)"
 ];
 
+export interface IWorkSheet {
+  workSheet: WorkSheet;
+  isVersion14: boolean;
+}
+
 
 
 @Injectable()
 export class ExcelToJsonService {
 
-  constructor(private alertService: AlertService,) { }
+  constructor(private alertService: AlertService,
+              private jsonToExcelService: JsonToExcelService) { }
 
   async convertExcelToJSJson(file: File): Promise<ISampleCollectionDTO> {
     let sampleSheet: WorkSheet;
     let data: ISampleCollectionDTO;
     try {
       sampleSheet = await this.fromFileToWorkSheet(file);
-      // console.log('sampleSheet: ', sampleSheet);
+      let currentWorkSheet: IWorkSheet = {
+        workSheet: sampleSheet,
+        isVersion14: this.isVersion14(sampleSheet)
+      };
+      this.jsonToExcelService.setCurrentWorkSheet(currentWorkSheet);
       data = this.fromWorksheetToData(sampleSheet);
-      // console.log('sampleSheet data: ', data);
 
       return data;
 
@@ -110,13 +120,18 @@ export class ExcelToJsonService {
 
       fileReader.onload = (event: any) => {
         const binaryStr: string = event.target.result;
-        const workbook: WorkBook = read(binaryStr, {type: 'binary'});
+        const workbook: WorkBook = read(binaryStr, {
+          type: 'binary',
+          cellDates: true,
+          cellText: false,
+          cellStyles: true
+        });
         const worksheetName: string = workbook.SheetNames[0];
         const sampleSheet: WorkSheet = workbook.Sheets[worksheetName];
         if (worksheetName === validSheetName) {
           resolve(sampleSheet);
         } else {
-          reject("not a valid excel sheet");
+          reject(`not a valid excel sheet, name of first sheet must be ${validSheetName}` );
         }
       };
 
@@ -127,34 +142,32 @@ export class ExcelToJsonService {
   fromWorksheetToData(workSheet: WorkSheet): ISampleCollectionDTO {
 
     let data: AOO;
+    let lineNumber: number = this.getVersionDependentLine(workSheet);
     if (this.isVersion14(workSheet)) {
       data = utils.sheet_to_json(workSheet, {
         header: jsHeaders,
-        range: this.getVersionDependentLine(workSheet),
-        defval: ''
+        range: lineNumber,
+        defval: '',
+        dateNF:'dd"."mm"."yyyy'
       });
     } else {
       data = utils.sheet_to_json(workSheet, {
         header: jsHeaders.filter(item => item !== 'vvvo'),
         range: this.getVersionDependentLine(workSheet),
-        defval: ''
+        defval: '',
+        dateNF:'dd"."mm"."yyyy'
       });
-
     }
 
-    // console.log('data: ', data);
     const cleanedSamples = this.fromDataToCleanedSamples(data);
-    // console.log('cleanedSamples: ', cleanedSamples);
-
     let samples: ISampleDTO[] = cleanedSamples;
     let sampleCollectionDTO: ISampleCollectionDTO = {
       data: samples
     };
 
-    // console.log('samples: ', samples);
-
     return sampleCollectionDTO;
   }
+
 
   isVersion14(workSheet: WorkSheet): boolean {
     const cellAdress = 'B3';

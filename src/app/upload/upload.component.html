@@ -16,7 +16,7 @@
 
   <div class="row top-bottom-margin">
     <div class="col-md-10 col-md-offset-1">
-      <h2>File Upload</h2>
+      <h2>Validate "Probeneinsendebogen"</h2>
       <hr>
     </div>
   </div>
@@ -40,7 +40,7 @@
           <img id="file-image" src="#" alt="Preview" class="hidden">
           <div id="start">
             <i class="glyphicon glyphicon-download-alt" aria-hidden="true"></i>
-            <div>Select a file or drag here</div>
+            <div>Select or drag an excel file here</div>
             <span class="btn btn-primary">Select a file</span>
           </div>
           <div id="response" class="hidden">
@@ -51,45 +51,6 @@
           </div>
         </label>
       </div>
-    </div>
-  </div>
-
-  <div class="row top-bottom-margin">
-    <div class="col-md-10 col-md-offset-1">
-      <h3>{{ files.length }} Selected Files</h3>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Type</th>
-            <th>Size</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngIf="files.length > 0">
-            <td>
-              <div *ngIf="['image/gif','image/png','image/jpeg'].indexOf(files[0].type) >= 0">
-                <div class="previewIcon" [ngfBackground]="files[0]"></div>
-              </div>
-              <strong>{{ files[0].name }}</strong>
-            </td>
-            <td nowrap>
-              {{ files[0].type }}
-            </td>
-            <td nowrap>
-              {{ files[0].size/1024/1024 | number:'.2' }} MB
-            </td>
-            <td nowrap>
-              <button type="button"
-                class="btn btn-danger btn-xs"
-                (click)="trashFile()">
-                <span class="glyphicon glyphicon-trash"></span>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
     </div>
   </div>
 

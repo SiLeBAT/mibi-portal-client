@@ -14,6 +14,7 @@ import { UserService } from './auth/services/user.service';
 import { UploadService } from './services/upload.service';
 import { ValidateService } from './services/validate.service';
 import { ExcelToJsonService } from './services/excel-to-json.service';
+import { JsonToExcelService } from './services/json-to-excel.service';
 import { TableToJsonService } from './services/table-to-json.service';
 import { LoadingSpinnerService } from './services/loading-spinner.service';
 import { routing } from './route/app.routing';
@@ -72,6 +73,7 @@ import { GenericSpinnerComponent } from './shared/generic-spinner/generic-spinne
     UploadService,
     ValidateService,
     ExcelToJsonService,
+    JsonToExcelService,
     TableToJsonService,
     LoadingSpinnerService,
     AuthGuard,
