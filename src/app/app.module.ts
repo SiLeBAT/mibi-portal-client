@@ -14,6 +14,7 @@ import { UserService } from './auth/services/user.service';
 import { UploadService } from './services/upload.service';
 import { ValidateService } from './services/validate.service';
 import { ExcelToJsonService } from './services/excel-to-json.service';
+import { JsonToExcelService } from './services/json-to-excel.service';
 import { TableToJsonService } from './services/table-to-json.service';
 import { routing } from './route/app.routing';
 import { HomeComponent } from './auth/home/home.component';
@@ -67,6 +68,7 @@ import { HotTableModule } from 'ng2-handsontable';
     UploadService,
     ValidateService,
     ExcelToJsonService,
+    JsonToExcelService,
     TableToJsonService,
     AuthGuard,
     {

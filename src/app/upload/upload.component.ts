@@ -152,7 +152,6 @@ export class UploadComponent implements OnInit {
   }
 
   invokeValidation() {
-    console.log('invokeValidation executed');
     this.readFileAndValidate();
   }
 
@@ -168,7 +167,7 @@ export class UploadComponent implements OnInit {
     this.files = [];
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   setCurrentKnimeResponseDTO(responseDTO: IKnimeResponseDTO) {
     let knimeToTable: ITableStructureProvider = new KnimeToTable(responseDTO);

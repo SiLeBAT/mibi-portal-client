@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from './auth/services/auth.service';
 import { User } from './models/user.model';
 import { environment } from './../environments/environment';
+import { UploadService } from './services/upload.service';
+import { ValidateService } from './services/validate.service';
 
 @Component({
   selector: 'app-root',
@@ -12,11 +14,12 @@ export class AppComponent implements OnInit {
   private isActive = false;
   currentUser;
   appName: string = environment.appName;
-  
-  constructor(public authService: AuthService) {}
 
-  ngOnInit() {
-  }
+  constructor(public authService: AuthService,
+              public uploadService: UploadService,
+              public validateService: ValidateService) {}
+
+  ngOnInit() {}
 
   getCurrentUserEmail() {
     if (this.authService.loggedIn()) {

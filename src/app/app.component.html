@@ -4,20 +4,32 @@
   <!-- Page Content Holder -->
   <div id="content">
 
-    <nav class="navbar navbar-collapse">
+    <nav class="navbar navbar-fixed-top">
       <div class="container-fluid">
 
 
         <div class="navbar-header navbar-brand">
           <a [routerLink]="authService.loggedIn() ? ['/main'] : ['/']" class="brand">
-            <i class="glyphicon glyphicon-asterisk logo"></i>
             {{ appName }}
           </a>
         </div>
 
-
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav navbar-right">
+
+            <li>
+              <a
+                (click)="validateService.onValidate()"
+                *ngIf="uploadService.isValidationActive()">
+                Validate
+              </a>
+            </li>
+            <li>
+              <a
+                (click)="validateService.onSave()"
+                *ngIf="authService.loggedIn() && uploadService.isValidationActive()">
+                Download as Excel</a>
+            </li>
             <li>
               <a routerLink="/users/login" (click)="deactivateSidebar()" *ngIf="!authService.loggedIn()">
                 Login/Register
@@ -36,12 +48,18 @@
             </li>
           </ul>
         </div>
+
       </div>
     </nav>
 
-    <app-alert>
-      </app-alert>
+    <div class="container-fluid">
+      <app-alert></app-alert>
+    </div>
+
+
+    <div class="container-fluid">
         <router-outlet></router-outlet>
+    </div>
 
         <footer class="container-fluid">
           <div class="text-center">

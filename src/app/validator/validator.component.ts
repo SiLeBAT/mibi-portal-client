@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 
@@ -13,11 +13,10 @@ import { IKnimeOrigdata, IKnimeColHeaders, IKnimeData, IJsResponseDTO } from './
 import { oriHeaders } from './../services/excel-to-json.service';
 import { ITableStructureProvider, ITableData, IErrRow, JsToTable } from './../services/json-to-table';
 
-// FIXME
-// import * as data from './../../../playground/utils/jsonOutput/out.postman.v14.test.json';
 import { ISampleCollectionDTO } from './../services/excel-to-json.service';
 import { ValidateService } from './../services/validate.service';
 import { TableToJsonService } from './../services/table-to-json.service';
+import { JsonToExcelService } from '../services/json-to-excel.service';
 
 
 @Component({
@@ -26,11 +25,6 @@ import { TableToJsonService } from './../services/table-to-json.service';
   styleUrls: ['./validator.component.css']
 })
 export class ValidatorComponent implements OnInit {
-
-  // errors = data['outputValues']['json-output-4']['errors'];
-  // origdata = data['outputValues']['json-output-4']['origdata'];
-  // errors = this.uploadService.currentJsonResponse['outputValues']['json-output-4']['errors'];
-  // origdata = this.uploadService.currentJsonResponse['outputValues']['json-output-4']['origdata'];
 
   tableStructureProvider: ITableStructureProvider;
   tableData: ITableData;
@@ -42,58 +36,66 @@ export class ValidatorComponent implements OnInit {
   columns: string[];
   options: any;
 
-  tooltipClass: string = 'tooltipster-text';
+  subscriptions = [];
 
   constructor(private uploadService: UploadService,
               private validateService: ValidateService,
               private tableToJsonService: TableToJsonService,
+              private jsonToExcelService: JsonToExcelService,
               private alertService: AlertService,
-              private router: Router,
-              private elem: ElementRef ) {}
+              private router: Router ) {
+  }
 
   ngOnInit() {
     this.initializeTable();
+    this.subscriptions.push(this.validateService.doValidation
+      .subscribe(notification => this.validate()));
+    this.subscriptions.push(this.validateService.doSaveAsExcel
+      .subscribe(notification => this.saveAsExcel()));
+
   }
 
   initializeTable() {
 
     this.tableStructureProvider = this.uploadService.getCurrentTableStructureProvider();
-    this.tableData = this.tableStructureProvider.getTableData();
-    this.errData = this.tableData.errData;
-    this.origdata = this.tableData.origdata;
-    this.data = this.origdata['data'];
+    if (this.tableStructureProvider) {
+      this.tableData = this.tableStructureProvider.getTableData();
+      this.errData = this.tableData.errData;
+      this.origdata = this.tableData.origdata;
+      this.data = this.origdata['data'];
 
-    let headers: string[] = this.origdata['colHeaders'];
+      let headers: string[] = this.origdata['colHeaders'];
 
-    this.colHeaders = headers.length === 18 ?
-                        oriHeaders.filter(item => !item.startsWith('VVVO')) :
-                        oriHeaders;
+      this.colHeaders = headers.length === 18 ?
+                          oriHeaders.filter(item => !item.startsWith('VVVO')) :
+                          oriHeaders;
 
-    this.options = {
-      data: this.data,
-      colHeaders: this.colHeaders,
-      rowHeaders: true,
-      stretchH: 'all',
-      colWidths : [ 50 ],
-      autoWrapRow : true,
-      comments: true,
-      debug: true,
-      manualColumnResize : true,
-      manualRowResize : true,
-      renderAllRows : true,
-      cells: (row, col, prop): any => {
-        const cellProperties: any = {};
+      this.options = {
+        data: this.data,
+        colHeaders: this.colHeaders,
+        rowHeaders: true,
+        stretchH: 'all',
+        colWidths : [ 50 ],
+        autoWrapRow : true,
+        comments: true,
+        debug: true,
+        manualColumnResize : true,
+        manualRowResize : true,
+        renderAllRows : true,
+        cells: (row, col, prop): any => {
+          const cellProperties: any = {};
 
-        if (this.errData[row]) {
-          if (this.errData[row][col]) {
-            cellProperties.errObj = this.errData[row][col];
-            Object.assign(cellProperties, {renderer: this.cellRenderer});
+          if (this.errData[row]) {
+            if (this.errData[row][col]) {
+              cellProperties.errObj = this.errData[row][col];
+              Object.assign(cellProperties, {renderer: this.cellRenderer});
+            }
           }
-        }
 
-        return cellProperties;
-      }
-    };
+          return cellProperties;
+        }
+      };
+    }
 
   }
 
@@ -162,7 +164,11 @@ export class ValidatorComponent implements OnInit {
   afterChange(event: any) {}
 
   validate() {
-    $('.tooltipster-text').tooltipster('destroy');
+    _.forEach($('.tooltipster-text'), (item) => {
+      if ($.tooltipster.instances($(item)).length > 0) {
+        $(item).tooltipster('destroy');
+      }
+    });
 
     let requestDTO: ISampleCollectionDTO = this.tableToJsonService.fromTableToDTO(this.data);
 
@@ -176,9 +182,22 @@ export class ValidatorComponent implements OnInit {
       });
   }
 
+  saveAsExcel() {
+    this.jsonToExcelService.saveAsExcel(this.data);
+  }
+
   setCurrentJsResponseDTO(responseDTO: IJsResponseDTO[]) {
     let jsToTable: ITableStructureProvider = new JsToTable(responseDTO);
     this.uploadService.setCurrentTableStructureProvider(jsToTable);
+  }
+
+  ngOnDestroy() {
+    this.uploadService.setCurrentTableStructureProvider(undefined);
+    this.jsonToExcelService.setCurrentWorkSheet(undefined);
+
+    _.forEach(this.subscriptions, (subscription) => {
+      subscription.unsubscribe();
+    });
   }
 
 }
