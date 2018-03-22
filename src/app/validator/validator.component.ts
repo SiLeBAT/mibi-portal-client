@@ -27,6 +27,8 @@ import { JsonToExcelService } from '../services/json-to-excel.service';
 })
 export class ValidatorComponent implements OnInit {
 
+  @ViewChild(HotTableComponent) hotTableComponent;
+
   tableStructureProvider: ITableStructureProvider;
   tableData: ITableData;
   errData: IErrRow;
@@ -80,6 +82,7 @@ export class ValidatorComponent implements OnInit {
                           oriHeaders;
 
       this.options = {
+        height: window.innerHeight - 350,
         data: this.data,
         colHeaders: this.colHeaders,
         rowHeaders: true,
@@ -105,6 +108,7 @@ export class ValidatorComponent implements OnInit {
         }
       };
     }
+
 
   }
 
