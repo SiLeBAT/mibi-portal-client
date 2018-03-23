@@ -1,4 +1,5 @@
 export const environment = {
     production: false,
-    appName: 'MiBi-Portal'
+    appName: 'MiBi-Portal',
+    supportContact: 'FoodRiskLabs@bfr.bund.de'
   };

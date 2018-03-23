@@ -149,15 +149,18 @@ export class UploadComponent implements OnInit {
     if (val && val[0]) {
       switch (val[0].type) {
         case 'fileSize':
-          this.alertService.error('File is too large: Files should be less than 2Gb', true);
+          this.alertService.error('File is too large: Files should be less than 2 Mb', false);
           break;
         case 'accept':
-          this.alertService.error('File is not the correct filetype: Files should be .xls or .xlsx', true);
+          this.alertService.error('File is not the correct filetype: Files should be .xls or .xlsx', false);
           break;
         default:
-          this.alertService.error('Unable to upload the file ', true);
+          this.alertService.error('Unable to upload the file ', false);
       }
 
+    }
+    else{
+      this.alertService.clear();
     }
   }
 

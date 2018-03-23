@@ -18,8 +18,7 @@ export class AlertService {
           // only keep for a single location change
           this.keepAfterNavigationChange = false;
       } else {
-          // clear alert
-          this.subject.next();
+          this.clear()
       }
     });
   }
@@ -38,6 +37,10 @@ export class AlertService {
       type: 'error',
       text: message
     });
+  }
+
+  clear() {
+    this.subject.next();
   }
 
   getMessage(): Observable<any> {
