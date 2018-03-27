@@ -18,6 +18,8 @@ import { ValidateService } from './../services/validate.service';
 import { TableToJsonService } from './../services/table-to-json.service';
 import { LoadingSpinnerService } from './../services/loading-spinner.service';
 import { JsonToExcelService } from '../services/json-to-excel.service';
+import { WindowRefService } from './../services/window-ref.service';
+
 
 
 @Component({
@@ -28,6 +30,8 @@ import { JsonToExcelService } from '../services/json-to-excel.service';
 export class ValidatorComponent implements OnInit {
 
   @ViewChild(HotTableComponent) hotTableComponent;
+
+  private _window: Window;
 
   tableStructureProvider: ITableStructureProvider;
   tableData: ITableData;
@@ -50,7 +54,10 @@ export class ValidatorComponent implements OnInit {
               private alertService: AlertService,
               private router: Router,
               // private elem: ElementRef,
-              private spinnerService: LoadingSpinnerService ) {}
+              private spinnerService: LoadingSpinnerService,
+              windowRef: WindowRefService) {
+    this._window = windowRef.nativeWindow;
+  }
 
 
   ngOnInit() {
@@ -82,7 +89,7 @@ export class ValidatorComponent implements OnInit {
                           oriHeaders;
 
       this.options = {
-        height: window.innerHeight - 350,
+        height: this._window.innerHeight - 350,
         data: this.data,
         colHeaders: this.colHeaders,
         rowHeaders: true,
@@ -198,8 +205,13 @@ export class ValidatorComponent implements OnInit {
       });
   }
 
-  saveAsExcel() {
-    this.jsonToExcelService.saveAsExcel(this.data);
+  async saveAsExcel() {
+    let blob;
+    try {
+      blob = await this.jsonToExcelService.saveAsExcel(this.data);
+    } catch (err) {
+      this.alertService.error('problem when saving validated errors as excel', false);
+    }
   }
 
   setCurrentJsResponseDTO(responseDTO: IJsResponseDTO[]) {
@@ -209,7 +221,7 @@ export class ValidatorComponent implements OnInit {
 
   ngOnDestroy() {
     this.uploadService.setCurrentTableStructureProvider(undefined);
-    this.jsonToExcelService.setCurrentWorkSheet(undefined);
+    this.jsonToExcelService.setCurrentExcelData(undefined);
 
     _.forEach(this.subscriptions, (subscription) => {
       subscription.unsubscribe();
