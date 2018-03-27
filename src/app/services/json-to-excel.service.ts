@@ -2,99 +2,113 @@ import { Injectable } from '@angular/core';
 
 import { WorkBook, WorkSheet, read, utils, writeFile } from 'xlsx';
 import * as _ from 'lodash';
+import * as XlsxPopulate from 'xlsx-populate/browser/xlsx-populate';
+import { saveAs } from 'file-saver/FileSaver';
 
 import { IKnimeData } from '../upload/upload.component';
-import { IWorkSheet } from './excel-to-json.service';
+import { IWorkSheet, IExcelData, jsHeaders, AOO } from './excel-to-json.service';
+import { WindowRefService } from './../services/window-ref.service';
 
 
 @Injectable()
 export class JsonToExcelService {
-  private currentWorkSheet: IWorkSheet;
+  private currentExcelData: IExcelData;
+  private _window: Window;
 
-  constructor() { }
-
-  setCurrentWorkSheet(currentWorkSheet: IWorkSheet) {
-    this.currentWorkSheet = currentWorkSheet;
-  }
-
-  saveAsExcel(data: IKnimeData[]) {
-    this.convertToExcel(data);
-  }
-
-  convertToExcel(data) {
-    let workSheetToSave: WorkSheet;
-    if (this.currentWorkSheet.isVersion14) {
-      workSheetToSave = this.getWorkSheet14ForSave(data);
-    } else {
-      workSheetToSave = this.getWorkSheet13ForSave(data);
+  constructor(windowRef: WindowRefService) {
+      this._window = windowRef.nativeWindow;
     }
 
-    let fileName = 'ProbenEinsendebogen.xlsx';
-    let workBook: WorkBook = utils.book_new();
-    utils.book_append_sheet(workBook, workSheetToSave, 'Einsendeformular');
-    writeFile(workBook, fileName);
+  setCurrentExcelData(currentExcelData: IExcelData) {
+    this.currentExcelData = currentExcelData;
   }
 
-  getWorkSheet13ForSave(data): WorkSheet {
-    let workSheet = this.currentWorkSheet.workSheet;
 
-    let dataUpper = utils.sheet_to_json(workSheet, {
-      header: 1,
-      range: 'A1:R36',
-      defval: '',
-      dateNF:'dd"."mm"."yyyy'
-    });
-    let dataHeader = utils.sheet_to_json(workSheet, {
-      header: 1,
-      range: 'A39:R39',
-      defval: '',
-      dateNF:'dd"."mm"."yyyy'
-    });
-
-    let wsUpper: WorkSheet = utils.json_to_sheet(dataUpper, {
-      dateNF:'dd"."mm"."yyyy',
-      skipHeader: true,
-      cellDates: true
-    });
-
-    let wsHeader: WorkSheet = utils.sheet_add_json(wsUpper, dataHeader, {
-      origin: -1,
-      dateNF:'dd"."mm"."yyyy',
-      skipHeader: true,
-      cellDates: true
-    });
-    let wsToSave: WorkSheet = utils.sheet_add_json(wsHeader, data, {
-      origin: -1,
-      dateNF:'dd"."mm"."yyyy',
-      skipHeader: true,
-      cellDates: true
-    });
-
-    return wsToSave;
+  async saveAsExcel(data: IKnimeData[]) {
+    let blob = await this.convertToExcel(data);
+    return blob;
   }
 
-  getWorkSheet14ForSave(data): WorkSheet {
-    let workSheet = this.currentWorkSheet.workSheet;
 
-    let dataUpper = utils.sheet_to_json(workSheet, {
-      header: 1,
-      range: 'A1:S41',
-      defval: '',
-      dateNF:'dd"."mm"."yyyy'
-    });
-    let wsUpper: WorkSheet = utils.json_to_sheet(dataUpper, {
-      dateNF:'dd"."mm"."yyyy',
-      skipHeader: true,
-      cellDates: true
-    });
-    let wsToSave: WorkSheet = utils.sheet_add_json(wsUpper, data, {
-      origin: -1,
-      dateNF:'dd"."mm"."yyyy',
-      skipHeader: true,
-      cellDates: true
-    });
+  private async convertToExcel(data) {
+    let file: File = this.currentExcelData.workSheet.file;
+    let oriFileName = file.name;
+    let entries: string[] = oriFileName.split('.xlsx');
+    let fileName: string = '';
+    if (entries.length > 0) {
+      fileName += entries[0];
+    }
+    fileName += '_validated.xlsx';
 
-    return wsToSave;
+    let currentHeaders = [];
+    if(this.currentExcelData.workSheet.isVersion14) {
+      currentHeaders = jsHeaders;
+    } else {
+      currentHeaders = jsHeaders.filter(item => item !== 'vvvo');
+    }
+
+    let dataToSave: AOO = this.fromDataObjToAOO(data, currentHeaders);
+    let workbook = await this.fromFileToWorkbook(file);
+    this.addValidatedDataToWorkbook(workbook, dataToSave, currentHeaders);
+
+    let blob = await this.fromWorkBookToBlob(workbook);
+    saveAs(blob, fileName);
+
+    return blob;
+  }
+
+
+  private fromDataObjToAOO(data, currentHeaders): AOO {
+    let dataToSave: AOO = [];
+
+    _.forEach(data, ((dataRow) => {
+      let row = [];
+      _.forEach(currentHeaders, ((header) => {
+        row.push(dataRow[header]);
+      }));
+      dataToSave.push(row);
+    }));
+
+    return dataToSave;
+  }
+
+
+  private async fromFileToWorkbook(file: File) {
+    this._window['IQc'] = { entity: 'x', ENTITIES: { x: 'x' } };
+    let workbook = await XlsxPopulate.fromDataAsync(file);
+
+    return workbook;
+  }
+
+  private addValidatedDataToWorkbook(workbook, dataToSave: AOO, currentHeaders) {
+    let validSheetName = this.currentExcelData.workSheet.validSheetName;
+    let oriDataLength = this.currentExcelData.workSheet.oriDataLength;
+    let searchTerm = 'Ihre Probe-';
+    let sheet = workbook.sheet(validSheetName);
+
+    if (sheet) {
+      let result = sheet.find(searchTerm);
+      // console.log('result: ', result);
+      if (result.length > 0) {
+        let cell = result[0];
+        let rowNumber = cell.row().rowNumber();
+
+        for (let i = (rowNumber + 1); i <= (rowNumber + oriDataLength); i++) {
+          for (let j = 1; j <= currentHeaders.length; j++) {
+            const cell = sheet.row(i).cell(j);
+            cell.value(undefined);
+          }
+        }
+
+        let startCell = 'A' + (rowNumber + 1);
+        sheet.cell(startCell).value(dataToSave);
+      }
+    }
+  }
+
+  private async fromWorkBookToBlob(workbook) {
+    let blob = await workbook.outputAsync();
+    return blob;
   }
 
 }

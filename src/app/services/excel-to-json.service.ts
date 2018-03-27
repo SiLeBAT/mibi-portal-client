@@ -2,10 +2,8 @@ import { Injectable } from '@angular/core';
 import { WorkBook, WorkSheet, read, utils, writeFile } from 'xlsx';
 
 import { AlertService } from '../auth/services/alert.service';
-import { JsonToExcelService } from './json-to-excel.service';
 
-type AOO = any[];
-
+export type AOO = any[];
 
 export interface ISampleDTO {
   sample_id: string;
@@ -81,29 +79,42 @@ export const oriHeaders: string[] = [
 export interface IWorkSheet {
   workSheet: WorkSheet;
   isVersion14: boolean;
+  file: File;
+  oriDataLength: number;
+  validSheetName: string;
+}
+
+export interface IExcelData {
+  data: ISampleCollectionDTO;
+  workSheet: IWorkSheet;
 }
 
 
 
 @Injectable()
 export class ExcelToJsonService {
+  private validSheetName: string = 'Einsendeformular';
 
-  constructor(private alertService: AlertService,
-              private jsonToExcelService: JsonToExcelService) { }
+  constructor(private alertService: AlertService) { }
 
-  async convertExcelToJSJson(file: File): Promise<ISampleCollectionDTO> {
+  async convertExcelToJSJson(file: File): Promise<IExcelData> {
     let sampleSheet: WorkSheet;
     let data: ISampleCollectionDTO;
     try {
       sampleSheet = await this.fromFileToWorkSheet(file);
+      data = this.fromWorksheetToData(sampleSheet);
       let currentWorkSheet: IWorkSheet = {
         workSheet: sampleSheet,
-        isVersion14: this.isVersion14(sampleSheet)
+        isVersion14: this.isVersion14(sampleSheet),
+        file: file,
+        oriDataLength: data.data.length,
+        validSheetName: this.validSheetName
       };
-      this.jsonToExcelService.setCurrentWorkSheet(currentWorkSheet);
-      data = this.fromWorksheetToData(sampleSheet);
 
-      return data;
+      return {
+        data: data,
+        workSheet: currentWorkSheet
+      };
 
     } catch (err) {
       const errMessage: string = 'error reading excel file';
@@ -113,8 +124,6 @@ export class ExcelToJsonService {
 
 
   async fromFileToWorkSheet(excelFile: File): Promise<WorkSheet> {
-    const validSheetName = 'Einsendeformular';
-
     return new Promise<WorkSheet>((resolve, reject) => {
       var fileReader = new FileReader();
 
@@ -128,10 +137,10 @@ export class ExcelToJsonService {
         });
         const worksheetName: string = workbook.SheetNames[0];
         const sampleSheet: WorkSheet = workbook.Sheets[worksheetName];
-        if (worksheetName === validSheetName) {
+        if (worksheetName === this.validSheetName) {
           resolve(sampleSheet);
         } else {
-          reject(`not a valid excel sheet, name of first sheet must be ${validSheetName}` );
+          reject(`not a valid excel sheet, name of first sheet must be ${this.validSheetName}` );
         }
       };
 

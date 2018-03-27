@@ -17,6 +17,7 @@ import { ExcelToJsonService } from './services/excel-to-json.service';
 import { JsonToExcelService } from './services/json-to-excel.service';
 import { TableToJsonService } from './services/table-to-json.service';
 import { LoadingSpinnerService } from './services/loading-spinner.service';
+import { WindowRefService } from './services/window-ref.service';
 import { routing } from './route/app.routing';
 import { HomeComponent } from './auth/home/home.component';
 import { LoginComponent } from './auth/login/login.component';
@@ -76,6 +77,7 @@ import { GenericSpinnerComponent } from './shared/generic-spinner/generic-spinne
     JsonToExcelService,
     TableToJsonService,
     LoadingSpinnerService,
+    WindowRefService,
     AuthGuard,
     {
       provide: HTTP_INTERCEPTORS,

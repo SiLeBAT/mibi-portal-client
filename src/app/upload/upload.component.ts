@@ -7,12 +7,14 @@ import { Subscription } from 'rxjs/Subscription';
 import { UploadService } from '../services/upload.service';
 import { concat } from 'rxjs/operators/concat';
 import { AlertService } from '../auth/services/alert.service';
-import { ExcelToJsonService, ISampleCollectionDTO, ISampleDTO } from '../services/excel-to-json.service';
+import { ExcelToJsonService, ISampleCollectionDTO, ISampleDTO, IExcelData } from '../services/excel-to-json.service';
+import { JsonToExcelService } from './../services/json-to-excel.service';
 import { ValidateService } from '../services/validate.service';
 
 import { KnimeToTable, ITableStructureProvider, JsToTable } from './../services/json-to-table';
 
 import { LoadingSpinnerService } from './../services/loading-spinner.service';
+
 
 
 interface IKnimeError {
@@ -112,10 +114,11 @@ export class UploadComponent implements OnInit {
 
   constructor(private uploadService: UploadService,
     private excelToJsonService: ExcelToJsonService,
+    private jsonToExcelService: JsonToExcelService,
     private validateService: ValidateService,
     private alertService: AlertService,
     private router: Router,
-    private spinnerService: LoadingSpinnerService) { }
+    private spinnerService: LoadingSpinnerService) {}
 
   // Kinme validation:
 
@@ -152,7 +155,7 @@ export class UploadComponent implements OnInit {
           this.alertService.error('File is too large: Files should be less than 2Gb', true);
           break;
         case 'accept':
-          this.alertService.error('File is not the correct filetype: Files should be .xls or .xlsx', true);
+          this.alertService.error('File is not the correct filetype: Files should be .xlsx', true);
           break;
         default:
           this.alertService.error('Unable to upload the file ', true);
@@ -162,7 +165,9 @@ export class UploadComponent implements OnInit {
   }
 
   async readFileAndValidate() {
-    const data: ISampleCollectionDTO = await this.excelToJsonService.convertExcelToJSJson(this.file);
+  const excelData: IExcelData = await this.excelToJsonService.convertExcelToJSJson(this.file);
+  this.jsonToExcelService.setCurrentExcelData(excelData);
+  const data: ISampleCollectionDTO = excelData.data;
 
     if (data) {
       this.spinnerService.show(this.onUploadSpinner);
