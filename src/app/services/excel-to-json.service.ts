@@ -18,7 +18,7 @@ export interface ISampleDTO {
   topic_adv: string;
   matrix_adv: string;
   matrix_text: string;
-  process_state: string;
+  process_state_adv: string;
   sampling_reason_adv: string;
   sampling_reason_text: string;
   operations_mode_adv: string;
@@ -45,7 +45,7 @@ export const jsHeaders: string[] = [
   'topic_adv',
   'matrix_adv',
   'matrix_text',
-  'process_state',
+  'process_state_adv',
   'sampling_reason_adv',
   'sampling_reason_text',
   'operations_mode_adv',
