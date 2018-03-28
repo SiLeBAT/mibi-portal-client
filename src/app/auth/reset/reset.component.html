@@ -17,6 +17,7 @@
             id="password1"
             class="form-control"
             formControlName="password1"/>
+            <em *ngIf="!validateField('password1')">Required.</em>
           <!-- <div *ngIf="f.submitted && !username.valid" class="help-block">Username is required</div> -->
         </div>
         <div class="form-group">
@@ -26,6 +27,7 @@
             id="password2"
             class="form-control"
             formControlName="password2"/>
+            <em *ngIf="!validateField('password2')  && resetForm.controls.password2.errors.validatePasswordConfirm">Passwords should match.</em>
           <!-- <div *ngIf="f.submitted && !username.valid" class="help-block">Username is required</div> -->
         </div>
         <div class="form-group">

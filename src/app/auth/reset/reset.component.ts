@@ -26,7 +26,12 @@ export class ResetComponent implements OnInit {
     this.resetForm = new FormGroup({
       password1: new FormControl(null, Validators.required),
       password2: new FormControl(null, Validators.required),
-    });
+    }, this.passwordConfirmationValidator);
+  }
+
+  validateField(fieldName: string) {
+    return this.resetForm.controls[fieldName].valid
+      || this.resetForm.controls[fieldName].untouched
   }
 
   reset() {
@@ -52,6 +57,17 @@ export class ResetComponent implements OnInit {
     this.resetForm.reset();
   }
 
+  private passwordConfirmationValidator(fg: FormGroup) {
+    let pw1 = fg.controls.password1;
+    let pw2 = fg.controls.password2;
 
+    if (pw1.value !== pw2.value) {
+      pw2.setErrors({ validatePasswordConfirm: true });
+    }
+    else {
+      pw2.setErrors(null);
+    }
+    return null;
+  }
 
 }
