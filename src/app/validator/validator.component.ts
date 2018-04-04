@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpEventType, HttpEvent, HttpResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+
 
 import * as _ from 'lodash';
 import * as Handsontable from 'handsontable';
@@ -17,9 +18,8 @@ import { ISampleCollectionDTO } from './../services/excel-to-json.service';
 import { ValidateService } from './../services/validate.service';
 import { TableToJsonService } from './../services/table-to-json.service';
 import { LoadingSpinnerService } from './../services/loading-spinner.service';
-import { JsonToExcelService } from '../services/json-to-excel.service';
+import { JsonToExcelService, IBlobData } from '../services/json-to-excel.service';
 import { WindowRefService } from './../services/window-ref.service';
-
 
 
 @Component({
@@ -66,6 +66,8 @@ export class ValidatorComponent implements OnInit {
       .subscribe(notification => this.validate()));
     this.subscriptions.push(this.validateService.doSaveAsExcel
       .subscribe(notification => this.saveAsExcel()));
+    this.subscriptions.push(this.validateService.doDownloadAndSend
+      .subscribe(notification => this.downloadAndSend()));
 
   }
 
@@ -205,13 +207,36 @@ export class ValidatorComponent implements OnInit {
       });
   }
 
-  async saveAsExcel() {
-    let blob;
+  async saveAsExcel(): Promise<IBlobData> {
+    let blobData: IBlobData;
     try {
-      blob = await this.jsonToExcelService.saveAsExcel(this.data);
+      blobData = await this.jsonToExcelService.saveAsExcel(this.data);
     } catch (err) {
       this.alertService.error('problem when saving validated errors as excel', false);
     }
+
+    return blobData;
+  }
+
+  async downloadAndSend() {
+    let blobData: IBlobData = await this.saveAsExcel();
+    try {
+      const formData: FormData = new FormData();
+      formData.append('myMemoryXSLX', blobData.blob, blobData.fileName);
+      this.validateService.sendFile(formData)
+        .subscribe((event: HttpEvent<Event>) => {
+          if (event instanceof HttpResponse) {
+            const message = event['statusText'];
+            this.alertService.success(`sending order to BfR ${message}`, false);
+          }
+        }, (err: HttpErrorResponse) => {
+          const errMessage = err['error']['error'];
+          this.alertService.error(errMessage, false);
+        });
+    } catch (err) {
+      this.alertService.error('problem when saving and sending validated errors as excel', false);
+    }
+
   }
 
   setCurrentJsResponseDTO(responseDTO: IJsResponseDTO[]) {
