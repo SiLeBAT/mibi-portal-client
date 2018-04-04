@@ -10,11 +10,13 @@ import { ISampleCollectionDTO, ExcelToJsonService } from './excel-to-json.servic
 export class ValidateService {
   public doValidation: EventEmitter<any>;
   public doSaveAsExcel: EventEmitter<any>;
+  public doDownloadAndSend: EventEmitter<any>;
 
   constructor(private httpClient: HttpClient,
               private excelToJsonService: ExcelToJsonService) {
     this.doValidation = new EventEmitter();
     this.doSaveAsExcel = new EventEmitter();
+    this.doDownloadAndSend = new EventEmitter();
   }
 
   validateJs( data: ISampleCollectionDTO) {
@@ -22,12 +24,27 @@ export class ValidateService {
       .post('/api/v1/upload', data.data);
   }
 
+  sendFile( sendableFormData: FormData) {
+    const postUrl = 'api/v1/job';
+    const req = new HttpRequest('POST', postUrl, sendableFormData, {
+      reportProgress: true
+    });
+
+    return this.httpClient
+    .request(req);
+  }
+
+
   onValidate() {
     this.doValidation.emit();
   }
 
   onSave() {
     this.doSaveAsExcel.emit();
+  }
+
+  onDownloadAndSend() {
+    this.doDownloadAndSend.emit();
   }
 
 }

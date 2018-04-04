@@ -10,6 +10,12 @@ import { IWorkSheet, IExcelData, jsHeaders, AOO } from './excel-to-json.service'
 import { WindowRefService } from './../services/window-ref.service';
 
 
+export interface IBlobData {
+  blob: Blob;
+  fileName: string;
+}
+
+
 @Injectable()
 export class JsonToExcelService {
   private currentExcelData: IExcelData;
@@ -24,13 +30,13 @@ export class JsonToExcelService {
   }
 
 
-  async saveAsExcel(data: IKnimeData[]) {
-    let blob = await this.convertToExcel(data);
-    return blob;
+  async saveAsExcel(data: IKnimeData[]): Promise<IBlobData> {
+    let blobData: IBlobData = await this.convertToExcel(data);
+    return blobData;
   }
 
 
-  private async convertToExcel(data) {
+  private async convertToExcel(data): Promise<IBlobData> {
     let file: File = this.currentExcelData.workSheet.file;
     let oriFileName = file.name;
     let entries: string[] = oriFileName.split('.xlsx');
@@ -54,7 +60,12 @@ export class JsonToExcelService {
     let blob = await this.fromWorkBookToBlob(workbook);
     saveAs(blob, fileName);
 
-    return blob;
+    let blobData: IBlobData = {
+      blob: blob,
+      fileName: fileName
+    };
+
+    return blobData;
   }
 
 
@@ -88,7 +99,6 @@ export class JsonToExcelService {
 
     if (sheet) {
       let result = sheet.find(searchTerm);
-      // console.log('result: ', result);
       if (result.length > 0) {
         let cell = result[0];
         let rowNumber = cell.row().rowNumber();

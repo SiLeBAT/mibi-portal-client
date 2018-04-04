@@ -27,8 +27,14 @@
             <li>
               <a
                 (click)="validateService.onSave()"
-                *ngIf="authService.loggedIn() && uploadService.isValidationActive()">
+                *ngIf="uploadService.isValidationActive()">
                 Download as Excel</a>
+            </li>
+            <li>
+              <a
+                (click)="validateService.onDownloadAndSend()"
+                *ngIf="authService.loggedIn() && uploadService.isValidationActive()">
+                Download and Send</a>
             </li>
             <li>
               <a routerLink="/upload">Upload</a>
