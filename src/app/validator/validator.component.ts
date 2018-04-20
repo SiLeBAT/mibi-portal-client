@@ -91,7 +91,6 @@ export class ValidatorComponent implements OnInit {
                           oriHeaders;
 
       this.options = {
-        // height: this._window.innerHeight,
         height: this._window.innerHeight - 100,
         data: this.data,
         colHeaders: this.colHeaders,
@@ -213,7 +212,7 @@ export class ValidatorComponent implements OnInit {
     try {
       blobData = await this.jsonToExcelService.saveAsExcel(this.data);
     } catch (err) {
-      this.alertService.error('problem when saving validated errors as excel', false);
+      this.alertService.error('Problem beim Speichern der validierten Daten als Excel', false);
     }
 
     return blobData;
@@ -228,14 +227,14 @@ export class ValidatorComponent implements OnInit {
         .subscribe((event: HttpEvent<Event>) => {
           if (event instanceof HttpResponse) {
             const message = event['statusText'];
-            this.alertService.success(`sending order to BfR ${message}`, false);
+            this.alertService.success(`Auftrag an das BfR senden ${message}`, false);
           }
         }, (err: HttpErrorResponse) => {
           const errMessage = err['error']['error'];
           this.alertService.error(errMessage, false);
         });
     } catch (err) {
-      this.alertService.error('problem when saving and sending validated errors as excel', false);
+      this.alertService.error('Problem beim Speichern der validierten Daten als Excel', false);
     }
 
   }

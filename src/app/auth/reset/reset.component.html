@@ -1,44 +1,44 @@
 <div class="jumbotron">
   <div class="container-fluid">
     <div class="col-md-6 col-md-offset-3">
-      <h2>Reset Password</h2>
+      <h2>Passwort zurücksetzen</h2>
       <hr>
       <br>
-      <p>Please reset your password</p>
+      <p>Bitte geben Sie ein neues Passwort ein</p>
       <br>
 
       <form
         [formGroup]="resetForm"
         (ngSubmit)="reset()">
         <div class="form-group">
-          <label for="password1">New Password</label>
+          <label for="password1">Neues Passwort</label>
           <input
             type="password"
             id="password1"
             class="form-control"
             formControlName="password1"/>
-            <em *ngIf="!validateField('password1')">Required.</em>
+            <em *ngIf="!validateField('password1')">Pflichtfeld.</em>
           <!-- <div *ngIf="f.submitted && !username.valid" class="help-block">Username is required</div> -->
         </div>
         <div class="form-group">
-          <label for="password2">Confirm Password</label>
+          <label for="password2">Passwort bestätigen</label>
           <input
             type="password"
             id="password2"
             class="form-control"
             formControlName="password2"/>
-            <em *ngIf="!validateField('password2')  && resetForm.controls.password2.errors.validatePasswordConfirm">Passwords should match.</em>
+            <em *ngIf="!validateField('password2')  && resetForm.controls.password2.errors.validatePasswordConfirm">Passwörter müssen übereinstimmen.</em>
           <!-- <div *ngIf="f.submitted && !username.valid" class="help-block">Username is required</div> -->
         </div>
         <div class="form-group">
           <button
             class="btn btn-primary"
             type="submit"
-            [disabled]="!resetForm.valid">Reset Password</button>
+            [disabled]="!resetForm.valid">cPasswort zurücksetzen</button>
           <a
             [routerLink]="['/main']"
             class="btn btn-link">
-              Cancel
+              Zurück
           </a>
         </div>
       </form>

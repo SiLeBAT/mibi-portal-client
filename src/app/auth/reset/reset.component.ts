@@ -39,12 +39,8 @@ export class ResetComponent implements OnInit {
 
     const password = this.resetForm.value.password1;
     const token = this.activatedRoute.snapshot.params['id'];
-
-    console.log('Reset clicked, token: ', token);
-
     this.userService.resetPassword(password, token)
       .subscribe((data) => {
-        console.log('reset password data: ', data);
         const message = data['title'];
         this.alertService.success(message, true);
         this.router.navigate(['users/login']);

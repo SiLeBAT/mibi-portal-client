@@ -16,7 +16,7 @@ export class ActivateComponent implements OnInit {
   private activateForm: FormGroup;
   tokenValid: boolean;
   appName: string = environment.appName;
-  
+
   constructor(private activatedRoute: ActivatedRoute,
               private userService: UserService,
               private alertService: AlertService,
@@ -24,11 +24,9 @@ export class ActivateComponent implements OnInit {
 
   ngOnInit() {
     const token = this.activatedRoute.snapshot.params['id'];
-    console.log('ActivateComponent ngOnInit, token: ', token);
 
     this.userService.activateAccount(token)
       .subscribe((data) => {
-        console.log('activate account data: ', data);
         const message = data['title'];
         this.alertService.success(message, true);
         this.tokenValid = true;

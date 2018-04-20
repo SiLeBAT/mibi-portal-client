@@ -23,7 +23,7 @@ export class JwtInterceptor implements HttpInterceptor {
         if (err instanceof HttpErrorResponse) {
           if (err.status === 401) {
             this.router.navigate(['/users/login']);
-            this.alertService.error('Not authorized or not activated. If already registered, please check your email for an activation code');
+            this.alertService.error('Nicht authorisiert oder nicht aktiviert. Wenn bereits registriert, überprüfen Sie bitte Ihre Email auf einen Aktivierungslink');
           }
         }
       }

@@ -1,32 +1,32 @@
 <div class="jumbotron">
   <div class="container-fluid">
     <div class="col-md-6 col-md-offset-3">
-      <h2>Account Activation Process</h2>
+      <h2>Kontoaktivierung</h2>
       <hr>
       <br>
       <div *ngIf="tokenValid" class="help-block">
-        <p>You have activated your {{ appName }} account.</p>
-        <p>You may now login.</p>
+        <p>Sie haben Ihr {{ appName }} Konto aktiviert</p>
+        <p>Sie können sich jetzt einloggen</p>
         <br>
         <button
           class="btn btn-primary"
           type="submit"
           [routerLink]="['/users/login']">
-          Continue to Login
+          Weiter zum Login
         </button>
       </div>
 
 
 
       <div *ngIf="!tokenValid" class="help-block">
-        <p>Your account activation failed.</p>
-        <p>Please register again.</p>
+        <p>Ihre Kontoaktivierung ist fehlgeschlagen.</p>
+        <p>Bitte erneut registrieren.</p>
         <br>
         <button
           class="btn btn-primary"
           type="submit"
           [routerLink]="['/users/register']">
-          Continue to Registration
+          Weiter zur Registrierung
         </button>
       </div>
 
