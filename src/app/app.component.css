@@ -1,90 +1,130 @@
-@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
-
 body {
-    font-family: 'Poppins', sans-serif;
-    background: #fafafa;
-    margin-bottom: 60px;
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+}
+
+.navbar-blue {
+  background: rgb(3, 78, 168);
+  color: rgb(255, 255, 255);
+  padding: 0;
+  margin: 0;
+}
+
+.navbar-brand-color, .navbar-text-color {
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+  font-size: 1.2em;
+  display: inline-block;
+  text-align: center;
+}
+
+.navbar-brand-color:hover,
+.navbar-brand-color:focus,
+.navbar-brand-color:active,
+.navbar-text-color:hover,
+.navbar-text-color:focus,
+.navbar-text-color:active {
+  background: rgb(3, 78, 168);
+  font-weight: bold;
+  outline: none;
+}
+
+.navbar-header::after,
+.navbar-text-color::after,
+.dropdown-link::after {
+  display: block;
+  content: attr(data-text);
+  font-weight: bold;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+}
+
+.open > a {
+  background: inherit;
+}
+
+.dropdown {
+  margin: 0 2rem;
+}
+
+.dropdown-info > a,
+.dropdown-info > a:hover {
+  background: rgb(255, 255, 255);
+  font-weight: bold;
+}
+
+.divider {
+  margin-top: 0;
+  background: rgb(204, 204, 204);
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+.dropdown-link {
+  cursor: pointer;
+}
+
+.dropdown-link:hover,
+.dropdown-link:focus,
+.dropdown-link:active {
+  cursor: pointer;
+  font-weight: bold;
+  outline: none;
 }
 
 
-.wrapper {
-  display: flex;
-  align-items: stretch;
-}
-
-
-p {
-    font-family: 'Poppins', sans-serif;
-    font-size: 1.1em;
-    font-weight: 300;
-    line-height: 1.7em;
-    color: #fff;
-}
-
-a {
-    color: inherit;
-    text-decoration: none;
-}
-
-a:hover {
-  background: #fff;
-  color: #337ab7;
-  transition: all 0.3s;
-  transform: scale(1.15);
-}
-
-
-.navbar {
-    padding: 15px 10px;
-    background: rgb(245, 245, 245);
-    border: 1px solid rgb(218, 218, 218);
-    border-radius: 0;
-    margin-bottom: 40px;
-    box-shadow: 5px 5px 5px rgb(218, 218, 218);
-
-}
-
-.navbar-header:hover {
-  transition: all 0.3s;
-  transform: scale(1.1);
-}
-
-.navbar-btn {
-    box-shadow: none;
-    outline: none !important;
-    border: none;
-}
-
-.navbar-header.navbar-brand {
-  margin-left: 10px;
-}
-
-/* ---------------------------------------------------
-  CONTENT STYLE
------------------------------------------------------ */
-
-
-#content {
-  width: 100%;
-  padding: 20px;
-  padding-top: 120px;
-  min-height: 100%;
-  transition: all 0.3s;
-  position: absolute;
+.main {
+  position: fixed;
   top: 0;
-  right: 0;
+  left: 0;
+  width: 100vw;
+  margin: 5rem 0;
+  height: calc(100vh - 10rem);
 }
 
-/* ---------------------------------------------------
-    STICKY FOOTER
------------------------------------------------------ */
 
-footer {
-  margin-top: 50px;
+.main-footer {
+  padding: 2rem;;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  z-index: 1030;
+  height: 5rem;
 }
 
-footer p {
-  color: rgb(80, 80, 80);
+hr {
+  position: fixed;
+  bottom: 5rem;
+  left: 0;
+  z-index: 1040;
+  margin: 0;
+  height: 1px;
+  background-color:rgb(3, 78, 168);
+  width: 100vw;
+}
+
+.main-footer__links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.main-footer__link {
+  display: inline-block;
+  padding: 0 4rem;
+}
+
+.main-footer__link a {
+  color: rgb(3, 78, 162);
+  text-decoration: none;
+}
+
+.main-footer__link a:hover,
+.main-footer__link a:active {
+  color: rgb(0, 0, 0);
 }
 
 

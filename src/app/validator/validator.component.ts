@@ -91,10 +91,11 @@ export class ValidatorComponent implements OnInit {
                           oriHeaders;
 
       this.options = {
-        height: this._window.innerHeight - 350,
+        // height: this._window.innerHeight,
+        height: this._window.innerHeight - 100,
         data: this.data,
         colHeaders: this.colHeaders,
-        rowHeaders: true,
+        // rowHeaders: true,
         stretchH: 'all',
         colWidths : [ 50 ],
         autoWrapRow : true,

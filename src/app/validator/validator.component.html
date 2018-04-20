@@ -4,18 +4,15 @@
       <app-spinner-container name="validationSpinner">
           <app-generic-spinner></app-generic-spinner>
         </app-spinner-container>
-    <div  *ngIf="!isValidateSpinnerShowing()"  class="col-md-12">
+    <div  *ngIf="!isValidateSpinnerShowing()"  class="col-md-12 hot-table-container">
 
-      <div class="hotTable">
-
-        <hotTable
-          [data]="data"
-          [colHeaders]="colHeaders"
-          [columns]="columns"
-          [options]="options"
-          (afterChange)="afterChange($event)">
-        </hotTable>
-      </div>
+      <hotTable
+        [data]="data"
+        [colHeaders]="colHeaders"
+        [columns]="columns"
+        [options]="options"
+        (afterChange)="afterChange($event)">
+      </hotTable>
 
     </div>
   </div>
