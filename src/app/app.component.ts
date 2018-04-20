@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { AuthService } from './auth/services/auth.service';
 import { User } from './models/user.model';
 import { environment } from './../environments/environment';
@@ -16,11 +16,11 @@ export class AppComponent implements OnInit {
   appName: string = environment.appName;
   supportContact: string = environment.supportContact;
 
-  constructor(public authService: AuthService, 
-    public uploadService: UploadService, 
-    public validateService: ValidateService) {} 
+  constructor(public authService: AuthService,
+    public uploadService: UploadService,
+    public validateService: ValidateService) {}
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   getCurrentUserEmail() {
     if (this.authService.loggedIn()) {

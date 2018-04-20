@@ -4,75 +4,150 @@
   <!-- Page Content Holder -->
   <div id="content">
 
-    <nav class="navbar navbar-fixed-top">
+    <nav class="navbar navbar-fixed-top navbar-blue">
       <div class="container-fluid">
 
 
         <div class="navbar-header navbar-brand">
-          <a [routerLink]="authService.loggedIn() ? ['/main'] : ['/']" class="brand">
+          <a
+            [routerLink]="authService.loggedIn() ? ['/main'] : ['/']"
+            class="brand navbar-brand-color">
             {{ appName }}
           </a>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav navbar-right">
-
-            <li>
+            <li
+              class="dropdown navbar-text-color"
+              appDropdown>
               <a
-                (click)="validateService.onValidate()"
-                *ngIf="uploadService.isValidationActive()">
-                Validate
+                style="cursor: pointer;"
+                class="dropdown-toggle navbar-user navbar-text-color "
+                role="button">
+                Data
+                <span class="caret"></span>
               </a>
-            </li>
-            <li>
-              <a
-                (click)="validateService.onSave()"
-                *ngIf="uploadService.isValidationActive()">
-                Download as Excel</a>
-            </li>
-            <li>
-              <a
-                (click)="validateService.onDownloadAndSend()"
-                *ngIf="authService.loggedIn() && uploadService.isValidationActive()">
-                Download and Send</a>
-            </li>
-            <li>
-              <a routerLink="/upload">Upload</a>
-            </li>
-            <li>
-              <a routerLink="/users/login" (click)="deactivateSidebar()" *ngIf="!authService.loggedIn()">
-                Login/Register
-              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a
+                    class="dropdown-link"
+                    routerLink="/upload"
+                    data-text="Upload">
+                    Upload
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="dropdown-link"
+                    (click)="validateService.onValidate()"
+                    *ngIf="uploadService.isValidationActive()"
+                    data-text="Validate">
+                    Validate
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="dropdown-link"
+                    (click)="validateService.onSave()"
+                    *ngIf="uploadService.isValidationActive()"
+                    data-text="Download">
+                    Download
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="dropdown-link"
+                    (click)="validateService.onDownloadAndSend()"
+                    *ngIf="authService.loggedIn() && uploadService.isValidationActive()"
+                    data-text="Download and Send">
+                    Download and Send
+                  </a>
+                </li>
+              </ul>
             </li>
 
-            <li>
-              <a routerLink="/users/login" (click)="onLogout()" *ngIf="authService.loggedIn()">Logout</a>
+
+            <li class="navbar-text-color">
+                <a
+                  class="navbar-text-color"
+                  routerLink="/users/login"
+                  (click)="deactivateSidebar()"
+                  *ngIf="!authService.loggedIn()"
+                  data-text="Login/Register">
+                  Login/Register
+                </a>
+              </li>
+
+
+
+            <li
+              class="dropdown navbar-text-color"
+              appDropdown
+              *ngIf="authService.loggedIn()">
+              <a
+                style="cursor: pointer;"
+                class="dropdown-toggle navbar-text-color navbar-user"
+                role="button">
+                <span class="glyphicon glyphicon-user"></span>
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-info">
+                  <a>{{ getCurrentUserEmail() }}</a>
+                </li>
+                <li class="dropdown-info">
+                  <a>{{ getUserInstitution() }}</a>
+                </li>
+                <li role="separator" class="divider"></li>
+                <li>
+                  <a
+                    class="dropdown-link"
+                    routerLink="/users/login"
+                    (click)="onLogout()">
+                    Logout
+                  </a>
+                </li>
+              </ul>
             </li>
+
+
           </ul>
         </div>
 
       </div>
     </nav>
 
-    <app-alert></app-alert>
+    <div class="main">
 
-    <router-outlet></router-outlet>
+      <app-alert></app-alert>
 
-    <footer class="container-fluid">
-      <div class="text-center">
-        <hr>
-        <p>
-          <a href="https://www.bfr.bund.de" target="_top">
-            BfR - Bundesinstitut für Risikobewertung</a>
-        </p>
-        <p>
-          <a href="https://foodrisklabs.bfr.bund.de" target="_top">FoodRisk - Labs</a>
-        </p>
-        <p style="font-size: 0.8em;">
-          <a href="mailto:{{ supportContact }}" target="_top">Report a problem</a>
-        </p>
+      <router-outlet></router-outlet>
 
-      </div>
+    </div>
+
+    <hr>
+    <footer class="container-fluid main-footer">
+      <nav>
+        <!-- <hr> -->
+        <ul class="main-footer__links">
+          <li class="main-footer__link">
+            <a href="https://www.bfr.bund.de" target="_blank">
+              BfR - Bundesinstitut für Risikobewertung</a>
+          </li>
+          <li class="main-footer__link">
+            <a href="https://foodrisklabs.bfr.bund.de" target="_blank">FoodRisk - Labs</a>
+          </li>
+          <li class="main-footer__link">
+            <a
+              href="mailto:{{ supportContact }}"
+              target="_top">
+              Report a problem
+            </a>
+          </li>
+        </ul>
+
+      </nav>
     </footer>
   </div>
 </div>

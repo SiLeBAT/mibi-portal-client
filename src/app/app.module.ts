@@ -36,6 +36,7 @@ import { ValidatorComponent } from './validator/validator.component';
 import { HotTableModule } from 'ng2-handsontable';
 import { SpinnerContainerComponent } from './shared/spinner-container/spinner-container.component';
 import { GenericSpinnerComponent } from './shared/generic-spinner/generic-spinner.component';
+import { DropdownDirective } from './shared/directive/dropdown.directive';
 
 
 
@@ -55,7 +56,8 @@ import { GenericSpinnerComponent } from './shared/generic-spinner/generic-spinne
     ActivateComponent,
     ValidatorComponent,
     SpinnerContainerComponent,
-    GenericSpinnerComponent
+    GenericSpinnerComponent,
+    DropdownDirective
   ],
   imports: [
     BrowserModule,
