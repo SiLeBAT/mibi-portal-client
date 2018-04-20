@@ -39,7 +39,6 @@ export class RecoveryComponent implements OnInit {
 
         this.userService.recoveryPassword(email)
           .subscribe((data) => {
-            console.log('recovery data: ', data);
             const message = data['title'];
             this.alertService.success(message, true);
             this.router.navigate(['users/login']);

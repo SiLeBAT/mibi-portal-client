@@ -25,7 +25,7 @@
                 style="cursor: pointer;"
                 class="dropdown-toggle navbar-user navbar-text-color "
                 role="button">
-                Data
+                Probendaten
                 <span class="caret"></span>
               </a>
               <ul class="dropdown-menu">
@@ -34,7 +34,7 @@
                     class="dropdown-link"
                     routerLink="/upload"
                     data-text="Upload">
-                    Upload
+                    Hochladen
                   </a>
                 </li>
                 <li>
@@ -43,7 +43,7 @@
                     (click)="validateService.onValidate()"
                     *ngIf="uploadService.isValidationActive()"
                     data-text="Validate">
-                    Validate
+                    Validieren
                   </a>
                 </li>
                 <li>
@@ -52,7 +52,7 @@
                     (click)="validateService.onSave()"
                     *ngIf="uploadService.isValidationActive()"
                     data-text="Download">
-                    Download
+                    Speichern
                   </a>
                 </li>
                 <li>
@@ -61,7 +61,7 @@
                     (click)="validateService.onDownloadAndSend()"
                     *ngIf="authService.loggedIn() && uploadService.isValidationActive()"
                     data-text="Download and Send">
-                    Download and Send
+                    Speichern und Senden
                   </a>
                 </li>
               </ul>
@@ -75,7 +75,7 @@
                   (click)="deactivateSidebar()"
                   *ngIf="!authService.loggedIn()"
                   data-text="Login/Register">
-                  Login/Register
+                  Login/Registrieren
                 </a>
               </li>
 
@@ -142,7 +142,7 @@
             <a
               href="mailto:{{ supportContact }}"
               target="_top">
-              Report a problem
+              Problem melden
             </a>
           </li>
         </ul>

@@ -25,7 +25,6 @@ export class RegisterComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
-    console.log('RegisterComponent ngOnInit() called');
     this.loadInstitutions();
     this.registerForm = new FormGroup({
       institution: new FormControl(null, Validators.required),
@@ -69,9 +68,6 @@ export class RegisterComponent implements OnInit {
   register() {
     if (this.registerForm.valid) {
       this.loading = true;
-
-      console.log('this.registerForm.value.institution: ', this.registerForm.value.institution);
-
       const user = new User(
         this.registerForm.value.email,
         this.registerForm.value.password1,
