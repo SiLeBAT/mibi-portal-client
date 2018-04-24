@@ -33,26 +33,26 @@
                   <a
                     class="dropdown-link"
                     routerLink="/upload"
-                    data-text="Upload">
+                    data-text="Hochladen">
                     Hochladen
                   </a>
                 </li>
-                <li>
+                <!-- <li>
                   <a
                     class="dropdown-link"
                     (click)="validateService.onValidate()"
                     *ngIf="uploadService.isValidationActive()"
-                    data-text="Validate">
+                    data-text="Validieren">
                     Validieren
                   </a>
-                </li>
+                </li> -->
                 <li>
                   <a
                     class="dropdown-link"
                     (click)="validateService.onSave()"
                     *ngIf="uploadService.isValidationActive()"
                     data-text="Download">
-                    Speichern
+                    Download
                   </a>
                 </li>
                 <li>
@@ -60,13 +60,22 @@
                     class="dropdown-link"
                     (click)="validateService.onDownloadAndSend()"
                     *ngIf="authService.loggedIn() && uploadService.isValidationActive()"
-                    data-text="Download and Send">
-                    Speichern und Senden
+                    data-text="Download und Senden">
+                    Download und Senden
                   </a>
                 </li>
               </ul>
             </li>
 
+            <li class="navbar-text-color">
+              <a
+                class="navbar-text-color"
+                (click)="validateService.onValidate()"
+                *ngIf="uploadService.isValidationActive()"
+                data-text="Validieren">
+                Validieren
+              </a>
+            </li>
 
             <li class="navbar-text-color">
                 <a
@@ -74,8 +83,8 @@
                   routerLink="/users/login"
                   (click)="deactivateSidebar()"
                   *ngIf="!authService.loggedIn()"
-                  data-text="Login/Register">
-                  Login/Registrieren
+                  data-text="Anmelden/Registrieren">
+                  Anmelden/Registrieren
                 </a>
               </li>
 
@@ -105,7 +114,7 @@
                     class="dropdown-link"
                     routerLink="/users/login"
                     (click)="onLogout()">
-                    Logout
+                    Abmelden
                   </a>
                 </li>
               </ul>
