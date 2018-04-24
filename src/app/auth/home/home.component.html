@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <h4>Eingeloggt als:</h4>
+  <h4>Angemeldet als:</h4>
   <p> {{ currentUser.firstName }} {{ currentUser.lastName }}</p>
   <p>{{ currentUser.email }}</p>
   <p>{{ getInstitutionName() }}</p>
@@ -7,18 +7,7 @@
     <a
       [routerLink]="['/users/login']"
       (click)="logout()">
-      Logout
+      Abmelden
     </a>
   </h4>
-    <!-- <app-upload></app-upload> -->
-    <!-- <router-outlet></router-outlet> -->
-
-    <!-- <h3>All registered users:</h3>
-    <ul>
-        <li *ngFor="let user of users">
-            {{user.email}} ({{user.firstName}} {{user.lastName}})
-            - <a (click)="deleteUser(user)">Delete</a>
-        </li>
-    </ul>
-    <p><a [routerLink]="['/users/login']">Logout</a></p> -->
 </div>
