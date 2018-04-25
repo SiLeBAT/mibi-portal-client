@@ -25,19 +25,8 @@ body {
 .navbar-text-color:focus,
 .navbar-text-color:active {
   background: rgb(3, 78, 168);
-  font-weight: bold;
+  color: rgb(204, 204, 204);
   outline: none;
-}
-
-.navbar-header::after,
-.navbar-text-color::after,
-.dropdown-link::after {
-  display: block;
-  content: attr(data-text);
-  font-weight: bold;
-  height: 0;
-  overflow: hidden;
-  visibility: hidden;
 }
 
 .open > a {
@@ -69,7 +58,6 @@ body {
 .dropdown-link:focus,
 .dropdown-link:active {
   cursor: pointer;
-  font-weight: bold;
   outline: none;
 }
 

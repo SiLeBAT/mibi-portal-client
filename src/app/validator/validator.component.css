@@ -2,3 +2,7 @@
   padding: 0;
   font-size: 12px;
 }
+
+mwlResizable {
+  box-sizing: border-box;
+}

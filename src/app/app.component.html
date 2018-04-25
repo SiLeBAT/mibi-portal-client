@@ -32,26 +32,15 @@
                 <li>
                   <a
                     class="dropdown-link"
-                    routerLink="/upload"
-                    data-text="Hochladen">
-                    Hochladen
+                    routerLink="/upload">
+                    Upload
                   </a>
                 </li>
-                <!-- <li>
-                  <a
-                    class="dropdown-link"
-                    (click)="validateService.onValidate()"
-                    *ngIf="uploadService.isValidationActive()"
-                    data-text="Validieren">
-                    Validieren
-                  </a>
-                </li> -->
                 <li>
                   <a
                     class="dropdown-link"
                     (click)="validateService.onSave()"
-                    *ngIf="uploadService.isValidationActive()"
-                    data-text="Download">
+                    *ngIf="uploadService.isValidationActive()">
                     Download
                   </a>
                 </li>
@@ -59,8 +48,7 @@
                   <a
                     class="dropdown-link"
                     (click)="validateService.onDownloadAndSend()"
-                    *ngIf="authService.loggedIn() && uploadService.isValidationActive()"
-                    data-text="Download und Senden">
+                    *ngIf="authService.loggedIn() && uploadService.isValidationActive()">
                     Download und Senden
                   </a>
                 </li>
@@ -71,8 +59,7 @@
               <a
                 class="navbar-text-color"
                 (click)="validateService.onValidate()"
-                *ngIf="uploadService.isValidationActive()"
-                data-text="Validieren">
+                *ngIf="uploadService.isValidationActive()">
                 Validieren
               </a>
             </li>
@@ -82,8 +69,7 @@
                   class="navbar-text-color"
                   routerLink="/users/login"
                   (click)="deactivateSidebar()"
-                  *ngIf="!authService.loggedIn()"
-                  data-text="Anmelden/Registrieren">
+                  *ngIf="!authService.loggedIn()">
                   Anmelden/Registrieren
                 </a>
               </li>
