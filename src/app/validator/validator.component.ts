@@ -32,6 +32,7 @@ export class ValidatorComponent implements OnInit {
   @ViewChild(HotTableComponent) hotTableComponent;
 
   private _window: Window;
+  private resizeId;
 
   tableStructureProvider: ITableStructureProvider;
   tableData: ITableData;
@@ -252,6 +253,16 @@ export class ValidatorComponent implements OnInit {
       subscription.unsubscribe();
     });
   }
+
+  async onResize(event) {
+    let promise = new Promise((resolve, reject) => {
+      clearTimeout(this.resizeId);
+      this.resizeId = setTimeout(() => resolve('promise done!'), 500);
+    })
+    let result = await promise;
+    this.initializeTable();
+  }
+
 
 }
 
