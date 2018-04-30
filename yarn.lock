@@ -160,6 +160,10 @@
   dependencies:
     tslib "^1.7.1"
 
+"@handsontable/angular@^1.0.0-beta4":
+  version "1.0.0-beta4"
+  resolved "https://registry.yarnpkg.com/@handsontable/angular/-/angular-1.0.0-beta4.tgz#0f06be673d6219a4c07437f16ceeda8a09200025"
+
 "@ngtools/json-schema@1.1.0", "@ngtools/json-schema@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@ngtools/json-schema/-/json-schema-1.1.0.tgz#c3a0c544d62392acc2813a42c8a0dc6f58f86922"
@@ -2496,9 +2500,9 @@ handlebars@^4.0.3:
   optionalDependencies:
     uglify-js "^2.6"
 
-handsontable@^0.35.0:
-  version "0.35.1"
-  resolved "https://registry.yarnpkg.com/handsontable/-/handsontable-0.35.1.tgz#e976aa568824b250f2f475309db8db9a8ef1b1d9"
+handsontable@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/handsontable/-/handsontable-2.0.0.tgz#b22fbd61d3193eb63b9c798e73843f55856ef022"
   dependencies:
     moment "2.20.1"
     numbro "1.11.0"
@@ -3677,9 +3681,13 @@ mkdirp@0.5.x, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0, mkd
   dependencies:
     minimist "0.0.8"
 
-moment@2.20.1, moment@2.x:
+moment@2.20.1:
   version "2.20.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.20.1.tgz#d6eb1a46cbcc14a2b2f9434112c1ff8907f313fd"
+
+moment@2.x:
+  version "2.22.1"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.1.tgz#529a2e9bf973f259c9643d237fda84de3a26e8ad"
 
 move-concurrently@^1.0.1:
   version "1.0.1"
@@ -3728,12 +3736,6 @@ ncname@1.0.x:
 negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
-
-ng2-handsontable@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/ng2-handsontable/-/ng2-handsontable-2.0.0.tgz#8c04263139bd5469bc2a88195404871d0ff29108"
-  dependencies:
-    handsontable "^0.35.0"
 
 no-case@^2.2.0:
   version "2.3.2"

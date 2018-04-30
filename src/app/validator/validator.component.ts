@@ -1,12 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { HttpErrorResponse, HttpEventType, HttpEvent, HttpResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 
 import * as _ from 'lodash';
 import * as Handsontable from 'handsontable';
+import { HotTableRegisterer } from '@handsontable/angular';
 import 'tooltipster';
-import { HotTableComponent } from 'ng2-handsontable';
 
 import { UploadService } from './../services/upload.service';
 import { AlertService } from '../auth/services/alert.service';
@@ -19,7 +19,6 @@ import { ValidateService } from './../services/validate.service';
 import { TableToJsonService } from './../services/table-to-json.service';
 import { LoadingSpinnerService } from './../services/loading-spinner.service';
 import { JsonToExcelService, IBlobData } from '../services/json-to-excel.service';
-import { WindowRefService } from './../services/window-ref.service';
 
 
 @Component({
@@ -27,10 +26,7 @@ import { WindowRefService } from './../services/window-ref.service';
   templateUrl: './validator.component.html',
   styleUrls: ['./validator.component.css']
 })
-export class ValidatorComponent implements OnInit {
-
-  @ViewChild(HotTableComponent) hotTableComponent;
-
+export class ValidatorComponent implements OnInit, OnDestroy {
   private _window: Window;
   private resizeId;
 
@@ -41,10 +37,9 @@ export class ValidatorComponent implements OnInit {
 
   data: IKnimeData[];
   colHeaders: string[];
-  columns: string[];
   options: any;
+  instance: string = 'hot';
 
-  // tooltipClass: string = 'tooltipster-text';
   private onValidateSpinner = 'validationSpinner';
   subscriptions = [];
 
@@ -54,15 +49,13 @@ export class ValidatorComponent implements OnInit {
               private jsonToExcelService: JsonToExcelService,
               private alertService: AlertService,
               private router: Router,
-              // private elem: ElementRef,
               private spinnerService: LoadingSpinnerService,
-              windowRef: WindowRefService) {
-    this._window = windowRef.nativeWindow;
-  }
+              private hotRegisterer: HotTableRegisterer) {}
 
 
   ngOnInit() {
     this.initializeTable();
+
     this.subscriptions.push(this.validateService.doValidation
       .subscribe(notification => this.validate()));
     this.subscriptions.push(this.validateService.doSaveAsExcel
@@ -78,6 +71,8 @@ export class ValidatorComponent implements OnInit {
 
   initializeTable() {
 
+    console.log('initializing table');
+
     this.tableStructureProvider = this.uploadService.getCurrentTableStructureProvider();
     if (this.tableStructureProvider) {
       this.tableData = this.tableStructureProvider.getTableData();
@@ -92,18 +87,15 @@ export class ValidatorComponent implements OnInit {
                           oriHeaders;
 
       this.options = {
-        height: this._window.innerHeight - 100,
         data: this.data,
         colHeaders: this.colHeaders,
-        // rowHeaders: true,
+        rowHeaders: true,
         stretchH: 'all',
         colWidths : [ 50 ],
-        autoWrapRow : true,
-        comments: true,
-        debug: true,
         manualColumnResize : true,
         manualRowResize : true,
         renderAllRows : true,
+        preventOverflow: 'horizontal',
         cells: (row, col, prop): any => {
           const cellProperties: any = {};
 
@@ -118,8 +110,6 @@ export class ValidatorComponent implements OnInit {
         }
       };
     }
-
-
   }
 
   cellRenderer(instance, td, row, col, prop, value, cellProperties) {
@@ -200,7 +190,6 @@ export class ValidatorComponent implements OnInit {
         this.setCurrentJsResponseDTO(data);
         this.spinnerService.hide(this.onValidateSpinner);
         this.initializeTable();
-
       }, (err: HttpErrorResponse) => {
         this.spinnerService.hide(this.onValidateSpinner);
         const errMessage = err['error']['title'];
@@ -253,16 +242,6 @@ export class ValidatorComponent implements OnInit {
       subscription.unsubscribe();
     });
   }
-
-  async onResize(event) {
-    let promise = new Promise((resolve, reject) => {
-      clearTimeout(this.resizeId);
-      this.resizeId = setTimeout(() => resolve('promise done!'), 500);
-    })
-    let result = await promise;
-    this.initializeTable();
-  }
-
 
 }
 
