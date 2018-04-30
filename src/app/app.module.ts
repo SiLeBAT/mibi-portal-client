@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ngfModule } from 'angular-file';
-
+import { HotTableModule } from '@handsontable/angular';
 
 import { AppComponent } from './app.component';
 import { AlertComponent } from './auth/alert/alert.component';
@@ -33,7 +33,6 @@ import { UserdataComponent } from './myaccount/userdata/userdata.component';
 import { HttpModule } from '@angular/http';
 import { ActivateComponent } from './auth/activate/activate.component';
 import { ValidatorComponent } from './validator/validator.component';
-import { HotTableModule } from 'ng2-handsontable';
 import { SpinnerContainerComponent } from './shared/spinner-container/spinner-container.component';
 import { GenericSpinnerComponent } from './shared/generic-spinner/generic-spinner.component';
 import { DropdownDirective } from './shared/directive/dropdown.directive';
@@ -61,7 +60,7 @@ import { DropdownDirective } from './shared/directive/dropdown.directive';
   ],
   imports: [
     BrowserModule,
-    HotTableModule,
+    HotTableModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
