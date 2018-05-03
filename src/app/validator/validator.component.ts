@@ -42,6 +42,7 @@ export class ValidatorComponent implements OnInit, OnDestroy {
 
   private onValidateSpinner = 'validationSpinner';
   subscriptions = [];
+  private message: string;
 
   constructor(private uploadService: UploadService,
               private validateService: ValidateService,
@@ -95,7 +96,6 @@ export class ValidatorComponent implements OnInit, OnDestroy {
         manualColumnResize : true,
         manualRowResize : true,
         renderAllRows : true,
-        preventOverflow: 'horizontal',
         cells: (row, col, prop): any => {
           const cellProperties: any = {};
 
@@ -193,7 +193,8 @@ export class ValidatorComponent implements OnInit, OnDestroy {
       }, (err: HttpErrorResponse) => {
         this.spinnerService.hide(this.onValidateSpinner);
         const errMessage = err['error']['title'];
-        this.alertService.error(errMessage, true);
+        this.message = errMessage;
+        this.alertService.error(errMessage);
       });
   }
 
@@ -202,7 +203,8 @@ export class ValidatorComponent implements OnInit, OnDestroy {
     try {
       blobData = await this.jsonToExcelService.saveAsExcel(this.data);
     } catch (err) {
-      this.alertService.error('Problem beim Speichern der validierten Daten als Excel', false);
+      this.message = 'Problem beim Speichern der validierten Daten als Excel';
+      this.alertService.error(this.message, false);
     }
 
     return blobData;
@@ -211,20 +213,23 @@ export class ValidatorComponent implements OnInit, OnDestroy {
   async downloadAndSend() {
     let blobData: IBlobData = await this.saveAsExcel();
     try {
-      const formData: FormData = new FormData();
+      let formData: FormData = new FormData();
       formData.append('myMemoryXSLX', blobData.blob, blobData.fileName);
       this.validateService.sendFile(formData)
         .subscribe((event: HttpEvent<Event>) => {
           if (event instanceof HttpResponse) {
             const message = event['statusText'];
-            this.alertService.success(`Auftrag an das BfR senden ${message}`, false);
+            this.message = `Auftrag an das BfR senden ${message}`;
+            this.alertService.success(this.message);
           }
         }, (err: HttpErrorResponse) => {
           const errMessage = err['error']['error'];
-          this.alertService.error(errMessage, false);
+          this.message = errMessage;
+          this.alertService.error(errMessage);
         });
     } catch (err) {
-      this.alertService.error('Problem beim Speichern der validierten Daten als Excel', false);
+      this.message = 'Problem beim Speichern der validierten Daten als Excel';
+      this.alertService.error(this.message, false);
     }
 
   }
@@ -232,6 +237,11 @@ export class ValidatorComponent implements OnInit, OnDestroy {
   setCurrentJsResponseDTO(responseDTO: IJsResponseDTO[]) {
     let jsToTable: ITableStructureProvider = new JsToTable(responseDTO);
     this.uploadService.setCurrentTableStructureProvider(jsToTable);
+  }
+
+  hasMessage() {
+    console.log('this.message: ', this.message);
+    return (this.message !== undefined);
   }
 
   ngOnDestroy() {

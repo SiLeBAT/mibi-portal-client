@@ -1,21 +1,16 @@
-<div class="container-fluid">
-
-  <div class="row">
-      <app-spinner-container name="validationSpinner">
-          <app-generic-spinner></app-generic-spinner>
-        </app-spinner-container>
+    <app-spinner-container name="validationSpinner">
+      <app-generic-spinner></app-generic-spinner>
+    </app-spinner-container>
     <div
       *ngIf="!isValidateSpinnerShowing()"
-      class="col-md-12 hot-table-container">
+      class="hot-table-container"
+      [class.has-alert]="hasMessage()">
 
       <hot-table
         [hotId]="instance"
         [settings]="options">
       </hot-table>
     </div>
-  </div>
-
-</div>
 
 
 

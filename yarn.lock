@@ -160,9 +160,11 @@
   dependencies:
     tslib "^1.7.1"
 
-"@handsontable/angular@^1.0.0-beta4":
-  version "1.0.0-beta4"
-  resolved "https://registry.yarnpkg.com/@handsontable/angular/-/angular-1.0.0-beta4.tgz#0f06be673d6219a4c07437f16ceeda8a09200025"
+"@handsontable/angular@^1.0.0-beta5":
+  version "1.0.0-beta5"
+  resolved "https://registry.yarnpkg.com/@handsontable/angular/-/angular-1.0.0-beta5.tgz#4ba386cc3c2dedaff41daac8149a6c9a0636ac03"
+  dependencies:
+    tslib "^1.7.1"
 
 "@ngtools/json-schema@1.1.0", "@ngtools/json-schema@^1.1.0":
   version "1.1.0"
@@ -6382,6 +6384,6 @@ zone.js@^0.8.14:
   version "0.8.17"
   resolved "https://registry.yarnpkg.com/zone.js/-/zone.js-0.8.17.tgz#4c5e5185a857da8da793daf3919371c5a36b2a0b"
 
-zone.js@^0.8.20:
-  version "0.8.20"
-  resolved "https://registry.yarnpkg.com/zone.js/-/zone.js-0.8.20.tgz#a218c48db09464b19ff6fc8f0d4bb5b1046e185d"
+zone.js@^0.8.26:
+  version "0.8.26"
+  resolved "https://registry.yarnpkg.com/zone.js/-/zone.js-0.8.26.tgz#7bdd72f7668c5a7ad6b118148b4ea39c59d08d2d"

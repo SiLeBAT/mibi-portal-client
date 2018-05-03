@@ -68,9 +68,7 @@ body {
   left: 0;
   width: 100vw;
   margin: 5rem 0;
-  height: calc(100vh - 10rem);
 }
-
 
 .main-footer {
   padding: 2rem;;

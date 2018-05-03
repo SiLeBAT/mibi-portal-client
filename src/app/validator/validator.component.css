@@ -6,3 +6,11 @@
   overflow: hidden;
 }
 
+.has-alert {
+  padding: 0;
+  font-size: 12px;
+  height: calc(100vh - 15rem);
+  width: 100vw;
+  overflow: hidden;
+}
+
