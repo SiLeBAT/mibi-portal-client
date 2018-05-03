@@ -23,7 +23,7 @@
     "@angular/platform-browser": "^5.2.0",
     "@angular/platform-browser-dynamic": "^5.2.0",
     "@angular/router": "^5.2.0",
-    "@handsontable/angular": "^1.0.0-beta4",
+    "@handsontable/angular": "^1.0.0-beta5",
     "angular-file": "^0.5.1",
     "angular2-jwt": "^0.2.3",
     "bootstrap": "^3.3.7",
@@ -39,7 +39,7 @@
     "ts-xlsx": "^0.0.11",
     "xlsx": "^0.12.4",
     "xlsx-populate": "^1.14.0",
-    "zone.js": "^0.8.20"
+    "zone.js": "^0.8.26"
   },
   "devDependencies": {
     "@angular/cli": "1.6.4",
