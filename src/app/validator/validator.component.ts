@@ -43,6 +43,7 @@ export class ValidatorComponent implements OnInit, OnDestroy {
   private onValidateSpinner = 'validationSpinner';
   subscriptions = [];
   private message: string;
+  private hasErrors: boolean = false;
 
   constructor(private uploadService: UploadService,
               private validateService: ValidateService,
@@ -72,8 +73,7 @@ export class ValidatorComponent implements OnInit, OnDestroy {
 
   initializeTable() {
 
-    console.log('initializing table');
-
+    this.hasErrors = false;
     this.tableStructureProvider = this.uploadService.getCurrentTableStructureProvider();
     if (this.tableStructureProvider) {
       this.tableData = this.tableStructureProvider.getTableData();
@@ -102,6 +102,9 @@ export class ValidatorComponent implements OnInit, OnDestroy {
           if (this.errData[row]) {
             if (this.errData[row][col]) {
               cellProperties.errObj = this.errData[row][col];
+              if (this.errData[row][col][2]) {
+                this.hasErrors = true;
+              }
               Object.assign(cellProperties, {renderer: this.cellRenderer});
             }
           }
@@ -174,9 +177,9 @@ export class ValidatorComponent implements OnInit, OnDestroy {
     }
   }
 
-  afterChange(event: any) {}
-
   validate() {
+    this.alertService.clear();
+
     _.forEach($('.tooltipster-text'), (item) => {
       if ($.tooltipster.instances($(item)).length > 0) {
         $(item).tooltipster('destroy');
@@ -215,23 +218,28 @@ export class ValidatorComponent implements OnInit, OnDestroy {
     try {
       let formData: FormData = new FormData();
       formData.append('myMemoryXSLX', blobData.blob, blobData.fileName);
-      this.validateService.sendFile(formData)
-        .subscribe((event: HttpEvent<Event>) => {
-          if (event instanceof HttpResponse) {
-            const message = event['statusText'];
-            this.message = `Auftrag an das BfR senden ${message}`;
-            this.alertService.success(this.message);
-          }
-        }, (err: HttpErrorResponse) => {
-          const errMessage = err['error']['error'];
-          this.message = errMessage;
-          this.alertService.error(errMessage);
-        });
+      if (this.hasErrors) {
+        this.message = 'Es gibt noch rot gekennzeichnete Fehler. Bitte vor dem Senden korrigieren.';
+        this.alertService.error(this.message);
+      } else {
+        this.alertService.clear();
+        this.validateService.sendFile(formData)
+          .subscribe((event: HttpEvent<Event>) => {
+            if (event instanceof HttpResponse) {
+              const message = event['statusText'];
+              this.message = `Auftrag an das BfR senden ${message}`;
+              this.alertService.success(this.message);
+            }
+          }, (err: HttpErrorResponse) => {
+            const errMessage = err['error']['error'];
+            this.message = errMessage;
+            this.alertService.error(errMessage);
+          });
+      }
     } catch (err) {
       this.message = 'Problem beim Speichern der validierten Daten als Excel';
       this.alertService.error(this.message, false);
     }
-
   }
 
   setCurrentJsResponseDTO(responseDTO: IJsResponseDTO[]) {
@@ -240,7 +248,6 @@ export class ValidatorComponent implements OnInit, OnDestroy {
   }
 
   hasMessage() {
-    console.log('this.message: ', this.message);
     return (this.message !== undefined);
   }
 
