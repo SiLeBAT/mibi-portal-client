@@ -19,6 +19,7 @@ import { ValidateService } from './../services/validate.service';
 import { TableToJsonService } from './../services/table-to-json.service';
 import { LoadingSpinnerService } from './../services/loading-spinner.service';
 import { JsonToExcelService, IBlobData } from '../services/json-to-excel.service';
+import { AuthService } from '../auth/services/auth.service';
 
 
 @Component({
@@ -51,6 +52,7 @@ export class ValidatorComponent implements OnInit, OnDestroy {
               private jsonToExcelService: JsonToExcelService,
               private alertService: AlertService,
               private router: Router,
+              private authService: AuthService,
               private spinnerService: LoadingSpinnerService,
               private hotRegisterer: HotTableRegisterer) {}
 
@@ -223,6 +225,12 @@ export class ValidatorComponent implements OnInit, OnDestroy {
         this.alertService.error(this.message);
       } else {
         this.alertService.clear();
+        const currentUser = this.authService.getCurrentUser();
+        formData.append('firstName', currentUser.firstName);
+        formData.append('lastName', currentUser.lastName);
+        formData.append('email', currentUser.email);
+        formData.append('institution', currentUser.institution.name1);
+        formData.append('location', currentUser.institution.name2);
         this.validateService.sendFile(formData)
           .subscribe((event: HttpEvent<Event>) => {
             if (event instanceof HttpResponse) {
