@@ -47,9 +47,9 @@
                 <li>
                   <a
                     class="dropdown-link"
-                    (click)="validateService.onDownloadAndSend()"
+                    (click)="validateService.onSend()"
                     *ngIf="authService.loggedIn() && uploadService.isValidationActive()">
-                    Download und Senden
+                    Senden
                   </a>
                 </li>
               </ul>

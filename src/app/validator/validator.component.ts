@@ -64,8 +64,8 @@ export class ValidatorComponent implements OnInit, OnDestroy {
       .subscribe(notification => this.validate()));
     this.subscriptions.push(this.validateService.doSaveAsExcel
       .subscribe(notification => this.saveAsExcel()));
-    this.subscriptions.push(this.validateService.doDownloadAndSend
-      .subscribe(notification => this.downloadAndSend()));
+    this.subscriptions.push(this.validateService.doSend
+      .subscribe(notification => this.send()));
 
   }
 
@@ -203,10 +203,10 @@ export class ValidatorComponent implements OnInit, OnDestroy {
       });
   }
 
-  async saveAsExcel(): Promise<IBlobData> {
+  async saveAsExcel(doDownload: boolean = true): Promise<IBlobData> {
     let blobData: IBlobData;
     try {
-      blobData = await this.jsonToExcelService.saveAsExcel(this.data);
+      blobData = await this.jsonToExcelService.saveAsExcel(this.data, doDownload);
     } catch (err) {
       this.message = 'Problem beim Speichern der validierten Daten als Excel';
       this.alertService.error(this.message, false);
@@ -215,8 +215,8 @@ export class ValidatorComponent implements OnInit, OnDestroy {
     return blobData;
   }
 
-  async downloadAndSend() {
-    let blobData: IBlobData = await this.saveAsExcel();
+  async send() {
+    let blobData: IBlobData = await this.saveAsExcel(false);
     try {
       let formData: FormData = new FormData();
       formData.append('myMemoryXSLX', blobData.blob, blobData.fileName);
