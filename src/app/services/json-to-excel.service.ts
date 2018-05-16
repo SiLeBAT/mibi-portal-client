@@ -30,13 +30,13 @@ export class JsonToExcelService {
   }
 
 
-  async saveAsExcel(data: IKnimeData[]): Promise<IBlobData> {
-    let blobData: IBlobData = await this.convertToExcel(data);
+  async saveAsExcel(data: IKnimeData[], doDownload: boolean): Promise<IBlobData> {
+    let blobData: IBlobData = await this.convertToExcel(data, doDownload);
     return blobData;
   }
 
 
-  private async convertToExcel(data): Promise<IBlobData> {
+  private async convertToExcel(data: IKnimeData[], doDownload: boolean): Promise<IBlobData> {
     let file: File = this.currentExcelData.workSheet.file;
     let oriFileName = file.name;
     let entries: string[] = oriFileName.split('.xlsx');
@@ -58,7 +58,11 @@ export class JsonToExcelService {
     this.addValidatedDataToWorkbook(workbook, dataToSave, currentHeaders);
 
     let blob = await this.fromWorkBookToBlob(workbook);
-    saveAs(blob, fileName);
+
+    if (doDownload) {
+      saveAs(blob, fileName);
+    }
+
 
     let blobData: IBlobData = {
       blob: blob,
