@@ -12,6 +12,7 @@ import { MainDashComponent } from '../main-dash/main-dash.component';
 import { MyaccountComponent } from '../myaccount/myaccount.component';
 import { UserdataComponent } from '../myaccount/userdata/userdata.component';
 import { ValidatorComponent } from '../validator/validator.component';
+import { AdminActivateComponent } from '../auth/admin-activate/admin-activate.component';
 
 const appRoutes: Routes = [
   { path: '', component: MainDashComponent},
@@ -26,12 +27,13 @@ const appRoutes: Routes = [
   { path: 'users/recovery', component: RecoveryComponent },
   { path: 'users/reset/:id', component: ResetComponent },
   { path: 'users/activate/:id', component: ActivateComponent },
+  { path: 'users/adminactivate/:id', component: AdminActivateComponent },
 
   // otherwise redirect to home
   { path: '**', redirectTo: '' }
 ];
 
-// export const routing = RouterModule.forRoot(appRoutes, {useHash: true});
+// export const routing = RouterModule.nforRoot(appRoutes, {useHash: true});
 export const routing = RouterModule.forRoot(appRoutes);
 
 
