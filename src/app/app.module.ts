@@ -36,6 +36,7 @@ import { ValidatorComponent } from './validator/validator.component';
 import { SpinnerContainerComponent } from './shared/spinner-container/spinner-container.component';
 import { GenericSpinnerComponent } from './shared/generic-spinner/generic-spinner.component';
 import { DropdownDirective } from './shared/directive/dropdown.directive';
+import { AdminActivateComponent } from './auth/admin-activate/admin-activate.component';
 
 
 
@@ -56,7 +57,8 @@ import { DropdownDirective } from './shared/directive/dropdown.directive';
     ValidatorComponent,
     SpinnerContainerComponent,
     GenericSpinnerComponent,
-    DropdownDirective
+    DropdownDirective,
+    AdminActivateComponent
   ],
   imports: [
     BrowserModule,
