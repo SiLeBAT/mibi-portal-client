@@ -60,6 +60,11 @@ export class UserService {
       .post('users/activate/' + token, null);
   }
 
+  adminActivateAccount(adminToken: String) {
+    return this.httpClient
+      .post('users/adminactivate/' + adminToken, null);
+  }
+
   addUserData(user: User, userData: UserData) {
     return this.httpClient
       .post('users/userdata', {user: user, userdata: userData});
