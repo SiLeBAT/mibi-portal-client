@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ngfModule } from 'angular-file';
 import { HotTableModule } from '@handsontable/angular';
+import { JasperoConfirmationsModule } from '@jaspero/ng-confirmations';
 
 import { AppComponent } from './app.component';
 import { AlertComponent } from './auth/alert/alert.component';
@@ -68,7 +69,8 @@ import { AdminActivateComponent } from './auth/admin-activate/admin-activate.com
     HttpClientModule,
     HttpModule,
     ngfModule,
-    routing
+    routing,
+    JasperoConfirmationsModule.forRoot()
   ],
   providers: [
     AuthService,

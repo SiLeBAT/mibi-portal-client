@@ -2,11 +2,11 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { HttpErrorResponse, HttpEventType, HttpEvent, HttpResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 
-
 import * as _ from 'lodash';
 import * as Handsontable from 'handsontable';
 import { HotTableRegisterer } from '@handsontable/angular';
 import 'tooltipster';
+import { ConfirmationService, ConfirmSettings } from "@jaspero/ng-confirmations";
 
 import { UploadService } from './../services/upload.service';
 import { AlertService } from '../auth/services/alert.service';
@@ -21,6 +21,18 @@ import { LoadingSpinnerService } from './../services/loading-spinner.service';
 import { JsonToExcelService, IBlobData } from '../services/json-to-excel.service';
 import { AuthService } from '../auth/services/auth.service';
 
+export interface ResolveEmit {
+  resolved?: boolean;
+  closedWithOutResolving?: string;
+}
+
+export interface ConfirmSettings {
+  overlay?: boolean; // Default: true
+  overlayClickToClose?: boolean; // Default: true
+  showCloseButton?: boolean; // Default: true
+  confirmText?: string; // Default: 'Yes'
+  declineText?: string; // Default: 'No'
+}
 
 @Component({
   selector: 'app-validator',
@@ -54,7 +66,8 @@ export class ValidatorComponent implements OnInit, OnDestroy {
               private router: Router,
               private authService: AuthService,
               private spinnerService: LoadingSpinnerService,
-              private hotRegisterer: HotTableRegisterer) {}
+              private hotRegisterer: HotTableRegisterer,
+              private confirmationService: ConfirmationService) {}
 
 
   ngOnInit() {
@@ -225,25 +238,42 @@ export class ValidatorComponent implements OnInit, OnDestroy {
         this.alertService.error(this.message);
       } else {
         this.alertService.clear();
-        const currentUser = this.authService.getCurrentUser();
-        formData.append('firstName', currentUser.firstName);
-        formData.append('lastName', currentUser.lastName);
-        formData.append('email', currentUser.email);
-        formData.append('institution', currentUser.institution.name1);
-        formData.append('location', currentUser.institution.name2);
-        this.validateService.sendFile(formData)
-          .subscribe((event: HttpEvent<Event>) => {
-            if (event instanceof HttpResponse) {
-              const message = event['statusText'];
-              this.message = `Auftrag an das BfR senden ${message}`;
-              this.alertService.success(this.message);
-            }
-          }, (err: HttpErrorResponse) => {
-            const errMessage = err['error']['error'];
-            this.message = errMessage;
-            this.alertService.error(errMessage);
+
+        const options: ConfirmSettings = {
+          overlay: true,
+          overlayClickToClose: false,
+          showCloseButton: true,
+          confirmText: 'Ja',
+          declineText: 'Cancel'
+        }
+
+        this.confirmationService.create('Senden', 'Ihre Probendaten werden jetzt an das BfR gesendet', options)
+          .subscribe((ans: ResolveEmit) => {
+            if (ans.resolved) {
+              const currentUser = this.authService.getCurrentUser();
+              formData.append('firstName', currentUser.firstName);
+              formData.append('lastName', currentUser.lastName);
+              formData.append('email', currentUser.email);
+              formData.append('institution', currentUser.institution.name1);
+              formData.append('location', currentUser.institution.name2);
+              this.validateService.sendFile(formData)
+                .subscribe((event: HttpEvent<Event>) => {
+                  if (event instanceof HttpResponse) {
+                    const message = event['statusText'];
+                    this.message = `Auftrag an das BfR senden ${message}`;
+                    this.alertService.success(this.message);
+                  }
+                }, (err: HttpErrorResponse) => {
+                  const errMessage = err['error']['error'];
+                  this.message = errMessage;
+                  this.alertService.error(errMessage);
+                });
+              } else {
+              this.message = 'Es wurden keine Probendaten an das BfR gesendet';
+              this.alertService.error(this.message, false);
+            };
           });
-      }
+      };
     } catch (err) {
       this.message = 'Problem beim Speichern der validierten Daten als Excel';
       this.alertService.error(this.message, false);
