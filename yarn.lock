@@ -166,6 +166,10 @@
   dependencies:
     tslib "^1.7.1"
 
+"@jaspero/ng-confirmations@^0.4.7":
+  version "0.4.7"
+  resolved "https://registry.yarnpkg.com/@jaspero/ng-confirmations/-/ng-confirmations-0.4.7.tgz#f8310e4625dcfd39c7377b057c736b6a9c70cff3"
+
 "@ngtools/json-schema@1.1.0", "@ngtools/json-schema@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@ngtools/json-schema/-/json-schema-1.1.0.tgz#c3a0c544d62392acc2813a42c8a0dc6f58f86922"
