@@ -9,3 +9,6 @@ hr {
   margin-bottom: 2rem;
 }
 
+.primary {
+  background: rgb(3, 78, 168) !important;
+}

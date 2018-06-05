@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 import * as Handsontable from 'handsontable';
 import { HotTableRegisterer } from '@handsontable/angular';
 import 'tooltipster';
-import { ConfirmationService, ConfirmSettings } from "@jaspero/ng-confirmations";
+import { ConfirmationService, ConfirmSettings, ResolveEmit } from "@jaspero/ng-confirmations";
 
 import { UploadService } from './../services/upload.service';
 import { AlertService } from '../auth/services/alert.service';
@@ -21,18 +21,6 @@ import { LoadingSpinnerService } from './../services/loading-spinner.service';
 import { JsonToExcelService, IBlobData } from '../services/json-to-excel.service';
 import { AuthService } from '../auth/services/auth.service';
 
-export interface ResolveEmit {
-  resolved?: boolean;
-  closedWithOutResolving?: string;
-}
-
-export interface ConfirmSettings {
-  overlay?: boolean; // Default: true
-  overlayClickToClose?: boolean; // Default: true
-  showCloseButton?: boolean; // Default: true
-  confirmText?: string; // Default: 'Yes'
-  declineText?: string; // Default: 'No'
-}
 
 @Component({
   selector: 'app-validator',
@@ -243,7 +231,7 @@ export class ValidatorComponent implements OnInit, OnDestroy {
           overlay: true,
           overlayClickToClose: false,
           showCloseButton: true,
-          confirmText: 'Ja',
+          confirmText: 'Ok',
           declineText: 'Cancel'
         }
 
@@ -259,8 +247,7 @@ export class ValidatorComponent implements OnInit, OnDestroy {
               this.validateService.sendFile(formData)
                 .subscribe((event: HttpEvent<Event>) => {
                   if (event instanceof HttpResponse) {
-                    const message = event['statusText'];
-                    this.message = `Auftrag an das BfR senden ${message}`;
+                    this.message = 'Auftrag wurde an das BfR gesendet.';
                     this.alertService.success(this.message);
                   }
                 }, (err: HttpErrorResponse) => {
