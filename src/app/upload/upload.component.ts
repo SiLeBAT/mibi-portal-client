@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { HttpErrorResponse, HttpEventType } from '@angular/common/http';
 import { HttpClient, HttpRequest, HttpResponse, HttpEvent } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
+import { concat } from 'rxjs/operators';
 
 import { UploadService } from '../services/upload.service';
-import { concat } from 'rxjs/operators/concat';
 import { AlertService } from '../auth/services/alert.service';
 import { ExcelToJsonService, ISampleCollectionDTO, ISampleDTO, IExcelData } from '../services/excel-to-json.service';
 import { JsonToExcelService } from './../services/json-to-excel.service';
