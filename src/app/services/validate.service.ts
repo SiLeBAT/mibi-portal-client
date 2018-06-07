@@ -1,7 +1,6 @@
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
-import 'rxjs/Rx';
 
 import { ISampleCollectionDTO, ExcelToJsonService } from './excel-to-json.service';
 

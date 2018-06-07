@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
-import 'rxjs/Rx';
 
 import { ITableStructureProvider } from './json-to-table';
 

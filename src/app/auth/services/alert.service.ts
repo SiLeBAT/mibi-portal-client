@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router, NavigationStart } from '@angular/router';
-import 'rxjs/Rx';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { Observable, Subject } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 @Injectable()
 export class AlertService {
@@ -12,7 +11,7 @@ export class AlertService {
   constructor(private router: Router) {
     // clear alert message on route change
     router.events
-    .filter(event => event instanceof NavigationStart)
+    .pipe(filter(event => event instanceof NavigationStart))
     .subscribe((event) => {
       if (this.keepAfterNavigationChange) {
           // only keep for a single location change
