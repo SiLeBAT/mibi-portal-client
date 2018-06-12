@@ -5,6 +5,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ngfModule } from 'angular-file';
 import { HotTableModule } from '@handsontable/angular';
 import { JasperoConfirmationsModule } from '@jaspero/ng-confirmations';
+import { PasswordStrengthMeterModule } from 'angular-password-strength-meter';
 
 import { AppComponent } from './app.component';
 import { AlertComponent } from './auth/alert/alert.component';
@@ -70,7 +71,8 @@ import { AdminActivateComponent } from './auth/admin-activate/admin-activate.com
     HttpModule,
     ngfModule,
     routing,
-    JasperoConfirmationsModule.forRoot()
+    JasperoConfirmationsModule.forRoot(),
+    PasswordStrengthMeterModule
   ],
   providers: [
     AuthService,

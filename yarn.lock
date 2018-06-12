@@ -518,6 +518,12 @@ angular-file@^0.5.4:
   version "0.5.4"
   resolved "https://registry.yarnpkg.com/angular-file/-/angular-file-0.5.4.tgz#03c9bca79ee4f9163b675d27118e90b048193d91"
 
+angular-password-strength-meter@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/angular-password-strength-meter/-/angular-password-strength-meter-0.0.4.tgz#908ec0eac8aec620e0a4d7db7bcd144db9b6f47f"
+  dependencies:
+    tslib "^1.9.0"
+
 angular2-jwt@^0.2.3:
   version "0.2.3"
   resolved "https://registry.yarnpkg.com/angular2-jwt/-/angular2-jwt-0.2.3.tgz#54efdda3ceedba85f6a37b165f22ac22b8adf021"
@@ -7418,3 +7424,7 @@ yn@^2.0.0:
 zone.js@^0.8.26:
   version "0.8.26"
   resolved "https://registry.yarnpkg.com/zone.js/-/zone.js-0.8.26.tgz#7bdd72f7668c5a7ad6b118148b4ea39c59d08d2d"
+
+zxcvbn@^4.4.2:
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/zxcvbn/-/zxcvbn-4.4.2.tgz#28ec17cf09743edcab056ddd8b1b06262cc73c30"

@@ -26,6 +26,7 @@
     "@handsontable/angular": "^1.0.0-beta5",
     "@jaspero/ng-confirmations": "^0.4.7",
     "angular-file": "^0.5.4",
+    "angular-password-strength-meter": "^0.0.4",
     "angular2-jwt": "^0.2.3",
     "bootstrap": "3.3.7",
     "core-js": "^2.5.7",
@@ -41,7 +42,8 @@
     "ts-xlsx": "^0.0.11",
     "xlsx": "^0.13.0",
     "xlsx-populate": "^1.17.0",
-    "zone.js": "^0.8.26"
+    "zone.js": "^0.8.26",
+    "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.6.8",

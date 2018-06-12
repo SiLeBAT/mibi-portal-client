@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -15,23 +15,36 @@ import { User } from '../../models/user.model';
 export class ResetComponent implements OnInit {
   public resetForm: FormGroup;
   loading = false;
+  private pwStrength: number;
 
   constructor(
     private userService: UserService,
     private alertService: AlertService,
     private router: Router,
-    private activatedRoute: ActivatedRoute) {}
+    private activatedRoute: ActivatedRoute,
+    private changeRef: ChangeDetectorRef) {
+      this.pwStrength = -1;
+    }
 
   ngOnInit() {
     this.resetForm = new FormGroup({
       password1: new FormControl(null, Validators.required),
-      password2: new FormControl(null, Validators.required),
+      password2: new FormControl(null, [Validators.required, Validators.minLength(8)]),
     }, this.passwordConfirmationValidator);
   }
 
   validateField(fieldName: string) {
     return this.resetForm.controls[fieldName].valid
       || this.resetForm.controls[fieldName].untouched
+  }
+
+  validatePwStrength() {
+    return (this.pwStrength >= 0 && this.pwStrength < 2);
+  }
+
+  doStrengthChange(pwStrength: number) {
+    this.pwStrength = pwStrength;
+    this.changeRef.detectChanges();
   }
 
   reset() {
