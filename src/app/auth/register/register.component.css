@@ -27,3 +27,16 @@ em {
 .error :-ms-input-placeholder {
     color: #999
 }
+
+.pw-1 {
+  margin-top: 3em;
+}
+
+.pw-strength {
+  margin-top: 2rem;
+}
+
+.reset-btn {
+  margin-top: 3rem;
+}
+

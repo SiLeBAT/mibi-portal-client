@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -18,11 +18,15 @@ export class RegisterComponent implements OnInit {
   public registerForm: FormGroup;
   loading = false;
   institutions: Institution[] = [];
+  private pwStrength: number;
 
   constructor(
     private userService: UserService,
     private alertService: AlertService,
-    private router: Router) { }
+    private router: Router,
+    private changeRef: ChangeDetectorRef) {
+      this.pwStrength = -1;
+    }
 
   ngOnInit() {
     this.loadInstitutions();
@@ -34,7 +38,7 @@ export class RegisterComponent implements OnInit {
         Validators.required,
         Validators.email
       ]),
-      password1: new FormControl(null, Validators.required),
+      password1: new FormControl(null, [Validators.required, Validators.minLength(8)]),
       password2: new FormControl(null),
     }, this.passwordConfirmationValidator);
   }
@@ -94,6 +98,10 @@ export class RegisterComponent implements OnInit {
       || this.registerForm.controls[fieldName].untouched
   }
 
+  validatePwStrength() {
+    return (this.pwStrength >= 0 && this.pwStrength < 2);
+  }
+
   private passwordConfirmationValidator(fg: FormGroup) {
     let pw1 = fg.controls.password1;
     let pw2 = fg.controls.password2;
@@ -105,5 +113,10 @@ export class RegisterComponent implements OnInit {
       pw2.setErrors(null);
     }
     return null;
+  }
+
+  doStrengthChange(pwStrength: number) {
+    this.pwStrength = pwStrength;
+    this.changeRef.detectChanges();
   }
 }

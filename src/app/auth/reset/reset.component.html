@@ -10,15 +10,21 @@
       <form
         [formGroup]="resetForm"
         (ngSubmit)="reset()">
-        <div class="form-group">
-          <label for="password1">Neues Passwort</label>
+        <div class="form-group" [ngClass]="{'error' :  !validateField('password1') || validatePwStrength()}">
+          <label for="password1">Neues Passwort (mind. 8 Zeichen)</label>
           <input
             type="password"
             id="password1"
             class="form-control"
             formControlName="password1"/>
-            <em *ngIf="!validateField('password1')">Pflichtfeld.</em>
-          <!-- <div *ngIf="f.submitted && !username.valid" class="help-block">Username is required</div> -->
+          <em *ngIf="validatePwStrength()">Zu schwaches oder zu kurzes Passwort.</em>
+          <em *ngIf="!validateField('password1')">Pflichtfeld.</em>
+        </div>
+        <div class="pw-strength">
+          <password-strength-meter
+            [password]="resetForm.value.password1"
+            (strengthChange)="doStrengthChange($event)">
+          </password-strength-meter>
         </div>
         <div class="form-group">
           <label for="password2">Passwort bestätigen</label>
@@ -28,9 +34,8 @@
             class="form-control"
             formControlName="password2"/>
             <em *ngIf="!validateField('password2')  && resetForm.controls.password2.errors.validatePasswordConfirm">Passwörter müssen übereinstimmen.</em>
-          <!-- <div *ngIf="f.submitted && !username.valid" class="help-block">Username is required</div> -->
         </div>
-        <div class="form-group">
+        <div class="form-group reset-btn">
           <button
             class="btn btn-primary"
             type="submit"
