@@ -247,7 +247,9 @@ export class ValidatorComponent implements OnInit, OnDestroy {
               this.validateService.sendFile(formData)
                 .subscribe((event: HttpEvent<Event>) => {
                   if (event instanceof HttpResponse) {
-                    this.message = 'Auftrag wurde an das BfR gesendet.';
+                    this.message = `Auftrag wurde an das BfR gesendet.
+                                    Bitte vergessen Sie nicht die Exceltabelle in Ihrem Mailanhang
+                                    auszudrucken und Ihren Isolaten beizulegen.`;
                     this.alertService.success(this.message);
                   }
                 }, (err: HttpErrorResponse) => {
