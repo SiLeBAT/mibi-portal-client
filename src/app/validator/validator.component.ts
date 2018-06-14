@@ -235,7 +235,9 @@ export class ValidatorComponent implements OnInit, OnDestroy {
           declineText: 'Cancel'
         }
 
-        this.confirmationService.create('Senden', 'Ihre Probendaten werden jetzt an das BfR gesendet', options)
+        this.confirmationService.create('Senden', `<p>Ihre Probendaten werden jetzt an das BfR gesendet.</p>
+                                                   <p>Bitte vergessen Sie nicht die Exceltabelle in Ihrem Mailanhang
+                                                   auszudrucken und Ihren Isolaten beizulegen.</p>`, options)
           .subscribe((ans: ResolveEmit) => {
             if (ans.resolved) {
               const currentUser = this.authService.getCurrentUser();
@@ -247,9 +249,9 @@ export class ValidatorComponent implements OnInit, OnDestroy {
               this.validateService.sendFile(formData)
                 .subscribe((event: HttpEvent<Event>) => {
                   if (event instanceof HttpResponse) {
-                    this.message = `Auftrag wurde an das BfR gesendet.
-                                    Bitte vergessen Sie nicht die Exceltabelle in Ihrem Mailanhang
-                                    auszudrucken und Ihren Isolaten beizulegen.`;
+                    this.message = `Der Auftrag wurde an das BfR gesendet.
+                                    Bitte drucken Sie die Exceltabelle in Ihrem Mailanhang
+                                    aus und legen sie Ihren Isolaten bei.`;
                     this.alertService.success(this.message);
                   }
                 }, (err: HttpErrorResponse) => {
