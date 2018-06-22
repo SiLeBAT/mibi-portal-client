@@ -49,13 +49,17 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(user)
       .subscribe((data) => {
-        const currentUser = data['obj'];
-        if (currentUser && currentUser.token) {
-          // store user details and jwt token in local storage to keep user logged in between page refreshes
-          localStorage.setItem('currentUser', JSON.stringify(currentUser));
-          this.authService.setCurrentUser(currentUser);
+        if (! data['obj']['token']) {
+          this.alertService.error(data['title']);
+        } else {
+          const currentUser = data['obj'];
+          if (currentUser && currentUser.token) {
+            // store user details and jwt token in local storage to keep user logged in between page refreshes
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            this.authService.setCurrentUser(currentUser);
+          }
+          this.router.navigate([this.returnUrl]);
         }
-        this.router.navigate([this.returnUrl]);
       }, (err: HttpErrorResponse) => {
         const errObj = JSON.parse(err.error);
         const message = errObj.title + ': ' + errObj.error.message;
