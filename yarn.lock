@@ -191,6 +191,12 @@
   dependencies:
     tslib "^1.9.0"
 
+"@auth0/angular-jwt@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@auth0/angular-jwt/-/angular-jwt-2.0.0.tgz#c0b2861824a24fb62d9d2e1fdb03a326e8a1e203"
+  dependencies:
+    url "^0.11.0"
+
 "@handsontable/angular@^1.0.0-beta5":
   version "1.0.0-beta5"
   resolved "https://registry.yarnpkg.com/@handsontable/angular/-/angular-1.0.0-beta5.tgz#4ba386cc3c2dedaff41daac8149a6c9a0636ac03"
@@ -523,10 +529,6 @@ angular-password-strength-meter@^0.0.4:
   resolved "https://registry.yarnpkg.com/angular-password-strength-meter/-/angular-password-strength-meter-0.0.4.tgz#908ec0eac8aec620e0a4d7db7bcd144db9b6f47f"
   dependencies:
     tslib "^1.9.0"
-
-angular2-jwt@^0.2.3:
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/angular2-jwt/-/angular2-jwt-0.2.3.tgz#54efdda3ceedba85f6a37b165f22ac22b8adf021"
 
 ansi-html@0.0.7:
   version "0.0.7"
@@ -5768,10 +5770,6 @@ run-queue@^1.0.0, run-queue@^1.0.3:
   resolved "https://registry.yarnpkg.com/run-queue/-/run-queue-1.0.3.tgz#e848396f057d223f24386924618e25694161ec47"
   dependencies:
     aproba "^1.1.1"
-
-rxjs-compat@^6.2.0:
-  version "6.2.0"
-  resolved "https://registry.yarnpkg.com/rxjs-compat/-/rxjs-compat-6.2.0.tgz#2eb49cc6ac20d0d7057c6887d1895beaab0966f9"
 
 rxjs@^6.0.0, rxjs@^6.2.0:
   version "6.2.0"
