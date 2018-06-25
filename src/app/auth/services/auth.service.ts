@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { tokenNotExpired } from 'angular2-jwt';
+// import { Observable } from 'rxjs';
+// import { tokenNotExpired } from 'angular2-jwt';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 import { User } from './../../models/user.model';
 
@@ -27,7 +28,10 @@ export class AuthService {
   loggedIn() {
     if (localStorage.getItem('currentUser')) {
       const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      return tokenNotExpired(null, currentUser.token);
+      const helper = new JwtHelperService();
+      const isExpired = helper.isTokenExpired(currentUser.token);
+
+      return !isExpired;
     }
 
     return false;
