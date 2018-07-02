@@ -6,6 +6,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from './../services/auth.service';
 import { AlertService } from './../services/alert.service';
 import { User } from '../../models/user.model';
+import { LoadingSpinnerService } from '../../services/loading-spinner.service';
 
 @Component({
   selector: 'app-login',
@@ -16,12 +17,14 @@ export class LoginComponent implements OnInit {
   public loginForm: FormGroup;
   loading = false;
   returnUrl: string;
+  private onLoginSpinner = 'loginSpinner';
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
-    private alertService: AlertService) { }
+    private alertService: AlertService,
+    private spinnerService: LoadingSpinnerService) { }
 
   ngOnInit() {
     // reset login status
@@ -39,6 +42,10 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  isLoginSpinnerShowing() {
+    return this.spinnerService.isShowing(this.onLoginSpinner);
+  }
+
   login() {
     this.loading = true;
 
@@ -47,8 +54,12 @@ export class LoginComponent implements OnInit {
       this.loginForm.value.password
     );
 
+    this.spinnerService.show(this.onLoginSpinner);
+
     this.authService.login(user)
       .subscribe((data) => {
+        this.spinnerService.hide(this.onLoginSpinner);
+        this.loginForm.reset();
         if (! data['obj']['token']) {
           this.alertService.error(data['title']);
         } else {
@@ -61,13 +72,13 @@ export class LoginComponent implements OnInit {
           this.router.navigate([this.returnUrl]);
         }
       }, (err: HttpErrorResponse) => {
+        this.spinnerService.hide(this.onLoginSpinner);
+        this.loginForm.reset();
         const errObj = JSON.parse(err.error);
         const message = errObj.title + ': ' + errObj.error.message;
         this.alertService.error(message);
         this.loading = false;
       });
-
-    this.loginForm.reset();
   }
 
 }
