@@ -1,8 +1,46 @@
 <div class="jumbotron">
-  <div class="container-fluid">
+  <div class="container">
+    <h1 class="portal">
+      {{ appName }}
+    </h1>
+    <div class="welcome-text">
+      <p class="welcome-p">
+        Sie befinden sich auf dem neuen Datenaustausch-Portal der mikrobiologischen nationalen Referenzlabore
+        des Bundesinstituts für Risikobewertung (BfR).
+      </p>
+      <p class="welcome-p">
+        Hier haben Sie die Möglichkeit sich zu registrieren und nach dem Einloggen Ihre im Probeneinsendebogen V14
+        eingetragenen Daten hochzuladen, zu validieren und an das BfR zu senden. Der Probeneinsendebogen ist
+        unter Probendaten \ Excel-Vorlage verlinkt und steht auf der gewohnten BfR-Seite zur Verfügung.
+      </p>
+      <p class="welcome-p">
+        Möchten Sie Ihren Probeneinsendebogen V14 nur kurz prüfen, können Sie die Validierung
+        der Proben wie gewohnt auch ohne sich einzuloggen vornehmen.
+      </p>
+      <p class="welcome-p">
+          Dieses Portal wird kontinuierlich weiterentwickelt. Folgende Punkte sind in der Planung:
+      </p>
+      <!-- <br> -->
+      <ul class="welcome-p">
+        <li>Autokorrektur fehlerhafter Daten</li>
+        <li>Bereitstellung von Resistenzdaten eingesendeter Isolate für registrierte Benutzer</li>
+        <li>Absenden und getrenntes Ausdrucken mehrerer Erreger in nur einer Datei</li>
+      </ul>
+      <!-- <br> -->
+      <p class="welcome-p">
+          Bei Fragen, Problemen oder Anregungen können Sie gerne mit uns in
+          <a href="mailto:{{ supportContact }}" target="_top">Kontakt</a> treten.
+      </p>
+      <br>
+      <p class="welcome-p">
+          Ihr MiBi-Portal Team
+      </p>
+      <br>
+      <p class="welcome-p">
       <a href="https://www.bfr.bund.de" target="_blank">
-        <img class="logo" src="../../assets/bfr_logo.gif" alt="BfR Logo"></a>
-    <!-- <h2><img src="../../assets/bfr_logo.gif" alt="BfR Logo"> Bundesinstitut für Risikobewertung</h2> -->
-    <h1 class="portal">{{ appName }}</h1>
+        <img class="logo" src="../../assets/bfr_logo.gif" alt="BfR Logo">
+      </a>
+      </p>
+    </div>
   </div>
 </div>
