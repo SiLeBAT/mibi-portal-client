@@ -9,6 +9,7 @@ import { environment } from './../../environments/environment';
 export class MainDashComponent implements OnInit {
 
   appName: string = environment.appName;
+  supportContact: string = environment.supportContact;
 
   constructor() { }
 

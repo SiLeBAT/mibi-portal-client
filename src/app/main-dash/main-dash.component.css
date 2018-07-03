@@ -1,15 +1,15 @@
 .portal {
   color: rgb(3, 78, 168);
-  text-align: center;
-  margin: 5rem auto;
 }
 
 .logo {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 8rem;
-  margin-bottom: 5rem;
-  width: 20rem;
-  height: auto;
+  width: 14rem;
+}
+
+.welcome-text {
+  margin-top: 5rem;
+}
+
+.welcome-p {
+  font-size: medium;
 }
