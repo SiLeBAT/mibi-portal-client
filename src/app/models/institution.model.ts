@@ -32,5 +32,15 @@ export class Institution {
     this.email = entry.email;
   }
 
+  public toString = () : string => {
+    let name = this.name1;
+    if (this.name2) {
+      name = name + ', ' + this.name2;
+    }
+    name = name + ', ' + this.location;
+
+    return name;
+  }
+
 }
 

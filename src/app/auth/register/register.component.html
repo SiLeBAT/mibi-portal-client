@@ -11,17 +11,20 @@ when the submit button is clocked. On submit the register() method is called if 
       <form [formGroup]="registerForm" (ngSubmit)="register()" novalidate>
 
         <div class="form-group" [ngClass]="{'error' :  !validateField('institution')}">
-          <label for="institutionMenu">Wählen Sie Ihr Institut</label>
-          <select class="form-control" name="institutionMenu" data-style="btn-primary" id="institutionMenu" formControlName="institution">
-            <!-- [(ngModel)]="selectedInstitutionId"> -->
-            <option [ngValue]="null" disabled>
-              -- Institut wählen --
-            </option>
-            <option *ngFor="let institution of institutions" [value]="institution._id">
-              {{ getInstitutionName(institution) }}
-            </option>
-          </select>
-          <em *ngIf="!validateField('institution')">Pflichtfeld.</em>
+
+            <label for="institutionMenu">Wählen Sie Ihr Institut</label>
+            <input
+              type="text"
+              class="form-control"
+              list="institutions"
+              id="institutionMenu"
+              name="institutionMenu"
+              formControlName="institution"/>
+            <datalist id="institutions">
+              <option *ngFor="let institution of institutions" [value]="institution"></option>
+            </datalist>
+            <em *ngIf="!validateField('institution')">Pflichtfeld.</em>
+
         </div>
 
         <div class="form-group" [ngClass]="{'error' :  !validateField('firstName')}">
@@ -61,6 +64,7 @@ when the submit button is clocked. On submit the register() method is called if 
 
         <div class="form-group reset-btn">
           <button class="btn btn-primary" type="submit" [disabled]="!registerForm.valid">Submit</button>
+          <!-- <button class="btn btn-primary" type="submit" >Submit</button> -->
           <a [routerLink]="['/main']" class="btn btn-link">
             Zurück
           </a>

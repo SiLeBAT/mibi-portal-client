@@ -8,6 +8,9 @@ import { AlertService } from './../services/alert.service';
 import { User } from '../../models/user.model';
 import { Institution } from '../../models/institution.model';
 
+export interface IHash {
+  [details: string]: string;
+}
 
 @Component({
   selector: 'app-register',
@@ -18,6 +21,8 @@ export class RegisterComponent implements OnInit {
   public registerForm: FormGroup;
   loading = false;
   institutions: Institution[] = [];
+  instituteHash: IHash = {};
+  selected: string = '';
   private pwStrength: number;
 
   constructor(
@@ -59,6 +64,7 @@ export class RegisterComponent implements OnInit {
           const institution = new Institution(entry);
           // console.log('institution: ', institution);
           this.institutions.push(institution);
+          this.instituteHash[institution.toString()] = institution._id;
         }
       }, (err: HttpErrorResponse) => {
         try {
@@ -71,25 +77,29 @@ export class RegisterComponent implements OnInit {
 
   register() {
     if (this.registerForm.valid) {
-      this.loading = true;
       const user = new User(
         this.registerForm.value.email,
         this.registerForm.value.password1,
         this.registerForm.value.firstName,
         this.registerForm.value.lastName,
       );
-      user.institution = this.registerForm.value.institution;
+
+      const instituteName = this.registerForm.value.institution;
+      user.institution = this.instituteHash[instituteName];
+      if (! user.institution) {
+        user.institution = instituteName;
+      }
 
       this.userService.create(user)
         .subscribe((data) => {
           this.alertService.success(data['title'], true);
+          this.registerForm.reset();
           this.router.navigate(['users/login']);
         }, (err: HttpErrorResponse) => {
           this.alertService.error(err.error.title, true);
-          this.loading = false;
+          this.registerForm.reset();
         });
 
-      this.registerForm.reset();
     }
   }
 
