@@ -62,7 +62,6 @@ export class RegisterComponent implements OnInit {
       .subscribe((data) => {
         for (const entry of data as Array<any>) {
           const institution = new Institution(entry);
-          // console.log('institution: ', institution);
           this.institutions.push(institution);
           this.instituteHash[institution.toString()] = institution._id;
         }
@@ -93,11 +92,9 @@ export class RegisterComponent implements OnInit {
       this.userService.create(user)
         .subscribe((data) => {
           this.alertService.success(data['title'], true);
-          this.registerForm.reset();
           this.router.navigate(['users/login']);
         }, (err: HttpErrorResponse) => {
           this.alertService.error(err.error.title, true);
-          this.registerForm.reset();
         });
 
     }
