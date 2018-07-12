@@ -32,7 +32,7 @@ export class ActivateComponent implements OnInit {
         this.tokenValid = true;
       }, (err: HttpErrorResponse) => {
         const errObj = JSON.parse(err.error);
-        this.alertService.error(errObj.title, true);
+        this.alertService.error(errObj.title, false);
         this.tokenValid = false;
       });
 

@@ -94,7 +94,7 @@ export class RegisterComponent implements OnInit {
           this.alertService.success(data['title'], true);
           this.router.navigate(['users/login']);
         }, (err: HttpErrorResponse) => {
-          this.alertService.error(err.error.title, true);
+          this.alertService.error(err.error.title, false);
         });
 
     }
