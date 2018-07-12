@@ -58,12 +58,10 @@ export class ResetComponent implements OnInit {
         this.alertService.success(message, true);
         this.router.navigate(['users/login']);
       }, (err: HttpErrorResponse) => {
-        const errObj = JSON.parse(err.error);
-        this.alertService.error(errObj.title, true);
+        const errMsg = err['error']['title'];
+        this.alertService.error(errMsg, false);
         this.loading = false;
       });
-
-    this.resetForm.reset();
   }
 
   private passwordConfirmationValidator(fg: FormGroup) {
