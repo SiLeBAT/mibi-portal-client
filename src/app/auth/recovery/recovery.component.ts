@@ -44,7 +44,7 @@ export class RecoveryComponent implements OnInit {
             this.router.navigate(['users/login']);
           }, (err: HttpErrorResponse) => {
             const errObj = JSON.parse(err.error);
-            this.alertService.error(errObj.title, true);
+            this.alertService.error(errObj.title, false);
             this.loading = false;
           });
 

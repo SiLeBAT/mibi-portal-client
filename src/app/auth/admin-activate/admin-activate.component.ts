@@ -35,7 +35,7 @@ export class AdminActivateComponent implements OnInit {
         this.adminTokenValid = true;
       }, (err: HttpErrorResponse) => {
         const errObj = JSON.parse(err.error);
-        this.alertService.error(errObj.title, true);
+        this.alertService.error(errObj.title, false);
         this.adminTokenValid = false;
       });
 
