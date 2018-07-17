@@ -40,8 +40,6 @@
     "rxjs": "^6.2.0",
     "tooltipster": "^4.2.6",
     "ts-xlsx": "^0.0.11",
-    "uglify-es": "3.2.2",
-    "uglifyjs-webpack-plugin": "1.1.5",
     "xlsx": "^0.13.0",
     "xlsx-populate": "^1.17.0",
     "zone.js": "^0.8.26",
