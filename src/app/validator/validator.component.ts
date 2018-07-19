@@ -22,6 +22,13 @@ import { JsonToExcelService, IBlobData } from '../services/json-to-excel.service
 import { AuthService } from '../auth/services/auth.service';
 
 
+interface IErrorColors {
+  red: boolean;
+  yellow: boolean;
+  blue: boolean;
+}
+
+
 @Component({
   selector: 'app-validator',
   templateUrl: './validator.component.html',
@@ -44,7 +51,8 @@ export class ValidatorComponent implements OnInit, OnDestroy {
   private onValidateSpinner = 'validationSpinner';
   subscriptions = [];
   private message: string;
-  private hasErrors: boolean = false;
+  private dataChanged: boolean = false;
+  private currentErrors: IErrorColors;
 
   constructor(private uploadService: UploadService,
               private validateService: ValidateService,
@@ -62,25 +70,23 @@ export class ValidatorComponent implements OnInit, OnDestroy {
     this.initializeTable();
 
     this.subscriptions.push(this.validateService.doValidation
-      .subscribe(notification => this.validate()));
+      .subscribe(notification => this.validateFromMenu()));
     this.subscriptions.push(this.validateService.doSaveAsExcel
       .subscribe(notification => this.saveAsExcel()));
     this.subscriptions.push(this.validateService.doSend
       .subscribe(notification => this.send()));
-
   }
 
   isValidateSpinnerShowing() {
     return this.spinnerService.isShowing(this.onValidateSpinner);
   }
 
-  initializeTable() {
-
-    this.hasErrors = false;
+  async initializeTable() {
     this.tableStructureProvider = this.uploadService.getCurrentTableStructureProvider();
     if (this.tableStructureProvider) {
       this.tableData = this.tableStructureProvider.getTableData();
       this.errData = this.tableData.errData;
+      this.currentErrors = this.getErrorColors();
       this.origdata = this.tableData.origdata;
       this.data = this.origdata['data'];
 
@@ -101,13 +107,9 @@ export class ValidatorComponent implements OnInit, OnDestroy {
         renderAllRows : true,
         cells: (row, col, prop): any => {
           const cellProperties: any = {};
-
           if (this.errData[row]) {
             if (this.errData[row][col]) {
               cellProperties.errObj = this.errData[row][col];
-              if (this.errData[row][col][2]) {
-                this.hasErrors = true;
-              }
               Object.assign(cellProperties, {renderer: this.cellRenderer});
             }
           }
@@ -180,8 +182,13 @@ export class ValidatorComponent implements OnInit, OnDestroy {
     }
   }
 
-  validate() {
-    this.alertService.clear();
+  validateFromMenu() {
+    this.dataChanged = false;
+    this.validate();
+  }
+
+  async validate() {
+    await this.alertService.clear();
 
     _.forEach($('.tooltipster-text'), (item) => {
       if ($.tooltipster.instances($(item)).length > 0) {
@@ -191,20 +198,25 @@ export class ValidatorComponent implements OnInit, OnDestroy {
 
     let requestDTO: ISampleCollectionDTO = this.tableToJsonService.fromTableToDTO(this.data);
     this.spinnerService.show(this.onValidateSpinner);
-    this.validateService.validateJs(requestDTO)
-      .subscribe((data: IJsResponseDTO[]) => {
-        this.setCurrentJsResponseDTO(data);
-        this.spinnerService.hide(this.onValidateSpinner);
-        this.initializeTable();
-      }, (err: HttpErrorResponse) => {
-        this.spinnerService.hide(this.onValidateSpinner);
-        const errMessage = err['error']['title'];
-        this.message = errMessage;
-        this.alertService.error(errMessage);
-      });
+
+    try {
+      const data = await this.validateService.validateJs(requestDTO).toPromise();
+      this.setCurrentJsResponseDTO(data as IJsResponseDTO[]);
+      this.spinnerService.hide(this.onValidateSpinner);
+      this.initializeTable();
+    } catch (err) {
+      this.spinnerService.hide(this.onValidateSpinner);
+      const errMessage = err['error']['title'];
+      this.message = errMessage;
+      this.alertService.error(errMessage, false);
+    };
   }
 
   async saveAsExcel(doDownload: boolean = true): Promise<IBlobData> {
+    if (this.dataChanged) {
+      await this.validate();
+    }
+
     let blobData: IBlobData;
     try {
       blobData = await this.jsonToExcelService.saveAsExcel(this.data, doDownload);
@@ -216,16 +228,42 @@ export class ValidatorComponent implements OnInit, OnDestroy {
     return blobData;
   }
 
+  getErrorColors(): IErrorColors {
+    let errorColors: IErrorColors = {
+      red: false,
+      yellow: false,
+      blue: false
+    }
+
+    _.forEach((this.errData), (rowItem, rowIndex) => {
+      _.forEach((rowItem), (colItem, colIndex) => {
+        if (colItem[2]) {
+          errorColors.red = true;
+        }
+        if (colItem[1]) {
+          errorColors.yellow = true;
+        }
+      });
+    });
+
+    return errorColors;
+  }
+
   async send() {
     let blobData: IBlobData = await this.saveAsExcel(false);
+
     try {
       let formData: FormData = new FormData();
       formData.append('myMemoryXSLX', blobData.blob, blobData.fileName);
-      if (this.hasErrors) {
+      if (this.currentErrors.red) {
         this.message = 'Es gibt noch rot gekennzeichnete Fehler. Bitte vor dem Senden korrigieren.';
-        this.alertService.error(this.message);
-      } else {
-        this.alertService.clear();
+        this.alertService.error(this.message, false);
+      } else if ((this.currentErrors.yellow) && (this.dataChanged)) {
+        this.message = 'Sie haben nach dem letzten Validierungsvorgang Änderungen gemacht, die zu neuen Ergebnissen führen. Wenn Sie dennoch senden wollen, dann klicken Sie bitte nochmals Senden.';
+        this.alertService.error(this.message, false);
+        this.dataChanged = false;
+    } else {
+        await this.alertService.clear();
 
         const options: ConfirmSettings = {
           overlay: true,
@@ -252,12 +290,12 @@ export class ValidatorComponent implements OnInit, OnDestroy {
                     this.message = `Der Auftrag wurde an das BfR gesendet.
                                     Bitte drucken Sie die Exceltabelle in Ihrem Mailanhang
                                     aus und legen sie Ihren Isolaten bei.`;
-                    this.alertService.success(this.message);
+                    this.alertService.success(this.message, false);
                   }
                 }, (err: HttpErrorResponse) => {
                   const errMessage = err['error']['error'];
                   this.message = errMessage;
-                  this.alertService.error(errMessage);
+                  this.alertService.error(errMessage, false);
                 });
               } else {
               this.message = 'Es wurden keine Probendaten an das BfR gesendet';
@@ -278,6 +316,12 @@ export class ValidatorComponent implements OnInit, OnDestroy {
 
   hasMessage() {
     return (this.message !== undefined);
+  }
+
+  afterChange(changes) {
+    if (changes.params[1] === 'edit') {
+      this.dataChanged = true;
+    }
   }
 
   ngOnDestroy() {

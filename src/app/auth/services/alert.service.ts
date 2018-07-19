@@ -38,8 +38,8 @@ export class AlertService {
     });
   }
 
-  clear() {
-    this.subject.next();
+  async clear() {
+    await this.subject.next();
   }
 
   getMessage(): Observable<any> {
