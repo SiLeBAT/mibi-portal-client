@@ -1,6 +1,8 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Router } from "@angular/router";
+import { ConfirmationService, ConfirmSettings, ResolveEmit } from "@jaspero/ng-confirmations";
+
 import { AuthService } from './auth/services/auth.service';
-import { User } from './models/user.model';
 import { environment } from './../environments/environment';
 import { UploadService } from './services/upload.service';
 import { ValidateService } from './services/validate.service';
@@ -18,7 +20,9 @@ export class AppComponent implements OnInit {
 
   constructor(public authService: AuthService,
     public uploadService: UploadService,
-    public validateService: ValidateService) {}
+    public validateService: ValidateService,
+    private confirmationService: ConfirmationService,
+    private router: Router,) {}
 
   ngOnInit() {}
 
@@ -40,16 +44,33 @@ export class AppComponent implements OnInit {
     }
   }
 
-  activateSidebar() {
-    this.isActive = true;
-  }
-  deactivateSidebar() {
-    this.isActive = false;
+  onLogin() {
+    if (this.uploadService.isValidationActive()) {
+      const options: ConfirmSettings = {
+        overlay: true,
+        overlayClickToClose: false,
+        showCloseButton: true,
+        confirmText: 'Ok',
+        declineText: 'Cancel'
+      }
+
+      this.confirmationService
+        .create(
+          "Upload",
+          `<p>Möchten Sie Ihre Daten verwerfen und sich anmelden?</p>`,
+          options
+        )
+        .subscribe((ans: ResolveEmit) => {
+          if (ans.resolved) {
+            this.router.navigate(["/users/login"]);
+          }
+        });
+    } else {
+      this.router.navigate(["/users/login"]);
+    }
+
   }
 
-  isSidebarActive() {
-    return this.isActive;
-  }
 
   getDisplayMode() {
     let displayMode;
@@ -63,8 +84,29 @@ export class AppComponent implements OnInit {
   }
 
   onLogout() {
-    this.deactivateSidebar();
-    this.authService.logout();
+    if (this.uploadService.isValidationActive()) {
+      const options: ConfirmSettings = {
+        overlay: true,
+        overlayClickToClose: false,
+        showCloseButton: true,
+        confirmText: 'Ok',
+        declineText: 'Cancel'
+      }
+
+      this.confirmationService
+        .create(
+          "Upload",
+          `<p>Möchten Sie Ihre Daten verwerfen und sich abmelden?</p>`,
+          options
+        )
+        .subscribe((ans: ResolveEmit) => {
+          if (ans.resolved) {
+            this.authService.logout();
+          }
+        });
+    } else {
+      this.authService.logout();
+    }
   }
 
 }

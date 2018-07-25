@@ -1,9 +1,9 @@
 import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
 import { HttpClient, HttpRequest } from "@angular/common/http";
 import { ConfirmationService, ConfirmSettings, ResolveEmit } from "@jaspero/ng-confirmations";
 
 import { ITableStructureProvider } from "./json-to-table";
-import { Router } from "@angular/router";
 
 @Injectable()
 export class UploadService {
