@@ -71,6 +71,7 @@ body {
 }
 
 .main-footer {
+  background: rgb(255, 255, 255);
   padding: 2rem;;
   position: fixed;
   bottom: 0;
