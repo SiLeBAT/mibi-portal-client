@@ -1,9 +1,8 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
 import { Router } from "@angular/router";
-import { ConfirmationService, ConfirmSettings, ResolveEmit } from "@jaspero/ng-confirmations";
 
 import { AuthService } from './auth/services/auth.service';
-import { environment } from './../environments/environment';
+import { environment } from '../environments/environment';
 import { UploadService } from './services/upload.service';
 import { ValidateService } from './services/validate.service';
 
@@ -21,8 +20,7 @@ export class AppComponent implements OnInit {
   constructor(public authService: AuthService,
     public uploadService: UploadService,
     public validateService: ValidateService,
-    private confirmationService: ConfirmationService,
-    private router: Router,) {}
+    private router: Router) {}
 
   ngOnInit() {}
 
@@ -45,30 +43,7 @@ export class AppComponent implements OnInit {
   }
 
   onLogin() {
-    if (this.uploadService.isValidationActive()) {
-      const options: ConfirmSettings = {
-        overlay: true,
-        overlayClickToClose: false,
-        showCloseButton: true,
-        confirmText: 'Ok',
-        declineText: 'Cancel'
-      }
-
-      this.confirmationService
-        .create(
-          "Upload",
-          `<p>Möchten Sie Ihre Daten verwerfen und sich anmelden?</p>`,
-          options
-        )
-        .subscribe((ans: ResolveEmit) => {
-          if (ans.resolved) {
-            this.router.navigate(["/users/login"]);
-          }
-        });
-    } else {
-      this.router.navigate(["/users/login"]);
-    }
-
+    this.router.navigate(["/users/login"]);
   }
 
 
@@ -84,29 +59,7 @@ export class AppComponent implements OnInit {
   }
 
   onLogout() {
-    if (this.uploadService.isValidationActive()) {
-      const options: ConfirmSettings = {
-        overlay: true,
-        overlayClickToClose: false,
-        showCloseButton: true,
-        confirmText: 'Ok',
-        declineText: 'Cancel'
-      }
-
-      this.confirmationService
-        .create(
-          "Upload",
-          `<p>Möchten Sie Ihre Daten verwerfen und sich abmelden?</p>`,
-          options
-        )
-        .subscribe((ans: ResolveEmit) => {
-          if (ans.resolved) {
-            this.authService.logout();
-          }
-        });
-    } else {
-      this.authService.logout();
-    }
+    this.authService.logout();
   }
 
 }

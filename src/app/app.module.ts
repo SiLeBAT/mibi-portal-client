@@ -39,6 +39,7 @@ import { SpinnerContainerComponent } from './shared/spinner-container/spinner-co
 import { GenericSpinnerComponent } from './shared/generic-spinner/generic-spinner.component';
 import { DropdownDirective } from './shared/directive/dropdown.directive';
 import { AdminActivateComponent } from './auth/admin-activate/admin-activate.component';
+import { CanDeactivateGuard } from './can-deactivate/can-deactivate.guard';
 
 
 
@@ -86,6 +87,7 @@ import { AdminActivateComponent } from './auth/admin-activate/admin-activate.com
     LoadingSpinnerService,
     WindowRefService,
     AuthGuard,
+    CanDeactivateGuard,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

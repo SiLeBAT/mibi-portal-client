@@ -5,7 +5,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { UserService } from '../services/user.service';
 import { AlertService } from '../services/alert.service';
-import { environment } from './../../../environments/environment';
+import { environment } from '../../../environments/environment';
 
 
 @Component({

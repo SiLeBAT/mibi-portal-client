@@ -3,11 +3,11 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 
-import { UserService } from './../../auth/services/user.service';
-import { AlertService } from './../../auth/services/alert.service';
-import { AuthService } from './../../auth/services/auth.service';
-import { User } from './../../models/user.model';
-import { UserData } from './../../models/userdata.model';
+import { UserService } from '../../auth/services/user.service';
+import { AlertService } from '../../auth/services/alert.service';
+import { AuthService } from '../../auth/services/auth.service';
+import { User } from '../../models/user.model';
+import { UserData } from '../../models/userdata.model';
 
 @Component({
   selector: 'app-userdata',

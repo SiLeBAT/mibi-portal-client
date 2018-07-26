@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 
-import { User } from './../../models/user.model';
-import { UserService } from './../services/user.service';
-import { AlertService } from './../services/alert.service';
+import { User } from '../../models/user.model';
+import { UserService } from '../services/user.service';
+import { AlertService } from '../services/alert.service';
 import { AuthService } from '../services/auth.service';
 import { Institution } from '../../models/institution.model';
 

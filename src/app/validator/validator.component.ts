@@ -8,18 +8,20 @@ import { HotTableRegisterer } from '@handsontable/angular';
 import 'tooltipster';
 import { ConfirmationService, ConfirmSettings, ResolveEmit } from "@jaspero/ng-confirmations";
 
-import { UploadService } from './../services/upload.service';
+import { UploadService } from '../services/upload.service';
 import { AlertService } from '../auth/services/alert.service';
-import { IKnimeOrigdata, IKnimeColHeaders, IKnimeData, IJsResponseDTO } from './../upload/upload.component';
-import { oriHeaders } from './../services/excel-to-json.service';
-import { ITableStructureProvider, ITableData, IErrRow, JsToTable } from './../services/json-to-table';
+import { IKnimeOrigdata, IKnimeColHeaders, IKnimeData, IJsResponseDTO } from '../upload/upload.component';
+import { oriHeaders } from '../services/excel-to-json.service';
+import { ITableStructureProvider, ITableData, IErrRow, JsToTable } from '../services/json-to-table';
 
-import { ISampleCollectionDTO } from './../services/excel-to-json.service';
-import { ValidateService } from './../services/validate.service';
-import { TableToJsonService } from './../services/table-to-json.service';
-import { LoadingSpinnerService } from './../services/loading-spinner.service';
+import { ISampleCollectionDTO } from '../services/excel-to-json.service';
+import { ValidateService } from '../services/validate.service';
+import { TableToJsonService } from '../services/table-to-json.service';
+import { LoadingSpinnerService } from '../services/loading-spinner.service';
 import { JsonToExcelService, IBlobData } from '../services/json-to-excel.service';
 import { AuthService } from '../auth/services/auth.service';
+import { CanComponentDeactivate } from '../can-deactivate/can-deactivate.guard';
+import { CanReloadComponent } from '../can-deactivate/can-reload.component';
 
 
 interface IWarning {
@@ -40,7 +42,7 @@ interface IErrorColors {
   templateUrl: './validator.component.html',
   styleUrls: ['./validator.component.css']
 })
-export class ValidatorComponent implements OnInit, OnDestroy {
+export class ValidatorComponent extends CanReloadComponent implements OnInit, OnDestroy, CanComponentDeactivate {
   private _window: Window;
   private resizeId;
 
@@ -75,7 +77,9 @@ export class ValidatorComponent implements OnInit, OnDestroy {
               private authService: AuthService,
               private spinnerService: LoadingSpinnerService,
               private hotRegisterer: HotTableRegisterer,
-              private confirmationService: ConfirmationService) {}
+              private confirmationService: ConfirmationService) {
+    super();
+  }
 
 
   ngOnInit() {
@@ -92,6 +96,40 @@ export class ValidatorComponent implements OnInit, OnDestroy {
   isValidateSpinnerShowing() {
     return this.spinnerService.isShowing(this.onValidateSpinner);
   }
+
+  canReload() {
+    return !this.uploadService.isValidationActive();
+  }
+
+  canDeactivate(): Promise<boolean> {
+    if (this.uploadService.isValidationActive()) {
+      return new Promise((resolve, reject) => {
+        const options: ConfirmSettings = {
+          overlay: true,
+          overlayClickToClose: false,
+          showCloseButton: true,
+          confirmText: 'Ok',
+          declineText: 'Cancel'
+        }
+
+       this.confirmationService
+          .create(
+            "Seite verlassen",
+            `<p>Möchten Sie Ihre Daten verwerfen und die Seite verlassen?</p>`,
+            options
+          )
+          .subscribe((ans: ResolveEmit) => {
+            if (ans.resolved) {
+              resolve(true);
+            } else {
+              reject();
+            }
+          });
+        });
+    }
+    return Promise.resolve(true);
+  }
+
 
   async initializeTable() {
     this.newWarnings = false;
