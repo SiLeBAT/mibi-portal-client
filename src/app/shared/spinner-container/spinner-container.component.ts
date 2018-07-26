@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { LoadingSpinnerService } from './../../services/loading-spinner.service';
+import { LoadingSpinnerService } from '../../services/loading-spinner.service';
 
 @Component({
   selector: 'app-spinner-container',

@@ -8,12 +8,12 @@ import { concat } from 'rxjs/operators';
 import { UploadService } from '../services/upload.service';
 import { AlertService } from '../auth/services/alert.service';
 import { ExcelToJsonService, ISampleCollectionDTO, ISampleDTO, IExcelData } from '../services/excel-to-json.service';
-import { JsonToExcelService } from './../services/json-to-excel.service';
+import { JsonToExcelService } from '../services/json-to-excel.service';
 import { ValidateService } from '../services/validate.service';
 
-import { KnimeToTable, ITableStructureProvider, JsToTable } from './../services/json-to-table';
+import { KnimeToTable, ITableStructureProvider, JsToTable } from '../services/json-to-table';
 
-import { LoadingSpinnerService } from './../services/loading-spinner.service';
+import { LoadingSpinnerService } from '../services/loading-spinner.service';
 
 
 

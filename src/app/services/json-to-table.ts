@@ -1,5 +1,5 @@
 import { IKnimeResponseDTO, IKnimeOrigdata, IJsResponseDTO, IKnimeData } from '../upload/upload.component';
-import { jsHeaders, ISampleDTO } from './../services/excel-to-json.service';
+import { jsHeaders, ISampleDTO } from './excel-to-json.service';
 
 import * as _ from 'lodash';
 

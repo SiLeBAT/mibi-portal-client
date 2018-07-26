@@ -3,8 +3,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 
-import { AuthService } from './../services/auth.service';
-import { AlertService } from './../services/alert.service';
+import { AuthService } from '../services/auth.service';
+import { AlertService } from '../services/alert.service';
 import { User } from '../../models/user.model';
 import { LoadingSpinnerService } from '../../services/loading-spinner.service';
 

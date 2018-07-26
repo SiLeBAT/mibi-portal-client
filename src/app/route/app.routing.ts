@@ -1,24 +1,25 @@
 import { Routes, RouterModule } from '@angular/router';
 
-import { HomeComponent } from './../auth/home/home.component';
-import { LoginComponent } from './../auth/login/login.component';
-import { RegisterComponent } from './../auth/register/register.component';
-import { RecoveryComponent } from './../auth/recovery/recovery.component';
-import { ResetComponent } from './../auth/reset/reset.component';
-import { ActivateComponent } from './../auth/activate/activate.component';
-import { AuthGuard } from './../auth/guards/auth.guard';
+import { HomeComponent } from '../auth/home/home.component';
+import { LoginComponent } from '../auth/login/login.component';
+import { RegisterComponent } from '../auth/register/register.component';
+import { RecoveryComponent } from '../auth/recovery/recovery.component';
+import { ResetComponent } from '../auth/reset/reset.component';
+import { ActivateComponent } from '../auth/activate/activate.component';
+import { AuthGuard } from '../auth/guards/auth.guard';
 import { UploadComponent } from '../upload/upload.component';
 import { MainDashComponent } from '../main-dash/main-dash.component';
 import { MyaccountComponent } from '../myaccount/myaccount.component';
 import { UserdataComponent } from '../myaccount/userdata/userdata.component';
 import { ValidatorComponent } from '../validator/validator.component';
 import { AdminActivateComponent } from '../auth/admin-activate/admin-activate.component';
+import { CanDeactivateGuard } from '../can-deactivate/can-deactivate.guard';
 
 const appRoutes: Routes = [
   { path: '', component: MainDashComponent},
   { path: 'main', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'upload', component: UploadComponent},
-  { path: 'validate', component: ValidatorComponent },
+  { path: 'validate', component: ValidatorComponent, canDeactivate: [CanDeactivateGuard] },
   { path: 'myaccount', component: MyaccountComponent, canActivate: [AuthGuard] },
   { path: 'userdata', component: UserdataComponent, canActivate: [AuthGuard] },
   { path: 'userdata/:index', component: UserdataComponent, canActivate: [AuthGuard] },

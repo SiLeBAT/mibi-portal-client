@@ -3,8 +3,8 @@ import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl } from
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 
-import { UserService } from './../services/user.service';
-import { AlertService } from './../services/alert.service';
+import { UserService } from '../services/user.service';
+import { AlertService } from '../services/alert.service';
 import { User } from '../../models/user.model';
 import { Institution } from '../../models/institution.model';
 
