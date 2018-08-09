@@ -16,26 +16,23 @@ import { AdminActivateComponent } from '../auth/admin-activate/admin-activate.co
 import { CanDeactivateGuard } from '../can-deactivate/can-deactivate.guard';
 
 const appRoutes: Routes = [
-  { path: '', component: MainDashComponent},
-  { path: 'main', component: HomeComponent, canActivate: [AuthGuard] },
-  { path: 'upload', component: UploadComponent},
-  { path: 'validate', component: ValidatorComponent, canDeactivate: [CanDeactivateGuard] },
-  { path: 'myaccount', component: MyaccountComponent, canActivate: [AuthGuard] },
-  { path: 'userdata', component: UserdataComponent, canActivate: [AuthGuard] },
-  { path: 'userdata/:index', component: UserdataComponent, canActivate: [AuthGuard] },
-  { path: 'users/login', component: LoginComponent },
-  { path: 'users/register', component: RegisterComponent },
-  { path: 'users/recovery', component: RecoveryComponent },
-  { path: 'users/reset/:id', component: ResetComponent },
-  { path: 'users/activate/:id', component: ActivateComponent },
-  { path: 'users/adminactivate/:id', component: AdminActivateComponent },
+    { path: '', component: MainDashComponent },
+    { path: 'main', component: HomeComponent, canActivate: [AuthGuard] },
+    { path: 'upload', component: UploadComponent },
+    { path: 'validate', component: ValidatorComponent, canDeactivate: [CanDeactivateGuard] },
+    { path: 'myaccount', component: MyaccountComponent, canActivate: [AuthGuard] },
+    { path: 'userdata', component: UserdataComponent, canActivate: [AuthGuard] },
+    { path: 'userdata/:index', component: UserdataComponent, canActivate: [AuthGuard] },
+    { path: 'users/login', component: LoginComponent },
+    { path: 'users/register', component: RegisterComponent },
+    { path: 'users/recovery', component: RecoveryComponent },
+    { path: 'users/reset/:id', component: ResetComponent },
+    { path: 'users/activate/:id', component: ActivateComponent },
+    { path: 'users/adminactivate/:id', component: AdminActivateComponent },
 
-  // otherwise redirect to home
-  { path: '**', redirectTo: '' }
+    // otherwise redirect to home
+    { path: '**', redirectTo: '' }
 ];
 
 // export const routing = RouterModule.forRoot(appRoutes, {useHash: true});
 export const routing = RouterModule.forRoot(appRoutes);
-
-
-

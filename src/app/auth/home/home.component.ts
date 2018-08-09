@@ -5,75 +5,69 @@ import { User } from '../../models/user.model';
 import { UserService } from '../services/user.service';
 import { AlertService } from '../services/alert.service';
 import { AuthService } from '../services/auth.service';
-import { Institution } from '../../models/institution.model';
-
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+    selector: 'app-home',
+    templateUrl: './home.component.html'
 })
 export class HomeComponent implements OnInit {
-  currentUser: User;
-  users: User[] = [];
+    currentUser: User;
+    users: User[] = [];
 
-  constructor(private userService: UserService,
-              private alertService: AlertService,
-              private authService: AuthService) {}
+    constructor(private userService: UserService,
+        private alertService: AlertService,
+        private authService: AuthService) { }
 
-  ngOnInit() {
-    // this.loadAllUsers();
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-  }
-
-  logout() {
-    this.authService.logout();
-  }
-
-  deleteUser(user: User) {
-    const _id = user._id;
-
-    this.userService.delete(_id)
-    .subscribe((data) => {
-      this.alertService.success('User ' + user.firstName + ' ' + user.lastName + ' deleted', true);
-      this.loadAllUsers();
-    }, (err: HttpErrorResponse) => {
-      try {
-        const errObj = JSON.parse(err.error);
-        if (err.error instanceof Error) {
-          console.error('deleteUser client-side or network error: ', errObj);
-        } else {
-          console.error(`deleteUser error status ${err.status}: `, errObj);
+    ngOnInit() {
+        // this.loadAllUsers();
+        const cu: string | null = localStorage.getItem('currentUser');
+        if (cu) {
+            this.currentUser = JSON.parse(cu);
         }
 
-        this.alertService.error(errObj.title);
-      } catch (e) {}
-
-      this.loadAllUsers();
-    });
-
-  }
-
-  getInstitutionName() {
-    let name = this.currentUser.institution['name1'];
-    if (this.currentUser.institution['name2']) {
-      name = name + ', ' + this.currentUser.institution['name2'];
     }
 
-    return name;
-  }
+    logout() {
+        this.authService.logout();
+    }
 
-  private loadAllUsers() {
-    this.userService.getAll()
-    .subscribe((data) => {
-      this.alertService.success(data['title']);
-      this.users = data['obj'];
-    }, (err: HttpErrorResponse) => {
-      try {
-        const errObj = JSON.parse(err.error);
-        console.log('error loadAllUsers: ', errObj);
-        this.alertService.error(errObj.title);
-      } catch (e) {}
-    });
-  }
+    deleteUser(user: User) {
+        const _id = user._id;
+
+        this.userService.delete(_id)
+            .subscribe((data) => {
+                this.alertService.success('User ' + user.firstName + ' ' + user.lastName + ' deleted', true);
+                this.loadAllUsers();
+            }, (err: HttpErrorResponse) => {
+                try {
+                    const errObj = JSON.parse(err.error);
+                    this.alertService.error(errObj.title);
+                } catch (e) { }
+
+                this.loadAllUsers();
+            });
+
+    }
+
+    getInstitutionName() {
+        let name = this.currentUser.institution['name1'];
+        if (this.currentUser.institution['name2']) {
+            name = name + ', ' + this.currentUser.institution['name2'];
+        }
+
+        return name;
+    }
+
+    private loadAllUsers() {
+        this.userService.getAll()
+            .subscribe((data: any) => {
+                this.alertService.success(data['title']);
+                this.users = data['obj'];
+            }, (err: HttpErrorResponse) => {
+                try {
+                    const errObj = JSON.parse(err.error);
+                    this.alertService.error(errObj.title);
+                } catch (e) { }
+            });
+    }
 }

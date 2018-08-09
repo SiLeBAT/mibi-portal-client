@@ -1,30 +1,25 @@
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
-
-import { IKnimeData } from '../upload/upload.component';
 import { ISampleCollectionDTO, ISampleDTO } from './excel-to-json.service';
-
-
 
 @Injectable()
 export class TableToJsonService {
 
-  constructor() {}
+    constructor() { }
 
-  fromTableToDTO(data: IKnimeData[]): ISampleCollectionDTO {
-    // console.log('fromTableToDTO, data: ', data);
-    let sampleList: ISampleDTO[] = [];
+    fromTableToDTO(data: any[]): ISampleCollectionDTO {
+        // console.log('fromTableToDTO, data: ', data);
+        const sampleList: ISampleDTO[] = [];
 
-    _.forEach(data, (sample, i) => {
-      sampleList[i] = sample;
-    });
+        _.forEach(data, (sample, i) => {
+            sampleList[i] = sample;
+        });
 
-    let dto: ISampleCollectionDTO = {
-      data: sampleList
+        const dto: ISampleCollectionDTO = {
+            data: sampleList
+        };
+
+        return dto;
     }
-
-    return dto;
-  }
-
 
 }

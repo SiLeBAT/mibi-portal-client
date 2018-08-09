@@ -1,19 +1,18 @@
 import { UserData } from './userdata.model';
 
 export class User {
-  constructor(
-    public email: string,
-    public password: string,
-    public firstName?: string,
-    public lastName?: string,
-    public _id?: string,
-    public userData?: UserData[],
-    public institution?: string
-  ) {
-    this.userData = [];
-  }
+    userData: UserData[] = [];
+    institution: any;
+    _id: any;
 
-  addUserDataEntry(userDataEntry: UserData) {
-    this.userData.push(userDataEntry);
-  }
+    constructor(
+        public email: string,
+        public password: string,
+        public firstName?: string,
+        public lastName?: string
+    ) { }
+
+    addUserDataEntry(userDataEntry: UserData) {
+        this.userData.push(userDataEntry);
+    }
 }

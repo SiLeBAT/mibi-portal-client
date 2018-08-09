@@ -32,7 +32,6 @@ import { UploadComponent } from './upload/upload.component';
 import { MainDashComponent } from './main-dash/main-dash.component';
 import { MyaccountComponent } from './myaccount/myaccount.component';
 import { UserdataComponent } from './myaccount/userdata/userdata.component';
-import { HttpModule } from '@angular/http';
 import { ActivateComponent } from './auth/activate/activate.component';
 import { ValidatorComponent } from './validator/validator.component';
 import { SpinnerContainerComponent } from './shared/spinner-container/spinner-container.component';
@@ -41,64 +40,61 @@ import { DropdownDirective } from './shared/directive/dropdown.directive';
 import { AdminActivateComponent } from './auth/admin-activate/admin-activate.component';
 import { CanDeactivateGuard } from './can-deactivate/can-deactivate.guard';
 
-
-
 @NgModule({
-  declarations: [
-    AppComponent,
-    RegisterComponent,
-    AlertComponent,
-    HomeComponent,
-    LoginComponent,
-    RecoveryComponent,
-    ResetComponent,
-    UploadComponent,
-    MainDashComponent,
-    MyaccountComponent,
-    UserdataComponent,
-    ActivateComponent,
-    ValidatorComponent,
-    SpinnerContainerComponent,
-    GenericSpinnerComponent,
-    DropdownDirective,
-    AdminActivateComponent
-  ],
-  imports: [
-    BrowserModule,
-    HotTableModule.forRoot(),
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    HttpModule,
-    ngfModule,
-    routing,
-    JasperoConfirmationsModule.forRoot(),
-    PasswordStrengthMeterModule
-  ],
-  providers: [
-    AuthService,
-    AlertService,
-    UserService,
-    UploadService,
-    ValidateService,
-    ExcelToJsonService,
-    JsonToExcelService,
-    TableToJsonService,
-    LoadingSpinnerService,
-    WindowRefService,
-    AuthGuard,
-    CanDeactivateGuard,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptor,
-      multi: true
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: JwtInterceptor,
-      multi: true
-    }
-  ],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        RegisterComponent,
+        AlertComponent,
+        HomeComponent,
+        LoginComponent,
+        RecoveryComponent,
+        ResetComponent,
+        UploadComponent,
+        MainDashComponent,
+        MyaccountComponent,
+        UserdataComponent,
+        ActivateComponent,
+        ValidatorComponent,
+        SpinnerContainerComponent,
+        GenericSpinnerComponent,
+        DropdownDirective,
+        AdminActivateComponent
+    ],
+    imports: [
+        BrowserModule,
+        HotTableModule.forRoot(),
+        FormsModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        ngfModule,
+        routing,
+        JasperoConfirmationsModule.forRoot(),
+        PasswordStrengthMeterModule
+    ],
+    providers: [
+        AuthService,
+        AlertService,
+        UserService,
+        UploadService,
+        ValidateService,
+        ExcelToJsonService,
+        JsonToExcelService,
+        TableToJsonService,
+        LoadingSpinnerService,
+        WindowRefService,
+        AuthGuard,
+        CanDeactivateGuard,
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: TokenInterceptor,
+            multi: true
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: JwtInterceptor,
+            multi: true
+        }
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }
