@@ -1,22 +1,22 @@
-import {Directive, ElementRef, HostListener, Renderer2} from '@angular/core';
+import { Directive, ElementRef, HostListener, Renderer2 } from '@angular/core';
 
 @Directive({
-  selector: '[appDropdown]'
+    selector: '[appDropdown]'
 })
 export class DropdownDirective {
-    constructor(private elementRef : ElementRef,
-                private renderer: Renderer2) {
+    constructor(private elementRef: ElementRef,
+        private renderer: Renderer2) {
     }
 
     @HostListener('document:click', ['$event.target'])
-    public onClick(targetElement) {
-      const nativeElement = this.elementRef.nativeElement;
-      const clickedInside = nativeElement.contains(targetElement);
+    onClick(targetElement: any) {
+        const nativeElement = this.elementRef.nativeElement;
+        const clickedInside = nativeElement.contains(targetElement);
 
-      if (!clickedInside || nativeElement.classList.contains('open')) {
-        this.renderer.removeClass(this.elementRef.nativeElement, 'open');
-      } else {
-        this.renderer.addClass(this.elementRef.nativeElement, 'open');
-      }
+        if (!clickedInside || nativeElement.classList.contains('open')) {
+            this.renderer.removeClass(this.elementRef.nativeElement, 'open');
+        } else {
+            this.renderer.addClass(this.elementRef.nativeElement, 'open');
+        }
     }
 }

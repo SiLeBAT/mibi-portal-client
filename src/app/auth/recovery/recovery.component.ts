@@ -5,50 +5,49 @@ import { HttpErrorResponse } from '@angular/common/http';
 
 import { UserService } from '../services/user.service';
 import { AlertService } from '../services/alert.service';
-import { User } from '../../models/user.model';
 
 @Component({
-  selector: 'app-revovery',
-  templateUrl: './recovery.component.html',
-  styleUrls: ['./recovery.component.css']
+    selector: 'app-revovery',
+    templateUrl: './recovery.component.html'
 })
 export class RecoveryComponent implements OnInit {
-  public recoveryForm: FormGroup;
-  loading = false;
+    recoveryForm: FormGroup;
+    loading = false;
 
-  constructor(
-    private userService: UserService,
-    private alertService: AlertService,
-    private router: Router) {}
+    constructor(
+        private userService: UserService,
+        private alertService: AlertService,
+        private router: Router) { }
 
-  ngOnInit() {
-    this.recoveryForm = new FormGroup({
-      email: new FormControl(null, [
-        Validators.required,
-        Validators.email
-      ])
-    });
-  }
+    ngOnInit() {
+        this.recoveryForm = new FormGroup({
+            email: new FormControl(null, [
+                Validators.required,
+                Validators.email
+            ])
+        });
+    }
 
-  recovery() {
-    console.log('Recovery clicked');
+    recovery() {
 
-    this.loading = true;
+        this.loading = true;
 
         const email = this.recoveryForm.value.email;
 
         this.userService.recoveryPassword(email)
-          .subscribe((data) => {
-            const message = data['title'];
-            this.alertService.success(message, true);
-            this.router.navigate(['users/login']);
-          }, (err: HttpErrorResponse) => {
-            const errObj = JSON.parse(err.error);
-            this.alertService.error(errObj.title, false);
-            this.loading = false;
-          });
+            .subscribe((data: any) => {
+                const message = data['title'];
+                this.alertService.success(message, true);
+                this.router.navigate(['users/login']).catch(() => {
+                    throw new Error('Unable to navigate.');
+                });
+            }, (err: HttpErrorResponse) => {
+                const errObj = JSON.parse(err.error);
+                this.alertService.error(errObj.title, false);
+                this.loading = false;
+            });
 
         this.recoveryForm.reset();
-  }
+    }
 
 }

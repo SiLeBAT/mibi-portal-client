@@ -1,4 +1,3 @@
-import { Institution } from '../models/institution.model';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/services/auth.service';
@@ -7,43 +6,49 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { AlertService } from '../auth/services/alert.service';
 
 @Component({
-  selector: 'app-myaccount',
-  templateUrl: './myaccount.component.html',
-  styleUrls: ['./myaccount.component.css']
+    selector: 'app-myaccount',
+    templateUrl: './myaccount.component.html',
+    styleUrls: ['./myaccount.component.css']
 })
 export class MyaccountComponent implements OnInit {
-  currentUser;
+    currentUser: any;
 
-  constructor(private router: Router,
-              private authService: AuthService,
-              private userService: UserService,
-              private alertService: AlertService) { }
+    constructor(private router: Router,
+        private authService: AuthService,
+        private userService: UserService,
+        private alertService: AlertService) { }
 
-  ngOnInit() {
-    this.currentUser = this.authService.getCurrentUser();
-  }
+    ngOnInit() {
+        this.currentUser = this.authService.getCurrentUser();
+    }
 
-  addUserData() {
-    this.router.navigateByUrl('/userdata');
-  }
+    addUserData() {
+        this.router.navigateByUrl('/userdata').catch(() => {
+            throw new Error('Unable to navigate.');
+        });
+    }
 
+    deleteUserData(userdata: any) {
 
-  deleteUserData(userdata) {
+        this.userService.deleteUserData(userdata._id, this.currentUser._id)
+            .subscribe((data: any) => {
 
-    this.userService.deleteUserData(userdata._id, this.currentUser._id)
-    .subscribe((data) => {
-      const localUser = JSON.parse(localStorage.getItem('currentUser'));
-      // const updatedUser = data['obj'];
-      const updatedUserdata = data['obj'].userdata;
-      localUser.userdata = updatedUserdata;
-      localStorage.setItem('currentUser', JSON.stringify(localUser));
-      this.authService.setCurrentUser(localUser);
-      this.currentUser = localUser;
-    }, (err: HttpErrorResponse) => {
-      const errObj = JSON.parse(err.error);
-      this.alertService.error(errObj.title, true);
-    });
+                const cu: string | null = localStorage.getItem('currentUser');
+                let localUser: any = {};
+                if (cu) {
+                    localUser = JSON.parse(cu);
+                }
+                // const updatedUser = data['obj'];
+                const updatedUserdata = data['obj'].userdata;
+                localUser.userdata = updatedUserdata;
+                localStorage.setItem('currentUser', JSON.stringify(localUser));
+                this.authService.setCurrentUser(localUser);
+                this.currentUser = localUser;
+            }, (err: HttpErrorResponse) => {
+                const errObj = JSON.parse(err.error);
+                this.alertService.error(errObj.title, true);
+            });
 
-  }
+    }
 
 }

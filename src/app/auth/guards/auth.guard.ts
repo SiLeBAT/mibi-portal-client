@@ -6,20 +6,22 @@ import { AlertService } from '../services/alert.service';
 @Injectable()
 export class AuthGuard implements CanActivate {
 
-  constructor(private authService: AuthService,
-              private alertService: AlertService,
-              private router: Router) { }
+    constructor(private authService: AuthService,
+        private alertService: AlertService,
+        private router: Router) { }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 
-    if (this.authService.loggedIn()) {
-      return true;
+        if (this.authService.loggedIn()) {
+            return true;
+        }
+
+        // not logged in so redirect to login page with the return url
+        this.alertService.error('Nicht authorisiert, bitte einloggen.');
+
+        this.router.navigate(['/users/login']).catch(() => {
+            throw new Error('Unable to navigate.');
+        });
+        return false;
     }
-
-    // not logged in so redirect to login page with the return url
-    this.alertService.error('Nicht authorisiert, bitte einloggen.');
-
-    this.router.navigate(['/users/login']);
-    return false;
-  }
 }
