@@ -33,7 +33,7 @@
             id="password2"
             class="form-control"
             formControlName="password2"/>
-            <em *ngIf="!validateField('password2')  && resetForm.controls.password2.errors.validatePasswordConfirm">Passwörter müssen übereinstimmen.</em>
+            <em *ngIf="!validateField('password2')  && resetForm.controls.password2.errors?.validatePasswordConfirm">Passwörter müssen übereinstimmen.</em>
         </div>
         <div class="form-group reset-btn">
           <button
