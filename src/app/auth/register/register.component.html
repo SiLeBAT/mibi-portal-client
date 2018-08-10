@@ -40,8 +40,8 @@ when the submit button is clocked. On submit the register() method is called if 
         <div class="form-group" [ngClass]="{'error' :  !validateField('email')}">
           <label for="email">Email</label>
           <input type="email" id="email" class="form-control" formControlName="email" placeholder="Email..." />
-          <em *ngIf="!validateField('email') && registerForm.controls.email.errors.email">Muss eine gültige Email sein.</em>
-          <em *ngIf="!validateField('email') && registerForm.controls.email.errors.required">Pflichtfeld.</em>
+          <em *ngIf="!validateField('email') && registerForm.controls.email.errors?.email">Muss eine gültige Email sein.</em>
+          <em *ngIf="!validateField('email') && registerForm.controls.email.errors?.required">Pflichtfeld.</em>
         </div>
         <div class="form-group pw-1" [ngClass]="{'error' :  !validateField('password1') || validatePwStrength()}">
           <label for="password1">Passwort (mind. 8 Zeichen)</label>
@@ -59,7 +59,7 @@ when the submit button is clocked. On submit the register() method is called if 
           <label for="password2">Passwort bestätigen</label>
           <input type="password" id="password2" class="form-control" formControlName="password2" placeholder="Password bestätigen..."
           />
-          <em *ngIf="!validateField('password2')  && registerForm.controls.password2.errors.validatePasswordConfirm">Passwörter müssen übereinstimmen.</em>
+          <em *ngIf="!validateField('password2')  && registerForm.controls.password2.errors?.validatePasswordConfirm">Passwörter müssen übereinstimmen.</em>
         </div>
 
         <div class="form-group reset-btn">
