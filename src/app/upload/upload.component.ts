@@ -9,7 +9,7 @@ import { ExcelToJsonService, ISampleCollectionDTO, ISampleDTO, IExcelData } from
 import { JsonToExcelService } from '../services/json-to-excel.service';
 import { ValidateService } from '../services/validate.service';
 
-import { KnimeToTable, ITableStructureProvider, JsToTable } from '../services/json-to-table';
+import { ITableStructureProvider, JsToTable } from '../services/json-to-table';
 
 import { LoadingSpinnerService } from '../services/loading-spinner.service';
 
@@ -42,30 +42,9 @@ export interface IKnimeColHeaders extends Array<string> {
     'Bemerkung_Untersuchungsprogramm': string;
 }
 
-export interface IKnimeData {
-    'Ihre_Probenummer': string | null;
-    'Probenummer_nach_AVVData': string | null;
-    'Erreger_Vorbefund_Text_aus_ADV-Kat-Nr16': string | null;
-    'Vorbefund_Textfeld_Ergaenzung': string | null;
-    'Datum_der_Probenahme': string | null;
-    'Datum_der_Isolierung': string | null;
-    'Ort_der_Probenahme_ADV-Kat-Nr9': string | null;
-    'Ort_der_Probenahme_PLZ': string | null;
-    'Ort_der_Probe-nahme_Text': string | null;
-    'Oberbegriff_Kodiersystem_der_Matrizes_ADV-Kat-Nr2': string | null;
-    'Matrix_Code_ADV-Kat-Nr3': string | null;
-    'Matrix_Textfeld_Ergaenzung': string | null;
-    'Verarbeitungszustand_ADV-Kat-Nr12': string | null;
-    'Grund_der_Probenahme_ADV-Kat-Nr4': string | null;
-    'Grund_der_Probenahme_Textfeld': string | null;
-    'Betriebsart_ADV-Kat-Nr8': string | null;
-    'Betriebsart_Textfeld': string | null;
-    'Bemerkung_Untersuchungsprogramm': string | null;
-}
-
 export interface IKnimeOrigdata {
     colHeaders: Array<string>;
-    data: IKnimeData[];
+    data: ISampleDTO[];
 }
 
 export interface IKnimeResponseDTO {
@@ -79,13 +58,20 @@ interface IErrorDTO {
     message: string;
 }
 
-interface IErrorResponseDTO {
+export interface IErrorResponseDTO {
     [key: string]: IErrorDTO[];
 }
 
-export interface IJsResponseDTO {
+export interface IAutoCorrectionDTO {
+    corrected: string;
+    field: string;
+    original: string;
+}
+
+export interface IValidationResponseDTO {
     data: ISampleDTO;
     errors: IErrorResponseDTO;
+    corrections: IAutoCorrectionDTO[];
 }
 
 @Component({
@@ -113,29 +99,6 @@ export class UploadComponent implements OnInit {
         private alertService: AlertService,
         private router: Router,
         private spinnerService: LoadingSpinnerService) { }
-
-    // Kinme validation:
-
-    // uploadFileAndValidate(files: File[]) {
-    //   this.uploadService.uploadFile(this.sendableFormData)
-    //     .subscribe((event: HttpEvent<Event>) => {
-    //       if (event.type === HttpEventType.UploadProgress) {
-    //         this.progress = Math.round(100 * event.loaded / event.total);
-    //       } else if (event instanceof HttpResponse) {
-    //         this.files = [];
-    //         const message = event['body']['title'];
-    //         this.alertService.success(message, true);
-    //         let responseDTO: IKnimeResponseDTO = this.fromKnimeToResponseDTO(event);
-    //         this.setCurrentKnimeResponseDTO(responseDTO);
-    //         this.router.navigate(['/validate']);
-    //       }
-    //     }, (err: HttpErrorResponse) => {
-    //       console.log('error upload file, err: ', err);
-    //       const errMessage = err['error']['title'];
-    //       this.alertService.error(errMessage, true);
-    //       this.files = [];
-    //     });
-    // }
 
     get lastInvalids(): any[] {
         return this._lastInvalids;
@@ -170,9 +133,10 @@ export class UploadComponent implements OnInit {
         if (data) {
             this.spinnerService.show(this.onUploadSpinner);
             this.validateService.validateJs(data)
-                .subscribe((data2: IJsResponseDTO[]) => {
+                .subscribe((data2: IValidationResponseDTO[]) => {
                     this.spinnerService.hide(this.onUploadSpinner);
-                    this.setCurrentJsResponseDTO(data2);
+                    const jsToTable: ITableStructureProvider = new JsToTable(data2);
+                    this.uploadService.setCurrentTableStructureProvider(jsToTable);
                     this.router.navigate(['/validate']).catch(() => {
                         throw new Error('Unable to navigate.');
                     });
@@ -202,34 +166,4 @@ export class UploadComponent implements OnInit {
     }
 
     ngOnInit() { }
-
-    setCurrentKnimeResponseDTO(responseDTO: IKnimeResponseDTO) {
-        const knimeToTable: ITableStructureProvider = new KnimeToTable(responseDTO);
-        this.uploadService.setCurrentTableStructureProvider(knimeToTable);
-    }
-
-    setCurrentJsResponseDTO(responseDTO: IJsResponseDTO[]) {
-        const jsToTable: ITableStructureProvider = new JsToTable(responseDTO);
-        this.uploadService.setCurrentTableStructureProvider(jsToTable);
-    }
-
-    fromKnimeToResponseDTO(dto: HttpEvent<Event>): IKnimeResponseDTO {
-        const responseData = JSON.parse((dto as any)['body']['obj']);
-        const errors = responseData['outputValues']['json-output-4']['errors'];
-        const origdata = responseData['outputValues']['json-output-4']['origdata'];
-        const colHeaders: IKnimeColHeaders = origdata['colHeaders'];
-        const knimeData: IKnimeData[] = origdata['data'];
-        const knimeOrigdata: IKnimeOrigdata = {
-            colHeaders: colHeaders,
-            data: knimeData
-        };
-        const errordata: IKnimeError[] = errors['data'];
-
-        const knimeResponseDTO: IKnimeResponseDTO = {
-            errordata: errordata,
-            origdata: knimeOrigdata
-        };
-
-        return knimeResponseDTO;
-    }
 }

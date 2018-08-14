@@ -1,7 +1,6 @@
-import { IKnimeResponseDTO, IKnimeOrigdata, IJsResponseDTO } from '../upload/upload.component';
-import { jsHeaders } from './excel-to-json.service';
-
 import * as _ from 'lodash';
+import { IAutoCorrectionDTO, IErrorResponseDTO, IKnimeOrigdata, IValidationResponseDTO } from '../upload/upload.component';
+import { ISampleDTO, jsHeaders } from './excel-to-json.service';
 
 interface IStatusComments {
     [status: number]: string[];
@@ -26,17 +25,19 @@ export interface ITableStructureProvider {
 }
 
 export class JsToTable implements ITableStructureProvider {
-    constructor(public data: IJsResponseDTO[]) { }
+    constructor(public data: IValidationResponseDTO[]) { }
 
     getTableData(): ITableData {
         const headerNum = Object.keys(this.data[0]['data']).length;
         const colHeaders = headerNum === 18 ? jsHeaders.filter(item => item !== 'vvvo') : jsHeaders;
-        const data: any[] = [];
-        const errors: any[] = [];
+        const data: ISampleDTO[] = [];
+        const errors: IErrorResponseDTO[] = [];
+        const corrections: IAutoCorrectionDTO[][] = [];
 
         _.forEach(this.data, (item, i) => {
             data[i] = item['data'];
             errors[i] = item['errors'];
+            corrections[i] = item['corrections'];
         });
 
         const origdata: IKnimeOrigdata = {
@@ -46,8 +47,7 @@ export class JsToTable implements ITableStructureProvider {
 
         const errData: IErrRow = {};
 
-        _.forEach(errors, (error, i) => {
-            const row = i;
+        _.forEach(errors, (error, row) => {
             const errRow: IErrCol = {};
             _.forEach(error, (errList, colName) => {
                 const col = _.findIndex(colHeaders, (header) => header === colName);
@@ -68,6 +68,27 @@ export class JsToTable implements ITableStructureProvider {
             errData[row] = errRow;
         });
 
+        const numbersOnly = new RegExp(/^\d+?/);
+        _.forEach(corrections, (correct, row) => {
+            _.forEach(correct, (correctedEntry, colName: number) => {
+                const colIndex = this.getColumnIndexForProperty(correctedEntry.field);
+                if (!errData[row][colIndex]) {
+                    errData[row][colIndex] = {};
+                }
+                let message =
+                    `Erreger erkannt. Ursprünglicher Text ${correctedEntry.original} wurde durch den Text aus ADV-Katalog Nr. 16 ersetzt.`;
+                if (numbersOnly.test(correctedEntry.original)) {
+                    message =
+                    // tslint:disable-next-line
+                    `ADV-16-Code ${correctedEntry.original} wurde erkannt & durch den entsprechenden ADV-Text ${correctedEntry.corrected} ersetzt.`;
+                }
+                errData[row][colIndex][4] = [
+                    message
+                ];
+            });
+
+        });
+
         const tableData: ITableData = {
             origdata: origdata,
             errData: errData
@@ -75,62 +96,13 @@ export class JsToTable implements ITableStructureProvider {
 
         return tableData;
     }
-}
 
-export class KnimeToTable implements ITableStructureProvider {
+    private getColumnIndexForProperty(prop: string): number {
 
-    constructor(public data: IKnimeResponseDTO) { }
-
-    getTableData(): ITableData {
-        const origdata: IKnimeOrigdata = this.data.origdata;
-
-        const errData: IErrRow = {};
-        const errors = this.data.errordata;
-
-        for (const currentError of errors) {
-            let errRow = currentError['Zeile'];
-            if (errRow) {
-                errRow -= 1;
-                let errCols;
-                if (!errData[errRow]) {
-                    errCols = {};
-                    errData[errRow] = errCols;
-                } else {
-                    errCols = errData[errRow];
-                }
-                const cols = currentError['Spalte'];
-                if (cols) {
-                    const entries = cols.split(';');
-                    for (const errColumn of entries) {
-                        let errCol: number = Number(errColumn);
-                        errCol -= 1;
-                        let errObj;
-                        if (!errCols[errCol]) {
-                            errObj = {};
-                            errCols[errCol] = errObj;
-                        } else {
-                            errObj = errCols[errCol];
-                        }
-
-                        let commentList: any[];
-                        const status = currentError['Status'];
-                        if (!errObj[status]) {
-                            commentList = [];
-                            errObj[status] = commentList;
-                        } else {
-                            commentList = errObj[status];
-                        }
-                        commentList.push(currentError['Kommentar']);
-                    }
-                }
-            }
-        }
-
-        const tableData: ITableData = {
-            origdata: origdata,
-            errData: errData
+        const colMap: { [key: string]: number } = {
+            pathogen_adv: 2
         };
 
-        return tableData;
+        return colMap[prop];
     }
 }

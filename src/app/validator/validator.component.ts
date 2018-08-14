@@ -1,7 +1,5 @@
 import { HttpErrorResponse, HttpEvent, HttpResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { HotTableRegisterer } from '@handsontable/angular';
 import { ConfirmationService, ConfirmSettings, ResolveEmit } from '@jaspero/ng-confirmations';
 import * as Handsontable from 'handsontable';
 import * as _ from 'lodash';
@@ -10,26 +8,14 @@ import { AlertService } from '../auth/services/alert.service';
 import { AuthService } from '../auth/services/auth.service';
 import { CanComponentDeactivate } from '../can-deactivate/can-deactivate.guard';
 import { CanReloadComponent } from '../can-deactivate/can-reload.component';
-import { ISampleCollectionDTO, oriHeaders } from '../services/excel-to-json.service';
+import { ISampleCollectionDTO, oriHeaders, ISampleDTO } from '../services/excel-to-json.service';
 import { IBlobData, JsonToExcelService } from '../services/json-to-excel.service';
-import { IErrRow, ITableData, ITableStructureProvider, JsToTable } from '../services/json-to-table';
+import { IErrRow, ITableStructureProvider, JsToTable } from '../services/json-to-table';
 import { LoadingSpinnerService } from '../services/loading-spinner.service';
 import { TableToJsonService } from '../services/table-to-json.service';
 import { UploadService } from '../services/upload.service';
 import { ValidateService } from '../services/validate.service';
-import { IJsResponseDTO, IKnimeData, IKnimeOrigdata } from '../upload/upload.component';
-
-interface IWarning {
-    row: number;
-    col: number;
-}
-
-interface IErrorColors {
-    red: boolean;
-    yellow: boolean;
-    blue: boolean;
-    warnings: IWarning[];
-}
+import { IValidationResponseDTO } from '../upload/upload.component';
 
 @Component({
     selector: 'app-validator',
@@ -40,25 +26,16 @@ export class ValidatorComponent extends CanReloadComponent implements OnInit, On
     private _window: Window;
 
     tableStructureProvider: ITableStructureProvider | undefined;
-    tableData: ITableData;
     errData: IErrRow;
-    origdata: IKnimeOrigdata;
 
-    data: IKnimeData[];
-    colHeaders: string[];
+    data: ISampleDTO[];
     options: any;
-    instance: string = 'hot';
 
     private onValidateSpinner = 'validationSpinner';
     subscriptions: any[] = [];
     private message: string;
     private dataChanged: boolean = false;
-    private currentErrors: IErrorColors = {
-        red: false,
-        yellow: false,
-        blue: false,
-        warnings: []
-    };
+
     private newWarnings: boolean = false;
 
     constructor(private uploadService: UploadService,
@@ -66,18 +43,14 @@ export class ValidatorComponent extends CanReloadComponent implements OnInit, On
         private tableToJsonService: TableToJsonService,
         private jsonToExcelService: JsonToExcelService,
         private alertService: AlertService,
-        router: Router,
         private authService: AuthService,
         private spinnerService: LoadingSpinnerService,
-        hotRegisterer: HotTableRegisterer,
         private confirmationService: ConfirmationService) {
         super();
     }
 
     ngOnInit() {
-        this.initializeTable().catch(() => {
-            throw new Error('Unable to initialize table.');
-        });
+        this.initializeTable();
 
         this.subscriptions.push(
             this.validateService.doValidation.subscribe(
@@ -129,25 +102,43 @@ export class ValidatorComponent extends CanReloadComponent implements OnInit, On
         return Promise.resolve(true);
     }
 
-    async initializeTable() {
+    hasMessage() {
+        return !!this.message;
+    }
+
+    afterChange(changes: any) {
+        if (changes.params[1] === 'edit') {
+            this.dataChanged = true;
+        }
+    }
+
+    ngOnDestroy() {
+        this.uploadService.setCurrentTableStructureProvider(undefined);
+        this.jsonToExcelService.setCurrentExcelData(undefined);
+
+        _.forEach(this.subscriptions, (subscription: any) => {
+            subscription.unsubscribe();
+        });
+    }
+
+    private initializeTable() {
         this.newWarnings = false;
         this.tableStructureProvider = this.uploadService.getCurrentTableStructureProvider();
         if (this.tableStructureProvider) {
-            this.tableData = this.tableStructureProvider.getTableData();
-            this.errData = this.tableData.errData;
-            this.currentErrors = this.getErrorColors();
-            this.origdata = this.tableData.origdata;
-            this.data = this.origdata['data'];
+            const tableData = this.tableStructureProvider.getTableData();
+            this.errData = tableData.errData;
+            const origdata = tableData.origdata;
+            this.data = origdata['data'];
 
-            const headers: string[] = this.origdata['colHeaders'];
+            const headers: string[] = origdata['colHeaders'];
 
-            this.colHeaders = headers.length === 18 ?
+            const colHeaders: string[] = headers.length === 18 ?
                 oriHeaders.filter(item => !item.startsWith('VVVO')) :
                 oriHeaders;
 
             this.options = {
                 data: this.data,
-                colHeaders: this.colHeaders,
+                colHeaders: colHeaders,
                 rowHeaders: true,
                 stretchH: 'all',
                 colWidths: [50],
@@ -169,7 +160,7 @@ export class ValidatorComponent extends CanReloadComponent implements OnInit, On
         }
     }
 
-    cellRenderer(instance: any, td: any, row: any, col: any, prop: any, value: any, cellProperties: any) {
+    private cellRenderer(instance: any, td: any, row: any, col: any, prop: any, value: any, cellProperties: any) {
         const yellow = 'rgb(255, 250, 205)';
         const red = 'rgb(255, 193, 193)';
         const blue = 'rgb(240, 248, 255)';
@@ -231,14 +222,14 @@ export class ValidatorComponent extends CanReloadComponent implements OnInit, On
         }
     }
 
-    validateFromMenu() {
+    private validateFromMenu() {
         this.dataChanged = false;
         this.validate().catch(() => {
             throw new Error('Unable to validate.');
         });
     }
 
-    async validate() {
+    private async validate() {
         await this.alertService.clear();
 
         _.forEach($('.tooltipster-text'), (item: any) => {
@@ -252,11 +243,9 @@ export class ValidatorComponent extends CanReloadComponent implements OnInit, On
 
         try {
             const data = await this.validateService.validateJs(requestDTO).toPromise();
-            this.setCurrentJsResponseDTO(data as IJsResponseDTO[]);
+            this.setCurrentJsResponseDTO(data as IValidationResponseDTO[]);
             this.spinnerService.hide(this.onValidateSpinner);
-            this.initializeTable().catch(() => {
-                throw new Error('Unable to initalize table.');
-            });
+            this.initializeTable();
         } catch (err) {
             this.spinnerService.hide(this.onValidateSpinner);
             const errMessage = err['error']['title'];
@@ -265,7 +254,7 @@ export class ValidatorComponent extends CanReloadComponent implements OnInit, On
         }
     }
 
-    async saveAsExcel(doDownload: boolean = true): Promise<IBlobData> {
+    private async saveAsExcel(doDownload: boolean = true): Promise<IBlobData> {
         if (this.dataChanged) {
             await this.validate();
         }
@@ -281,47 +270,39 @@ export class ValidatorComponent extends CanReloadComponent implements OnInit, On
         }
     }
 
-    getErrorColors(): IErrorColors {
-        const prevWarnings: IWarning[] = this.currentErrors.warnings;
-        const curWarnings: IWarning[] = [];
-        const errorColors: IErrorColors = {
-            red: false,
-            yellow: false,
-            blue: false,
-            warnings: []
-        };
+    private hasErrors(): boolean {
+        return this.errDataContainsStatus(2);
+    }
 
-        _.forEach(this.errData, (rowItem: any, rowIndex: any) => {
-            _.forEach(rowItem, (colItem: any, colIndex: any) => {
-                if (colItem[2]) {
-                    errorColors.red = true;
-                }
-                if (colItem[1]) {
-                    errorColors.yellow = true;
-                    const curWarning: IWarning = {
-                        row: rowIndex,
-                        col: colIndex
-                    };
-                    curWarnings.push(curWarning);
-                    if (_.findIndex(prevWarnings, (prevWarning: any) => _.isMatch(prevWarning, curWarning)) === -1) {
-                        this.newWarnings = true;
-                    }
+    private hasWarnings(): boolean {
+        return this.errDataContainsStatus(1);
+    }
+
+    // TODO: Data structure & search algorithm inefficient & clumsy.
+    private errDataContainsStatus(status: number): boolean {
+        let found: boolean = false;
+        if (status < 1 || status > 2) {
+            return false;
+        }
+        _.forEach(this.errData, rowEntry => {
+            _.forEach(rowEntry, colEntry => {
+                if (colEntry[status]) {
+                    found = true;
+                    return;
                 }
             });
         });
-        errorColors.warnings = curWarnings;
-
-        return errorColors;
+        return found;
     }
 
-    async send() {
+    private async send() {
         const blobData: IBlobData = await this.saveAsExcel(false);
 
         try {
-            if (this.currentErrors.red) {
+            if (this.hasErrors()) {
                 this.message = 'Es gibt noch rot gekennzeichnete Fehler. Bitte vor dem Senden korrigieren.';
                 this.alertService.error(this.message, false);
-            } else if ((this.currentErrors.yellow) && (this.dataChanged)) {
+            } else if ((this.hasWarnings()) && (this.dataChanged)) {
                 if (!this.newWarnings) {
                     this.sendData(blobData).catch(() => {
                         throw new Error('Unable to send data.');
@@ -343,7 +324,7 @@ export class ValidatorComponent extends CanReloadComponent implements OnInit, On
         }
     }
 
-    async sendData(blobData: IBlobData) {
+    private async sendData(blobData: IBlobData) {
         const formData: FormData = new FormData();
         formData.append('myMemoryXSLX', blobData.blob, blobData.fileName);
 
@@ -388,28 +369,8 @@ export class ValidatorComponent extends CanReloadComponent implements OnInit, On
             });
     }
 
-    setCurrentJsResponseDTO(responseDTO: IJsResponseDTO[]) {
+    private setCurrentJsResponseDTO(responseDTO: IValidationResponseDTO[]) {
         const jsToTable: ITableStructureProvider = new JsToTable(responseDTO);
         this.uploadService.setCurrentTableStructureProvider(jsToTable);
     }
-
-    hasMessage() {
-        return !!this.message;
-    }
-
-    afterChange(changes: any) {
-        if (changes.params[1] === 'edit') {
-            this.dataChanged = true;
-        }
-    }
-
-    ngOnDestroy() {
-        this.uploadService.setCurrentTableStructureProvider(undefined);
-        this.jsonToExcelService.setCurrentExcelData(undefined);
-
-        _.forEach(this.subscriptions, (subscription: any) => {
-            subscription.unsubscribe();
-        });
-    }
-
 }
