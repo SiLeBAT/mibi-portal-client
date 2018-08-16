@@ -5,8 +5,7 @@ import * as _ from 'lodash';
 import * as XlsxPopulate from 'xlsx-populate/browser/xlsx-populate';
 import { saveAs } from 'file-saver';
 
-import { IKnimeData } from '../upload/upload.component';
-import { IExcelData, jsHeaders, AOO } from './excel-to-json.service';
+import { IExcelData, jsHeaders, AOO, ISampleDTO } from './excel-to-json.service';
 import { WindowRefService } from './../services/window-ref.service';
 
 export interface IBlobData {
@@ -27,12 +26,12 @@ export class JsonToExcelService {
         this.currentExcelData = currentExcelData;
     }
 
-    async saveAsExcel(data: IKnimeData[], doDownload: boolean): Promise<IBlobData> {
+    async saveAsExcel(data: ISampleDTO[], doDownload: boolean): Promise<IBlobData> {
         const blobData: IBlobData = await this.convertToExcel(data, doDownload);
         return blobData;
     }
 
-    private async convertToExcel(data: IKnimeData[], doDownload: boolean): Promise<IBlobData> {
+    private async convertToExcel(data: ISampleDTO[], doDownload: boolean): Promise<IBlobData> {
 
         if (this.currentExcelData === undefined) {
             throw new Error('No Excel data available.');
