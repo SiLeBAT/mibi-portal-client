@@ -3,65 +3,6 @@ body {
   margin: 0;
 }
 
-.navbar-blue {
-  background: rgb(3, 78, 168);
-  color: rgb(255, 255, 255);
-  padding: 0;
-  margin: 0;
-}
-
-.navbar-brand-color, .navbar-text-color {
-  color: rgb(255, 255, 255);
-  text-decoration: none;
-  font-size: 1.2em;
-  display: inline-block;
-  text-align: center;
-}
-
-.navbar-brand-color:hover,
-.navbar-brand-color:focus,
-.navbar-brand-color:active,
-.navbar-text-color:hover,
-.navbar-text-color:focus,
-.navbar-text-color:active {
-  background: rgb(3, 78, 168);
-  color: rgb(204, 204, 204);
-  outline: none;
-}
-
-.open > a {
-  background: inherit;
-}
-
-.dropdown {
-  margin: 0 2rem;
-}
-
-.dropdown-info > a,
-.dropdown-info > a:hover {
-  background: rgb(255, 255, 255);
-  font-weight: bold;
-}
-
-.divider {
-  margin-top: 0;
-  background: rgb(204, 204, 204);
-  margin-left: 1rem;
-  margin-right: 1rem;
-}
-
-.dropdown-link {
-  cursor: pointer;
-}
-
-.dropdown-link:hover,
-.dropdown-link:focus,
-.dropdown-link:active {
-  cursor: pointer;
-  outline: none;
-}
-
-
 .main {
   position: fixed;
   top: 0;

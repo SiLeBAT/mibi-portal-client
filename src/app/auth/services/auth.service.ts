@@ -1,39 +1,43 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-// import { Observable } from 'rxjs';
-// import { tokenNotExpired } from 'angular2-jwt';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { SampleStore } from '../../sampleManagement/services/sampleStore.service';
+import { IUser, ICredentials } from '../../models/models';
 
-import { User } from '../../models/user.model';
-
+const NULL_USER: IUser = {
+    email: '',
+    userData: [],
+    institution: '',
+    _id: ''
+};
 @Injectable()
 export class AuthService {
     currentUser: any;
 
     constructor(private httpClient: HttpClient,
-        private router: Router) { }
+        private router: Router,
+        private sampleStore: SampleStore) { }
 
-    login(user: User) {
+    login(credentials: ICredentials) {
         return this.httpClient
-            .post('/users/login', user);
+            .post('/users/login', credentials);
     }
 
     logout() {
         const url = '/users/login';
+        this.sampleStore.clear();
+        localStorage.removeItem('currentUser');
         this.router.navigate([url]).catch(() => {
             throw new Error('Unable to navigate.');
         });
-        if (this.router.routerState.snapshot.url === url) {
-            localStorage.removeItem('currentUser');
-        }
     }
 
-    loggedIn() {
+    loggedIn(): boolean {
         if (localStorage.getItem('currentUser')) {
             const cu: string | null = localStorage.getItem('currentUser');
             if (!cu) {
-                return '';
+                return false;
             }
             const currentUser = JSON.parse(cu);
             const helper = new JwtHelperService();
@@ -49,12 +53,12 @@ export class AuthService {
         this.currentUser = user;
     }
 
-    getCurrentUser() {
+    getCurrentUser(): IUser {
         // console.log('AuthService getCurrentUser: ', this.currentUser);
         if (!this.currentUser) {
             const cu: string | null = localStorage.getItem('currentUser');
             if (!cu) {
-                return '';
+                return NULL_USER;
             }
             this.currentUser = JSON.parse(cu);
         }

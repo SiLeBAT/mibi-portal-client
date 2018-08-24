@@ -1,0 +1,87 @@
+<nav class="navbar navbar-fixed-top navbar-blue">
+  <div class="container-fluid">
+
+
+    <div class="navbar-header navbar-brand">
+      <a [routerLink]="authService.loggedIn() ? ['/main'] : ['/']" class="brand navbar-brand-color">
+        {{ config?.appName }}
+      </a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown navbar-text-color" appDropdown>
+          <a style="cursor: pointer;" class="dropdown-toggle navbar-user navbar-text-color " role="button">
+            Probendaten
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-link" [routerLink]="['upload']">
+                Upload
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-link" [routerLink]="['samples']" [class.hidden]="!sampleStore.hasEntries">
+                View Samples
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-link" (click)="export()" [class.hidden]="!sampleStore.hasEntries || getCurrentRoute() !== '/samples'">
+                Download
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-link" (click)="send()" [class.hidden]="!authService.loggedIn() || !sampleStore.hasEntries || getCurrentRoute() !== '/samples'">
+                Senden
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-link" href="https://www.bfr.bund.de/de/einsendeformular_fuer_isolate_und_proben-9257.html" target="_blank">
+                Excel-Vorlage
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="navbar-text-color">
+          <a class="navbar-text-color" (click)="validate()" [class.hidden]="!sampleStore.hasEntries || getCurrentRoute() !== '/samples'">
+            Validieren
+          </a>
+        </li>
+
+        <li class="navbar-text-color">
+          <a class="navbar-text-color" [routerLink]="['/users/login']" [class.hidden]="authService.loggedIn()">
+            Anmelden/Registrieren
+          </a>
+        </li>
+
+
+
+        <li class="dropdown navbar-text-color" appDropdown *ngIf="authService.loggedIn()">
+          <a style="cursor: pointer;" class="dropdown-toggle navbar-text-color navbar-user" role="button">
+            <span class="glyphicon glyphicon-user"></span>
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li class="dropdown-info">
+              <a>{{ currentUser?.email }}</a>
+            </li>
+            <li class="dropdown-info">
+              <a>{{ currentUser?.institution?.name1 }}</a>
+            </li>
+            <li role="separator" class="divider"></li>
+            <li>
+              <a class="dropdown-link" (click)="logout()">
+                Abmelden
+              </a>
+            </li>
+          </ul>
+        </li>
+
+
+      </ul>
+    </div>
+
+  </div>
+</nav>

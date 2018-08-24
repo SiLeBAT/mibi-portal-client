@@ -1,18 +1,17 @@
-import { UserData } from './userdata.model';
+import { IUser, IUserData } from './models';
 
-export class User {
-    userData: UserData[] = [];
+export class User implements IUser {
+    userData: IUserData[] = [];
     institution: any;
     _id: any;
 
     constructor(
         public email: string,
-        public password: string,
         public firstName?: string,
         public lastName?: string
     ) { }
 
-    addUserDataEntry(userDataEntry: UserData) {
+    addUserDataEntry(userDataEntry: IUserData) {
         this.userData.push(userDataEntry);
     }
 }

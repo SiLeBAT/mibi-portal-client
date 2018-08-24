@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 
 import { UserService } from '../../auth/services/user.service';
-import { AlertService } from '../../auth/services/alert.service';
+import { AlertService } from '../../services/alert.service';
 import { AuthService } from '../../auth/services/auth.service';
 import { UserData } from '../../models/userdata.model';
 

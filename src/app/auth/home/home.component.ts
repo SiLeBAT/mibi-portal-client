@@ -3,7 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 
 import { User } from '../../models/user.model';
 import { UserService } from '../services/user.service';
-import { AlertService } from '../services/alert.service';
+import { AlertService } from '../../services/alert.service';
 import { AuthService } from '../services/auth.service';
 
 @Component({

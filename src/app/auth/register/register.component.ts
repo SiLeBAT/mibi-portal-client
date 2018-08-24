@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 
 import { UserService } from '../services/user.service';
-import { AlertService } from '../services/alert.service';
+import { AlertService } from '../../services/alert.service';
 import { User } from '../../models/user.model';
 import { Institution } from '../../models/institution.model';
 
@@ -77,7 +77,6 @@ export class RegisterComponent implements OnInit {
         if (this.registerForm.valid) {
             const user = new User(
                 this.registerForm.value.email,
-                this.registerForm.value.password1,
                 this.registerForm.value.firstName,
                 this.registerForm.value.lastName
             );
