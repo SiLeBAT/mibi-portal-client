@@ -1,34 +1,14 @@
 import { Injectable } from '@angular/core';
 import { WorkBook, WorkSheet, read, utils } from 'xlsx';
 
-import { AlertService } from '../auth/services/alert.service';
+import { AlertService } from './alert.service';
+import { IWorkSheet } from '../sampleManagement/models/models';
 
 export type AOO = any[];
 
-export interface ISampleDTO {
-    sample_id: string;
-    sample_id_avv: string;
-    pathogen_adv: string;
-    pathogen_text: string;
-    sampling_date: string;
-    isolation_date: string;
-    sampling_location_adv: string;
-    sampling_location_zip: string;
-    sampling_location_text: string;
-    topic_adv: string;
-    matrix_adv: string;
-    matrix_text: string;
-    process_state_adv: string;
-    sampling_reason_adv: string;
-    sampling_reason_text: string;
-    operations_mode_adv: string;
-    operations_mode_text: string;
-    vvvo?: string;
-    comment: string;
-}
-
-export interface ISampleCollectionDTO {
-    data: ISampleDTO[];
+// FIXME: Remove
+export interface IOLDSampleCollectionDTO {
+    data: Record<string, string>[];
 }
 
 export const jsHeaders: string[] = [
@@ -53,38 +33,8 @@ export const jsHeaders: string[] = [
     'comment'
 ];
 
-export const oriHeaders: string[] = [
-    'Ihre<br>Proben-<br>ummer',
-    'Probe-<br>nummer<br>nach<br>AVVData',
-    'Erreger<br>(Text aus<br>ADV-Kat-Nr.16)',
-    'Erreger<br>(Textfeld/<br>Ergänzung)',
-    'Datum der<br>Probenahme',
-    'Datum der<br>Isolierung',
-    'Ort der<br>Probe-<br>nahme<br>(Code aus<br>ADV-Kat-<br>Nr.9)',
-    'Ort der<br>Probe-<br>nahme<br>(PLZ)',
-    'Ort der<br>Probe-<br>nahme<br>(Text)',
-    'Oberbe-<br>griff<br>(Kodier-<br>system)<br>der<br>Matrizes<br>(Code aus<br>ADV-Kat-<br>Nr.2)',
-    'Matrix<br>Code<br>(Code<br>aus<br>ADV-<br>Kat-<br>Nr.3)',
-    'Matrix<br>(Textfeld/<br>Ergänzung)',
-    'Ver-<br>arbeitungs-<br>zustand<br>(Code aus<br>ADV-Kat-<br>Nr.12)',
-    'Grund<br>der<br>Probe-<br>nahme<br>(Code<br>aus<br>ADV-Kat-<br>Nr.4)',
-    'Grund der<br>Probe-<br>nahme<br>(Textfeld/<br>Ergänzung)',
-    'Betriebsart<br>(Code aus<br>ADV-Kat-Nr.8)',
-    'Betriebsart<br>(Textfeld/<br>Ergänzung)',
-    'VVVO-Nr /<br>Herde',
-    'Bemerkung<br>(u.a.<br>Untersuchungs-<br>programm)'
-];
-
-export interface IWorkSheet {
-    workSheet: WorkSheet;
-    isVersion14: boolean;
-    file: File;
-    oriDataLength: number;
-    validSheetName: string;
-}
-
 export interface IExcelData {
-    data: ISampleCollectionDTO;
+    data: IOLDSampleCollectionDTO;
     workSheet: IWorkSheet;
 }
 
@@ -96,7 +46,7 @@ export class ExcelToJsonService {
 
     async convertExcelToJSJson(file: File): Promise<IExcelData> {
         let sampleSheet: WorkSheet;
-        let data: ISampleCollectionDTO;
+        let data: IOLDSampleCollectionDTO;
         try {
             sampleSheet = await this.fromFileToWorkSheet(file);
             data = this.fromWorksheetToData(sampleSheet);
@@ -120,7 +70,7 @@ export class ExcelToJsonService {
         }
     }
 
-    async fromFileToWorkSheet(excelFile: File): Promise<WorkSheet> {
+    private async fromFileToWorkSheet(excelFile: File): Promise<WorkSheet> {
         return new Promise<WorkSheet>((resolve, reject) => {
             const fileReader = new FileReader();
 
@@ -145,7 +95,7 @@ export class ExcelToJsonService {
         });
     }
 
-    fromWorksheetToData(workSheet: WorkSheet): ISampleCollectionDTO {
+    private fromWorksheetToData(workSheet: WorkSheet): IOLDSampleCollectionDTO {
 
         let data: AOO;
         const lineNumber: number = this.getVersionDependentLine(workSheet);
@@ -166,26 +116,26 @@ export class ExcelToJsonService {
         }
 
         const cleanedSamples = this.fromDataToCleanedSamples(data);
-        const samples: ISampleDTO[] = cleanedSamples;
-        const sampleCollectionDTO: ISampleCollectionDTO = {
+        const samples: Record<string, string>[] = cleanedSamples;
+        const sampleCollectionDTO: IOLDSampleCollectionDTO = {
             data: samples
         };
 
         return sampleCollectionDTO;
     }
 
-    isVersion14(workSheet: WorkSheet): boolean {
+    private isVersion14(workSheet: WorkSheet): boolean {
         const cellAdress = 'B3';
         const cell = workSheet[cellAdress];
 
         return (cell !== undefined);
     }
 
-    getVersionDependentLine(workSheet: WorkSheet): number {
+    private getVersionDependentLine(workSheet: WorkSheet): number {
         return (this.isVersion14(workSheet) ? 41 : 39);
     }
 
-    fromDataToCleanedSamples(data: AOO): AOO {
+    private fromDataToCleanedSamples(data: AOO): AOO {
         const cleanedData: AOO = data
             .filter(sampleObj => (Object.keys(sampleObj)
                 .map(key => sampleObj[key]))

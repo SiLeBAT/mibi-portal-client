@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 
 import { AuthService } from '../services/auth.service';
-import { AlertService } from '../services/alert.service';
-import { User } from '../../models/user.model';
+import { AlertService } from '../../services/alert.service';
 import { LoadingSpinnerService } from '../../services/loading-spinner.service';
+import { SampleStore } from '../../sampleManagement/services/sampleStore.service';
 
 @Component({
     selector: 'app-login',
@@ -16,22 +16,16 @@ import { LoadingSpinnerService } from '../../services/loading-spinner.service';
 export class LoginComponent implements OnInit {
     loginForm: FormGroup;
     loading = false;
-    returnUrl: string;
     private onLoginSpinner = 'loginSpinner';
 
     constructor(
-        private route: ActivatedRoute,
         private router: Router,
         private authService: AuthService,
         private alertService: AlertService,
-        private spinnerService: LoadingSpinnerService) { }
+        private spinnerService: LoadingSpinnerService,
+        private sampleStore: SampleStore) { }
 
     ngOnInit() {
-        // reset login status
-        this.authService.logout();
-
-        // get return url from route parameters or default to '/'
-        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/main';
 
         this.loginForm = new FormGroup({
             email: new FormControl(null, [
@@ -49,14 +43,14 @@ export class LoginComponent implements OnInit {
     login() {
         this.loading = true;
 
-        const user = new User(
-            this.loginForm.value.email,
-            this.loginForm.value.password
-        );
+        const credentials = {
+            email: this.loginForm.value.email,
+            password: this.loginForm.value.password
+        };
 
         this.spinnerService.show(this.onLoginSpinner);
 
-        this.authService.login(user)
+        this.authService.login(credentials)
             .subscribe((data: any) => {
                 this.spinnerService.hide(this.onLoginSpinner);
                 this.loginForm.reset();
@@ -69,9 +63,7 @@ export class LoginComponent implements OnInit {
                         localStorage.setItem('currentUser', JSON.stringify(currentUser));
                         this.authService.setCurrentUser(currentUser);
                     }
-                    this.router.navigate([this.returnUrl]).catch(() => {
-                        throw new Error();
-                    });
+                    this.navigationSelection();
                 }
             }, (err: HttpErrorResponse) => {
                 this.spinnerService.hide(this.onLoginSpinner);
@@ -81,6 +73,19 @@ export class LoginComponent implements OnInit {
                 this.alertService.error(message);
                 this.loading = false;
             });
+    }
+
+    private navigationSelection() {
+        // get return url from route parameters or default to '/'
+        let returnUrl = '/main';
+
+        if (this.sampleStore.hasEntries) {
+            returnUrl = '/samples';
+        }
+
+        this.router.navigate([returnUrl]).catch(() => {
+            throw new Error();
+        });
     }
 
 }

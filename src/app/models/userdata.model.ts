@@ -1,4 +1,6 @@
-export class UserData {
+import { IUserData } from './models';
+
+export class UserData implements IUserData {
     _id: string;
     department: string;
     contact: string;

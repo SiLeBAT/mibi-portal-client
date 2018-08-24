@@ -1,0 +1,9 @@
+<app-spinner-container [show]="isValidating" name="validationSpinner">
+  <app-generic-spinner></app-generic-spinner>
+</app-spinner-container>
+<div
+  *ngIf="!isValidating"
+  class="hot-table-container">
+
+  <app-data-grid-container></app-data-grid-container>
+</div>

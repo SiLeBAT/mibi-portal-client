@@ -1,77 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpErrorResponse, HttpEvent } from '@angular/common/http';
+import { HttpEvent } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { UploadService } from '../services/upload.service';
-import { AlertService } from '../auth/services/alert.service';
-import { ExcelToJsonService, ISampleCollectionDTO, ISampleDTO, IExcelData } from '../services/excel-to-json.service';
-import { JsonToExcelService } from '../services/json-to-excel.service';
-import { ValidateService } from '../services/validate.service';
-
-import { ITableStructureProvider, JsToTable } from '../services/json-to-table';
+import { AlertService } from '../services/alert.service';
+import { ExcelToJsonService, IExcelData } from '../services/excel-to-json.service';
 
 import { LoadingSpinnerService } from '../services/loading-spinner.service';
-
-interface IKnimeError {
-    Status: number;
-    Zeile: number;
-    Spalte: string;
-    'Fehler-Nr': number | null;
-    Kommentar: string;
-}
-
-export interface IKnimeColHeaders extends Array<string> {
-    'Ihre_Probenummer': string;
-    'Probenummer_nach_AVVData': string;
-    'Erreger_Vorbefund_Text_aus_ADV-Kat-Nr16': string;
-    'Vorbefund_Textfeld_Ergaenzung': string;
-    'Datum_der_Probenahme': string;
-    'Datum_der_Isolierung': string;
-    'Ort_der_Probenahme_ADV-Kat-Nr9': string;
-    'Ort_der_Probenahme_PLZ': string;
-    'Ort_der_Probe-nahme_Text': string;
-    'Oberbegriff_Kodiersystem_der_Matrizes_ADV-Kat-Nr2': string;
-    'Matrix_Code_ADV-Kat-Nr3': string;
-    'Matrix_Textfeld_Ergaenzung': string;
-    'Verarbeitungszustand_ADV-Kat-Nr12': string;
-    'Grund_der_Probenahme_ADV-Kat-Nr4': string;
-    'Grund_der_Probenahme_Textfeld': string;
-    'Betriebsart_ADV-Kat-Nr8': string;
-    'Betriebsart_Textfeld': string;
-    'Bemerkung_Untersuchungsprogramm': string;
-}
+import { SampleStore } from '../sampleManagement/services/sampleStore.service';
+import { ValidationService } from '../sampleManagement/services/validation.service';
+import { IAnnotatedSampleData } from '../sampleManagement/models/models';
 
 export interface IKnimeOrigdata {
     colHeaders: Array<string>;
-    data: ISampleDTO[];
-}
-
-export interface IKnimeResponseDTO {
-    errordata: IKnimeError[];
-    origdata: IKnimeOrigdata;
-}
-
-interface IErrorDTO {
-    code: number;
-    level: number;
-    message: string;
-}
-
-export interface IErrorResponseDTO {
-    [key: string]: IErrorDTO[];
-}
-
-export interface IAutoCorrectionDTO {
-    corrected: string;
-    field: string;
-    original: string;
-}
-
-export interface IValidationResponseDTO {
-    data: ISampleDTO;
-    errors: IErrorResponseDTO;
-    corrections: IAutoCorrectionDTO[];
+    data: Record<string, string>[];
 }
 
 @Component({
@@ -92,13 +34,13 @@ export class UploadComponent implements OnInit {
     private _lastInvalids: any[] = [];
     maxFileSize = 2097152;
 
-    constructor(private uploadService: UploadService,
+    constructor(
         private excelToJsonService: ExcelToJsonService,
-        private jsonToExcelService: JsonToExcelService,
-        private validateService: ValidateService,
+        private validationService: ValidationService,
         private alertService: AlertService,
         private router: Router,
-        private spinnerService: LoadingSpinnerService) { }
+        private spinnerService: LoadingSpinnerService,
+        private sampleStore: SampleStore) { }
 
     get lastInvalids(): any[] {
         return this._lastInvalids;
@@ -126,27 +68,37 @@ export class UploadComponent implements OnInit {
     }
 
     async readFileAndValidate() {
-        const excelData: IExcelData = await this.excelToJsonService.convertExcelToJSJson(this.file);
-        this.jsonToExcelService.setCurrentExcelData(excelData);
-        const data: ISampleCollectionDTO = excelData.data;
+        this.spinnerService.show(this.onUploadSpinner);
+        const excelData: IExcelData = await this.excelToJsonService.convertExcelToJSJson(this.file).then(
+            (uploadedData: IExcelData) => {
+                return uploadedData;
+            }
+        );
+        this.sampleStore.setState({
+            entries: excelData.data.data.map(e => ({
+                data: e,
+                errors: {},
+                corrections: []
+            })),
+            workSheet: excelData.workSheet
+        });
+        const data: Record<string, string>[] = this.sampleStore.state.entries.map(e => e.data);
 
         if (data) {
-            this.spinnerService.show(this.onUploadSpinner);
-            this.validateService.validateJs(data)
-                .subscribe((data2: IValidationResponseDTO[]) => {
-                    this.spinnerService.hide(this.onUploadSpinner);
-                    const jsToTable: ITableStructureProvider = new JsToTable(data2);
-                    this.uploadService.setCurrentTableStructureProvider(jsToTable);
-                    this.router.navigate(['/validate']).catch(() => {
+            this.validationService.validate(data).then(
+                (validationResponse: IAnnotatedSampleData[]) => {
+                    const newState = { ...this.sampleStore.state, ...{ entries: validationResponse } };
+                    this.sampleStore.setState(
+                        newState
+                    );
+                    this.router.navigate(['/samples']).catch(() => {
                         throw new Error('Unable to navigate.');
                     });
-                }, (err: HttpErrorResponse) => {
-                    const errMessage = err['error']['title'];
-                    this.alertService.error(errMessage, true);
-                    this.files = [];
                     this.spinnerService.hide(this.onUploadSpinner);
-                });
-
+                }
+            ).catch(
+                err => { throw err; }
+            );
         }
     }
 

@@ -11,15 +11,11 @@ import { AppComponent } from './app.component';
 import { AlertComponent } from './auth/alert/alert.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { AuthService } from './auth/services/auth.service';
-import { AlertService } from './auth/services/alert.service';
+import { AlertService } from './services/alert.service';
 import { UserService } from './auth/services/user.service';
-import { UploadService } from './services/upload.service';
-import { ValidateService } from './services/validate.service';
 import { ExcelToJsonService } from './services/excel-to-json.service';
-import { JsonToExcelService } from './services/json-to-excel.service';
-import { TableToJsonService } from './services/table-to-json.service';
 import { LoadingSpinnerService } from './services/loading-spinner.service';
-import { WindowRefService } from './services/window-ref.service';
+import { WindowRefService } from './sampleManagement/services/window-ref.service';
 import { routing } from './route/app.routing';
 import { HomeComponent } from './auth/home/home.component';
 import { LoginComponent } from './auth/login/login.component';
@@ -33,12 +29,24 @@ import { MainDashComponent } from './main-dash/main-dash.component';
 import { MyaccountComponent } from './myaccount/myaccount.component';
 import { UserdataComponent } from './myaccount/userdata/userdata.component';
 import { ActivateComponent } from './auth/activate/activate.component';
-import { ValidatorComponent } from './validator/validator.component';
+import { DataGridContainerComponent } from './sampleManagement/container/data-grid-container/data-grid-container.component';
 import { SpinnerContainerComponent } from './shared/spinner-container/spinner-container.component';
 import { GenericSpinnerComponent } from './shared/generic-spinner/generic-spinner.component';
 import { DropdownDirective } from './shared/directive/dropdown.directive';
 import { AdminActivateComponent } from './auth/admin-activate/admin-activate.component';
 import { CanDeactivateGuard } from './can-deactivate/can-deactivate.guard';
+import { DataGridComponent } from './sampleManagement/presentation/data-grid/data-grid.component';
+import { SampleStore } from './sampleManagement/services/sampleStore.service';
+import { NavBarComponent } from './core/presentation/nav-bar/nav-bar.component';
+import { ExcelConverterService } from './sampleManagement/services/excel-converter.service';
+import { ExportService } from './sampleManagement/services/export.service';
+import { SendSampleService } from './sampleManagement/services/send-sample.service';
+import { ValidationService } from './sampleManagement/services/validation.service';
+import { SampleViewComponent } from './sampleManagement/presentation/sample-view/sample-view.component';
+import { SampleViewContainerComponent } from './sampleManagement/container/sample-view-container/sample-view-container.component';
+import { SampleSheetUtilService } from './sampleManagement/services/sampleSheetUtil.service';
+import { HttpFacadeService } from './services/httpFacade.service';
+import { NavBarContainerComponent } from './core/container/nav-bar-container/nav-bar-container.component';
 
 @NgModule({
     declarations: [
@@ -54,11 +62,16 @@ import { CanDeactivateGuard } from './can-deactivate/can-deactivate.guard';
         MyaccountComponent,
         UserdataComponent,
         ActivateComponent,
-        ValidatorComponent,
+        DataGridContainerComponent,
         SpinnerContainerComponent,
         GenericSpinnerComponent,
         DropdownDirective,
-        AdminActivateComponent
+        AdminActivateComponent,
+        DataGridComponent,
+        NavBarComponent,
+        SampleViewComponent,
+        SampleViewContainerComponent,
+        NavBarContainerComponent
     ],
     imports: [
         BrowserModule,
@@ -75,11 +88,7 @@ import { CanDeactivateGuard } from './can-deactivate/can-deactivate.guard';
         AuthService,
         AlertService,
         UserService,
-        UploadService,
-        ValidateService,
         ExcelToJsonService,
-        JsonToExcelService,
-        TableToJsonService,
         LoadingSpinnerService,
         WindowRefService,
         AuthGuard,
@@ -93,7 +102,14 @@ import { CanDeactivateGuard } from './can-deactivate/can-deactivate.guard';
             provide: HTTP_INTERCEPTORS,
             useClass: JwtInterceptor,
             multi: true
-        }
+        },
+        SampleStore,
+        ExcelConverterService,
+        ExportService,
+        SendSampleService,
+        ValidationService,
+        SampleSheetUtilService,
+        HttpFacadeService
     ],
     bootstrap: [AppComponent]
 })
