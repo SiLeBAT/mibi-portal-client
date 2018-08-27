@@ -16,7 +16,6 @@ import { UserService } from './auth/services/user.service';
 import { ExcelToJsonService } from './services/excel-to-json.service';
 import { LoadingSpinnerService } from './services/loading-spinner.service';
 import { WindowRefService } from './sampleManagement/services/window-ref.service';
-import { routing } from './route/app.routing';
 import { HomeComponent } from './auth/home/home.component';
 import { LoginComponent } from './auth/login/login.component';
 import { AuthGuard } from './auth/guards/auth.guard';
@@ -47,6 +46,10 @@ import { SampleViewContainerComponent } from './sampleManagement/container/sampl
 import { SampleSheetUtilService } from './sampleManagement/services/sampleSheetUtil.service';
 import { HttpFacadeService } from './services/httpFacade.service';
 import { NavBarContainerComponent } from './core/container/nav-bar-container/nav-bar-container.component';
+import { LogService } from './shared/services/log.service';
+import { LogPublishersService } from './shared/services/log-publishers.service';
+import { NoSampleGuard } from './sampleManagement/services/no-sample.guard';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
     declarations: [
@@ -80,9 +83,9 @@ import { NavBarContainerComponent } from './core/container/nav-bar-container/nav
         ReactiveFormsModule,
         HttpClientModule,
         ngfModule,
-        routing,
         JasperoConfirmationsModule.forRoot(),
-        PasswordStrengthMeterModule
+        PasswordStrengthMeterModule,
+        AppRoutingModule
     ],
     providers: [
         AuthService,
@@ -92,6 +95,7 @@ import { NavBarContainerComponent } from './core/container/nav-bar-container/nav
         LoadingSpinnerService,
         WindowRefService,
         AuthGuard,
+        NoSampleGuard,
         CanDeactivateGuard,
         {
             provide: HTTP_INTERCEPTORS,
@@ -109,7 +113,9 @@ import { NavBarContainerComponent } from './core/container/nav-bar-container/nav
         SendSampleService,
         ValidationService,
         SampleSheetUtilService,
-        HttpFacadeService
+        HttpFacadeService,
+        LogService,
+        LogPublishersService
     ],
     bootstrap: [AppComponent]
 })
