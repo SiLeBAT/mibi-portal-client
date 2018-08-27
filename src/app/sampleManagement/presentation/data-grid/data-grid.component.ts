@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, Input, ViewChild, Output, EventEmitter, OnInit } from '@angular/core';
 import { HotTableComponent } from '@handsontable/angular';
 import * as Handsontable from 'handsontable';
 import * as _ from 'lodash';
@@ -21,23 +21,67 @@ interface IColConfig {
     title: string;
 }
 
+enum ToolTipType {
+    WARNING = 1,
+    ERROR = 2,
+    AUTOCORRECTION = 4
+}
+
+enum ToolTipColour {
+    YELLOW = 'rgb(255, 250, 205)',
+    RED = 'rgb(255, 193, 193)',
+    BLUE = 'rgb(240, 248, 255)'
+}
+interface IToolTipConfig {
+    theme: string;
+    alignmemt: 'bottom' | 'top' | 'left';
+    colour: ToolTipColour;
+}
 export interface ITableDataOutput {
     data: IAnnotatedSampleData[];
     touched: boolean;
     changed: boolean;
 }
 
+interface ICellProperties {
+    renderer: (instance: any, td: any, row: any, col: any, prop: any, value: any, cp: any) => void;
+}
+
+class ToolTip implements IToolTipConfig {
+
+    constructor(public theme: string,
+        public alignmemt: 'bottom' | 'top' | 'left',
+        public colour: ToolTipColour) { }
+
+    static constructToolTipText(commentList: string[]): string {
+        let tooltipText = '<ul>';
+        for (const comment of commentList) {
+            tooltipText += '<li>';
+            tooltipText += comment;
+            tooltipText += '</li>';
+        }
+        tooltipText += '</ul>';
+        return tooltipText;
+    }
+}
+
 @Component({
     selector: 'app-data-grid',
     templateUrl: './data-grid.component.html'
 })
-export class DataGridComponent {
+export class DataGridComponent implements OnInit {
 
-    @ViewChild(HotTableComponent) hotTableComponent: HotTableComponent;
-
-    private _sampleData: IAnnotatedSampleData[];
     settings: any;
     data: Record<string, string>[];
+    @ViewChild(HotTableComponent) hotTableComponent: HotTableComponent;
+    @Output() valueChanged = new EventEmitter();
+    @Input() set sampleData(sampleData: IAnnotatedSampleData[]) {
+        this._sampleData = _.cloneDeep(sampleData);
+        this.data = this._sampleData.map(e => e.data);
+        this.updateTableSettings();
+    }
+
+    private _sampleData: IAnnotatedSampleData[];
     // FIXME: HTML tags in Text?  Formatting shoule be handled by CSS.
     private columnConfigArray: IColConfig[] = [
         {
@@ -117,42 +161,40 @@ export class DataGridComponent {
             title: 'Bemerkung<br>(u.a.<br>Untersuchungs-<br>programm)'
         }
     ];
+
+    private ToolTipConfigs: { [key: number]: IToolTipConfig } = {};
+
     constructor() { }
 
-    @Output() valueChanged = new EventEmitter();
-    @Input() set sampleData(sampleData: IAnnotatedSampleData[]) {
-
-        this._sampleData = _.cloneDeep(sampleData);
-
-        const errData = this.parseErrors(this._sampleData.map(e => e.errors), this._sampleData.map(e => e.corrections));
-        this.data = this._sampleData.map(e => e.data);
-        this.updateTableSettings(errData);
+    ngOnInit(): void {
+        this.ToolTipConfigs[ToolTipType.WARNING] = new ToolTip('tooltipster-warning', 'bottom', ToolTipColour.YELLOW);
+        this.ToolTipConfigs[ToolTipType.ERROR] = new ToolTip('tooltipster-error', 'top', ToolTipColour.RED);
+        this.ToolTipConfigs[ToolTipType.AUTOCORRECTION] = new ToolTip('tooltipster-info', 'left', ToolTipColour.BLUE);
     }
 
-    afterChange(changes: any) {
-        const tableData: ITableDataOutput = {
-            data: this._sampleData,
-            touched: false,
-            changed: false
-        };
-        if (changes.params[1] === 'edit') {
+    // Handsontable dictates that this should be an arrow function.
+    onAfterChange = (hotInstance: any, changes: any, source: any) => {
+        // context -> AppComponent
+        if (changes) {
+            const tableData: ITableDataOutput = {
+                data: this._sampleData,
+                touched: true,
+                changed: false
+            };
+
             tableData.touched = true;
-            if (changes.params[0][0][2] !== changes.params[0][0][3]) {
+            if (changes[0][2] !== changes[0][3]) {
                 tableData.changed = true;
-                this.removeWarningAndError(changes.params[0][0][0], changes.params[0][0][1]);
             }
+
+            this.valueChanged.emit(tableData);
         }
-        this.valueChanged.emit(tableData);
+
+        return false; // returns value in Handsontable
     }
 
-    private removeWarningAndError(row: number, column: string) {
-        this._sampleData[row].errors[column] = [];
-        this._sampleData[row].corrections = _.filter(this._sampleData[row].corrections, e => e.field !== column);
+    private updateTableSettings() {
         const errData = this.parseErrors(this._sampleData.map(e => e.errors), this._sampleData.map(e => e.corrections));
-        this.updateTableSettings(errData);
-    }
-
-    private updateTableSettings(errData: IErrRow) {
         this.settings = {
             colHeaders: this.columnConfigArray.map(c => c.title),
             rowHeaders: true,
@@ -161,81 +203,58 @@ export class DataGridComponent {
             manualColumnResize: true,
             manualRowResize: true,
             renderAllRows: true,
-            cells: (row: any, col: any, prop: any): any => {
-                const cellProperties: any = {};
-                if (errData[row]) {
-                    if (errData[row][col]) {
-                        cellProperties.errObj = errData[row][col];
-                        Object.assign(cellProperties, { renderer: this.cellRenderer });
+            cells: (cellRow: number, cellCol: number, cellProps: string): any => {
+                const cellProperties: ICellProperties = {
+                    renderer: (instance: any, td: any, row: any, col: any, prop: any, value: any, cp: any) => {
+                        const errObj = errData[cellRow][cellCol];
+                        const tooltipOptionList: any[] = [];
+                        if (errObj) {
+                            for (const s of Object.keys(errObj)) {
+                                const status = parseInt(s, 10);
+                                td.classList.add('tooltipster-text');
+                                td.style.backgroundColor = this.ToolTipConfigs[status].colour;
+                                td.style.fontWeight = 'bold';
+                                tooltipOptionList.push(this.constructToolTipOption(errObj[status], status));
+                            }
+                            // add multiple property to the tooltip options => set multiple: true except in first option
+                            if (tooltipOptionList.length > 1) {
+                                const optionsNum = tooltipOptionList.length;
+                                tooltipOptionList[1].multiple = true;
+                                if (optionsNum === 3) {
+                                    tooltipOptionList[2].multiple = true;
+                                }
+                            }
+
+                            const instances = $.tooltipster.instances(td);
+                            if (instances.length === 0) {
+                                for (const option of tooltipOptionList) {
+                                    $(td).tooltipster(option);
+                                }
+                            }
+                        }
+                        Handsontable.renderers.TextRenderer(instance, td, row, col, prop, value, cp);
                     }
-                }
+                };
 
                 return cellProperties;
             }
         };
-        this.hotTableComponent.updateHotTable(this.settings);
     }
 
-    private cellRenderer(instance: any, td: any, row: any, col: any, prop: any, value: any, cellProperties: any) {
-        const yellow = 'rgb(255, 250, 205)';
-        const red = 'rgb(255, 193, 193)';
-        const blue = 'rgb(240, 248, 255)';
-        const errObj = cellProperties.errObj;
-        const tooltipOptionList: any[] = [];
-        const statusList = [4, 1, 2];
-        const statusMapper: any = {
-            1: ['tooltipster-warning', 'bottom', yellow],
-            2: ['tooltipster-error', 'top', red],
-            4: ['tooltipster-info', 'left', blue]
+    private constructToolTipOption(commentList: string[], status: number) {
+        const theme: string = this.ToolTipConfigs[status].theme;
+        const side: string = this.ToolTipConfigs[status].alignmemt;
+        return {
+            repositionOnScroll: true,
+            animation: 'grow', // fade
+            delay: 0,
+            theme: theme,
+            touchDevices: false,
+            trigger: 'hover',
+            contentAsHTML: true,
+            content: ToolTip.constructToolTipText(commentList),
+            side: side
         };
-
-        Handsontable.renderers.TextRenderer.apply(this, arguments);
-
-        for (const status of statusList) {
-            if (errObj[status]) {
-                td.classList.add('tooltipster-text');
-                td.style.backgroundColor = statusMapper[status][2];
-                const commentList = errObj[status];
-                let tooltipText = '<ul>';
-                for (const comment of commentList) {
-                    tooltipText += '<li>';
-                    tooltipText += comment;
-                    tooltipText += '</li>';
-                }
-                tooltipText += '</ul>';
-                const theme: string = statusMapper[status][0];
-                const side: string = statusMapper[status][1];
-                tooltipOptionList.push({
-                    repositionOnScroll: true,
-                    animation: 'grow', // fade
-                    delay: 0,
-                    theme: theme,
-                    touchDevices: false,
-                    trigger: 'hover',
-                    contentAsHTML: true,
-                    content: tooltipText,
-                    side: side
-                });
-            }
-        }
-
-        // add multiple property to the tooltip options => set multiple: true except in first option
-        if (tooltipOptionList.length > 1) {
-            const optionsNum = tooltipOptionList.length;
-            tooltipOptionList[1].multiple = true;
-            if (optionsNum === 3) {
-                tooltipOptionList[2].multiple = true;
-            }
-        }
-
-        td.style.fontWeight = 'bold';
-
-        const instances = $.tooltipster.instances(td);
-        if (instances.length === 0) {
-            for (const option of tooltipOptionList) {
-                $(td).tooltipster(option);
-            }
-        }
     }
 
     private parseErrors(errors: IErrorResponseDTO[], corrections: IAutoCorrectionDTO[][]) {
