@@ -21,11 +21,11 @@ export class AuthService {
 
     login(credentials: ICredentials) {
         return this.httpClient
-            .post('/users/login', credentials);
+            .post('/api/v1/users/login', credentials);
     }
 
     logout() {
-        const url = '/users/login';
+        const url = '/v1/users/login';
         this.sampleStore.clear();
         localStorage.removeItem('currentUser');
         this.router.navigate([url]).catch(() => {
