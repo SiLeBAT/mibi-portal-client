@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { saveAs } from 'file-saver';
 import { IExcelFileBlob, ExcelConverterService } from './excel-converter.service';
-import { ISampleSheet } from '../models/models';
+import { ISampleSheet } from '../models/sample-management.model';
 
 interface IExportService {
     export(sampleSheet: ISampleSheet): Promise<void>;

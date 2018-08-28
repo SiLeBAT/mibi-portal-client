@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { WorkBook, WorkSheet, read, utils } from 'xlsx';
 
 import { AlertService } from './alert.service';
-import { IWorkSheet } from '../sampleManagement/models/models';
+import { IWorkSheet } from '../../sampleManagement/models/sample-management.model';
 
 export type AOO = any[];
 

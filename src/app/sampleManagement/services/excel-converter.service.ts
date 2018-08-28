@@ -6,7 +6,7 @@ import * as XlsxPopulate from 'xlsx-populate/browser/xlsx-populate';
 
 import { WindowRefService } from './window-ref.service';
 import { IExcelFileBlob } from './excel-converter.service';
-import { ISampleSheet, IWorkSheet } from '../models/models';
+import { ISampleSheet, IWorkSheet } from '../models/sample-management.model';
 
 export interface IExcelFileBlob {
     blob: Blob;

@@ -4,9 +4,9 @@ import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 
 import { UserService } from '../services/user.service';
-import { AlertService } from '../../services/alert.service';
-import { User } from '../../models/user.model';
-import { Institution } from '../../models/institution.model';
+import { AlertService } from '../../shared/services/alert.service';
+import { Institution } from '../../shared/models/institution.model';
+import { User } from '../../shared/models/user.model';
 
 export interface IHash {
     [details: string]: string;

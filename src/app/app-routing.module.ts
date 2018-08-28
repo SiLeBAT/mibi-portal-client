@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MainDashComponent } from './main-dash/main-dash.component';
+import { MainDashComponent } from './core/main-dash/main-dash.component';
 import { HomeComponent } from './auth/home/home.component';
 import { AuthGuard } from './auth/guards/auth.guard';
-import { UploadComponent } from './upload/upload.component';
+import { UploadComponent } from './sampleManagement/upload/upload.component';
 import { SampleViewContainerComponent } from './sampleManagement/container/sample-view-container/sample-view-container.component';
-import { NoSampleGuard } from './sampleManagement/services/no-sample.guard';
-import { MyaccountComponent } from './myaccount/myaccount.component';
-import { UserdataComponent } from './myaccount/userdata/userdata.component';
+import { NoSampleGuard } from './sampleManagement/services/no-sample-guard.service';
+import { MyaccountComponent } from './core/myaccount/myaccount.component';
+import { UserdataComponent } from './core/myaccount/userdata/userdata.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { RecoveryComponent } from './auth/recovery/recovery.component';
@@ -38,7 +38,10 @@ const ROUTES: Routes = [
     imports: [
         RouterModule.forRoot(ROUTES)
     ],
-    exports: [RouterModule]
+    exports: [RouterModule],
+    providers: [
+        NoSampleGuard
+    ]
 })
 export class AppRoutingModule {
 

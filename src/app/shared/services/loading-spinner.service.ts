@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SpinnerContainerComponent } from '../shared/spinner-container/spinner-container.component';
+import { SpinnerContainerComponent } from '../spinner-container/spinner-container.component';
 
 @Injectable()
 export class LoadingSpinnerService {

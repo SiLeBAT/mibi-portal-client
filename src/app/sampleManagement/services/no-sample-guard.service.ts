@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { SampleStore } from './sampleStore.service';
+import { SampleStore } from './sample-store.service';
 
 @Injectable()
 export class NoSampleGuard implements CanActivate {

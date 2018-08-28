@@ -2,7 +2,7 @@ import { Component, Input, ViewChild, Output, EventEmitter, OnInit } from '@angu
 import { HotTableComponent } from '@handsontable/angular';
 import * as Handsontable from 'handsontable';
 import * as _ from 'lodash';
-import { IAnnotatedSampleData, IErrorResponseDTO, IAutoCorrectionDTO } from '../../models/models';
+import { IAnnotatedSampleData, IErrorResponseDTO, IAutoCorrectionDTO } from '../../models/sample-management.model';
 
 interface IStatusComments {
     [status: number]: string[];

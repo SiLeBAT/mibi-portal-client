@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../../auth/services/auth.service';
 import { Router } from '@angular/router';
-import { SampleStore } from '../../../sampleManagement/services/sampleStore.service';
+import { SampleStore } from '../../../sampleManagement/services/sample-store.service';
 import { environment } from '../../../../environments/environment';
 import { ValidationService } from '../../../sampleManagement/services/validation.service';
 import { ExportService } from '../../../sampleManagement/services/export.service';
 import { SendSampleService } from '../../../sampleManagement/services/send-sample.service';
-import { IAnnotatedSampleData } from '../../../sampleManagement/models/models';
-import { AlertService } from '../../../services/alert.service';
-import { SampleSheetUtilService } from '../../../sampleManagement/services/sampleSheetUtil.service';
+import { IAnnotatedSampleData } from '../../../sampleManagement/models/sample-management.model';
+import { AlertService } from '../../../shared/services/alert.service';
+import { SampleSheetUtilService } from '../../../sampleManagement/services/sample-sheet-util.service';
 import { ConfirmationService, ConfirmSettings, ResolveEmit } from '@jaspero/ng-confirmations';
 import { INavBarConfiguration } from '../../presentation/nav-bar/nav-bar.component';
 

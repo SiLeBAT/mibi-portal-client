@@ -4,9 +4,9 @@ import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 
 import { AuthService } from '../services/auth.service';
-import { AlertService } from '../../services/alert.service';
-import { LoadingSpinnerService } from '../../services/loading-spinner.service';
-import { SampleStore } from '../../sampleManagement/services/sampleStore.service';
+import { AlertService } from '../../shared/services/alert.service';
+import { LoadingSpinnerService } from '../../shared/services/loading-spinner.service';
+import { SampleStore } from '../../sampleManagement/services/sample-store.service';
 
 @Component({
     selector: 'app-login',

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../auth/services/auth.service';
-import { UserService } from '../auth/services/user.service';
+import { AuthService } from '../../auth/services/auth.service';
+import { UserService } from '../../auth/services/user.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { AlertService } from '../services/alert.service';
+import { AlertService } from '../../shared/services/alert.service';
 
 @Component({
     selector: 'app-myaccount',

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ISampleSheet } from '../models/models';
+import { ISampleSheet } from '../models/sample-management.model';
 
 @Injectable({
     providedIn: 'root'

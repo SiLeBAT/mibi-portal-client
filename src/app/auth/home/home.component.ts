@@ -1,18 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 
-import { User } from '../../models/user.model';
 import { UserService } from '../services/user.service';
-import { AlertService } from '../../services/alert.service';
+import { AlertService } from '../../shared/services/alert.service';
 import { AuthService } from '../services/auth.service';
+import { IUser } from '../../shared/models/models';
+import { User } from '../../shared/models/user.model';
 
 @Component({
     selector: 'app-home',
     templateUrl: './home.component.html'
 })
 export class HomeComponent implements OnInit {
-    currentUser: User;
-    users: User[] = [];
+    currentUser: IUser;
+    users: IUser[] = [];
 
     constructor(private userService: UserService,
         private alertService: AlertService,

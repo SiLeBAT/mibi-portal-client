@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import * as _ from 'lodash';
 import 'tooltipster';
-import { CanReloadComponent } from '../../../can-deactivate/can-reload.component';
-import { SampleStore } from '../../services/sampleStore.service';
+import { SampleStore } from '../../services/sample-store.service';
 import { ValidationService } from '../../services/validation.service';
 import { ITableDataOutput } from '../../presentation/data-grid/data-grid.component';
+import { CanReloadComponent } from '../../../core/can-deactivate/can-reload.component';
 
 @Component({
     selector: 'app-data-grid-container',

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { ISampleSheet } from '../models/models';
+import { ISampleSheet } from '../models/sample-management.model';
 import { ExcelConverterService, IExcelFileBlob } from './excel-converter.service';
-import { IUser } from '../../models/models';
-import { HttpFacadeService } from '../../services/httpFacade.service';
+import { HttpFacadeService } from '../../shared/services/httpFacade.service';
+import { IUser } from '../../shared/models/models';
 
 @Injectable({
     providedIn: 'root'

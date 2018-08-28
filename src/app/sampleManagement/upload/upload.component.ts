@@ -3,13 +3,13 @@ import { HttpEvent } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { AlertService } from '../services/alert.service';
-import { ExcelToJsonService, IExcelData } from '../services/excel-to-json.service';
+import { AlertService } from '../../shared/services/alert.service';
+import { ExcelToJsonService, IExcelData } from '../../shared/services/excel-to-json.service';
 
-import { LoadingSpinnerService } from '../services/loading-spinner.service';
-import { SampleStore } from '../sampleManagement/services/sampleStore.service';
-import { ValidationService } from '../sampleManagement/services/validation.service';
-import { IAnnotatedSampleData } from '../sampleManagement/models/models';
+import { LoadingSpinnerService } from '../../shared/services/loading-spinner.service';
+import { SampleStore } from '../services/sample-store.service';
+import { ValidationService } from '../services/validation.service';
+import { IAnnotatedSampleData } from '../models/sample-management.model';
 
 export interface IKnimeOrigdata {
     colHeaders: Array<string>;

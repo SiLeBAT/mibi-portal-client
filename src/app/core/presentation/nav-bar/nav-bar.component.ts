@@ -1,8 +1,8 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
-import { SampleStore } from '../../../sampleManagement/services/sampleStore.service';
-import { IUser } from '../../../models/models';
+import { SampleStore } from '../../../sampleManagement/services/sample-store.service';
 import { AuthService } from '../../../auth/services/auth.service';
+import { IUser } from '../../../shared/models/models';
 
 // TODO: Fix this mess
 export interface INavBarConfiguration {

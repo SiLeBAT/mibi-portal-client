@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { SampleStore } from '../../sampleManagement/services/sampleStore.service';
-import { IUser, ICredentials } from '../../models/models';
+import { SampleStore } from '../../sampleManagement/services/sample-store.service';
+import { IUser, ICredentials } from '../../shared/models/models';
 
 const NULL_USER: IUser = {
     email: '',

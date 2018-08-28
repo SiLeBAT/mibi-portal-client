@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
-import { User } from '../../models/user.model';
-import { UserData } from '../../models/userdata.model';
+import { IUser } from '../../shared/models/models';
+import { User } from '../../shared/models/user.model';
+import { UserData } from '../../shared/models/userdata.model';
 
 @Injectable()
 export class UserService {
@@ -35,7 +35,7 @@ export class UserService {
             .delete('/api/v1/users/' + _id);
     }
 
-    create(user: User) {
+    create(user: IUser) {
         return this.httpClient
             .post('/api/v1/users/register', user);
     }

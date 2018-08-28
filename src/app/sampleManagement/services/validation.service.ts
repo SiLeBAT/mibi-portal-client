@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { IAnnotatedSampleData } from '../models/models';
-import { HttpFacadeService } from '../../services/httpFacade.service';
+import { IAnnotatedSampleData } from '../models/sample-management.model';
+import { HttpFacadeService } from '../../shared/services/httpFacade.service';
 
 export interface IValidationService {
     validate(data: Record<string, string>[]): Promise<IAnnotatedSampleData[]>;
