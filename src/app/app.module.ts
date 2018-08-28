@@ -35,19 +35,10 @@ import { DropdownDirective } from './shared/directive/dropdown.directive';
 import { AdminActivateComponent } from './auth/admin-activate/admin-activate.component';
 import { CanDeactivateGuard } from './core/can-deactivate/can-deactivate.guard';
 import { DataGridComponent } from './sampleManagement/presentation/data-grid/data-grid.component';
-import { SampleStore } from './sampleManagement/services/sample-store.service';
 import { NavBarComponent } from './core/presentation/nav-bar/nav-bar.component';
-import { ExcelConverterService } from './sampleManagement/services/excel-converter.service';
-import { ExportService } from './sampleManagement/services/export.service';
-import { SendSampleService } from './sampleManagement/services/send-sample.service';
-import { ValidationService } from './sampleManagement/services/validation.service';
 import { SampleViewComponent } from './sampleManagement/presentation/sample-view/sample-view.component';
 import { SampleViewContainerComponent } from './sampleManagement/container/sample-view-container/sample-view-container.component';
-import { SampleSheetUtilService } from './sampleManagement/services/sample-sheet-util.service';
-import { HttpFacadeService } from './shared/services/httpFacade.service';
 import { NavBarContainerComponent } from './core/container/nav-bar-container/nav-bar-container.component';
-import { LogService } from './shared/services/log.service';
-import { LogPublishersService } from './shared/services/log-publishers.service';
 import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
@@ -105,16 +96,7 @@ import { AppRoutingModule } from './app-routing.module';
             provide: HTTP_INTERCEPTORS,
             useClass: JwtInterceptor,
             multi: true
-        },
-        SampleStore,
-        ExcelConverterService,
-        ExportService,
-        SendSampleService,
-        ValidationService,
-        SampleSheetUtilService,
-        HttpFacadeService,
-        LogService,
-        LogPublishersService
+        }
     ],
     bootstrap: [AppComponent]
 })

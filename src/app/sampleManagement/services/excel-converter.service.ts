@@ -6,7 +6,7 @@ import * as XlsxPopulate from 'xlsx-populate/browser/xlsx-populate';
 
 import { WindowRefService } from './window-ref.service';
 import { IExcelFileBlob } from './excel-converter.service';
-import { ISampleSheet, IWorkSheet } from '../models/sample-management.model';
+import { ISampleSheet, IWorkSheet, SampleData } from '../models/sample-management.model';
 
 export interface IExcelFileBlob {
     blob: Blob;
@@ -79,7 +79,7 @@ export class ExcelConverterService {
         return workbook;
     }
 
-    private fromDataObjToAOO(data: Record<string, string>[]): any {
+    private fromDataObjToAOO(data: SampleData[]): any {
         const dataToSave: any = [];
 
         _.forEach(data, ((dataRow: any) => {
