@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { WorkBook, WorkSheet, read, utils } from 'xlsx';
 
 import { AlertService } from './alert.service';
-import { IWorkSheet } from '../../sampleManagement/models/sample-management.model';
+import { IWorkSheet, SampleData } from '../../sampleManagement/models/sample-management.model';
 
 export type AOO = any[];
 
 // FIXME: Remove
 export interface IOLDSampleCollectionDTO {
-    data: Record<string, string>[];
+    data: SampleData[];
 }
 
 export const jsHeaders: string[] = [
@@ -116,7 +116,7 @@ export class ExcelToJsonService {
         }
 
         const cleanedSamples = this.fromDataToCleanedSamples(data);
-        const samples: Record<string, string>[] = cleanedSamples;
+        const samples: SampleData[] = cleanedSamples;
         const sampleCollectionDTO: IOLDSampleCollectionDTO = {
             data: samples
         };

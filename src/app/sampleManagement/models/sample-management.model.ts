@@ -1,5 +1,7 @@
 import { WorkSheet } from 'xlsx/types';
 
+export type SampleData = Record<string, string>;
+export type ChangedValueCollection = Record<string, string>;
 export interface IWorkSheet {
     workSheet: WorkSheet;
     isVersion14: boolean;
@@ -13,24 +15,24 @@ export interface ISampleSheet {
     workSheet: IWorkSheet | null;
 }
 
-interface IErrorDTO {
+interface IValidationError {
     code: number;
     level: number;
     message: string;
 }
 
-export interface IErrorResponseDTO {
-    [key: string]: IErrorDTO[];
+export interface IValidationErrorCollection {
+    [key: string]: IValidationError[];
 }
 
-export interface IAutoCorrectionDTO {
-    corrected: string;
-    field: string;
+export interface IAutoCorrectionEntry {
+    field: keyof SampleData;
     original: string;
+    corrected: string;
 }
-
 export interface IAnnotatedSampleData {
-    data: Record<string, string>;
-    errors: IErrorResponseDTO;
-    corrections: IAutoCorrectionDTO[];
+    data: SampleData;
+    errors: IValidationErrorCollection;
+    edits: ChangedValueCollection;
+    corrections: IAutoCorrectionEntry[];
 }

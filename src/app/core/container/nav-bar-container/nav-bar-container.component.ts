@@ -6,7 +6,7 @@ import { environment } from '../../../../environments/environment';
 import { ValidationService } from '../../../sampleManagement/services/validation.service';
 import { ExportService } from '../../../sampleManagement/services/export.service';
 import { SendSampleService } from '../../../sampleManagement/services/send-sample.service';
-import { IAnnotatedSampleData } from '../../../sampleManagement/models/sample-management.model';
+import { IAnnotatedSampleData, SampleData } from '../../../sampleManagement/models/sample-management.model';
 import { AlertService } from '../../../shared/services/alert.service';
 import { SampleSheetUtilService } from '../../../sampleManagement/services/sample-sheet-util.service';
 import { ConfirmationService, ConfirmSettings, ResolveEmit } from '@jaspero/ng-confirmations';
@@ -117,13 +117,10 @@ export class NavBarContainerComponent {
         return this.authService.getCurrentUser();
     }
     private doValidation() {
-        const data: Record<string, string>[] = this.sampleStore.state.entries.map(e => e.data);
+        const data: SampleData[] = this.sampleStore.state.entries.map(e => e.data);
         return this.validationService.validate(data).then(
             (validationResponse: IAnnotatedSampleData[]) => {
-                const newState = { ...this.sampleStore.state, ...{ entries: validationResponse } };
-                this.sampleStore.setState(
-                    newState
-                );
+                this.sampleStore.mergeValidationResponseIntoState(validationResponse);
             }
         );
     }

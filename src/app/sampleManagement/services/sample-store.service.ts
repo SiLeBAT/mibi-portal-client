@@ -16,7 +16,9 @@ const INITIAL_STATE: ISampleSheet = {
     workSheet: null
 };
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class SampleStore extends Store<ISampleSheet> implements ISampleStore {
 
     constructor() {
@@ -31,6 +33,24 @@ export class SampleStore extends Store<ISampleSheet> implements ISampleStore {
 
     get hasEntries(): boolean {
         return this.state.entries.length > 0;
+    }
+
+    mergeValidationResponseIntoState(validationResponse: IAnnotatedSampleData[]) {
+
+        const mergedEntries = validationResponse.map(
+            (response, i) => {
+                return {
+                    data: response.data,
+                    errors: response.errors,
+                    corrections: response.corrections,
+                    edits: { ...response.edits, ...this.state.entries[i].edits }
+                };
+            }
+        );
+        const newState = { ...this.state, ...{ entries: mergedEntries } };
+        this.setState(
+            newState
+        );
     }
 
     clear() {

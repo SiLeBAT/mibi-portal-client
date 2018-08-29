@@ -1,24 +1,33 @@
-import { Component, Input, ViewChild, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, ViewChild, Output, EventEmitter, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { HotTableComponent } from '@handsontable/angular';
+import 'tooltipster';
 import * as Handsontable from 'handsontable';
 import * as _ from 'lodash';
-import { IAnnotatedSampleData, IErrorResponseDTO, IAutoCorrectionDTO } from '../../models/sample-management.model';
+import {
+    SampleData, ChangedValueCollection
+} from '../../models/sample-management.model';
 
-interface IStatusComments {
+export interface IStatusComments {
     [status: number]: string[];
 }
 
-interface IErrCol {
+export interface IErrCol {
     [errCol: number]: IStatusComments;
 }
 
-interface IErrRow {
+export interface IErrRow {
     [errRow: number]: IErrCol;
 }
 
-interface IColConfig {
+export interface IColConfig {
     id: string;
     title: string;
+}
+
+export interface ITableDataOutput {
+    data: SampleData[];
+    touched: boolean;
+    changed: IChangedDataGridField;
 }
 
 enum ToolTipType {
@@ -32,19 +41,44 @@ enum ToolTipColour {
     RED = 'rgb(255, 193, 193)',
     BLUE = 'rgb(240, 248, 255)'
 }
+
+enum HotChangeIndex {
+    INDEX = 0,
+    COL_ID = 1,
+    ORIGINAL_VALUE = 2,
+    NEW_VALUE = 3
+
+}
 interface IToolTipConfig {
     theme: string;
     alignmemt: 'bottom' | 'top' | 'left';
     colour: ToolTipColour;
 }
-export interface ITableDataOutput {
-    data: IAnnotatedSampleData[];
-    touched: boolean;
-    changed: boolean;
+
+interface IChangedDataGridField {
+    rowIndex: number;
+    columnId: string;
+    originalValue: string;
+    newValue: string;
 }
 
 interface ICellProperties {
-    renderer: (instance: any, td: any, row: any, col: any, prop: any, value: any, cp: any) => void;
+    tooltipOptionList: any[];
+    errData?: IStatusComments;
+    changed?: ChangedValueCollection;
+    renderer?: (instance: any, td: any, row: any, col: any, prop: any, value: any, cp: any) => void;
+}
+
+interface IHotSettings {
+
+    colHeaders: string[];
+    rowHeaders: boolean;
+    stretchH: string;
+    colWidths: number[];
+    manualColumnResize: boolean;
+    manualRowResize: boolean;
+    renderAllRows: boolean;
+    cells: (cellRow: number, cellCol: number, cellProp: string) => ICellProperties;
 }
 
 class ToolTip implements IToolTipConfig {
@@ -67,102 +101,36 @@ class ToolTip implements IToolTipConfig {
 
 @Component({
     selector: 'app-data-grid',
-    templateUrl: './data-grid.component.html'
+    templateUrl: './data-grid.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DataGridComponent implements OnInit {
 
-    settings: any;
-    data: Record<string, string>[];
+    settings: IHotSettings;
+
+    @Input() colTitles: string[];
+
     @ViewChild(HotTableComponent) hotTableComponent: HotTableComponent;
     @Output() valueChanged = new EventEmitter();
-    @Input() set sampleData(sampleData: IAnnotatedSampleData[]) {
-        this._sampleData = _.cloneDeep(sampleData);
-        this.data = this._sampleData.map(e => e.data);
-        this.updateTableSettings();
+
+    @Input() set data(sampleData: SampleData[]) {
+        this.localData = _.cloneDeep(sampleData);
     }
 
-    private _sampleData: IAnnotatedSampleData[];
-    // FIXME: HTML tags in Text?  Formatting shoule be handled by CSS.
-    private columnConfigArray: IColConfig[] = [
-        {
-            id: 'sample_id',
-            title: 'Ihre<br>Proben-<br>ummer'
-        },
-        {
-            id: 'sample_id_avv',
-            title: 'Probe-<br>nummer<br>nach<br>AVVData'
-        },
-        {
-            id: 'pathogen_adv',
-            title: 'Erreger<br>(Text aus<br>ADV-Kat-Nr.16)'
-        },
-        {
-            id: 'pathogen_text',
-            title: 'Erreger<br>(Textfeld/<br>Ergänzung)'
-        },
-        {
-            id: 'sampling_date',
-            title: 'Datum der<br>Probenahme'
-        },
-        {
-            id: 'isolation_date',
-            title: 'Datum der<br>Isolierung'
-        },
-        {
-            id: 'sampling_location_adv',
-            title: 'Ort der<br>Probe-<br>nahme<br>(Code aus<br>ADV-Kat-<br>Nr.9)'
-        },
-        {
-            id: 'sampling_location_zip',
-            title: 'Ort der<br>Probe-<br>nahme<br>(PLZ)'
-        },
-        {
-            id: 'sampling_location_text',
-            title: 'Ort der<br>Probe-<br>nahme<br>(Text)'
-        },
-        {
-            id: 'topic_adv',
-            title: 'Oberbe-<br>griff<br>(Kodier-<br>system)<br>der<br>Matrizes<br>(Code aus<br>ADV-Kat-<br>Nr.2)'
-        },
-        {
-            id: 'matrix_adv',
-            title: 'Matrix<br>Code<br>(Code<br>aus<br>ADV-<br>Kat-<br>Nr.3)'
-        },
-        {
-            id: 'matrix_text',
-            title: 'Matrix<br>(Textfeld/<br>Ergänzung)'
-        },
-        {
-            id: 'process_state_adv',
-            title: 'Ver-<br>arbeitungs-<br>zustand<br>(Code aus<br>ADV-Kat-<br>Nr.12)'
-        },
-        {
-            id: 'sampling_reason_adv',
-            title: 'Grund<br>der<br>Probe-<br>nahme<br>(Code<br>aus<br>ADV-Kat-<br>Nr.4)'
-        },
-        {
-            id: 'sampling_reason_text',
-            title: 'Grund der<br>Probe-<br>nahme<br>(Textfeld/<br>Ergänzung)'
-        },
-        {
-            id: 'operations_mode_adv',
-            title: 'Betriebsart<br>(Code aus<br>ADV-Kat-Nr.8)'
-        },
-        {
-            id: 'operations_mode_text',
-            title: 'Betriebsart<br>(Textfeld/<br>Ergänzung)'
-        },
-        {
-            id: 'vvvo',
-            title: 'VVVO-Nr /<br>Herde'
-        },
-        {
-            id: 'comment',
-            title: 'Bemerkung<br>(u.a.<br>Untersuchungs-<br>programm)'
-        }
-    ];
+    @Input() set errorData(errData: IErrRow) {
+        this._errorData = errData;
+        this.changeSettings();
+    }
 
+    @Input() set changedData(data: ChangedValueCollection) {
+        this._changedData = data;
+        this.changeSettings();
+    }
+
+    localData: SampleData[];
     private ToolTipConfigs: { [key: number]: IToolTipConfig } = {};
+    private _errorData: IErrRow;
+    private _changedData: ChangedValueCollection;
 
     constructor() { }
 
@@ -170,22 +138,32 @@ export class DataGridComponent implements OnInit {
         this.ToolTipConfigs[ToolTipType.WARNING] = new ToolTip('tooltipster-warning', 'bottom', ToolTipColour.YELLOW);
         this.ToolTipConfigs[ToolTipType.ERROR] = new ToolTip('tooltipster-error', 'top', ToolTipColour.RED);
         this.ToolTipConfigs[ToolTipType.AUTOCORRECTION] = new ToolTip('tooltipster-info', 'left', ToolTipColour.BLUE);
+        this.changeSettings();
     }
 
     // Handsontable dictates that this should be an arrow function.
-    onAfterChange = (hotInstance: any, changes: any, source: any) => {
+    onAfterChange = (hotInstance: any, changes: any, source: string) => {
         // context -> AppComponent
-        if (changes) {
-            const tableData: ITableDataOutput = {
-                data: this._sampleData,
-                touched: true,
-                changed: false
-            };
+        if (source === 'loadData') {
+            return false;
+        }
+        if (source === 'edit' && changes[0][HotChangeIndex.ORIGINAL_VALUE] !== changes[0][HotChangeIndex.NEW_VALUE]) {
+            const changeArray = changes[0];
+            const originalValue = changeArray[HotChangeIndex.ORIGINAL_VALUE];
+            const newValue = changeArray[HotChangeIndex.NEW_VALUE];
+            const rowIndex = changeArray[HotChangeIndex.INDEX];
+            const columnId = changeArray[HotChangeIndex.COL_ID];
 
-            tableData.touched = true;
-            if (changes[0][2] !== changes[0][3]) {
-                tableData.changed = true;
-            }
+            const tableData: ITableDataOutput = {
+                data: this.localData,
+                touched: true,
+                changed: {
+                    rowIndex,
+                    columnId,
+                    originalValue,
+                    newValue
+                }
+            };
 
             this.valueChanged.emit(tableData);
         }
@@ -193,52 +171,75 @@ export class DataGridComponent implements OnInit {
         return false; // returns value in Handsontable
     }
 
-    private updateTableSettings() {
-        const errData = this.parseErrors(this._sampleData.map(e => e.errors), this._sampleData.map(e => e.corrections));
+    private createCellVisitor() {
+        return (cellRow: number, cellCol: number, cellProp: string): any => {
+            let cellProperties: ICellProperties = {
+                tooltipOptionList: []
+            };
+
+            if (this._errorData[cellRow][cellCol]) {
+                for (const s of Object.keys(this._errorData[cellRow][cellCol])) {
+                    const status = parseInt(s, 10);
+                    cellProperties.tooltipOptionList.push(this.constructToolTipOption(this._errorData[cellRow][cellCol][status], status));
+                }
+            }
+
+            if (cellProperties.tooltipOptionList.length || (this._changedData[cellRow] as any)[cellProp]) {
+                cellProperties = {
+                    ...cellProperties, ...{
+                        errData: this._errorData[cellRow][cellCol],
+                        changed: (this._changedData[cellRow] as any)[cellProp],
+                        renderer: this.cellRenderer
+                    }
+                };
+            }
+            return cellProperties;
+        };
+    }
+
+    private changeSettings() {
         this.settings = {
-            colHeaders: this.columnConfigArray.map(c => c.title),
+            colHeaders: this.colTitles,
             rowHeaders: true,
             stretchH: 'all',
             colWidths: [50],
             manualColumnResize: true,
             manualRowResize: true,
             renderAllRows: true,
-            cells: (cellRow: number, cellCol: number, cellProps: string): any => {
-                const cellProperties: ICellProperties = {
-                    renderer: (instance: any, td: any, row: any, col: any, prop: any, value: any, cp: any) => {
-                        const errObj = errData[cellRow][cellCol];
-                        const tooltipOptionList: any[] = [];
-                        if (errObj) {
-                            for (const s of Object.keys(errObj)) {
-                                const status = parseInt(s, 10);
-                                td.classList.add('tooltipster-text');
-                                td.style.backgroundColor = this.ToolTipConfigs[status].colour;
-                                td.style.fontWeight = 'bold';
-                                tooltipOptionList.push(this.constructToolTipOption(errObj[status], status));
-                            }
-                            // add multiple property to the tooltip options => set multiple: true except in first option
-                            if (tooltipOptionList.length > 1) {
-                                const optionsNum = tooltipOptionList.length;
-                                tooltipOptionList[1].multiple = true;
-                                if (optionsNum === 3) {
-                                    tooltipOptionList[2].multiple = true;
-                                }
-                            }
-
-                            const instances = $.tooltipster.instances(td);
-                            if (instances.length === 0) {
-                                for (const option of tooltipOptionList) {
-                                    $(td).tooltipster(option);
-                                }
-                            }
-                        }
-                        Handsontable.renderers.TextRenderer(instance, td, row, col, prop, value, cp);
-                    }
-                };
-
-                return cellProperties;
-            }
+            cells: this.createCellVisitor()
         };
+    }
+
+    // Handsontable dictates that this should be an arrow function.
+    private cellRenderer = (instance: any, td: any, row: any, col: any, prop: any, value: any, cp: any) => {
+        const errObj = cp.errData;
+        if (cp.changed) {
+            td.style.boxShadow = 'inset 0 0 0 2px #0de5cf';
+        }
+        if (cp.tooltipOptionList.length) {
+            for (const s of Object.keys(errObj)) {
+                const status = parseInt(s, 10);
+                td.classList.add('tooltipster-text');
+                td.style.backgroundColor = this.ToolTipConfigs[status].colour;
+                td.style.fontWeight = 'bold';
+            }
+            // add multiple property to the tooltip options => set multiple: true except in first option
+            if (cp.tooltipOptionList.length > 1) {
+                const optionsNum = cp.tooltipOptionList.length;
+                cp.tooltipOptionList[1].multiple = true;
+                if (optionsNum === 3) {
+                    cp.tooltipOptionList[2].multiple = true;
+                }
+            }
+
+            const instances = $.tooltipster.instances(td);
+            if (instances.length === 0) {
+                for (const option of cp.tooltipOptionList) {
+                    $(td).tooltipster(option);
+                }
+            }
+        }
+        Handsontable.renderers.TextRenderer(instance, td, row, col, prop, value, cp);
     }
 
     private constructToolTipOption(commentList: string[], status: number) {
@@ -257,51 +258,4 @@ export class DataGridComponent implements OnInit {
         };
     }
 
-    private parseErrors(errors: IErrorResponseDTO[], corrections: IAutoCorrectionDTO[][]) {
-        const errData: IErrRow = {};
-
-        _.forEach(errors, (error, row) => {
-            const errRow: IErrCol = {};
-            _.forEach(error, (errList, colName) => {
-                const col = _.findIndex(this.columnConfigArray.map(c => c.id), header => header === colName);
-                const errCol: IStatusComments = {};
-                _.forEach(errList, (errItem) => {
-                    const currentLevel = errItem['level'];
-                    let commentList: any[];
-                    if (!errCol[currentLevel]) {
-                        commentList = [];
-                        errCol[currentLevel] = commentList;
-                    } else {
-                        commentList = errCol[currentLevel];
-                    }
-                    commentList.push(errItem['message']);
-                });
-                errRow[col] = errCol;
-            });
-            errData[row] = errRow;
-        });
-
-        const numbersOnly = new RegExp(/^\d+?/);
-        _.forEach(corrections, (correct, row) => {
-            _.forEach(correct, (correctedEntry, colName: number) => {
-                const colIndex = _.findIndex(this.columnConfigArray.map(c => c.id), header => header === correctedEntry.field);
-                if (!errData[row][colIndex]) {
-                    errData[row][colIndex] = {};
-                }
-                let message =
-                    `Erreger erkannt. Ursprünglicher Text ${correctedEntry.original} wurde durch den Text aus ADV-Katalog Nr. 16 ersetzt.`;
-                if (numbersOnly.test(correctedEntry.original)) {
-                    message =
-                        // tslint:disable-next-line
-                        `ADV-16-Code ${correctedEntry.original} wurde erkannt & durch den entsprechenden ADV-Text ${correctedEntry.corrected} ersetzt.`;
-                }
-                errData[row][colIndex][4] = [
-                    message
-                ];
-            });
-
-        });
-
-        return errData;
-    }
 }

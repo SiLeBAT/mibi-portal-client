@@ -9,11 +9,11 @@ import { ExcelToJsonService, IExcelData } from '../../shared/services/excel-to-j
 import { LoadingSpinnerService } from '../../shared/services/loading-spinner.service';
 import { SampleStore } from '../services/sample-store.service';
 import { ValidationService } from '../services/validation.service';
-import { IAnnotatedSampleData } from '../models/sample-management.model';
+import { IAnnotatedSampleData, SampleData } from '../models/sample-management.model';
 
 export interface IKnimeOrigdata {
     colHeaders: Array<string>;
-    data: Record<string, string>[];
+    data: SampleData[];
 }
 
 @Component({
@@ -78,19 +78,17 @@ export class UploadComponent implements OnInit {
             entries: excelData.data.data.map(e => ({
                 data: e,
                 errors: {},
-                corrections: []
+                corrections: [],
+                edits: {}
             })),
             workSheet: excelData.workSheet
         });
-        const data: Record<string, string>[] = this.sampleStore.state.entries.map(e => e.data);
+        const data: SampleData[] = this.sampleStore.state.entries.map(e => e.data);
 
         if (data) {
             this.validationService.validate(data).then(
                 (validationResponse: IAnnotatedSampleData[]) => {
-                    const newState = { ...this.sampleStore.state, ...{ entries: validationResponse } };
-                    this.sampleStore.setState(
-                        newState
-                    );
+                    this.sampleStore.mergeValidationResponseIntoState(validationResponse);
                     this.router.navigate(['/samples']).catch(() => {
                         throw new Error('Unable to navigate.');
                     });

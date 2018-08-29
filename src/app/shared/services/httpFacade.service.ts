@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpRequest } from '@angular/common/http';
+import { SampleData } from '../../sampleManagement/models/sample-management.model';
 
 @Injectable({
     providedIn: 'root'
@@ -18,7 +19,7 @@ export class HttpFacadeService {
         return this.postFormData(this.URL.sendFile, sendableFormData);
     }
 
-    validateSampleData(data: Record<string, string>[]) {
+    validateSampleData(data: SampleData[]) {
         return this.postData(this.URL.validateSample, data);
     }
 
