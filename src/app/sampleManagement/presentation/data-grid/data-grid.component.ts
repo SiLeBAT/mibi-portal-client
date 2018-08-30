@@ -184,7 +184,7 @@ export class DataGridComponent implements OnInit {
                 }
             }
 
-            if (cellProperties.tooltipOptionList.length || (this._changedData[cellRow] as any)[cellProp]) {
+            if (cellProperties.tooltipOptionList.length || ((this._changedData[cellRow] as any)[cellProp] !== undefined)) {
                 cellProperties = {
                     ...cellProperties, ...{
                         errData: this._errorData[cellRow][cellCol],
@@ -213,7 +213,7 @@ export class DataGridComponent implements OnInit {
     // Handsontable dictates that this should be an arrow function.
     private cellRenderer = (instance: any, td: any, row: any, col: any, prop: any, value: any, cp: any) => {
         const errObj = cp.errData;
-        if (cp.changed) {
+        if (cp.changed !== undefined) {
             td.style.boxShadow = 'inset 0 0 0 2px #0de5cf';
         }
         if (cp.tooltipOptionList.length) {

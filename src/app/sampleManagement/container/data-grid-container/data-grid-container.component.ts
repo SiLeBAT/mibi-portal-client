@@ -129,10 +129,8 @@ export class DataGridContainerComponent extends CanReloadComponent {
                 const newEdits = { ...e.edits };
 
                 if (i === rowIndex) {
-                    if (newEdits[columnId]) {
-                        if (newEdits[columnId] === newValue) {
-                            newEdits[columnId] = '';
-                        }
+                    if (newEdits[columnId] === newValue) {
+                        delete newEdits[columnId];
                     } else {
                         newEdits[columnId] = originalValue;
                     }
