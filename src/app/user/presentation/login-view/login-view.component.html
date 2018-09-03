@@ -1,0 +1,11 @@
+<mibi-spinner-container name="loginSpinner">
+    <mibi-generic-spinner></mibi-generic-spinner>
+</mibi-spinner-container>
+
+<div class="login-container">
+
+    <mibi-user-view-layout title="Anmelden">
+        <mibi-login-container *ngIf="!isLoginSpinnerShowing"></mibi-login-container>
+    </mibi-user-view-layout>
+
+</div>

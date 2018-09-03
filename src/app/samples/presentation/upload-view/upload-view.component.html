@@ -1,0 +1,19 @@
+<div class="container-fluid">
+
+    <div class="row top-bottom-margin">
+      <div class="col-md-10 col-md-offset-1">
+        <h2>Probeneinsendebogen validieren</h2>
+        <hr>
+      </div>
+    </div>
+    <div class="row top-bottom-margin">
+        <mibi-spinner-container name="uploadSpinner">
+            <mibi-generic-spinner></mibi-generic-spinner>
+          </mibi-spinner-container>
+      <div class="col-md-10 col-md-offset-1">
+        <mibi-upload-container  *ngIf="!isUploadSpinnerShowing" ></mibi-upload-container>
+      </div>
+    </div>
+  
+  </div>
+  

@@ -1,0 +1,28 @@
+
+
+      <form
+        [formGroup]="recoveryForm"
+        (ngSubmit)="onRecovery()">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            class="form-control"
+            formControlName="email"/>
+          <!-- <div *ngIf="f.submitted && !username.valid" class="help-block">Username is required</div> -->
+        </div>
+        <div class="form-group">
+          <button
+            class="btn btn-primary"
+            type="submit"
+            [disabled]="!recoveryForm.valid">Passwort zurücksetzen</button>
+          <a
+            [routerLink]="['/users/profile']"
+            class="btn btn-link">
+              Zurück
+          </a>
+        </div>
+      </form>
+
+

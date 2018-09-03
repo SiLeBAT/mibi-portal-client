@@ -1,8 +1,8 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
-import { SampleStore } from '../../../sampleManagement/services/sample-store.service';
-import { AuthService } from '../../../auth/services/auth.service';
-import { IUser } from '../../../shared/models/models';
+import { AuthService } from '../../../user/services/auth.service';
+import { IUser } from '../../../user/model/models';
+import { SampleStore } from '../../../samples/services/sample-store.service';
 
 // TODO: Fix this mess
 export interface INavBarConfiguration {
@@ -11,7 +11,7 @@ export interface INavBarConfiguration {
 }
 
 @Component({
-    selector: 'app-nav-bar',
+    selector: 'mibi-nav-bar',
     templateUrl: './nav-bar.component.html',
     styleUrls: ['./nav-bar.component.css']
 })

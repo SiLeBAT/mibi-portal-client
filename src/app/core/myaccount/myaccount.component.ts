@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../../auth/services/auth.service';
-import { UserService } from '../../auth/services/user.service';
+import { AuthService } from '../../user/services/auth.service';
+import { UserService } from '../../user/services/user.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { AlertService } from '../../shared/services/alert.service';
+import { AlertService } from '../../core/services/alert.service';
 
 @Component({
-    selector: 'app-myaccount',
+    selector: 'mibi-myaccount',
     templateUrl: './myaccount.component.html',
     styleUrls: ['./myaccount.component.css']
 })

@@ -1,0 +1,9 @@
+<mibi-spinner-container [show]="isValidating" name="validationSpinner">
+  <mibi-generic-spinner></mibi-generic-spinner>
+</mibi-spinner-container>
+<div
+  *ngIf="!isValidating"
+  class="hot-table-container">
+
+  <mibi-data-grid-container></mibi-data-grid-container>
+</div>

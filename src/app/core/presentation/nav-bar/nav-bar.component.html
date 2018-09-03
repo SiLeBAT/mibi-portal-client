@@ -3,7 +3,7 @@
 
 
     <div class="navbar-header navbar-brand">
-      <a [routerLink]="authService.loggedIn() ? ['/main'] : ['/']" class="brand navbar-brand-color">
+      <a [routerLink]="authService.loggedIn() ? ['/users/profile'] : ['/']" class="brand navbar-brand-color">
         {{ config?.appName }}
       </a>
     </div>
@@ -17,12 +17,12 @@
           </a>
           <ul class="dropdown-menu">
             <li>
-              <a class="dropdown-link" [routerLink]="['upload']">
+              <a class="dropdown-link" [routerLink]="['/upload']">
                 Upload
               </a>
             </li>
             <li>
-              <a class="dropdown-link" [routerLink]="['samples']" [class.hidden]="!sampleStore.hasEntries">
+              <a class="dropdown-link" [routerLink]="['/samples']" [class.hidden]="!sampleStore.hasEntries">
                 View Samples
               </a>
             </li>

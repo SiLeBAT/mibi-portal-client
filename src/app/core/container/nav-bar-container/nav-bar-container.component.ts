@@ -1,27 +1,27 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../../auth/services/auth.service';
+import { AuthService } from '../../../user/services/auth.service';
 import { Router } from '@angular/router';
-import { SampleStore } from '../../../sampleManagement/services/sample-store.service';
 import { environment } from '../../../../environments/environment';
-import { ValidationService } from '../../../sampleManagement/services/validation.service';
-import { ExportService } from '../../../sampleManagement/services/export.service';
-import { SendSampleService } from '../../../sampleManagement/services/send-sample.service';
-import { IAnnotatedSampleData, SampleData } from '../../../sampleManagement/models/sample-management.model';
-import { AlertService } from '../../../shared/services/alert.service';
-import { SampleSheetUtilService } from '../../../sampleManagement/services/sample-sheet-util.service';
+import { AlertService } from '../../../core/services/alert.service';
 import { ConfirmationService, ConfirmSettings, ResolveEmit } from '@jaspero/ng-confirmations';
 import { INavBarConfiguration } from '../../presentation/nav-bar/nav-bar.component';
+import { SampleStore } from '../../../samples/services/sample-store.service';
+import { ValidationService } from '../../../samples/services/validation.service';
+import { ExportService } from '../../../samples/services/export.service';
+import { SendSampleService } from '../../../samples/services/send-sample.service';
+import { SampleSheetUtilService } from '../../../samples/services/sample-sheet-util.service';
+import { SampleData, IAnnotatedSampleData } from '../../../samples/model/sample-management.model';
 
 @Component({
-    selector: 'app-nav-bar-container',
-    template: `<app-nav-bar
+    selector: 'mibi-nav-bar-container',
+    template: `<mibi-nav-bar
     [config]="viewConfig"
     [currentUser]="getCurrentUser()"
     (onValidate)="onValidate()"
     (onSend)="onSend()"
     (onExport)="onExport()"
     (onLogout)="onLogout()">
-    </app-nav-bar>`
+    </mibi-nav-bar>`
 })
 export class NavBarContainerComponent {
 

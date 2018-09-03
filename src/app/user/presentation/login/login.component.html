@@ -1,0 +1,23 @@
+<form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input type="email" id="email" class="form-control" formControlName="email" />
+    <!-- <div *ngIf="f.submitted && !username.valid" class="help-block">Username is required</div> -->
+  </div>
+  <div class="form-group">
+    <label for="password">Passwort</label>
+    <input type="password" id="password" class="form-control" formControlName="password" />
+    <!-- <div *ngIf="f.submitted && !password.valid" class="help-block">Password is required</div> -->
+  </div>
+  <div class="form-group">
+    <button class="btn btn-primary" type="submit" [disabled]="!loginForm.valid">
+      Anmelden
+    </button>
+    <a [routerLink]="['/users/register']" class="btn btn-link">
+      Registrierung
+    </a>
+    <a [routerLink]="['/users/recovery']" class="btn btn-link">
+      Passwort vergessen?
+    </a>
+  </div>
+</form>
