@@ -1,0 +1,12 @@
+h2 {
+    text-align: center;
+    font-size: 3rem;
+    line-height: 1;
+    color: rgb(3, 78, 168);
+    margin-bottom: 20;
+  }
+
+  .top-bottom-margin {
+    margin-top: 70px;
+    margin-bottom: 70px;
+  }

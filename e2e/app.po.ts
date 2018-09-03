@@ -6,6 +6,6 @@ export class EpiLabPage {
     }
 
     getParagraphText() {
-        return element(by.css('app-root h1')).getText();
+        return element(by.css('mibi-root h1')).getText();
     }
 }

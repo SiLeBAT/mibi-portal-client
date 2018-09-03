@@ -128,7 +128,7 @@
     "component-selector": [
       true,
       "element",
-      "app",
+      "mibi",
       "kebab-case"
     ],
     "use-input-property-decorator": true,

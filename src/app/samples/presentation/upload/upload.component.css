@@ -1,0 +1,80 @@
+.uploader {
+  display: block;
+  clear: both;
+  margin: 0 auto;
+  width: 100%;
+
+}
+
+.uploader label {
+  float: left;
+  clear: both;
+  width: 100%;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  background: #eee;
+  border-radius: 7px;
+  border: 3px solid #eee;
+  /* box-shadow: 5px 5px 5px rgb(226, 226, 226); */
+  -webkit-transition: all .2s ease;
+  transition: all .2s ease;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.uploader label:hover {
+  border-color: rgb(3, 78, 168);;
+}
+
+.uploader label.hover {
+  border: 3px solid #6994b9;
+  box-shadow: inset 0 0 0 6px rgb(107, 107, 107);
+}
+
+.uploader #start i.glyphicon {
+  font-size: 50px;
+  margin-bottom: 1rem;
+  -webkit-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
+}
+
+.uploader div {
+  margin: 0 0 .5rem 0;
+}
+
+.uploader .btn {
+  display: inline-block;
+  margin: .5rem .5rem 1rem .5rem;
+  clear: both;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+  text-transform: initial;
+  border: none;
+  border-radius: .2rem;
+  outline: none;
+  padding: 0 1rem;
+  height: 36px;
+  line-height: 36px;
+  color: #fff;
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+
+.download-icon {
+  color: rgb(3, 78, 168);
+}
+
+.select-text {
+  color: rgb(3, 78, 168);
+}
+
+.select-button {
+  background: rgb(3, 78, 168);
+}

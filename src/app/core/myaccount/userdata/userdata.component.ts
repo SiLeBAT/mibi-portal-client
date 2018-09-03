@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-import { UserService } from '../../../auth/services/user.service';
-import { AlertService } from '../../../shared/services/alert.service';
-import { AuthService } from '../../../auth/services/auth.service';
-import { UserData } from '../../../shared/models/userdata.model';
+import { UserService } from '../../../user/services/user.service';
+import { AlertService } from '../../../core/services/alert.service';
+import { AuthService } from '../../../user/services/auth.service';
+import { UserData } from '../../../user/model/userdata.model';
 
 @Component({
-    selector: 'app-userdata',
+    selector: 'mibi-userdata',
     templateUrl: './userdata.component.html'
 })
 export class UserdataComponent implements OnInit {

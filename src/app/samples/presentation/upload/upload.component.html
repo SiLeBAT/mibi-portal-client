@@ -1,0 +1,12 @@
+<div class="uploader" ngfDrop [selectable]="1" [maxSize]="maxFileSize" accept=".xlsx"
+  [fileDropDisabled]="dropDisabled" (fileChange)="onFileChange($event)" [(lastInvalids)]="lastInvalids">
+  <label for="file-upload" id="file-drag">
+    <img id="file-image" src="#" alt="Preview" class="hidden">
+    <div id="start">
+      <i class="glyphicon glyphicon-download-alt download-icon" aria-hidden="true"></i>
+      <div class="select-text">Per Drag&Drop in dieses Feld ziehen</div>
+      <div class="select-text">oder</div>
+      <span class="btn btn-primary select-button">Datei wählen</span>
+    </div>
+  </label>
+</div>
