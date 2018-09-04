@@ -81,6 +81,12 @@ interface IHotSettings {
     cells: (cellRow: number, cellCol: number, cellProp: string) => ICellProperties;
 }
 
+enum HotSource {
+    LOAD_DATA = 'loadData',
+    COPY_PAST = 'CopyPaste.paste',
+    EDIT = 'edit'
+}
+
 class ToolTip implements IToolTipConfig {
 
     constructor(public theme: string,
@@ -101,8 +107,7 @@ class ToolTip implements IToolTipConfig {
 
 @Component({
     selector: 'mibi-data-grid',
-    templateUrl: './data-grid.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush
+    templateUrl: './data-grid.component.html'
 })
 export class DataGridComponent implements OnInit {
 
@@ -144,31 +149,33 @@ export class DataGridComponent implements OnInit {
     // Handsontable dictates that this should be an arrow function.
     onAfterChange = (hotInstance: any, changes: any, source: string) => {
         // context -> AppComponent
-        if (source === 'loadData') {
-            return false;
-        }
-        if (source === 'edit' && changes[0][HotChangeIndex.ORIGINAL_VALUE] !== changes[0][HotChangeIndex.NEW_VALUE]) {
-            const changeArray = changes[0];
-            const originalValue = changeArray[HotChangeIndex.ORIGINAL_VALUE];
-            const newValue = changeArray[HotChangeIndex.NEW_VALUE];
-            const rowIndex = changeArray[HotChangeIndex.INDEX];
-            const columnId = changeArray[HotChangeIndex.COL_ID];
+        switch (source) {
+            case HotSource.EDIT:
+            case HotSource.COPY_PAST:
+                if (changes[0][HotChangeIndex.ORIGINAL_VALUE] !== changes[0][HotChangeIndex.NEW_VALUE]) {
+                    const changeArray = changes[0];
+                    const originalValue = changeArray[HotChangeIndex.ORIGINAL_VALUE];
+                    const newValue = changeArray[HotChangeIndex.NEW_VALUE];
+                    const rowIndex = changeArray[HotChangeIndex.INDEX];
+                    const columnId = changeArray[HotChangeIndex.COL_ID];
 
-            const tableData: ITableDataOutput = {
-                data: this.localData,
-                touched: true,
-                changed: {
-                    rowIndex,
-                    columnId,
-                    originalValue,
-                    newValue
+                    const tableData: ITableDataOutput = {
+                        data: this.localData,
+                        touched: true,
+                        changed: {
+                            rowIndex,
+                            columnId,
+                            originalValue,
+                            newValue
+                        }
+                    };
+
+                    this.valueChanged.emit(tableData);
                 }
-            };
-
-            this.valueChanged.emit(tableData);
+                return false;
+            default:
+                return false;
         }
-
-        return false; // returns value in Handsontable
     }
 
     private createCellVisitor() {
