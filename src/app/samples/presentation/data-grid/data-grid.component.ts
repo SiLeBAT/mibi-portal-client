@@ -36,10 +36,16 @@ enum ToolTipType {
     AUTOCORRECTION = 4
 }
 
+enum ToolTipClassName {
+    WARNING = 'warn',
+    ERROR = 'error',
+    AUTOCORRECTION = 'corrected'
+}
+
 enum ToolTipColour {
-    YELLOW = 'rgb(255, 250, 205)',
-    RED = 'rgb(255, 193, 193)',
-    BLUE = 'rgb(240, 248, 255)'
+    YELLOW = 'rgb(255, 250, 205)', // FFFACD
+    RED = 'rgb(255, 193, 193)', // FFC1C1
+    BLUE = 'rgb(240, 248, 255)' // F0F8FF
 }
 
 enum HotChangeIndex {
@@ -53,6 +59,7 @@ interface IToolTipConfig {
     theme: string;
     alignmemt: 'bottom' | 'top' | 'left';
     colour: ToolTipColour;
+    className: ToolTipClassName;
 }
 
 interface IChangedDataGridField {
@@ -91,7 +98,8 @@ class ToolTip implements IToolTipConfig {
 
     constructor(public theme: string,
         public alignmemt: 'bottom' | 'top' | 'left',
-        public colour: ToolTipColour) { }
+        public colour: ToolTipColour,
+        public className: ToolTipClassName) { }
 
     static constructToolTipText(commentList: string[]): string {
         let tooltipText = '<ul>';
@@ -140,9 +148,11 @@ export class DataGridComponent implements OnInit {
     constructor() { }
 
     ngOnInit(): void {
-        this.ToolTipConfigs[ToolTipType.WARNING] = new ToolTip('tooltipster-warning', 'bottom', ToolTipColour.YELLOW);
-        this.ToolTipConfigs[ToolTipType.ERROR] = new ToolTip('tooltipster-error', 'top', ToolTipColour.RED);
-        this.ToolTipConfigs[ToolTipType.AUTOCORRECTION] = new ToolTip('tooltipster-info', 'left', ToolTipColour.BLUE);
+        this.ToolTipConfigs[ToolTipType.WARNING]
+            = new ToolTip('tooltipster-warning', 'bottom', ToolTipColour.YELLOW, ToolTipClassName.WARNING);
+        this.ToolTipConfigs[ToolTipType.ERROR] = new ToolTip('tooltipster-error', 'top', ToolTipColour.RED, ToolTipClassName.ERROR);
+        this.ToolTipConfigs[ToolTipType.AUTOCORRECTION]
+            = new ToolTip('tooltipster-info', 'left', ToolTipColour.BLUE, ToolTipClassName.AUTOCORRECTION);
         this.changeSettings();
     }
 
@@ -221,14 +231,13 @@ export class DataGridComponent implements OnInit {
     private cellRenderer = (instance: any, td: any, row: any, col: any, prop: any, value: any, cp: any) => {
         const errObj = cp.errData;
         if (cp.changed !== undefined) {
-            td.style.boxShadow = 'inset 0 0 0 2px #0de5cf';
+            td.classList.add('changed');
         }
         if (cp.tooltipOptionList.length) {
             for (const s of Object.keys(errObj)) {
                 const status = parseInt(s, 10);
                 td.classList.add('tooltipster-text');
-                td.style.backgroundColor = this.ToolTipConfigs[status].colour;
-                td.style.fontWeight = 'bold';
+                td.classList.add(this.ToolTipConfigs[status].className);
             }
             // add multiple property to the tooltip options => set multiple: true except in first option
             if (cp.tooltipOptionList.length > 1) {

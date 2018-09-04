@@ -12,3 +12,23 @@ hr {
 .primary {
   background: rgb(3, 78, 168) !important;
 }
+
+.handsontable td.warn{
+  background-color: #FFFACD;
+  font-weight: bold;
+}
+
+.handsontable td.error{
+  background-color: #FFC1C1;
+  font-weight: bold;
+}
+
+.handsontable td.corrected{
+  background-color: #F0F8FF;
+  font-weight: bold;
+}
+
+.handsontable td.changed{
+  box-shadow: inset 0 0 0 2px #0de5cf;
+}
+
