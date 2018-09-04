@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, Output, EventEmitter, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, ViewChild, Output, EventEmitter, OnInit } from '@angular/core';
 import { HotTableComponent } from '@handsontable/angular';
 import 'tooltipster';
 import * as Handsontable from 'handsontable';
