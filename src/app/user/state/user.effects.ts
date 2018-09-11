@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import * as userActions from './user.actions';
-import { map, catchError, exhaustMap } from 'rxjs/operators';
+import { map, catchError, exhaustMap, mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { DataService } from '../../core/services/data.service';
 import { AlertType } from '../../core/model/alert.model';
@@ -51,7 +51,7 @@ export class UserEffects {
     @Effect()
     logoutUser$ = this.actions$.pipe(
         ofType(userActions.UserActionTypes.LogoutUser),
-        exhaustMap(() => {
+        mergeMap(() => {
             this.router.navigate(['users/login']).catch(() => {
                 throw new Error('Unable to navigate.');
             });
