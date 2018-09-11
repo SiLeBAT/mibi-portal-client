@@ -3,7 +3,7 @@
 
 
     <div class="navbar-header navbar-brand">
-      <a [routerLink]="authService.loggedIn() ? ['/users/profile'] : ['/']" class="brand navbar-brand-color">
+      <a [routerLink]="(currentUser$ | async) ? ['/users/profile'] : ['/']" class="brand navbar-brand-color">
         {{ config?.appName }}
       </a>
     </div>
@@ -22,17 +22,17 @@
               </a>
             </li>
             <li>
-              <a class="dropdown-link" [routerLink]="['/samples']" [class.hidden]="!sampleStore.hasEntries">
+              <a class="dropdown-link" [routerLink]="['/samples']" [class.hidden]="!(hasEntries$ | async)">
                 View Samples
               </a>
             </li>
             <li>
-              <a class="dropdown-link" (click)="export()" [class.hidden]="!sampleStore.hasEntries || getCurrentRoute() !== '/samples'">
+              <a class="dropdown-link" (click)="export()" [class.hidden]="!(hasEntries$ | async) || getCurrentRoute() !== '/samples'">
                 Download
               </a>
             </li>
             <li>
-              <a class="dropdown-link" (click)="send()" [class.hidden]="!authService.loggedIn() || !sampleStore.hasEntries || getCurrentRoute() !== '/samples'">
+              <a class="dropdown-link" (click)="send()" [class.hidden]="!(currentUser$ | async) || !(hasEntries$ | async) || getCurrentRoute() !== '/samples'">
                 Senden
               </a>
             </li>
@@ -45,30 +45,30 @@
         </li>
 
         <li class="navbar-text-color">
-          <a class="navbar-text-color" (click)="validate()" [class.hidden]="!sampleStore.hasEntries || getCurrentRoute() !== '/samples'">
+          <a class="navbar-text-color" (click)="validate()" [class.hidden]="!(hasEntries$ | async) || getCurrentRoute() !== '/samples'">
             Validieren
           </a>
         </li>
 
         <li class="navbar-text-color">
-          <a class="navbar-text-color" [routerLink]="['/users/login']" [class.hidden]="authService.loggedIn()">
+          <a class="navbar-text-color" [routerLink]="['/users/login']" [class.hidden]="currentUser$ | async">
             Anmelden/Registrieren
           </a>
         </li>
 
 
 
-        <li class="dropdown navbar-text-color" appDropdown *ngIf="authService.loggedIn()">
+        <li class="dropdown navbar-text-color" appDropdown *ngIf="currentUser$ | async">
           <a style="cursor: pointer;" class="dropdown-toggle navbar-text-color navbar-user" role="button">
             <span class="glyphicon glyphicon-user"></span>
             <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
             <li class="dropdown-info">
-              <a>{{ currentUser?.email }}</a>
+              <a>{{ (currentUser$ | async).email }}</a>
             </li>
             <li class="dropdown-info">
-              <a>{{ currentUser?.institution?.name1 }}</a>
+              <a>{{ (currentUser$ | async).institution?.name1 }}</a>
             </li>
             <li role="separator" class="divider"></li>
             <li>

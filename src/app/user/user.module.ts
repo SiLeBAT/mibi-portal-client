@@ -10,7 +10,6 @@ import { SharedModule } from '../shared/shared.module';
 import { UserViewLayoutComponent } from './presentation/user-view-layout/user-view-layout.component';
 import { RegisterComponent } from './presentation/register/register.component';
 import { PasswordStrengthMeterModule } from 'angular-password-strength-meter';
-import { LoginViewContainerComponent } from './container/login-view-container/login-view-container.component';
 import { RegisterContainerComponent } from './container/register-container/register-container.component';
 import { RegisterViewComponent } from './presentation/register-view/register-view.component';
 import { ProfileContainerComponent } from './container/profile-container/profile-container.component';
@@ -27,6 +26,12 @@ import { ActivateComponent } from './presentation/activate/activate.component';
 import { AdminActivateContainerComponent } from './container/admin-activate-container/admin-activate-container.component';
 import { AdminActivateViewComponent } from './presentation/admin-activate-view/admin-activate-view.component';
 import { AdminActivateComponent } from './presentation/admin-activate/admin-activate.component';
+import { StoreModule } from '@ngrx/store';
+import { STATE_SLICE_NAME, reducer } from './state/user.reducer';
+import { UserEffects } from './state/user.effects';
+import { EffectsModule } from '@ngrx/effects';
+import { TokenValidationResolver } from './services/token-validation-resolver.service';
+import { AdminTokenValidationResolver } from './services/admin-token-validation-resolver.service';
 
 @NgModule({
     imports: [
@@ -37,15 +42,18 @@ import { AdminActivateComponent } from './presentation/admin-activate/admin-acti
         RouterModule.forChild([{
             path: 'users',
             children: [
-                { path: 'login', component: LoginViewContainerComponent },
+                { path: 'login', component: LoginViewComponent },
                 { path: 'register', component: RegisterViewComponent },
                 { path: 'recovery', component: RecoveryViewComponent },
                 { path: 'reset/:id', component: ResetViewComponent },
-                { path: 'activate/:id', component: ActivateViewComponent },
-                { path: 'adminactivate/:id', component: AdminActivateViewComponent },
+                { path: 'activate/:id', component: ActivateViewComponent, resolve: { tokenValid: TokenValidationResolver } },
+                // tslint:disable-next-line:max-line-length
+                { path: 'adminactivate/:id', component: AdminActivateViewComponent, resolve: { adminTokenValid: AdminTokenValidationResolver } },
                 { path: 'profile', component: ProfileContainerComponent, canActivate: [AuthGuard] }
             ]
-        }])
+        }]),
+        StoreModule.forFeature(STATE_SLICE_NAME, reducer),
+        EffectsModule.forFeature([UserEffects])
     ],
     declarations: [
         AdminActivateComponent,
@@ -68,7 +76,6 @@ import { AdminActivateComponent } from './presentation/admin-activate/admin-acti
         UserViewLayoutComponent,
         LoginComponent,
         LoginContainerComponent,
-        LoginViewContainerComponent,
         LoginViewComponent
     ],
     exports: []

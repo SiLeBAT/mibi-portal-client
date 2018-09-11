@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { SampleData, IAnnotatedSampleData, ChangedValueCollection } from '../model/sample-management.model';
-import { HttpFacadeService } from '../../core/services/httpFacade.service';
+import { DataService } from '../../core/services/data.service';
+import { map } from 'rxjs/operators';
 
 export interface IValidationService {
-    validate(data: SampleData[]): Promise<IAnnotatedSampleData[]>;
+    validate(data: SampleData[]): Observable<IAnnotatedSampleData[]>;
 }
 
 interface IValidationResponseErrorEntryDTO {
@@ -29,6 +30,7 @@ interface IValidationResponseDTO {
     corrections: IValidationResponseCorrectionEntryDTO[];
 }
 
+// TODO: Actionize
 @Injectable({
     providedIn: 'root'
 })
@@ -36,7 +38,7 @@ export class ValidationService implements IValidationService {
 
     private _isValidating$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-    constructor(private httpFacade: HttpFacadeService) { }
+    constructor(private httpFacade: DataService) { }
 
     get isValidating$(): Observable<boolean> {
         return this._isValidating$.asObservable();
@@ -49,17 +51,12 @@ export class ValidationService implements IValidationService {
     validate(data: SampleData[]) {
         this._isValidating$.next(true);
         return this.httpFacade
-            .validateSampleData(data).then(
-                (res: IValidationResponseDTO[]) => this.onSuccess(res)
-            ).catch(err => this.onError(err));
+            .validateSampleData(data).pipe(
+                map((dtoArray: IValidationResponseDTO[]) => dtoArray.map(this.fromDTO))
+            );
     }
 
-    private onSuccess(response: IValidationResponseDTO[]) {
-        this._isValidating$.next(false);
-        return response.map(this.fromDTO);
-    }
-
-    private fromDTO(dto: IValidationResponseDTO) {
+    private fromDTO(dto: IValidationResponseDTO): IAnnotatedSampleData {
         return {
             data: dto.data,
             errors: dto.errors,
@@ -72,10 +69,5 @@ export class ValidationService implements IValidationService {
                 {}
             )
         };
-    }
-
-    private onError(err: Error): never {
-        this._isValidating$.next(false);
-        throw err;
     }
 }

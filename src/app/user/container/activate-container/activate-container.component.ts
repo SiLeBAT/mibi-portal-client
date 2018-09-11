@@ -1,37 +1,37 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { environment } from '../../../../environments/default.environment';
-import { UserService } from '../../services/user.service';
-import { AlertService } from '../../../core/services/alert.service';
+import { Store } from '@ngrx/store';
+import * as fromUser from '../../state/user.reducer';
+import * as coreActions from '../../../core/state/core.actions';
+import { AlertType } from '../../../core/model/alert.model';
 
 @Component({
     selector: 'mibi-activate-container',
     template: `<mibi-activate [appName]="appName" [tokenValid]="tokenValid"></mibi-activate>`
 })
 export class ActivateContainerComponent implements OnInit {
-    tokenValid: boolean;
+    tokenValid: boolean = false;
     appName: string = environment.appName;
 
     constructor(private activatedRoute: ActivatedRoute,
-        private userService: UserService,
-        private alertService: AlertService,
-        private router: Router) { }
+        private router: Router,
+        private store: Store<fromUser.IState>) { }
 
     ngOnInit() {
-        const token = this.activatedRoute.snapshot.params['id'];
+        this.tokenValid = this.activatedRoute.snapshot.data['tokenValid'];
 
-        this.userService.activateAccount(token)
-            .subscribe((data: any) => {
-                const message = data['title'];
-                this.alertService.success(message, true);
-                this.tokenValid = true;
-            }, (err: HttpErrorResponse) => {
-                const errObj = JSON.parse(err.error);
-                this.alertService.error(errObj.title, false);
-                this.tokenValid = false;
-            });
-
+        if (this.tokenValid) {
+            this.store.dispatch(new coreActions.DisplayAlert({
+                message: 'Kontoaktivierung erfolgreich!',
+                type: AlertType.SUCCESS
+            }));
+        } else {
+            this.store.dispatch(new coreActions.DisplayAlert({
+                message: 'Unable to activate account.',
+                type: AlertType.ERROR
+            }));
+        }
     }
 
     continue() {

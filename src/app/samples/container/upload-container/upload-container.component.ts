@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { SampleData, IAnnotatedSampleData } from '../../model/sample-management.model';
-import { ExcelToJsonService, IExcelData } from '../../services/excel-to-json.service';
-import { ValidationService } from '../../services/validation.service';
-import { AlertService } from '../../../core/services/alert.service';
-import { LoadingSpinnerService } from '../../../core/services/loading-spinner.service';
-import { SampleStore } from '../../services/sample-store.service';
 import { UploadErrorType } from '../../presentation/upload/upload.component';
+import { Store } from '@ngrx/store';
+import * as fromSamples from '../../state/samples.reducer';
+import * as samplesActions from '../../state/samples.actions';
+import * as coreActions from '../../../core/state/core.actions';
+import { AlertType } from '../../../core/model/alert.model';
 
 @Component({
     selector: 'mibi-upload-container',
@@ -17,65 +15,36 @@ import { UploadErrorType } from '../../presentation/upload/upload.component';
 })
 export class UploadContainerComponent {
 
-    private onUploadSpinner = 'uploadSpinner';
-
     constructor(
-        private excelToJsonService: ExcelToJsonService,
-        private validationService: ValidationService,
-        private alertService: AlertService,
-        private router: Router,
-        private spinnerService: LoadingSpinnerService,
-        private sampleStore: SampleStore) { }
+        private store: Store<fromSamples.IState>) { }
 
     onError(error: UploadErrorType) {
         switch (error) {
             case UploadErrorType.SIZE:
-                this.alertService.error('Zu grosse Datei: Dateien müssen kleiner als 2 Mb sein.', false);
+                this.store.dispatch(new coreActions.DisplayAlert({
+                    type: AlertType.ERROR,
+                    message: 'Zu grosse Datei: Dateien müssen kleiner als 2 Mb sein.'
+                }));
                 break;
             case UploadErrorType.TYPE:
-                this.alertService.error('Falscher Dateityp: Dateien müssen vom Typ .xlsx sein.', true);
+                this.store.dispatch(new coreActions.DisplayAlert({
+                    type: AlertType.ERROR,
+                    message: 'Falscher Dateityp: Dateien müssen vom Typ .xlsx sein.'
+                }));
                 break;
             case UploadErrorType.CLEAR:
-                this.alertService.clear().catch(() => {
-                    throw new Error('Unable to clear alert.');
-                });
+                this.store.dispatch(new coreActions.ClearAlert());
                 break;
             default:
-                this.alertService.error('Die Datei konnte nicht hochgeladen werden.', false);
+                this.store.dispatch(new coreActions.DisplayAlert({
+                    type: AlertType.ERROR,
+                    message: 'Die Datei konnte nicht hochgeladen werden.'
+                }));
         }
     }
 
     private async readFileAndValidate(file: File) {
-        this.spinnerService.show(this.onUploadSpinner);
-        const excelData: IExcelData = await this.excelToJsonService.convertExcelToJSJson(file).then(
-            (uploadedData: IExcelData) => {
-                return uploadedData;
-            }
-        );
-        this.sampleStore.setState({
-            entries: excelData.data.data.map(e => ({
-                data: e,
-                errors: {},
-                corrections: [],
-                edits: {}
-            })),
-            workSheet: excelData.workSheet
-        });
-        const data: SampleData[] = this.sampleStore.state.entries.map(e => e.data);
-
-        if (data) {
-            this.validationService.validate(data).then(
-                (validationResponse: IAnnotatedSampleData[]) => {
-                    this.sampleStore.mergeValidationResponseIntoState(validationResponse);
-                    this.router.navigate(['/samples']).catch(() => {
-                        throw new Error('Unable to navigate.');
-                    });
-                    this.spinnerService.hide(this.onUploadSpinner);
-                }
-            ).catch(
-                (err: Error) => { throw err; }
-            );
-        }
+        this.store.dispatch(new samplesActions.ImportExcelFile(file));
     }
 
     invokeValidation(file: File) {

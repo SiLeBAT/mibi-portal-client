@@ -1,13 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
     selector: 'mibi-sample-view',
     templateUrl: './sample-view.component.html',
-    styleUrls: ['./sample-view.component.css']
+    styleUrls: ['./sample-view.component.scss']
 })
 export class SampleViewComponent {
-
-    @Input() isValidating: boolean;
 
     constructor() { }
 

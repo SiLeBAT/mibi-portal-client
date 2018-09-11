@@ -36,3 +36,10 @@ export interface IAnnotatedSampleData {
     edits: ChangedValueCollection;
     corrections: IAutoCorrectionEntry[];
 }
+
+export interface IChangedField {
+    rowIndex: number;
+    columnId: string;
+    newValue: string;
+    originalValue: string;
+}

@@ -7,7 +7,6 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 })
 export class RecoveryComponent implements OnInit {
     recoveryForm: FormGroup;
-    loading = false;
 
     @Output() recovery = new EventEmitter();
     constructor() { }
@@ -24,5 +23,6 @@ export class RecoveryComponent implements OnInit {
     onRecovery() {
         const email = this.recoveryForm.value.email;
         this.recovery.emit(email);
+        this.recoveryForm.reset();
     }
 }

@@ -1,15 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import * as _ from 'lodash';
-import { SampleStore } from '../../services/sample-store.service';
 import { ValidationService } from '../../services/validation.service';
 import { ITableDataOutput, IErrRow, IErrCol, IStatusComments, IColConfig } from '../../presentation/data-grid/data-grid.component';
 import {
     IValidationErrorCollection,
     IAutoCorrectionEntry, IAnnotatedSampleData, SampleData, ChangedValueCollection
 } from '../../model/sample-management.model';
-import { map } from 'rxjs/operators';
+import { map, takeWhile } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { CanReloadComponent } from '../../../shared/container/can-reload.component';
+import { Store, select } from '@ngrx/store';
+import * as fromSamples from '../../state/samples.reducer';
+import * as samplesActions from '../../state/samples.actions';
+import * as fromCore from '../../../core/state/core.reducer';
+import * as fromUser from '../../../user/state/user.reducer';
+import { IModal } from '../../../core/model/modal.model';
+import { ConfirmationService, ResolveEmit } from '@jaspero/ng-confirmations';
+import { AlertType } from '../../../core/model/alert.model';
+import { IUser } from '../../../user/model/models';
 
 @Component({
     selector: 'mibi-data-grid-container',
@@ -22,12 +30,14 @@ import { CanReloadComponent } from '../../../shared/container/can-reload.compone
         (valueChanged)="onValueChanged($event)">
     </mibi-data-grid>`
 })
-export class DataGridContainerComponent extends CanReloadComponent {
+export class DataGridContainerComponent extends CanReloadComponent implements OnInit, OnDestroy {
 
     changedData$: Observable<ChangedValueCollection[]>;
     errors$: Observable<IErrRow>;
     data$: Observable<SampleData[]>;
-    // FIXME: HTML tags in Text?  Formatting shoule be handled by CSS.
+    private currentUser: IUser | null;
+    private componentActive: boolean = true;
+    // TODO: HTML tags in Text?  Formatting shoule be handled by CSS.
     private columnConfigArray: IColConfig[] = [
         {
             id: 'sample_id',
@@ -107,51 +117,50 @@ export class DataGridContainerComponent extends CanReloadComponent {
         }
     ];
 
-    constructor(public sampleStore: SampleStore,
-        private validationService: ValidationService) {
+    constructor(
+        private validationService: ValidationService,
+        private confirmationService: ConfirmationService,
+        private store: Store<fromSamples.IState>) {
         super();
+    }
+
+    ngOnInit(): void {
         this.changedData$ = this.getChangedData();
         this.errors$ = this.getErrors();
         this.data$ = this.getData();
+        this.store.pipe(select(fromUser.getCurrentUser),
+            takeWhile(() => this.componentActive))
+            .subscribe(
+                (user: IUser | null) => this.currentUser = user
+            );
+        this.store.pipe(select(fromCore.getModal),
+            takeWhile(() => this.componentActive))
+            .subscribe(
+                (modal: IModal) => {
+                    if (modal.show) {
+                        this.confirmationService.create(modal.title, modal.message, modal.config).subscribe((ans: ResolveEmit) => {
+                            if (ans.resolved) {
+                                if (this.currentUser) {
+                                    this.store.dispatch(new samplesActions.SendSamplesFromStore(this.currentUser));
+                                }
+                            } else {
+                                this.store.dispatch(new samplesActions.SendSamplesFailure({
+                                    message: 'Es wurden keine Probendaten an das BfR gesendet',
+                                    type: AlertType.ERROR
+                                }));
+                            }
+                        });
+                    }
+                }
+            );
+    }
+
+    ngOnDestroy(): void {
+        this.componentActive = false;
     }
 
     onValueChanged(tableData: ITableDataOutput) {
-        const {
-            rowIndex,
-            columnId,
-            originalValue,
-            newValue
-        } = tableData.changed;
-
-        if (originalValue !== newValue) {
-
-            const newEntries = this.sampleStore.state.entries.map((e: IAnnotatedSampleData, i: number) => {
-                const newEdits = { ...e.edits };
-
-                if (i === rowIndex) {
-                    if (newEdits[columnId] === newValue) {
-                        delete newEdits[columnId];
-                    } else {
-                        newEdits[columnId] = originalValue;
-                    }
-                }
-
-                return {
-                    data: tableData.data[i],
-                    errors: e.errors,
-                    edits: newEdits,
-                    corrections: e.corrections
-                };
-            });
-
-            const newState = {
-                ...this.sampleStore.state,
-                ...{
-                    entries: newEntries
-                }
-            };
-            this.sampleStore.setState(newState);
-        }
+        this.store.dispatch(new samplesActions.ChangeFieldValue(tableData.changed));
     }
 
     // TODO: IS this needed?
@@ -163,19 +172,26 @@ export class DataGridContainerComponent extends CanReloadComponent {
         return this.columnConfigArray.map(c => c.title);
     }
 
+    private getStoreEntries(): Observable<IAnnotatedSampleData[]> {
+        return this.store.pipe(select(fromSamples.getAnnotatedSampleData));
+    }
+
+    // TODO: Possibly create a selector?
     private getErrors() {
-        return this.sampleStore.annotatedSampleData$.pipe(
+        return this.getStoreEntries().pipe(
             map((entry: IAnnotatedSampleData[]) => this.parseErrors(entry.map(e => e.errors), entry.map(e => e.corrections)))
         );
     }
 
+    // TODO: Possibly create a selector?
     private getChangedData() {
-        return this.sampleStore.annotatedSampleData$.pipe(
+        return this.getStoreEntries().pipe(
             map((entry: IAnnotatedSampleData[]) => entry.map(e => e.edits)));
     }
 
+    // TODO: Possibly create a selector?
     private getData() {
-        return this.sampleStore.annotatedSampleData$.pipe(
+        return this.getStoreEntries().pipe(
             map((entry: IAnnotatedSampleData[]) => entry.map(e => e.data)));
     }
 

@@ -1,0 +1,21 @@
+import { Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, Resolve } from '@angular/router';
+import { DataService } from '../../core/services/data.service';
+
+@Injectable({
+    providedIn: 'root'
+})
+export class TokenValidationResolver implements Resolve<boolean> {
+
+    constructor(
+        private dataService: DataService) { }
+
+    resolve(activatedRoute: ActivatedRouteSnapshot, sanp: RouterStateSnapshot): Promise<boolean> {
+        const token = activatedRoute.params['id'];
+        return this.dataService.activateAccount(token).toPromise().then(
+            (t: boolean) => t,
+            () => false)
+            .catch(
+                () => false);
+    }
+}
