@@ -1,50 +1,42 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import * as fromUser from '../../state/user.reducer';
+import * as coreActions from '../../../core/state/core.actions';
+import { Store } from '@ngrx/store';
+import { DataService } from '../../../core/services/data.service';
+import { AlertType } from '../../../core/model/alert.model';
 import { Router } from '@angular/router';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { HttpErrorResponse } from '@angular/common/http';
-import { UserService } from '../../services/user.service';
-import { AlertService } from '../../../core/services/alert.service';
 
 @Component({
     selector: 'mibi-recovery-container',
     template: `<mibi-recovery (recovery)="recovery($event)"></mibi-recovery>`
 })
-export class RecoveryContainerComponent implements OnInit {
-    recoveryForm: FormGroup;
-    loading = false;
+export class RecoveryContainerComponent {
 
-    constructor(
-        private userService: UserService,
-        private alertService: AlertService,
-        private router: Router) { }
-
-    ngOnInit() {
-        this.recoveryForm = new FormGroup({
-            email: new FormControl(null, [
-                Validators.required,
-                Validators.email
-            ])
-        });
-    }
+    constructor(private store: Store<fromUser.IState>, private dataService: DataService, private router: Router) { }
 
     recovery(email: string) {
-
-        this.loading = true;
-
-        this.userService.recoveryPassword(email)
-            .subscribe((data: any) => {
-                const message = data['title'];
-                this.alertService.success(message, true);
-                this.router.navigate(['users/login']).catch(() => {
-                    throw new Error('Unable to navigate.');
-                });
-            }, (err: HttpErrorResponse) => {
-                const errObj = JSON.parse(err.error);
-                this.alertService.error(errObj.title, false);
-                this.loading = false;
-            });
-
-        this.recoveryForm.reset();
+        this.dataService.recoverPassword(
+            email).toPromise().then(
+                (response) => {
+                    this.router.navigate(['users/login']).then(
+                        () => {
+                            this.store.dispatch(new coreActions.DisplayAlert({
+                                message: response.title,
+                                type: AlertType.ERROR
+                            }));
+                        }
+                    ).catch(() => {
+                        throw new Error('Unable to navigate.');
+                    });
+                }
+            ).catch(
+                (response) => {
+                    this.store.dispatch(new coreActions.DisplayAlert({
+                        message: response.title,
+                        type: AlertType.ERROR
+                    }));
+                }
+            );
     }
 
 }

@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ISampleSheet } from '../model/sample-management.model';
 import { ExcelConverterService, IExcelFileBlob } from './excel-converter.service';
-import { HttpFacadeService } from '../../core/services/httpFacade.service';
+import { DataService } from '../../core/services/data.service';
 import { IUser } from '../../user/model/models';
 
+// TODO: Actionize
 @Injectable({
     providedIn: 'root'
 })
@@ -11,7 +12,7 @@ export class SendSampleService {
 
     constructor(
         private excelConverter: ExcelConverterService,
-        private httpFacade: HttpFacadeService) { }
+        private httpFacade: DataService) { }
 
     async sendData(sampleSheet: ISampleSheet, currentUser: IUser) {
         const excelFileBlob = await this.excelConverter.convertToExcel(sampleSheet);

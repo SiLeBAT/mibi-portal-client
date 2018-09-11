@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { HttpErrorResponse } from '@angular/common/http';
 import { Institution } from '../../../user/model/institution.model';
-import { UserService } from '../../services/user.service';
-import { AlertService } from '../../../core/services/alert.service';
+import * as fromUser from '../../state/user.reducer';
+import * as coreActions from '../../../core/state/core.actions';
+import { Store } from '@ngrx/store';
 import { User } from '../../../user/model/user.model';
 import { IRegistrationDetails } from '../../presentation/register/register.component';
+import { DataService } from '../../../core/services/data.service';
+import { AlertType } from '../../../core/model/alert.model';
+import { Router } from '@angular/router';
 
 export interface IHash {
     [details: string]: string;
@@ -20,9 +22,9 @@ export class RegisterContainerComponent implements OnInit {
     instituteHash: IHash = {};
 
     constructor(
-        private userService: UserService,
-        private alertService: AlertService,
-        private router: Router) {
+        private router: Router,
+        private store: Store<fromUser.IState>,
+        private dataService: DataService) {
     }
 
     ngOnInit() {
@@ -42,38 +44,57 @@ export class RegisterContainerComponent implements OnInit {
             user.institution = details.instituteName;
         }
 
-        this.userService.create({
+        const credentials = {
             email: details.email,
             password: details.password
-        }, {
+        };
+
+        const userDetails = {
             firstName: details.firstName,
             lastName: details.lastName,
             institution: user.institution,
             userData: []
-        }).subscribe((data: any) => {
-            this.alertService.success(data['title'], true);
-            this.router.navigate(['users/login']).catch(() => {
-                throw new Error('Unable to navigate.');
-            });
-        }, (err: HttpErrorResponse) => {
-            this.alertService.error(err.error.title, false);
-        });
+        };
 
+        this.dataService.registerUser(
+            credentials,
+            userDetails
+        ).toPromise().then(
+            (response) => {
+                this.router.navigate(['users/login']).then(
+                    () => {
+                        this.store.dispatch(new coreActions.DisplayAlert({
+                            // tslint:disable-next-line:max-line-length
+                            message: `Bitte aktivieren Sie Ihren Account: Eine Email mit weiteren Anweisungen wurde an ${user.email} gesendet`,
+                            type: AlertType.SUCCESS
+                        }));
+                    }
+                ).catch(() => {
+                    throw new Error('Unable to navigate.');
+                });
+
+            }
+        ).catch(
+            (response) => {
+                this.store.dispatch(new coreActions.DisplayAlert({
+                    message: response.title,
+                    type: AlertType.ERROR
+                }));
+            }
+        );
     }
 
     private loadInstitutions() {
-        this.userService.getAllInstitutions()
-            .subscribe((data) => {
+        this.dataService.getAllInstitutions().toPromise().then(
+            data => {
                 for (const entry of data as Array<any>) {
                     const institution = new Institution(entry);
                     this.institutions.push(institution);
                     this.instituteHash[institution.toString()] = institution._id;
                 }
-            }, (err: HttpErrorResponse) => {
-                try {
-                    const errObj = JSON.parse(err.error);
-                    this.alertService.error(errObj.title);
-                } catch (e) { }
-            });
+            }
+        ).catch(
+            () => { throw new Error(); }
+        );
     }
 }

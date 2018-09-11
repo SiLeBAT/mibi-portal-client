@@ -14,6 +14,9 @@ export interface IUser {
     _id: any;
 }
 
+export interface ITokenizedUser extends IUser {
+    token: string;
+}
 export interface ICredentials {
     email: string;
     password: string;

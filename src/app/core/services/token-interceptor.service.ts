@@ -2,6 +2,10 @@ import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/c
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 
+interface ITokenized {
+    token: string;
+}
+
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
     intercept(req: HttpRequest<any>,
@@ -25,7 +29,7 @@ export class TokenInterceptor implements HttpInterceptor {
         if (!cu) {
             return null;
         }
-        const currentUser = JSON.parse(cu);
+        const currentUser: ITokenized = JSON.parse(cu);
         let token;
         if (currentUser && currentUser.token) {
             token = currentUser.token;

@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 import { WorkBook, WorkSheet, read, utils } from 'xlsx';
-
-import { AlertService } from '../../core/services/alert.service';
 import { IWorkSheet, SampleData } from '../model/sample-management.model';
 
 export type AOO = any[];
 
-// FIXME: Remove
+// TODO: Remove
 export interface IOLDSampleCollectionDTO {
     data: SampleData[];
 }
@@ -38,13 +36,14 @@ export interface IExcelData {
     workSheet: IWorkSheet;
 }
 
+// TODO: Possibly changes Store state & should be handled by actions.
 @Injectable({
     providedIn: 'root'
 })
 export class ExcelToJsonService {
     private validSheetName: string = 'Einsendeformular';
 
-    constructor(private alertService: AlertService) { }
+    constructor() { }
 
     async convertExcelToJSJson(file: File): Promise<IExcelData> {
         let sampleSheet: WorkSheet;
@@ -67,7 +66,8 @@ export class ExcelToJsonService {
 
         } catch (err) {
             const errMessage: string = 'error reading excel file';
-            this.alertService.error(errMessage, false);
+            // TODO: Fix this
+            // this.alertService.error(errMessage, false);
             throw new Error(errMessage);
         }
     }

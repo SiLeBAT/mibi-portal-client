@@ -1,20 +1,36 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { SampleStore } from './sample-store.service';
+import { CanActivate, Router } from '@angular/router';
+import * as fromSamples from '../state/samples.reducer';
+import { Store, select } from '@ngrx/store';
+import { take } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
 })
 export class NoSampleGuard implements CanActivate {
 
-    constructor(private router: Router, private sampleStore: SampleStore) { }
+    constructor(
+        private store: Store<fromSamples.IState>,
+        private router: Router) { }
 
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    async canActivate() {
+        return this.store.pipe(select(fromSamples.hasEntries),
+            take(1))
+            .toPromise()
+            .then(
+                hasEntries => {
+                    if (hasEntries) {
+                        return true;
+                    } else {
+                        return this.onDissallow();
+                    }
+                },
+                () => this.onDissallow()
+            )
+            .catch(() => this.onDissallow());
+    }
 
-        if (this.sampleStore.hasEntries) {
-            return true;
-        }
-
+    private onDissallow() {
         this.router.navigate(['/upload']).catch(() => {
             throw new Error('Unable to navigate.');
         });

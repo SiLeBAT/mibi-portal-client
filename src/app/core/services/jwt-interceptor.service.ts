@@ -3,30 +3,35 @@ import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-
-import { AlertService } from './alert.service';
-
+import * as coreActions from '../../core/state/core.actions';
+import * as fromCore from '../../core/state/core.reducer';
+import { Store } from '@ngrx/store';
+import { AlertType } from '../model/alert.model';
+// TODO: This should be handled in Effects & with different actions
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
 
     constructor(private router: Router,
-        private alertService: AlertService) { }
+        private store: Store<fromCore.IState>) { }
 
     intercept(req: HttpRequest<any>,
         next: HttpHandler): Observable<HttpEvent<any>> {
 
         return next.handle(req).pipe(tap(
-            (event: HttpEvent<any>) => {
+            () => {
                 // doing nothing
             },
-            (err: any) => {
+            (err: Error) => {
                 if (err instanceof HttpErrorResponse) {
                     if (err.status === 401) {
+                        this.store.dispatch(new coreActions.DisplayAlert({
+                            message: 'Nicht authorisiert oder nicht aktiviert. '
+                                + 'Wenn bereits registriert, überprüfen Sie bitte Ihre Email auf einen Aktivierungslink',
+                            type: AlertType.ERROR
+                        }));
                         this.router.navigate(['/users/login']).catch(() => {
                             throw new Error();
                         });
-                        this.alertService.error('Nicht authorisiert oder nicht aktiviert. '
-                            + 'Wenn bereits registriert, überprüfen Sie bitte Ihre Email auf einen Aktivierungslink');
                     }
                 }
             }

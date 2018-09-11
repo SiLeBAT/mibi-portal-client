@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { IUser } from '../../../user/model/models';
-import { AuthService } from '../../services/auth.service';
+import * as userActions from '../../../user/state/user.actions';
+import { IState } from '../../../state/app.state';
+import { Store } from '@ngrx/store';
 
 @Component({
     selector: 'mibi-profile-container',
@@ -12,7 +14,8 @@ import { AuthService } from '../../services/auth.service';
 export class ProfileContainerComponent implements OnInit {
     currentUser: IUser;
 
-    constructor(private authService: AuthService) { }
+    constructor(
+        private store: Store<IState>) { }
 
     ngOnInit() {
         const cu: string | null = localStorage.getItem('currentUser');
@@ -23,7 +26,7 @@ export class ProfileContainerComponent implements OnInit {
     }
 
     logout() {
-        this.authService.logout();
+        this.store.dispatch(new userActions.LogoutUser());
     }
 
     getInstitutionName() {

@@ -4,11 +4,10 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 @Component({
     selector: 'mibi-reset',
     templateUrl: './reset.component.html',
-    styleUrls: ['./reset.component.css']
+    styleUrls: ['./reset.component.scss']
 })
 export class ResetComponent implements OnInit {
     resetForm: FormGroup;
-    loading = false;
     private pwStrength: number;
     @Output() reset = new EventEmitter();
 

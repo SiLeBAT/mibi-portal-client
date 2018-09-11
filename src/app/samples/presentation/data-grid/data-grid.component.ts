@@ -194,14 +194,14 @@ export class DataGridComponent implements OnInit {
                 tooltipOptionList: []
             };
 
-            if (this._errorData[cellRow][cellCol]) {
+            if (this._errorData && this._errorData[cellRow] && this._errorData[cellRow][cellCol]) {
                 for (const s of Object.keys(this._errorData[cellRow][cellCol])) {
                     const status = parseInt(s, 10);
                     cellProperties.tooltipOptionList.push(this.constructToolTipOption(this._errorData[cellRow][cellCol][status], status));
                 }
             }
 
-            if (cellProperties.tooltipOptionList.length || ((this._changedData[cellRow] as any)[cellProp] !== undefined)) {
+            if (cellProperties.tooltipOptionList.length || this.hasChangedFields(cellRow, cellProp)) {
                 cellProperties = {
                     ...cellProperties, ...{
                         errData: this._errorData[cellRow][cellCol],
@@ -212,6 +212,10 @@ export class DataGridComponent implements OnInit {
             }
             return cellProperties;
         };
+    }
+
+    private hasChangedFields(cellRow: number, cellProp: string): boolean {
+        return !!this._changedData[cellRow] && ((this._changedData[cellRow] as any)[cellProp] !== undefined);
     }
 
     private changeSettings() {
