@@ -21,3 +21,7 @@ export interface IAdminActivateResponseDTO extends IActivationResponseDTO {
     obj: string;
     title: string;
 }
+
+export interface ISystemInformationResponseDTO {
+    version: string;
+}

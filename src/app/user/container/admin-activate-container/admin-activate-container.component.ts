@@ -1,6 +1,6 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { environment } from '../../../../environments/default.environment';
+import { environment } from '../../../../environments/environment';
 import * as fromUser from '../../state/user.reducer';
 import * as coreActions from '../../../core/state/core.actions';
 import { Store } from '@ngrx/store';
