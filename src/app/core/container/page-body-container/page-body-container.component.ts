@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import * as fromCore from '../../state/core.reducer';
-import { environment } from '../../../../environments/default.environment';
+import { environment } from '../../../../environments/environment';
 
 @Component({
     selector: 'mibi-page-body-container',

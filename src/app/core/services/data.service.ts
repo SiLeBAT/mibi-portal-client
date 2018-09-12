@@ -8,7 +8,7 @@ import { User } from '../../user/model/user.model';
 import { UserData } from '../../user/model/userdata.model';
 import {
     IAdminActivateResponseDTO,
-    IRecoverPasswordResponseDTO, IRegisterUserResponseDTO, ILoginResponseDTO, IActivationResponseDTO
+    IRecoverPasswordResponseDTO, IRegisterUserResponseDTO, ILoginResponseDTO, IActivationResponseDTO, ISystemInformationResponseDTO
 } from '../model/response.model';
 import { map } from 'rxjs/operators';
 
@@ -29,7 +29,8 @@ export class DataService {
         reset: this.API_ROOT + this.API_VERSION + '/users/reset',
         activate: this.API_ROOT + this.API_VERSION + '/users/activate',
         adminactivate: this.API_ROOT + this.API_VERSION + '/users/adminactivate',
-        userdata: this.API_ROOT + this.API_VERSION + '/users/userdata'
+        userdata: this.API_ROOT + this.API_VERSION + '/users/userdata',
+        systemInfo: this.API_ROOT + this.API_VERSION + '/util/system-info'
     };
 
     constructor(private httpClient: HttpClient) {
@@ -45,6 +46,10 @@ export class DataService {
             return null;
         }
         return JSON.parse(cu);
+    }
+
+    getSystemInfo(): Observable<ISystemInformationResponseDTO> {
+        return this.getData<ISystemInformationResponseDTO>(this.URL.systemInfo);
     }
 
     logout() {

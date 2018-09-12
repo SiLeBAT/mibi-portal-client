@@ -18,6 +18,8 @@ hr {
     width: 100vw;
     z-index: 1030;
     height: 5rem;
+    display: flex;
+    justify-content: space-between;
   }
 
 .main-footer__links {
