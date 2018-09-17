@@ -7,7 +7,6 @@ import { LoginComponent } from './presentation/login/login.component';
 import { LoginContainerComponent } from './container/login-container/login-container.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
-import { UserViewLayoutComponent } from './presentation/user-view-layout/user-view-layout.component';
 import { RegisterComponent } from './presentation/register/register.component';
 import { PasswordStrengthMeterModule } from 'angular-password-strength-meter';
 import { RegisterContainerComponent } from './container/register-container/register-container.component';
@@ -73,7 +72,6 @@ import { AdminTokenValidationResolver } from './services/admin-token-validation-
         RegisterViewComponent,
         RegisterContainerComponent,
         RegisterComponent,
-        UserViewLayoutComponent,
         LoginComponent,
         LoginContainerComponent,
         LoginViewComponent

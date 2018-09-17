@@ -10,7 +10,7 @@ const ROUTES: Routes = [
 
 @NgModule({
     imports: [
-        RouterModule.forRoot(ROUTES)
+        RouterModule.forRoot(ROUTES, { anchorScrolling: 'enabled' })
     ],
     exports: [RouterModule]
 })

@@ -15,6 +15,8 @@ import { UserModule } from './user/user.module';
 import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreRouterConnectingModule, routerReducer } from '@ngrx/router-store';
+import { ContentModule } from './content/content.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
     declarations: [
@@ -22,6 +24,7 @@ import { StoreRouterConnectingModule, routerReducer } from '@ngrx/router-store';
     ],
     imports: [
         BrowserModule,
+        BrowserAnimationsModule,
         JasperoConfirmationsModule.forRoot(),
         StoreModule.forRoot({
             router: routerReducer
@@ -36,9 +39,10 @@ import { StoreRouterConnectingModule, routerReducer } from '@ngrx/router-store';
         SharedModule,
         SamplesModule,
         UserModule,
+        ContentModule,
+        StoreRouterConnectingModule.forRoot(),
         // AppRoutingModule needs to be at the end
-        AppRoutingModule,
-        StoreRouterConnectingModule.forRoot()
+        AppRoutingModule
     ],
     providers: [
         {

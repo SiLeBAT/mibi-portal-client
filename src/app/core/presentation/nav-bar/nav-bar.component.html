@@ -10,6 +10,12 @@
 
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
+        <li class="navbar-text-color">
+          <a class="navbar-text-color" (click)="validate()" [class.hidden]="!(hasEntries$ | async) || getCurrentRoute() !== '/samples'">
+            Validieren
+          </a>
+        </li>
+
         <li class="dropdown navbar-text-color" appDropdown>
           <a style="cursor: pointer;" class="dropdown-toggle navbar-user navbar-text-color " role="button">
             Probendaten
@@ -37,17 +43,12 @@
               </a>
             </li>
             <li>
-              <a class="dropdown-link" href="https://www.bfr.bund.de/de/einsendeformular_fuer_isolate_und_proben-9257.html" target="_blank">
+              <a class="dropdown-link" href="https://www.bfr.bund.de/de/einsendeformular_fuer_isolate_und_proben-9257.html"
+                target="_blank">
                 Excel-Vorlage
               </a>
             </li>
           </ul>
-        </li>
-
-        <li class="navbar-text-color">
-          <a class="navbar-text-color" (click)="validate()" [class.hidden]="!(hasEntries$ | async) || getCurrentRoute() !== '/samples'">
-            Validieren
-          </a>
         </li>
 
         <li class="navbar-text-color">

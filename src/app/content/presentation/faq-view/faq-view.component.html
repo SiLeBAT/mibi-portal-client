@@ -1,0 +1,8 @@
+<mibi-view-layout title="MiBi-Portal FAQ">
+    <section  class="faq__toc">
+        <mibi-faq-toc [faqCollection]="faqCollection"></mibi-faq-toc>
+    </section>
+    <section class="faq__section">
+        <mibi-faq-section *ngFor="let faqGroup of faqCollection" [faqGroup]="faqGroup"></mibi-faq-section>
+    </section>
+</mibi-view-layout>
