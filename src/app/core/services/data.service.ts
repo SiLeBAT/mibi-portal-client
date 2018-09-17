@@ -30,7 +30,8 @@ export class DataService {
         activate: this.API_ROOT + this.API_VERSION + '/users/activate',
         adminactivate: this.API_ROOT + this.API_VERSION + '/users/adminactivate',
         userdata: this.API_ROOT + this.API_VERSION + '/users/userdata',
-        systemInfo: this.API_ROOT + this.API_VERSION + '/util/system-info'
+        systemInfo: this.API_ROOT + this.API_VERSION + '/util/system-info',
+        faq: './assets/faq.json'
     };
 
     constructor(private httpClient: HttpClient) {
@@ -46,6 +47,10 @@ export class DataService {
             return null;
         }
         return JSON.parse(cu);
+    }
+
+    getFAQs() {
+        return this.getData(this.URL.faq);
     }
 
     getSystemInfo(): Observable<ISystemInformationResponseDTO> {

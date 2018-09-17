@@ -12,6 +12,7 @@ import { takeWhile } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { IUser } from '../../../user/model/models';
 
+// TODO: Should have pass navBarConfig to presentational component, to make the presentational component more generic
 @Component({
     selector: 'mibi-nav-bar-container',
     template: `<mibi-nav-bar

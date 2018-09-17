@@ -1,0 +1,22 @@
+
+td{vertical-align:top;}
+
+.toc__count {
+    text-align: right;
+    width: 10%;
+}
+
+.toc__divider {
+    border-bottom: 1px dotted black;
+    width: 60%;
+}
+
+.toc__entry {
+    width: 30%;
+}
+
+.toc {
+    border-collapse:collapse;
+    width:100%;
+    padding-bottom: 32px;
+}

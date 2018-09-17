@@ -1,0 +1,106 @@
+{
+    "top": [
+        {
+            "q": "Wie kann ich über das MiBi-Portal ein Einsendeformular an das BfR senden?",
+            "a": "Bitte melden Sie sich mit Ihrer E-Mail-Adresse und Ihrem Passwort an. Klicken Sie anschließend im oberen Menübalken auf Probendaten/Upload und wählen Sie ein Einsendeformular von Ihrer Festplatte aus. Nach der automatischen Validierung sind eventuell einige Felder rot (Fehler) oder gelb (Warnungen) markiert. Korrigieren Sie diese Fehler und Warnungen und klicken Sie dann auf Probendaten/Senden, um Ihr Einsendeformular an das BfR per E-Mail zu senden."
+        }
+    ],
+    "anmelden": [
+        {
+            "q": "Ich kann mich nicht anmelden.",
+            "a": "Vor der ersten Anmeldung müssen Sie sich registrieren. Klicken Sie im oberen blauen Menüband am rechten Rand auf „Anmelden/Registrieren“ und dort auf „Registrierung“."
+        },
+        {
+            "q": "Woran erkenne ich, dass ich angemeldet bin?",
+            "a": "Wenn Sie im MiBi-Portal angemeldet sind, ist im oberen blauen Menüband am rechten Rand schematisch eine weiße Büste abgebildet. Sind Sie nicht angemeldet, dann steht dort „Anmelden/Registrieren“."
+        },
+        {
+            "q": "Ich habe mein Passwort vergessen. Wie kann ich mich trotzdem anmelden?",
+            "a": "Klicken Sie auf „Anmelden/Registrieren“ und unterhalb der Passwort-Eingabe auf „Passwort vergessen?“. Sie werden aufgefordert, die E-Mail-Adresse anzugeben, mit der Sie sich registriert haben. Kurz darauf erhalten Sie per E-Mail einen Link zum Zurücksetzen des Passworts. Nach dem Anklicken des Buttons in der E-Mail können Sie im MiBi-Portal ein neues Passwort angeben."
+        }
+    ],
+    "registrieren": [
+        {
+            "q": "Wie kann ich mich registrieren?",
+            "a": "Vor der ersten Anmeldung müssen Sie sich registrieren. Klicken Sie im oberen blauen Menüband am rechten Rand auf „Anmelden/Registrieren“ und dort auf „Registrierung“. Füllen Sie das Formular aus und drücken Sie auf „Submit“. Sie erhalten eine E-Mail mit weiteren Anweisungen."
+        },
+        {
+            "q": "Ich habe das Registrierungsformular ausgefüllt. Was passiert nun? Warum kann ich mich noch nicht anmelden?",
+            "a": "Es ist noch die Freigabe durch den MiBi-Portal-Administrator erforderlich. Sie erhalten eine E-Mail, wenn Sie sich anmelden können."
+        }
+    ],
+    "hochladen": [
+        {
+            "q": "Wie kann ich meine zu validierenden Daten hochladen?",
+            "a": "Klicken Sie oben im blauen Menüband auf Probendaten/Upload."
+        },
+        {
+            "q": "Wie kann ich ein Einsendeformular hochladen?",
+            "a": "Es gibt zwei Möglichkeiten:<ol><li>Klicken Sie den Button „Datei wählen“ an. Ein Datei-Explorer-Fenster öffnet sich, über das Sie eine *.xlsx-Datei von Ihrer Festplatte bzw. von Ihrem Netzwerklaufwerk auswählen können.</li><li>Positionieren Sie Ihren Datei-Explorer neben Ihrem Browser-Fenster und ziehen Sie mit Drag&Drop eine *.xlsx-Datei aus dem Datei-Explorer zum Browser-Fenster. Lassen Sie die Maus los, wenn sich der Mauszeiger im grau hinterlegten Bereich befindet.</li></ol>"
+        },
+        {
+            "q": "Mein Einsendeformular wird nicht akzeptiert. Dabei hatte ich es damals von der BfR- Website heruntergeladen.",
+            "a": "Das MiBi-Portal akzeptiert ausschließlich Dateien mit der Endung *.xlsx. Das seit Oktober 2017 aktuelle <a href=\"https://www.bfr.bund.de/de/einsendeformular_fuer_isolate_und_proben-9257.html\">Einsendeformular v14</a> hat diese Dateiendung. Sollten Sie eine ältere Version des Einsendeformulars verwenden, bitten wir Sie, sich von der oben angegebenen Website die aktuelle Version herunterzuladen und diese zu verwenden."
+        },
+        {
+            "q": "Ich habe eine Excel-Datei mit der Endung *.xls, aber diese wird vom MiBi-Portal nicht akzeptiert. Was nun?",
+            "a": "Das MiBi-Portal akzeptiert ausschließlich Exceldateien mit der Endung *.xlsx. Dieser seit Ende Januar 2007 existierende Dateityp kann mit jeder Version seit Microsoft Office 2007 erzeugt werden. Öffnen Sie hierzu Ihre *.xls-Datei und speichern Sie sie anschließend als *.xlsx-Datei (Datei, Speichern unter, Dateityp = „Excel-Arbeitsmappe (*.xlsx)“. Wenn Sie kein Microsoft Office verwenden, können Sie z.B. auch mit der kostenlosen Open- Source-Software Libre Office ihre .xls-Datei in *.xlsx umwandeln."
+        },
+        {
+            "q": "Muss ich angemeldet sein, um ein Einsendeformular hochzuladen?",
+            "a": "Nein, man kann ohne Anmeldung das Einsendeformular hochladen. Entscheidet man sich anschließend, die Daten an das BfR zu senden, kann man sich anmelden und gelangt anschließend wieder auf die Seite mit den eigenen gerade hochgeladenen Daten."
+        }
+    ],
+    "fehlerkorrektur": [
+        {
+            "q": "Wie bereinigt man Fehler und Warnungen?",
+            "a": "Am einfachsten ist es, wenn man direkt online in die entsprechende Zelle klickt und den Text ändert. Lässt man die Maus über einer gefärbten Zelle schweben, zeigt eine Sprechblase einen Hinweis zum Fehler (rot) bzw. zur Warnung (gelb) an. Nach der Korrektur klickt man auf „Validieren“, um zu sehen, ob die Änderung den Fehler oder die Warnung behoben hat. Alternativ könnte man auch die Excel-Datei korrigieren und erneut hochladen. Die Validierung können Sie beliebig oft durchführen."
+        }
+    ],
+    "darstellung": [
+        {
+            "q": "Worin liegt der Unterschied zwischen weißen, roten, gelben und blauen Zellen?",
+            "a": "Weiße Zellen werden vom MiBi-Portal als korrekt angesehen. Manche Spalten erlauben Freitext, so dass es hierfür keine Prüfroutinen gibt. Sie werden unabhängig vom Inhalt immer weiß dargestellt. Ist eine Zelle rot gefärbt, liegt ein Fehler vor, der es dem BfR unmöglich macht, die Daten später korrekt auszuwerten. Aus diesem Grund werden keine Daten angenommen, in denen noch rot gefärbte Zellen vorkommen. Gelbe Zellen zeigen Warnungen an. Wenn eine Datei hochgeladen wird und z.B. im Datum der Probenahme das Jahr 2018 angegeben wird und dann beim Datum der Isolierung das Jahr 2015 (typischer Verschreiber), dann wird der Nutzer gefragt, ob wirklich über ein Jahr zwischen Probennahme und Isolation vergangen ist. Einsendeformulare können ans BfR gesandt werden, auch wenn Sie Warnungen enthalten. Wir bitten Sie jedoch, auch diese Zellen zu korrigieren. Bei blau hinterlegten Zellen handelt es sich um automatisch korrigierte Einträge. Wenn z.B. bei einem ADV-Code eine vorangestellte ‚0‘ fehlt, dann wird dieser Wert automatisch korrigiert und Ihnen blau angezeigt, damit Ihnen diese Änderungen bewusst sind und Sie ggf. nochmals korrigierend eingreifen können."
+        },
+        {
+            "q": "Text wird teilweise am rechten Rand einer Zelle nicht vollständig angezeigt. Wie kann ich sicher sein, dass meine Daten vollständig beim BfR ankommen?",
+            "a": "Ihre Daten werden nicht gekürzt. Hierbei handelt es sich um einen Darstellungsfehler. Je schmaler der Monitor ist, desto weniger Platz bleibt pro Spalte übrig. Da der Text nur bei Leerzeichen umgebrochen wird, kann bei langen Wörtern oder Zahlen das Ende eventuell nicht mehr dargestellt werden.  Wenn Sie sichergehen möchten können Sie zum Prüfen zum Beispiel die Spalte breiter ziehen. Hierzu bewegen Sie die Maus auf die senkrechte Linie zwischen zwei Spaltenüberschriften. Sobald Sie sich der Mauszeiger in das Symbol für das Verändern der Spaltenbreite verwandelt hat (ein senkrechter Strich mit je einem Pfeil nach links und rechts), klicken Sie mit der linken Maustaste und ziehen die Maus nach rechts, bis der Text vollständig zu sehen ist. Eine weitere Möglichkeit besteht darin, einen Doppelklick in die entsprechende Zelle zu machen. Dann ist der vollständige Text zu lesen. Eine dritte Möglichkeit haben Sie, indem Sie die Daten über Probendaten/Download herunterladen. In der erzeugten Excel-Datei sehen Sie die Daten so, wie sie bei einem Klick auf „Senden“ ans BfR geschickt werden würden."
+        },
+        {
+            "q": "Was bedeuten die türkisfarbenen Umrandungen um manche Zellen?",
+            "a": "Einzelne Zellen der Tabelle werden umrandet, wenn sich der online dargestellte Inhalt von dem Inhalt in dem von Ihnen hochgeladenen Einsendeformular unterscheidet. Dies kann in zwei Fällen passieren:<ol><li>Direkt nach dem Hochladen des Einsendeformulars sind Zellen umrandet. In diesem Fall sind sie auch blau gefärbt, da die Autokorrektur Ihre ursprünglichen Angaben verändert hat. Wenn Sie z.B. korrekterweise den Code für einen Erreger aus ADV-Katalog Nr. 16 angegeben haben, dann ersetzt die Autokorrektur diesen durch den dazugehörigen ADV- Text.</li><li>Sie haben Ihr Einsendeformular hochgeladen und haben einen Fehler entdeckt. Wenn Sie diesen online editieren, zeigt die türkisfarbene Umrandung an, dass Sie diese Zelle der Tabelle im Vergleich zur hochgeladenen Datei verändert haben.</li></ol> Diese Funktionalität könnte Ihnen z.B. dabei helfen, den Excel-Export Ihres hauseigenen LIMS  zu optimieren."
+        }
+    ],
+    "senden": [
+        {
+            "q": "Ich habe ein Einsendeformular im MiBi-Portal hochgeladen und validieren lassen. Wie kann ich die Daten ans BfR schicken?",
+            "a": "Loggen Sie sich ein und klicken Sie im oberen blauen Menüband auf Probendaten/Senden. Die Daten werden daraufhin an das BfR gesendet und Sie erhalten eine Kopie der gesendeten Daten an Ihr E-Mail-Postfach. Vergessen Sie bitte nicht, auch weiterhin die gesendeten Daten auszudrucken und Ihren Isolaten beizulegen."
+        }
+    ],
+    "problem melden": [
+        {
+            "q": "Ich komme an einer Stelle nicht weiter und auch diese FAQs helfen mir nicht. Wie erhalte ich Hilfe?",
+            "a": "Klicken Sie unten auf der Website auf „Problem melden“. Eine neue E-Mail wird in Ihrem E-Mail-Programm geöffnet. Die Adresse ist bereits eingetragen, so dass Sie nur noch das Problem kurz schildern müssen. Gerne können Sie auch die entsprechende Datei anhängen, falls das Problem damit zu tun hat. Wir werden uns umgehend bei Ihnen melden."
+        },
+        {
+            "q": "Meine Daten waren korrekt, aber die Autokorrektur hat meine Daten verändert oder die Validierung zeigt einen Fehler an. Wie kann ich meine Daten korrekt an das BfR senden?",
+            "a": "Sollte die Autokorrektur das Ergebnis verschlimmbessert haben, bitten wir um Entschuldigung und darum, dass Sie uns das Problem in einer kurzen E-Mail schildern. Klicken Sie hierzu unten auf der Website auf „Problem melden“. Eine neue E-Mail wird in Ihrem E-Mail-Programm geöffnet. Schreiben Sie „Fehler bei Autokorrektur in Zeile […], Spalte […]“ und hängen Sie die Exceldatei an. Wurde zum Beispiel in der zweiten Datenzeile und in der ersten Erregerspalte ein Fehler entdeckt, geben Sie an: „Fehler bei Autokorrektur in Zeile 2, Spalte Erreger ADV16“."
+        }
+    ],
+    "abmelden": [
+        {
+            "q": "Ich bin angemeldet und möchte mich nun abmelden. Doch wo finde ich den entsprechenden Button?",
+            "a": "Klicken Sie oben rechts im blauen Menüband auf die weiße Büste und dann auf „Abmelden“. Ihr Login verliert nach 24 Stunden automatisch seine Gültigkeit."
+        }
+    ],
+    "andere themen": [
+        {
+            "q": "Ich sehe nach dem Eingeben des <a href=\"https://mibi-portal.bfr.bund.de\">MiBi-Portal-Weblinks</a> nur eine weiße Fläche im Browser. Was läuft hier schief?",
+            "a": "Das MiBi-Portal verwendet Ressourcen, die von den folgenden Browsern unterstützt werden: <ul><li>Mozilla Firefox: ab Version 52</li><li>Google Chrome: ab Version 64</li><li>Microsoft Edge: ab Version 41</li><li>Apple Safari: ab Version 11</li><li>Opera: ab Version 54</li></ul>Bei älteren Browserversionen ist nach dem Aufruf des MiBi-Portal-Weblinks möglicherweise nur ein weißes Browserfenster zu sehen. Dies kann auch bei anderen Browsern passieren, wie z.B. dem Internet Explorer. Bitte verwenden Sie in diesem Fall einen der oben aufgelisteten Browser."
+        },
+        {
+            "q": "Warum gibt es jetzt das MiBi-Portal?",
+            "a": "Hierfür gibt es mehrere Gründe: Die Weiterleitung der Einsendeformulare erfolgte bisher manuell und war sehr zeitaufwändig. Zusätzlich zur Zeitersparnis wird auch eine höhere Datenqualität erwartet: Die im Portal eingebauten Plausibilitätsprüfungen untersuchen ADV-Codes, Datumsangaben, Erreger-Schreibweisen und Zugehörigkeiten von Proben zum Zoonosen-Monitoring. Bei Fehlern, die eine Verwertbarkeit für das BfR einschränken, wird aufgefordert, diese zu korrigieren. Dies hat Vorteile auf beiden Seiten, denn es fallen z.B. die häufigen telefonischen Rückfragen weg. In naher Zukunft wird das Portal weitere Funktionen bereitstellen, wie z.B. eine automatische Probenaufteilung nach NRL. Dadurch wird für Nutzer der Umstand, Proben nach Erreger getrennt auf je ein Einsendeformular aufteilen zu müssen, wegfallen. Später wird es auch die Möglichkeit geben, die Ergebnisse der NRLs zu den zugesandten Proben einzusehen und herunterzuladen, sobald die Proben durch das BfR untersucht worden sind."
+        }
+    ]
+}

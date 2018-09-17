@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { environment } from '../environments/environment';
 
@@ -6,13 +6,11 @@ import { environment } from '../environments/environment';
     selector: 'mibi-root',
     templateUrl: './app.component.html'
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
     private isActive = false;
     supportContact: string = environment.supportContact;
 
     constructor() { }
-
-    ngOnInit() { }
 
     getDisplayMode() {
         let displayMode;
