@@ -51,7 +51,7 @@ export class ImportExcelFileSuccess implements Action {
 export class ImportExcelFileFailure implements Action {
     readonly type = SamplesActionTypes.ImportExcelFileFailure;
 
-    constructor(public payload: IExcelData) {
+    constructor(public payload: IAlert) {
 
     }
 }

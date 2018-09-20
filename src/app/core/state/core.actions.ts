@@ -5,7 +5,8 @@ import {
     ExportExcelFile,
     ExportExcelFileSuccess,
     ExportExcelFileFailure,
-    SendSamplesSuccess, SendSamplesFailure, SendSamplesConfirm, SendSamplesInitiate
+    SendSamplesSuccess,
+    SendSamplesFailure, SendSamplesConfirm, SendSamplesInitiate, ImportExcelFile, ImportExcelFileSuccess, ImportExcelFileFailure
 } from '../../samples/state/samples.actions';
 import { Action } from '@ngrx/store';
 import { IAlert } from '../model/alert.model';
@@ -40,6 +41,9 @@ export class ClearAlert implements Action {
 export type SystemActions = ValidateSamples
     | ValidateSamplesSuccess
     | ValidateSamplesFailure
+    | ImportExcelFile
+    | ImportExcelFileSuccess
+    | ImportExcelFileFailure
     | ExportExcelFile
     | ExportExcelFileSuccess
     | ExportExcelFileFailure

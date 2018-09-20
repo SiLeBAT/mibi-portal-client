@@ -102,6 +102,7 @@ export function reducer(state: ICoreState = initialState, action: SystemActions)
                 }
             };
         case SamplesActionTypes.ValidateSamples:
+        case SamplesActionTypes.ImportExcelFile:
         case UserActionTypes.LoginUser:
             return {
                 ...state, ...{
@@ -113,6 +114,7 @@ export function reducer(state: ICoreState = initialState, action: SystemActions)
                 }
             };
         case SamplesActionTypes.ValidateSamplesSuccess:
+        case SamplesActionTypes.ImportExcelFileSuccess:
         case UserActionTypes.LoginUserSuccess:
             return {
                 ...state, ...{
@@ -124,6 +126,7 @@ export function reducer(state: ICoreState = initialState, action: SystemActions)
                 }
             };
         case SamplesActionTypes.ValidateSamplesFailure:
+        case SamplesActionTypes.ImportExcelFileFailure:
         case UserActionTypes.LoginUserFailure:
         case SamplesActionTypes.SendSamplesFailure:
         case SamplesActionTypes.SendSamplesSuccess:
