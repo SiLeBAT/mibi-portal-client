@@ -1,6 +1,4 @@
-/*
-* Loader
-*/
+@import '../../../../assets/sass/abstracts';
 
 .loader-container {
     display: flex;
@@ -10,7 +8,7 @@
   .loader {
     margin-top: 10rem;
     border: 8px solid rgb(204, 204, 204);
-    border-top: 8px solid rgb(3, 78, 162);
+    border-top: 8px solid $primary-color;
     border-radius: 50%;
     width: 100px;
     height: 100px;

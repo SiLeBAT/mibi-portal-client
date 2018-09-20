@@ -1,0 +1,28 @@
+@import '../../../../assets/sass/abstracts';
+
+body {
+    counter-reset: datenschutz-section;
+  }
+  .dateschutz-hinweise-item-header {
+    counter-increment: datenschutz-section;
+    font-weight: bold;
+  }
+  .dateschutz-hinweise-item-header:before {
+    content: counter(datenschutz-section) '. ';
+  }
+
+.dateschutz-hinweis {
+    margin-top: 32px;
+}
+
+.dateschutz-hinweise-item__list {
+    font-size: 21px;
+}
+
+.dateschutz-hinweise-footer {
+    border-top: 1px solid $primary-color;
+}
+
+.dateschutz-hinweise-footer__head {
+    font-size: 21px;
+}

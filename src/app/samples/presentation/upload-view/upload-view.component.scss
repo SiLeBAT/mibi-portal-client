@@ -1,8 +1,10 @@
+@import '../../../../assets/sass/abstracts';
+
 h2 {
     text-align: center;
     font-size: 3rem;
     line-height: 1;
-    color: rgb(3, 78, 168);
+    color: $primary-color;
     margin-bottom: 20;
   }
 
