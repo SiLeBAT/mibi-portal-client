@@ -1,5 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 @import 'handsontable/dist/handsontable.full.css';
+@import 'assets/sass/base';
+@import 'assets/sass/abstracts';
+@import 'assets/sass/components';
+@import 'assets/sass/layout';
 
 
 body {
@@ -9,13 +13,13 @@ body {
 
 hr {
   height: 1px;
-  background-color:rgb(3, 78, 168);
+  background-color: $primary-color;
   margin-top: 2rem;
   margin-bottom: 2rem;
 }
 
 .primary {
-  background: rgb(3, 78, 168) !important;
+  background:  $primary-color !important;
 }
 
 .handsontable td.warn{

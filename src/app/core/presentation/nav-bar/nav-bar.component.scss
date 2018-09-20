@@ -1,13 +1,14 @@
+@import '../../../../assets/sass/abstracts';
 
   .navbar-blue {
-    background: rgb(3, 78, 168);
-    color: rgb(255, 255, 255);
+    background: $primary-color;
+    color: $on-primary-color;
     padding: 0;
     margin: 0;
   }
   
   .navbar-brand-color, .navbar-text-color {
-    color: rgb(255, 255, 255);
+    color: $on-primary-color;
     text-decoration: none;
     font-size: 1.2em;
     display: inline-block;
@@ -20,7 +21,7 @@
   .navbar-text-color:hover,
   .navbar-text-color:focus,
   .navbar-text-color:active {
-    background: rgb(3, 78, 168);
+    background: $primary-color;
     color: rgb(204, 204, 204);
     outline: none;
   }

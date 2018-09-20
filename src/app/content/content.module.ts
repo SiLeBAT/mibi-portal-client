@@ -9,6 +9,8 @@ import { FAQSectionComponent } from './presentation/faq-section/faq-section.comp
 import { FAQTocComponent } from './presentation/faq-toc/faq-toc.component';
 import { FAQResolver } from './service/faq-resolver.service';
 import { MatCardModule } from '@angular/material/card';
+import { DatenschutzerklaerungComponent } from './presentation/datenschutzerklaerung/datenschutzerklaerung.component';
+import { DatenschutzerklaerungViewComponent } from './presentation/datenschutzerklaerung-view/datenschutzerklaerung-view.component';
 
 @NgModule({
     imports: [
@@ -17,7 +19,8 @@ import { MatCardModule } from '@angular/material/card';
         RouterModule.forChild([{
             path: 'content',
             children: [
-                { path: 'faq', component: FAQViewComponent, resolve: { faqCollection: FAQResolver } }
+                { path: 'faq', component: FAQViewComponent, resolve: { faqCollection: FAQResolver } },
+                { path: 'datenschutzerklaerung', component: DatenschutzerklaerungViewComponent }
             ]
         }]),
         MatExpansionModule,
@@ -27,7 +30,9 @@ import { MatCardModule } from '@angular/material/card';
         FAQComponent,
         FAQViewComponent,
         FAQSectionComponent,
-        FAQTocComponent
+        FAQTocComponent,
+        DatenschutzerklaerungComponent,
+        DatenschutzerklaerungViewComponent
     ],
     exports: [
     ]

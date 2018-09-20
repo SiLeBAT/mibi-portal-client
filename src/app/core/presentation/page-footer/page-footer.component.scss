@@ -1,3 +1,5 @@
+@import '../../../../assets/sass/abstracts';
+
 hr {
     position: fixed;
     bottom: 5rem;
@@ -5,12 +7,12 @@ hr {
     z-index: 1040;
     margin: 0;
     height: 1px;
-    background-color:rgb(3, 78, 168);
+    background-color: $primary-color;
     width: 100vw;
   }
   
   .main-footer {
-    background: rgb(255, 255, 255);
+    background: $background-color;
     padding: 2rem;;
     position: fixed;
     bottom: 0;
@@ -35,11 +37,11 @@ hr {
   }
   
   .main-footer__link a {
-    color: rgb(3, 78, 162);
+    color: $primary-color;
     text-decoration: none;
   }
   
   .main-footer__link a:hover,
   .main-footer__link a:active {
-    color: rgb(0, 0, 0);
+    color: $on-background-color;
   }

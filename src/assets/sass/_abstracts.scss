@@ -1,0 +1,54 @@
+/*
+Put all your functions here, along with variables and mixins. In short, all your helpers.
+*/
+
+/*
+BfR Colours
+*/
+
+$bfr-blue: rgb(3, 78, 162); // #034ea2
+$bfr-white: rgb(255, 255, 255); // #ffffff
+$bfr-lightgrey: rgb(204, 204, 204); // #cccccc
+$bfr-black: rgb(0, 0, 0); // #000000
+$bfr-lightblue: rgb(140, 190, 218); // #8cbeda
+$bfr-lightcyan: rgb(209, 237, 244); // #d1edf4
+$bfr-ocre: rgb(241, 199, 83); // #f1c753
+$bfr-lightocre: rgb(246, 231, 187); // #f6e7bb
+$bfr-darkgrey: rgb(102, 102, 102); // #666666
+$bfr-mintgreen: rgb(52, 172, 159); // #34ac9f
+$bfr-red: rgb(254, 0, 0); // #fe0000
+
+/*
+Material Design implementations: created using the Material Design Color tool: https://material.io/tools/color/#!/?view.left=0&view.right=1
+*/
+$primary-color:  $bfr-blue;
+$primary-color-dark:  rgb(0, 39, 115); // #002773
+$primary-color-light:  rgb(82, 121, 212); // #5279d4
+$secondary-color: $bfr-ocre;
+$secondary-color-dark: rgb(187, 151, 32);  // #bb9720
+$secondary-color-light: rgb(255, 250, 132); // #fffa84
+
+$background-color: $bfr-white;
+$surface-color: $bfr-lightgrey;
+$error-color: $bfr-red;
+
+$on-primary-color:  $bfr-white;
+$on-secondary-color: $bfr-black;
+
+$on-background-color: $bfr-black;
+$on-surface-color: $bfr-black;
+$on-error-color: $bfr-black;
+
+/*
+Medium-emphasis text and hint text have opacities of 60%
+Disabled text has an opacity of 38%
+*/
+
+/*
+Fonts
+*/
+
+$app-title-size: 16px; // Open Sans - Semi-bold
+$mibi-text-size: 16px;
+$mibi-text-weight: normal;
+$mibi-text-family: 'Open Sans'; // - regular

@@ -1,0 +1,13 @@
+/*
+in here, put all your boilerplate code. By boilerplate, I mean all CSS code you’re gonna write each time you’ll start a new project. For example: typography rules, animations, utilities (by utilities, I mean classes like margin-right-large , text-center , …) and so on.
+*/
+
+@import './abstracts';
+/*
+Font
+*/
+
+.mibi-text {
+    font-size: $mibi-text-size;
+    font-weight: $mibi-text-weight;
+}

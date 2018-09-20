@@ -1,3 +1,5 @@
+@import 'assets/sass/abstracts';
+
 table thead th {
   word-wrap: break-all;
   /* max-width: 50px; */
@@ -15,7 +17,7 @@ ul  {
  .tooltipster-sidetip.tooltipster-error .tooltipster-box {
      border: 1px solid black;
      border-radius: 5px;
-     background: red;
+     background: $error-color;
      box-shadow: 0px 0px 14px rgba(0,0,0,0.3);
  }
  .tooltipster-sidetip.tooltipster-error .tooltipster-content {
@@ -41,19 +43,19 @@ ul  {
      border: 9px solid transparent;
  }
  .tooltipster-sidetip.tooltipster-error.tooltipster-bottom .tooltipster-arrow-background {
-     border-bottom-color: red;
+     border-bottom-color: $error-color;
      top: 1px;
  }
  .tooltipster-sidetip.tooltipster-error.tooltipster-left .tooltipster-arrow-background {
-     border-left-color: red;
+     border-left-color: $error-color;
      left: -1px;
  }
  .tooltipster-sidetip.tooltipster-error.tooltipster-right .tooltipster-arrow-background {
-     border-right-color: red;
+     border-right-color: $error-color;
      left: 1px;
  }
  .tooltipster-sidetip.tooltipster-error.tooltipster-top .tooltipster-arrow-background {
-     border-top-color: red;
+     border-top-color: $error-color;
      top: -1px;
  }
  .tooltipster-sidetip.tooltipster-error .tooltipster-arrow-border {
@@ -148,7 +150,7 @@ ul  {
  .tooltipster-sidetip.tooltipster-info .tooltipster-box {
      border: 1px solid black;
      border-radius: 5px;
-     background: blue;
+     background: $primary-color;
      box-shadow: 0px 0px 14px rgba(0,0,0,0.3);
  }
  .tooltipster-sidetip.tooltipster-info .tooltipster-content {
@@ -174,19 +176,19 @@ ul  {
      border: 9px solid transparent;
  }
  .tooltipster-sidetip.tooltipster-info.tooltipster-bottom .tooltipster-arrow-background {
-     border-bottom-color: blue;
+     border-bottom-color: $primary-color;
      top: 1px;
  }
  .tooltipster-sidetip.tooltipster-info.tooltipster-left .tooltipster-arrow-background {
-     border-left-color: blue;
+     border-left-color: $primary-color;
      left: -1px;
  }
  .tooltipster-sidetip.tooltipster-info.tooltipster-right .tooltipster-arrow-background {
-     border-right-color: blue;
+     border-right-color: $primary-color;
      left: 1px;
  }
  .tooltipster-sidetip.tooltipster-info.tooltipster-top .tooltipster-arrow-background {
-     border-top-color: blue;
+     border-top-color: $primary-color;
      top: -1px;
  }
  .tooltipster-sidetip.tooltipster-info .tooltipster-arrow-border {

@@ -1,3 +1,5 @@
+@import '../../../../assets/sass/abstracts';
+
 .uploader {
   display: block;
   clear: both;
@@ -25,7 +27,7 @@
 }
 
 .uploader label:hover {
-  border-color: rgb(3, 78, 168);;
+  border-color: $primary-color;
 }
 
 .uploader label.hover {
@@ -68,13 +70,13 @@
 
 
 .download-icon {
-  color: rgb(3, 78, 168);
+  color: $primary-color;
 }
 
 .select-text {
-  color: rgb(3, 78, 168);
+  color: $primary-color;
 }
 
 .select-button {
-  background: rgb(3, 78, 168);
+  background: $primary-color;
 }

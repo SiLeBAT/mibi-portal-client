@@ -42,10 +42,11 @@ enum ToolTipClassName {
     AUTOCORRECTION = 'corrected'
 }
 
+// TODO Is this still needed?
 enum ToolTipColour {
     YELLOW = 'rgb(255, 250, 205)', // FFFACD
-    RED = 'rgb(255, 193, 193)', // FFC1C1
-    BLUE = 'rgb(240, 248, 255)' // F0F8FF
+    RED = 'rgb(254, 0, 0)', // FFC1C1
+    BLUE = 'rgb(3, 78, 162)' // F0F8FF
 }
 
 enum HotChangeIndex {
