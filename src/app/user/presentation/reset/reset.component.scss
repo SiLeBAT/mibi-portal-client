@@ -1,6 +1,8 @@
+@import '../../../../assets/sass/abstracts';
+
 em {
   float: right;
-  color: #E05C65;
+  color: $error-color;
   padding-left: 10px;
 }
 

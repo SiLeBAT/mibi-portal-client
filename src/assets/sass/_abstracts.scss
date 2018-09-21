@@ -37,7 +37,7 @@ $on-secondary-color: $bfr-black;
 
 $on-background-color: $bfr-black;
 $on-surface-color: $bfr-black;
-$on-error-color: $bfr-black;
+$on-error-color: $bfr-white;
 
 /*
 Medium-emphasis text and hint text have opacities of 60%
@@ -52,3 +52,13 @@ $app-title-size: 16px; // Open Sans - Semi-bold
 $mibi-text-size: 16px;
 $mibi-text-weight: normal;
 $mibi-text-family: 'Open Sans'; // - regular
+
+
+/*
+Mixins
+*/
+
+@mixin background-opacity($color, $opacity: 0.3) {
+    background: $color; /* The Fallback */
+    background: rgba($color, $opacity);
+}
