@@ -1,4 +1,6 @@
 
+@import '../../../../assets/sass/abstracts';
+
 td{vertical-align:top;}
 
 .toc__count {
@@ -7,7 +9,7 @@ td{vertical-align:top;}
 }
 
 .toc__divider {
-    border-bottom: 1px dotted black;
+    border-bottom: 1px dotted $primary-color;
     width: 60%;
 }
 

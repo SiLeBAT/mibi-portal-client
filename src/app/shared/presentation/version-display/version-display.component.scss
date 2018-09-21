@@ -1,4 +1,7 @@
+
+@import '../../../../assets/sass/abstracts';
+
 .version-display__text {
-    color: lightgray;
+    color: $surface-color;
     font-size: 1rem;
 }

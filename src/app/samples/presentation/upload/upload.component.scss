@@ -14,10 +14,9 @@
   width: 100%;
   padding: 2rem 1.5rem;
   text-align: center;
-  background: #eee;
+  background: $surface-color;
   border-radius: 7px;
-  border: 3px solid #eee;
-  /* box-shadow: 5px 5px 5px rgb(226, 226, 226); */
+  border: 3px solid $surface-color;
   -webkit-transition: all .2s ease;
   transition: all .2s ease;
   -webkit-user-select: none;
@@ -61,7 +60,7 @@
   padding: 0 1rem;
   height: 36px;
   line-height: 36px;
-  color: #fff;
+  color: $background-color;
   -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
   box-sizing: border-box;
