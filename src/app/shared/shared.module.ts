@@ -1,28 +1,25 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MomentModule } from 'ngx-moment';
 import { DropdownDirective } from './directive/dropdown.directive';
-import { VersionDisplayComponent } from './presentation/version-display/version-display.component';
-// tslint:disable-next-line:max-line-length
-import { ClientVersionDisplayContainerComponent } from './container/client-version-display-container/client-version-display-container.component';
-// tslint:disable-next-line:max-line-length
-import { ServerVersionDisplayContainerComponent } from './container/server-version-display-container/server-version-display-container.component';
 import { ViewLayoutComponent } from './presentation/view-layout/view-layout.component';
+import { LastChangeDisplayContainerComponent } from './container/last-change-display-container/last-change-display-container.component';
+import { LastChangeDisplayComponent } from './presentation/last-change-display/last-change-display.component';
 
 @NgModule({
     imports: [
-        CommonModule
+        CommonModule,
+        MomentModule
     ],
     declarations: [
         DropdownDirective,
-        VersionDisplayComponent,
-        ClientVersionDisplayContainerComponent,
-        ServerVersionDisplayContainerComponent,
+        LastChangeDisplayContainerComponent,
+        LastChangeDisplayComponent,
         ViewLayoutComponent
     ],
     exports: [
         DropdownDirective,
-        ClientVersionDisplayContainerComponent,
-        ServerVersionDisplayContainerComponent,
+        LastChangeDisplayContainerComponent,
         ViewLayoutComponent
     ]
 })
