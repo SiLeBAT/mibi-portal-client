@@ -19,7 +19,7 @@ export class LastChangeDisplayContainerComponent implements OnInit {
     clientVersion: string;
     isDataAvailable: boolean;
     private dateParseString = 'ddd MMM DD HH:mm:ss YYYY +-HHmm';
-    private clientLastChange: moment.Moment = moment(environment.lastChange, this.dateParseString);
+    private clientLastChange: moment.Moment;
     private serverLastChange: moment.Moment;
 
     constructor(private dataService: DataService) { }
@@ -40,5 +40,6 @@ export class LastChangeDisplayContainerComponent implements OnInit {
             }
         );
         this.clientVersion = environment.version;
+        this.clientLastChange = moment(environment.lastChange, this.dateParseString) || '';
     }
 }
