@@ -6,6 +6,22 @@ import * as _ from 'lodash';
 import {
     SampleData, ChangedValueCollection
 } from '../../model/sample-management.model';
+import {
+    ToolTipTheme, IToolTip, createToolTip, TOOLTIP_CLASS_HOOK
+} from '../../../shared/model/tooltip.model';
+
+enum AlteredField {
+    WARNING = 'warn',
+    ERROR = 'error',
+    AUTOCORRECTED = 'corrected'
+}
+
+enum ToolTipType {
+    WARNING = 1,
+    ERROR = 2,
+    TIP = 3,
+    INFO = 4
+}
 
 export interface IStatusComments {
     [status: number]: string[];
@@ -30,37 +46,12 @@ export interface ITableDataOutput {
     changed: IChangedDataGridField;
 }
 
-enum ToolTipType {
-    WARNING = 1,
-    ERROR = 2,
-    AUTOCORRECTION = 4
-}
-
-enum ToolTipClassName {
-    WARNING = 'warn',
-    ERROR = 'error',
-    AUTOCORRECTION = 'corrected'
-}
-
-// TODO Is this still needed?
-enum ToolTipColour {
-    YELLOW = 'rgb(255, 250, 205)', // FFFACD
-    RED = 'rgb(254, 0, 0)', // FFC1C1
-    BLUE = 'rgb(3, 78, 162)' // F0F8FF
-}
-
 enum HotChangeIndex {
     INDEX = 0,
     COL_ID = 1,
     ORIGINAL_VALUE = 2,
     NEW_VALUE = 3
 
-}
-interface IToolTipConfig {
-    theme: string;
-    alignmemt: 'bottom' | 'top' | 'left';
-    colour: ToolTipColour;
-    className: ToolTipClassName;
 }
 
 interface IChangedDataGridField {
@@ -95,25 +86,6 @@ enum HotSource {
     EDIT = 'edit'
 }
 
-class ToolTip implements IToolTipConfig {
-
-    constructor(public theme: string,
-        public alignmemt: 'bottom' | 'top' | 'left',
-        public colour: ToolTipColour,
-        public className: ToolTipClassName) { }
-
-    static constructToolTipText(commentList: string[]): string {
-        let tooltipText = '<ul>';
-        for (const comment of commentList) {
-            tooltipText += '<li>';
-            tooltipText += comment;
-            tooltipText += '</li>';
-        }
-        tooltipText += '</ul>';
-        return tooltipText;
-    }
-}
-
 @Component({
     selector: 'mibi-data-grid',
     templateUrl: './data-grid.component.html'
@@ -142,18 +114,18 @@ export class DataGridComponent implements OnInit {
     }
 
     localData: SampleData[];
-    private ToolTipConfigs: { [key: number]: IToolTipConfig } = {};
+    private ToolTips: { [key: number]: IToolTip } = {};
     private _errorData: IErrRow;
     private _changedData: ChangedValueCollection;
 
     constructor() { }
 
     ngOnInit(): void {
-        this.ToolTipConfigs[ToolTipType.WARNING]
-            = new ToolTip('tooltipster-warning', 'bottom', ToolTipColour.YELLOW, ToolTipClassName.WARNING);
-        this.ToolTipConfigs[ToolTipType.ERROR] = new ToolTip('tooltipster-error', 'top', ToolTipColour.RED, ToolTipClassName.ERROR);
-        this.ToolTipConfigs[ToolTipType.AUTOCORRECTION]
-            = new ToolTip('tooltipster-info', 'left', ToolTipColour.BLUE, ToolTipClassName.AUTOCORRECTION);
+        this.ToolTips[ToolTipType.WARNING]
+            = createToolTip(ToolTipTheme.WARNING, 'bottom');
+        this.ToolTips[ToolTipType.ERROR] = createToolTip(ToolTipTheme.ERROR, 'top');
+        this.ToolTips[ToolTipType.INFO]
+            = createToolTip(ToolTipTheme.INFO, 'left');
         this.changeSettings();
     }
 
@@ -198,7 +170,7 @@ export class DataGridComponent implements OnInit {
             if (this._errorData && this._errorData[cellRow] && this._errorData[cellRow][cellCol]) {
                 for (const s of Object.keys(this._errorData[cellRow][cellCol])) {
                     const status = parseInt(s, 10);
-                    cellProperties.tooltipOptionList.push(this.constructToolTipOption(this._errorData[cellRow][cellCol][status], status));
+                    cellProperties.tooltipOptionList.push(this.ToolTips[status].getOptions(this._errorData[cellRow][cellCol][status]));
                 }
             }
 
@@ -241,8 +213,8 @@ export class DataGridComponent implements OnInit {
         if (cp.tooltipOptionList.length) {
             for (const s of Object.keys(errObj)) {
                 const status = parseInt(s, 10);
-                td.classList.add('tooltipster-text');
-                td.classList.add(this.ToolTipConfigs[status].className);
+                td.classList.add(TOOLTIP_CLASS_HOOK);
+                td.classList.add(this.getFieldBackground(status));
             }
             // add multiple property to the tooltip options => set multiple: true except in first option
             if (cp.tooltipOptionList.length > 1) {
@@ -263,20 +235,20 @@ export class DataGridComponent implements OnInit {
         Handsontable.renderers.TextRenderer(instance, td, row, col, prop, value, cp);
     }
 
-    private constructToolTipOption(commentList: string[], status: number) {
-        const theme: string = this.ToolTipConfigs[status].theme;
-        const side: string = this.ToolTipConfigs[status].alignmemt;
-        return {
-            repositionOnScroll: true,
-            animation: 'grow', // fade
-            delay: 0,
-            theme: theme,
-            touchDevices: false,
-            trigger: 'hover',
-            contentAsHTML: true,
-            content: ToolTip.constructToolTipText(commentList),
-            side: side
-        };
+    private getFieldBackground(status: number): string {
+        let fieldClassName = '';
+        switch (status) {
+            case 1:
+                fieldClassName = AlteredField.ERROR;
+                break;
+            case 2:
+                fieldClassName = AlteredField.WARNING;
+                break;
+            case 4:
+                fieldClassName = AlteredField.AUTOCORRECTED;
+                break;
+            default:
+        }
+        return fieldClassName;
     }
-
 }

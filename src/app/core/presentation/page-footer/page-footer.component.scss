@@ -21,7 +21,15 @@ hr {
     z-index: 1030;
     height: 5rem;
     display: flex;
-    justify-content: space-between;
+  }
+
+  .main-footer__nav {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .main-footer__last-change {
+    margin-right: 20%;
   }
 
 .main-footer__links {

@@ -24,4 +24,5 @@ export interface IAdminActivateResponseDTO extends IActivationResponseDTO {
 
 export interface ISystemInformationResponseDTO {
     version: string;
+    lastChange: string;
 }
