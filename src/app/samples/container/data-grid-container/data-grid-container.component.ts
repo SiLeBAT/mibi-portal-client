@@ -1,12 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import * as _ from 'lodash';
-import { ValidationService } from '../../services/validation.service';
 import { ITableDataOutput, IErrRow, IErrCol, IStatusComments, IColConfig } from '../../presentation/data-grid/data-grid.component';
 import {
     IValidationErrorCollection,
     IAutoCorrectionEntry, IAnnotatedSampleData, SampleData, ChangedValueCollection
 } from '../../model/sample-management.model';
-import { map, takeWhile } from 'rxjs/operators';
+import { map, takeWhile, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { CanReloadComponent } from '../../../shared/container/can-reload.component';
 import { Store, select } from '@ngrx/store';
@@ -35,6 +34,7 @@ export class DataGridContainerComponent extends CanReloadComponent implements On
     changedData$: Observable<ChangedValueCollection[]>;
     errors$: Observable<IErrRow>;
     data$: Observable<SampleData[]>;
+    private reload: boolean = true;
     private currentUser: IUser | null;
     private componentActive: boolean = true;
     // TODO: HTML tags in Text?  Formatting shoule be handled by CSS.
@@ -118,7 +118,6 @@ export class DataGridContainerComponent extends CanReloadComponent implements On
     ];
 
     constructor(
-        private validationService: ValidationService,
         private confirmationService: ConfirmationService,
         private store: Store<fromSamples.IState>) {
         super();
@@ -127,7 +126,15 @@ export class DataGridContainerComponent extends CanReloadComponent implements On
     ngOnInit(): void {
         this.changedData$ = this.getChangedData();
         this.errors$ = this.getErrors();
-        this.data$ = this.getData();
+        this.data$ = this.getData().pipe(
+            tap(data => {
+                if (data) {
+                    this.reload = false;
+                } else {
+                    this.reload = true;
+                }
+            })
+        );
         this.store.pipe(select(fromUser.getCurrentUser),
             takeWhile(() => this.componentActive))
             .subscribe(
@@ -165,7 +172,7 @@ export class DataGridContainerComponent extends CanReloadComponent implements On
 
     // TODO: IS this needed?
     canReload() {
-        return !this.validationService.isValidating;
+        return this.reload;
     }
 
     getColTitles() {
