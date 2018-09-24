@@ -1,4 +1,5 @@
 import { Component, Input, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import * as moment from 'moment';
 import { IToolTip, createToolTip, ToolTipTheme, TOOLTIP_CLASS_HOOK } from '../../model/tooltip.model';
 
 @Component({
@@ -7,7 +8,7 @@ import { IToolTip, createToolTip, ToolTipTheme, TOOLTIP_CLASS_HOOK } from '../..
     styleUrls: ['./last-change-display.component.scss']
 })
 export class LastChangeDisplayComponent implements AfterViewInit {
-    @Input() lastChange: string;
+    @Input() lastChange: moment.Moment;
     @Input() serverVersion: string;
     @Input() clientVersion: string;
     @ViewChild('entry', { read: ElementRef }) entry: ElementRef;

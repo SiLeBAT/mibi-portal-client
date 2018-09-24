@@ -25,6 +25,7 @@ export class LastChangeDisplayContainerComponent implements OnInit {
     constructor(private dataService: DataService) { }
 
     ngOnInit(): void {
+        this.clientLastChange = moment(environment.lastChange, this.dateParseString);
         this.dataService.getSystemInfo().toPromise().then(
             (sysInfo: ISystemInformationResponseDTO) => {
                 this.serverLastChange = moment(sysInfo.lastChange, this.dateParseString);
@@ -40,6 +41,5 @@ export class LastChangeDisplayContainerComponent implements OnInit {
             }
         );
         this.clientVersion = environment.version;
-        this.clientLastChange = moment(environment.lastChange, this.dateParseString) || '';
     }
 }

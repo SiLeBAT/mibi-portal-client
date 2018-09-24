@@ -239,10 +239,10 @@ export class DataGridComponent implements OnInit {
         let fieldClassName = '';
         switch (status) {
             case 1:
-                fieldClassName = AlteredField.ERROR;
+                fieldClassName = AlteredField.WARNING;
                 break;
             case 2:
-                fieldClassName = AlteredField.WARNING;
+                fieldClassName = AlteredField.ERROR;
                 break;
             case 4:
                 fieldClassName = AlteredField.AUTOCORRECTED;
