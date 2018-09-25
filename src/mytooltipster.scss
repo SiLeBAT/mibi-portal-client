@@ -1,5 +1,10 @@
 @import 'assets/sass/abstracts';
 
+$tooltip-tip-color:  $surface-color;
+$tooltip-error-color:  $error-color;
+$tooltip-warning-color:  $secondary-color;
+$tooltip-info-color:  $primary-color;
+
 table thead th {
   word-wrap: break-all;
 }
@@ -16,19 +21,19 @@ ul  {
  .tooltipster-sidetip {
     &.tooltipster-tip{
         &.tooltipster-bottom .tooltipster-arrow-background {
-            border-bottom-color: $surface-color;
+            border-bottom-color: $tooltip-tip-color;
         }
         &.tooltipster-left .tooltipster-arrow-background {
-            border-left-color: $surface-color;
+            border-left-color: $tooltip-tip-color;
         }
         &.tooltipster-top .tooltipster-arrow-background {
-            border-top-color: $surface-color;
+            border-top-color: $tooltip-tip-color;
         }
         &.tooltipster-right .tooltipster-arrow-background {
-            border-right-color: $surface-color;
+            border-right-color: $tooltip-tip-color;
         } 
         .tooltipster-box {
-            background: $surface-color;
+            background: $tooltip-tip-color;
         }
         .tooltipster-content {
             color: $on-surface-color;
@@ -36,19 +41,19 @@ ul  {
     }
     &.tooltipster-info{
         &.tooltipster-bottom .tooltipster-arrow-background {
-            border-bottom-color: $primary-color;
+            border-bottom-color: $tooltip-info-color;
         }
         &.tooltipster-left .tooltipster-arrow-background {
-            border-left-color: $primary-color;
+            border-left-color: $tooltip-info-color;
         }
         &.tooltipster-top .tooltipster-arrow-background {
-            border-top-color: $primary-color;
+            border-top-color: $tooltip-info-color;
         }
         &.tooltipster-right .tooltipster-arrow-background {
-            border-right-color: $primary-color;
+            border-right-color: $tooltip-info-color;
         } 
         .tooltipster-box {
-            background: $primary-color;
+            background: $tooltip-info-color;
         }
         .tooltipster-content {
             color: $on-primary-color;
@@ -56,19 +61,19 @@ ul  {
     }
     &.tooltipster-warning {
         &.tooltipster-bottom .tooltipster-arrow-background {
-            border-bottom-color: $secondary-color;
+            border-bottom-color: $tooltip-warning-color;
         }
         &.tooltipster-left .tooltipster-arrow-background {
-            border-left-color: $secondary-color;
+            border-left-color: $tooltip-warning-color;
         }
         &.tooltipster-top .tooltipster-arrow-background {
-            border-top-color: $secondary-color;
+            border-top-color: $tooltip-warning-color;
         }
         &.tooltipster-right .tooltipster-arrow-background {
-            border-right-color: $secondary-color;
+            border-right-color: $tooltip-warning-color;
         }
         .tooltipster-box {
-            background: $secondary-color;
+            background: $tooltip-warning-color;
         }
         .tooltipster-content {
             color: $on-secondary-color;
@@ -76,19 +81,19 @@ ul  {
     }
     &.tooltipster-error {
         &.tooltipster-bottom .tooltipster-arrow-background {
-            border-bottom-color: $error-color;
+            border-bottom-color: $tooltip-error-color;
         }
         &.tooltipster-left .tooltipster-arrow-background {
-            border-left-color: $error-color;
+            border-left-color: $tooltip-error-color;
         }
         &.tooltipster-top .tooltipster-arrow-background {
-            border-top-color: $error-color;
+            border-top-color: $tooltip-error-color;
         }
         &.tooltipster-right .tooltipster-arrow-background {
-            border-right-color: $error-color;
+            border-right-color: $tooltip-error-color;
         }
         .tooltipster-box {
-            background: $error-color;
+            background: $tooltip-error-color;
         }
         .tooltipster-content {
             color: $on-error-color;
