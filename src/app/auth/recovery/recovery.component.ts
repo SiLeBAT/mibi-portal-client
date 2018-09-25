@@ -39,13 +39,12 @@ export class RecoveryComponent implements OnInit {
 
         this.userService.recoveryPassword(email)
           .subscribe((data) => {
-            console.log('recovery data: ', data);
             const message = data['title'];
             this.alertService.success(message, true);
             this.router.navigate(['users/login']);
           }, (err: HttpErrorResponse) => {
             const errObj = JSON.parse(err.error);
-            this.alertService.error(errObj.title, true);
+            this.alertService.error(errObj.title, false);
             this.loading = false;
           });
 

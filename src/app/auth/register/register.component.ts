@@ -1,13 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 
-import { UserService } from './../services/user.service';
-import { AlertService } from './../services/alert.service';
+import { UserService } from '../services/user.service';
+import { AlertService } from '../services/alert.service';
 import { User } from '../../models/user.model';
 import { Institution } from '../../models/institution.model';
 
+export interface IHash {
+  [details: string]: string;
+}
 
 @Component({
   selector: 'app-register',
@@ -18,14 +21,19 @@ export class RegisterComponent implements OnInit {
   public registerForm: FormGroup;
   loading = false;
   institutions: Institution[] = [];
+  instituteHash: IHash = {};
+  selected: string = '';
+  private pwStrength: number;
 
   constructor(
     private userService: UserService,
     private alertService: AlertService,
-    private router: Router) { }
+    private router: Router,
+    private changeRef: ChangeDetectorRef) {
+      this.pwStrength = -1;
+    }
 
   ngOnInit() {
-    console.log('RegisterComponent ngOnInit() called');
     this.loadInstitutions();
     this.registerForm = new FormGroup({
       institution: new FormControl(null, Validators.required),
@@ -35,7 +43,7 @@ export class RegisterComponent implements OnInit {
         Validators.required,
         Validators.email
       ]),
-      password1: new FormControl(null, Validators.required),
+      password1: new FormControl(null, [Validators.required, Validators.minLength(8)]),
       password2: new FormControl(null),
     }, this.passwordConfirmationValidator);
   }
@@ -54,8 +62,8 @@ export class RegisterComponent implements OnInit {
       .subscribe((data) => {
         for (const entry of data as Array<any>) {
           const institution = new Institution(entry);
-          // console.log('institution: ', institution);
           this.institutions.push(institution);
+          this.instituteHash[institution.toString()] = institution._id;
         }
       }, (err: HttpErrorResponse) => {
         try {
@@ -68,35 +76,37 @@ export class RegisterComponent implements OnInit {
 
   register() {
     if (this.registerForm.valid) {
-      this.loading = true;
-
-      console.log('this.registerForm.value.institution: ', this.registerForm.value.institution);
-
       const user = new User(
         this.registerForm.value.email,
         this.registerForm.value.password1,
         this.registerForm.value.firstName,
         this.registerForm.value.lastName,
       );
-      user.institution = this.registerForm.value.institution;
+
+      const instituteName = this.registerForm.value.institution;
+      user.institution = this.instituteHash[instituteName];
+      if (! user.institution) {
+        user.institution = instituteName;
+      }
 
       this.userService.create(user)
         .subscribe((data) => {
           this.alertService.success(data['title'], true);
           this.router.navigate(['users/login']);
         }, (err: HttpErrorResponse) => {
-          const errObj = JSON.parse(err.error);
-          this.alertService.error(errObj.title, true);
-          this.loading = false;
+          this.alertService.error(err.error.title, false);
         });
 
-      this.registerForm.reset();
     }
   }
 
   validateField(fieldName: string) {
     return this.registerForm.controls[fieldName].valid
       || this.registerForm.controls[fieldName].untouched
+  }
+
+  validatePwStrength() {
+    return (this.pwStrength >= 0 && this.pwStrength < 2);
   }
 
   private passwordConfirmationValidator(fg: FormGroup) {
@@ -110,5 +120,10 @@ export class RegisterComponent implements OnInit {
       pw2.setErrors(null);
     }
     return null;
+  }
+
+  doStrengthChange(pwStrength: number) {
+    this.pwStrength = pwStrength;
+    this.changeRef.detectChanges();
   }
 }

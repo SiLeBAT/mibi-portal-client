@@ -1,8 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
+@import 'handsontable/dist/handsontable.full.css';
+
+
 hr {
   height: 1px;
-  background-color:#5d8eb6;
-  margin-top: 30px;
-  margin-bottom: 30px;
+  background-color:rgb(3, 78, 168);
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 
+.primary {
+  background: rgb(3, 78, 168) !important;
+}

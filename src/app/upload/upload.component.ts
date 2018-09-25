@@ -1,13 +1,98 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpErrorResponse, HttpEventType } from '@angular/common/http';
 import { HttpClient, HttpRequest, HttpResponse, HttpEvent } from '@angular/common/http';
-// import { ngfModule } from 'angular-file';
-import { Subscription } from 'rxjs/Subscription';
-
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { concat } from 'rxjs/operators';
 
 import { UploadService } from '../services/upload.service';
-import { concat } from 'rxjs/operators/concat';
 import { AlertService } from '../auth/services/alert.service';
+import { ExcelToJsonService, ISampleCollectionDTO, ISampleDTO, IExcelData } from '../services/excel-to-json.service';
+import { JsonToExcelService } from '../services/json-to-excel.service';
+import { ValidateService } from '../services/validate.service';
+
+import { KnimeToTable, ITableStructureProvider, JsToTable } from '../services/json-to-table';
+
+import { LoadingSpinnerService } from '../services/loading-spinner.service';
+
+
+
+interface IKnimeError {
+  Status: number;
+  Zeile: number;
+  Spalte: string;
+  'Fehler-Nr': number | null;
+  Kommentar: string
+}
+
+export interface IKnimeColHeaders extends Array<string> {
+  'Ihre_Probenummer': string;
+  'Probenummer_nach_AVVData': string;
+  'Erreger_Vorbefund_Text_aus_ADV-Kat-Nr16': string;
+  'Vorbefund_Textfeld_Ergaenzung': string;
+  'Datum_der_Probenahme': string;
+  'Datum_der_Isolierung': string;
+  'Ort_der_Probenahme_ADV-Kat-Nr9': string;
+  'Ort_der_Probenahme_PLZ': string;
+  'Ort_der_Probe-nahme_Text': string;
+  'Oberbegriff_Kodiersystem_der_Matrizes_ADV-Kat-Nr2': string;
+  'Matrix_Code_ADV-Kat-Nr3': string;
+  'Matrix_Textfeld_Ergaenzung': string;
+  'Verarbeitungszustand_ADV-Kat-Nr12': string;
+  'Grund_der_Probenahme_ADV-Kat-Nr4': string;
+  'Grund_der_Probenahme_Textfeld': string;
+  'Betriebsart_ADV-Kat-Nr8': string;
+  'Betriebsart_Textfeld': string;
+  'Bemerkung_Untersuchungsprogramm': string;
+}
+
+export interface IKnimeData {
+  'Ihre_Probenummer': string | null;
+  'Probenummer_nach_AVVData': string | null;
+  'Erreger_Vorbefund_Text_aus_ADV-Kat-Nr16': string | null;
+  'Vorbefund_Textfeld_Ergaenzung': string | null;
+  'Datum_der_Probenahme': string | null;
+  'Datum_der_Isolierung': string | null;
+  'Ort_der_Probenahme_ADV-Kat-Nr9': string | null;
+  'Ort_der_Probenahme_PLZ': string | null;
+  'Ort_der_Probe-nahme_Text': string | null;
+  'Oberbegriff_Kodiersystem_der_Matrizes_ADV-Kat-Nr2': string | null;
+  'Matrix_Code_ADV-Kat-Nr3': string | null;
+  'Matrix_Textfeld_Ergaenzung': string | null;
+  'Verarbeitungszustand_ADV-Kat-Nr12': string | null;
+  'Grund_der_Probenahme_ADV-Kat-Nr4': string | null;
+  'Grund_der_Probenahme_Textfeld': string | null;
+  'Betriebsart_ADV-Kat-Nr8': string | null;
+  'Betriebsart_Textfeld': string | null;
+  'Bemerkung_Untersuchungsprogramm': string | null;
+}
+
+export interface IKnimeOrigdata {
+  colHeaders: Array<string>;
+  data: IKnimeData[];
+}
+
+export interface IKnimeResponseDTO {
+  errordata: IKnimeError[];
+  origdata: IKnimeOrigdata;
+}
+
+interface IErrorDTO {
+  code: number;
+  level: number;
+  message: string;
+}
+
+interface IErrorResponseDTO {
+  [key: string]: IErrorDTO[];
+}
+
+export interface IJsResponseDTO {
+  data: ISampleDTO;
+  errors: IErrorResponseDTO;
+}
+
+
 
 @Component({
   selector: 'app-upload',
@@ -23,50 +108,93 @@ export class UploadComponent implements OnInit {
   files: File[] = [];
   file: File;
   dropDisabled = false;
+  private onUploadSpinner = 'uploadSpinner';
+  private _lastInvalids = [];
+  maxFileSize = 2097152;
 
   constructor(private uploadService: UploadService,
-              private alertService: AlertService) {}
+    private excelToJsonService: ExcelToJsonService,
+    private jsonToExcelService: JsonToExcelService,
+    private validateService: ValidateService,
+    private alertService: AlertService,
+    private router: Router,
+    private spinnerService: LoadingSpinnerService) {}
 
-  uploadFiles(files: File[]) {
-    console.log('uploadFiles clicked!');
-    console.log('files: ', this.files);
-    console.log('sendableFormData: ', this.sendableFormData);
+  // Kinme validation:
 
-    this.uploadService.uploadFile(this.sendableFormData)
-      .subscribe((event: HttpEvent<Event>) => {
-        console.log('upload file, event: ', event);
-        console.log('upload file, this.file: ', this.file);
-        if (event.type === HttpEventType.UploadProgress) {
-          this.progress = Math.round(100 * event.loaded / event.total);
-          console.log(`file is ${this.progress}% uploaded.`);
-        } else if (event instanceof HttpResponse) {
-          this.files = [];
-          const message = event['body']['title'];
-          this.alertService.success(message, true);
-        }
-      }, (err: HttpErrorResponse) => {
-        console.log('error upload file, err: ', err);
-        const errMessage = err['error']['title'];
-        this.alertService.error(errMessage, true);
-        this.files = [];
-      });
+  // uploadFileAndValidate(files: File[]) {
+  //   this.uploadService.uploadFile(this.sendableFormData)
+  //     .subscribe((event: HttpEvent<Event>) => {
+  //       if (event.type === HttpEventType.UploadProgress) {
+  //         this.progress = Math.round(100 * event.loaded / event.total);
+  //       } else if (event instanceof HttpResponse) {
+  //         this.files = [];
+  //         const message = event['body']['title'];
+  //         this.alertService.success(message, true);
+  //         let responseDTO: IKnimeResponseDTO = this.fromKnimeToResponseDTO(event);
+  //         this.setCurrentKnimeResponseDTO(responseDTO);
+  //         this.router.navigate(['/validate']);
+  //       }
+  //     }, (err: HttpErrorResponse) => {
+  //       console.log('error upload file, err: ', err);
+  //       const errMessage = err['error']['title'];
+  //       this.alertService.error(errMessage, true);
+  //       this.files = [];
+  //     });
+  // }
 
-      this.file = undefined;
-      console.log('upload file, at the end this.file: ', this.file);
+  get lastInvalids(): any[] {
+    return this._lastInvalids;
   }
 
-  fileOverDropZone(event) {
-    console.log('fileOverDropZone, this.files: ', this.files);
-    console.log('fileOverDropZone, this.file: ', this.file);
+  set lastInvalids(val: any[]) {
+    this._lastInvalids = val;
+    if (val && val[0]) {
+      switch (val[0].type) {
+        case 'fileSize':
+          this.alertService.error('Zu grosse Datei: Dateien müssen kleiner als 2 Mb sein.', false);
+          break;
+        case 'accept':
+          this.alertService.error('Falscher Dateityp: Dateien müssen vom Typ .xlsx sein.', true);
+          break;
+        default:
+          this.alertService.error('Die Datei konnte nicht hochgeladen werden.', false);
+      }
 
-    this.progress = 0;
-    if (this.files.length > 0) {
-      this.files.shift();
+    }
+    else{
+      this.alertService.clear();
     }
   }
 
-  initDropZone() {
-    console.log('initDropZone processed!');
+  async readFileAndValidate() {
+  const excelData: IExcelData = await this.excelToJsonService.convertExcelToJSJson(this.file);
+  this.jsonToExcelService.setCurrentExcelData(excelData);
+  const data: ISampleCollectionDTO = excelData.data;
+
+    if (data) {
+      this.spinnerService.show(this.onUploadSpinner);
+      this.validateService.validateJs(data)
+        .subscribe((data: IJsResponseDTO[]) => {
+          this.spinnerService.hide(this.onUploadSpinner);
+          this.setCurrentJsResponseDTO(data);
+          this.router.navigate(['/validate']);
+        }, (err: HttpErrorResponse) => {
+          const errMessage = err['error']['title'];
+          this.alertService.error(errMessage, true);
+          this.files = [];
+          this.spinnerService.hide(this.onUploadSpinner);
+        });
+
+    }
+  }
+
+  isUploadSpinnerShowing() {
+    return this.spinnerService.isShowing(this.onUploadSpinner);
+  }
+
+  invokeValidation() {
+    this.readFileAndValidate();
   }
 
   trashFile() {
@@ -74,61 +202,37 @@ export class UploadComponent implements OnInit {
     this.files = [];
   }
 
-  // cancel() {
-  //   this.progress = 0;
-  //   if ( this.httpEmitter ) {
-  //     console.log('cancelled');
-  //     this.httpEmitter.unsubscribe();
-  //   }
-  // }
+  ngOnInit() {}
 
-
-
-
-
-  init() {
-    console.log('init done!');
+  setCurrentKnimeResponseDTO(responseDTO: IKnimeResponseDTO) {
+    let knimeToTable: ITableStructureProvider = new KnimeToTable(responseDTO);
+    this.uploadService.setCurrentTableStructureProvider(knimeToTable);
   }
 
-  ngOnInit() {
-    console.log('ngOnInit done!');
+  setCurrentJsResponseDTO(responseDTO: IJsResponseDTO[]) {
+    let jsToTable: ITableStructureProvider = new JsToTable(responseDTO);
+    this.uploadService.setCurrentTableStructureProvider(jsToTable);
   }
 
+  fromKnimeToResponseDTO(dto: HttpEvent<Event>): IKnimeResponseDTO {
+    let responseData = JSON.parse(dto['body']['obj']);
+    let errors = responseData['outputValues']['json-output-4']['errors'];
+    let origdata = responseData['outputValues']['json-output-4']['origdata'];
+    let colHeaders: IKnimeColHeaders = origdata['colHeaders'];
+    let knimeData: IKnimeData[] = origdata['data'];
+    let knimeOrigdata: IKnimeOrigdata = {
+      colHeaders: colHeaders,
+      data: knimeData
+    };
+    let errordata: IKnimeError[] = errors['data'];
 
+    let knimeResponseDTO: IKnimeResponseDTO = {
+      errordata: errordata,
+      origdata: knimeOrigdata
+    };
 
-
-// ng2-file-uploader stuff
-
-  // onUpload() {
-
-  //   console.log('Upload Sample File clicked');
-
-  //   this.uploadService.upload()
-  //     .subscribe((data) => {
-
-  //       console.log('knime response data: ', data);
-
-  //       const responseData = data['obj'];
-  //     }, (err: HttpErrorResponse) => {
-  //       console.log('knime response err: ', err);
-  //     });
-
-  // }
-
-  // uploadAll() {
-  //   console.log('before loading, uploader: ', this.uploader);
-  //   this.uploader.uploadAll();
-  //   console.log('after loading, uploader: ', this.uploader);
-  // }
-
-  // // const URL = 'api/v1/knime';
-
-
-  // public fileOverBase(e:any):void {
-  //   this.hasBaseDropZoneOver = e;
-  // }
-
-  // public fileOverAnother(e:any):void {
-  //   this.hasAnotherDropZoneOver = e;
-  // }
+    return knimeResponseDTO;
+  }
 }
+
+

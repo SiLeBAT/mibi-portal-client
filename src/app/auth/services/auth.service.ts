@@ -1,18 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import 'rxjs/Rx';
-import { Observable } from 'rxjs/Observable';
-import { tokenNotExpired } from 'angular2-jwt';
+import { Router, ActivatedRoute } from '@angular/router';
+// import { Observable } from 'rxjs';
+// import { tokenNotExpired } from 'angular2-jwt';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
-import { User } from './../../models/user.model';
+import { User } from '../../models/user.model';
 
 @Injectable()
 export class AuthService {
   currentUser;
 
   constructor(private httpClient: HttpClient,
-              private router: Router) { }
+              private router: Router,
+            private activatedRoute: ActivatedRoute) { }
 
   login(user: User) {
       return this.httpClient
@@ -20,15 +21,20 @@ export class AuthService {
   }
 
   logout() {
-    // remove user from local storage to log user out
-    localStorage.removeItem('currentUser');
-    // this.router.navigate(['/users/login']);
+    const url = '/users/login';
+    this.router.navigate([url]);
+    if (this.router.routerState.snapshot.url === url) {
+      localStorage.removeItem('currentUser');
+    }
   }
 
   loggedIn() {
     if (localStorage.getItem('currentUser')) {
       const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      return tokenNotExpired(null, currentUser.token);
+      const helper = new JwtHelperService();
+      const isExpired = helper.isTokenExpired(currentUser.token);
+
+      return !isExpired;
     }
 
     return false;

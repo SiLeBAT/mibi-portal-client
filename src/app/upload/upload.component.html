@@ -16,28 +16,33 @@
 
   <div class="row top-bottom-margin">
     <div class="col-md-10 col-md-offset-1">
-      <h2>File Upload</h2>
+      <h2>Probeneinsendebogen validieren</h2>
       <hr>
     </div>
   </div>
-
   <div class="row top-bottom-margin">
+      <app-spinner-container name="uploadSpinner">
+          <app-generic-spinner></app-generic-spinner>
+        </app-spinner-container>
     <div class="col-md-10 col-md-offset-1">
-      <div class="uploader"
+      <div *ngIf="!isUploadSpinnerShowing()" class="uploader"
         ngfDrop
-        [selectable]    = "1"
-        (fileOver)      = "fileOverDropZone()"
-        [ngClass]       = "{'another-file-over-class': validComboDrag}"
-        [(files)]       = "files"
-        [(file)]        = "file"
-        (init)          = "init()"
-        [fileDropDisabled] = "dropDisabled" >
+        [selectable]       = "1"
+        [maxSize]          = "maxFileSize"
+        accept             = ".xlsx"
+        [ngClass]          = "{'another-file-over-class': validComboDrag}"
+        [(files)]          = "files"
+        [(file)]           = "file"
+        [fileDropDisabled] = "dropDisabled"
+        (fileChange)       = "invokeValidation($event)"
+        [(lastInvalids)] = "lastInvalids" >
         <label for="file-upload" id="file-drag">
           <img id="file-image" src="#" alt="Preview" class="hidden">
           <div id="start">
-            <i class="glyphicon glyphicon-download-alt" aria-hidden="true"></i>
-            <div>Select a file or drag here</div>
-            <span class="btn btn-primary">Select a file</span>
+            <i class="glyphicon glyphicon-download-alt download-icon" aria-hidden="true"></i>
+            <div class="select-text">Per Drag&Drop in dieses Feld ziehen</div>
+            <div class="select-text">oder</div>
+            <span class="btn btn-primary select-button">Datei wählen</span>
           </div>
           <div id="response" class="hidden">
             <div id="messages"></div>
@@ -47,97 +52,6 @@
           </div>
         </label>
       </div>
-    </div>
-  </div>
-
-  <div class="row top-bottom-margin">
-    <div class="col-md-10 col-md-offset-1">
-      <h3>{{ files.length }} Selected Files</h3>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Type</th>
-            <th>Size</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- <tr *ngFor="let item of files; let i=index"> -->
-          <tr *ngIf="files.length > 0">
-          <!-- <tr *ngIf="file"> -->
-            <td>
-              <div *ngIf="['image/gif','image/png','image/jpeg'].indexOf(files[0].type) >= 0">
-                <div class="previewIcon" [ngfBackground]="files[0]"></div>
-              </div>
-              <strong>{{ files[0].name }}</strong>
-            </td>
-            <td nowrap>
-              {{ files[0].type }}
-            </td>
-            <td nowrap>
-              {{ files[0].size/1024/1024 | number:'.2' }} MB
-            </td>
-            <td nowrap>
-              <button type="button"
-                class="btn btn-danger btn-xs"
-                (click)="trashFile()">
-                <span class="glyphicon glyphicon-trash"></span>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-
-  <div class="row top-bottom-margin">
-    <div class="col-md-10 col-md-offset-1">
-      Queue progress:
-      <div class="progress" style="">
-        <div class="progress-bar"
-          role="progressbar"
-          [ngStyle]="{ 'width': progress + '%' }"
-        ></div>
-      </div>
-      <div *ngIf="progress">
-        Upload Progress: {{ progress }}%
-      </div>
-    </div>
-  </div>
-
-
-  <div class="row top-bottom-margin">
-    <div class="col-md-10 col-md-offset-1">
-
-      <button
-        type="button"
-        class="btn btn-success btn-s"
-        (click)="uploadFiles(files)"
-        [disabled]="!files.length">
-        <span class="glyphicon glyphicon-upload"></span>
-        Upload all
-      </button>
-
-      <!-- <button
-        type="button"
-        class="btn btn-warning btn-s"
-        (click)="cancel()"
-        [disabled]="!httpEmitter">
-        <span class="glyphicon glyphicon-ban-circle"></span>
-        Cancel all
-      </button> -->
-
-      <button
-        type="button"
-        class="btn btn-danger btn-s"
-        (click)="trashFile()"
-        [disabled]="!files.length">
-        <span class="glyphicon glyphicon-trash"></span>
-        Remove all
-      </button>
-
     </div>
   </div>
 

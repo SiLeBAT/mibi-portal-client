@@ -2,6 +2,7 @@
 
 # compiled output
 /dist
+/public
 /tmp
 /out-tsc
 
@@ -18,7 +19,7 @@
 *.sublime-workspace
 
 # IDE - VSCode
-.vscode/*
+.vscode
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
@@ -44,3 +45,5 @@ Thumbs.db
 # app
 /server/config/config.json
 /playground
+/uploads
+server-patch.patch

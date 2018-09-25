@@ -1,5 +1,6 @@
 <div
   *ngIf="message"
+  class="alert"
   [ngClass]="{
     'alert': message,
     'alert-success': message.type === 'success',

@@ -1,10 +1,15 @@
-h1 {
-  color: #337ab7;
-  text-shadow: 4px 4px 5px #7599b6;
-  text-align: center;
-  margin-bottom: 10%;
+.portal {
+  color: rgb(3, 78, 168);
 }
 
-.jumbotron {
-  box-shadow: 5px 5px 5px rgb(218, 218, 218);
+.logo {
+  width: 14rem;
+}
+
+.welcome-text {
+  margin-top: 5rem;
+}
+
+.welcome-p {
+  font-size: medium;
 }

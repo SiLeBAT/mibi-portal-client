@@ -1,42 +1,49 @@
 <div class="jumbotron">
   <div class="container-fluid">
     <div class="col-md-6 col-md-offset-3">
-      <h2>Reset Password</h2>
+      <h2>Passwort zurücksetzen</h2>
       <hr>
       <br>
-      <p>Please reset your password</p>
+      <p>Bitte geben Sie ein neues Passwort ein</p>
       <br>
 
       <form
         [formGroup]="resetForm"
         (ngSubmit)="reset()">
-        <div class="form-group">
-          <label for="password1">New Password</label>
+        <div class="form-group" [ngClass]="{'error' :  !validateField('password1') || validatePwStrength()}">
+          <label for="password1">Neues Passwort (mind. 8 Zeichen)</label>
           <input
             type="password"
             id="password1"
             class="form-control"
             formControlName="password1"/>
-          <!-- <div *ngIf="f.submitted && !username.valid" class="help-block">Username is required</div> -->
+          <em *ngIf="validatePwStrength()">Zu schwaches oder zu kurzes Passwort.</em>
+          <em *ngIf="!validateField('password1')">Pflichtfeld.</em>
+        </div>
+        <div class="pw-strength">
+          <password-strength-meter
+            [password]="resetForm.value.password1"
+            (strengthChange)="doStrengthChange($event)">
+          </password-strength-meter>
         </div>
         <div class="form-group">
-          <label for="password2">Confirm Password</label>
+          <label for="password2">Passwort bestätigen</label>
           <input
             type="password"
             id="password2"
             class="form-control"
             formControlName="password2"/>
-          <!-- <div *ngIf="f.submitted && !username.valid" class="help-block">Username is required</div> -->
+            <em *ngIf="!validateField('password2')  && resetForm.controls.password2.errors.validatePasswordConfirm">Passwörter müssen übereinstimmen.</em>
         </div>
-        <div class="form-group">
+        <div class="form-group reset-btn">
           <button
             class="btn btn-primary"
             type="submit"
-            [disabled]="!resetForm.valid">Reset Password</button>
+            [disabled]="!resetForm.valid">Passwort zurücksetzen</button>
           <a
             [routerLink]="['/main']"
             class="btn btn-link">
-              Cancel
+              Zurück
           </a>
         </div>
       </form>

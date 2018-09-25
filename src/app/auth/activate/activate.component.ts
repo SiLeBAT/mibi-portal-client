@@ -5,6 +5,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { UserService } from '../services/user.service';
 import { AlertService } from '../services/alert.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-activate',
@@ -14,6 +15,7 @@ import { AlertService } from '../services/alert.service';
 export class ActivateComponent implements OnInit {
   private activateForm: FormGroup;
   tokenValid: boolean;
+  appName: string = environment.appName;
 
   constructor(private activatedRoute: ActivatedRoute,
               private userService: UserService,
@@ -22,17 +24,15 @@ export class ActivateComponent implements OnInit {
 
   ngOnInit() {
     const token = this.activatedRoute.snapshot.params['id'];
-    console.log('ActivateComponent ngOnInit, token: ', token);
 
     this.userService.activateAccount(token)
       .subscribe((data) => {
-        console.log('activate account data: ', data);
         const message = data['title'];
         this.alertService.success(message, true);
         this.tokenValid = true;
       }, (err: HttpErrorResponse) => {
         const errObj = JSON.parse(err.error);
-        this.alertService.error(errObj.title, true);
+        this.alertService.error(errObj.title, false);
         this.tokenValid = false;
       });
 

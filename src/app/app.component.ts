@@ -1,6 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Router } from "@angular/router";
+
 import { AuthService } from './auth/services/auth.service';
-import { User } from './models/user.model';
+import { environment } from '../environments/environment';
+import { UploadService } from './services/upload.service';
+import { ValidateService } from './services/validate.service';
 
 @Component({
   selector: 'app-root',
@@ -10,11 +14,15 @@ import { User } from './models/user.model';
 export class AppComponent implements OnInit {
   private isActive = false;
   currentUser;
+  appName: string = environment.appName;
+  supportContact: string = environment.supportContact;
 
-  constructor(public authService: AuthService) {}
+  constructor(public authService: AuthService,
+    public uploadService: UploadService,
+    public validateService: ValidateService,
+    private router: Router) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   getCurrentUserEmail() {
     if (this.authService.loggedIn()) {
@@ -34,16 +42,10 @@ export class AppComponent implements OnInit {
     }
   }
 
-  activateSidebar() {
-    this.isActive = true;
-  }
-  deactivateSidebar() {
-    this.isActive = false;
+  onLogin() {
+    this.router.navigate(["/users/login"]);
   }
 
-  isSidebarActive() {
-    return this.isActive;
-  }
 
   getDisplayMode() {
     let displayMode;
@@ -57,7 +59,6 @@ export class AppComponent implements OnInit {
   }
 
   onLogout() {
-    this.deactivateSidebar();
     this.authService.logout();
   }
 
