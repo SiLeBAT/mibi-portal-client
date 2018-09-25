@@ -1,13 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import * as _ from 'lodash';
-import { ITableDataOutput, IErrRow, IErrCol, IStatusComments, IColConfig } from '../../presentation/data-grid/data-grid.component';
 import {
     IValidationErrorCollection,
-    IAutoCorrectionEntry, IAnnotatedSampleData, SampleData, ChangedValueCollection
+    IAutoCorrectionEntry,
+    IAnnotatedSampleData, SampleData, ChangedValueCollection, IErrRow, IColConfig, ITableDataOutput, IErrCol, IStatusComments
 } from '../../model/sample-management.model';
 import { map, takeWhile, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { CanReloadComponent } from '../../../shared/container/can-reload.component';
+import { GuardedUnloadComponent } from '../../../shared/container/guarded-unload.component';
 import { Store, select } from '@ngrx/store';
 import * as fromSamples from '../../state/samples.reducer';
 import * as samplesActions from '../../state/samples.actions';
@@ -25,16 +25,18 @@ import { IUser } from '../../../user/model/models';
         [colTitles] = "getColTitles()"
         [errorData] = "errors$ | async"
         [changedData] = "changedData$ | async"
+        [importedData] = "importedData$ | async"
         [data] = "data$ | async"
         (valueChanged)="onValueChanged($event)">
     </mibi-data-grid>`
 })
-export class DataGridContainerComponent extends CanReloadComponent implements OnInit, OnDestroy {
+export class DataGridContainerComponent extends GuardedUnloadComponent implements OnInit, OnDestroy {
 
     changedData$: Observable<ChangedValueCollection[]>;
     errors$: Observable<IErrRow>;
     data$: Observable<SampleData[]>;
-    private reload: boolean = true;
+    importedData$: Observable<SampleData[]>;
+    private hasData: boolean = true;
     private currentUser: IUser | null;
     private componentActive: boolean = true;
     // TODO: HTML tags in Text?  Formatting shoule be handled by CSS.
@@ -124,14 +126,15 @@ export class DataGridContainerComponent extends CanReloadComponent implements On
     }
 
     ngOnInit(): void {
-        this.changedData$ = this.getChangedData();
-        this.errors$ = this.getErrors();
-        this.data$ = this.getData().pipe(
+        this.changedData$ = this.store.pipe(select(fromSamples.getDataEdits));
+        this.errors$ = this.getFieldAnnotations();
+        this.importedData$ = this.store.pipe(select(fromSamples.getImportedData));
+        this.data$ = this.store.pipe(select(fromSamples.getDataValues)).pipe(
             tap(data => {
                 if (data) {
-                    this.reload = false;
+                    this.hasData = false;
                 } else {
-                    this.reload = true;
+                    this.hasData = true;
                 }
             })
         );
@@ -170,9 +173,8 @@ export class DataGridContainerComponent extends CanReloadComponent implements On
         this.store.dispatch(new samplesActions.ChangeFieldValue(tableData.changed));
     }
 
-    // TODO: IS this needed?
-    canReload() {
-        return this.reload;
+    unloadGuard() {
+        return this.hasData;
     }
 
     getColTitles() {
@@ -180,26 +182,14 @@ export class DataGridContainerComponent extends CanReloadComponent implements On
     }
 
     private getStoreEntries(): Observable<IAnnotatedSampleData[]> {
-        return this.store.pipe(select(fromSamples.getAnnotatedSampleData));
+        return this.store.pipe(select(fromSamples.getFormData));
     }
 
     // TODO: Possibly create a selector?
-    private getErrors() {
+    private getFieldAnnotations() {
         return this.getStoreEntries().pipe(
             map((entry: IAnnotatedSampleData[]) => this.parseErrors(entry.map(e => e.errors), entry.map(e => e.corrections)))
         );
-    }
-
-    // TODO: Possibly create a selector?
-    private getChangedData() {
-        return this.getStoreEntries().pipe(
-            map((entry: IAnnotatedSampleData[]) => entry.map(e => e.edits)));
-    }
-
-    // TODO: Possibly create a selector?
-    private getData() {
-        return this.getStoreEntries().pipe(
-            map((entry: IAnnotatedSampleData[]) => entry.map(e => e.data)));
     }
 
     private parseErrors(errors: IValidationErrorCollection[], corrections: IAutoCorrectionEntry[][]): IErrRow {

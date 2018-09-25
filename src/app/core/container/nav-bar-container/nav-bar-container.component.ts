@@ -43,7 +43,7 @@ export class NavBarContainerComponent implements OnInit, OnDestroy {
         private store: Store<fromSamples.IState>) { }
 
     ngOnInit() {
-        this.store.pipe(select(fromSamples.getData),
+        this.store.pipe(select(fromSamples.getDataValues),
             takeWhile(() => this.componentActive)).subscribe(
                 (data: SampleData[]) => this.sampleData = data
             );

@@ -1,12 +1,12 @@
 import { HostListener } from '@angular/core';
 
-export abstract class CanReloadComponent {
+export abstract class GuardedUnloadComponent {
 
-    abstract canReload(): boolean;
+    abstract unloadGuard(): boolean;
 
     @HostListener('window:beforeunload', ['$event'])
     unloadNotification($event: any) {
-        if (!this.canReload()) {
+        if (!this.unloadGuard()) {
             $event.returnValue = true;
         }
     }

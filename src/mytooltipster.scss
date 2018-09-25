@@ -14,6 +14,26 @@ ul  {
  }
 
  .tooltipster-sidetip {
+    &.tooltipster-tip{
+        &.tooltipster-bottom .tooltipster-arrow-background {
+            border-bottom-color: $surface-color;
+        }
+        &.tooltipster-left .tooltipster-arrow-background {
+            border-left-color: $surface-color;
+        }
+        &.tooltipster-top .tooltipster-arrow-background {
+            border-top-color: $surface-color;
+        }
+        &.tooltipster-right .tooltipster-arrow-background {
+            border-right-color: $surface-color;
+        } 
+        .tooltipster-box {
+            background: $surface-color;
+        }
+        .tooltipster-content {
+            color: $on-surface-color;
+        }
+    }
     &.tooltipster-info{
         &.tooltipster-bottom .tooltipster-arrow-background {
             border-bottom-color: $primary-color;
@@ -142,6 +162,14 @@ ul  {
      margin-left: 4px;
      margin-top: -16px;
      width: 10px;
+ }
+
+ .tooltipster-sidetip.tooltipster-tip.tooltipster-left .tooltipster-arrow,
+ .tooltipster-sidetip.tooltipster-tip.tooltipster-right .tooltipster-arrow {
+     height: 18px;
+     margin-left: 2px;
+     margin-top: -16px;
+     width: 8px;
  }
 
  .tooltipster-box {
