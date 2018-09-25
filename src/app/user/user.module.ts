@@ -31,8 +31,8 @@ import { UserEffects } from './state/user.effects';
 import { EffectsModule } from '@ngrx/effects';
 import { TokenValidationResolver } from './services/token-validation-resolver.service';
 import { AdminTokenValidationResolver } from './services/admin-token-validation-resolver.service';
-import { DatenschutzHinweiseComponent } from './presentation/datenschutz-hinweise/datenschutz-hinweise.component';
-import { DatenSchutzHinweiseViewComponent } from './presentation/datenschutz-hinweise-view/datenschutz-hinweise-view.component';
+import { DatenschutzHinweiseComponent } from './presentation/datenschutzhinweise/datenschutzhinweise.component';
+import { DatenSchutzHinweiseViewComponent } from './presentation/datenschutzhinweise-view/datenschutzhinweise-view.component';
 
 @NgModule({
     imports: [
@@ -51,7 +51,7 @@ import { DatenSchutzHinweiseViewComponent } from './presentation/datenschutz-hin
                 // tslint:disable-next-line:max-line-length
                 { path: 'adminactivate/:id', component: AdminActivateViewComponent, resolve: { adminTokenValid: AdminTokenValidationResolver } },
                 { path: 'profile', component: ProfileContainerComponent, canActivate: [AuthGuard] },
-                { path: 'datenschutz-hinweise', component: DatenSchutzHinweiseViewComponent }
+                { path: 'datenschutzhinweise', component: DatenSchutzHinweiseViewComponent }
             ]
         }]),
         StoreModule.forFeature(STATE_SLICE_NAME, reducer),

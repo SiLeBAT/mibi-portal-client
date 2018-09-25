@@ -3,11 +3,11 @@
 body {
     counter-reset: datenschutz-section;
   }
-  .dateschutz-hinweise-item-header {
+  .dateschutzhinweise-item-header {
     counter-increment: datenschutz-section;
     font-weight: bold;
   }
-  .dateschutz-hinweise-item-header:before {
+  .dateschutzhinweise-item-header:before {
     content: counter(datenschutz-section) '. ';
   }
 
@@ -15,14 +15,14 @@ body {
     margin-top: 32px;
 }
 
-.dateschutz-hinweise-item__list {
+.dateschutzhinweise-item__list {
     font-size: 21px;
 }
 
-.dateschutz-hinweise-footer {
+.dateschutzhinweise-footer {
     border-top: 1px solid $primary-color;
 }
 
-.dateschutz-hinweise-footer__head {
+.dateschutzhinweise-footer__head {
     font-size: 21px;
 }

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 
 @Component({
-    selector: 'mibi-datenschutz-hinweise-view',
-    templateUrl: './datenschutz-hinweise-view.component.html'
+    selector: 'mibi-datenschutzhinweise-view',
+    templateUrl: './datenschutzhinweise-view.component.html'
 })
 export class DatenSchutzHinweiseViewComponent {
     constructor() { }
