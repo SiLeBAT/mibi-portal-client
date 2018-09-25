@@ -1,41 +1,55 @@
-import { IAnnotatedSampleData, IWorkSheet } from '../model/sample-management.model';
 import * as fromRoot from '../../state/app.state';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { SamplesActions, SamplesActionTypes } from './samples.actions';
 import { UserActionTypes } from '../../user/state/user.actions';
+import {
+    ISampleSheet,
+    SampleData,
+    IAnnotatedSampleData
+} from '../model/sample-management.model';
 
 export const STATE_SLICE_NAME = 'samples';
 export interface IState extends fromRoot.IState {
     samples: ISamplesState;
 }
 
-export interface ISamplesState {
-    entries: IAnnotatedSampleData[];
-    workSheet: IWorkSheet | null;
+export interface ISamplesState extends ISampleSheet {
     error: string;
+    importedData: SampleData[];
 }
 
 const initialState: ISamplesState = {
-    entries: [],
+    formData: [],
     workSheet: null,
-    error: ''
+    error: '',
+    importedData: []
 };
 
 // SELECTORS
 export const getSamplesFeatureState = createFeatureSelector<ISamplesState>(STATE_SLICE_NAME);
 
-export const getAnnotatedSampleData = createSelector(
+export const getFormData = createSelector(
     getSamplesFeatureState,
-    state => state.entries
+    state => state.formData
 );
 
-export const getData = createSelector(
-    getAnnotatedSampleData,
+export const getImportedData = createSelector(
+    getSamplesFeatureState,
+    state => state.importedData
+);
+
+export const getDataValues = createSelector(
+    getFormData,
     state => state.map(e => e.data)
 );
 
+export const getDataEdits = createSelector(
+    getFormData,
+    state => state.map(e => e.edits)
+);
+
 export const hasEntries = createSelector(
-    getAnnotatedSampleData,
+    getFormData,
     state => !!state.length
 );
 
@@ -45,7 +59,7 @@ export const getSamplesError = createSelector(
 );
 
 export const hasValidationErrors = createSelector(
-    getAnnotatedSampleData,
+    getFormData,
     state => {
         return !!state.reduce(
             (acc, entry) => {
@@ -70,14 +84,16 @@ export function reducer(state: ISamplesState = initialState, action: SamplesActi
         case SamplesActionTypes.ImportExcelFileSuccess:
             const excelData = action.payload;
             return {
-                entries: excelData.data.data.map((e: any) => ({
-                    data: e,
-                    errors: {},
-                    corrections: [],
-                    edits: {}
-                })),
-                workSheet: excelData.workSheet,
-                error: ''
+                ...state, ...{
+                    formData: excelData.data.map((e: any) => ({
+                        data: e,
+                        errors: {},
+                        corrections: [],
+                        edits: {}
+                    })),
+                    workSheet: excelData.workSheet,
+                    importedData: excelData.data
+                }
             };
         case SamplesActionTypes.ValidateSamplesSuccess:
             const mergedEntries = action.payload.map(
@@ -86,11 +102,11 @@ export function reducer(state: ISamplesState = initialState, action: SamplesActi
                         data: response.data,
                         errors: response.errors,
                         corrections: response.corrections,
-                        edits: { ...response.edits, ...state.entries[i].edits }
+                        edits: { ...response.edits, ...state.formData[i].edits }
                     };
                 }
             );
-            return { ...state, ...{ entries: mergedEntries, error: '' } };
+            return { ...state, ...{ formData: mergedEntries, error: '' } };
         case SamplesActionTypes.ValidateSamplesFailure:
         case SamplesActionTypes.ExportExcelFileFailure:
             return { ...state, ...{ error: action.payload.message } };
@@ -104,7 +120,7 @@ export function reducer(state: ISamplesState = initialState, action: SamplesActi
 
             if (originalValue !== newValue) {
 
-                const newEntries = state.entries.map((e: IAnnotatedSampleData, i: number) => {
+                const newEntries = state.formData.map((e: IAnnotatedSampleData, i: number) => {
                     let newData = e.data;
                     let newEdits = e.edits;
 
@@ -133,7 +149,7 @@ export function reducer(state: ISamplesState = initialState, action: SamplesActi
                 return {
                     ...state,
                     ...{
-                        entries: newEntries
+                        formData: newEntries
                     }
                 };
             }

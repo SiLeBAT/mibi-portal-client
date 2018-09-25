@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ISampleSheet } from '../model/sample-management.model';
-import { ExcelConverterService, IExcelFileBlob } from './excel-converter.service';
+import { ISampleSheet, IExcelFileBlob } from '../model/sample-management.model';
+import { ExcelConverterService } from './excel-converter.service';
 import { DataService } from '../../core/services/data.service';
 import { IUser } from '../../user/model/models';
 

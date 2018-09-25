@@ -1,62 +1,28 @@
 import { Injectable } from '@angular/core';
 import { WorkBook, WorkSheet, read, utils } from 'xlsx';
-import { IWorkSheet, SampleData } from '../model/sample-management.model';
+import { IImportedExcelFileDetails, SampleData, VALID_SHEET_NAME, CURRENT_HEADERS, IExcelData } from '../model/sample-management.model';
 
 export type AOO = any[];
-
-// TODO: Remove
-export interface IOLDSampleCollectionDTO {
-    data: SampleData[];
-}
-
-export const jsHeaders: string[] = [
-    'sample_id',
-    'sample_id_avv',
-    'pathogen_adv',
-    'pathogen_text',
-    'sampling_date',
-    'isolation_date',
-    'sampling_location_adv',
-    'sampling_location_zip',
-    'sampling_location_text',
-    'topic_adv',
-    'matrix_adv',
-    'matrix_text',
-    'process_state_adv',
-    'sampling_reason_adv',
-    'sampling_reason_text',
-    'operations_mode_adv',
-    'operations_mode_text',
-    'vvvo',
-    'comment'
-];
-
-export interface IExcelData {
-    data: IOLDSampleCollectionDTO;
-    workSheet: IWorkSheet;
-}
 
 // TODO: Possibly changes Store state & should be handled by actions.
 @Injectable({
     providedIn: 'root'
 })
 export class ExcelToJsonService {
-    private validSheetName: string = 'Einsendeformular';
 
     constructor() { }
 
     async convertExcelToJSJson(file: File): Promise<IExcelData> {
         let sampleSheet: WorkSheet;
-        let data: IOLDSampleCollectionDTO;
+        let data: SampleData[];
         try {
             sampleSheet = await this.fromFileToWorkSheet(file);
             data = this.fromWorksheetToData(sampleSheet);
-            const currentWorkSheet: IWorkSheet = {
+            const currentWorkSheet: IImportedExcelFileDetails = {
                 workSheet: sampleSheet,
                 isVersion14: this.isVersion14(sampleSheet),
                 file: file,
-                oriDataLength: data.data.length,
-                validSheetName: this.validSheetName
+                oriDataLength: data.length
             };
 
             return {
@@ -86,10 +52,10 @@ export class ExcelToJsonService {
                 });
                 const worksheetName: string = workbook.SheetNames[0];
                 const sampleSheet: WorkSheet = workbook.Sheets[worksheetName];
-                if (worksheetName === this.validSheetName) {
+                if (worksheetName === VALID_SHEET_NAME) {
                     resolve(sampleSheet);
                 } else {
-                    reject(`not a valid excel sheet, name of first sheet must be ${this.validSheetName}`);
+                    reject(`not a valid excel sheet, name of first sheet must be ${VALID_SHEET_NAME}`);
                 }
             };
 
@@ -97,33 +63,27 @@ export class ExcelToJsonService {
         });
     }
 
-    private fromWorksheetToData(workSheet: WorkSheet): IOLDSampleCollectionDTO {
+    private fromWorksheetToData(workSheet: WorkSheet): SampleData[] {
 
         let data: AOO;
         const lineNumber: number = this.getVersionDependentLine(workSheet);
         if (this.isVersion14(workSheet)) {
             data = utils.sheet_to_json(workSheet, {
-                header: jsHeaders,
+                header: CURRENT_HEADERS,
                 range: lineNumber,
                 defval: '',
                 dateNF: 'dd"."mm"."yyyy'
             });
         } else {
             data = utils.sheet_to_json(workSheet, {
-                header: jsHeaders.filter(item => item !== 'vvvo'),
+                header: CURRENT_HEADERS.filter(item => item !== 'vvvo'),
                 range: this.getVersionDependentLine(workSheet),
                 defval: '',
                 dateNF: 'dd"."mm"."yyyy'
             });
         }
 
-        const cleanedSamples = this.fromDataToCleanedSamples(data);
-        const samples: SampleData[] = cleanedSamples;
-        const sampleCollectionDTO: IOLDSampleCollectionDTO = {
-            data: samples
-        };
-
-        return sampleCollectionDTO;
+        return this.fromDataToCleanedSamples(data);
     }
 
     private isVersion14(workSheet: WorkSheet): boolean {

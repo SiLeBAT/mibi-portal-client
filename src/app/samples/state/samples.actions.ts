@@ -1,6 +1,5 @@
 import { Action } from '@ngrx/store';
-import { IExcelData } from '../services/excel-to-json.service';
-import { SampleData, IAnnotatedSampleData, ISampleSheet, IChangedField } from '../model/sample-management.model';
+import { SampleData, IAnnotatedSampleData, ISampleSheet, IChangedField, IExcelData } from '../model/sample-management.model';
 import { IAlert } from '../../core/model/alert.model';
 import { LogoutUser } from '../../user/state/user.actions';
 import { IModalContent } from '../../core/model/modal.model';

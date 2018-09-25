@@ -3,15 +3,11 @@ import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 // @ts-ignore
 import * as XlsxPopulate from 'xlsx-populate/browser/xlsx-populate';
-
 import { WindowRefService } from './window-ref.service';
-import { IExcelFileBlob } from './excel-converter.service';
-import { ISampleSheet, IWorkSheet, SampleData } from '../model/sample-management.model';
-
-export interface IExcelFileBlob {
-    blob: Blob;
-    fileName: string;
-}
+import {
+    ISampleSheet,
+    IImportedExcelFileDetails, SampleData, VALID_SHEET_NAME, CURRENT_HEADERS, IExcelFileBlob
+} from '../model/sample-management.model';
 
 // TODO: Actionize
 @Injectable({
@@ -19,27 +15,6 @@ export interface IExcelFileBlob {
 })
 export class ExcelConverterService {
 
-    private currentHeaders: string[] = [
-        'sample_id',
-        'sample_id_avv',
-        'pathogen_adv',
-        'pathogen_text',
-        'sampling_date',
-        'isolation_date',
-        'sampling_location_adv',
-        'sampling_location_zip',
-        'sampling_location_text',
-        'topic_adv',
-        'matrix_adv',
-        'matrix_text',
-        'process_state_adv',
-        'sampling_reason_adv',
-        'sampling_reason_text',
-        'operations_mode_adv',
-        'operations_mode_text',
-        'vvvo',
-        'comment'
-    ];
     private _window: any;
 
     constructor(windowRef: WindowRefService) {
@@ -60,7 +35,7 @@ export class ExcelConverterService {
         }
         fileName += '_validated.xlsx';
 
-        const dataToSave = this.fromDataObjToAOO(data.entries.map(e => e.data));
+        const dataToSave = this.fromDataObjToAOO(data.formData.map(e => e.data));
         let workbook = await this.fromFileToWorkbook(file);
         workbook = this.addValidatedDataToWorkbook(data.workSheet, workbook, dataToSave);
 
@@ -85,7 +60,7 @@ export class ExcelConverterService {
 
         _.forEach(data, ((dataRow: any) => {
             const row: any[] = [];
-            _.forEach(this.currentHeaders, ((header) => {
+            _.forEach(CURRENT_HEADERS, ((header) => {
                 row.push(dataRow[header]);
             }));
             dataToSave.push(row);
@@ -94,12 +69,11 @@ export class ExcelConverterService {
         return dataToSave;
     }
 
-    private addValidatedDataToWorkbook(originalWorkSheet: IWorkSheet, workbook: any, dataToSave: any) {
+    private addValidatedDataToWorkbook(originalWorkSheet: IImportedExcelFileDetails, workbook: any, dataToSave: any) {
 
-        const validSheetName = originalWorkSheet.validSheetName;
         const oriDataLength = originalWorkSheet.oriDataLength;
         const searchTerm = 'Ihre Probe-';
-        const sheet = workbook.sheet(validSheetName);
+        const sheet = workbook.sheet(VALID_SHEET_NAME);
 
         if (sheet) {
             const result = sheet.find(searchTerm);
@@ -108,7 +82,7 @@ export class ExcelConverterService {
                 const rowNumber = cell.row().rowNumber();
 
                 for (let i = (rowNumber + 1); i <= (rowNumber + oriDataLength); i++) {
-                    for (let j = 1; j <= this.currentHeaders.length; j++) {
+                    for (let j = 1; j <= CURRENT_HEADERS.length; j++) {
                         const cell2 = sheet.row(i).cell(j);
                         cell2.value(undefined);
                     }

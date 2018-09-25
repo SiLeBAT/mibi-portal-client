@@ -4,7 +4,7 @@ import 'tooltipster';
 import * as Handsontable from 'handsontable';
 import * as _ from 'lodash';
 import {
-    SampleData, ChangedValueCollection
+    SampleData, ChangedValueCollection, IStatusComments, IErrRow, ITableDataOutput
 } from '../../model/sample-management.model';
 import {
     ToolTipTheme, IToolTip, createToolTip, TOOLTIP_CLASS_HOOK
@@ -23,29 +23,6 @@ enum ToolTipType {
     INFO = 4
 }
 
-export interface IStatusComments {
-    [status: number]: string[];
-}
-
-export interface IErrCol {
-    [errCol: number]: IStatusComments;
-}
-
-export interface IErrRow {
-    [errRow: number]: IErrCol;
-}
-
-export interface IColConfig {
-    id: string;
-    title: string;
-}
-
-export interface ITableDataOutput {
-    data: SampleData[];
-    touched: boolean;
-    changed: IChangedDataGridField;
-}
-
 enum HotChangeIndex {
     INDEX = 0,
     COL_ID = 1,
@@ -54,15 +31,9 @@ enum HotChangeIndex {
 
 }
 
-interface IChangedDataGridField {
-    rowIndex: number;
-    columnId: string;
-    originalValue: string;
-    newValue: string;
-}
-
 interface ICellProperties {
     tooltipOptionList: any[];
+    originalData?: string;
     errData?: IStatusComments;
     changed?: ChangedValueCollection;
     renderer?: (instance: any, td: any, row: any, col: any, prop: any, value: any, cp: any) => void;
@@ -113,6 +84,8 @@ export class DataGridComponent implements OnInit {
         this.changeSettings();
     }
 
+    @Input() importedData: SampleData[];
+
     localData: SampleData[];
     private ToolTips: { [key: number]: IToolTip } = {};
     private _errorData: IErrRow;
@@ -126,6 +99,8 @@ export class DataGridComponent implements OnInit {
         this.ToolTips[ToolTipType.ERROR] = createToolTip(ToolTipTheme.ERROR, 'top');
         this.ToolTips[ToolTipType.INFO]
             = createToolTip(ToolTipTheme.INFO, 'left');
+        this.ToolTips[ToolTipType.TIP]
+            = createToolTip(ToolTipTheme.TIP, 'right');
         this.changeSettings();
     }
 
@@ -174,9 +149,15 @@ export class DataGridComponent implements OnInit {
                 }
             }
 
+            if (this._changedData && this._changedData[cellRow] && (this._changedData[cellRow] as any)[cellProp] !== undefined) {
+                cellProperties.tooltipOptionList.push(
+                    this.ToolTips[ToolTipType.TIP].getOptions(['Ursprüngliche Daten: ' + this.importedData[cellRow][cellProp]]));
+            }
+
             if (cellProperties.tooltipOptionList.length || this.hasChangedFields(cellRow, cellProp)) {
                 cellProperties = {
                     ...cellProperties, ...{
+                        originalData: this.importedData[cellRow][cellProp],
                         errData: this._errorData[cellRow][cellCol],
                         changed: (this._changedData[cellRow] as any)[cellProp],
                         renderer: this.cellRenderer
@@ -211,11 +192,14 @@ export class DataGridComponent implements OnInit {
             td.classList.add('changed');
         }
         if (cp.tooltipOptionList.length) {
-            for (const s of Object.keys(errObj)) {
-                const status = parseInt(s, 10);
-                td.classList.add(TOOLTIP_CLASS_HOOK);
-                td.classList.add(this.getFieldBackground(status));
+            if (errObj) {
+                for (const s of Object.keys(errObj)) {
+                    const status = parseInt(s, 10);
+                    td.classList.add(this.getFieldBackground(status));
+                }
             }
+            td.classList.add(TOOLTIP_CLASS_HOOK);
+
             // add multiple property to the tooltip options => set multiple: true except in first option
             if (cp.tooltipOptionList.length > 1) {
                 const optionsNum = cp.tooltipOptionList.length;

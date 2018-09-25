@@ -7,7 +7,7 @@ export enum ToolTipTheme {
     TIP = 'tooltipster-tip'
 }
 
-export type ToolTipAlignment = 'bottom' | 'top' | 'left';
+export type ToolTipAlignment = 'bottom' | 'top' | 'left' | 'right';
 
 export interface IToolTipOptions {
     repositionOnScroll: boolean;
@@ -30,7 +30,7 @@ export interface IToolTip {
 class ToolTip implements IToolTip {
 
     constructor(public theme: string,
-        public alignmemt: 'bottom' | 'top' | 'left') { }
+        public alignmemt: 'bottom' | 'top' | 'left' | 'right') { }
 
     constructToolTipText(commentList: string[]): string {
         let tooltipText = '<ul>';

@@ -5,14 +5,14 @@ import { saveAs } from 'file-saver';
 import { ValidationService } from '../services/validation.service';
 import * as samplesActions from './samples.actions';
 import { map, concatMap, catchError, exhaustMap, withLatestFrom, switchMap, mergeMap, pluck } from 'rxjs/operators';
-import { IAnnotatedSampleData } from '../model/sample-management.model';
-import { ExcelConverterService, IExcelFileBlob } from '../services/excel-converter.service';
+import { IAnnotatedSampleData, IExcelFileBlob, IExcelData } from '../model/sample-management.model';
+import { ExcelConverterService } from '../services/excel-converter.service';
 import { from, of } from 'rxjs';
 import { Store } from '@ngrx/store';
 import * as fromSamples from '../state/samples.reducer';
 import { AlertType } from '../../core/model/alert.model';
 import { Router } from '@angular/router';
-import { ExcelToJsonService, IExcelData } from '../services/excel-to-json.service';
+import { ExcelToJsonService } from '../services/excel-to-json.service';
 import { SendSampleService } from '../services/send-sample.service';
 @Injectable()
 export class SamplesEffects {
@@ -58,7 +58,7 @@ export class SamplesEffects {
             this.router.navigate(['/samples']).catch(() => {
                 throw new Error('Unable to navigate.');
             });
-            return new samplesActions.ValidateSamples(actionStoreCombine[1].samples.entries.map(e => e.data));
+            return new samplesActions.ValidateSamples(actionStoreCombine[1].samples.formData.map(e => e.data));
         })
     );
 
@@ -96,7 +96,7 @@ export class SamplesEffects {
     sendSamplesInitation$ = this.actions$.pipe(
         ofType(samplesActions.SamplesActionTypes.SendSamplesInitiate),
         switchMap((action: samplesActions.SendSamplesInitiate) => {
-            return this.validationService.validate(action.payload.entries.map(e => e.data)).pipe(
+            return this.validationService.validate(action.payload.formData.map(e => e.data)).pipe(
                 map((annotatedSamples: IAnnotatedSampleData[]) => {
                     return (new samplesActions.ValidateSamplesSuccess(annotatedSamples));
                 }),
