@@ -47,8 +47,9 @@ export class ExcelToJsonService {
                 const workbook: WorkBook = read(binaryStr, {
                     type: 'binary',
                     cellDates: true,
-                    cellText: false,
-                    cellStyles: true
+                    cellText: true,
+                    cellStyles: true,
+                    cellNF: true
                 });
                 const worksheetName: string = workbook.SheetNames[0];
                 const sampleSheet: WorkSheet = workbook.Sheets[worksheetName];
@@ -72,14 +73,16 @@ export class ExcelToJsonService {
                 header: CURRENT_HEADERS,
                 range: lineNumber,
                 defval: '',
-                dateNF: 'dd"."mm"."yyyy'
+                dateNF: 'dd"."mm"."yyyy',
+                raw: false
             });
         } else {
             data = utils.sheet_to_json(workSheet, {
                 header: CURRENT_HEADERS.filter(item => item !== 'vvvo'),
                 range: this.getVersionDependentLine(workSheet),
                 defval: '',
-                dateNF: 'dd"."mm"."yyyy'
+                dateNF: 'dd"."mm"."yyyy',
+                raw: false
             });
         }
 
