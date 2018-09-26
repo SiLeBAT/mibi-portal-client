@@ -1,8 +1,16 @@
-.faq__section {
+.faq-view__section {
     padding-top: 16px;
     padding-bottom: 16px;
+    display: flex;
+    flex-direction: column;
 }
 
-.faq__toc {
-    padding-bottom: 16px;
+.faq-view {
+    display: flex;
+    flex-direction: column;
+}
+
+.faq-view__faqGroup {
+    display: flex;
+    justify-content: center;
 }

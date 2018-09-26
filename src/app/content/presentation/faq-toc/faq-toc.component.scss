@@ -1,24 +1,21 @@
 
 @import '../../../../assets/sass/abstracts';
 
-td{vertical-align:top;}
-
-.toc__count {
-    text-align: right;
-    width: 10%;
-}
-
-.toc__divider {
-    border-bottom: 1px dotted $primary-color;
-    width: 60%;
-}
-
-.toc__entry {
-    width: 30%;
+.toc__row {
+    background: $primary-color;
+    width: 20%;
+    margin: 4px;
+    padding: 2px;
+    text-align: center;
 }
 
 .toc {
-    border-collapse:collapse;
-    width:100%;
     padding-bottom: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.toc__link {
+    color: $on-primary-color;
 }

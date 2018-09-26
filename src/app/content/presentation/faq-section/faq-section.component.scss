@@ -1,3 +1,14 @@
+@import '../../../../assets/sass/abstracts';
+
 .faq-group {
-padding-bottom: 16px;
+    margin-bottom: 16px;
+    background: $primary-color;
+    width: 70%;
+}
+
+.faq-group__title {
+    color: $on-primary-color;
+    text-align: center;
+    padding: 10px;
+    margin: 0;
 }
