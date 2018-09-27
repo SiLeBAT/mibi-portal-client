@@ -225,12 +225,10 @@ export class DataGridContainerComponent extends GuardedUnloadComponent implement
                     errData[row][newColIn] = {};
                 }
                 let message =
-                    // tslint:disable-next-line:max-line-length
-                    `Erreger erkannt. Ursprünglicher Text ${correctedEntry.original} wurde durch den Text aus ADV-Katalog Nr. 16 ersetzt.`;
+                    `Erreger erkannt. Ursprünglicher Text wurde durch den Text aus ADV-Katalog Nr. 16 ersetzt.`;
                 if (numbersOnly.test(correctedEntry.original)) {
                     message =
-                        // tslint:disable-next-line:max-line-length
-                        `ADV-16-Code ${correctedEntry.original} wurde erkannt & durch den entsprechenden ADV-Text ${correctedEntry.corrected} ersetzt.`;
+                        `ADV-16-Code wurde erkannt & durch den entsprechenden ADV-Text ${correctedEntry.corrected} ersetzt.`;
                 }
                 errData[row][newColIn][4] = [
                     message
