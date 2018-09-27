@@ -151,7 +151,8 @@ export class DataGridComponent implements OnInit {
 
             if (this._changedData && this._changedData[cellRow] && (this._changedData[cellRow] as any)[cellProp] !== undefined) {
                 cellProperties.tooltipOptionList.push(
-                    this.ToolTips[ToolTipType.TIP].getOptions(['Ursprünglich:' + (this.importedData[cellRow][cellProp] || ' ')]));
+                    this.ToolTips[ToolTipType.TIP].getOptions(
+                        ['Ursprünglich: ' + (this.importedData[cellRow][cellProp] || '&lt;leer&gt;')]));
             }
 
             if (cellProperties.tooltipOptionList.length || this.hasChangedFields(cellRow, cellProp)) {
