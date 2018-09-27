@@ -1,6 +1,7 @@
 import { Component, Input, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import * as moment from 'moment';
 import { IToolTip, createToolTip, ToolTipTheme, TOOLTIP_CLASS_HOOK } from '../../model/tooltip.model';
+import { Observable } from 'rxjs';
 
 @Component({
     selector: 'mibi-last-change-display',
@@ -8,7 +9,7 @@ import { IToolTip, createToolTip, ToolTipTheme, TOOLTIP_CLASS_HOOK } from '../..
     styleUrls: ['./last-change-display.component.scss']
 })
 export class LastChangeDisplayComponent implements AfterViewInit {
-    @Input() lastChange: moment.Moment;
+    @Input() lastChange$: Observable<moment.Moment>;
     @Input() serverVersion: string;
     @Input() clientVersion: string;
     @ViewChild('entry', { read: ElementRef }) entry: ElementRef;

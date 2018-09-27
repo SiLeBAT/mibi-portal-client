@@ -7,27 +7,31 @@ import { FrontEndError } from '../../core/model/frontend-error';
 
 export type AOO = any[];
 
+interface IParseOptions {
+    dateFormat: string;
+}
+
 const DATA_FORMATS: { [key: string]: Function } = {
-    sampling_date: (d: string) => {
+    sampling_date: (v: string, parseOptions: IParseOptions) => {
         try {
-            const date = moment(new Date(d)).format('L');
+            const date = moment(v, parseOptions.dateFormat).format('L');
             if (date === 'Invalid date') {
-                return '';
+                return v;
             }
             return date;
         } catch (e) {
-            return '';
+            return v;
         }
     },
-    isolation_date: (d: string) => {
+    isolation_date: (v: string, parseOptions: IParseOptions) => {
         try {
-            const date = moment(new Date(d)).format('L');
+            const date = moment(v, parseOptions.dateFormat).format('L');
             if (date === 'Invalid date') {
-                return '';
+                return v;
             }
             return date;
         } catch (e) {
-            return '';
+            return v;
         }
     }
 };
@@ -112,11 +116,14 @@ export class ExcelToJsonService {
     }
 
     private formatData(data: any) {
+        const parseOptions = {
+            dateFormat: 'MM/dd/yyyy'
+        };
         const formattedData = data.map(
             (sample: SampleData) => {
                 for (const props in sample) {
                     if (DATA_FORMATS[props]) {
-                        sample[props] = DATA_FORMATS[props](sample[props]);
+                        sample[props] = DATA_FORMATS[props](sample[props], parseOptions);
                     }
                 }
                 return sample;
