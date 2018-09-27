@@ -1,9 +1,36 @@
 import { Injectable } from '@angular/core';
 import { WorkBook, WorkSheet, read, utils } from 'xlsx';
 import { IImportedExcelFileDetails, SampleData, VALID_SHEET_NAME, CURRENT_HEADERS, IExcelData } from '../model/sample-management.model';
+import * as moment from 'moment';
+import 'moment/locale/de';
+import { FrontEndError } from '../../core/model/frontend-error';
 
 export type AOO = any[];
 
+const DATA_FORMATS: { [key: string]: Function } = {
+    sampling_date: (d: string) => {
+        try {
+            const date = moment(new Date(d)).format('L');
+            if (date === 'Invalid date') {
+                return '';
+            }
+            return date;
+        } catch (e) {
+            return '';
+        }
+    },
+    isolation_date: (d: string) => {
+        try {
+            const date = moment(new Date(d)).format('L');
+            if (date === 'Invalid date') {
+                return '';
+            }
+            return date;
+        } catch (e) {
+            return '';
+        }
+    }
+};
 // TODO: Possibly changes Store state & should be handled by actions.
 @Injectable({
     providedIn: 'root'
@@ -31,10 +58,8 @@ export class ExcelToJsonService {
             };
 
         } catch (err) {
-            const errMessage: string = 'error reading excel file';
-            // TODO: Fix this
-            // this.alertService.error(errMessage, false);
-            throw new Error(errMessage);
+            const errMessage: string = 'Ein Fehler ist aufgetreten beim einlesen der Datei.';
+            throw new FrontEndError(errMessage);
         }
     }
 
@@ -47,7 +72,7 @@ export class ExcelToJsonService {
                 const workbook: WorkBook = read(binaryStr, {
                     type: 'binary',
                     cellDates: true,
-                    cellText: true,
+                    cellText: false,
                     cellStyles: true,
                     cellNF: true
                 });
@@ -72,21 +97,32 @@ export class ExcelToJsonService {
             data = utils.sheet_to_json(workSheet, {
                 header: CURRENT_HEADERS,
                 range: lineNumber,
-                defval: '',
-                dateNF: 'dd"."mm"."yyyy',
-                raw: false
+                defval: ''
             });
         } else {
             data = utils.sheet_to_json(workSheet, {
                 header: CURRENT_HEADERS.filter(item => item !== 'vvvo'),
                 range: this.getVersionDependentLine(workSheet),
-                defval: '',
-                dateNF: 'dd"."mm"."yyyy',
-                raw: false
+                defval: ''
             });
         }
+        const cleanedData = this.fromDataToCleanedSamples(data);
+        const formattedData = this.formatData(cleanedData);
+        return formattedData;
+    }
 
-        return this.fromDataToCleanedSamples(data);
+    private formatData(data: any) {
+        const formattedData = data.map(
+            (sample: SampleData) => {
+                for (const props in sample) {
+                    if (DATA_FORMATS[props]) {
+                        sample[props] = DATA_FORMATS[props](sample[props]);
+                    }
+                }
+                return sample;
+            }
+        );
+        return formattedData;
     }
 
     private isVersion14(workSheet: WorkSheet): boolean {
