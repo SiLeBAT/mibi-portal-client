@@ -7,34 +7,6 @@ import { FrontEndError } from '../../core/model/frontend-error';
 
 export type AOO = any[];
 
-interface IParseOptions {
-    dateFormat: string;
-}
-
-const DATA_FORMATS: { [key: string]: Function } = {
-    sampling_date: (v: string, parseOptions: IParseOptions) => {
-        try {
-            const date = moment(v, parseOptions.dateFormat).format('L');
-            if (date === 'Invalid date') {
-                return v;
-            }
-            return date;
-        } catch (e) {
-            return v;
-        }
-    },
-    isolation_date: (v: string, parseOptions: IParseOptions) => {
-        try {
-            const date = moment(v, parseOptions.dateFormat).format('L');
-            if (date === 'Invalid date') {
-                return v;
-            }
-            return date;
-        } catch (e) {
-            return v;
-        }
-    }
-};
 // TODO: Possibly changes Store state & should be handled by actions.
 @Injectable({
     providedIn: 'root'
@@ -116,20 +88,48 @@ export class ExcelToJsonService {
     }
 
     private formatData(data: any) {
-        const parseOptions = {
-            dateFormat: 'MM/dd/yyyy'
-        };
         const formattedData = data.map(
             (sample: SampleData) => {
                 for (const props in sample) {
-                    if (DATA_FORMATS[props]) {
-                        sample[props] = DATA_FORMATS[props](sample[props], parseOptions);
+                    if (this.isDateField(props)) {
+                        sample[props] = this.parseDate(sample[props]);
                     }
                 }
                 return sample;
             }
         );
         return formattedData;
+    }
+
+    private parseDate(date: string) {
+        let parseOptions = {
+            dateFormat: 'DD.MM.YYYY'
+        };
+        const americanDF = /\d\d?\/\d\d?\/\d\d\d?\d?/;
+        if (americanDF.test(date)) {
+            parseOptions = {
+                dateFormat: 'MM/DD/YYYY'
+            };
+        }
+        try {
+            const parsedDate = moment(date, parseOptions.dateFormat).locale('de').format('DD.MM.YYYY');
+            if (parsedDate === 'Invalid date') {
+                return date;
+            }
+            return parsedDate;
+        } catch (e) {
+            return date;
+        }
+    }
+
+    private isDateField(field: string) {
+        switch (field) {
+            case 'sampling_date':
+            case 'isolation_date':
+                return true;
+            default:
+                return false;
+        }
     }
 
     private isVersion14(workSheet: WorkSheet): boolean {
