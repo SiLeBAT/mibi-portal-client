@@ -1,4 +1,4 @@
-import { Component, Input, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, AfterViewInit, ViewChild, ElementRef, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import { IToolTip, createToolTip, ToolTipTheme, TOOLTIP_CLASS_HOOK } from '../../model/tooltip.model';
 import { Observable } from 'rxjs';
@@ -21,6 +21,7 @@ export class LastChangeDisplayComponent implements AfterViewInit {
     }
 
     ngAfterViewInit(): void {
+
         const display: string[] = [];
         if (this.serverVersion) {
             display.push('server version@' + this.serverVersion);

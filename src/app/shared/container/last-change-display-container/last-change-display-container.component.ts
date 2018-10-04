@@ -27,6 +27,7 @@ export class LastChangeDisplayContainerComponent implements OnInit {
     constructor(private dataService: DataService) { }
 
     ngOnInit(): void {
+        moment.locale('en');
         this.clientLastChange = moment(environment.lastChange, this.dateParseString);
         this._lastChange = new BehaviorSubject(this.clientLastChange);
         this.dataService.getSystemInfo().toPromise().then(
