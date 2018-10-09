@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { SampleData, IAnnotatedSampleData, ISampleSheet, IChangedField, IExcelData } from '../model/sample-management.model';
+import { SampleData, IAnnotatedSampleData, ISampleSheet, IExcelData, IChangedDataGridField } from '../model/sample-management.model';
 import { IAlert } from '../../core/model/alert.model';
 import { LogoutUser } from '../../user/state/user.actions';
 import { IModalContent } from '../../core/model/modal.model';
@@ -26,7 +26,7 @@ export enum SamplesActionTypes {
 export class ChangeFieldValue implements Action {
     readonly type = SamplesActionTypes.ChangeFieldValue;
 
-    constructor(public payload: IChangedField) {
+    constructor(public payload: IChangedDataGridField) {
 
     }
 }

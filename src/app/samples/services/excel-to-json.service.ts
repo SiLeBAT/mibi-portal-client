@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { WorkBook, WorkSheet, read, utils } from 'xlsx';
-import { IImportedExcelFileDetails, SampleData, VALID_SHEET_NAME, CURRENT_HEADERS, IExcelData } from '../model/sample-management.model';
+import { IImportedExcelFileDetails, SampleData, VALID_SHEET_NAME, FORM_PROPERTIES, IExcelData } from '../model/sample-management.model';
 import * as moment from 'moment';
 import 'moment/locale/de';
 import { FrontEndError } from '../../core/model/frontend-error';
@@ -71,13 +71,13 @@ export class ExcelToJsonService {
         const lineNumber: number = this.getVersionDependentLine(workSheet);
         if (this.isVersion14(workSheet)) {
             data = utils.sheet_to_json(workSheet, {
-                header: CURRENT_HEADERS,
+                header: FORM_PROPERTIES,
                 range: lineNumber,
                 defval: ''
             });
         } else {
             data = utils.sheet_to_json(workSheet, {
-                header: CURRENT_HEADERS.filter(item => item !== 'vvvo'),
+                header: FORM_PROPERTIES.filter(item => item !== 'vvvo'),
                 range: this.getVersionDependentLine(workSheet),
                 defval: ''
             });

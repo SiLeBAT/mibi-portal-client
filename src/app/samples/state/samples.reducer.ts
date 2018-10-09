@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import * as fromRoot from '../../state/app.state';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { SamplesActions, SamplesActionTypes } from './samples.actions';
@@ -123,6 +124,8 @@ export function reducer(state: ISamplesState = initialState, action: SamplesActi
                 const newEntries = state.formData.map((e: IAnnotatedSampleData, i: number) => {
                     let newData = e.data;
                     let newEdits = e.edits;
+                    let newErrors = e.errors;
+                    let newCorrections = e.corrections;
 
                     if (i === rowIndex) {
                         newData = {
@@ -136,13 +139,19 @@ export function reducer(state: ISamplesState = initialState, action: SamplesActi
                         } else {
                             newEdits[columnId] = originalValue;
                         }
+                        newErrors = {
+                            ...e.errors, ...{
+                                [columnId]: []
+                            }
+                        };
+                        newCorrections = _.filter(e.corrections, c => c.field !== columnId);
                     }
 
                     return {
                         data: newData,
-                        errors: e.errors,
+                        errors: newErrors,
                         edits: newEdits,
-                        corrections: e.corrections
+                        corrections: newCorrections
                     };
                 });
 

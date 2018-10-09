@@ -4,7 +4,7 @@ export type SampleData = Record<string, string>;
 export type ChangedValueCollection = Record<string, string>;
 export const VALID_SHEET_NAME: string = 'Einsendeformular';
 
-export const CURRENT_HEADERS: string[] = [
+export const FORM_PROPERTIES: string[] = [
     'sample_id',
     'sample_id_avv',
     'pathogen_adv',
@@ -48,7 +48,7 @@ export interface IExcelData {
     workSheet: IImportedExcelFileDetails;
 }
 
-interface IValidationError {
+export interface IValidationError {
     code: number;
     level: number;
     message: string;
@@ -61,7 +61,7 @@ export interface IValidationErrorCollection {
 export interface IAutoCorrectionEntry {
     field: keyof SampleData;
     original: string;
-    corrected: string;
+    correctionOffer: string[];
 }
 export interface IAnnotatedSampleData {
     data: SampleData;
@@ -70,37 +70,16 @@ export interface IAnnotatedSampleData {
     corrections: IAutoCorrectionEntry[];
 }
 
-export interface IChangedField {
-    rowIndex: number;
-    columnId: string;
-    newValue: string;
-    originalValue: string;
-}
-
-export interface IStatusComments {
-    [status: number]: string[];
-}
-
-export interface IErrCol {
-    [errCol: number]: IStatusComments;
-}
-
-export interface IErrRow {
-    [errRow: number]: IErrCol;
-}
-
 export interface IColConfig {
     id: string;
     title: string;
 }
 
 export interface ITableDataOutput {
-    data: SampleData[];
-    touched: boolean;
     changed: IChangedDataGridField;
 }
 
-interface IChangedDataGridField {
+export interface IChangedDataGridField {
     rowIndex: number;
     columnId: string;
     originalValue: string;

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { SampleData, IAnnotatedSampleData, ChangedValueCollection } from '../model/sample-management.model';
+import { SampleData, IAnnotatedSampleData } from '../model/sample-management.model';
 import { DataService } from '../../core/services/data.service';
 import { map } from 'rxjs/operators';
 
@@ -21,7 +21,7 @@ interface IValidationResponseErrorCollectionDTO {
 interface IValidationResponseCorrectionEntryDTO {
     field: keyof SampleData;
     original: string;
-    corrected: string;
+    correctionOffer: string[];
 }
 
 interface IValidationResponseDTO {
@@ -61,13 +61,7 @@ export class ValidationService implements IValidationService {
             data: dto.data,
             errors: dto.errors,
             corrections: dto.corrections,
-            edits: dto.corrections.reduce(
-                (acc: ChangedValueCollection, current: IValidationResponseCorrectionEntryDTO) => {
-                    acc[current.field] = current.original;
-                    return acc;
-                },
-                {}
-            )
+            edits: {}
         };
     }
 }
