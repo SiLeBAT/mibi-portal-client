@@ -1,11 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import * as _ from 'lodash';
 import {
-    IValidationErrorCollection,
-    IAutoCorrectionEntry,
-    IAnnotatedSampleData, SampleData, ChangedValueCollection, IErrRow, IColConfig, ITableDataOutput, IErrCol, IStatusComments
+    IAnnotatedSampleData, IColConfig, ITableDataOutput
 } from '../../model/sample-management.model';
-import { map, takeWhile, tap } from 'rxjs/operators';
+import { map, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { GuardedUnloadComponent } from '../../../shared/container/guarded-unload.component';
 import { Store, select } from '@ngrx/store';
@@ -17,30 +15,32 @@ import { IModal } from '../../../core/model/modal.model';
 import { ConfirmationService, ResolveEmit } from '@jaspero/ng-confirmations';
 import { AlertType } from '../../../core/model/alert.model';
 import { IUser } from '../../../user/model/models';
+import { IFormViewModel, IFormRowViewModel } from '../../presentation/data-grid/data-grid.component';
+import { ToolTipType } from '../../../shared/model/tooltip.model';
+
+enum AlteredField {
+    WARNING = 'warn',
+    ERROR = 'error',
+    AUTOCORRECTED = 'corrected'
+}
 
 @Component({
     selector: 'mibi-data-grid-container',
     template: `
     <mibi-data-grid
-        [colTitles] = "getColTitles()"
-        [errorData] = "errors$ | async"
-        [changedData] = "changedData$ | async"
-        [importedData] = "importedData$ | async"
-        [data] = "data$ | async"
+        [colConfig] = "columnConfigArray"
+        [viewModel] = "viewModel$ | async"
         (valueChanged)="onValueChanged($event)">
     </mibi-data-grid>`
 })
 export class DataGridContainerComponent extends GuardedUnloadComponent implements OnInit, OnDestroy {
 
-    changedData$: Observable<ChangedValueCollection[]>;
-    errors$: Observable<IErrRow>;
-    data$: Observable<SampleData[]>;
-    importedData$: Observable<SampleData[]>;
+    viewModel$: Observable<IFormViewModel>;
     private hasData: boolean = true;
     private currentUser: IUser | null;
     private componentActive: boolean = true;
     // TODO: HTML tags in Text?  Formatting shoule be handled by CSS.
-    private columnConfigArray: IColConfig[] = [
+    columnConfigArray: IColConfig[] = [
         {
             id: 'sample_id',
             title: 'Ihre<br>Proben-<br>ummer'
@@ -126,17 +126,25 @@ export class DataGridContainerComponent extends GuardedUnloadComponent implement
     }
 
     ngOnInit(): void {
-        this.changedData$ = this.store.pipe(select(fromSamples.getDataEdits));
-        this.errors$ = this.getFieldAnnotations();
-        this.importedData$ = this.store.pipe(select(fromSamples.getImportedData));
-        this.data$ = this.store.pipe(select(fromSamples.getDataValues)).pipe(
+        this.viewModel$ = this.store.pipe(select(fromSamples.getFormData)).pipe(
             tap(data => {
                 if (data) {
                     this.hasData = false;
                 } else {
                     this.hasData = true;
                 }
-            })
+            }),
+            withLatestFrom(this.store),
+            map(
+                (dataStateCombine: [IAnnotatedSampleData[], fromSamples.IState]) => {
+                    if (dataStateCombine[0]) {
+                        return this.createViewModel(dataStateCombine);
+                    }
+                    return {
+                        data: []
+                    };
+                }
+            )
         );
         this.store.pipe(select(fromUser.getCurrentUser),
             takeWhile(() => this.componentActive))
@@ -177,66 +185,69 @@ export class DataGridContainerComponent extends GuardedUnloadComponent implement
         return this.hasData;
     }
 
-    getColTitles() {
-        return this.columnConfigArray.map(c => c.title);
-    }
+    private createViewModel(dataStateCombine: [IAnnotatedSampleData[], fromSamples.IState]) {
+        const rows = dataStateCombine[0].map(
+            (row, index) => {
+                const result: IFormRowViewModel = {};
 
-    private getStoreEntries(): Observable<IAnnotatedSampleData[]> {
-        return this.store.pipe(select(fromSamples.getFormData));
-    }
-
-    // TODO: Possibly create a selector?
-    private getFieldAnnotations() {
-        return this.getStoreEntries().pipe(
-            map((entry: IAnnotatedSampleData[]) => this.parseErrors(entry.map(e => e.errors), entry.map(e => e.corrections)))
-        );
-    }
-
-    private parseErrors(errors: IValidationErrorCollection[], corrections: IAutoCorrectionEntry[][]): IErrRow {
-        const errData: IErrRow = {};
-
-        _.forEach(errors, (error, row) => {
-            const errRow: IErrCol = {};
-            _.forEach(error, (errList, colName) => {
-                const col = _.findIndex(this.columnConfigArray.map(c => c.id), header => header === colName);
-                const errCol: IStatusComments = {};
-                _.forEach(errList, (errItem) => {
-                    const currentLevel = errItem['level'];
-                    let commentList: any[];
-                    if (!errCol[currentLevel]) {
-                        commentList = [];
-                        errCol[currentLevel] = commentList;
-                    } else {
-                        commentList = errCol[currentLevel];
-                    }
-                    commentList.push(errItem['message']);
+                // Add values
+                _.forEach(row.data, (v, k) => {
+                    result[k] = {
+                        id: k,
+                        value: v,
+                        correctionOffer: [],
+                        editMessage: []
+                    };
                 });
-                errRow[col] = errCol;
-            });
-            errData[row] = errRow;
-        });
 
-        const numbersOnly = new RegExp(/^\d+?/);
-        _.forEach(corrections, (correct, row) => {
-            _.forEach(correct, (correctedEntry: IAutoCorrectionEntry, colIndex: number) => {
+                // Add correction Offers
+                row.corrections.forEach(
+                    correction => {
+                        if (result[correction.field]) {
+                            result[correction.field].correctionOffer = correction.correctionOffer;
+                        }
+                    }
+                );
 
-                const newColIn = _.findIndex(this.columnConfigArray.map(c => c.id), header => header === correctedEntry.field);
-                if (!errData[row][newColIn]) {
-                    errData[row][newColIn] = {};
-                }
-                let message =
-                    `Erreger erkannt. Ursprünglicher Text wurde durch den Text aus ADV-Katalog Nr. 16 ersetzt.`;
-                if (numbersOnly.test(correctedEntry.original)) {
-                    message =
-                        `ADV-16-Code wurde erkannt & durch den entsprechenden ADV-Text ${correctedEntry.corrected} ersetzt.`;
-                }
-                errData[row][newColIn][4] = [
-                    message
-                ];
+                // Add errors
+                _.forEach(row.errors, (v, k) => {
+                    if (result[k]) {
+                        result[k].errors = {
+                            severity: this.getFieldBackground(Math.max.apply(Math, v.map(error => error.level))),
+                            errorMessage: v.filter(error => error.level === ToolTipType.ERROR).map(error => error.message),
+                            warningMessage: v.filter(
+                                error => error.level === ToolTipType.WARNING).map(error => error.message)
+                        };
+                    }
+                });
 
-            });
-        });
+                // Add edits
+                _.forEach(row.edits, (v, k) => {
+                    if (result[k]) {
+                        result[k].editMessage = ['Ursprünglich: ' +
+                            dataStateCombine[1].samples.importedData[index][k] || '&lt;leer&gt;'];
+                    }
+                });
+                return result;
+            }
+        );
+        return {
+            data: rows
+        };
 
-        return errData;
+    }
+
+    private getFieldBackground(status: number): string {
+        let fieldClassName = '';
+        switch (status) {
+            case 1:
+                fieldClassName = AlteredField.WARNING;
+                break;
+            case 2:
+                fieldClassName = AlteredField.ERROR;
+                break;
+            default:
+        }
+        return fieldClassName;
     }
 }

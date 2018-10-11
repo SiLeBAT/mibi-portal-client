@@ -1,5 +1,12 @@
 export const TOOLTIP_CLASS_HOOK = 'tooltipster-text';
 
+export enum ToolTipType {
+    WARNING = 1,
+    ERROR = 2,
+    TIP = 3,
+    INFO = 4
+}
+
 export enum ToolTipTheme {
     WARNING = 'tooltipster-warning',
     ERROR = 'tooltipster-error',
@@ -19,6 +26,7 @@ export interface IToolTipOptions {
     contentAsHTML: boolean;
     content: string;
     side: any;
+    multiple: boolean;
 }
 export interface IToolTip {
     theme: string;
@@ -53,7 +61,8 @@ class ToolTip implements IToolTip {
             trigger: 'hover',
             contentAsHTML: true,
             content: this.constructToolTipText(commentList),
-            side: this.alignmemt
+            side: this.alignmemt,
+            multiple: true
         };
     }
 }

@@ -6,7 +6,7 @@ import * as XlsxPopulate from 'xlsx-populate/browser/xlsx-populate';
 import { WindowRefService } from './window-ref.service';
 import {
     ISampleSheet,
-    IImportedExcelFileDetails, SampleData, VALID_SHEET_NAME, CURRENT_HEADERS, IExcelFileBlob
+    IImportedExcelFileDetails, SampleData, VALID_SHEET_NAME, FORM_PROPERTIES, IExcelFileBlob
 } from '../model/sample-management.model';
 
 // TODO: Actionize
@@ -60,7 +60,7 @@ export class ExcelConverterService {
 
         _.forEach(data, ((dataRow: any) => {
             const row: any[] = [];
-            _.forEach(CURRENT_HEADERS, ((header) => {
+            _.forEach(FORM_PROPERTIES, ((header) => {
                 row.push(dataRow[header]);
             }));
             dataToSave.push(row);
@@ -82,7 +82,7 @@ export class ExcelConverterService {
                 const rowNumber = cell.row().rowNumber();
 
                 for (let i = (rowNumber + 1); i <= (rowNumber + oriDataLength); i++) {
-                    for (let j = 1; j <= CURRENT_HEADERS.length; j++) {
+                    for (let j = 1; j <= FORM_PROPERTIES.length; j++) {
                         const cell2 = sheet.row(i).cell(j);
                         cell2.value(undefined);
                     }
