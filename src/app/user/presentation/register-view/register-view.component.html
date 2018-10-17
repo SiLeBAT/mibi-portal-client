@@ -1,6 +1,9 @@
 <mibi-view-layout title="Register">
     <mibi-register-container></mibi-register-container>
-    <div class="datenschutz-link-container"><a class="datenschutz-link" [routerLink]="['/users/datenschutzhinweise']">
-        Datenschutzhinweise
-      </a></div>
+    <div class="datenschutz-link-container">
+        <span>
+        Bitte beachten Sie unsere <a [routerLink]="['/users/datenschutzhinweise']">Datenschutzhinweise</a>
+        für die Registrierung sowie unsere allgemeine <a [routerLink]="['/content/datenschutzerklaerung']">Datenschutzerklärung</a>
+        </span>
+    </div>
 </mibi-view-layout>
