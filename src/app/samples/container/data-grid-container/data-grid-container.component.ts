@@ -225,7 +225,7 @@ export class DataGridContainerComponent extends GuardedUnloadComponent implement
                 _.forEach(row.edits, (v, k) => {
                     if (result[k]) {
                         result[k].editMessage = ['Ursprünglich: ' +
-                            dataStateCombine[1].samples.importedData[index][k] || '&lt;leer&gt;'];
+                            (dataStateCombine[1].samples.importedData[index][k] || '&lt;leer&gt;')];
                     }
                 });
                 return result;
