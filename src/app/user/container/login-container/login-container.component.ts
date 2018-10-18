@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ICredentials } from '../../../user/model/models';
+import { ICredentials } from '../../../user/model/user.model';
 import * as fromUser from '../../state/user.reducer';
 import * as userActions from '../../state/user.actions';
 import { Store } from '@ngrx/store';

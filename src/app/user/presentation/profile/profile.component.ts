@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter, Input } from '@angular/core';
-import { IUser } from '../../../user/model/models';
+import { IUser } from '../../../user/model/user.model';
 
 @Component({
     selector: 'mibi-profile',

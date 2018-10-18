@@ -8,9 +8,9 @@ import * as fromSamples from '../../../samples/state/samples.reducer';
 import * as fromUser from '../../../user/state/user.reducer';
 import * as samplesActions from '../../../samples/state/samples.actions';
 import * as userActions from '../../../user/state/user.actions';
-import { takeWhile } from 'rxjs/operators';
+import { takeWhile, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { IUser } from '../../../user/model/models';
+import { IUser } from '../../../user/model/user.model';
 
 // TODO: Should have pass navBarConfig to presentational component, to make the presentational component more generic
 @Component({
@@ -29,6 +29,7 @@ export class NavBarContainerComponent implements OnInit, OnDestroy {
 
     hasEntries$: Observable<boolean>;
     currentUser$: Observable<IUser | null>;
+    private currentUser: IUser | null;
     private sampleData: SampleData[];
     private sampleSheet: ISampleSheet;
     private hasValidationErrors: boolean;
@@ -60,7 +61,10 @@ export class NavBarContainerComponent implements OnInit, OnDestroy {
                 (hasValidationErrors: boolean) => this.hasValidationErrors = hasValidationErrors
             );
 
-        this.currentUser$ = this.store.pipe(select(fromUser.getCurrentUser));
+        this.currentUser$ = this.store.pipe(
+            select(fromUser.getCurrentUser),
+            tap(cu => this.currentUser = cu)
+        );
     }
 
     ngOnDestroy(): void {
@@ -68,7 +72,12 @@ export class NavBarContainerComponent implements OnInit, OnDestroy {
     }
 
     onValidate() {
-        this.store.dispatch(new samplesActions.ValidateSamples(this.sampleData));
+        this.store.dispatch(new samplesActions.ValidateSamples({
+            data: this.sampleData,
+            meta: {
+                state: this.currentUser ? this.currentUser.institution.stateShort : ''
+            }
+        }));
         this.router.navigate(['/samples']).catch(
             err => { throw err; }
         );

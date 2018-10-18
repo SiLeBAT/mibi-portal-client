@@ -1,4 +1,4 @@
-import { ICredentials, IUser } from '../model/models';
+import { ICredentials, IUser } from '../model/user.model';
 import { Action } from '@ngrx/store';
 import { IAlert } from '../../core/model/alert.model';
 

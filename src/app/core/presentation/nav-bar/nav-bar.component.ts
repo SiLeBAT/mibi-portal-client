@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
-import { IUser } from '../../../user/model/models';
+import { IUser } from '../../../user/model/user.model';
 import { Observable } from 'rxjs';
 
 export interface INavBarConfiguration {

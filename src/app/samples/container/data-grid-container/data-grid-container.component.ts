@@ -14,9 +14,9 @@ import * as fromUser from '../../../user/state/user.reducer';
 import { IModal } from '../../../core/model/modal.model';
 import { ConfirmationService, ResolveEmit } from '@jaspero/ng-confirmations';
 import { AlertType } from '../../../core/model/alert.model';
-import { IUser } from '../../../user/model/models';
 import { IFormViewModel, IFormRowViewModel } from '../../presentation/data-grid/data-grid.component';
 import { ToolTipType } from '../../../shared/model/tooltip.model';
+import { IUser } from '../../../user/model/user.model';
 
 enum AlteredField {
     WARNING = 'warn',

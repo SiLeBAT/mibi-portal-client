@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { saveAs } from 'file-saver';
 
-import { ValidationService } from '../services/validation.service';
 import * as samplesActions from './samples.actions';
 import { map, concatMap, catchError, exhaustMap, withLatestFrom, switchMap, mergeMap, pluck } from 'rxjs/operators';
 import { IAnnotatedSampleData, IExcelFileBlob, IExcelData } from '../model/sample-management.model';
@@ -10,18 +9,21 @@ import { ExcelConverterService } from '../services/excel-converter.service';
 import { from, of } from 'rxjs';
 import { Store } from '@ngrx/store';
 import * as fromSamples from '../state/samples.reducer';
+import * as fromUser from '../../user/state/user.reducer';
 import { AlertType } from '../../core/model/alert.model';
 import { Router } from '@angular/router';
 import { ExcelToJsonService } from '../services/excel-to-json.service';
 import { SendSampleService } from '../services/send-sample.service';
+import { DataService } from '../../core/services/data.service';
+import { IUser } from '../../user/model/user.model';
 @Injectable()
 export class SamplesEffects {
 
     constructor(private actions$: Actions,
-        private validationService: ValidationService,
         private excelConverterService: ExcelConverterService,
         private sendSampleService: SendSampleService,
         private excelToJsonService: ExcelToJsonService,
+        private dataService: DataService,
         private router: Router,
         private store: Store<fromSamples.IState>) {
     }
@@ -29,7 +31,7 @@ export class SamplesEffects {
     @Effect()
     validateSamples$ = this.actions$.pipe(
         ofType(samplesActions.SamplesActionTypes.ValidateSamples),
-        concatMap((action: samplesActions.ValidateSamples) => this.validationService.validate(action.payload).pipe(
+        concatMap((action: samplesActions.ValidateSamples) => this.dataService.validateSampleData(action.payload).pipe(
             map((annotatedSamples: IAnnotatedSampleData[]) => {
                 return (new samplesActions.ValidateSamplesSuccess(annotatedSamples));
             }),
@@ -54,11 +56,17 @@ export class SamplesEffects {
     importExcelSuccess$ = this.actions$.pipe(
         ofType(samplesActions.SamplesActionTypes.ImportExcelFileSuccess),
         withLatestFrom(this.store),
-        map((actionStoreCombine: [samplesActions.ExportExcelFileSuccess, fromSamples.IState]) => {
+        map((actionStoreCombine: [samplesActions.ExportExcelFileSuccess, fromSamples.IState & fromUser.IState]) => {
             this.router.navigate(['/samples']).catch(() => {
                 throw new Error('Unable to navigate.');
             });
-            return new samplesActions.ValidateSamples(actionStoreCombine[1].samples.formData.map(e => e.data));
+            return new samplesActions.ValidateSamples({
+                data: actionStoreCombine[1].samples.formData.map(e => e.data),
+                meta: {
+                    state: actionStoreCombine[1].user.currentUser ?
+                        (actionStoreCombine[1].user.currentUser as IUser).institution.stateShort : ''
+                }
+            });
         })
     );
 
@@ -95,13 +103,21 @@ export class SamplesEffects {
     @Effect()
     sendSamplesInitation$ = this.actions$.pipe(
         ofType(samplesActions.SamplesActionTypes.SendSamplesInitiate),
-        switchMap((action: samplesActions.SendSamplesInitiate) => {
-            return this.validationService.validate(action.payload.formData.map(e => e.data)).pipe(
-                map((annotatedSamples: IAnnotatedSampleData[]) => {
-                    return (new samplesActions.ValidateSamplesSuccess(annotatedSamples));
-                }),
-                catchError(err => of(new samplesActions.ValidateSamplesFailure(err)))
-            );
+        withLatestFrom(this.store),
+        switchMap((actionStoreCombine: [samplesActions.SendSamplesInitiate, fromSamples.IState & fromUser.IState]) => {
+            return this.dataService.validateSampleData(
+                {
+                    data: actionStoreCombine[0].payload.formData.map(e => e.data),
+                    meta: {
+                        state: actionStoreCombine[1].user.currentUser ?
+                            (actionStoreCombine[1].user.currentUser as IUser).institution.stateShort : ''
+                    }
+                }).pipe(
+                    map((annotatedSamples: IAnnotatedSampleData[]) => {
+                        return (new samplesActions.ValidateSamplesSuccess(annotatedSamples));
+                    }),
+                    catchError(err => of(new samplesActions.ValidateSamplesFailure(err)))
+                );
         }),
         ofType(samplesActions.SamplesActionTypes.ValidateSamplesSuccess),
         pluck('payload'),

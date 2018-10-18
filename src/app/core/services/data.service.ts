@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpRequest } from '@angular/common/http';
-import { SampleData, IAnnotatedSampleData } from '../../samples/model/sample-management.model';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { IAnnotatedSampleData } from '../../samples/model/sample-management.model';
 import { Institution } from '../../user/model/institution.model';
-import { ICredentials, ITokenizedUser, IUserDetails } from '../../user/model/models';
-import { User } from '../../user/model/user.model';
-import { UserData } from '../../user/model/userdata.model';
 import {
     IAdminActivateResponseDTO,
-    IRecoverPasswordResponseDTO, IRegisterUserResponseDTO, ILoginResponseDTO, IActivationResponseDTO, ISystemInformationResponseDTO
+    IRecoverPasswordResponseDTO,
+    IRegisterUserResponseDTO,
+    ILoginResponseDTO, IActivationResponseDTO, ISystemInformationResponseDTO, IValidationResponseDTO, IFAQResponseDTO
 } from '../model/response.model';
-import { map } from 'rxjs/operators';
+import { ITokenizedUser, ICredentials, IUserDetails, User, UserData } from '../../user/model/user.model';
+import { IValidationRequest } from '../model/request.model';
 
 @Injectable({
     providedIn: 'root'
@@ -21,7 +22,7 @@ export class DataService {
     private API_VERSION = '/v1';
     private URL = {
         sendFile: this.API_ROOT + this.API_VERSION + '/job',
-        validateSample: this.API_ROOT + this.API_VERSION + '/upload',
+        validateSample: this.API_ROOT + this.API_VERSION + '/validation',
         institutions: this.API_ROOT + this.API_VERSION + '/institutions',
         login: this.API_ROOT + this.API_VERSION + '/users/login',
         register: this.API_ROOT + this.API_VERSION + '/users/register',
@@ -49,12 +50,12 @@ export class DataService {
         return JSON.parse(cu);
     }
 
-    getFAQs() {
-        return this.getData(this.URL.faq);
+    getFAQs(): Observable<IFAQResponseDTO> {
+        return this.httpClient.get<IFAQResponseDTO>(this.URL.faq);
     }
 
     getSystemInfo(): Observable<ISystemInformationResponseDTO> {
-        return this.getData<ISystemInformationResponseDTO>(this.URL.systemInfo);
+        return this.httpClient.get<ISystemInformationResponseDTO>(this.URL.systemInfo);
     }
 
     logout() {
@@ -63,82 +64,63 @@ export class DataService {
     }
 
     login(credentials: ICredentials): Observable<ILoginResponseDTO> {
-        return this.postData<ILoginResponseDTO>(this.URL.login, credentials);
+        return this.httpClient.post<ILoginResponseDTO>(this.URL.login, credentials);
     }
 
     sendSampleSheet(sendableFormData: FormData) {
-        return this.postFormData(this.URL.sendFile, sendableFormData);
+        return this.httpClient.post(this.URL.sendFile, sendableFormData);
     }
 
-    validateSampleData(data: SampleData[]): Observable<IAnnotatedSampleData[]> {
-        return this.postData<IAnnotatedSampleData[]>(this.URL.validateSample, data);
+    validateSampleData(requestData: IValidationRequest): Observable<IAnnotatedSampleData[]> {
+        return this.httpClient.post<IAnnotatedSampleData[]>(this.URL.validateSample, requestData).pipe(
+            map((dtoArray: IValidationResponseDTO[]) => dtoArray.map(this.fromValidationResponseDTOToAnnotatedSampleData))
+        );
     }
 
     getAllInstitutions(): Observable<Institution[]> {
-        return this.getData<Institution[]>(this.URL.institutions);
+        return this.httpClient.get<Institution[]>(this.URL.institutions);
     }
 
     registerUser(credentials: ICredentials, userDetails: IUserDetails): Observable<IRegisterUserResponseDTO> {
-        return this.postData(this.URL.register, { ...credentials, ...userDetails });
+        return this.httpClient.post<IRegisterUserResponseDTO>(this.URL.register, { ...credentials, ...userDetails });
     }
 
     recoverPassword(email: String): Observable<IRecoverPasswordResponseDTO> {
-        return this.postData<IRecoverPasswordResponseDTO>(this.URL.recovery, { email: email });
+        return this.httpClient.post<IRecoverPasswordResponseDTO>(this.URL.recovery, { email: email });
     }
 
     resetPassword(newPw: String, token: String) {
-        return this.postData(this.URL.reset + token, { newPw: newPw });
+        return this.httpClient.post(this.URL.reset + token, { newPw: newPw });
     }
 
     activateAccount(token: String): Observable<boolean> {
-        return this.postData<IActivationResponseDTO>(this.URL.activate + token, null).pipe(
+        return this.httpClient.post<IActivationResponseDTO>(this.URL.activate + token, null).pipe(
             map(r => r.activation)
         );
     }
 
     adminActivateAccount(adminToken: String): Observable<IAdminActivateResponseDTO> {
-        return this.postData(this.URL.adminactivate + adminToken, null);
+        return this.httpClient.post<IAdminActivateResponseDTO>(this.URL.adminactivate + adminToken, null);
     }
 
     addUserData(user: User, userData: UserData) {
-        return this.postData(this.URL.userdata, { user: user, userdata: userData });
+        return this.httpClient.post(this.URL.userdata, { user: user, userdata: userData });
     }
 
     updateUserData(_id: string, userData: UserData) {
-        return this.putData(this.URL.userdata + _id, userData);
+        return this.httpClient.put(this.URL.userdata + _id, userData);
     }
 
     deleteUserData(userdataId: string, userId: string) {
-        return this.deleteData(this.URL.userdata + userdataId + '&' + userId);
+        return this.httpClient.delete(this.URL.userdata + userdataId + '&' + userId);
     }
 
-    // TODO: Remove this
-    private postFormData(url: string, sendableFormData: FormData) {
-        const req = new HttpRequest('POST', url, sendableFormData, {
-            reportProgress: true
-        });
-
-        return this.httpClient
-            .request(req).toPromise();
-    }
-
-    private postData<T>(url: string, data: any): Observable<T> {
-        return this.httpClient
-            .post<T>(url, data);
-    }
-
-    private putData<T>(url: string, data: any): Observable<T> {
-        return this.httpClient
-            .put<T>(url, data);
-    }
-
-    private deleteData<T>(url: string) {
-        return this.httpClient
-            .delete<T>(url);
-    }
-
-    private getData<T>(url: string): Observable<T> {
-        return this.httpClient
-            .get<T>(url);
+    private fromValidationResponseDTOToAnnotatedSampleData(dto: IValidationResponseDTO): IAnnotatedSampleData {
+        return {
+            data: dto.data,
+            errors: dto.errors,
+            corrections: dto.corrections,
+            edits: {}
+        };
     }
 }

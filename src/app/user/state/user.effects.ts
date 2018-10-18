@@ -42,7 +42,8 @@ export class UserEffects {
                 }
             }),
             catchError(() => of(new userActions.LoginUserFailure({
-                message: 'Unable to login',
+                // tslint:disable-next-line:max-line-length
+                message: 'Es gab einen Fehler beim einloggen.  Bitte registrieren Sie sich oder, wenn Sie sich schon registriert haben, kontaktieren Sie das MiBi-Portal team.',
                 type: AlertType.ERROR
             })))
         ))

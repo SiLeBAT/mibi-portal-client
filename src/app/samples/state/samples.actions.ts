@@ -1,9 +1,10 @@
 import { Action } from '@ngrx/store';
-import { SampleData, IAnnotatedSampleData, ISampleSheet, IExcelData, IChangedDataGridField } from '../model/sample-management.model';
+import { IAnnotatedSampleData, ISampleSheet, IExcelData, IChangedDataGridField } from '../model/sample-management.model';
 import { IAlert } from '../../core/model/alert.model';
 import { LogoutUser } from '../../user/state/user.actions';
 import { IModalContent } from '../../core/model/modal.model';
-import { IUser } from '../../user/model/models';
+import { IUser } from '../../user/model/user.model';
+import { IValidationRequest } from '../../core/model/request.model';
 
 export enum SamplesActionTypes {
     ImportExcelFile = '[Samples] Import Excel file',
@@ -79,7 +80,7 @@ export class ExportExcelFileFailure implements Action {
 export class ValidateSamples implements Action {
     readonly type = SamplesActionTypes.ValidateSamples;
 
-    constructor(public payload: SampleData[]) {
+    constructor(public payload: IValidationRequest) {
 
     }
 }
