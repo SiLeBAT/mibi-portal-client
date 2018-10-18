@@ -1,4 +1,5 @@
-import { ITokenizedUser } from '../../user/model/models';
+import { ITokenizedUser } from '../../user/model/user.model';
+import { SampleData } from '../../samples/model/sample-management.model';
 
 export interface IRecoverPasswordResponseDTO {
     title: string;
@@ -25,4 +26,33 @@ export interface IAdminActivateResponseDTO extends IActivationResponseDTO {
 export interface ISystemInformationResponseDTO {
     version: string;
     lastChange: string;
+}
+interface IValidationResponseErrorEntryDTO {
+    code: number;
+    level: number;
+    message: string;
+}
+
+interface IValidationResponseErrorCollectionDTO {
+    [key: string]: IValidationResponseErrorEntryDTO[];
+}
+
+interface IValidationResponseCorrectionEntryDTO {
+    field: keyof SampleData;
+    original: string;
+    correctionOffer: string[];
+}
+
+export interface IValidationResponseDTO {
+    data: Record<string, string>;
+    errors: IValidationResponseErrorCollectionDTO;
+    corrections: IValidationResponseCorrectionEntryDTO[];
+}
+
+interface IQA {
+    q: string;
+    a: string;
+}
+export interface IFAQResponseDTO {
+    [key: string]: IQA[];
 }

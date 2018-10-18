@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IUser } from '../../../user/model/models';
+import { IUser } from '../../../user/model/user.model';
 import * as userActions from '../../../user/state/user.actions';
 import { IState } from '../../../state/app.state';
 import { Store } from '@ngrx/store';

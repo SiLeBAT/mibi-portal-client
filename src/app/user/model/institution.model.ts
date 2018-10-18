@@ -2,7 +2,7 @@
 // TODO: Refactor
 export class Institution {
     _id: string;
-    short: string;
+    stateShort: string;
     name1: string;
     name2: string;
     location: string;
@@ -17,11 +17,10 @@ export class Institution {
     phone: string;
     fax: string;
     email: Array<string>;
-    state_id: string;
 
     constructor(entry: any) {
         this._id = entry._id;
-        this.short = entry.short;
+        this.stateShort = entry.stateShort || '';
         this.name1 = entry.name1;
         this.name2 = entry.name2;
         this.location = entry.location;
