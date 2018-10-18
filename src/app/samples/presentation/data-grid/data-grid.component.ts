@@ -3,7 +3,8 @@ import { HotTableComponent } from '@handsontable/angular';
 import 'tooltipster';
 import * as Handsontable from 'handsontable';
 import * as _ from 'lodash';
-import { ITableDataOutput, IColConfig
+import {
+    ITableDataOutput, IColConfig
 } from '../../model/sample-management.model';
 import {
     ToolTipTheme, IToolTip, createToolTip, ToolTipType
@@ -24,6 +25,9 @@ interface ICellProperties {
     source?: string[];
     type?: string;
     strict?: boolean;
+    filter?: boolean;
+    trimDropdown?: boolean;
+    visibleRows?: number;
 }
 
 interface IColumnProperties {
@@ -159,7 +163,10 @@ export class DataGridComponent implements OnInit {
             if (cellConfig.correctionOffer.length) {
                 cellProperties.source = cellConfig.correctionOffer;
                 cellProperties.type = 'autocomplete';
+                cellProperties.filter = false;
                 cellProperties.strict = false;
+                cellProperties.trimDropdown = false;
+                cellProperties.visibleRows = 21;
             }
 
             if (cellConfig.editMessage.length) {
