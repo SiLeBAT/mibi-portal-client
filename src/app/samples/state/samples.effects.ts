@@ -35,7 +35,10 @@ export class SamplesEffects {
             map((annotatedSamples: IAnnotatedSampleData[]) => {
                 return (new samplesActions.ValidateSamplesSuccess(annotatedSamples));
             }),
-            catchError(err => of(new samplesActions.ValidateSamplesFailure(err)))
+            catchError(() => of(new samplesActions.ValidateSamplesFailure({
+                message: 'Es gab einen Fehler beim Validieren.',
+                type: AlertType.ERROR
+            })))
         ))
     );
 
@@ -47,7 +50,10 @@ export class SamplesEffects {
                 map((excelData: IExcelData) => {
                     return (new samplesActions.ImportExcelFileSuccess(excelData));
                 }),
-                catchError(err => of(new samplesActions.ImportExcelFileFailure(err)))
+                catchError(() => of(new samplesActions.ImportExcelFileFailure({
+                    message: 'Es gab einen Fehler beim Importieren der Datei.',
+                    type: AlertType.ERROR
+                })))
             );
         })
     );
@@ -81,7 +87,10 @@ export class SamplesEffects {
                     saveAs(excelFileBlob.blob, excelFileBlob.fileName);
                     return new samplesActions.ExportExcelFileSuccess();
                 }),
-                catchError(err => of(new samplesActions.ExportExcelFileFailure(err)))
+                catchError(() => of(new samplesActions.ExportExcelFileFailure({
+                    message: 'Es gab einen Fehler beim Exportieren der Datei.',
+                    type: AlertType.ERROR
+                })))
             ))
     );
 
@@ -97,7 +106,10 @@ export class SamplesEffects {
                     Bitte drucken Sie die Exceltabelle in Ihrem Mailanhang
                     aus und legen sie Ihren Isolaten bei.`
                 })),
-                catchError(err => of(new samplesActions.SendSamplesFailure(err)))
+                catchError(() => of(new samplesActions.SendSamplesFailure({
+                    message: 'Es gab einen Fehler beim Versenden der Datei and das MiBi-Portal.',
+                    type: AlertType.ERROR
+                })))
             )
         )
     );
@@ -120,7 +132,10 @@ export class SamplesEffects {
                     map((annotatedSamples: IAnnotatedSampleData[]) => {
                         return (new samplesActions.ValidateSamplesSuccess(annotatedSamples));
                     }),
-                    catchError(err => of(new samplesActions.ValidateSamplesFailure(err)))
+                    catchError(() => of(new samplesActions.ValidateSamplesFailure({
+                        message: 'Es gab einen Fehler beim Versenden der Datei and das MiBi-Portal.',
+                        type: AlertType.ERROR
+                    })))
                 );
         }),
         ofType(samplesActions.SamplesActionTypes.ValidateSamplesSuccess),

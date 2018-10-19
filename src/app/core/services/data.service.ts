@@ -76,7 +76,7 @@ export class DataService {
         return this.httpClient.post<IAnnotatedSampleData[]>(this.URL.validateSample, requestData).pipe(
             map((dtoArray: IValidationResponseDTO[]) => dtoArray.map(this.fromValidationResponseDTOToAnnotatedSampleData)),
             catchError(() => {
-                throw new ClientError('Unable to Validate data');
+                throw new ClientError('Beim Validieren ist ein Fehler eingetreten');
             })
         );
     }
