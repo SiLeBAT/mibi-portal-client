@@ -64,7 +64,9 @@ export class SamplesEffects {
                 data: actionStoreCombine[1].samples.formData.map(e => e.data),
                 meta: {
                     state: actionStoreCombine[1].user.currentUser ?
-                        (actionStoreCombine[1].user.currentUser as IUser).institution.stateShort : ''
+                        (actionStoreCombine[1].user.currentUser as IUser).institution.stateShort : '',
+                    nrl: actionStoreCombine[1].samples.nrl ?
+                        actionStoreCombine[1].samples.nrl : ''
                 }
             });
         })
@@ -110,7 +112,9 @@ export class SamplesEffects {
                     data: actionStoreCombine[0].payload.formData.map(e => e.data),
                     meta: {
                         state: actionStoreCombine[1].user.currentUser ?
-                            (actionStoreCombine[1].user.currentUser as IUser).institution.stateShort : ''
+                            (actionStoreCombine[1].user.currentUser as IUser).institution.stateShort : '',
+                        nrl: actionStoreCombine[1].samples.nrl ?
+                            actionStoreCombine[1].samples.nrl : ''
                     }
                 }).pipe(
                     map((annotatedSamples: IAnnotatedSampleData[]) => {

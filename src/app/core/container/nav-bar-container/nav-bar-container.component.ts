@@ -32,8 +32,8 @@ export class NavBarContainerComponent implements OnInit, OnDestroy {
     private currentUser: IUser | null;
     private sampleData: SampleData[];
     private sampleSheet: ISampleSheet;
-    private hasValidationErrors: boolean;
     private componentActive: boolean = true;
+    private nrl: string = '';
 
     viewConfig: INavBarConfiguration = {
         appName: environment.appName
@@ -56,15 +56,16 @@ export class NavBarContainerComponent implements OnInit, OnDestroy {
                 (sheet: ISampleSheet) => this.sampleSheet = sheet
             );
 
-        this.store.pipe(select(fromSamples.hasValidationErrors),
-            takeWhile(() => this.componentActive)).subscribe(
-                (hasValidationErrors: boolean) => this.hasValidationErrors = hasValidationErrors
-            );
-
         this.currentUser$ = this.store.pipe(
             select(fromUser.getCurrentUser),
             tap(cu => this.currentUser = cu)
         );
+
+        this.store.pipe(select(fromSamples.getNRL),
+            takeWhile(() => this.componentActive)).subscribe(
+                (nrl: string) => this.nrl = nrl
+            );
+
     }
 
     ngOnDestroy(): void {
@@ -75,7 +76,8 @@ export class NavBarContainerComponent implements OnInit, OnDestroy {
         this.store.dispatch(new samplesActions.ValidateSamples({
             data: this.sampleData,
             meta: {
-                state: this.currentUser ? this.currentUser.institution.stateShort : ''
+                state: this.currentUser ? this.currentUser.institution.stateShort : '',
+                nrl: this.nrl
             }
         }));
         this.router.navigate(['/samples']).catch(

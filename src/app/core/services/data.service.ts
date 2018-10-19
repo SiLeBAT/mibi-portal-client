@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { IAnnotatedSampleData } from '../../samples/model/sample-management.model';
 import { Institution } from '../../user/model/institution.model';
 import {
@@ -12,6 +12,7 @@ import {
 } from '../model/response.model';
 import { ITokenizedUser, ICredentials, IUserDetails, User, UserData } from '../../user/model/user.model';
 import { IValidationRequest } from '../model/request.model';
+import { ClientError } from '../model/client-error';
 
 @Injectable({
     providedIn: 'root'
@@ -73,7 +74,10 @@ export class DataService {
 
     validateSampleData(requestData: IValidationRequest): Observable<IAnnotatedSampleData[]> {
         return this.httpClient.post<IAnnotatedSampleData[]>(this.URL.validateSample, requestData).pipe(
-            map((dtoArray: IValidationResponseDTO[]) => dtoArray.map(this.fromValidationResponseDTOToAnnotatedSampleData))
+            map((dtoArray: IValidationResponseDTO[]) => dtoArray.map(this.fromValidationResponseDTOToAnnotatedSampleData)),
+            catchError(() => {
+                throw new ClientError('Unable to Validate data');
+            })
         );
     }
 

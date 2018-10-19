@@ -33,7 +33,6 @@ export interface IExcelFileBlob {
 
 export interface IImportedExcelFileDetails {
     workSheet: WorkSheet;
-    isVersion14: boolean;
     file: File;
     oriDataLength: number;
 }
@@ -43,8 +42,12 @@ export interface ISampleSheet {
     workSheet: IImportedExcelFileDetails | null;
 }
 
+export interface ISampleMetaData {
+    nrl: string;
+}
 export interface IExcelData {
     data: SampleData[];
+    meta: ISampleMetaData;
     workSheet: IImportedExcelFileDetails;
 }
 
