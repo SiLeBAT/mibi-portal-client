@@ -17,13 +17,15 @@ export interface IState extends fromRoot.IState {
 export interface ISamplesState extends ISampleSheet {
     error: string;
     importedData: SampleData[];
+    nrl: string;
 }
 
 const initialState: ISamplesState = {
     formData: [],
     workSheet: null,
     error: '',
-    importedData: []
+    importedData: [],
+    nrl: ''
 };
 
 // SELECTORS
@@ -37,6 +39,11 @@ export const getFormData = createSelector(
 export const getImportedData = createSelector(
     getSamplesFeatureState,
     state => state.importedData
+);
+
+export const getNRL = createSelector(
+    getSamplesFeatureState,
+    state => state.nrl
 );
 
 export const getDataValues = createSelector(
@@ -93,7 +100,8 @@ export function reducer(state: ISamplesState = initialState, action: SamplesActi
                         edits: {}
                     })),
                     workSheet: excelData.workSheet,
-                    importedData: excelData.data
+                    importedData: excelData.data,
+                    nrl: excelData.meta.nrl
                 }
             };
         case SamplesActionTypes.ValidateSamplesSuccess:

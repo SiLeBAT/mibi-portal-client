@@ -3,7 +3,7 @@ import { WorkBook, WorkSheet, read, utils } from 'xlsx';
 import { IImportedExcelFileDetails, SampleData, VALID_SHEET_NAME, FORM_PROPERTIES, IExcelData } from '../model/sample-management.model';
 import * as moment from 'moment';
 import 'moment/locale/de';
-import { FrontEndError } from '../../core/model/frontend-error';
+import { ClientError } from '../../core/model/client-error';
 
 export type AOO = any[];
 
@@ -18,24 +18,28 @@ export class ExcelToJsonService {
     async convertExcelToJSJson(file: File): Promise<IExcelData> {
         let sampleSheet: WorkSheet;
         let data: SampleData[];
+        let nrl: string = '';
         try {
             sampleSheet = await this.fromFileToWorkSheet(file);
             data = this.fromWorksheetToData(sampleSheet);
+            nrl = this.getNRLFromWorkSheet(sampleSheet);
             const currentWorkSheet: IImportedExcelFileDetails = {
                 workSheet: sampleSheet,
-                isVersion14: this.isVersion14(sampleSheet),
                 file: file,
                 oriDataLength: data.length
             };
 
             return {
                 data: data,
+                meta: {
+                    nrl
+                },
                 workSheet: currentWorkSheet
             };
 
         } catch (err) {
             const errMessage: string = 'Ein Fehler ist aufgetreten beim einlesen der Datei.';
-            throw new FrontEndError(errMessage);
+            throw new ClientError(errMessage);
         }
     }
 
@@ -64,24 +68,18 @@ export class ExcelToJsonService {
             fileReader.readAsBinaryString(excelFile);
         });
     }
-
+    private getNRLFromWorkSheet(workSheet: WorkSheet): string {
+        return workSheet['B7'].v || '';
+    }
     private fromWorksheetToData(workSheet: WorkSheet): SampleData[] {
 
         let data: AOO;
         const lineNumber: number = this.getVersionDependentLine(workSheet);
-        if (this.isVersion14(workSheet)) {
-            data = utils.sheet_to_json(workSheet, {
-                header: FORM_PROPERTIES,
-                range: lineNumber,
-                defval: ''
-            });
-        } else {
-            data = utils.sheet_to_json(workSheet, {
-                header: FORM_PROPERTIES.filter(item => item !== 'vvvo'),
-                range: this.getVersionDependentLine(workSheet),
-                defval: ''
-            });
-        }
+        data = utils.sheet_to_json(workSheet, {
+            header: FORM_PROPERTIES,
+            range: lineNumber,
+            defval: ''
+        });
         const cleanedData = this.fromDataToCleanedSamples(data);
         const formattedData = this.formatData(cleanedData);
         return formattedData;
@@ -132,15 +130,8 @@ export class ExcelToJsonService {
         }
     }
 
-    private isVersion14(workSheet: WorkSheet): boolean {
-        const cellAdress = 'B3';
-        const cell = workSheet[cellAdress];
-
-        return (cell !== undefined);
-    }
-
     private getVersionDependentLine(workSheet: WorkSheet): number {
-        return (this.isVersion14(workSheet) ? 41 : 39);
+        return 41;
     }
 
     private fromDataToCleanedSamples(data: AOO): AOO {

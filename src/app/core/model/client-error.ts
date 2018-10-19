@@ -1,4 +1,4 @@
-export class FrontEndError extends Error {
+export class ClientError extends Error {
     friendlyMessage: string = '';
     // tslint:disable-next-line
     constructor(...args: any[]) {
