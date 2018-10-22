@@ -111,7 +111,7 @@ export function reducer(state: ISamplesState = initialState, action: SamplesActi
                         data: response.data,
                         errors: response.errors,
                         corrections: response.corrections,
-                        edits: { ...response.edits, ...state.formData[i].edits }
+                        edits: response.edits
                     };
                 }
             );
