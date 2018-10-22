@@ -120,7 +120,8 @@ export function reducer(state: ICoreState = initialState, action: SystemActions)
                 ...state, ...{
                     ui: {
                         ...state.ui, ...{
-                            isBusy: false
+                            isBusy: false,
+                            alert: null
                         }
                     }
                 }
@@ -138,6 +139,14 @@ export function reducer(state: ICoreState = initialState, action: SystemActions)
                             alert: {
                                 type: action.payload.type,
                                 message: action.payload.message
+                            },
+                            modal: {
+                                ...state.ui.modal,
+                                ...{
+                                    title: '',
+                                    message: '',
+                                    show: false
+                                }
                             }
                         }
                     }

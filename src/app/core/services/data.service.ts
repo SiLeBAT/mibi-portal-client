@@ -69,14 +69,17 @@ export class DataService {
     }
 
     sendSampleSheet(sendableFormData: FormData) {
-        return this.httpClient.post(this.URL.sendFile, sendableFormData);
+        return this.httpClient.post(this.URL.sendFile, sendableFormData).toPromise()
+        .catch(() => {
+            throw new ClientError('Beim Versenden ist ein Fehler aufgetreten');
+        });
     }
 
     validateSampleData(requestData: IValidationRequest): Observable<IAnnotatedSampleData[]> {
         return this.httpClient.post<IAnnotatedSampleData[]>(this.URL.validateSample, requestData).pipe(
             map((dtoArray: IValidationResponseDTO[]) => dtoArray.map(this.fromValidationResponseDTOToAnnotatedSampleData)),
             catchError(() => {
-                throw new ClientError('Beim Validieren ist ein Fehler eingetreten');
+                throw new ClientError('Beim Validieren ist ein Fehler aufgetreten');
             })
         );
     }

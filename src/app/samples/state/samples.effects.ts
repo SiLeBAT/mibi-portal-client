@@ -81,7 +81,7 @@ export class SamplesEffects {
     @Effect()
     exportExcel$ = this.actions$.pipe(
         ofType(samplesActions.SamplesActionTypes.ExportExcelFile),
-        exhaustMap((action: samplesActions.ExportExcelFile) =>
+        mergeMap((action: samplesActions.ExportExcelFile) =>
             from(this.excelConverterService.convertToExcel(action.payload)).pipe(
                 map((excelFileBlob: IExcelFileBlob) => {
                     saveAs(excelFileBlob.blob, excelFileBlob.fileName);
@@ -98,7 +98,7 @@ export class SamplesEffects {
     sendSamplesFromStore$ = this.actions$.pipe(
         ofType(samplesActions.SamplesActionTypes.SendSamplesFromStore),
         withLatestFrom(this.store),
-        exhaustMap((actionStoreCombine: [samplesActions.SendSamplesFromStore, fromSamples.IState]) =>
+        mergeMap((actionStoreCombine: [samplesActions.SendSamplesFromStore, fromSamples.IState]) =>
             from(this.sendSampleService.sendData(actionStoreCombine[1].samples, actionStoreCombine[0].payload)).pipe(
                 map(() => new samplesActions.SendSamplesSuccess({
                     type: AlertType.SUCCESS,
