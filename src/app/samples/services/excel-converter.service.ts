@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 // @ts-ignore
 import * as XlsxPopulate from 'xlsx-populate/browser/xlsx-populate';
+import * as moment from 'moment';
+import 'moment/locale/de';
 import { WindowRefService } from './window-ref.service';
 import {
     ISampleSheet,
@@ -33,7 +35,8 @@ export class ExcelConverterService {
         if (entries.length > 0) {
             fileName += entries[0];
         }
-        fileName += '_validated.xlsx';
+        const timestamp = moment().unix();
+        fileName += '.MP_' + timestamp + '.xlsx';
 
         const dataToSave = this.fromDataObjToAOO(data.formData.map(e => e.data));
         let workbook = await this.fromFileToWorkbook(file);
