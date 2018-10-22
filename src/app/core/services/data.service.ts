@@ -70,9 +70,9 @@ export class DataService {
 
     sendSampleSheet(sendableFormData: FormData) {
         return this.httpClient.post(this.URL.sendFile, sendableFormData).toPromise()
-        .catch(() => {
-            throw new ClientError('Beim Versenden ist ein Fehler aufgetreten');
-        });
+            .catch(() => {
+                throw new ClientError('Beim Versenden ist ein Fehler aufgetreten');
+            });
     }
 
     validateSampleData(requestData: IValidationRequest): Observable<IAnnotatedSampleData[]> {
@@ -101,7 +101,7 @@ export class DataService {
     }
 
     activateAccount(token: String): Observable<boolean> {
-        return this.httpClient.post<IActivationResponseDTO>(this.URL.activate + token, null).pipe(
+        return this.httpClient.post<IActivationResponseDTO>([this.URL.activate, token].join('/'), null).pipe(
             map(r => r.activation)
         );
     }
