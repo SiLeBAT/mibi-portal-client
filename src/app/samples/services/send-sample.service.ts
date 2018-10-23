@@ -14,8 +14,8 @@ export class SendSampleService {
         private excelConverter: ExcelConverterService,
         private httpFacade: DataService) { }
 
-    async sendData(sampleSheet: ISampleSheet, currentUser: IUser) {
-        const excelFileBlob = await this.excelConverter.convertToExcel(sampleSheet);
+    async sendData(sampleSheet: ISampleSheet, filename: string, currentUser: IUser) {
+        const excelFileBlob = await this.excelConverter.convertToExcel(sampleSheet, filename);
         const formData = this.assembleForm(excelFileBlob, currentUser);
         return this.httpFacade.sendSampleSheet(formData);
 

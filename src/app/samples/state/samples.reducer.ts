@@ -111,7 +111,7 @@ export function reducer(state: ISamplesState = initialState, action: SamplesActi
                         data: response.data,
                         errors: response.errors,
                         corrections: response.corrections,
-                        edits: response.edits
+                        edits: { ...state.formData[i].edits, ...response.edits }
                     };
                 }
             );
@@ -145,7 +145,7 @@ export function reducer(state: ISamplesState = initialState, action: SamplesActi
                         if (newEdits[columnId] === newValue) {
                             delete newEdits[columnId];
                         } else {
-                            newEdits[columnId] = originalValue;
+                            newEdits[columnId] = state.importedData[i][columnId] ;
                         }
                         newErrors = {
                             ...e.errors, ...{

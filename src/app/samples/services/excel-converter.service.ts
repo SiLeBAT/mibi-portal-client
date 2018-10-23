@@ -3,8 +3,6 @@ import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 // @ts-ignore
 import * as XlsxPopulate from 'xlsx-populate/browser/xlsx-populate';
-import * as moment from 'moment';
-import 'moment/locale/de';
 import { WindowRefService } from './window-ref.service';
 import {
     ISampleSheet,
@@ -23,7 +21,7 @@ export class ExcelConverterService {
         this._window = windowRef.nativeWindow;
     }
 
-    async convertToExcel(data: ISampleSheet): Promise<IExcelFileBlob> {
+    async convertToExcel(data: ISampleSheet, fileNameAddon: string = ''): Promise<IExcelFileBlob> {
 
         if (!data.workSheet) {
             throw new Error('No Excel data available.');
@@ -35,8 +33,8 @@ export class ExcelConverterService {
         if (entries.length > 0) {
             fileName += entries[0];
         }
-        const timestamp = moment().unix();
-        fileName += '.MP_' + timestamp + '.xlsx';
+
+        fileName += fileNameAddon + '.xlsx';
 
         const dataToSave = this.fromDataObjToAOO(data.formData.map(e => e.data));
         let workbook = await this.fromFileToWorkbook(file);
