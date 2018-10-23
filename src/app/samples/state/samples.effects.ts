@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { saveAs } from 'file-saver';
-
+import * as moment from 'moment';
+import 'moment/locale/de';
 import * as samplesActions from './samples.actions';
 import { map, concatMap, catchError, exhaustMap, withLatestFrom, switchMap, mergeMap, pluck } from 'rxjs/operators';
 import { IAnnotatedSampleData, IExcelFileBlob, IExcelData } from '../model/sample-management.model';
@@ -81,8 +82,9 @@ export class SamplesEffects {
     @Effect()
     exportExcel$ = this.actions$.pipe(
         ofType(samplesActions.SamplesActionTypes.ExportExcelFile),
-        mergeMap((action: samplesActions.ExportExcelFile) =>
-            from(this.excelConverterService.convertToExcel(action.payload)).pipe(
+        mergeMap((action: samplesActions.ExportExcelFile) => {
+            const filenameAddon = '.MP_' + moment().unix();
+            return from(this.excelConverterService.convertToExcel(action.payload, filenameAddon)).pipe(
                 map((excelFileBlob: IExcelFileBlob) => {
                     saveAs(excelFileBlob.blob, excelFileBlob.fileName);
                     return new samplesActions.ExportExcelFileSuccess();
@@ -91,15 +93,17 @@ export class SamplesEffects {
                     message: 'Es gab einen Fehler beim Exportieren der Datei.',
                     type: AlertType.ERROR
                 })))
-            ))
+            );
+        })
     );
 
     @Effect()
     sendSamplesFromStore$ = this.actions$.pipe(
         ofType(samplesActions.SamplesActionTypes.SendSamplesFromStore),
         withLatestFrom(this.store),
-        mergeMap((actionStoreCombine: [samplesActions.SendSamplesFromStore, fromSamples.IState]) =>
-            from(this.sendSampleService.sendData(actionStoreCombine[1].samples, actionStoreCombine[0].payload)).pipe(
+        mergeMap((actionStoreCombine: [samplesActions.SendSamplesFromStore, fromSamples.IState]) => {
+            const filenameAddon = '_validated';
+            return from(this.sendSampleService.sendData(actionStoreCombine[1].samples, filenameAddon, actionStoreCombine[0].payload)).pipe(
                 map(() => new samplesActions.SendSamplesSuccess({
                     type: AlertType.SUCCESS,
                     message: `Der Auftrag wurde an das BfR gesendet.
@@ -110,7 +114,8 @@ export class SamplesEffects {
                     message: 'Es gab einen Fehler beim Versenden der Datei and das MiBi-Portal.',
                     type: AlertType.ERROR
                 })))
-            )
+            );
+        }
         )
     );
 
