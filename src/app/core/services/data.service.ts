@@ -107,7 +107,7 @@ export class DataService {
     }
 
     adminActivateAccount(adminToken: String): Observable<IAdminActivateResponseDTO> {
-        return this.httpClient.post<IAdminActivateResponseDTO>(this.URL.adminactivate + adminToken, null);
+        return this.httpClient.post<IAdminActivateResponseDTO>([this.URL.adminactivate, adminToken].join('/'), null);
     }
 
     addUserData(user: User, userData: UserData) {
