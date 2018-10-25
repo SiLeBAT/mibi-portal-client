@@ -127,7 +127,7 @@ export class DataService {
             data: dto.data,
             errors: dto.errors,
             corrections: dto.corrections,
-            edits: {}
+            edits: dto.edits
         };
     }
 }

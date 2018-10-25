@@ -213,10 +213,12 @@ export class DataGridContainerComponent extends GuardedUnloadComponent implement
                 _.forEach(row.errors, (v, k) => {
                     if (result[k]) {
                         result[k].errors = {
-                            severity: this.getFieldBackground(Math.max.apply(Math, v.map(error => error.level))),
+                            severity: this.getFieldBackground(v.map(error => error.level)),
                             errorMessage: v.filter(error => error.level === ToolTipType.ERROR).map(error => error.message),
                             warningMessage: v.filter(
-                                error => error.level === ToolTipType.WARNING).map(error => error.message)
+                                error => error.level === ToolTipType.WARNING).map(error => error.message),
+                            autoCorrectMessage: v.filter(
+                                error => error.level === ToolTipType.INFO).map(error => error.message)
                         };
                     }
                 });
@@ -237,17 +239,16 @@ export class DataGridContainerComponent extends GuardedUnloadComponent implement
 
     }
 
-    private getFieldBackground(status: number): string {
-        let fieldClassName = '';
-        switch (status) {
-            case 1:
-                fieldClassName = AlteredField.WARNING;
-                break;
-            case 2:
-                fieldClassName = AlteredField.ERROR;
-                break;
-            default:
+    private getFieldBackground(status: number[]): string {
+        if (status.includes(2)) {
+            return AlteredField.ERROR;
         }
-        return fieldClassName;
+        if (status.includes(1)) {
+            return AlteredField.WARNING;
+        }
+        if (status.includes(4)) {
+            return AlteredField.AUTOCORRECTED;
+        }
+        return '';
     }
 }
