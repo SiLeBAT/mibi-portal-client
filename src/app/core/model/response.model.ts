@@ -47,6 +47,7 @@ export interface IValidationResponseDTO {
     data: Record<string, string>;
     errors: IValidationResponseErrorCollectionDTO;
     corrections: IValidationResponseCorrectionEntryDTO[];
+    edits: Record<string, string>;
 }
 
 interface IQA {

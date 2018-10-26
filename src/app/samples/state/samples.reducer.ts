@@ -142,7 +142,7 @@ export function reducer(state: ISamplesState = initialState, action: SamplesActi
                             }
                         };
                         newEdits = { ...e.edits };
-                        if (newEdits[columnId] === newValue) {
+                        if (newEdits[columnId] && newEdits[columnId] === newValue) {
                             delete newEdits[columnId];
                         } else {
                             newEdits[columnId] = state.importedData[i][columnId] ;

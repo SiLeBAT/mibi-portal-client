@@ -63,6 +63,7 @@ export interface IErrorViewModel {
     severity: string;
     errorMessage: string[];
     warningMessage: string[];
+    autoCorrectMessage: string[];
 }
 export interface IFormCellViewModel {
     id: string;
@@ -100,6 +101,8 @@ export class DataGridComponent implements OnInit {
         this.ToolTips[ToolTipType.ERROR] = createToolTip(ToolTipTheme.ERROR, 'top');
         this.ToolTips[ToolTipType.TIP]
             = createToolTip(ToolTipTheme.TIP, 'right');
+        this.ToolTips[ToolTipType.INFO]
+            = createToolTip(ToolTipTheme.INFO, 'left');
 
         this.settings = {
             colHeaders: this.colConfig.map(c => c.title),
@@ -182,6 +185,9 @@ export class DataGridComponent implements OnInit {
                 }
                 if (cellConfig.errors.warningMessage.length) {
                     cellProperties.tooltipOptionList.push(this.ToolTips[ToolTipType.WARNING].getOptions(cellConfig.errors.warningMessage));
+                }
+                if (cellConfig.errors.autoCorrectMessage.length) {
+                    cellProperties.tooltipOptionList.push(this.ToolTips[ToolTipType.INFO].getOptions(cellConfig.errors.autoCorrectMessage));
                 }
             }
 
