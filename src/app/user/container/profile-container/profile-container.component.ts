@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { IUser } from '../../../user/model/user.model';
 import * as userActions from '../../../user/state/user.actions';
-import { IState } from '../../../state/app.state';
+import { State } from '../../../state/app.state';
 import { Store } from '@ngrx/store';
 
 @Component({
@@ -15,7 +15,7 @@ export class ProfileContainerComponent implements OnInit {
     currentUser: IUser;
 
     constructor(
-        private store: Store<IState>) { }
+        private store: Store<State>) { }
 
     ngOnInit() {
         const cu: string | null = localStorage.getItem('currentUser');

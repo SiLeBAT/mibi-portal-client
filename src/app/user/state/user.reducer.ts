@@ -3,7 +3,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { UserActions, UserActionTypes } from './user.actions';
 import { IUser } from '../model/user.model';
 export const STATE_SLICE_NAME = 'user';
-export interface IState extends fromRoot.IState {
+export interface IState extends fromRoot.State {
     user: IUserState;
 }
 

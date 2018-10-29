@@ -1,11 +1,9 @@
 import { ICredentials, IUser } from '../model/user.model';
 import { Action } from '@ngrx/store';
-import { IAlert } from '../../core/model/alert.model';
 
 export enum UserActionTypes {
     LoginUser = '[User] Log in user',
     LoginUserSuccess = '[User] Successfully logged in user',
-    LoginUserFailure = '[User] Failure logging in user',
     LogoutUser = '[User] Log out user'
 }
 
@@ -25,14 +23,6 @@ export class LoginUserSuccess implements Action {
     }
 }
 
-export class LoginUserFailure implements Action {
-    readonly type = UserActionTypes.LoginUserFailure;
-
-    constructor(public payload: IAlert) {
-
-    }
-}
-
 export class LogoutUser implements Action {
     readonly type = UserActionTypes.LogoutUser;
 
@@ -43,5 +33,4 @@ export class LogoutUser implements Action {
 
 export type UserActions = LoginUser
     | LoginUserSuccess
-    | LoginUserFailure
     | LogoutUser;

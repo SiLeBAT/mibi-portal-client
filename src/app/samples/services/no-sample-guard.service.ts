@@ -10,7 +10,7 @@ import { take } from 'rxjs/operators';
 export class NoSampleGuard implements CanActivate {
 
     constructor(
-        private store: Store<fromSamples.IState>,
+        private store: Store<fromSamples.State>,
         private router: Router) { }
 
     async canActivate() {

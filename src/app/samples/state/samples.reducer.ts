@@ -10,26 +10,24 @@ import {
 } from '../model/sample-management.model';
 
 export const STATE_SLICE_NAME = 'samples';
-export interface IState extends fromRoot.IState {
-    samples: ISamplesState;
+export interface State extends fromRoot.State {
+    samples: SamplesState;
 }
 
-export interface ISamplesState extends ISampleSheet {
-    error: string;
+export interface SamplesState extends ISampleSheet {
     importedData: SampleData[];
     nrl: string;
 }
 
-const initialState: ISamplesState = {
+const initialState: SamplesState = {
     formData: [],
     workSheet: null,
-    error: '',
     importedData: [],
     nrl: ''
 };
 
 // SELECTORS
-export const getSamplesFeatureState = createFeatureSelector<ISamplesState>(STATE_SLICE_NAME);
+export const getSamplesFeatureState = createFeatureSelector<SamplesState>(STATE_SLICE_NAME);
 
 export const getFormData = createSelector(
     getSamplesFeatureState,
@@ -61,11 +59,6 @@ export const hasEntries = createSelector(
     state => !!state.length
 );
 
-export const getSamplesError = createSelector(
-    getSamplesFeatureState,
-    state => state.error
-);
-
 export const hasValidationErrors = createSelector(
     getFormData,
     state => {
@@ -85,7 +78,7 @@ export const hasValidationErrors = createSelector(
 );
 
 // REDUCER
-export function reducer(state: ISamplesState = initialState, action: SamplesActions): ISamplesState {
+export function reducer(state: SamplesState = initialState, action: SamplesActions): SamplesState {
     switch (action.type) {
         case UserActionTypes.LogoutUser:
             return { ...initialState };
@@ -115,10 +108,7 @@ export function reducer(state: ISamplesState = initialState, action: SamplesActi
                     };
                 }
             );
-            return { ...state, ...{ formData: mergedEntries, error: '' } };
-        case SamplesActionTypes.ValidateSamplesFailure:
-        case SamplesActionTypes.ExportExcelFileFailure:
-            return { ...state, ...{ error: action.payload.message } };
+            return { ...state, ...{ formData: mergedEntries } };
         case SamplesActionTypes.ChangeFieldValue:
             const {
                 rowIndex,
@@ -142,7 +132,7 @@ export function reducer(state: ISamplesState = initialState, action: SamplesActi
                             }
                         };
                         newEdits = { ...e.edits };
-                        if (newEdits[columnId] && newEdits[columnId] === newValue) {
+                        if (newEdits[columnId] && newEdits[columnId] === state.importedData[i][columnId]) {
                             delete newEdits[columnId];
                         } else {
                             newEdits[columnId] = state.importedData[i][columnId] ;
