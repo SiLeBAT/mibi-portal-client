@@ -1,2 +1,2 @@
-export interface IState {
+export interface State {
 }

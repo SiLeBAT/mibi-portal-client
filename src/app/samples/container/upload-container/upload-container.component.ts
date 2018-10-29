@@ -16,7 +16,7 @@ import { AlertType } from '../../../core/model/alert.model';
 export class UploadContainerComponent {
 
     constructor(
-        private store: Store<fromSamples.IState>) { }
+        private store: Store<fromSamples.State>) { }
 
     onError(error: UploadErrorType) {
         switch (error) {

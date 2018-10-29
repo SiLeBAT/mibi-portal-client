@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import * as userActions from './user.actions';
+import * as coreActions from '../../core/state/core.actions';
 import { map, catchError, exhaustMap, mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { DataService } from '../../core/services/data.service';
@@ -35,13 +36,13 @@ export class UserEffects {
                         _id: response.obj._id
                     });
                 } else {
-                    return new userActions.LoginUserFailure({
+                    return new coreActions.DisplayAlert({
                         message: response.title,
                         type: AlertType.ERROR
                     });
                 }
             }),
-            catchError(() => of(new userActions.LoginUserFailure({
+            catchError(() => of(new coreActions.DisplayAlert({
                 // tslint:disable-next-line:max-line-length
                 message: 'Es gab einen Fehler beim einloggen.  Bitte registrieren Sie sich oder, wenn Sie sich schon registriert haben, kontaktieren Sie das MiBi-Portal team.',
                 type: AlertType.ERROR

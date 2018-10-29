@@ -1,18 +1,15 @@
 import {
     ValidateSamples,
     ValidateSamplesSuccess,
-    ValidateSamplesFailure,
     ExportExcelFile,
     ExportExcelFileSuccess,
     ExportExcelFileFailure,
-    SendSamplesSuccess,
-    SendSamplesFailure, SendSamplesConfirm, SendSamplesInitiate, ImportExcelFile, ImportExcelFileSuccess, ImportExcelFileFailure
+ SendSamplesConfirm, SendSamplesInitiate, ImportExcelFile, ImportExcelFileSuccess
 } from '../../samples/state/samples.actions';
 import { Action } from '@ngrx/store';
 import { IAlert } from '../model/alert.model';
 import {
     LoginUser,
-    LoginUserFailure,
     LoginUserSuccess
 } from '../../user/state/user.actions';
 import { RouterNavigationAction } from '@ngrx/router-store';
@@ -40,20 +37,15 @@ export class ClearAlert implements Action {
 // TODO: Is this correct?
 export type SystemActions = ValidateSamples
     | ValidateSamplesSuccess
-    | ValidateSamplesFailure
     | ImportExcelFile
     | ImportExcelFileSuccess
-    | ImportExcelFileFailure
     | ExportExcelFile
     | ExportExcelFileSuccess
     | ExportExcelFileFailure
     | SendSamplesInitiate
-    | SendSamplesSuccess
-    | SendSamplesFailure
     | SendSamplesConfirm
     | DisplayAlert
     | ClearAlert
     | LoginUser
-    | LoginUserFailure
     | LoginUserSuccess
     | RouterNavigationAction;

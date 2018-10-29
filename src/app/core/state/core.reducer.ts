@@ -9,7 +9,7 @@ import { IModal } from '../model/modal.model';
 import { ROUTER_NAVIGATION } from '@ngrx/router-store';
 
 export const STATE_SLICE_NAME = 'core';
-export interface IState extends fromRoot.IState {
+export interface IState extends fromRoot.State {
     core: ICoreState;
 }
 
@@ -91,16 +91,6 @@ export function reducer(state: ICoreState = initialState, action: SystemActions)
                     }
                 }
             };
-        case CoreActionTypes.DisplayAlert:
-            return {
-                ...state, ...{
-                    ui: {
-                        ...state.ui, ...{
-                            alert: action.payload
-                        }
-                    }
-                }
-            };
         case SamplesActionTypes.ValidateSamples:
         case SamplesActionTypes.ImportExcelFile:
         case UserActionTypes.LoginUser:
@@ -126,11 +116,7 @@ export function reducer(state: ICoreState = initialState, action: SystemActions)
                     }
                 }
             };
-        case SamplesActionTypes.ValidateSamplesFailure:
-        case SamplesActionTypes.ImportExcelFileFailure:
-        case UserActionTypes.LoginUserFailure:
-        case SamplesActionTypes.SendSamplesFailure:
-        case SamplesActionTypes.SendSamplesSuccess:
+        case CoreActionTypes.DisplayAlert:
             return {
                 ...state, ...{
                     ui: {

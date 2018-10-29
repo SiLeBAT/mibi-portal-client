@@ -10,6 +10,7 @@ import { Store, select } from '@ngrx/store';
 import * as fromSamples from '../../state/samples.reducer';
 import * as samplesActions from '../../state/samples.actions';
 import * as fromCore from '../../../core/state/core.reducer';
+import * as coreAction from '../../../core/state/core.actions';
 import * as fromUser from '../../../user/state/user.reducer';
 import { IModal } from '../../../core/model/modal.model';
 import { ConfirmationService, ResolveEmit } from '@jaspero/ng-confirmations';
@@ -121,7 +122,7 @@ export class DataGridContainerComponent extends GuardedUnloadComponent implement
 
     constructor(
         private confirmationService: ConfirmationService,
-        private store: Store<fromSamples.IState>) {
+        private store: Store<fromSamples.State>) {
         super();
     }
 
@@ -136,7 +137,7 @@ export class DataGridContainerComponent extends GuardedUnloadComponent implement
             }),
             withLatestFrom(this.store),
             map(
-                (dataStateCombine: [IAnnotatedSampleData[], fromSamples.IState]) => {
+                (dataStateCombine: [IAnnotatedSampleData[], fromSamples.State]) => {
                     if (dataStateCombine[0]) {
                         return this.createViewModel(dataStateCombine);
                     }
@@ -162,7 +163,7 @@ export class DataGridContainerComponent extends GuardedUnloadComponent implement
                                     this.store.dispatch(new samplesActions.SendSamplesFromStore(this.currentUser));
                                 }
                             } else {
-                                this.store.dispatch(new samplesActions.SendSamplesFailure({
+                                this.store.dispatch(new coreAction.DisplayAlert({
                                     message: 'Es wurden keine Probendaten an das BfR gesendet',
                                     type: AlertType.ERROR
                                 }));
@@ -185,7 +186,7 @@ export class DataGridContainerComponent extends GuardedUnloadComponent implement
         return this.hasData;
     }
 
-    private createViewModel(dataStateCombine: [IAnnotatedSampleData[], fromSamples.IState]) {
+    private createViewModel(dataStateCombine: [IAnnotatedSampleData[], fromSamples.State]) {
         const rows = dataStateCombine[0].map(
             (row, index) => {
                 const result: IFormRowViewModel = {};
@@ -225,7 +226,7 @@ export class DataGridContainerComponent extends GuardedUnloadComponent implement
 
                 // Add edits
                 _.forEach(row.edits, (v, k) => {
-                    if (result[k]) {
+                    if (result[k] && result[k].value !== dataStateCombine[1].samples.importedData[index][k]) {
                         result[k].editMessage = ['Ursprünglich: ' +
                             (dataStateCombine[1].samples.importedData[index][k] || '&lt;leer&gt;')];
                     }

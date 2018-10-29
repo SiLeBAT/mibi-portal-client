@@ -41,7 +41,7 @@ export class NavBarContainerComponent implements OnInit, OnDestroy {
 
     constructor(
         private router: Router,
-        private store: Store<fromSamples.IState>) { }
+        private store: Store<fromSamples.State>) { }
 
     ngOnInit() {
         this.store.pipe(select(fromSamples.getDataValues),
@@ -90,7 +90,13 @@ export class NavBarContainerComponent implements OnInit, OnDestroy {
     }
 
     onSend() {
-        this.store.dispatch(new samplesActions.SendSamplesInitiate(this.sampleSheet));
+        this.store.dispatch(new samplesActions.SendSamplesInitiate({
+            data: this.sampleData,
+            meta: {
+                state: this.currentUser ? this.currentUser.institution.stateShort : '',
+                nrl: this.nrl
+            }
+        }));
     }
 
     onLogout() {
