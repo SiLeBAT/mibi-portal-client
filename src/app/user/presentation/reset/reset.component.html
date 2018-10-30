@@ -1,40 +1,30 @@
- <form
-        [formGroup]="resetForm"
-        (ngSubmit)="onReset()">
-        <div class="form-group" [ngClass]="{'error' :  !validateField('password1') || validatePwStrength()}">
-          <label for="password1">Neues Passwort (mind. 8 Zeichen)</label>
-          <input
-            type="password"
-            id="password1"
-            class="form-control"
-            formControlName="password1"/>
-          <em *ngIf="validatePwStrength()">Zu schwaches oder zu kurzes Passwort.</em>
-          <em *ngIf="!validateField('password1')">Pflichtfeld.</em>
-        </div>
-        <div class="pw-strength">
-          <password-strength-meter
-            [password]="resetForm.value.password1"
-            (strengthChange)="doStrengthChange($event)">
-          </password-strength-meter>
-        </div>
-        <div class="form-group">
-          <label for="password2">Passwort bestätigen</label>
-          <input
-            type="password"
-            id="password2"
-            class="form-control"
-            formControlName="password2"/>
-            <em *ngIf="!validateField('password2')  && resetForm.controls.password2.errors?.validatePasswordConfirm">Passwörter müssen übereinstimmen.</em>
-        </div>
-        <div class="form-group reset-btn">
-          <button
-            class="btn btn-primary"
-            type="submit"
-            [disabled]="!resetForm.valid">Passwort zurücksetzen</button>
-          <a
-            [routerLink]="['/users/login']"
-            class="btn btn-link">
-              Zurück
-          </a>
-        </div>
-      </form>
+<br>
+<p>Bitte geben Sie ein neues Passwort ein</p>
+<br>
+<form [formGroup]="resetForm" (ngSubmit)="onReset()">
+  <div class="reset-form__form-fields">
+
+    <mat-form-field>
+      <input matInput placeholder="Neues Passwort (mind. 8 Zeichen)" type="password" name="password1" formControlName="password1"
+        required>
+    </mat-form-field>
+    <em class="mat-small" [hidden]="!validatePwStrength()">Zu schwaches oder zu kurzes Passwort.</em>
+
+    <div class="pw-strengt">
+      <password-strength-meter [password]="resetForm.value.password1" (strengthChange)="doStrengthChange($event)">
+      </password-strength-meter>
+    </div>
+    <mat-form-field>
+      <input matInput placeholder="Password bestätigen" type="password" name="password2" formControlName="password2"
+        required>
+    </mat-form-field>
+    <em class="mat-small" [hidden]="validateField('password2')  || !resetForm.controls.password2.errors?.validatePasswordConfirm">Passwörter
+      müssen übereinstimmen.</em>
+  </div>
+  <div class="reset-form__buttons">
+    <button mat-raised-button color="primary" type="submit" [disabled]="!resetForm.valid">Passwort zurücksetzen</button>
+    <a mat-button color="primary" [routerLink]="['/users/login']" >
+      Zurück
+    </a>
+  </div>
+</form>

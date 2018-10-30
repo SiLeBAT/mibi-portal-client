@@ -3,33 +3,29 @@
 em {
   float: right;
   color: $error-color;
-  padding-left: 10px;
+  padding-left: 5%;
+  margin-bottom: 8px;
+  text-align: right;
 }
 
-.error input {
-  background-color: #E3C3C5
+.reset-form__form-fields {
+  display: flex;
+  flex-direction: column;
 }
 
-.error select {
-  background-color: #E3C3C5
+.reset-form__buttons {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 3rem;
+  &> a {
+      text-decoration: none;
+  }
 }
 
-.error ::-webkit-input-placeholder {
-  color: #999
+em[hidden] {
+  visibility: hidden;
+  display: block;
 }
-
-.error ::-moz-placeholder {
-  color: #999
-}
-
-.error :-moz-placeholder {
-  color: #999
-}
-
-.error :-ms-input-placeholder {
-  color: #999
-}
-
 
 .pw-strength {
   margin-top: 2rem;

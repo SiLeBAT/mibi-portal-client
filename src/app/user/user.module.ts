@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthGuard } from './services/auth-guard.service';
@@ -33,11 +33,22 @@ import { TokenValidationResolver } from './services/token-validation-resolver.se
 import { AdminTokenValidationResolver } from './services/admin-token-validation-resolver.service';
 import { DatenschutzHinweiseComponent } from './presentation/datenschutzhinweise/datenschutzhinweise.component';
 import { DatenSchutzHinweiseViewComponent } from './presentation/datenschutzhinweise-view/datenschutzhinweise-view.component';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 @NgModule({
     imports: [
         CommonModule,
         ReactiveFormsModule,
+        BrowserAnimationsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatCardModule,
+        MatButtonModule,
+        MatAutocompleteModule,
         PasswordStrengthMeterModule,
         SharedModule,
         RouterModule.forChild([{
@@ -81,6 +92,7 @@ import { DatenSchutzHinweiseViewComponent } from './presentation/datenschutzhinw
         DatenschutzHinweiseComponent,
         DatenSchutzHinweiseViewComponent
     ],
-    exports: []
+    exports: [],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class UserModule { }

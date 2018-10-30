@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavBarComponent } from './presentation/nav-bar/nav-bar.component';
 import { NavBarContainerComponent } from './container/nav-bar-container/nav-bar-container.component';
@@ -18,7 +18,9 @@ import { reducer, STATE_SLICE_NAME } from './state/core.reducer';
 import { PageBodyContainerComponent } from './container/page-body-container/page-body-container.component';
 import { SpinnerComponent } from './presentation/spinner/spinner.component';
 import { JasperoConfirmationsModule } from '@jaspero/ng-confirmations';
-
+import { LastChangeDisplayComponent } from './presentation/last-change-display/last-change-display.component';
+import { LastChangeDisplayContainerComponent } from './container/last-change-display-container/last-change-display-container.component';
+import { MomentModule } from 'ngx-moment';
 @NgModule({
     imports: [
         CommonModule,
@@ -26,11 +28,14 @@ import { JasperoConfirmationsModule } from '@jaspero/ng-confirmations';
         FormsModule,
         ReactiveFormsModule,
         SharedModule,
+        MomentModule,
         RouterModule.forChild([]),
         StoreModule.forFeature(STATE_SLICE_NAME, reducer),
         JasperoConfirmationsModule
     ],
     declarations: [
+        LastChangeDisplayContainerComponent,
+        LastChangeDisplayComponent,
         HomeComponent,
         NavBarComponent,
         NavBarContainerComponent,
@@ -52,6 +57,7 @@ import { JasperoConfirmationsModule } from '@jaspero/ng-confirmations';
         DefaultPageLayoutComponent,
         SpinnerComponent,
         AlertContainerComponent
-    ]
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class CoreModule { }

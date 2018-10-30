@@ -1,17 +1,13 @@
 @import '../../../../assets/sass/abstracts';
 
-.portal {
+.app-name {
   color: $primary-color;
+  text-align: center;
+  font-size: 4em;
+  font-style: bold;
+  margin-bottom: 5%;
 }
 
 .logo {
   width: 14rem;
-}
-
-.welcome-text {
-  margin-top: 5rem;
-}
-
-.welcome-p {
-  font-size: medium;
 }

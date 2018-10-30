@@ -1,13 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~normalize.css/normalize.css';
 @import 'handsontable/dist/handsontable.full.css';
 @import 'assets/sass/base';
 @import 'assets/sass/abstracts';
 @import 'assets/sass/components';
 @import 'assets/sass/layout';
+@import 'assets/sass/themes';
 
 
 body {
-  font-family: 'Arial', sans-serif;
   margin: 0;
 }
 
@@ -20,31 +21,4 @@ hr {
 
 .primary {
   background:  $primary-color !important;
-}
-
-.handsontable td.warn{
-  @include background-opacity($secondary-color-light, 0.3);
-  font-weight: bold;
-}
-
-.handsontable td.error{
-  @include background-opacity($error-color, 0.3);
-  font-weight: bold;
-}
-
-.handsontable td.corrected{
-  @include background-opacity($primary-color-light, 0.3);
-  font-weight: bold;
-}
-
-.handsontable td.changed{
-  box-shadow: inset 0 0 0 2px $primary-color;
-}
-
-.htAutocompleteArrow {
-  display: none;
-}
-
-.showArrow .htAutocompleteArrow {
-  display: block;
 }

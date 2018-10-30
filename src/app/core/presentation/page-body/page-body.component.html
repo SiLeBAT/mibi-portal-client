@@ -2,7 +2,7 @@
 
   <mibi-spinner [show]="isBusy$ | async" name="uploadSpinner">
   </mibi-spinner>
-  <div *ngIf="!(isBusy$ | async)">
+  <div class="main__view-outlet" *ngIf="!(isBusy$ | async)">
     <mibi-alert-container></mibi-alert-container>
     <router-outlet></router-outlet>
   </div>

@@ -23,7 +23,6 @@
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/tooltipster/dist/css/tooltipster.bundle.min.css",
-              "src/mytooltipster.scss",
               "src/styles.scss"
             ],
             "scripts": [
@@ -95,7 +94,6 @@
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/tooltipster/dist/css/tooltipster.bundle.min.css",
-              "src/mytooltipster.css",
               "src/styles.css"
             ],
             "assets": [

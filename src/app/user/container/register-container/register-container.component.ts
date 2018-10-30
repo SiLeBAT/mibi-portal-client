@@ -4,7 +4,7 @@ import * as fromUser from '../../state/user.reducer';
 import * as coreActions from '../../../core/state/core.actions';
 import { Store } from '@ngrx/store';
 import { User } from '../../../user/model/user.model';
-import { IRegistrationDetails } from '../../presentation/register/register.component';
+import { RegistrationDetails } from '../../presentation/register/register.component';
 import { DataService } from '../../../core/services/data.service';
 import { AlertType } from '../../../core/model/alert.model';
 import { Router } from '@angular/router';
@@ -32,7 +32,7 @@ export class RegisterContainerComponent implements OnInit {
     }
 
     // TODO: User can be removed & institution resolution should happen on the server
-    register(details: IRegistrationDetails) {
+    register(details: RegistrationDetails) {
         const user = new User(
             details.email,
             details.firstName,

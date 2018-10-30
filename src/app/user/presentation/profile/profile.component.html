@@ -1,13 +1,12 @@
-<div class="container-fluid">
-  <h4>Angemeldet als:</h4>
-  <p> {{ currentUser.firstName }} {{ currentUser.lastName }}</p>
-  <p>{{ currentUser.email }}</p>
-  <p>{{ institution }}</p>
-  <h4>
-    <a
-      [routerLink]="['/users/login']"
-      (click)="onLogout()">
+<mibi-single-center-card-layout title="Profil">
+  <mibi-view-card-body>
+    <p> {{ currentUser.firstName }} {{ currentUser.lastName }}</p>
+    <p>{{ currentUser.email }}</p>
+    <p>{{ institution }}</p>
+  </mibi-view-card-body>
+  <mibi-view-card-actions class="mibi-view-card__actions">
+    <a class="profile-card__button" mat-button color="primary" [routerLink]="['/users/login']" (click)="onLogout()">
       Abmelden
     </a>
-  </h4>
-</div>
+  </mibi-view-card-actions>
+</mibi-single-center-card-layout>

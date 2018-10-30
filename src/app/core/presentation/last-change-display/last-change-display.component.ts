@@ -1,7 +1,7 @@
 import { Component, Input, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import * as moment from 'moment';
-import { IToolTip, createToolTip, ToolTipTheme, TOOLTIP_CLASS_HOOK } from '../../model/tooltip.model';
 import { Observable } from 'rxjs';
+import { IToolTip, TOOLTIP_CLASS_HOOK, createToolTip, ToolTipTheme } from '../../../shared/model/tooltip.model';
 
 @Component({
     selector: 'mibi-last-change-display',

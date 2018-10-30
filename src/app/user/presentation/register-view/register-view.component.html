@@ -1,9 +1,13 @@
-<mibi-view-layout title="Register">
-    <mibi-register-container></mibi-register-container>
-    <div class="datenschutz-link-container">
-        <span>
-        Bitte beachten Sie unsere <a [routerLink]="['/users/datenschutzhinweise']">Datenschutzhinweise</a>
-        für die Registrierung sowie unsere allgemeine <a [routerLink]="['/content/datenschutzerklaerung']">Datenschutzerklärung</a>
-        </span>
-    </div>
-</mibi-view-layout>
+<mibi-single-center-card-layout title="Registrierung">
+    <mibi-view-card-body>
+        <mibi-register-container></mibi-register-container>
+    </mibi-view-card-body>
+    <mibi-view-card-actions>
+        <div class="datenschutz-link-container mat-small">
+            <span>
+                Bitte beachten Sie unsere <a [routerLink]="['/users/datenschutzhinweise']">Datenschutzhinweise</a>
+                für die Registrierung sowie unsere allgemeine <a [routerLink]="['/content/datenschutzerklaerung']">Datenschutzerklärung</a>
+            </span>
+        </div>
+    </mibi-view-card-actions>
+</mibi-single-center-card-layout>

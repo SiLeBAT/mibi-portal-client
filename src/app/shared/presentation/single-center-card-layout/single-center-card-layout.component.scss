@@ -1,0 +1,21 @@
+.single-center-card-layout {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.view-card {
+    max-width: 800px;
+    min-width: 400px;
+  }
+
+  .view-card__title {
+    font-size: 2em;
+  }
+
+  .view-card__header {
+      display: flex;
+      justify-content: space-around;
+  }

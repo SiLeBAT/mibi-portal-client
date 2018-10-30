@@ -1,18 +1,22 @@
 import { Component, OnInit, ChangeDetectorRef, Output, EventEmitter, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Institution } from '../../../user/model/institution.model';
+import { Observable } from 'rxjs';
+import { startWith, map } from 'rxjs/operators';
 
-export interface IHash {
-    [details: string]: string;
-}
-
-export interface IRegistrationDetails {
+export interface RegistrationDetails {
     email: string;
     firstName: string;
     lastName: string;
     instituteName: string;
     password: string;
 }
+
+export const _filter = (opt: string[], value: string): string[] => {
+    const filterValue = value.toLowerCase();
+
+    return opt.filter(item => item.toLowerCase().indexOf(filterValue) === 0);
+};
 
 @Component({
     selector: 'mibi-register',
@@ -24,7 +28,7 @@ export class RegisterComponent implements OnInit {
     @Input() institutions: Institution[];
     private pwStrength: number;
     @Output() register = new EventEmitter();
-
+    filteredOptions: Observable<Institution[]>;
     constructor(
         private changeRef: ChangeDetectorRef) {
         this.pwStrength = -1;
@@ -42,11 +46,28 @@ export class RegisterComponent implements OnInit {
             password1: new FormControl(null, [Validators.required, Validators.minLength(8)]),
             password2: new FormControl(null)
         }, this.passwordConfirmationValidator);
+
+        this.filteredOptions = this.registerForm.controls.institution.valueChanges
+            .pipe(
+                startWith(''),
+                map(value => {
+                    if (!value) {
+                        return this.institutions;
+                    }
+                    return this._filter(value);
+                })
+            );
+    }
+
+    private _filter(value: string): Institution[] {
+        const filterValue = value.toLowerCase();
+
+        return this.institutions.filter(inst => inst.name1.toLowerCase().includes(filterValue));
     }
 
     onRegister() {
         if (this.registerForm.valid) {
-            const details: IRegistrationDetails = {
+            const details: RegistrationDetails = {
                 email: this.registerForm.value.email,
                 firstName: this.registerForm.value.firstName,
                 lastName: this.registerForm.value.lastName,
