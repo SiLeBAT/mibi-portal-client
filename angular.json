@@ -21,13 +21,11 @@
               "src/favicon.png"
             ],
             "styles": [
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/tooltipster/dist/css/tooltipster.bundle.min.css",
               "src/styles.scss"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.min.js",
               "node_modules/tooltipster/dist/js/tooltipster.bundle.min.js"
             ]
           },
@@ -88,11 +86,10 @@
             "tsConfig": "src/tsconfig.spec.json",
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.min.js",
               "node_modules/tooltipster/dist/js/tooltipster.bundle.min.js"
             ],
             "styles": [
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+    
               "node_modules/tooltipster/dist/css/tooltipster.bundle.min.css",
               "src/styles.css"
             ],
