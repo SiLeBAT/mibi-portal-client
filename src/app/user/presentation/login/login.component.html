@@ -1,23 +1,11 @@
-<form [formGroup]="loginForm" (ngSubmit)="onLogin()">
-  <div class="form-group">
-    <label for="email">Email</label>
-    <input type="email" id="email" class="form-control" formControlName="email" />
-    <!-- <div *ngIf="f.submitted && !username.valid" class="help-block">Username is required</div> -->
-  </div>
-  <div class="form-group">
-    <label for="password">Passwort</label>
-    <input type="password" id="password" class="form-control" formControlName="password" />
-    <!-- <div *ngIf="f.submitted && !password.valid" class="help-block">Password is required</div> -->
-  </div>
-  <div class="form-group">
-    <button class="btn btn-primary" type="submit" [disabled]="!loginForm.valid">
-      Anmelden
-    </button>
-    <a [routerLink]="['/users/register']" class="btn btn-link">
-      Registrierung
-    </a>
-    <a [routerLink]="['/users/recovery']" class="btn btn-link">
-      Passwort vergessen?
-    </a>
-  </div>
+<form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="login-form">
+  <div class="login-form__form-fields">
+  <mat-form-field>
+    <input matInput placeholder="Email" name="email" formControlName="email" required>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Password" type="password" name="password" formControlName="password" required>
+  </mat-form-field>
+</div>
+  <button  class="login-form__submit-button" mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">Anmelden</button>
 </form>

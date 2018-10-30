@@ -3,7 +3,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
     selector: 'mibi-recovery',
-    templateUrl: './recovery.component.html'
+    templateUrl: './recovery.component.html',
+    styleUrls: ['./recovery.component.scss']
 })
 export class RecoveryComponent implements OnInit {
     recoveryForm: FormGroup;

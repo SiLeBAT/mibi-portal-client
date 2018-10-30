@@ -1,33 +1,22 @@
 @import '../../../../assets/sass/abstracts';
 
+.register-form__form-fields {
+    display: flex;
+    flex-direction: column;
+  }
+
 em {
     float: right;
     color: $error-color;
-    padding-left: 10px;
+    padding-left: 5%;
+    margin-bottom: 8px;
+    text-align: right;
 }
 
-.error input {
-    background-color: #E3C3C5
-}
 
-.error select {
-    background-color: #E3C3C5
-}
-
-.error ::-webkit-input-placeholder {
-    color: #999
-}
-
-.error ::-moz-placeholder {
-    color: #999
-}
-
-.error :-moz-placeholder {
-    color: #999
-}
-
-.error :-ms-input-placeholder {
-    color: #999
+em[hidden] {
+  visibility: hidden;
+  display: block;
 }
 
 .pw-1 {
@@ -38,7 +27,12 @@ em {
   margin-top: 2rem;
 }
 
-.reset-btn {
-  margin-top: 3rem;
+.register-form__buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 3rem;
+    &> a {
+      text-decoration: none;
+  }
 }
 

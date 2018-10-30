@@ -3,7 +3,8 @@ import { IUser } from '../../../user/model/user.model';
 
 @Component({
     selector: 'mibi-profile',
-    templateUrl: './profile.component.html'
+    templateUrl: './profile.component.html',
+    styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent {
 

@@ -1,28 +1,16 @@
-
-
-      <form
-        [formGroup]="recoveryForm"
-        (ngSubmit)="onRecovery()">
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            class="form-control"
-            formControlName="email"/>
-          <!-- <div *ngIf="f.submitted && !username.valid" class="help-block">Username is required</div> -->
-        </div>
-        <div class="form-group">
-          <button
-            class="btn btn-primary"
-            type="submit"
-            [disabled]="!recoveryForm.valid">Passwort zurücksetzen</button>
-          <a
-            [routerLink]="['/users/login']"
-            class="btn btn-link">
-              Zurück
-          </a>
-        </div>
-      </form>
-
-
+<br>
+<p>Bitte geben Sie Ihre Email Adresse an, die Sie für die Registrierung verwendet haben</p>
+<br>
+<form [formGroup]="recoveryForm" (ngSubmit)="onRecovery()">
+  <div class="recovery-form__form-fields">
+    <mat-form-field>
+      <input matInput placeholder="Email" name="email" formControlName="email" required>
+    </mat-form-field>
+  </div>
+  <div class="recovery-form__buttons">
+    <button mat-raised-button color="primary" type="submit" [disabled]="!recoveryForm.valid">Passwort zurücksetzen</button>
+    <a [routerLink]="['/users/login']" mat-button color="primary">
+      Zurück
+    </a>
+  </div>
+</form>

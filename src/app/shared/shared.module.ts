@@ -1,26 +1,31 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MomentModule } from 'ngx-moment';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
 import { DropdownDirective } from './directive/dropdown.directive';
-import { ViewLayoutComponent } from './presentation/view-layout/view-layout.component';
-import { LastChangeDisplayContainerComponent } from './container/last-change-display-container/last-change-display-container.component';
-import { LastChangeDisplayComponent } from './presentation/last-change-display/last-change-display.component';
-
+import { SingleCenterCardLayoutComponent } from './presentation/single-center-card-layout/single-center-card-layout.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { WallOfTextLayoutComponent } from './presentation/wall-of-text-layout/wall-of-text-layout.component';
 @NgModule({
     imports: [
         CommonModule,
-        MomentModule
+        BrowserAnimationsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatCardModule,
+        MatButtonModule
     ],
     declarations: [
         DropdownDirective,
-        LastChangeDisplayContainerComponent,
-        LastChangeDisplayComponent,
-        ViewLayoutComponent
+        SingleCenterCardLayoutComponent,
+        WallOfTextLayoutComponent
     ],
     exports: [
         DropdownDirective,
-        LastChangeDisplayContainerComponent,
-        ViewLayoutComponent
+        SingleCenterCardLayoutComponent,
+        WallOfTextLayoutComponent
     ]
 })
 export class SharedModule { }

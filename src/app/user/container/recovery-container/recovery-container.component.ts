@@ -22,7 +22,7 @@ export class RecoveryContainerComponent {
                         () => {
                             this.store.dispatch(new coreActions.DisplayAlert({
                                 message: response.title,
-                                type: AlertType.ERROR
+                                type: AlertType.SUCCESS
                             }));
                         }
                     ).catch(() => {

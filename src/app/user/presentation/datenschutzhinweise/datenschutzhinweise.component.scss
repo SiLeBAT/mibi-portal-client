@@ -6,6 +6,7 @@ body {
   .dateschutzhinweise-item-header {
     counter-increment: datenschutz-section;
     font-weight: bold;
+    margin-top: 3%;
   }
   .dateschutzhinweise-item-header:before {
     content: counter(datenschutz-section) '. ';
@@ -15,14 +16,18 @@ body {
     margin-top: 32px;
 }
 
-.dateschutzhinweise-item__list {
-    font-size: 21px;
-}
-
 .dateschutzhinweise-footer {
     border-top: 1px solid $primary-color;
 }
 
-.dateschutzhinweise-footer__head {
-    font-size: 21px;
+
+.dateschutzhinweise-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.dateschutzhinweise-item {
+    width: 75%;
 }

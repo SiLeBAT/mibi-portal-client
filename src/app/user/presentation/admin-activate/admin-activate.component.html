@@ -1,16 +1,16 @@
+<div *ngIf="adminTokenValid">
+  <mibi-single-center-card-layout title="Konto aktiviert">
+    <mibi-view-card-body>
+      <p>Sie haben das {{ appName }} Konto für {{ name }} als Admin aktiviert</p>
+    </mibi-view-card-body>
+  </mibi-single-center-card-layout>
+</div>
 
-      <br>
-      <div *ngIf="adminTokenValid" class="help-block">
-        <p>Sie haben das {{ appName }} Konto für {{ name }} als Admin aktiviert</p>
-      </div>
-
-
-
-      <div *ngIf="!adminTokenValid" class="help-block">
-        <p>Ihre Admin Kontoaktivierung ist fehlgeschlagen.</p>
-        <p>Bitte erneut registrieren lassen.</p>
-        <br>
-      </div>
-
-
-
+<div *ngIf="!adminTokenValid">
+  <mibi-single-center-card-layout title="Fehler">
+    <mibi-view-card-body>
+      <p>Ihre Admin Kontoaktivierung ist fehlgeschlagen.</p>
+      <p>Bitte erneut registrieren lassen.</p>
+    </mibi-view-card-body>
+  </mibi-single-center-card-layout>
+</div>
