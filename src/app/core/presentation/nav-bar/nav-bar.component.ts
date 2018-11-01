@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { IUser } from '../../../user/model/user.model';
+import { User } from '../../../user/model/user.model';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class NavBarComponent {
 
-    @Input() currentUser$: Observable<IUser | null>;
+    @Input() currentUser$: Observable<User | null>;
     @Input() hasEntries$: Observable<boolean>;
 
     @Output() onLogout = new EventEmitter();

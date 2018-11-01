@@ -1,4 +1,4 @@
-<div *ngIf="tokenValid">
+<div *ngIf="tokenValid else invalidToken">
   <mibi-single-center-card-layout title="Konto aktiviert">
     <mibi-view-card-body>
       <p>Sie haben Ihr {{ appName }} Konto aktiviert.</p>
@@ -12,7 +12,7 @@
     </mibi-view-card-actions>
   </mibi-single-center-card-layout>
 </div>
-<div *ngIf="!tokenValid">
+<ng-template #invalidToken>
   <mibi-single-center-card-layout title="Fehler">
     <mibi-view-card-body>
         <p>Ihre Kontoaktivierung ist fehlgeschlagen.</p>
@@ -24,4 +24,4 @@
         </button>
     </mibi-view-card-actions>
   </mibi-single-center-card-layout>
-</div>
+</ng-template>

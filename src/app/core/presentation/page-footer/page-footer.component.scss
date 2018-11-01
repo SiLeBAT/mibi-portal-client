@@ -2,12 +2,8 @@
   
   .mibi-main-footer {
     border-top: 2px solid $primary-color;
-    background: $background-color;
+    background-color: $background-color;
     padding: 1rem;
-    position: fixed;
-    bottom: 0;
-    width: 100vw;
-    z-index: 1030;
     display: flex;
   }
 
@@ -18,6 +14,7 @@
 
   .mibi-main-footer__last-change {
     margin-right: 10%;
+    line-height: 2.7;
   }
 
 .mibi-main-footer__links {
@@ -32,12 +29,4 @@
     padding: 0 4rem;
   }
   
-  .mibi-main-footer__link a {
-    color: $primary-color;
-    text-decoration: none;
-  }
   
-  .mibi-main-footer__link a:hover,
-  .mibi-main-footer__link a:active {
-    color: $on-background-color;
-  }

@@ -1,6 +1,3 @@
-.mibi-view-outlet{
-  height: 100%;
-}
   .mibi-banner {
     overflow-y: hidden;
     max-height: 100%; /* approximate max height */
@@ -11,4 +8,13 @@
     &--closed {
       max-height: 0;
     }
+  }
+.mibi-view-outlet{
+  height: 100%;
+}
+  .mibi-spinner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60%;;
   }

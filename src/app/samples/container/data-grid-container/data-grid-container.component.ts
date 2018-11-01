@@ -16,7 +16,7 @@ import { Dialog } from '../../../core/model/dialog.model';
 import { ConfirmationService, ResolveEmit } from '@jaspero/ng-confirmations';
 import { IFormViewModel, IFormRowViewModel } from '../../presentation/data-grid/data-grid.component';
 import { ToolTipType } from '../../../shared/model/tooltip.model';
-import { IUser } from '../../../user/model/user.model';
+import { User } from '../../../user/model/user.model';
 
 enum AlteredField {
     WARNING = 'warn',
@@ -37,7 +37,7 @@ export class DataGridContainerComponent extends GuardedUnloadComponent implement
 
     viewModel$: Observable<IFormViewModel>;
     private hasData: boolean = true;
-    private currentUser: IUser | null;
+    private currentUser: User | null;
     private componentActive: boolean = true;
 
     columnConfigArray: IColConfig[] = [
@@ -149,7 +149,7 @@ export class DataGridContainerComponent extends GuardedUnloadComponent implement
         this.store.pipe(select(fromUser.getCurrentUser),
             takeWhile(() => this.componentActive))
             .subscribe(
-                (user: IUser | null) => this.currentUser = user
+                (user: User | null) => this.currentUser = user
             );
         this.store.pipe(select(fromCore.getDialog),
             takeWhile(() => this.componentActive))

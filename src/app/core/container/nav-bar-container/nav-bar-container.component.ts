@@ -3,10 +3,9 @@ import { Store, select } from '@ngrx/store';
 import * as fromSamples from '../../../samples/state/samples.reducer';
 import * as fromUser from '../../../user/state/user.reducer';
 import { Observable } from 'rxjs';
-import { IUser } from '../../../user/model/user.model';
+import { User } from '../../../user/model/user.model';
 import * as userActions from '../../../user/state/user.actions';
 
-// TODO: Should have pass navBarConfig to presentational component, to make the presentational component more generic
 @Component({
     selector: 'mibi-nav-bar-container',
     template: `<mibi-nav-bar
@@ -18,7 +17,7 @@ import * as userActions from '../../../user/state/user.actions';
 export class NavBarContainerComponent implements OnInit {
 
     hasEntries$: Observable<boolean>;
-    currentUser$: Observable<IUser | null>;
+    currentUser$: Observable<User | null>;
 
     constructor(
         private store: Store<fromSamples.State>) { }

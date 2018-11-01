@@ -3,14 +3,25 @@
     <mat-icon>menu</mat-icon>
   </button>
   <mat-menu #menu="matMenu">
-      <a mat-menu-item [routerLink]="['/users/login']" [class.hidden]="currentUser$ | async">
-        <mat-icon>person</mat-icon>
-        <span>Anmelden/Registrieren</span>
-      </a>
-      <a mat-menu-item [routerLink]="['/users/profile']" [class.hidden]="!(currentUser$ | async)">
-        <mat-icon>person</mat-icon>
-        <span>Profil</span>
-      </a>
+    <div class="mibi-user-info" *ngIf="currentUser$ | async; let user">
+      <span class="mibi-user-info__main">
+        <mat-icon class="mibi-user-info__icon">face</mat-icon>
+        <span class="mat-body-strong mibi-user-info__name"> {{ user.firstName }} {{ user.lastName }}</span>
+      </span>
+      <div class="mibi-user-info__auxilliary mat-small">
+        <div class="mibi-user-info__email">{{ user.email }}</div>
+        <div class="mibi-user-info__institute">{{ user.institution?.name1 }} {{ user.institution?.name2 }}</div>
+      </div>
+      <mat-divider></mat-divider>
+    </div>
+    <a mat-menu-item [routerLink]="['/users/login']" [class.hidden]="currentUser$ | async">
+      <mat-icon>person</mat-icon>
+      <span>Anmelden/Registrieren</span>
+    </a>
+    <a mat-menu-item [routerLink]="['/users/profile']" [class.hidden]="!(currentUser$ | async)">
+      <mat-icon>person</mat-icon>
+      <span>Profil</span>
+    </a>
     <a mat-menu-item [routerLink]="['/upload']" [class.hidden]="hasEntries$ | async">
       <mat-icon>folder</mat-icon>
       <span>Probendaten</span>

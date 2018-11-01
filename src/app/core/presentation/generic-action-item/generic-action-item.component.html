@@ -1,6 +1,6 @@
-<li class="mibi-action-item">
-    <mat-icon class="mibi-action-item__icon">{{configuration.icon}}</mat-icon>
-    <a class="mibi-action-item__label" (click)="configuration.onClick($event)">
-        {{configuration.label}}
-    </a>
-</li>
+<ng-template #defaultTemplate>
+    <button class="mibi-user-action" mat-button color="accent" (click)="configuration.onClick($event)">{{configuration.label}}</button>
+</ng-template>
+<ng-container *ngTemplateOutlet="configuration.template ? configuration.template : defaultTemplate;context:configuration">
+
+</ng-container>

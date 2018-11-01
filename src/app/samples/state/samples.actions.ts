@@ -1,10 +1,9 @@
 import { Action } from '@ngrx/store';
-import { IAnnotatedSampleData, ISampleSheet, IExcelData, IChangedDataGridField } from '../model/sample-management.model';
+import { IAnnotatedSampleData, IExcelData, IChangedDataGridField } from '../model/sample-management.model';
 import { Alert } from '../../core/model/alert.model';
 import { LogoutUser } from '../../user/state/user.actions';
 import { DialogContent } from '../../core/model/dialog.model';
-import { IUser } from '../../user/model/user.model';
-import { IValidationRequest } from '../../core/model/request.model';
+import { User } from '../../user/model/user.model';
 
 export enum SamplesActionTypes {
     ImportExcelFile = '[Samples] Import Excel file',
@@ -47,7 +46,7 @@ export class ImportExcelFileSuccess implements Action {
 export class ExportExcelFile implements Action {
     readonly type = SamplesActionTypes.ExportExcelFile;
 
-    constructor(public payload: ISampleSheet) {
+    constructor() {
     }
 }
 
@@ -68,7 +67,7 @@ export class ExportExcelFileFailure implements Action {
 export class ValidateSamples implements Action {
     readonly type = SamplesActionTypes.ValidateSamples;
 
-    constructor(public payload: IValidationRequest) {
+    constructor() {
 
     }
 }
@@ -84,7 +83,7 @@ export class ValidateSamplesSuccess implements Action {
 export class SendSamplesInitiate implements Action {
     readonly type = SamplesActionTypes.SendSamplesInitiate;
 
-    constructor(public payload: IValidationRequest) {
+    constructor() {
 
     }
 }
@@ -92,7 +91,7 @@ export class SendSamplesInitiate implements Action {
 export class SendSamplesFromStore implements Action {
     readonly type = SamplesActionTypes.SendSamplesFromStore;
 
-    constructor(public payload: IUser) {
+    constructor(public payload: User) {
     }
 }
 

@@ -10,7 +10,7 @@ import {
     IRegisterUserResponseDTO,
     ILoginResponseDTO, IActivationResponseDTO, ISystemInformationResponseDTO, IValidationResponseDTO, IFAQResponseDTO
 } from '../model/response.model';
-import { ITokenizedUser, ICredentials, IUserDetails, User, UserData } from '../../user/model/user.model';
+import { TokenizedUser, Credentials, UserDetails, DefaultUser, DefaultUserData } from '../../user/model/user.model';
 import { IValidationRequest } from '../model/request.model';
 import { ClientError } from '../model/client-error';
 
@@ -39,11 +39,11 @@ export class DataService {
     constructor(private httpClient: HttpClient) {
     }
 
-    setCurrentUser(obj: ITokenizedUser) {
+    setCurrentUser(obj: TokenizedUser) {
         localStorage.setItem('currentUser', JSON.stringify(obj));
     }
 
-    getCurrentUser(): ITokenizedUser | null {
+    getCurrentUser(): TokenizedUser | null {
         const cu: string | null = localStorage.getItem('currentUser');
         if (!cu) {
             return null;
@@ -64,7 +64,7 @@ export class DataService {
         return new Observable<void>().toPromise();
     }
 
-    login(credentials: ICredentials): Observable<ILoginResponseDTO> {
+    login(credentials: Credentials): Observable<ILoginResponseDTO> {
         return this.httpClient.post<ILoginResponseDTO>(this.URL.login, credentials);
     }
 
@@ -88,7 +88,7 @@ export class DataService {
         return this.httpClient.get<Institution[]>(this.URL.institutions);
     }
 
-    registerUser(credentials: ICredentials, userDetails: IUserDetails): Observable<IRegisterUserResponseDTO> {
+    registerUser(credentials: Credentials, userDetails: UserDetails): Observable<IRegisterUserResponseDTO> {
         return this.httpClient.post<IRegisterUserResponseDTO>(this.URL.register, { ...credentials, ...userDetails });
     }
 
@@ -110,11 +110,11 @@ export class DataService {
         return this.httpClient.post<IAdminActivateResponseDTO>([this.URL.adminactivate, adminToken].join('/'), null);
     }
 
-    addUserData(user: User, userData: UserData) {
+    addUserData(user: DefaultUser, userData: DefaultUserData) {
         return this.httpClient.post(this.URL.userdata, { user: user, userdata: userData });
     }
 
-    updateUserData(_id: string, userData: UserData) {
+    updateUserData(_id: string, userData: DefaultUserData) {
         return this.httpClient.put(this.URL.userdata + _id, userData);
     }
 

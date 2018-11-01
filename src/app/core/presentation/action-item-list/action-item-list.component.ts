@@ -1,6 +1,8 @@
-import { Component, Input, OnInit, ViewChild, ComponentFactoryResolver, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import {
+    Component,
+    Input, OnInit, ViewChild, ComponentFactoryResolver, OnDestroy, ChangeDetectorRef, TemplateRef, ViewContainerRef
+} from '@angular/core';
 import { ActionItemConfiguration, ActionItemComponent } from '../../model/action-items.model';
-import { ActionItemAnchorDirective } from '../../../shared/directive/action-item-anchor.directive';
 import { Observable } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
 
@@ -12,7 +14,9 @@ import { takeWhile } from 'rxjs/operators';
 export class ActionItemListComponent implements OnInit, OnDestroy {
 
     @Input() configuration$: Observable<ActionItemConfiguration[]>;
-    @ViewChild(ActionItemAnchorDirective) actionItemHost: ActionItemAnchorDirective;
+    @ViewChild('actionList', { read: ViewContainerRef }) actionItemHost: ViewContainerRef;
+    @ViewChild('customActionItems')
+    private customActionItems: TemplateRef<any>;
     private componentActive: boolean = true;
     constructor(private componentFactoryResolver: ComponentFactoryResolver, private _changeDetectionRef: ChangeDetectorRef) { }
 
@@ -20,12 +24,15 @@ export class ActionItemListComponent implements OnInit, OnDestroy {
         this.configuration$.pipe(
             takeWhile(() => this.componentActive)).subscribe(
                 (configuration: ActionItemConfiguration[]) => {
-                    const viewContainerRef = this.actionItemHost.viewContainerRef;
+
+                    const viewContainerRef = this.actionItemHost;
                     viewContainerRef.clear();
                     for (let i = 0; i < configuration.length; i++) {
-                        const componentFactory = this.componentFactoryResolver.resolveComponentFactory(configuration[i].component);
+                        const myConfig = { ...configuration[i] };
+                        myConfig.template = this.customActionItems;
+                        const componentFactory = this.componentFactoryResolver.resolveComponentFactory(myConfig.component);
                         const componentRef = viewContainerRef.createComponent(componentFactory, i);
-                        (componentRef.instance as ActionItemComponent).configuration = configuration[i];
+                        (componentRef.instance as ActionItemComponent).configuration = myConfig;
                     }
                     this._changeDetectionRef.detectChanges();
                 }

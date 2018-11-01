@@ -1,25 +1,23 @@
 <footer class="mibi-main-footer">
-    <mibi-last-change-display-container class="mibi-main-footer__last-change"></mibi-last-change-display-container>
+  <mibi-last-change-display-container class="mibi-main-footer__last-change"></mibi-last-change-display-container>
   <nav class="mibi-main-footer__nav">
     <!-- <hr> -->
     <ul class="mibi-main-footer__links">
       <li class="mibi-main-footer__link">
-        <a href="https://www.bfr.bund.de" target="_blank">
+        <a mat-button color="primary" href="https://www.bfr.bund.de" target="_blank">
           BfR - Bundesinstitut für Risikobewertung</a>
       </li>
       <li class="mibi-main-footer__link">
-        <a href="https://foodrisklabs.bfr.bund.de" target="_blank">FoodRisk - Labs</a>
+        <a mat-button color="primary" href="https://foodrisklabs.bfr.bund.de" target="_blank">FoodRisk - Labs</a>
       </li>
       <li class="mibi-main-footer__link">
-          <a [routerLink]="['/content/faq']">FAQ</a>
-        </li>
-        <li class="mibi-main-footer__link">
-            <a [routerLink]="['/content/datenschutzerklaerung']">Datenschutzerklärung</a>
-          </li>
+        <a mat-button color="primary" [routerLink]="['/content/faq']">FAQ</a>
+      </li>
       <li class="mibi-main-footer__link">
-        <a
-          href="mailto:{{ supportContact }}"
-          target="_top">
+        <a mat-button color="primary" [routerLink]="['/content/datenschutzerklaerung']">Datenschutzerklärung</a>
+      </li>
+      <li class="mibi-main-footer__link">
+        <a mat-button color="primary" href="mailto:{{ supportContact }}" target="_top">
           Problem melden
         </a>
       </li>

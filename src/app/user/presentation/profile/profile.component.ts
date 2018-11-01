@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter, Input } from '@angular/core';
-import { IUser } from '../../../user/model/user.model';
+import { User } from '../../../user/model/user.model';
 
 @Component({
     selector: 'mibi-profile',
@@ -9,7 +9,7 @@ import { IUser } from '../../../user/model/user.model';
 export class ProfileComponent {
 
     @Output() logout = new EventEmitter();
-    @Input() currentUser: IUser;
+    @Input() currentUser: User;
     @Input() institution: string;
 
     constructor() { }

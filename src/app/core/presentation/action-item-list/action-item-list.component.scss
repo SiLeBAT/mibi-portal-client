@@ -1,5 +1,17 @@
 @import '../../../../assets/sass/abstracts';
 
+.mibi-action-item__label{
+    padding: 0 2px;
+    font-size: 1em;
+    line-height: 1.7;
+}
+
+.mibi-action-item__label:hover,
+.mibi-action-item__label:focus,
+.mibi-action-item__label:active {
+  color: $surface-color;
+}
+
 .mibi-action-item-list {
   display: flex;
   justify-content: flex-end;

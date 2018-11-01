@@ -5,20 +5,20 @@ import * as moment from 'moment';
 import 'moment/locale/de';
 import * as samplesActions from './samples.actions';
 import * as coreActions from '../../core/state/core.actions';
-import { map, concatMap, catchError, exhaustMap, withLatestFrom, switchMap, mergeMap, pluck, tap } from 'rxjs/operators';
+import { map, concatMap, catchError, exhaustMap, withLatestFrom, switchMap, mergeMap, tap } from 'rxjs/operators';
 import { IAnnotatedSampleData, IExcelFileBlob, IExcelData } from '../model/sample-management.model';
 import { ExcelConverterService } from '../services/excel-converter.service';
 import { from, of } from 'rxjs';
 import { Store } from '@ngrx/store';
 import * as fromSamples from '../state/samples.reducer';
 import * as fromUser from '../../user/state/user.reducer';
-import { AlertType } from '../../core/model/alert.model';
 import { Router } from '@angular/router';
 import { ExcelToJsonService } from '../services/excel-to-json.service';
 import { SendSampleService } from '../services/send-sample.service';
 import { DataService } from '../../core/services/data.service';
-import { IUser } from '../../user/model/user.model';
 import { IValidationRequest } from '../../core/model/request.model';
+import { LogService } from '../../core/services/log.service';
+import { ClientError } from '../../core/model/client-error';
 @Injectable()
 export class SamplesEffects {
 
@@ -28,18 +28,26 @@ export class SamplesEffects {
         private excelToJsonService: ExcelToJsonService,
         private dataService: DataService,
         private router: Router,
+        private logger: LogService,
         private store: Store<fromSamples.State>) {
     }
 
     @Effect()
     validateSamples$ = this.actions$.pipe(
         ofType(samplesActions.SamplesActionTypes.ValidateSamples),
-        concatMap((action: samplesActions.ValidateSamples) => this.dataService.validateSampleData(action.payload).pipe(
-            map((annotatedSamples: IAnnotatedSampleData[]) => {
-                return (new samplesActions.ValidateSamplesSuccess(annotatedSamples));
-            }),
-            catchError(() => of(new coreActions.DisplayBanner({ predefined: 'validationFailure' })))
-        ))
+        withLatestFrom(this.store),
+        concatMap((actionStoreCombine: [samplesActions.ValidateSamples, fromSamples.State & fromUser.IState]) => {
+            const validationRequest: IValidationRequest = this.createValidationRequestFromStore(actionStoreCombine[1]);
+            return this.dataService.validateSampleData(validationRequest).pipe(
+                map((annotatedSamples: IAnnotatedSampleData[]) => {
+                    return (new samplesActions.ValidateSamplesSuccess(annotatedSamples));
+                }),
+                catchError((error) => {
+                    this.logger.error('Failed to validate samples', error);
+                    return of(new coreActions.DisplayBanner({ predefined: 'validationFailure' }));
+                })
+            );
+        })
     );
 
     @Effect()
@@ -50,7 +58,8 @@ export class SamplesEffects {
                 map((excelData: IExcelData) => {
                     return (new samplesActions.ImportExcelFileSuccess(excelData));
                 }),
-                catchError(() => {
+                catchError((error) => {
+                    this.logger.error('Failed to import Excel File', error);
                     return of(new coreActions.DisplayBanner({ predefined: 'uploadFailure' }));
                 })
             );
@@ -60,37 +69,30 @@ export class SamplesEffects {
     @Effect()
     importExcelSuccess$ = this.actions$.pipe(
         ofType(samplesActions.SamplesActionTypes.ImportExcelFileSuccess),
-        withLatestFrom(this.store),
-        map((actionStoreCombine: [samplesActions.ExportExcelFileSuccess, fromSamples.State & fromUser.IState]) => {
+        map(() => {
             this.router.navigate(['/samples']).catch(() => {
-                throw new Error('Unable to navigate.');
+                throw new ClientError('Unable to navigate.');
             });
-            return new samplesActions.ValidateSamples({
-                data: actionStoreCombine[1].samples.formData.map(e => e.data),
-                meta: {
-                    state: actionStoreCombine[1].user.currentUser ?
-                        (actionStoreCombine[1].user.currentUser as IUser).institution.stateShort : '',
-                    nrl: actionStoreCombine[1].samples.nrl ?
-                        actionStoreCombine[1].samples.nrl : ''
-                }
-            });
+            return new samplesActions.ValidateSamples();
         })
     );
 
     @Effect()
     exportExcel$ = this.actions$.pipe(
         ofType(samplesActions.SamplesActionTypes.ExportExcelFile),
-        mergeMap((action: samplesActions.ExportExcelFile) => {
+        withLatestFrom(this.store),
+        mergeMap((actionStoreCombine: [samplesActions.ExportExcelFile, fromSamples.State & fromUser.IState]) => {
             const filenameAddon = '.MP_' + moment().unix();
-            return from(this.excelConverterService.convertToExcel(action.payload, filenameAddon)).pipe(
+            const sampleSheet = fromSamples.getSamplesFeatureState(actionStoreCombine[1]);
+            return from(this.excelConverterService.convertToExcel(sampleSheet, filenameAddon)).pipe(
                 map((excelFileBlob: IExcelFileBlob) => {
                     saveAs(excelFileBlob.blob, excelFileBlob.fileName);
                     return new samplesActions.ExportExcelFileSuccess();
                 }),
-                catchError(() => of(new samplesActions.ExportExcelFileFailure({
-                    message: 'Es gab einen Fehler beim Exportieren der Datei.',
-                    type: AlertType.ERROR
-                })))
+                catchError((error) => {
+                    this.logger.error('Failed to export Excel File', error);
+                    return of(new coreActions.DisplayBanner({ predefined: 'exportFailure' }));
+                })
             );
         })
     );
@@ -103,7 +105,10 @@ export class SamplesEffects {
             const filenameAddon = '_validated';
             return from(this.sendSampleService.sendData(actionStoreCombine[1].samples, filenameAddon, actionStoreCombine[0].payload)).pipe(
                 map(() => new coreActions.DisplayBanner({ predefined: 'sendSuccess' })),
-                catchError(() => of(new coreActions.DisplayBanner({ predefined: 'sendFailure' })))
+                catchError((error) => {
+                    this.logger.error('Failed to send samples from store', error);
+                    return of(new coreActions.DisplayBanner({ predefined: 'sendFailure' }));
+                })
             );
         }
         )
@@ -112,13 +117,17 @@ export class SamplesEffects {
     @Effect()
     sendSamplesInitation$ = this.actions$.pipe(
         ofType(samplesActions.SamplesActionTypes.SendSamplesInitiate),
-        pluck('payload'),
-        switchMap((validationRequest: IValidationRequest) => {
+        withLatestFrom(this.store),
+        switchMap((actionStoreCombine: [samplesActions.SendSamplesInitiate, fromSamples.State & fromUser.IState]) => {
+            const validationRequest: IValidationRequest = this.createValidationRequestFromStore(actionStoreCombine[1]);
             return this.dataService.validateSampleData(validationRequest).pipe(
                 tap((annotatedSamples: IAnnotatedSampleData[]) => {
                     this.store.dispatch(new samplesActions.ValidateSamplesSuccess(annotatedSamples));
                 }),
-                catchError(() => of(new coreActions.DisplayBanner({ predefined: 'sendFailure' })))
+                catchError((error) => {
+                    this.logger.error('Failed to initiate sending samples', error);
+                    return of(new coreActions.DisplayBanner({ predefined: 'sendFailure' }));
+                })
             );
         }),
         switchMap((annotatedSamples: IAnnotatedSampleData[]) => {
@@ -157,5 +166,16 @@ export class SamplesEffects {
             },
             0
         );
+    }
+
+    private createValidationRequestFromStore(state: fromSamples.State & fromUser.IState): IValidationRequest {
+        const cu = fromUser.getCurrentUser(state) || null;
+        return {
+            data: fromSamples.getDataValues(state),
+            meta: {
+                state: cu ? cu.institution.stateShort : '',
+                nrl: fromSamples.getNRL(state)
+            }
+        };
     }
 }

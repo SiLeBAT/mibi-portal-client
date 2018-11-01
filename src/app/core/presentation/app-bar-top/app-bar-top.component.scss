@@ -4,6 +4,7 @@
     display: flex;
     background: $primary-color;
     color: $on-primary-color;
+    height: 100%;
 }
 
 .mibi-app-bar-top__title-link{
@@ -20,6 +21,10 @@
     color: $surface-color;
   }
   
+  .mibi-app-bar-top__title-link:visited {
+    color: $on-primary-color;
+  }
+
   .mibi-app-bar-top__navigation{
     flex: 0 1 auto;
     margin: 1%;
