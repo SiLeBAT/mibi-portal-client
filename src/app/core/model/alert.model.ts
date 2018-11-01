@@ -1,3 +1,5 @@
+import { ActionItemConfiguration } from './action-items.model';
+
 export enum AlertType {
     SUCCESS = 'success',
     ERROR = 'error',
@@ -10,11 +12,6 @@ export interface Alert {
 
 export interface Banner extends Alert {
     icon?: string;
-    mainButton?: ButtonConfig;
-    auxilliaryButton?: ButtonConfig;
-}
-
-export interface ButtonConfig {
-    label: string;
-    onClick: Function;
+    mainButton?: ActionItemConfiguration;
+    auxilliaryButton?: ActionItemConfiguration;
 }

@@ -11,11 +11,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { WallOfTextLayoutComponent } from './presentation/wall-of-text-layout/wall-of-text-layout.component';
 import { UploadComponent } from './presentation/upload/upload.component';
 import { UploadContainerComponent } from './container/upload-container/upload-container.component';
-import { ActionItemAnchorDirective } from './directive/action-item-anchor.directive';
+import { MatDividerModule } from '@angular/material/divider';
 @NgModule({
     imports: [
         CommonModule,
         ngfModule,
+        MatDividerModule,
         BrowserAnimationsModule,
         MatFormFieldModule,
         MatInputModule,
@@ -26,13 +27,12 @@ import { ActionItemAnchorDirective } from './directive/action-item-anchor.direct
         UploadComponent,
         UploadContainerComponent,
         DropdownDirective,
-        ActionItemAnchorDirective,
+
         SingleCenterCardLayoutComponent,
         WallOfTextLayoutComponent
     ],
     exports: [
         DropdownDirective,
-        ActionItemAnchorDirective,
         UploadContainerComponent,
         SingleCenterCardLayoutComponent,
         WallOfTextLayoutComponent

@@ -7,18 +7,6 @@
 @import 'assets/sass/layout';
 @import 'assets/sass/themes';
 
-
-body {
-  margin: 0;
-}
-
-hr {
-  height: 1px;
-  background-color: $primary-color;
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-}
-
 .primary {
   background:  $primary-color !important;
 }

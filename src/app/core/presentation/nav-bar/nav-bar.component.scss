@@ -12,3 +12,22 @@ $nav-bar-color: $primary-color;
      border: none;
    }
   
+   .mibi-user-info__icon{
+     color: $secondary-color;
+   }
+
+   .mibi-user-info {
+     padding: 8px;
+   }
+
+   .mibi-user-info__auxilliary {
+    margin: 8px 32px;
+   }
+
+   .mibi-user-info__main {
+     display: flex;
+   }
+
+   .mibi-user-info__name {
+     margin-left: 8px;
+   }

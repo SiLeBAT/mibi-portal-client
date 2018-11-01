@@ -14,7 +14,6 @@ import { PageFooterComponent } from './presentation/page-footer/page-footer.comp
 import { StoreModule } from '@ngrx/store';
 import { reducer, STATE_SLICE_NAME } from './state/core.reducer';
 import { PageBodyContainerComponent } from './container/page-body-container/page-body-container.component';
-import { SpinnerComponent } from './presentation/spinner/spinner.component';
 import { JasperoConfirmationsModule } from '@jaspero/ng-confirmations';
 import { LastChangeDisplayComponent } from './presentation/last-change-display/last-change-display.component';
 import { LastChangeDisplayContainerComponent } from './container/last-change-display-container/last-change-display-container.component';
@@ -31,10 +30,16 @@ import { UploadActionItemComponent } from './presentation/upload-action-item/upl
 import { BannerComponent } from './presentation/banner/banner.component';
 import { BannerContainerComponent } from './container/banner-container/banner-container.component';
 import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
     imports: [
         MatButtonModule,
+        MatProgressSpinnerModule,
+        BrowserAnimationsModule,
+        MatDividerModule,
         CommonModule,
         HttpClientModule,
         FormsModule,
@@ -65,7 +70,6 @@ import { MatButtonModule } from '@angular/material/button';
         PageBodyContainerComponent,
         PageHeaderComponent,
         PageFooterComponent,
-        SpinnerComponent,
         BannerComponent,
         BannerContainerComponent
     ],
@@ -76,7 +80,6 @@ import { MatButtonModule } from '@angular/material/button';
         FormsModule,
         ReactiveFormsModule,
         DefaultPageLayoutComponent,
-        SpinnerComponent,
         BannerContainerComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],

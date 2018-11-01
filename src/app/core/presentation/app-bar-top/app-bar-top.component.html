@@ -3,7 +3,7 @@
         <mibi-nav-bar-container></mibi-nav-bar-container>
     </div>
     <div class="mibi-app-bar-top__title">
-        <a [routerLink]="(currentUser$ | async) ? ['/users/profile'] : ['/']" class="mibi-app-bar-top__title-link">
+        <a mat-flat-button [routerLink]="(currentUser$ | async) ? ['/users/profile'] : ['/']" class="mibi-app-bar-top__title-link">
             {{ appName }}
         </a>
     </div>

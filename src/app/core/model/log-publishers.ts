@@ -14,12 +14,12 @@ export class LogConsolePublisher extends LogPublisher {
     log(record: LogEntry) {
         // tslint:disable-next-line
         console.log(record.buildLogString());
-        return Observable.create(of(true));
+        return of(true);
     }
 
     clear() {
         // tslint:disable-next-line
         console.clear();
-        return Observable.create(of(true));
+        return of(true);
     }
 }

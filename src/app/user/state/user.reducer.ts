@@ -1,14 +1,14 @@
 import * as fromRoot from '../../state/app.state';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { UserActions, UserActionTypes } from './user.actions';
-import { IUser } from '../model/user.model';
+import { User } from '../model/user.model';
 export const STATE_SLICE_NAME = 'user';
 export interface IState extends fromRoot.State {
     user: IUserState;
 }
 
 export interface IUserState {
-    currentUser: IUser | null;
+    currentUser: User | null;
 }
 
 const initialState: IUserState = {

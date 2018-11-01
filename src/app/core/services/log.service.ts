@@ -39,9 +39,14 @@ export class LogEntry {
     private formatParams(params: any[]): string {
         let ret: string = params.join(',');
         if (params.some(p => typeof p === 'object')) {
-            ret = '';
+            const retArry: string[] = [];
             for (const item of params) {
-                ret += JSON.stringify(item) + ',';
+                if (item.message) {
+                    retArry.push(item.message);
+                } else {
+                    retArry.push(JSON.stringify(item));
+                }
+                ret = retArry.join(', ');
             }
         }
         return ret;
@@ -61,7 +66,7 @@ export class LogService {
         this.publishers = this.publishersService.publishers;
     }
 
-    log(msg: any, ...optionalParams: any[]) {
+    log(msg: string, ...optionalParams: any[]) {
         this.writeToLog(msg, LogLevel.ALL, optionalParams);
     }
 

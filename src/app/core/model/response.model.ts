@@ -1,4 +1,4 @@
-import { ITokenizedUser } from '../../user/model/user.model';
+import { TokenizedUser } from '../../user/model/user.model';
 import { SampleData } from '../../samples/model/sample-management.model';
 
 export interface IRecoverPasswordResponseDTO {
@@ -10,7 +10,7 @@ export interface IRegisterUserResponseDTO {
 }
 
 export interface ILoginResponseDTO {
-    obj: ITokenizedUser;
+    obj: TokenizedUser;
     title: string;
 }
 

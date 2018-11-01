@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IUser } from '../../../user/model/user.model';
+import { User } from '../../../user/model/user.model';
 import * as userActions from '../../../user/state/user.actions';
 import { State } from '../../../state/app.state';
 import { Store } from '@ngrx/store';
@@ -12,7 +12,7 @@ import { Store } from '@ngrx/store';
     (logout)="logout()"></mibi-profile>`
 })
 export class ProfileContainerComponent implements OnInit {
-    currentUser: IUser;
+    currentUser: User;
 
     constructor(
         private store: Store<State>) { }

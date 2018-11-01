@@ -1,4 +1,4 @@
-import { ICredentials, IUser } from '../model/user.model';
+import { Credentials, User } from '../model/user.model';
 import { Action } from '@ngrx/store';
 
 export enum UserActionTypes {
@@ -10,7 +10,7 @@ export enum UserActionTypes {
 export class LoginUser implements Action {
     readonly type = UserActionTypes.LoginUser;
 
-    constructor(public payload: ICredentials) {
+    constructor(public payload: Credentials) {
 
     }
 }
@@ -18,7 +18,7 @@ export class LoginUser implements Action {
 export class LoginUserSuccess implements Action {
     readonly type = UserActionTypes.LoginUserSuccess;
 
-    constructor(public payload: IUser) {
+    constructor(public payload: User) {
 
     }
 }

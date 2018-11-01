@@ -1,10 +1,7 @@
+@import '../../../../assets/sass/abstracts';
 .wot-title {
  text-align: center;
  margin-top: 2%
-}
-
-.wot-divider {
-    width: 50%;
 }
 
 .wot-content {
@@ -16,4 +13,6 @@
 
 .wot-preamble {
     width: 75%;
+    padding-top: 8px;
+    border-top: 1px solid $primary-color;
    }
