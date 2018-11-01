@@ -2,7 +2,7 @@ import {
     Component,
     Input, OnInit, ViewChild, ComponentFactoryResolver, OnDestroy, ChangeDetectorRef, TemplateRef, ViewContainerRef
 } from '@angular/core';
-import { ActionItemConfiguration, ActionItemComponent } from '../../model/action-items.model';
+import { ActionItemConfiguration, ActionItemComponent, ActionItemType } from '../../model/action-items.model';
 import { Observable } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
 
@@ -17,6 +17,8 @@ export class ActionItemListComponent implements OnInit, OnDestroy {
     @ViewChild('actionList', { read: ViewContainerRef }) actionItemHost: ViewContainerRef;
     @ViewChild('customActionItems')
     private customActionItems: TemplateRef<any>;
+    @ViewChild('uploadActionItem')
+    private uploadActionItem: TemplateRef<any>;
     private componentActive: boolean = true;
     constructor(private componentFactoryResolver: ComponentFactoryResolver, private _changeDetectionRef: ChangeDetectorRef) { }
 
@@ -29,7 +31,7 @@ export class ActionItemListComponent implements OnInit, OnDestroy {
                     viewContainerRef.clear();
                     for (let i = 0; i < configuration.length; i++) {
                         const myConfig = { ...configuration[i] };
-                        myConfig.template = this.customActionItems;
+                        myConfig.template = this.getTemplate(myConfig.type);
                         const componentFactory = this.componentFactoryResolver.resolveComponentFactory(myConfig.component);
                         const componentRef = viewContainerRef.createComponent(componentFactory, i);
                         (componentRef.instance as ActionItemComponent).configuration = myConfig;
@@ -42,5 +44,14 @@ export class ActionItemListComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.componentActive = false;
+    }
+
+    private getTemplate(type: ActionItemType): TemplateRef<any> {
+        switch (type) {
+            case ActionItemType.UPLOAD:
+                return this.uploadActionItem;
+            default:
+                return this.customActionItems;
+        }
     }
 }

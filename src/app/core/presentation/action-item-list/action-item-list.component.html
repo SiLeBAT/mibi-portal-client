@@ -1,12 +1,22 @@
 <ng-template #customActionItems let-icon="icon" let-onClick="onClick" let-label="label">
-        <li class="mibi-action-item">
+    <li class="mibi-action-item">
+        <mat-icon class="mibi-action-item__icon">{{icon}}</mat-icon>
+        <a mat-flat-button class="mibi-action-item__label" (click)="onClick($event)">
+            {{label}}
+        </a>
+    </li>
+</ng-template>
+
+<ng-template #uploadActionItem let-icon="icon" let-onClick="onClick" let-label="label">
+    <li class="mibi-action-item">
+        <mibi-upload-container (onFileUpload)="onClick($event)">
             <mat-icon class="mibi-action-item__icon">{{icon}}</mat-icon>
-            <a mat-flat-button class="mibi-action-item__label" (click)="onClick($event)">
-                {{label}}
-            </a>
-        </li> 
-    </ng-template>
-    
+            <span mat-flat-button class="mibi-action-item__label">{{label}}</span>
+        </mibi-upload-container>
+
+    </li>
+</ng-template>
+
 <ul class="mibi-action-item-list">
     <ng-template #actionList></ng-template>
 </ul>

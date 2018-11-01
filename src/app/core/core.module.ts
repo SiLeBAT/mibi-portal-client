@@ -26,7 +26,6 @@ import { AppBarTopContainerComponent } from './container/app-bar-top-container/a
 import { ActionItemListContainerComponent } from './container/action-item-list-container/action-item-list-container.component';
 import { ActionItemListComponent } from './presentation/action-item-list/action-item-list.component';
 import { GenericActionItemComponent } from './presentation/generic-action-item/generic-action-item.component';
-import { UploadActionItemComponent } from './presentation/upload-action-item/upload-action-item.component';
 import { BannerComponent } from './presentation/banner/banner.component';
 import { BannerContainerComponent } from './container/banner-container/banner-container.component';
 import { MatButtonModule } from '@angular/material/button';
@@ -55,7 +54,6 @@ import { MatDividerModule } from '@angular/material/divider';
     ],
     declarations: [
         GenericActionItemComponent,
-        UploadActionItemComponent,
         AppBarTopContainerComponent,
         ActionItemListContainerComponent,
         ActionItemListComponent,
@@ -83,6 +81,6 @@ import { MatDividerModule } from '@angular/material/divider';
         BannerContainerComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    entryComponents: [GenericActionItemComponent, UploadActionItemComponent]
+    entryComponents: [GenericActionItemComponent]
 })
 export class CoreModule { }

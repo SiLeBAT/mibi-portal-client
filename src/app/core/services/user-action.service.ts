@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import { ActionItemConfiguration, ActionItemType } from '../model/action-items.model';
 import { GenericActionItemComponent } from '../presentation/generic-action-item/generic-action-item.component';
-import { UploadActionItemComponent } from '../presentation/upload-action-item/upload-action-item.component';
 import * as samplesActions from '../../samples/state/samples.actions';
 import * as fromCore from '../state/core.reducer';
 import * as coreActions from '../state/core.actions';
@@ -18,28 +17,28 @@ export class UserActionService {
     userActionConfiguration: ActionItemConfiguration[] = [{
         label: 'Validieren',
         type: ActionItemType.VALIDATE,
-        onClick: this.onValidate.bind(this),
+        onClick: this.validate.bind(this),
         component: GenericActionItemComponent,
         icon: 'spellcheck'
     },
     {
         label: 'Hochladen',
         type: ActionItemType.UPLOAD,
-        onClick: this.onImport.bind(this),
-        component: UploadActionItemComponent,
+        onClick: this.import.bind(this),
+        component: GenericActionItemComponent,
         icon: 'get_app'
     },
     {
         label: 'Exportieren',
         type: ActionItemType.EXPORT,
-        onClick: this.onExport.bind(this),
+        onClick: this.export.bind(this),
         component: GenericActionItemComponent,
         icon: 'save'
     },
     {
         label: 'Senden',
         type: ActionItemType.SEND,
-        onClick: this.onSend.bind(this),
+        onClick: this.send.bind(this),
         component: GenericActionItemComponent,
         icon: 'send'
     },
@@ -76,26 +75,25 @@ export class UserActionService {
         };
     }
 
-    // TODO: Rename these functions
     private navigate(url: string) {
         this.router.navigate([url]).catch(() => {
             throw new ClientError('Unable to navigate.');
         });
     }
 
-    private onValidate() {
+    private validate() {
         this.store.dispatch(new samplesActions.ValidateSamples());
     }
 
-    private onExport() {
+    private export() {
         this.store.dispatch(new samplesActions.ExportExcelFile());
     }
 
-    private onImport(file: File) {
+    private import(file: File) {
         this.store.dispatch(new samplesActions.ImportExcelFile(file));
     }
 
-    private onSend() {
+    private send() {
         this.store.dispatch(new samplesActions.SendSamplesInitiate());
     }
 
