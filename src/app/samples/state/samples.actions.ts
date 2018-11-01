@@ -1,8 +1,8 @@
 import { Action } from '@ngrx/store';
 import { IAnnotatedSampleData, ISampleSheet, IExcelData, IChangedDataGridField } from '../model/sample-management.model';
-import { IAlert } from '../../core/model/alert.model';
+import { Alert } from '../../core/model/alert.model';
 import { LogoutUser } from '../../user/state/user.actions';
-import { IModalContent } from '../../core/model/modal.model';
+import { DialogContent } from '../../core/model/dialog.model';
 import { IUser } from '../../user/model/user.model';
 import { IValidationRequest } from '../../core/model/request.model';
 
@@ -61,7 +61,7 @@ export class ExportExcelFileSuccess implements Action {
 export class ExportExcelFileFailure implements Action {
     readonly type = SamplesActionTypes.ExportExcelFileFailure;
 
-    constructor(public payload: IAlert) {
+    constructor(public payload: Alert) {
     }
 }
 
@@ -99,7 +99,7 @@ export class SendSamplesFromStore implements Action {
 export class SendSamplesConfirm implements Action {
     readonly type = SamplesActionTypes.SendSamplesConfirm;
 
-    constructor(public payload: IModalContent) {
+    constructor(public payload: DialogContent) {
     }
 }
 

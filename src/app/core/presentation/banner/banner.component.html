@@ -1,0 +1,11 @@
+<div *ngIf="banner" class="mibi-banner">
+  <mat-icon class="mibi-banner__icon" [ngClass]="{
+      'mibi-banner__icon--success': banner.type === 'success',
+      'mibi-banner__icon--error': banner.type === 'error' }">{{banner.icon}}</mat-icon>
+  <div class="mibi-banner__message mat-body-2">{{banner.message}}</div>
+  <div class="mibi-banner__buttons">
+    <button *ngIf="banner.auxilliaryButton" class="mibi-banner__auxilliary-button" mat-button color="accent" (click)="banner.auxilliaryButton.onClick($event)">{{banner.auxilliaryButton.label}}</button>
+    <button class="mibi-banner__main-button" mat-button color="accent" (click)="banner.mainButton.onClick($event)">{{banner.mainButton.label}}</button>
+  </div>
+
+</div>

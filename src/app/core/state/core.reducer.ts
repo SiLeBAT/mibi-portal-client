@@ -3,31 +3,39 @@ import * as fromRoot from '../../state/app.state';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { SystemActions, CoreActionTypes } from './core.actions';
 import { SamplesActionTypes } from '../../samples/state/samples.actions';
-import { IAlert } from '../model/alert.model';
+import { Alert, Banner } from '../model/alert.model';
 import { UserActionTypes } from '../../user/state/user.actions';
-import { IModal } from '../model/modal.model';
+import { Dialog } from '../model/dialog.model';
 import { ROUTER_NAVIGATION } from '@ngrx/router-store';
+import { ActionItemType } from '../model/action-items.model';
 
 export const STATE_SLICE_NAME = 'core';
-export interface IState extends fromRoot.State {
-    core: ICoreState;
+export interface State extends fromRoot.State {
+    core: CoreState;
 }
 
-export interface ICoreState {
-    ui: IUIState;
+export interface CoreState {
+    ui: UIState;
 }
 
-export interface IUIState {
+export interface BannerState {
+    predefined: string;
+    custom?: Banner;
+}
+export interface UIState {
     isBusy: boolean;
-    alert: IAlert | null;
-    modal: IModal;
+    banner: BannerState | null;
+    snackbar: Alert | null;
+    dialog: Dialog;
+    enabledActionItems: ActionItemType[];
 }
 
-const initialState: ICoreState = {
+const initialState: CoreState = {
     ui: {
         isBusy: false,
-        alert: null,
-        modal: {
+        banner: null,
+        snackbar: null,
+        dialog: {
             config: {
                 overlay: true,
                 overlayClickToClose: false,
@@ -37,30 +45,41 @@ const initialState: ICoreState = {
             },
             show: false,
             title: ''
-        }
+        },
+        enabledActionItems: []
     }
 };
 
 // SELECTORS
-export const getCoreFeatureState = createFeatureSelector<ICoreState>(STATE_SLICE_NAME);
+export const getCoreFeatureState = createFeatureSelector<CoreState>(STATE_SLICE_NAME);
 
 export const isBusy = createSelector(
     getCoreFeatureState,
     state => state.ui.isBusy
 );
 
-export const getAlert = createSelector(
+export const getBanner = createSelector(
     getCoreFeatureState,
-    state => state.ui.alert
+    state => state.ui.banner
 );
 
-export const getModal = createSelector(
+export const getSnackbar = createSelector(
     getCoreFeatureState,
-    state => state.ui.modal
+    state => state.ui.snackbar
+);
+
+export const getDialog = createSelector(
+    getCoreFeatureState,
+    state => state.ui.dialog
+);
+
+export const getEnabledActionItems = createSelector(
+    getCoreFeatureState,
+    state => state.ui.enabledActionItems
 );
 
 // REDUCER
-export function reducer(state: ICoreState = initialState, action: SystemActions): ICoreState {
+export function reducer(state: CoreState = initialState, action: SystemActions): CoreState {
     switch (action.type) {
         case SamplesActionTypes.SendSamplesConfirm:
             return {
@@ -68,8 +87,8 @@ export function reducer(state: ICoreState = initialState, action: SystemActions)
                 ... {
                     ui: {
                         ...state.ui, ...{
-                            modal: {
-                                ...state.ui.modal,
+                            dialog: {
+                                ...state.ui.dialog,
                                 ...{
                                     title: action.payload.title,
                                     message: action.payload.message,
@@ -80,54 +99,47 @@ export function reducer(state: ICoreState = initialState, action: SystemActions)
                     }
                 }
             };
-        case CoreActionTypes.ClearAlert:
-        case ROUTER_NAVIGATION:
-            return {
-                ...state, ...{
-                    ui: {
-                        ...state.ui, ...{
-                            alert: null
-                        }
-                    }
+        case CoreActionTypes.EnableActionItems:
+            const enabledAIState = { ...state };
+            enabledAIState.ui.enabledActionItems = action.payload;
+            return enabledAIState;
+        case CoreActionTypes.ClearBanner:
+            const clearedAlertState = setUI({
+                ...state.ui, ...{
+                    banner: null
                 }
-            };
+            }, state);
+            return clearedAlertState;
+        case ROUTER_NAVIGATION:
+            const navigatedState = { ...state };
+            navigatedState.ui.enabledActionItems = [];
+            return navigatedState;
         case SamplesActionTypes.ValidateSamples:
         case SamplesActionTypes.ImportExcelFile:
         case UserActionTypes.LoginUser:
-            return {
-                ...state, ...{
-                    ui: {
-                        ...state.ui, ...{
-                            isBusy: true
-                        }
-                    }
+            return setUI({
+                ...state.ui, ...{
+                    isBusy: true
                 }
-            };
-        case SamplesActionTypes.ValidateSamplesSuccess:
+            }, state);
         case SamplesActionTypes.ImportExcelFileSuccess:
+        case SamplesActionTypes.ValidateSamplesSuccess:
         case UserActionTypes.LoginUserSuccess:
-            return {
-                ...state, ...{
-                    ui: {
-                        ...state.ui, ...{
-                            isBusy: false,
-                            alert: null
-                        }
-                    }
+            return setUI({
+                ...state.ui, ...{
+                    isBusy: false,
+                    banner: null
                 }
-            };
-        case CoreActionTypes.DisplayAlert:
+            }, state);
+        case CoreActionTypes.DisplayBanner:
             return {
                 ...state, ...{
                     ui: {
                         ...state.ui, ...{
                             isBusy: false,
-                            alert: {
-                                type: action.payload.type,
-                                message: action.payload.message
-                            },
-                            modal: {
-                                ...state.ui.modal,
+                            banner: action.payload,
+                            dialog: {
+                                ...state.ui.dialog,
                                 ...{
                                     title: '',
                                     message: '',
@@ -141,4 +153,12 @@ export function reducer(state: ICoreState = initialState, action: SystemActions)
         default:
             return state;
     }
+}
+
+// Utility
+
+function setUI(ui: UIState, state: CoreState) {
+    const newState = { ...state };
+    newState.ui = ui;
+    return newState;
 }

@@ -1,60 +1,14 @@
 @import '../../../../assets/sass/abstracts';
 
-  .navbar-blue {
-    background: $primary-color;
-    color: $on-primary-color;
-    padding: 0;
-    margin: 0;
+$nav-bar-color: $primary-color;
+
+  .mibi-navbar {
+    background-color: $nav-bar-color;
   }
-  
-  .navbar-brand-color, .navbar-text-color {
-    color: $on-primary-color;
-    text-decoration: none;
-    font-size: 1.2em;
-    display: inline-block;
-    text-align: center;
-  }
-  
-  .navbar-brand-color:hover,
-  .navbar-brand-color:focus,
-  .navbar-brand-color:active,
-  .navbar-text-color:hover,
-  .navbar-text-color:focus,
-  .navbar-text-color:active {
-    background: $primary-color;
-    color: $surface-color;
-    outline: none;
-  }
-  
-  .open > a {
-    background: inherit;
-  }
-  
-  .dropdown {
-    margin: 0 2rem;
-  }
-  
-  .dropdown-info > a,
-  .dropdown-info > a:hover {
-    background: $background-color;
-    font-weight: bold;
-  }
-  
-  .divider {
-    margin-top: 0;
-    background: $surface-color;
-    margin-left: 1rem;
-    margin-right: 1rem;
-  }
-  
-  .dropdown-link {
-    cursor: pointer;
-  }
-  
-  .dropdown-link:hover,
-  .dropdown-link:focus,
-  .dropdown-link:active {
-    cursor: pointer;
-    outline: none;
-  }
+
+   .mibi-navbar__button {
+     background-color: $nav-bar-color;
+     color: $on-primary-color;
+     border: none;
+   }
   

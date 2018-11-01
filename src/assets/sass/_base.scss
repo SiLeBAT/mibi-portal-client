@@ -42,3 +42,7 @@ MD defaults:
 $mibi-typography: mat-typography-config(
    $font-family: $mibi-font-family
    );
+
+   .hidden {
+    display: none !important;
+  }

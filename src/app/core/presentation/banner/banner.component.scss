@@ -1,0 +1,26 @@
+@import '../../../../assets/sass/abstracts';
+
+.mibi-banner {
+  display: flex;
+  justify-content: center;
+  padding: 8px;
+  min-height: 52px;
+}
+
+.mibi-banner__icon {
+  margin-right: 16px;
+  line-height: 1.5;
+ &--error {
+  color: $error-color;
+ }
+ &--success {
+  color: $secondary-color;
+ }
+ &--warning{
+  color: $secondary-color;
+ }
+}
+
+.mibi-banner__message {
+  line-height: 2.5;
+}

@@ -1,4 +1,4 @@
-interface IModalConfiguration {
+interface DialogConfiguration {
     overlay: boolean;
     overlayClickToClose: boolean;
     showCloseButton: boolean;
@@ -6,12 +6,12 @@ interface IModalConfiguration {
     declineText: string;
 }
 
-export interface IModalContent {
+export interface DialogContent {
     title: string;
     message?: string;
 }
 
-export interface IModal extends IModalContent {
-    config: IModalConfiguration;
+export interface Dialog extends DialogContent {
+    config: DialogConfiguration;
     show: boolean;
 }

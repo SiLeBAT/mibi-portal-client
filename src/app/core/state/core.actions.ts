@@ -7,27 +7,37 @@ import {
  SendSamplesConfirm, SendSamplesInitiate, ImportExcelFile, ImportExcelFileSuccess
 } from '../../samples/state/samples.actions';
 import { Action } from '@ngrx/store';
-import { IAlert } from '../model/alert.model';
 import {
     LoginUser,
     LoginUserSuccess
 } from '../../user/state/user.actions';
 import { RouterNavigationAction } from '@ngrx/router-store';
+import { ActionItemType } from '../model/action-items.model';
+import { BannerState } from './core.reducer';
 
 export enum CoreActionTypes {
-    DisplayAlert = '[Core] Display Alert',
-    ClearAlert = '[Core] Clear Alert'
+    DisplayBanner = '[Core] Display Banner',
+    ClearBanner = '[Core] Clear Banner',
+    EnableActionItems = '[Core] Enable Action Items'
 }
-export class DisplayAlert implements Action {
-    readonly type = CoreActionTypes.DisplayAlert;
+export class DisplayBanner implements Action {
+    readonly type = CoreActionTypes.DisplayBanner;
 
-    constructor(public payload: IAlert) {
+    constructor(public payload: BannerState) {
 
     }
 }
 
-export class ClearAlert implements Action {
-    readonly type = CoreActionTypes.ClearAlert;
+export class EnableActionItems implements Action {
+    readonly type = CoreActionTypes.EnableActionItems;
+
+    constructor(public payload: ActionItemType[]) {
+
+    }
+}
+
+export class ClearBanner implements Action {
+    readonly type = CoreActionTypes.ClearBanner;
 
     constructor() {
 
@@ -44,8 +54,9 @@ export type SystemActions = ValidateSamples
     | ExportExcelFileFailure
     | SendSamplesInitiate
     | SendSamplesConfirm
-    | DisplayAlert
-    | ClearAlert
+    | DisplayBanner
+    | ClearBanner
+    | EnableActionItems
     | LoginUser
     | LoginUserSuccess
     | RouterNavigationAction;

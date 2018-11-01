@@ -6,13 +6,13 @@ import { tap } from 'rxjs/operators';
 import * as coreActions from '../../core/state/core.actions';
 import * as fromCore from '../../core/state/core.reducer';
 import { Store } from '@ngrx/store';
-import { AlertType } from '../model/alert.model';
+
 // TODO: This should be handled in Effects & with different actions
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
 
     constructor(private router: Router,
-        private store: Store<fromCore.IState>) { }
+        private store: Store<fromCore.State>) { }
 
     intercept(req: HttpRequest<any>,
         next: HttpHandler): Observable<HttpEvent<any>> {
@@ -24,11 +24,7 @@ export class JwtInterceptor implements HttpInterceptor {
             (err: Error) => {
                 if (err instanceof HttpErrorResponse) {
                     if (err.status === 401) {
-                        this.store.dispatch(new coreActions.DisplayAlert({
-                            message: 'Nicht authorisiert oder nicht aktiviert. '
-                                + 'Wenn bereits registriert, überprüfen Sie bitte Ihre Email auf einen Aktivierungslink',
-                            type: AlertType.ERROR
-                        }));
+                        this.store.dispatch(new coreActions.DisplayBanner({ predefined: 'noAuthorizationOrActivation' }));
                         this.router.navigate(['/users/login']).catch(() => {
                             throw new Error();
                         });

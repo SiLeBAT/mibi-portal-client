@@ -63,10 +63,13 @@ export class RegisterContainerComponent implements OnInit {
             (response) => {
                 this.router.navigate(['users/login']).then(
                     () => {
-                        this.store.dispatch(new coreActions.DisplayAlert({
-                            // tslint:disable-next-line:max-line-length
-                            message: `Bitte aktivieren Sie Ihren Account: Eine Email mit weiteren Anweisungen wurde an ${user.email} gesendet`,
-                            type: AlertType.SUCCESS
+                        this.store.dispatch(new coreActions.DisplayBanner({
+                            predefined: '',
+                            custom: {
+                                // tslint:disable-next-line:max-line-length
+                                message: `Bitte aktivieren Sie Ihren Account: Eine Email mit weiteren Anweisungen wurde an ${user.email} gesendet`,
+                                type: AlertType.SUCCESS
+                            }
                         }));
                     }
                 ).catch(() => {
@@ -76,9 +79,12 @@ export class RegisterContainerComponent implements OnInit {
             }
         ).catch(
             (response) => {
-                this.store.dispatch(new coreActions.DisplayAlert({
-                    message: response.title,
-                    type: AlertType.ERROR
+                this.store.dispatch(new coreActions.DisplayBanner({
+                    predefined: '',
+                    custom: {
+                        message: response.title,
+                        type: AlertType.ERROR
+                    }
                 }));
             }
         );
