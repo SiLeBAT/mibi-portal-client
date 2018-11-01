@@ -1,21 +1,28 @@
 
 @import '../../../../assets/sass/abstracts';
 
-.toc__row {
+.mibi-toc__row {
     background: $primary-color;
-    width: 50%;
+    width: 25%;
     margin: 4px;
     padding: 2px;
     text-align: center;
 }
 
-.toc {
+.mibi-toc {
     padding-bottom: 32px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.toc__link {
+.mibi-toc__link {
     color: $on-primary-color;
+    text-decoration: none;
 }
+
+  .mibi-toc__link:hover,
+  .mibi-toc__link:focus,
+  .mibi-toc__link:active {
+    color: $surface-color;
+  }

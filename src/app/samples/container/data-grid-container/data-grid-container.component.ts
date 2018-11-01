@@ -12,9 +12,8 @@ import * as samplesActions from '../../state/samples.actions';
 import * as fromCore from '../../../core/state/core.reducer';
 import * as coreAction from '../../../core/state/core.actions';
 import * as fromUser from '../../../user/state/user.reducer';
-import { IModal } from '../../../core/model/modal.model';
+import { Dialog } from '../../../core/model/dialog.model';
 import { ConfirmationService, ResolveEmit } from '@jaspero/ng-confirmations';
-import { AlertType } from '../../../core/model/alert.model';
 import { IFormViewModel, IFormRowViewModel } from '../../presentation/data-grid/data-grid.component';
 import { ToolTipType } from '../../../shared/model/tooltip.model';
 import { IUser } from '../../../user/model/user.model';
@@ -40,83 +39,83 @@ export class DataGridContainerComponent extends GuardedUnloadComponent implement
     private hasData: boolean = true;
     private currentUser: IUser | null;
     private componentActive: boolean = true;
-    // TODO: HTML tags in Text?  Formatting shoule be handled by CSS.
+
     columnConfigArray: IColConfig[] = [
         {
             id: 'sample_id',
-            title: 'Ihre<br>Proben-<br>ummer'
+            title: 'Ihre Proben&shy;ummer'
         },
         {
             id: 'sample_id_avv',
-            title: 'Probe-<br>nummer<br>nach<br>AVVData'
+            title: 'Probe&shy;nummer nach AVVData'
         },
         {
             id: 'pathogen_adv',
-            title: 'Erreger<br>(Text aus<br>ADV-Kat-Nr.16)'
+            title: 'Erreger (Text aus ADV-Kat-Nr.16)'
         },
         {
             id: 'pathogen_text',
-            title: 'Erreger<br>(Textfeld/<br>Ergänzung)'
+            title: 'Erreger (Textfeld / Ergänzung)'
         },
         {
             id: 'sampling_date',
-            title: 'Datum der<br>Probenahme'
+            title: 'Datum der Probe&shy;nahme'
         },
         {
             id: 'isolation_date',
-            title: 'Datum der<br>Isolierung'
+            title: 'Datum der Isolierung'
         },
         {
             id: 'sampling_location_adv',
-            title: 'Ort der<br>Probe-<br>nahme<br>(Code aus<br>ADV-Kat-<br>Nr.9)'
+            title: 'Ort der Probe&shy;nahme (Code aus ADV-Kat-Nr.9)'
         },
         {
             id: 'sampling_location_zip',
-            title: 'Ort der<br>Probe-<br>nahme<br>(PLZ)'
+            title: 'Ort der Probe&shy;nahme (PLZ)'
         },
         {
             id: 'sampling_location_text',
-            title: 'Ort der<br>Probe-<br>nahme<br>(Text)'
+            title: 'Ort der Probe&shy;nahme (Text)'
         },
         {
             id: 'topic_adv',
-            title: 'Oberbe-<br>griff<br>(Kodier-<br>system)<br>der<br>Matrizes<br>(Code aus<br>ADV-Kat-<br>Nr.2)'
+            title: 'Oberbe&shy;griff (Kodier&shy;system) der Matrizes (Code aus ADV-Kat-Nr.2)'
         },
         {
             id: 'matrix_adv',
-            title: 'Matrix<br>Code<br>(Code<br>aus<br>ADV-<br>Kat-<br>Nr.3)'
+            title: 'Matrix Code (Code aus ADV&shy;Kat&shy;Nr.3)'
         },
         {
             id: 'matrix_text',
-            title: 'Matrix<br>(Textfeld/<br>Ergänzung)'
+            title: 'Matrix (Textfeld / Ergänzung)'
         },
         {
             id: 'process_state_adv',
-            title: 'Ver-<br>arbeitungs-<br>zustand<br>(Code aus<br>ADV-Kat-<br>Nr.12)'
+            title: 'Ver&shy;arbeitungs&shy;zustand (Code aus ADV-Kat&shy;Nr.12)'
         },
         {
             id: 'sampling_reason_adv',
-            title: 'Grund<br>der<br>Probe-<br>nahme<br>(Code<br>aus<br>ADV-Kat-<br>Nr.4)'
+            title: 'Grund der Probe&shy;nahme (Code aus ADV-Kat&shy;Nr.4)'
         },
         {
             id: 'sampling_reason_text',
-            title: 'Grund der<br>Probe-<br>nahme<br>(Textfeld/<br>Ergänzung)'
+            title: 'Grund der Probe&shy;nahme (Textfeld / Ergänzung)'
         },
         {
             id: 'operations_mode_adv',
-            title: 'Betriebsart<br>(Code aus<br>ADV-Kat-Nr.8)'
+            title: 'Betriebsart (Code aus ADV-Kat-Nr.8)'
         },
         {
             id: 'operations_mode_text',
-            title: 'Betriebsart<br>(Textfeld/<br>Ergänzung)'
+            title: 'Betriebsart (Textfeld / Ergänzung)'
         },
         {
             id: 'vvvo',
-            title: 'VVVO-Nr /<br>Herde'
+            title: 'VVVO-Nr / Herde'
         },
         {
             id: 'comment',
-            title: 'Bemerkung<br>(u.a.<br>Untersuchungs-<br>programm)'
+            title: 'Bemerkung (u.a. Untersuchungs&shy;programm)'
         }
     ];
 
@@ -152,10 +151,10 @@ export class DataGridContainerComponent extends GuardedUnloadComponent implement
             .subscribe(
                 (user: IUser | null) => this.currentUser = user
             );
-        this.store.pipe(select(fromCore.getModal),
+        this.store.pipe(select(fromCore.getDialog),
             takeWhile(() => this.componentActive))
             .subscribe(
-                (modal: IModal) => {
+                (modal: Dialog) => {
                     if (modal.show) {
                         this.confirmationService.create(modal.title, modal.message, modal.config).subscribe((ans: ResolveEmit) => {
                             if (ans.resolved) {
@@ -163,10 +162,7 @@ export class DataGridContainerComponent extends GuardedUnloadComponent implement
                                     this.store.dispatch(new samplesActions.SendSamplesFromStore(this.currentUser));
                                 }
                             } else {
-                                this.store.dispatch(new coreAction.DisplayAlert({
-                                    message: 'Es wurden keine Probendaten an das BfR gesendet',
-                                    type: AlertType.ERROR
-                                }));
+                                this.store.dispatch(new coreAction.DisplayBanner({ predefined: 'sendCancel' }));
                             }
                         });
                     }

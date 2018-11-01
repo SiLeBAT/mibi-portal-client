@@ -1,55 +1,43 @@
 @import '../../../../assets/sass/abstracts';
-
-hr {
-    position: fixed;
-    bottom: 5rem;
-    left: 0;
-    z-index: 1040;
-    margin: 0;
-    height: 1px;
-    background-color: $primary-color;
-    width: 100vw;
-  }
   
-  .main-footer {
+  .mibi-main-footer {
+    border-top: 2px solid $primary-color;
     background: $background-color;
-    padding: 2rem;;
+    padding: 1rem;
     position: fixed;
     bottom: 0;
-    left: 0;
     width: 100vw;
     z-index: 1030;
-    height: 5rem;
     display: flex;
   }
 
-  .main-footer__nav {
+  .mibi-main-footer__nav {
     display: flex;
     justify-content: space-around;
   }
 
-  .main-footer__last-change {
-    margin-right: 20%;
+  .mibi-main-footer__last-change {
+    margin-right: 10%;
   }
 
-.main-footer__links {
+.mibi-main-footer__links {
     list-style: none;
     margin: 0;
     padding: 0;
     text-align: center;
   }
   
-  .main-footer__link {
+  .mibi-main-footer__link {
     display: inline-block;
     padding: 0 4rem;
   }
   
-  .main-footer__link a {
+  .mibi-main-footer__link a {
     color: $primary-color;
     text-decoration: none;
   }
   
-  .main-footer__link a:hover,
-  .main-footer__link a:active {
+  .mibi-main-footer__link a:hover,
+  .mibi-main-footer__link a:active {
     color: $on-background-color;
   }

@@ -20,9 +20,12 @@ export class RecoveryContainerComponent {
                 (response) => {
                     this.router.navigate(['users/login']).then(
                         () => {
-                            this.store.dispatch(new coreActions.DisplayAlert({
-                                message: response.title,
-                                type: AlertType.SUCCESS
+                            this.store.dispatch(new coreActions.DisplayBanner({
+                                predefined: '',
+                                custom: {
+                                    message: response.title,
+                                    type: AlertType.SUCCESS
+                                }
                             }));
                         }
                     ).catch(() => {
@@ -31,9 +34,12 @@ export class RecoveryContainerComponent {
                 }
             ).catch(
                 (response) => {
-                    this.store.dispatch(new coreActions.DisplayAlert({
-                        message: response.title,
-                        type: AlertType.ERROR
+                    this.store.dispatch(new coreActions.DisplayBanner({
+                        predefined: '',
+                        custom: {
+                            message: response.title,
+                            type: AlertType.ERROR
+                        }
                     }));
                 }
             );

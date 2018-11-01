@@ -38,10 +38,7 @@ export class SamplesEffects {
             map((annotatedSamples: IAnnotatedSampleData[]) => {
                 return (new samplesActions.ValidateSamplesSuccess(annotatedSamples));
             }),
-            catchError(() => of(new coreActions.DisplayAlert({
-                message: 'Es gab einen Fehler beim Validieren.',
-                type: AlertType.ERROR
-            })))
+            catchError(() => of(new coreActions.DisplayBanner({ predefined: 'validationFailure' })))
         ))
     );
 
@@ -53,10 +50,9 @@ export class SamplesEffects {
                 map((excelData: IExcelData) => {
                     return (new samplesActions.ImportExcelFileSuccess(excelData));
                 }),
-                catchError(() => of(new coreActions.DisplayAlert({
-                    message: 'Es gab einen Fehler beim Importieren der Datei.',
-                    type: AlertType.ERROR
-                })))
+                catchError(() => {
+                    return of(new coreActions.DisplayBanner({ predefined: 'uploadFailure' }));
+                })
             );
         })
     );
@@ -106,16 +102,8 @@ export class SamplesEffects {
         mergeMap((actionStoreCombine: [samplesActions.SendSamplesFromStore, fromSamples.State]) => {
             const filenameAddon = '_validated';
             return from(this.sendSampleService.sendData(actionStoreCombine[1].samples, filenameAddon, actionStoreCombine[0].payload)).pipe(
-                map(() => new coreActions.DisplayAlert({
-                    type: AlertType.SUCCESS,
-                    message: `Der Auftrag wurde an das BfR gesendet.
-                    Bitte drucken Sie die Exceltabelle in Ihrem Mailanhang
-                    aus und legen sie Ihren Isolaten bei.`
-                })),
-                catchError(() => of(new coreActions.DisplayAlert({
-                    message: 'Es gab einen Fehler beim Versenden der Datei and das MiBi-Portal.',
-                    type: AlertType.ERROR
-                })))
+                map(() => new coreActions.DisplayBanner({ predefined: 'sendSuccess' })),
+                catchError(() => of(new coreActions.DisplayBanner({ predefined: 'sendFailure' })))
             );
         }
         )
@@ -130,23 +118,14 @@ export class SamplesEffects {
                 tap((annotatedSamples: IAnnotatedSampleData[]) => {
                     this.store.dispatch(new samplesActions.ValidateSamplesSuccess(annotatedSamples));
                 }),
-                catchError(() => of(new coreActions.DisplayAlert({
-                    message: 'Es gab einen Fehler beim Versenden der Datei and das MiBi-Portal.',
-                    type: AlertType.ERROR
-                })))
+                catchError(() => of(new coreActions.DisplayBanner({ predefined: 'sendFailure' })))
             );
         }),
         switchMap((annotatedSamples: IAnnotatedSampleData[]) => {
             if (this.hasSampleError(annotatedSamples)) {
-                return of(new coreActions.DisplayAlert({
-                    message: 'Es gibt noch rot gekennzeichnete Fehler. Bitte vor dem Senden korrigieren.',
-                    type: AlertType.ERROR
-                }));
+                return of(new coreActions.DisplayBanner({ predefined: 'validationErrors' }));
             } else if (this.hasSampleAutoCorrection(annotatedSamples)) {
-                return of(new coreActions.DisplayAlert({
-                    message: 'Es wurden Felder autokorregiert. Bitte prüfen und nochmals senden.',
-                    type: AlertType.ERROR
-                }));
+                return of(new coreActions.DisplayBanner({ predefined: 'autocorrections' }));
             } else {
                 return of(new samplesActions.SendSamplesConfirm({
                     message: `<p>Ihre Probendaten werden jetzt an das BfR gesendet.</p>
@@ -156,10 +135,7 @@ export class SamplesEffects {
                 }));
             }
         }),
-        catchError(() => of(new coreActions.DisplayAlert({
-            message: 'Es wurden keine Probendaten an das BfR gesendet',
-            type: AlertType.ERROR
-        })))
+        catchError(() => of(new coreActions.DisplayBanner({ predefined: 'sendCancel' })))
     );
 
     private hasSampleError(annotatedSamples: IAnnotatedSampleData[]) {

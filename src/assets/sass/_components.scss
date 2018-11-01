@@ -6,6 +6,10 @@ The name is explicit here. This folder contains all the components used to build
 }
 
 // Handsontable
+.handsontable th{
+    white-space: normal;
+  }
+
 .handsontable td.warn{
     @include background-opacity($secondary-color-light, 0.3);
     font-weight: bold;
@@ -223,3 +227,30 @@ ul  {
     padding: 2px 5px 3px 3px;
     margin-top: 5px;
 }
+
+
+// Action Items
+.mibi-action-item{
+    list-style: none;
+    margin-right: 16px;
+    display: flex;
+    & .uploader {
+        display: flex
+    }
+  }
+    
+    .mibi-action-item:hover,
+    .mibi-action-item:focus,
+    .mibi-action-item:active {
+      color: $surface-color;
+    }
+
+    .mibi-action-item__icon {
+        line-height: 1.3;
+    }
+    
+// Buttons
+ button {
+     text-transform: uppercase;
+ }
+ 

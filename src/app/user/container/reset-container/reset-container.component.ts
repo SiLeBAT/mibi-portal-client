@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as fromUser from '../../state/user.reducer';
 import { Store } from '@ngrx/store';
 import { DataService } from '../../../core/services/data.service';
-import { AlertType } from '../../../core/model/alert.model';
 import * as coreActions from '../../../core/state/core.actions';
 
 @Component({
@@ -27,10 +26,7 @@ export class ResetContainerComponent {
                 (response) => {
                     this.router.navigate(['users/login']).then(
                         () => {
-                            this.store.dispatch(new coreActions.DisplayAlert({
-                                message: 'Bitte melden Sie sich mit Ihrem neuen Passwort an',
-                                type: AlertType.SUCCESS
-                            }));
+                            this.store.dispatch(new coreActions.DisplayBanner({ predefined: 'passwordChangeSuccess' }));
                         }
                     ).catch(() => {
                         throw new Error('Unable to navigate.');
@@ -38,11 +34,7 @@ export class ResetContainerComponent {
                 }
             ).catch(
                 (response) => {
-                    this.store.dispatch(new coreActions.DisplayAlert({
-                        // tslint:disable-next-line:max-line-length
-                        message: `Fehler beim Passwort zurücksetzten, Token ungültig. Bitte lassen Sie sich einen neuen 'Passwort-Reset' Link mit Hilfe der Option 'Passwort vergessen?' zuschicken.`,
-                        type: AlertType.ERROR
-                    }));
+                    this.store.dispatch(new coreActions.DisplayBanner({ predefined: 'passwordChangeFailure' }));
                 }
 
             );

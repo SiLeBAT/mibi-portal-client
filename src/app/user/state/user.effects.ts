@@ -36,17 +36,16 @@ export class UserEffects {
                         _id: response.obj._id
                     });
                 } else {
-                    return new coreActions.DisplayAlert({
-                        message: response.title,
-                        type: AlertType.ERROR
+                    return new coreActions.DisplayBanner({
+                        predefined: '',
+                        custom: {
+                            message: response.title,
+                            type: AlertType.ERROR
+                        }
                     });
                 }
             }),
-            catchError(() => of(new coreActions.DisplayAlert({
-                // tslint:disable-next-line:max-line-length
-                message: 'Es gab einen Fehler beim einloggen.  Bitte registrieren Sie sich oder, wenn Sie sich schon registriert haben, kontaktieren Sie das MiBi-Portal team.',
-                type: AlertType.ERROR
-            })))
+            catchError(() => of(new coreActions.DisplayBanner({ predefined: 'loginFailure' })))
         ))
     );
 

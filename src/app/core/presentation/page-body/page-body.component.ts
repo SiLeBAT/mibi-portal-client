@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 export class PageBodyComponent {
 
     @Input() isBusy$: Observable<boolean>;
+    @Input() isBanner$: Observable<boolean>;
 
     constructor() { }
 

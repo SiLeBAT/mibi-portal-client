@@ -1,16 +1,16 @@
-<div class="container-fluid">
-
-    <div class="row top-bottom-margin">
-      <div class="col-md-10 col-md-offset-1">
-        <h2>Probeneinsendebogen validieren</h2>
-        <hr>
-      </div>
-    </div>
-    <div class="row top-bottom-margin">
-      <div class="col-md-10 col-md-offset-1">
-        <mibi-upload-container ></mibi-upload-container>
-      </div>
-    </div>
-  
-  </div>
-  
+<mibi-wall-of-text-layout title="Probeneinsendebogen hochladen">
+  <wot-preamble>
+    <mibi-upload-container (onFileUpload)="fileUpload($event)">
+      <label for="file-upload" id="file-drag">
+        <div id="start">
+          <i class="material-icons mibi-uploader-icon">
+            get_app
+          </i>
+          <div class="select-text">Per Drag&Drop in dieses Feld ziehen</div>
+          <div class="select-text">oder</div>
+          <button class="btn select-button" mat-flat-button color="primary">Datei wählen</button>
+        </div>
+      </label>
+    </mibi-upload-container>
+  </wot-preamble>
+</mibi-wall-of-text-layout>

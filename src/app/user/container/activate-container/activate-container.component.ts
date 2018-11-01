@@ -4,7 +4,6 @@ import { environment } from '../../../../environments/environment';
 import { Store } from '@ngrx/store';
 import * as fromUser from '../../state/user.reducer';
 import * as coreActions from '../../../core/state/core.actions';
-import { AlertType } from '../../../core/model/alert.model';
 
 @Component({
     selector: 'mibi-activate-container',
@@ -22,15 +21,9 @@ export class ActivateContainerComponent implements OnInit {
         this.tokenValid = this.activatedRoute.snapshot.data['tokenValid'];
 
         if (this.tokenValid) {
-            this.store.dispatch(new coreActions.DisplayAlert({
-                message: 'Kontoaktivierung erfolgreich!',
-                type: AlertType.SUCCESS
-            }));
+            this.store.dispatch(new coreActions.DisplayBanner({ predefined: 'accountActivationSuccess' }));
         } else {
-            this.store.dispatch(new coreActions.DisplayAlert({
-                message: 'Unable to activate account.',
-                type: AlertType.ERROR
-            }));
+            this.store.dispatch(new coreActions.DisplayBanner({ predefined: 'accountActivationFailure' }));
         }
     }
 

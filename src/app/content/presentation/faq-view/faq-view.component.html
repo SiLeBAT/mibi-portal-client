@@ -1,14 +1,10 @@
-<div class="faq-index">
-    <mat-card class="faq-card">
-        <mat-card-header class="faq-card__header">
-            <mat-card-title class="faq-card__title">MiBi-Portal FAQ</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-            <mibi-faq-toc [faqCollection]="faqCollection"></mibi-faq-toc>
-        </mat-card-content>
-    </mat-card>
-</div>
-
-<section class="faq__section">
-    <mibi-faq-section class="faq-view__faqGroup" *ngFor="let faqGroup of faqCollection" [faqGroup]="faqGroup"></mibi-faq-section>
-</section>
+<mibi-wall-of-text-layout title="MiBi-Portal FAQ">
+    <wot-preamble>
+        <mibi-faq-toc [faqCollection]="faqCollection"></mibi-faq-toc>
+    </wot-preamble>
+    <wot-content>
+        <section class="faq__section">
+            <mibi-faq-section class="faq-view__faqGroup" *ngFor="let faqGroup of faqCollection" [faqGroup]="faqGroup"></mibi-faq-section>
+        </section>
+    </wot-content>
+</mibi-wall-of-text-layout>

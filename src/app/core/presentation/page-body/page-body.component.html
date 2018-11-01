@@ -1,9 +1,9 @@
-<div class="main">
-
-  <mibi-spinner [show]="isBusy$ | async" name="uploadSpinner">
-  </mibi-spinner>
-  <div class="main__view-outlet" *ngIf="!(isBusy$ | async)">
-    <mibi-alert-container></mibi-alert-container>
-    <router-outlet></router-outlet>
+<mibi-spinner [show]="isBusy$ | async" name="uploadSpinner">
+</mibi-spinner>
+<div class="mibi-view-outlet" *ngIf="!(isBusy$ | async)">
+  <div class="mibi-banner" [ngClass]="{
+      'mibi-banner--open': (isBanner$ | async) }">
+    <mibi-banner-container></mibi-banner-container>
   </div>
+  <router-outlet></router-outlet>
 </div>

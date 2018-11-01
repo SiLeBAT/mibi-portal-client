@@ -5,7 +5,6 @@ import * as fromUser from '../../state/user.reducer';
 import * as coreActions from '../../../core/state/core.actions';
 import { Store } from '@ngrx/store';
 import { IAdminActivateResponseDTO } from '../../../core/model/response.model';
-import { AlertType } from '../../../core/model/alert.model';
 
 @Component({
     selector: 'mibi-admin-activate-container',
@@ -27,16 +26,10 @@ export class AdminActivateContainerComponent implements OnInit {
 
         if (this.adminTokenValid.activation) {
             this.name = this.adminTokenValid.obj;
-            this.store.dispatch(new coreActions.DisplayAlert({
-                message: 'Kontoaktivierung erfolgreich!',
-                type: AlertType.SUCCESS
-            }));
+            this.store.dispatch(new coreActions.DisplayBanner({ predefined: 'accountActivationSuccess' }));
         } else {
             this.name = '';
-            this.store.dispatch(new coreActions.DisplayAlert({
-                message: 'Unable to activate account.',
-                type: AlertType.ERROR
-            }));
+            this.store.dispatch(new coreActions.DisplayBanner({ predefined: 'accountActivationFailure' }));
         }
     }
 }
