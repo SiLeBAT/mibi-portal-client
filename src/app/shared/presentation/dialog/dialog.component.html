@@ -1,0 +1,11 @@
+<ng-template #mainActionTemplate let-onClick="onClick" let-label="label">
+    <button cdkFocusInitial class="mibi-user-action" mat-raised-button color="primary" (click)="onClick($event)">{{label}}</button>
+</ng-template>
+
+<h1 mat-dialog-title>{{data.title}}</h1>
+<div mat-dialog-content>
+        <ng-container *compile="data.message; context: {}"></ng-container>
+</div>
+<div mat-dialog-actions class="mibi-dialog-button-container">
+    <ng-template #mainAction></ng-template>
+</div>

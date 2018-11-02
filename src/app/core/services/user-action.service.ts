@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
 import * as _ from 'lodash';
-import { ActionItemConfiguration, ActionItemType } from '../model/action-items.model';
+import { ActionItemConfiguration, ActionItemType, ColorType, ActionItemComponent } from '../model/action-items.model';
 import { GenericActionItemComponent } from '../presentation/generic-action-item/generic-action-item.component';
 import * as samplesActions from '../../samples/state/samples.actions';
 import * as fromCore from '../state/core.reducer';
@@ -19,39 +19,44 @@ export class UserActionService {
         type: ActionItemType.VALIDATE,
         onClick: this.validate.bind(this),
         component: GenericActionItemComponent,
-        icon: 'spellcheck'
+        icon: 'spellcheck',
+        color: ColorType.ACCENT
     },
     {
         label: 'Hochladen',
         type: ActionItemType.UPLOAD,
         onClick: this.import.bind(this),
         component: GenericActionItemComponent,
-        icon: 'get_app'
+        icon: 'get_app',
+        color: ColorType.ACCENT
     },
     {
         label: 'Exportieren',
         type: ActionItemType.EXPORT,
         onClick: this.export.bind(this),
         component: GenericActionItemComponent,
-        icon: 'save'
+        icon: 'save',
+        color: ColorType.ACCENT
     },
     {
         label: 'Senden',
         type: ActionItemType.SEND,
         onClick: this.send.bind(this),
         component: GenericActionItemComponent,
-        icon: 'send'
+        icon: 'send',
+        color: ColorType.ACCENT
     },
     {
         label: 'Verwerfen',
         type: ActionItemType.DISMISS_BANNER,
         onClick: this.dismissAction.bind(this),
         component: GenericActionItemComponent,
-        icon: ''
+        icon: '',
+        color: ColorType.ACCENT
     }];
 
     constructor(
-        private store: Store<fromCore.State>, private router: Router) {
+        private store: Store<fromCore.State>, private router: Router, private componentFactoryResolver: ComponentFactoryResolver) {
     }
 
     getConfigOfType(type: ActionItemType): ActionItemConfiguration {
@@ -61,7 +66,8 @@ export class UserActionService {
             type: ActionItemType.DISMISS_BANNER,
             onClick: () => null,
             component: GenericActionItemComponent,
-            icon: ''
+            icon: '',
+            color: ColorType.ACCENT
         };
     }
 
@@ -71,10 +77,30 @@ export class UserActionService {
             type: ActionItemType.NAVIGATE,
             onClick: this.navigate.bind(this, url),
             component: GenericActionItemComponent,
-            icon: ''
+            icon: '',
+            color: ColorType.ACCENT
         };
     }
 
+    getOnClickHandlerOfType(type: ActionItemType): Function {
+        const handler = _.find(this.userActionConfiguration, (c: ActionItemConfiguration) => c.type === type);
+        return handler ? handler.onClick : () => null;
+    }
+
+    createComponent(ref: ViewContainerRef, configuration: ActionItemConfiguration) {
+        const componentFactory = this.componentFactoryResolver.resolveComponentFactory(configuration.component);
+        const componentRef = ref.createComponent(componentFactory);
+        (componentRef.instance as ActionItemComponent).configuration = configuration;
+        return componentRef;
+    }
+
+    augmentOnClick(original: ActionItemConfiguration, augment: Function) {
+        const originalOnClick = original.onClick;
+        original.onClick = (...args: any[]) => {
+            originalOnClick(args);
+            augment();
+        };
+    }
     private navigate(url: string) {
         this.router.navigate([url]).catch(() => {
             throw new ClientError('Unable to navigate.');

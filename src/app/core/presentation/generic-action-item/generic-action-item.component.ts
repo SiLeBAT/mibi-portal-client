@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { ActionItemConfiguration, ActionItemComponent } from '../../model/action-items.model';
 
@@ -7,12 +7,8 @@ import { ActionItemConfiguration, ActionItemComponent } from '../../model/action
     templateUrl: './generic-action-item.component.html',
     styleUrls: ['./generic-action-item.component.scss']
 })
-export class GenericActionItemComponent implements OnInit, ActionItemComponent {
+export class GenericActionItemComponent implements ActionItemComponent {
 
     @Input() configuration: ActionItemConfiguration;
     constructor() { }
-
-    ngOnInit(): void {
-
-    }
 }

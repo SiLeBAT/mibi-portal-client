@@ -1,33 +1,4 @@
 .faq__section {
     padding-top: 16px;
     padding-bottom: 16px;
-    display: flex;
-    flex-direction: column;
-}
-
-.faq-card {
-    max-width: 800px;
-    min-width: 400px;
-    margin-top: 2%;
-  }
-
-  .faq-card__title {
-    font-size: 2em;
-  }
-
-  .faq-card__header {
-      display: flex;
-      justify-content: space-around;
-  }
-
-.faq-view__faqGroup {
-    display: flex;
-    justify-content: center;
-}
-
-.faq-index {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }

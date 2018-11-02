@@ -14,7 +14,6 @@ import { PageFooterComponent } from './presentation/page-footer/page-footer.comp
 import { StoreModule } from '@ngrx/store';
 import { reducer, STATE_SLICE_NAME } from './state/core.reducer';
 import { PageBodyContainerComponent } from './container/page-body-container/page-body-container.component';
-import { JasperoConfirmationsModule } from '@jaspero/ng-confirmations';
 import { LastChangeDisplayComponent } from './presentation/last-change-display/last-change-display.component';
 import { LastChangeDisplayContainerComponent } from './container/last-change-display-container/last-change-display-container.component';
 import { MomentModule } from 'ngx-moment';
@@ -32,9 +31,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDividerModule } from '@angular/material/divider';
+import { CoreEffects } from './state/core.effects';
+import { EffectsModule } from '@ngrx/effects';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
     imports: [
+        FlexLayoutModule,
         MatButtonModule,
         MatProgressSpinnerModule,
         BrowserAnimationsModule,
@@ -50,7 +53,7 @@ import { MatDividerModule } from '@angular/material/divider';
         MatToolbarModule,
         RouterModule.forChild([]),
         StoreModule.forFeature(STATE_SLICE_NAME, reducer),
-        JasperoConfirmationsModule
+        EffectsModule.forFeature([CoreEffects])
     ],
     declarations: [
         GenericActionItemComponent,

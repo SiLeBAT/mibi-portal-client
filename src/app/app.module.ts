@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { JasperoConfirmationsModule } from '@jaspero/ng-confirmations';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AppComponent } from './app.component';
@@ -25,7 +24,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
-        JasperoConfirmationsModule.forRoot(),
         StoreModule.forRoot({
             router: routerReducer
         }),

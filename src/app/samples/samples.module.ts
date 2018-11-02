@@ -14,6 +14,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { SamplesEffects } from './state/samples.effects';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
 
 const SAMPLES_ROUTES = [
     { path: 'upload', component: UploadViewComponent },
@@ -25,6 +26,7 @@ const SAMPLES_ROUTES = [
         HotTableModule.forRoot(),
         MatIconModule,
         MatButtonModule,
+        MatDialogModule,
         RouterModule.forChild(SAMPLES_ROUTES),
         StoreModule.forFeature(STATE_SLICE_NAME, reducer),
         EffectsModule.forFeature([SamplesEffects]),

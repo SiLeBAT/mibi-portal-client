@@ -1,5 +1,5 @@
 <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="login-form">
-  <div class="login-form__form-fields">
+  <div class="login-form__form-fields" fxLayout="column" fxLayoutAlign=" none">
   <mat-form-field>
     <input matInput placeholder="Email" name="email" formControlName="email" required>
   </mat-form-field>

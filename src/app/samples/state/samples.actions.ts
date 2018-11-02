@@ -2,7 +2,6 @@ import { Action } from '@ngrx/store';
 import { IAnnotatedSampleData, IExcelData, IChangedDataGridField } from '../model/sample-management.model';
 import { Alert } from '../../core/model/alert.model';
 import { LogoutUser } from '../../user/state/user.actions';
-import { DialogContent } from '../../core/model/dialog.model';
 import { User } from '../../user/model/user.model';
 
 export enum SamplesActionTypes {
@@ -15,7 +14,6 @@ export enum SamplesActionTypes {
     ValidateSamplesSuccess = '[Samples] Successfully validated samples',
     SendSamplesInitiate = '[Samples] Initiating sending samples',
     SendSamplesFromStore = '[Samples] Send samples from store',
-    SendSamplesConfirm = '[Samples] Confirm sending samples',
     ChangeFieldValue = '[Samples] Change field value'
 }
 
@@ -95,13 +93,6 @@ export class SendSamplesFromStore implements Action {
     }
 }
 
-export class SendSamplesConfirm implements Action {
-    readonly type = SamplesActionTypes.SendSamplesConfirm;
-
-    constructor(public payload: DialogContent) {
-    }
-}
-
 export type SamplesActions = ImportExcelFile
     | ImportExcelFileSuccess
     | ValidateSamples
@@ -111,6 +102,5 @@ export type SamplesActions = ImportExcelFile
     | ExportExcelFileFailure
     | SendSamplesInitiate
     | SendSamplesFromStore
-    | SendSamplesConfirm
     | ChangeFieldValue
     | LogoutUser;

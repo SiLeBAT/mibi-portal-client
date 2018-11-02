@@ -1,7 +1,4 @@
 .single-center-card-layout {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     height: 100%;
 }
 
@@ -13,8 +10,4 @@
   .view-card__title {
     font-size: 2em;
   }
-
-  .view-card__header {
-      display: flex;
-      justify-content: space-around;
-  }
+  

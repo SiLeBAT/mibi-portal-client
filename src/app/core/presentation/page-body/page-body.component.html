@@ -1,12 +1,11 @@
 <div class="mibi-view-outlet" *ngIf="!(isBusy$ | async) else loading">
-  <div class="mibi-banner" [ngClass]="{
-        'mibi-banner--open': (isBanner$ | async) }">
+  <div class="mibi-banner" [@slideInOut]="animationState">
     <mibi-banner-container></mibi-banner-container>
   </div>
   <router-outlet></router-outlet>
 </div>
 <ng-template #loading>
-  <div class="mibi-spinner-container">
+  <div class="mibi-spinner-container"  fxLayout="row" fxLayoutAlign="center center" >
     <mat-spinner class="mibi-spinner" [color]="primary">
     </mat-spinner>
   </div>

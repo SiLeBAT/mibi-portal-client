@@ -5,7 +5,6 @@ import { SystemActions, CoreActionTypes } from './core.actions';
 import { SamplesActionTypes } from '../../samples/state/samples.actions';
 import { Alert, Banner } from '../model/alert.model';
 import { UserActionTypes } from '../../user/state/user.actions';
-import { Dialog } from '../model/dialog.model';
 import { ROUTER_NAVIGATION } from '@ngrx/router-store';
 import { ActionItemType } from '../model/action-items.model';
 
@@ -26,26 +25,14 @@ export interface UIState {
     isBusy: boolean;
     banner: BannerState | null;
     snackbar: Alert | null;
-    dialog: Dialog;
     enabledActionItems: ActionItemType[];
 }
 
 const initialState: CoreState = {
     ui: {
         isBusy: false,
-        banner: null,
+        banner: null, // { predefined: 'loginUnauthorized' },
         snackbar: null,
-        dialog: {
-            config: {
-                overlay: true,
-                overlayClickToClose: false,
-                showCloseButton: true,
-                confirmText: 'Ok',
-                declineText: 'Cancel'
-            },
-            show: false,
-            title: ''
-        },
         enabledActionItems: []
     }
 };
@@ -68,11 +55,6 @@ export const getSnackbar = createSelector(
     state => state.ui.snackbar
 );
 
-export const getDialog = createSelector(
-    getCoreFeatureState,
-    state => state.ui.dialog
-);
-
 export const getEnabledActionItems = createSelector(
     getCoreFeatureState,
     state => state.ui.enabledActionItems
@@ -81,24 +63,6 @@ export const getEnabledActionItems = createSelector(
 // REDUCER
 export function reducer(state: CoreState = initialState, action: SystemActions): CoreState {
     switch (action.type) {
-        case SamplesActionTypes.SendSamplesConfirm:
-            return {
-                ...state,
-                ... {
-                    ui: {
-                        ...state.ui, ...{
-                            dialog: {
-                                ...state.ui.dialog,
-                                ...{
-                                    title: action.payload.title,
-                                    message: action.payload.message,
-                                    show: true
-                                }
-                            }
-                        }
-                    }
-                }
-            };
         case CoreActionTypes.EnableActionItems:
             const enabledAIState = { ...state };
             enabledAIState.ui.enabledActionItems = action.payload;
@@ -137,15 +101,7 @@ export function reducer(state: CoreState = initialState, action: SystemActions):
                     ui: {
                         ...state.ui, ...{
                             isBusy: false,
-                            banner: action.payload,
-                            dialog: {
-                                ...state.ui.dialog,
-                                ...{
-                                    title: '',
-                                    message: '',
-                                    show: false
-                                }
-                            }
+                            banner: action.payload
                         }
                     }
                 }

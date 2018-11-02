@@ -1,45 +1,25 @@
 @import '../../../../assets/sass/abstracts';
+@import '~@angular/material/theming';
 
 .mibi-app-bar-top {
-    display: flex;
+  @include mat-elevation(4);
     background: $primary-color;
     color: $on-primary-color;
     height: 100%;
 }
 
-.mibi-app-bar-top__title-link{
+.mibi-app-bar-top__title{
   color: $on-primary-color;
   text-decoration: none;
   font-size: 1.5em;
-  margin-left: 1%;
-  margin-right: 1%;
 }
   
-  .mibi-app-bar-top__title-link:hover,
-  .mibi-app-bar-top__title-link:focus,
-  .mibi-app-bar-top__title-link:active {
+  .mibi-app-bar-top__title:hover,
+  .mibi-app-bar-top__title:focus,
+  .mibi-app-bar-top__title:active {
     color: $surface-color;
   }
   
-  .mibi-app-bar-top__title-link:visited {
+  .mibi-app-bar-top__title:visited {
     color: $on-primary-color;
   }
-
-  .mibi-app-bar-top__navigation{
-    flex: 0 1 auto;
-    margin: 1%;
-  }
-
-  .mibi-app-bar-top__title{
-    flex: 0 1 auto;
-    margin: 1%;
-}
-
-.mibi-app-bar-top__action-items{
-    flex: 1 1 auto;
-}
-
-.mibi-app-bar-top__overflow-menu{
-    flex: 0 1 auto;
-    margin: 1%;
-}
