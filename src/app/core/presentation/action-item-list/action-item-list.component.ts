@@ -1,10 +1,11 @@
 import {
     Component,
-    Input, OnInit, ViewChild, ComponentFactoryResolver, OnDestroy, ChangeDetectorRef, TemplateRef, ViewContainerRef
+    Input, OnInit, ViewChild, OnDestroy, ChangeDetectorRef, TemplateRef, ViewContainerRef
 } from '@angular/core';
-import { ActionItemConfiguration, ActionItemComponent, ActionItemType } from '../../model/action-items.model';
+import { ActionItemConfiguration, ActionItemType } from '../../model/action-items.model';
 import { Observable } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
+import { UserActionService } from '../../services/user-action.service';
 
 @Component({
     selector: 'mibi-action-item-list',
@@ -20,7 +21,7 @@ export class ActionItemListComponent implements OnInit, OnDestroy {
     @ViewChild('uploadActionItem')
     private uploadActionItem: TemplateRef<any>;
     private componentActive: boolean = true;
-    constructor(private componentFactoryResolver: ComponentFactoryResolver, private _changeDetectionRef: ChangeDetectorRef) { }
+    constructor(private _changeDetectionRef: ChangeDetectorRef, private userActionService: UserActionService) { }
 
     ngOnInit(): void {
         this.configuration$.pipe(
@@ -32,9 +33,7 @@ export class ActionItemListComponent implements OnInit, OnDestroy {
                     for (let i = 0; i < configuration.length; i++) {
                         const myConfig = { ...configuration[i] };
                         myConfig.template = this.getTemplate(myConfig.type);
-                        const componentFactory = this.componentFactoryResolver.resolveComponentFactory(myConfig.component);
-                        const componentRef = viewContainerRef.createComponent(componentFactory, i);
-                        (componentRef.instance as ActionItemComponent).configuration = myConfig;
+                        this.userActionService.createComponent(viewContainerRef, myConfig);
                     }
                     this._changeDetectionRef.detectChanges();
                 }

@@ -8,14 +8,7 @@ em {
   text-align: right;
 }
 
-.reset-form__form-fields {
-  display: flex;
-  flex-direction: column;
-}
-
 .reset-form__buttons {
-  display: flex;
-  justify-content: space-around;
   margin-top: 3rem;
   &> a {
       text-decoration: none;

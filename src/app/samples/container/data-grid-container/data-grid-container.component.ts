@@ -1,22 +1,16 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import * as _ from 'lodash';
 import {
     IAnnotatedSampleData, IColConfig, ITableDataOutput
 } from '../../model/sample-management.model';
-import { map, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
+import { map, tap, withLatestFrom } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { GuardedUnloadComponent } from '../../../shared/container/guarded-unload.component';
 import { Store, select } from '@ngrx/store';
 import * as fromSamples from '../../state/samples.reducer';
 import * as samplesActions from '../../state/samples.actions';
-import * as fromCore from '../../../core/state/core.reducer';
-import * as coreAction from '../../../core/state/core.actions';
-import * as fromUser from '../../../user/state/user.reducer';
-import { Dialog } from '../../../core/model/dialog.model';
-import { ConfirmationService, ResolveEmit } from '@jaspero/ng-confirmations';
 import { IFormViewModel, IFormRowViewModel } from '../../presentation/data-grid/data-grid.component';
 import { ToolTipType } from '../../../shared/model/tooltip.model';
-import { User } from '../../../user/model/user.model';
 
 enum AlteredField {
     WARNING = 'warn',
@@ -33,12 +27,10 @@ enum AlteredField {
         (valueChanged)="onValueChanged($event)">
     </mibi-data-grid>`
 })
-export class DataGridContainerComponent extends GuardedUnloadComponent implements OnInit, OnDestroy {
+export class DataGridContainerComponent extends GuardedUnloadComponent implements OnInit {
 
     viewModel$: Observable<IFormViewModel>;
     private hasData: boolean = true;
-    private currentUser: User | null;
-    private componentActive: boolean = true;
 
     columnConfigArray: IColConfig[] = [
         {
@@ -119,9 +111,7 @@ export class DataGridContainerComponent extends GuardedUnloadComponent implement
         }
     ];
 
-    constructor(
-        private confirmationService: ConfirmationService,
-        private store: Store<fromSamples.State>) {
+    constructor(private store: Store<fromSamples.State>) {
         super();
     }
 
@@ -146,32 +136,6 @@ export class DataGridContainerComponent extends GuardedUnloadComponent implement
                 }
             )
         );
-        this.store.pipe(select(fromUser.getCurrentUser),
-            takeWhile(() => this.componentActive))
-            .subscribe(
-                (user: User | null) => this.currentUser = user
-            );
-        this.store.pipe(select(fromCore.getDialog),
-            takeWhile(() => this.componentActive))
-            .subscribe(
-                (modal: Dialog) => {
-                    if (modal.show) {
-                        this.confirmationService.create(modal.title, modal.message, modal.config).subscribe((ans: ResolveEmit) => {
-                            if (ans.resolved) {
-                                if (this.currentUser) {
-                                    this.store.dispatch(new samplesActions.SendSamplesFromStore(this.currentUser));
-                                }
-                            } else {
-                                this.store.dispatch(new coreAction.DisplayBanner({ predefined: 'sendCancel' }));
-                            }
-                        });
-                    }
-                }
-            );
-    }
-
-    ngOnDestroy(): void {
-        this.componentActive = false;
     }
 
     onValueChanged(tableData: ITableDataOutput) {

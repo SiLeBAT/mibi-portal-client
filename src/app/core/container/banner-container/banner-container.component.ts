@@ -62,14 +62,14 @@ export class BannerContainerComponent implements OnInit {
         validationErrors: {
             message: 'Es gibt noch rot gekennzeichnete Fehler. Bitte vor dem Senden korrigieren.',
             type: AlertType.ERROR,
-            auxilliaryButton: { ...this.userActionService.getConfigOfType(ActionItemType.SEND), ...{ label: 'Nochmals Senden' } }
+            auxilliaryAction: { ...this.userActionService.getConfigOfType(ActionItemType.SEND), ...{ label: 'Nochmals Senden' } }
 
         },
 
         autocorrections: {
             message: 'Es wurden Felder autokorregiert. Bitte prüfen und nochmals senden.',
             type: AlertType.ERROR,
-            auxilliaryButton: { ...this.userActionService.getConfigOfType(ActionItemType.SEND), ...{ label: 'Nochmals Senden' } }
+            auxilliaryAction: { ...this.userActionService.getConfigOfType(ActionItemType.SEND), ...{ label: 'Nochmals Senden' } }
 
         },
         wrongUploadDatatype: {
@@ -95,27 +95,27 @@ export class BannerContainerComponent implements OnInit {
         passwordChangeSuccess: {
             message: 'Bitte melden Sie sich mit Ihrem neuen Passwort an',
             type: AlertType.SUCCESS,
-            auxilliaryButton: { ...this.userActionService.getNavigationConfig('/users/login'), ...{ label: 'Zum Login' } }
+            auxilliaryAction: { ...this.userActionService.getNavigationConfig('/users/login'), ...{ label: 'Zum Login' } }
 
         },
         passwordChangeFailure: {
             // tslint:disable-next-line:max-line-length
             message: `Fehler beim Passwort zurücksetzten, Token ungültig. Bitte lassen Sie sich einen neuen 'Passwort-Reset' Link mit Hilfe der Option 'Passwort vergessen?' zuschicken.`,
             type: AlertType.ERROR,
-            auxilliaryButton: { ...this.userActionService.getNavigationConfig('/users/recovery'), ...{ label: 'Zum Passwort-Reset' } }
+            auxilliaryAction: { ...this.userActionService.getNavigationConfig('/users/recovery'), ...{ label: 'Zum Passwort-Reset' } }
 
         },
         loginFailure: {
             // tslint:disable-next-line:max-line-length
             message: 'Es gab einen Fehler beim einloggen.  Bitte registrieren Sie sich oder, wenn Sie sich schon registriert haben, kontaktieren Sie das MiBi-Portal team.',
             type: AlertType.ERROR,
-            auxilliaryButton: { ...this.userActionService.getNavigationConfig('/users/register'), ...{ label: 'Zur Registrierung' } }
+            auxilliaryAction: { ...this.userActionService.getNavigationConfig('/users/register'), ...{ label: 'Zur Registrierung' } }
 
         },
         loginUnauthorized: {
             message: 'Nicht authorisiert, bitte einloggen.',
             type: AlertType.ERROR,
-            auxilliaryButton: { ...this.userActionService.getNavigationConfig('/users/login'), ...{ label: 'Zum Login' } }
+            auxilliaryAction: { ...this.userActionService.getNavigationConfig('/users/login'), ...{ label: 'Zum Login' } }
         },
         exportFailure: {
             message: 'Es gab einen Fehler beim Exportieren der Datei.',
@@ -132,8 +132,8 @@ export class BannerContainerComponent implements OnInit {
                 if (b) {
                     const banner = this.banners[b.predefined] || b.custom;
                     if (banner) {
-                        if (!banner.mainButton) {
-                            banner.mainButton = this.userActionService.getConfigOfType(ActionItemType.DISMISS_BANNER);
+                        if (!banner.mainAction) {
+                            banner.mainAction = this.userActionService.getConfigOfType(ActionItemType.DISMISS_BANNER);
                         }
                         if (!banner.icon) {
                             switch (banner.type) {
@@ -148,11 +148,18 @@ export class BannerContainerComponent implements OnInit {
                                     banner.icon = 'warning';
                             }
                         }
+                        if (banner.mainAction && !(banner.mainAction.type === ActionItemType.DISMISS_BANNER)) {
+                            this.userActionService.augmentOnClick(banner.mainAction,
+                                this.userActionService.getOnClickHandlerOfType(ActionItemType.DISMISS_BANNER));
+                        }
+                        if (banner.auxilliaryAction && !(banner.auxilliaryAction.type === ActionItemType.DISMISS_BANNER)) {
+                            this.userActionService.augmentOnClick(banner.auxilliaryAction,
+                                this.userActionService.getOnClickHandlerOfType(ActionItemType.DISMISS_BANNER));
+                        }
                         return banner;
                     }
                 }
                 return null;
             }));
     }
-
 }

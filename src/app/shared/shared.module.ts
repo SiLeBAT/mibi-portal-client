@@ -12,18 +12,26 @@ import { WallOfTextLayoutComponent } from './presentation/wall-of-text-layout/wa
 import { UploadComponent } from './presentation/upload/upload.component';
 import { UploadContainerComponent } from './container/upload-container/upload-container.component';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatDialogModule } from '@angular/material/dialog';
+import { DialogComponent } from './presentation/dialog/dialog.component';
+import { CompileDirective } from './directive/compile.directive';
+import { FlexLayoutModule } from '@angular/flex-layout';
 @NgModule({
     imports: [
         CommonModule,
         ngfModule,
+        MatDialogModule,
         MatDividerModule,
         BrowserAnimationsModule,
         MatFormFieldModule,
         MatInputModule,
         MatCardModule,
-        MatButtonModule
+        MatButtonModule,
+        FlexLayoutModule
     ],
     declarations: [
+        CompileDirective,
+        DialogComponent,
         UploadComponent,
         UploadContainerComponent,
         DropdownDirective,
@@ -32,10 +40,13 @@ import { MatDividerModule } from '@angular/material/divider';
         WallOfTextLayoutComponent
     ],
     exports: [
+        CompileDirective,
+        DialogComponent,
         DropdownDirective,
         UploadContainerComponent,
         SingleCenterCardLayoutComponent,
         WallOfTextLayoutComponent
-    ]
+    ],
+    entryComponents: [DialogComponent]
 })
 export class SharedModule { }

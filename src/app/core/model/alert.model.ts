@@ -12,6 +12,6 @@ export interface Alert {
 
 export interface Banner extends Alert {
     icon?: string;
-    mainButton?: ActionItemConfiguration;
-    auxilliaryButton?: ActionItemConfiguration;
+    mainAction?: ActionItemConfiguration;
+    auxilliaryAction?: ActionItemConfiguration;
 }

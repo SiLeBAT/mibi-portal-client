@@ -2,7 +2,7 @@
 <p>Bitte geben Sie ein neues Passwort ein</p>
 <br>
 <form [formGroup]="resetForm" (ngSubmit)="onReset()">
-  <div class="reset-form__form-fields">
+  <div class="reset-form__form-fields"  fxLayout="column" fxLayoutAlign=" none">
 
     <mat-form-field>
       <input matInput placeholder="Neues Passwort (mind. 8 Zeichen)" type="password" name="password1" formControlName="password1"
@@ -21,7 +21,7 @@
     <em class="mat-small" [hidden]="validateField('password2')  || !resetForm.controls.password2.errors?.validatePasswordConfirm">Passwörter
       müssen übereinstimmen.</em>
   </div>
-  <div class="reset-form__buttons">
+  <div class="reset-form__buttons"  fxLayout="row" fxLayoutAlign="space-around none">
     <button mat-raised-button color="primary" type="submit" [disabled]="!resetForm.valid">Passwort zurücksetzen</button>
     <a mat-button color="primary" [routerLink]="['/users/login']" >
       Zurück

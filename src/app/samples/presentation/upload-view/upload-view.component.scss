@@ -1,4 +1,5 @@
 @import '../../../../assets/sass/abstracts';
+@import '~@angular/material/theming';
 
 h2 {
     text-align: center;
@@ -14,6 +15,7 @@ h2 {
   }
 
 label {
+  @include mat-elevation(2);
     float: left;
     clear: both;
     width: 100%;

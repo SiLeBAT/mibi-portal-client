@@ -4,7 +4,7 @@
   </button>
   <mat-menu #menu="matMenu">
     <div class="mibi-user-info" *ngIf="currentUser$ | async; let user">
-      <span class="mibi-user-info__main">
+      <span class="mibi-user-info__main" fxLayout="row" fxLayoutAlign=" none" >
         <mat-icon class="mibi-user-info__icon">face</mat-icon>
         <span class="mat-body-strong mibi-user-info__name"> {{ user.firstName }} {{ user.lastName }}</span>
       </span>

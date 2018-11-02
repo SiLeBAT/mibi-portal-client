@@ -19,6 +19,8 @@ import { DataService } from '../../core/services/data.service';
 import { IValidationRequest } from '../../core/model/request.model';
 import { LogService } from '../../core/services/log.service';
 import { ClientError } from '../../core/model/client-error';
+import { ActionItemType, ColorType } from '../../core/model/action-items.model';
+import { GenericActionItemComponent } from '../../core/presentation/generic-action-item/generic-action-item.component';
 @Injectable()
 export class SamplesEffects {
 
@@ -114,7 +116,7 @@ export class SamplesEffects {
         )
     );
 
-    @Effect()
+    @Effect({ dispatch: false })
     sendSamplesInitation$ = this.actions$.pipe(
         ofType(samplesActions.SamplesActionTypes.SendSamplesInitiate),
         withLatestFrom(this.store),
@@ -130,21 +132,51 @@ export class SamplesEffects {
                 })
             );
         }),
-        switchMap((annotatedSamples: IAnnotatedSampleData[]) => {
-            if (this.hasSampleError(annotatedSamples)) {
-                return of(new coreActions.DisplayBanner({ predefined: 'validationErrors' }));
-            } else if (this.hasSampleAutoCorrection(annotatedSamples)) {
-                return of(new coreActions.DisplayBanner({ predefined: 'autocorrections' }));
+        withLatestFrom(this.store),
+        tap((combine: [IAnnotatedSampleData[], fromSamples.State & fromUser.IState]) => {
+            if (this.hasSampleError(combine[0])) {
+                this.store.dispatch(new coreActions.DisplayBanner({ predefined: 'validationErrors' }));
+            } else if (this.hasSampleAutoCorrection(combine[0])) {
+                this.store.dispatch(new coreActions.DisplayBanner({ predefined: 'autocorrections' }));
             } else {
-                return of(new samplesActions.SendSamplesConfirm({
+                this.store.dispatch(new coreActions.DisplayDialog({
                     message: `<p>Ihre Probendaten werden jetzt an das BfR gesendet.</p>
                         <p>Bitte vergessen Sie nicht die Exceltabelle in Ihrem Mailanhang
                         auszudrucken und Ihren Isolaten beizulegen.</p>`,
-                    title: 'Senden'
+                    title: 'Senden',
+                    mainAction: {
+                        type: ActionItemType.CUSTOM,
+                        label: 'Senden',
+                        onClick: () => {
+                            const currentUser = fromUser.getCurrentUser(combine[1]);
+                            if (currentUser) {
+                                this.store.dispatch(new samplesActions.SendSamplesFromStore(currentUser));
+                            } else {
+                                this.store.dispatch(new coreActions.DisplayBanner({ predefined: 'loginUnauthorized' }));
+                            }
+                        },
+                        component: GenericActionItemComponent,
+                        icon: '',
+                        color: ColorType.PRIMARY,
+                        focused: true
+                    },
+                    auxilliaryAction: {
+                        type: ActionItemType.CUSTOM,
+                        label: 'Abbrechen',
+                        onClick: () => {
+                            this.store.dispatch(new coreActions.DisplayBanner({ predefined: 'sendCancel' }));
+                        },
+                        component: GenericActionItemComponent,
+                        icon: '',
+                        color: ColorType.PRIMARY
+                    }
                 }));
             }
         }),
-        catchError(() => of(new coreActions.DisplayBanner({ predefined: 'sendCancel' })))
+        catchError((error) => {
+            this.logger.error('Failed to initiate sending samples', error);
+            return of(new coreActions.DisplayBanner({ predefined: 'sendCancel' }));
+        })
     );
 
     private hasSampleError(annotatedSamples: IAnnotatedSampleData[]) {
