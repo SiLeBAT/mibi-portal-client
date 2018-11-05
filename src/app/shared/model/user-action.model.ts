@@ -1,4 +1,4 @@
-import { TemplateRef, Component } from '@angular/core';
+import { TemplateRef } from '@angular/core';
 
 export interface UserActionViewModelConfiguration {
     label: string;
