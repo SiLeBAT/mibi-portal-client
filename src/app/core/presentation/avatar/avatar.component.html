@@ -1,0 +1,22 @@
+<nav class="mibi-avatar" *ngIf="currentUser$ | async; let user">
+  <button class="mibi-avatar__button" mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon class="mibi-avatar__button-icon">person</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <div class="mibi-user-info">
+      <span class="mibi-user-info__main" fxLayout="row" fxLayoutAlign=" none" >
+        <mat-icon class="mibi-user-info__icon">face</mat-icon>
+        <span class="mat-body-strong mibi-user-info__name"> {{ user.firstName }} {{ user.lastName }}</span>
+      </span>
+      <div class="mibi-user-info__auxilliary mat-small">
+        <div class="mibi-user-info__email">{{ user.email }}</div>
+        <div class="mibi-user-info__institute">{{ user.institution?.name1 }} {{ user.institution?.name2 }}</div>
+      </div>
+      <mat-divider></mat-divider>
+    </div>
+    <a mat-menu-item (click)="logout()">
+      <mat-icon>exit_to_app</mat-icon>
+      <span>Abmelden</span>
+    </a>
+  </mat-menu>
+</nav>

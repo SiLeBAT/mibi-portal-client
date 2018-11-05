@@ -34,6 +34,8 @@ import { MatDividerModule } from '@angular/material/divider';
 import { CoreEffects } from './state/core.effects';
 import { EffectsModule } from '@ngrx/effects';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { AvatarComponent } from './presentation/avatar/avatar.component';
+import { AvatarContainerComponent } from './container/avatar-container/avatar-container.component';
 
 @NgModule({
     imports: [
@@ -56,6 +58,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
         EffectsModule.forFeature([CoreEffects])
     ],
     declarations: [
+        AvatarComponent,
+        AvatarContainerComponent,
         GenericActionItemComponent,
         AppBarTopContainerComponent,
         ActionItemListContainerComponent,
@@ -76,7 +80,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     ],
     exports: [
         HomeComponent,
-        NavBarContainerComponent,
         HttpClientModule,
         FormsModule,
         ReactiveFormsModule,
