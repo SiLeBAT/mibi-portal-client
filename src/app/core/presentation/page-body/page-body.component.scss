@@ -1,7 +1,9 @@
+@import "../../../../assets/sass/abstracts";
+
 .mibi-view-outlet {
   height: 100%;
 }
 
 .mibi-spinner-container {
-  height: 60%;
+  margin-top: $mibi-octupleSpace;
 }

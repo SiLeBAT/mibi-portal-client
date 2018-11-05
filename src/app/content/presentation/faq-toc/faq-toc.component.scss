@@ -3,13 +3,13 @@
 .mibi-toc__row {
   background: $primary-color;
   width: 25%;
-  margin: 4px;
-  padding: 2px;
+  margin: $mibi-halfSpace;
+  padding: $mibi-halfSpace/2;
   text-align: center;
 }
 
 .mibi-toc {
-  padding-bottom: 32px;
+  padding-bottom: $mibi-quadrupleSpace;
 }
 
 .mibi-toc__link {

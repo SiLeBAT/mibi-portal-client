@@ -1,12 +1,12 @@
 @import "../../../../assets/sass/abstracts";
 
 .mibi-banner {
-  padding: 4px;
-  min-height: 36px;
+  padding: $mibi-halfSpace;
+  min-height: $mibi-quintupleSpace;
 }
 
 .mibi-banner__icon {
-  margin-right: 16px;
+  margin-right: $mibi-doubleSpace;
   line-height: 1.5;
 
   &--error {

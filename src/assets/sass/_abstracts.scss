@@ -114,3 +114,15 @@ Mixins
   background: $color; /* The Fallback */
   background: rgba($color, $opacity);
 }
+
+// Spaces
+
+$mibi-singleSpace: 8px;
+$mibi-halfSpace: $mibi-singleSpace/2;
+$mibi-doubleSpace: $mibi-singleSpace * 2;
+$mibi-tripleSpace: $mibi-singleSpace * 3;
+$mibi-quadrupleSpace: $mibi-singleSpace * 4;
+$mibi-quintupleSpace: $mibi-singleSpace * 5;
+$mibi-sextupleSpace: $mibi-singleSpace * 6;
+$mibi-septupleSpace: $mibi-singleSpace * 7;
+$mibi-octupleSpace: $mibi-singleSpace * 8;
