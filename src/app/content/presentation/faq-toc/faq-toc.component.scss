@@ -1,25 +1,24 @@
-
-@import '../../../../assets/sass/abstracts';
+@import "../../../../assets/sass/abstracts";
 
 .mibi-toc__row {
-    background: $primary-color;
-    width: 25%;
-    margin: 4px;
-    padding: 2px;
-    text-align: center;
+  background: $primary-color;
+  width: 25%;
+  margin: 4px;
+  padding: 2px;
+  text-align: center;
 }
 
 .mibi-toc {
-    padding-bottom: 32px;
+  padding-bottom: 32px;
 }
 
 .mibi-toc__link {
-    color: $on-primary-color;
-    text-decoration: none;
+  color: $on-primary-color;
+  text-decoration: none;
 }
 
-  .mibi-toc__link:hover,
-  .mibi-toc__link:focus,
-  .mibi-toc__link:active {
-    color: $surface-color;
-  }
+.mibi-toc__link:hover,
+.mibi-toc__link:focus,
+.mibi-toc__link:active {
+  color: $surface-color;
+}

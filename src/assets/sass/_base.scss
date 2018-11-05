@@ -2,8 +2,9 @@
 in here, put all your boilerplate code. By boilerplate, I mean all CSS code you’re gonna write each time you’ll start a new project.
 For example: typography rules, animations, utilities (by utilities, I mean classes like margin-right-large , text-center , …) and so on.
 */
-@import '~@angular/material/theming';
-@import './abstracts';
+@import "~@angular/material/theming";
+@import "./abstracts";
+
 /*
 Typography
 Name          |	CSS classes                     |	Description
@@ -21,7 +22,7 @@ caption	      | .mat-small, .mat-caption	      |	Smaller body and hint text.
 button	      | None. Used only in components.	|	Buttons and anchors.
 input	        | None. Used only in components.	|	Form input fields.
 
-MD defaults: 
+MD defaults:
   $font-family:   'Roboto, "Helvetica Neue", sans-serif',
   $display-4:     mat-typography-level(112px, 112px, 300),
   $display-3:     mat-typography-level(56px, 56px, 400),
@@ -40,9 +41,9 @@ MD defaults:
 */
 
 $mibi-typography: mat-typography-config(
-   $font-family: $mibi-font-family
-   );
+  $font-family: $mibi-font-family
+);
 
-   .hidden {
-    display: none !important;
-  }
+.hidden {
+  display: none !important;
+}

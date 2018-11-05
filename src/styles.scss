@@ -1,14 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
-@import '~normalize.css/normalize.css';
-@import 'handsontable/dist/handsontable.full.css';
-@import 'assets/sass/base';
-@import 'assets/sass/abstracts';
-@import 'assets/sass/components';
-@import 'assets/sass/layout';
-@import 'assets/sass/themes';
+@import "~normalize.css/normalize.css";
+@import "handsontable/dist/handsontable.full.css";
+@import "assets/sass/base";
+@import "assets/sass/abstracts";
+@import "assets/sass/components";
+@import "assets/sass/layout";
+@import "assets/sass/themes";
 
 .primary {
-  background:  $primary-color !important;
+  background: $primary-color !important;
 }
 
 router-outlet ~ * {

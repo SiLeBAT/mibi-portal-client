@@ -22,11 +22,11 @@ $bfr-red: rgb(254, 0, 0); // #fe0000
 Material Design implementations: created using the Material Design Color tool: https://material.io/tools/color/#!/?view.left=0&view.right=1
 */
 
-$primary-color:  $bfr-blue;
-$primary-color-dark:  rgb(0, 39, 115); // #002773
-$primary-color-light:  rgb(82, 121, 212); // #5279d4
+$primary-color: $bfr-blue;
+$primary-color-dark: rgb(0, 39, 115); // #002773
+$primary-color-light: rgb(82, 121, 212); // #5279d4
 $secondary-color: $bfr-ocre;
-$secondary-color-dark: rgb(187, 151, 32);  // #bb9720
+$secondary-color-dark: rgb(187, 151, 32); // #bb9720
 $secondary-color-light: rgb(255, 250, 132); // #fffa84
 
 $background-color: $bfr-white;
@@ -35,9 +35,9 @@ $error-color: $bfr-red;
 $error-color-light: rgb(255, 90, 53); // #ff5a35
 $error-color-dark: rgb(193, 0, 0); // #c10000
 
-$on-primary-color:  $bfr-white;
-$on-primary-color-light:  $bfr-black;
-$on-primary-color-dark:  $bfr-white;
+$on-primary-color: $bfr-white;
+$on-primary-color-light: $bfr-black;
+$on-primary-color-dark: $bfr-white;
 $on-secondary-color: $bfr-black;
 $on-secondary-color-light: $bfr-black;
 $on-secondary-color-dark: $bfr-black;
@@ -47,41 +47,43 @@ $on-surface-color: $bfr-black;
 $on-error-color: $bfr-black;
 $on-error-color-light: $bfr-black;
 $on-error-color-dark: $bfr-white;
-/* 
+
+/*
 *  If no numbers are provided Angular Material selects sensible defaults $default: 500, $lighter: 100, $darker: 700.
 */
 $bfr-primary-palette: (
   100: $primary-color-light,
   500: $primary-color,
-  700:$primary-color-dark,
+  700: $primary-color-dark,
   contrast: (
     100: $on-primary-color-light,
     500: $on-primary-color,
-    700: $on-primary-color-dark,
+    700: $on-primary-color-dark
   )
 );
 
 $bfr-secondary-palette: (
   100: $secondary-color-light,
   500: $secondary-color,
-  700:$secondary-color-dark,
+  700: $secondary-color-dark,
   contrast: (
     100: $on-secondary-color-light,
     500: $on-secondary-color,
-    700: $on-secondary-color-dark,
+    700: $on-secondary-color-dark
   )
 );
 
 $bfr-error-palette: (
   100: $error-color-light,
   500: $error-color,
-  700:$error-color-dark,
+  700: $error-color-dark,
   contrast: (
     100: $on-error-color-light,
     500: $on-error-color,
-    700: $on-error-color-dark,
+    700: $on-error-color-dark
   )
 );
+
 /*
 Medium-emphasis text and hint text have opacities of 60%
 Disabled text has an opacity of 38%
@@ -91,7 +93,7 @@ Disabled text has an opacity of 38%
 Fonts
 */
 
-$app-title-size-text: 16px; 
+$app-title-size-text: 16px;
 $mibi-font-size-text: 16px;
 $mibi-font-size-heading: 16px;
 // Thin, Light, Regular, Medium, Bold, and Black.
@@ -102,15 +104,13 @@ $mibi-font-weight-medium: 500;
 $mibi-font-weight-bold: 600;
 $mibi-font-weight-black: 700;
 
-
-$mibi-font-family: 'Roboto, monospace';
-
+$mibi-font-family: "Roboto, monospace";
 
 /*
 Mixins
 */
 
 @mixin background-opacity($color, $opacity: 0.3) {
-    background: $color; /* The Fallback */
-    background: rgba($color, $opacity);
+  background: $color; /* The Fallback */
+  background: rgba($color, $opacity);
 }

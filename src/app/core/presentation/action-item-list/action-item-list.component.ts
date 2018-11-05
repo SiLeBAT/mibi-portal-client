@@ -9,8 +9,7 @@ import { UserActionService } from '../../services/user-action.service';
 
 @Component({
     selector: 'mibi-action-item-list',
-    templateUrl: './action-item-list.component.html',
-    styleUrls: ['./action-item-list.component.scss']
+    templateUrl: './action-item-list.component.html'
 })
 export class ActionItemListComponent implements OnInit, OnDestroy {
 

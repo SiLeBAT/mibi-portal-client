@@ -1,4 +1,4 @@
-@import '../../../../assets/sass/abstracts';
+@import "../../../../assets/sass/abstracts";
 
 em {
   float: right;
@@ -10,8 +10,9 @@ em {
 
 .reset-form__buttons {
   margin-top: 3rem;
-  &> a {
-      text-decoration: none;
+
+  & > a {
+    text-decoration: none;
   }
 }
 

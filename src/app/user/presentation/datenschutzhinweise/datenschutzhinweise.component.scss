@@ -1,26 +1,27 @@
-@import '../../../../assets/sass/abstracts';
+@import "../../../../assets/sass/abstracts";
 
 body {
-    counter-reset: datenschutz-section;
-  }
-  .dateschutzhinweise-item-header {
-    counter-increment: datenschutz-section;
-    font-weight: bold;
-    margin-top: 3%;
-  }
-  .dateschutzhinweise-item-header:before {
-    content: counter(datenschutz-section) '. ';
-  }
+  counter-reset: datenschutz-section;
+}
+
+.dateschutzhinweise-item-header {
+  counter-increment: datenschutz-section;
+  font-weight: bold;
+  margin-top: 3%;
+}
+
+.dateschutzhinweise-item-header::before {
+  content: counter(datenschutz-section) ". ";
+}
 
 .dateschutz-hinweis {
-    margin-top: 32px;
+  margin-top: 32px;
 }
 
 .dateschutzhinweise-footer {
-    border-top: 1px solid $primary-color;
+  border-top: 1px solid $primary-color;
 }
 
-
 .dateschutzhinweise-item {
-    width: 75%;
+  width: 75%;
 }

@@ -2,9 +2,9 @@
 If you have different themes for your app (dark mode, admin, and so on) put them in this folder.
 */
 
-@import '~@angular/material/theming';
-@import './abstracts';
-@import './base';
+@import "~@angular/material/theming";
+@import "./abstracts";
+@import "./base";
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -16,10 +16,10 @@ If you have different themes for your app (dark mode, admin, and so on) put them
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
 $mibi-primary: mat-palette($bfr-primary-palette);
-$mibi-accent:  mat-palette($bfr-secondary-palette);
+$mibi-accent: mat-palette($bfr-secondary-palette);
 
 // The warn palette is optional (defaults to red).
-$mibi-warn:    mat-palette($bfr-error-palette);
+$mibi-warn: mat-palette($bfr-error-palette);
 
 // Create the theme object (a Sass map containing all of the palettes).
 $mibi-theme: mat-light-theme($mibi-primary, $mibi-accent, $mibi-warn);
@@ -32,31 +32,31 @@ $mibi-theme: mat-light-theme($mibi-primary, $mibi-accent, $mibi-warn);
 // .mat-h1, .mat-headline, .mat-typography h1 {
 //     font-family: 'Open Sans'
 //   }
-  
+
 //   .mat-h2, .mat-title, .mat-typography h2 {
 //     font-family: $mibi-font-family-heading
 //   }
-  
+
 //   .mat-h3, .mat-subheading-2, .mat-typography h3 {
 //     font-family: $mibi-font-family-heading
 //   }
-  
+
 //   .mat-h4, .mat-subheading-1, .mat-typography h4 {
 //     font-family: $mibi-font-family-heading
 //   }
-  
+
 //   .mat-display-4, .mat-typography .mat-display-4 {
 //     font-family: $mibi-font-family-heading
 //   }
-  
+
 //   .mat-display-3, .mat-typography .mat-display-3{
 //     font-family: $mibi-font-family-heading
 //   }
-  
+
 //   .mat-display-2, .mat-typography .mat-display-2 {
 //     font-family: $mibi-font-family-heading
 //   }
-  
+
 //   .mat-display-1, .mat-typography .mat-display-1 {
 //     font-family: $mibi-font-family-heading
 //   }

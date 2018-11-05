@@ -1,13 +1,12 @@
-@import '../../../../assets/sass/abstracts';
+@import "../../../../assets/sass/abstracts";
 
 em {
-    float: right;
-    color: $error-color;
-    padding-left: 5%;
-    margin-bottom: 8px;
-    text-align: right;
+  float: right;
+  color: $error-color;
+  padding-left: 5%;
+  margin-bottom: 8px;
+  text-align: right;
 }
-
 
 em[hidden] {
   visibility: hidden;
@@ -23,9 +22,9 @@ em[hidden] {
 }
 
 .register-form__buttons {
-    margin-top: 3rem;
-    &> a {
-      text-decoration: none;
+  margin-top: 3rem;
+
+  & > a {
+    text-decoration: none;
   }
 }
-

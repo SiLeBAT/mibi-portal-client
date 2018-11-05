@@ -1,22 +1,22 @@
-@import '../../../../assets/sass/abstracts';
+@import "../../../../assets/sass/abstracts";
 
-  .dateschutzerklaerung-item-header {
-   font-weight: bold;
-   margin-top: 5%;
-  }
+.dateschutzerklaerung-item-header {
+  font-weight: bold;
+  margin-top: 5%;
+}
 
-  .dateschutzerklaerung-item-subheader {
-    font-weight: bold;
-   }
+.dateschutzerklaerung-item-subheader {
+  font-weight: bold;
+}
 
 .dateschutzerklaerung {
-    margin-top: 32px;
+  margin-top: 32px;
 }
 
 .dateschutzerklaerung-item {
-    width: 75%;
+  width: 75%;
 }
 
 .dateschutzerklaerung-footer {
-    border-top: 1px solid $primary-color;
+  border-top: 1px solid $primary-color;
 }

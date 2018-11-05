@@ -1,4 +1,4 @@
-@import '../../../../assets/sass/abstracts';
+@import "../../../../assets/sass/abstracts";
 
 .mibi-banner {
   padding: 4px;
@@ -8,15 +8,18 @@
 .mibi-banner__icon {
   margin-right: 16px;
   line-height: 1.5;
- &--error {
-  color: $error-color;
- }
- &--success {
-  color: $secondary-color;
- }
- &--warning{
-  color: $secondary-color;
- }
+
+  &--error {
+    color: $error-color;
+  }
+
+  &--success {
+    color: $secondary-color;
+  }
+
+  &--warning {
+    color: $secondary-color;
+  }
 }
 
 .mibi-banner__message {

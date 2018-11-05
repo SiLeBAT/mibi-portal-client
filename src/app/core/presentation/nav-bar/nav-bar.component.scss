@@ -1,29 +1,29 @@
-@import '../../../../assets/sass/abstracts';
+@import "../../../../assets/sass/abstracts";
 
 $nav-bar-color: $primary-color;
 
-  .mibi-navbar {
-    background-color: $nav-bar-color;
-  }
+.mibi-navbar {
+  background-color: $nav-bar-color;
+}
 
-   .mibi-navbar__button {
-     background-color: $nav-bar-color;
-     color: $on-primary-color;
-     border: none;
-   }
-  
-   .mibi-user-info__icon{
-     color: $secondary-color;
-   }
+.mibi-navbar__button {
+  background-color: $nav-bar-color;
+  color: $on-primary-color;
+  border: none;
+}
 
-   .mibi-user-info {
-     padding: 8px;
-   }
+.mibi-user-info__icon {
+  color: $secondary-color;
+}
 
-   .mibi-user-info__auxilliary {
-    margin: 8px 32px;
-   }
+.mibi-user-info {
+  padding: 8px;
+}
 
-   .mibi-user-info__name {
-     margin-left: 8px;
-   }
+.mibi-user-info__auxilliary {
+  margin: 8px 32px;
+}
+
+.mibi-user-info__name {
+  margin-left: 8px;
+}
