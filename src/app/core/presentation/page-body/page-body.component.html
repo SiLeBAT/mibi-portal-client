@@ -1,11 +1,13 @@
 <div class="mibi-view-outlet" *ngIf="!(isBusy$ | async) else loading">
-  <div class="mibi-banner" [@slideInOut]="animationState">
+  <div class="mibi-banner" [@slideInOut]="animationState" (@slideInOut.done)="animationDone($event)">
     <mibi-banner-container></mibi-banner-container>
   </div>
-  <router-outlet></router-outlet>
+  <div [@fadeAnimation]="o.isActivated ? o.activatedRoute : ''">
+    <router-outlet #o="outlet"></router-outlet>
+  </div>
 </div>
 <ng-template #loading>
-  <div class="mibi-spinner-container"  fxLayout="row" fxLayoutAlign="center center" >
+  <div class="mibi-spinner-container" fxLayout="row" fxLayoutAlign="center center">
     <mat-spinner class="mibi-spinner" [color]="primary">
     </mat-spinner>
   </div>

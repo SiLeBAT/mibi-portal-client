@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { Banner, AlertType } from '../../model/alert.model';
 import { map } from 'rxjs/operators';
 import { UserActionService } from '../../services/user-action.service';
-import { ActionItemType } from '../../model/action-items.model';
+import { UserActionType } from '../../../shared/model/user-action.model';
 
 @Component({
     selector: 'mibi-banner-container',
@@ -62,14 +62,14 @@ export class BannerContainerComponent implements OnInit {
         validationErrors: {
             message: 'Es gibt noch rot gekennzeichnete Fehler. Bitte vor dem Senden korrigieren.',
             type: AlertType.ERROR,
-            auxilliaryAction: { ...this.userActionService.getConfigOfType(ActionItemType.SEND), ...{ label: 'Nochmals Senden' } }
+            auxilliaryAction: { ...this.userActionService.getConfigOfType(UserActionType.SEND), ...{ label: 'Nochmals Senden' } }
 
         },
 
         autocorrections: {
             message: 'Es wurden Felder autokorregiert. Bitte prüfen und nochmals senden.',
             type: AlertType.ERROR,
-            auxilliaryAction: { ...this.userActionService.getConfigOfType(ActionItemType.SEND), ...{ label: 'Nochmals Senden' } }
+            auxilliaryAction: { ...this.userActionService.getConfigOfType(UserActionType.SEND), ...{ label: 'Nochmals Senden' } }
 
         },
         wrongUploadDatatype: {
@@ -133,7 +133,7 @@ export class BannerContainerComponent implements OnInit {
                     const banner = this.banners[b.predefined] || b.custom;
                     if (banner) {
                         if (!banner.mainAction) {
-                            banner.mainAction = this.userActionService.getConfigOfType(ActionItemType.DISMISS_BANNER);
+                            banner.mainAction = this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER);
                         }
                         if (!banner.icon) {
                             switch (banner.type) {
@@ -148,13 +148,13 @@ export class BannerContainerComponent implements OnInit {
                                     banner.icon = 'warning';
                             }
                         }
-                        if (banner.mainAction && !(banner.mainAction.type === ActionItemType.DISMISS_BANNER)) {
+                        if (banner.mainAction && !(banner.mainAction.type === UserActionType.DISMISS_BANNER)) {
                             this.userActionService.augmentOnClick(banner.mainAction,
-                                this.userActionService.getOnClickHandlerOfType(ActionItemType.DISMISS_BANNER));
+                                this.userActionService.getOnClickHandlerOfType(UserActionType.DISMISS_BANNER));
                         }
-                        if (banner.auxilliaryAction && !(banner.auxilliaryAction.type === ActionItemType.DISMISS_BANNER)) {
+                        if (banner.auxilliaryAction && !(banner.auxilliaryAction.type === UserActionType.DISMISS_BANNER)) {
                             this.userActionService.augmentOnClick(banner.auxilliaryAction,
-                                this.userActionService.getOnClickHandlerOfType(ActionItemType.DISMISS_BANNER));
+                                this.userActionService.getOnClickHandlerOfType(UserActionType.DISMISS_BANNER));
                         }
                         return banner;
                     }

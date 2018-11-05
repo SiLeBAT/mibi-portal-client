@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import * as fromCore from '../../../core/state/core.reducer';
 import * as coreActions from '../../../core/state/core.actions';
 import { Store } from '@ngrx/store';
-import { ActionItemType } from '../../../core/model/action-items.model';
+import { UserActionType } from '../../../shared/model/user-action.model';
 @Component({
     selector: 'mibi-sample-view',
     templateUrl: './sample-view.component.html',
@@ -15,7 +15,7 @@ export class SampleViewComponent implements OnInit {
 
     ngOnInit(): void {
         this.store.dispatch(new coreActions.EnableActionItems(
-            [ActionItemType.VALIDATE, ActionItemType.SEND, ActionItemType.EXPORT, ActionItemType.UPLOAD]));
+            [UserActionType.VALIDATE, UserActionType.SEND, UserActionType.EXPORT, UserActionType.UPLOAD]));
     }
 
 }

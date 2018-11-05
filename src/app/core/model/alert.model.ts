@@ -1,4 +1,4 @@
-import { ActionItemConfiguration } from './action-items.model';
+import { UserActionViewModelConfiguration } from '../../shared/model/user-action.model';
 
 export enum AlertType {
     SUCCESS = 'success',
@@ -12,6 +12,6 @@ export interface Alert {
 
 export interface Banner extends Alert {
     icon?: string;
-    mainAction?: ActionItemConfiguration;
-    auxilliaryAction?: ActionItemConfiguration;
+    mainAction?: UserActionViewModelConfiguration;
+    auxilliaryAction?: UserActionViewModelConfiguration;
 }

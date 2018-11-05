@@ -1,8 +1,8 @@
-import { ActionItemConfiguration } from './action-items.model';
+import { UserActionViewModelConfiguration } from '../../shared/model/user-action.model';
 
 export interface DialogContent {
     title: string;
     message?: string;
-    mainAction: ActionItemConfiguration;
-    auxilliaryAction?: ActionItemConfiguration;
+    mainAction: UserActionViewModelConfiguration;
+    auxilliaryAction?: UserActionViewModelConfiguration;
 }

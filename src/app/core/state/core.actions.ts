@@ -12,14 +12,15 @@ import {
     LoginUserSuccess
 } from '../../user/state/user.actions';
 import { RouterNavigationAction } from '@ngrx/router-store';
-import { ActionItemType } from '../model/action-items.model';
+import { UserActionType } from '../../shared/model/user-action.model';
 import { BannerState } from './core.reducer';
 import { DialogContent } from '../model/dialog.model';
 
 export enum CoreActionTypes {
     DisplayBanner = '[Core] Display Banner',
     DisplayDialog = '[Core] Display Dialog',
-    ClearBanner = '[Core] Clear Banner',
+    DestroyBanner = '[Core] Destroy Banner',
+    HideBanner = '[Core] Hide Banner',
     EnableActionItems = '[Core] Enable Action Items'
 }
 export class DisplayDialog implements Action {
@@ -34,19 +35,28 @@ export class DisplayBanner implements Action {
     readonly type = CoreActionTypes.DisplayBanner;
 
     constructor(public payload: BannerState) {
+        this.payload = { ...this.payload, ...{ show: true } };
 
     }
 }
 export class EnableActionItems implements Action {
     readonly type = CoreActionTypes.EnableActionItems;
 
-    constructor(public payload: ActionItemType[]) {
+    constructor(public payload: UserActionType[]) {
 
     }
 }
 
-export class ClearBanner implements Action {
-    readonly type = CoreActionTypes.ClearBanner;
+export class DestroyBanner implements Action {
+    readonly type = CoreActionTypes.DestroyBanner;
+
+    constructor() {
+
+    }
+}
+
+export class HideBanner implements Action {
+    readonly type = CoreActionTypes.HideBanner;
 
     constructor() {
 
@@ -57,6 +67,7 @@ export class ClearBanner implements Action {
 export type SystemActions = ValidateSamples
     | ValidateSamplesSuccess
     | DisplayDialog
+    | HideBanner
     | ImportExcelFile
     | ImportExcelFileSuccess
     | ExportExcelFile
@@ -64,7 +75,7 @@ export type SystemActions = ValidateSamples
     | ExportExcelFileFailure
     | SendSamplesInitiate
     | DisplayBanner
-    | ClearBanner
+    | DestroyBanner
     | EnableActionItems
     | LoginUser
     | LoginUserSuccess

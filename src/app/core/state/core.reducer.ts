@@ -6,7 +6,7 @@ import { SamplesActionTypes } from '../../samples/state/samples.actions';
 import { Alert, Banner } from '../model/alert.model';
 import { UserActionTypes } from '../../user/state/user.actions';
 import { ROUTER_NAVIGATION } from '@ngrx/router-store';
-import { ActionItemType } from '../model/action-items.model';
+import { UserActionType } from '../../shared/model/user-action.model';
 
 export const STATE_SLICE_NAME = 'core';
 export interface State extends fromRoot.State {
@@ -18,6 +18,7 @@ export interface CoreState {
 }
 
 export interface BannerState {
+    show?: boolean;
     predefined: string;
     custom?: Banner;
 }
@@ -25,13 +26,13 @@ export interface UIState {
     isBusy: boolean;
     banner: BannerState | null;
     snackbar: Alert | null;
-    enabledActionItems: ActionItemType[];
+    enabledActionItems: UserActionType[];
 }
 
 const initialState: CoreState = {
     ui: {
         isBusy: false,
-        banner: null, // { predefined: 'loginUnauthorized' },
+        banner: null,
         snackbar: null,
         enabledActionItems: []
     }
@@ -48,6 +49,11 @@ export const isBusy = createSelector(
 export const getBanner = createSelector(
     getCoreFeatureState,
     state => state.ui.banner
+);
+
+export const showBanner = createSelector(
+    getCoreFeatureState,
+    state => !!state.ui.banner && !!state.ui.banner.show
 );
 
 export const getSnackbar = createSelector(
@@ -67,13 +73,19 @@ export function reducer(state: CoreState = initialState, action: SystemActions):
             const enabledAIState = { ...state };
             enabledAIState.ui.enabledActionItems = action.payload;
             return enabledAIState;
-        case CoreActionTypes.ClearBanner:
+        case CoreActionTypes.DestroyBanner:
             const clearedAlertState = setUI({
                 ...state.ui, ...{
                     banner: null
                 }
             }, state);
             return clearedAlertState;
+        case CoreActionTypes.HideBanner:
+            const hideBanner = { ...state };
+            if (hideBanner.ui.banner) {
+                hideBanner.ui.banner.show = false;
+            }
+            return hideBanner;
         case ROUTER_NAVIGATION:
             const navigatedState = { ...state };
             navigatedState.ui.enabledActionItems = [];

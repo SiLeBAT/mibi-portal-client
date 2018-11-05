@@ -19,7 +19,7 @@ import { DataService } from '../../core/services/data.service';
 import { IValidationRequest } from '../../core/model/request.model';
 import { LogService } from '../../core/services/log.service';
 import { ClientError } from '../../core/model/client-error';
-import { ActionItemType, ColorType } from '../../core/model/action-items.model';
+import { UserActionType, ColorType } from '../../shared/model/user-action.model';
 import { GenericActionItemComponent } from '../../core/presentation/generic-action-item/generic-action-item.component';
 @Injectable()
 export class SamplesEffects {
@@ -145,9 +145,9 @@ export class SamplesEffects {
                         auszudrucken und Ihren Isolaten beizulegen.</p>`,
                     title: 'Senden',
                     mainAction: {
-                        type: ActionItemType.CUSTOM,
+                        type: UserActionType.CUSTOM,
                         label: 'Senden',
-                        onClick: () => {
+                        onExecute: () => {
                             const currentUser = fromUser.getCurrentUser(combine[1]);
                             if (currentUser) {
                                 this.store.dispatch(new samplesActions.SendSamplesFromStore(currentUser));
@@ -161,9 +161,9 @@ export class SamplesEffects {
                         focused: true
                     },
                     auxilliaryAction: {
-                        type: ActionItemType.CUSTOM,
+                        type: UserActionType.CUSTOM,
                         label: 'Abbrechen',
-                        onClick: () => {
+                        onExecute: () => {
                             this.store.dispatch(new coreActions.DisplayBanner({ predefined: 'sendCancel' }));
                         },
                         component: GenericActionItemComponent,

@@ -1,14 +1,14 @@
 import { Component, Input } from '@angular/core';
 
-import { ActionItemConfiguration, ActionItemComponent } from '../../model/action-items.model';
+import { UserActionViewModelConfiguration, UserActionComponent } from '../../../shared/model/user-action.model';
 
 @Component({
     selector: 'mibi-generic-action-item',
     templateUrl: './generic-action-item.component.html',
     styleUrls: ['./generic-action-item.component.scss']
 })
-export class GenericActionItemComponent implements ActionItemComponent {
+export class GenericActionItemComponent implements UserActionComponent {
 
-    @Input() configuration: ActionItemConfiguration;
+    @Input() configuration: UserActionViewModelConfiguration;
     constructor() { }
 }

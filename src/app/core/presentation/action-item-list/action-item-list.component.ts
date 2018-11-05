@@ -2,7 +2,7 @@ import {
     Component,
     Input, OnInit, ViewChild, OnDestroy, ChangeDetectorRef, TemplateRef, ViewContainerRef
 } from '@angular/core';
-import { ActionItemConfiguration, ActionItemType } from '../../model/action-items.model';
+import { UserActionViewModelConfiguration, UserActionType } from '../../../shared/model/user-action.model';
 import { Observable } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
 import { UserActionService } from '../../services/user-action.service';
@@ -14,7 +14,7 @@ import { UserActionService } from '../../services/user-action.service';
 })
 export class ActionItemListComponent implements OnInit, OnDestroy {
 
-    @Input() configuration$: Observable<ActionItemConfiguration[]>;
+    @Input() configuration$: Observable<UserActionViewModelConfiguration[]>;
     @ViewChild('actionList', { read: ViewContainerRef }) actionItemHost: ViewContainerRef;
     @ViewChild('customActionItems')
     private customActionItems: TemplateRef<any>;
@@ -26,7 +26,7 @@ export class ActionItemListComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.configuration$.pipe(
             takeWhile(() => this.componentActive)).subscribe(
-                (configuration: ActionItemConfiguration[]) => {
+                (configuration: UserActionViewModelConfiguration[]) => {
 
                     const viewContainerRef = this.actionItemHost;
                     viewContainerRef.clear();
@@ -45,9 +45,9 @@ export class ActionItemListComponent implements OnInit, OnDestroy {
         this.componentActive = false;
     }
 
-    private getTemplate(type: ActionItemType): TemplateRef<any> {
+    private getTemplate(type: UserActionType): TemplateRef<any> {
         switch (type) {
-            case ActionItemType.UPLOAD:
+            case UserActionType.UPLOAD:
                 return this.uploadActionItem;
             default:
                 return this.customActionItems;

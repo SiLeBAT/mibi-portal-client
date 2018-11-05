@@ -1,9 +1,9 @@
-import { TemplateRef } from '@angular/core';
+import { TemplateRef, Component } from '@angular/core';
 
-export interface ActionItemConfiguration {
+export interface UserActionViewModelConfiguration {
     label: string;
-    onClick: Function;
-    type: ActionItemType;
+    onExecute: Function;
+    type: UserActionType;
     component: any;
     icon: string;
     color: ColorType;
@@ -16,10 +16,10 @@ export enum ColorType {
     SECONDAYR = 'accent',
     ACCENT = 'accent'
 }
-export enum ActionItemType {
+export enum UserActionType {
     VALIDATE, UPLOAD, EXPORT, SEND, DISMISS_BANNER, NAVIGATE, CUSTOM
 }
 
-export interface ActionItemComponent {
-    configuration: ActionItemConfiguration;
+export interface UserActionComponent {
+    configuration: UserActionViewModelConfiguration;
 }

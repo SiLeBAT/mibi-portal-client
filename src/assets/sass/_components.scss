@@ -233,7 +233,7 @@ ul  {
 .mibi-action-item{
     list-style: none;
     margin-right: 16px;
-    display: flex;
+    cursor: pointer;
     & .uploader {
         display: flex
     }

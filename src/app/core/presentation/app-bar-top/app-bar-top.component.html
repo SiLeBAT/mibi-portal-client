@@ -1,7 +1,7 @@
 <mat-toolbar class="mibi-app-bar-top" fxLayout="row" fxLayoutAlign=" center">
 
     <mibi-nav-bar-container fxFlex="5" class="mibi-app-bar-top__navigation"></mibi-nav-bar-container>
-    <a fxFlex="5" class="mibi-app-bar-top__title" mat-flat-button [routerLink]="(currentUser$ | async) ? ['/users/profile'] : ['/']">
+    <a fxFlex="5" class="mibi-app-bar-top__title" [routerLink]="(currentUser$ | async) ? ['/users/profile'] : ['/']">
         {{ appName }}
     </a>
     <mibi-action-item-list-container fxFlex="85" class="mibi-app-bar-top__action-items"></mibi-action-item-list-container>

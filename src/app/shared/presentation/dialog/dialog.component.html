@@ -1,4 +1,4 @@
-<ng-template #mainActionTemplate let-onClick="onClick" let-label="label">
+<ng-template #mainActionTemplate let-onClick="onExecute" let-label="label">
     <button cdkFocusInitial class="mibi-user-action" mat-raised-button color="primary" (click)="onClick($event)">{{label}}</button>
 </ng-template>
 

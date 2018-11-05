@@ -6,7 +6,7 @@ import * as fromUser from '../../../user/state/user.reducer';
 import * as fromCore from '../../state/core.reducer';
 import { map } from 'rxjs/operators';
 import { Observable, of, combineLatest } from 'rxjs';
-import { ActionItemConfiguration, ActionItemType } from '../../model/action-items.model';
+import { UserActionViewModelConfiguration, UserActionType } from '../../../shared/model/user-action.model';
 import { UserActionService } from '../../services/user-action.service';
 
 @Component({
@@ -15,7 +15,7 @@ import { UserActionService } from '../../services/user-action.service';
 })
 export class ActionItemListContainerComponent implements OnInit {
 
-    config$: Observable<ActionItemConfiguration[]>;
+    config$: Observable<UserActionViewModelConfiguration[]>;
 
     constructor(
         private store: Store<fromSamples.State>,
@@ -35,11 +35,11 @@ export class ActionItemListContainerComponent implements OnInit {
                         newConfig = [];
                     }
                     if (!currentUser) {
-                        newConfig = _.filter(newConfig, (c: ActionItemConfiguration) => c.type !== ActionItemType.SEND);
+                        newConfig = _.filter(newConfig, (c: UserActionViewModelConfiguration) => c.type !== UserActionType.SEND);
 
                     }
                     if (enabled.length) {
-                        newConfig = _.filter(newConfig, (c: ActionItemConfiguration) => {
+                        newConfig = _.filter(newConfig, (c: UserActionViewModelConfiguration) => {
                             return _.includes(enabled, c.type);
                         });
                     }
