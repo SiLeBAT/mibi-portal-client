@@ -15,7 +15,8 @@ export class SampleViewComponent implements OnInit {
 
     ngOnInit(): void {
         this.store.dispatch(new coreActions.EnableActionItems(
-            [UserActionType.VALIDATE, UserActionType.SEND, UserActionType.EXPORT, UserActionType.UPLOAD]));
+            [UserActionType.VALIDATE,
+                UserActionType.SEND, UserActionType.EXPORT, UserActionType.UPLOAD, UserActionType.DOWNLOAD_TEMPLATE]));
     }
 
 }

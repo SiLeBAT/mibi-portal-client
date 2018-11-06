@@ -52,6 +52,16 @@ export class UserActionService {
         component: GenericActionItemComponent,
         icon: '',
         color: ColorType.ACCENT
+    },
+    {
+        label: 'Excel-Vorlage',
+        type: UserActionType.DOWNLOAD_TEMPLATE,
+        onExecute: () => {
+            window.open('https://www.bfr.bund.de/cm/343/Einsendebogen-v14-1.xlsx', '_self');
+        },
+        component: GenericActionItemComponent,
+        icon: '',
+        color: ColorType.ACCENT
     }];
 
     constructor(

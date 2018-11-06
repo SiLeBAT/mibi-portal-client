@@ -20,6 +20,8 @@ export class ActionItemListComponent implements OnInit, OnDestroy {
     private customActionItems: TemplateRef<any>;
     @ViewChild('uploadActionItem')
     private uploadActionItem: TemplateRef<any>;
+    @ViewChild('downloadTemplateItem')
+    private downloadTemplateItem: TemplateRef<any>;
     private componentActive: boolean = true;
     hasElements: boolean = false;
     constructor(private _changeDetectionRef: ChangeDetectorRef, private userActionService: UserActionService) { }
@@ -51,6 +53,8 @@ export class ActionItemListComponent implements OnInit, OnDestroy {
         switch (type) {
             case UserActionType.UPLOAD:
                 return this.uploadActionItem;
+            case UserActionType.UPLOAD:
+                return this.downloadTemplateItem;
             default:
                 return this.customActionItems;
         }

@@ -42,18 +42,27 @@ export class AppBarTopContainerComponent implements OnInit {
 
                     const [configuration, enabled, hasEntries, currentUser, isBusy] = combined;
                     let newConfig = [...configuration];
-                    if (!hasEntries || !enabled.length || isBusy) {
+                    if (isBusy || !enabled.length) {
                         newConfig = [];
-                    }
-                    if (!currentUser) {
-                        newConfig = _.filter(newConfig, (c: UserActionViewModelConfiguration) => c.type !== UserActionType.SEND);
-
                     }
                     if (enabled.length) {
                         newConfig = _.filter(newConfig, (c: UserActionViewModelConfiguration) => {
                             return _.includes(enabled, c.type);
                         });
                     }
+                    if (!hasEntries) {
+                        newConfig = _.filter(newConfig, (c: UserActionViewModelConfiguration) => {
+                            return c.type !== UserActionType.SEND
+                            && c.type !== UserActionType.UPLOAD
+                            && c.type !== UserActionType.EXPORT
+                            && c.type !== UserActionType.VALIDATE;
+                        });
+                    }
+                    if (!currentUser) {
+                        newConfig = _.filter(newConfig, (c: UserActionViewModelConfiguration) => c.type !== UserActionType.SEND);
+
+                    }
+
                     return newConfig;
                 })
             );

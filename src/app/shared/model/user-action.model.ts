@@ -17,7 +17,7 @@ export enum ColorType {
     ACCENT = 'accent'
 }
 export enum UserActionType {
-    VALIDATE, UPLOAD, EXPORT, SEND, DISMISS_BANNER, NAVIGATE, CUSTOM
+    VALIDATE, UPLOAD, EXPORT, SEND, DISMISS_BANNER, NAVIGATE, CUSTOM, DOWNLOAD_TEMPLATE
 }
 
 export interface UserActionComponent {
