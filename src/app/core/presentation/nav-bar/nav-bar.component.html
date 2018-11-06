@@ -2,7 +2,7 @@
     <a class="mibi-navbar__link" [routerLink]="['/upload']"  [routerLinkActive]="['mibi-navbar__link--active']" [class.hidden]="hasEntries$ | async">
       <span>Probendaten</span>
     </a>
-    <a class="mibi-navbar__link" [routerLink]="['/samples']"  [routerLinkActive]="['mibi-navbar__link--active']" [class.hidden]="!(hasEntries$ | async)">
+    <a class="mibi-navbar__link primary-color" [routerLink]="['/samples']"  [routerLinkActive]="['mibi-navbar__link--active']" [class.hidden]="!(hasEntries$ | async)">
       <span>Probendaten</span>
     </a>
 </nav>

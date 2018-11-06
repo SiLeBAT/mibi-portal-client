@@ -41,21 +41,5 @@ $nav-bar-color: $primary-color;
 }
 
 .mibi-avatar__register-link {
-  text-decoration: none;
-  font-size: 1rem;
-  text-align: center;
-  padding: $mibi-singleSpace;
-}
-
-.mibi-avatar__register-link:visited {
-  color: $on-primary-color;
-}
-
-.mibi-avatar__register-link:hover,
-.mibi-avatar__register-link:active {
-  color: $surface-color;
-}
-
-.mibi-avatar__register-text {
-  line-height: 1.5;
+  @include nav-bar-link();
 }

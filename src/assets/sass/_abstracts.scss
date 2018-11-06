@@ -115,6 +115,21 @@ Mixins
   background: rgba($color, $opacity);
 }
 
+@mixin nav-bar-link() {
+  text-decoration: none;
+  font-size: 1.5rem;
+  text-align: center;
+  padding: $mibi-singleSpace;
+
+  &:visited {
+    color: $on-primary-color;
+  }
+
+  &:hover,
+  &:active {
+    color: $surface-color;
+  }
+}
 // Spaces
 
 $mibi-singleSpace: 8px;
