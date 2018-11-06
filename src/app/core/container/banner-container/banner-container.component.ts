@@ -130,6 +130,13 @@ export class BannerContainerComponent implements OnInit {
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
 
         },
+        registrationFailure: {
+            // tslint:disable-next-line:max-line-length
+            message: 'Es gab einen Fehler beim registrieren.  Bitte kontaktieren Sie das MiBi-Portal team.',
+            type: AlertType.ERROR,
+            mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
+
+        },
         loginUnauthorized: {
             message: 'Nicht authorisiert, bitte einloggen.',
             type: AlertType.ERROR,

@@ -62,7 +62,7 @@ export class RegisterContainerComponent implements OnInit {
             credentials,
             userDetails
         ).toPromise().then(
-            (response) => {
+            () => {
                 this.router.navigate(['users/login']).then(
                     () => {
                         this.store.dispatch(new coreActions.DisplayBanner({
@@ -85,7 +85,7 @@ export class RegisterContainerComponent implements OnInit {
                 this.store.dispatch(new coreActions.DisplayBanner({
                     predefined: '',
                     custom: {
-                        message: response.title,
+                        message: response.error.title,
                         type: AlertType.ERROR,
                         mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
                     }

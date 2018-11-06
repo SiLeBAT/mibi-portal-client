@@ -12,12 +12,6 @@ export interface RegistrationDetails {
     password: string;
 }
 
-export const _filter = (opt: string[], value: string): string[] => {
-    const filterValue = value.toLowerCase();
-
-    return opt.filter(item => item.toLowerCase().indexOf(filterValue) === 0);
-};
-
 @Component({
     selector: 'mibi-register',
     templateUrl: './register.component.html',
@@ -60,9 +54,13 @@ export class RegisterComponent implements OnInit {
     }
 
     private _filter(value: string): Institution[] {
-        const filterValue = value.toLowerCase();
+        try {
+            const filterValue = value.toLowerCase();
 
-        return this.institutions.filter(inst => inst.name1.toLowerCase().includes(filterValue));
+            return this.institutions.filter(inst => inst.name1.toLowerCase().includes(filterValue));
+        } catch (err) {
+            return [];
+        }
     }
 
     onRegister() {

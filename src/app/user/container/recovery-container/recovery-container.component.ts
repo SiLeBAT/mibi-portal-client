@@ -41,7 +41,7 @@ export class RecoveryContainerComponent {
                     this.store.dispatch(new coreActions.DisplayBanner({
                         predefined: '',
                         custom: {
-                            message: response.title,
+                            message: response.error.title,
                             type: AlertType.ERROR,
                             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
                         }
