@@ -1,0 +1,24 @@
+@import "../../../../assets/sass/abstracts";
+@import "~@angular/material/theming";
+
+.mibi-action-item-list {
+  width: 100%;
+  list-style: none;
+  padding-top: $mibi-halfSpace;
+
+  &--foreground {
+    z-index: 12;
+  }
+}
+
+.mibi-action-item {
+  margin-right: $mibi-quadrupleSpace;
+}
+
+.mibi-action-item__label {
+  font-size: 1.1rem;
+}
+
+.mibi-action-item__link {
+  cursor: pointer;
+}

@@ -11,7 +11,8 @@ export interface Alert {
 }
 
 export interface Banner extends Alert {
+    id?: string;
     icon?: string;
-    mainAction?: UserActionViewModelConfiguration;
+    mainAction: UserActionViewModelConfiguration;
     auxilliaryAction?: UserActionViewModelConfiguration;
 }

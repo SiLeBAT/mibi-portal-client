@@ -8,6 +8,8 @@ import { RegistrationDetails } from '../../presentation/register/register.compon
 import { DataService } from '../../../core/services/data.service';
 import { AlertType } from '../../../core/model/alert.model';
 import { Router } from '@angular/router';
+import { UserActionService } from '../../../core/services/user-action.service';
+import { UserActionType } from '../../../shared/model/user-action.model';
 
 export interface IHash {
     [details: string]: string;
@@ -24,7 +26,7 @@ export class RegisterContainerComponent implements OnInit {
     constructor(
         private router: Router,
         private store: Store<fromUser.IState>,
-        private dataService: DataService) {
+        private dataService: DataService, private userActionService: UserActionService) {
     }
 
     ngOnInit() {
@@ -68,7 +70,8 @@ export class RegisterContainerComponent implements OnInit {
                             custom: {
                                 // tslint:disable-next-line:max-line-length
                                 message: `Bitte aktivieren Sie Ihren Account: Eine Email mit weiteren Anweisungen wurde an ${user.email} gesendet`,
-                                type: AlertType.SUCCESS
+                                type: AlertType.SUCCESS,
+                                mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
                             }
                         }));
                     }
@@ -83,7 +86,8 @@ export class RegisterContainerComponent implements OnInit {
                     predefined: '',
                     custom: {
                         message: response.title,
-                        type: AlertType.ERROR
+                        type: AlertType.ERROR,
+                        mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
                     }
                 }));
             }

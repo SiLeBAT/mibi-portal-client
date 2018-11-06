@@ -21,6 +21,7 @@ export interface BannerState {
     show?: boolean;
     predefined: string;
     custom?: Banner;
+    id?: string;
 }
 export interface UIState {
     isBusy: boolean;
@@ -74,12 +75,17 @@ export function reducer(state: CoreState = initialState, action: SystemActions):
             enabledAIState.ui.enabledActionItems = action.payload;
             return enabledAIState;
         case CoreActionTypes.DestroyBanner:
-            const clearedAlertState = setUI({
-                ...state.ui, ...{
-                    banner: null
-                }
-            }, state);
-            return clearedAlertState;
+
+            const banner = state.ui.banner;
+            if (banner && !banner.show) {
+                const clearedAlertState = setUI({
+                    ...state.ui, ...{
+                        banner: null
+                    }
+                }, state);
+                return clearedAlertState;
+            }
+            return state;
         case CoreActionTypes.HideBanner:
             const hideBanner = { ...state };
             if (hideBanner.ui.banner) {
@@ -89,6 +95,9 @@ export function reducer(state: CoreState = initialState, action: SystemActions):
         case ROUTER_NAVIGATION:
             const navigatedState = { ...state };
             navigatedState.ui.enabledActionItems = [];
+            if (navigatedState.ui.banner) {
+                navigatedState.ui.banner = null;
+            }
             return navigatedState;
         case SamplesActionTypes.ValidateSamples:
         case SamplesActionTypes.ImportExcelFile:

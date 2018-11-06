@@ -4,27 +4,30 @@
 .mibi-app-bar-top {
   @include mat-elevation(4);
 
-  background: $primary-color;
-  color: $on-primary-color;
-  height: 100%;
+  height: $mibi-nonupleSpace;
+
+  &.mibi-app-bar-top--small {
+    height: $mibi-sextupleSpace;
+  }
+}
+
+.mibi-app-bar-top__main {
+  padding-top: 8px;
 }
 
 .mibi-app-bar-top__title {
   color: $on-primary-color;
   text-decoration: none;
-  font-size: 1.5em;
-}
-
-.mibi-app-bar-top__title:hover,
-.mibi-app-bar-top__title:focus,
-.mibi-app-bar-top__title:active {
-  color: $surface-color;
+  font-size: 2rem;
+  text-align: center;
+  margin-top: $mibi-singleSpace;
 }
 
 .mibi-app-bar-top__title:visited {
   color: $on-primary-color;
 }
 
-.mibi-app-bar-top__avatar {
-  margin-left: $mibi-doubleSpace;
+.mibi-app-bar-top__title:hover,
+.mibi-app-bar-top__title:active {
+  color: $surface-color;
 }

@@ -1,9 +1,8 @@
 import {
     Component,
-    Input, OnInit, ViewChild, ChangeDetectorRef, AfterViewInit, ViewContainerRef
+    Input, OnInit, AfterViewInit, Output, EventEmitter
 } from '@angular/core';
 import { Banner } from '../../model/alert.model';
-import { UserActionService } from '../../services/user-action.service';
 
 @Component({
     selector: 'mibi-banner',
@@ -13,22 +12,23 @@ import { UserActionService } from '../../services/user-action.service';
 export class BannerComponent implements OnInit, AfterViewInit {
 
     @Input() banner: Banner;
-    @ViewChild('mainAction', { read: ViewContainerRef }) mainAction: ViewContainerRef;
-    constructor(private userActionService: UserActionService, private _changeDetectionRef: ChangeDetectorRef) { }
+    @Output() mainAction = new EventEmitter();
+    @Output() auxilliaryAction = new EventEmitter();
+    constructor() { }
 
     ngOnInit(): void {
-        const viewContainerRef = this.mainAction;
-        viewContainerRef.clear();
-        if (this.banner.auxilliaryAction) {
-            this.userActionService.createComponent(viewContainerRef, this.banner.auxilliaryAction);
-        }
-        if (this.banner.mainAction) {
-            this.userActionService.createComponent(viewContainerRef, this.banner.mainAction);
-        }
-        this._changeDetectionRef.detectChanges();
+
     }
 
     ngAfterViewInit(): void {
 
+    }
+
+    onMainAction() {
+        this.mainAction.emit();
+    }
+
+    onAuxAction() {
+        this.auxilliaryAction.emit();
     }
 }

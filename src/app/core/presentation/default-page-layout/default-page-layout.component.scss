@@ -1,13 +1,12 @@
 @import "../../../../assets/sass/abstracts";
 
-$barHeight: $mibi-septupleSpace;
+$barHeight: $mibi-nonupleSpace;
 $topBarHeight: $barHeight;
 $bottomBarHeight: $barHeight;
 
 .mibi-page-header {
   position: fixed;
   width: 100%;
-  height: $topBarHeight;
   z-index: 999;
 }
 

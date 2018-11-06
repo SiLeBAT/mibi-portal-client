@@ -9,7 +9,8 @@ import { UserActionService } from '../../services/user-action.service';
 
 @Component({
     selector: 'mibi-action-item-list',
-    templateUrl: './action-item-list.component.html'
+    templateUrl: './action-item-list.component.html',
+    styleUrls: ['./action-item-list.component.scss']
 })
 export class ActionItemListComponent implements OnInit, OnDestroy {
 
@@ -20,6 +21,7 @@ export class ActionItemListComponent implements OnInit, OnDestroy {
     @ViewChild('uploadActionItem')
     private uploadActionItem: TemplateRef<any>;
     private componentActive: boolean = true;
+    hasElements: boolean = false;
     constructor(private _changeDetectionRef: ChangeDetectorRef, private userActionService: UserActionService) { }
 
     ngOnInit(): void {
@@ -34,6 +36,7 @@ export class ActionItemListComponent implements OnInit, OnDestroy {
                         myConfig.template = this.getTemplate(myConfig.type);
                         this.userActionService.createComponent(viewContainerRef, myConfig);
                     }
+                    this.hasElements = !!configuration.length;
                     this._changeDetectionRef.detectChanges();
                 }
             );

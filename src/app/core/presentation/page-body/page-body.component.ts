@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy, EventEmitter, Output } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, EventEmitter, Output, ChangeDetectorRef } from '@angular/core';
 import { Observable } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
 import { SlideInOutAnimation } from '../../../shared/animations/slideInOut.animation';
@@ -16,7 +16,7 @@ export class PageBodyComponent implements OnInit, OnDestroy {
     private componentActive = true;
     animationState = 'out';
     @Output() onAnimationDone = new EventEmitter();
-    constructor() {
+    constructor(private _changeDetectionRef: ChangeDetectorRef) {
     }
 
     ngOnInit(): void {
@@ -29,6 +29,7 @@ export class PageBodyComponent implements OnInit, OnDestroy {
                 } else {
                     this.animationState = 'out';
                 }
+                this._changeDetectionRef.detectChanges();
             }
         );
     }

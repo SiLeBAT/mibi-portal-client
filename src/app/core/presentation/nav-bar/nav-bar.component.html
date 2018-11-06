@@ -1,27 +1,8 @@
-<nav class="mibi-navbar">
-  <button class="mibi-navbar__button" mat-icon-button [matMenuTriggerFor]="menu">
-    <mat-icon>menu</mat-icon>
-  </button>
-  <mat-menu #menu="matMenu">
-    <a mat-menu-item [routerLink]="['/users/login']" [class.hidden]="currentUser$ | async">
-      <mat-icon>person</mat-icon>
-      <span>Anmelden/Registrieren</span>
-    </a>
-    <a mat-menu-item [routerLink]="['/users/profile']" [class.hidden]="!(currentUser$ | async)">
-      <mat-icon>person</mat-icon>
-      <span>Profil</span>
-    </a>
-    <a mat-menu-item [routerLink]="['/upload']" [class.hidden]="hasEntries$ | async">
-      <mat-icon>folder</mat-icon>
+<nav class="mibi-navbar" fxFlexFill fxLayout="row" fxLayoutAlign="end stretch" >
+    <a class="mibi-navbar__link" [routerLink]="['/upload']"  [routerLinkActive]="['mibi-navbar__link--active']" [class.hidden]="hasEntries$ | async">
       <span>Probendaten</span>
     </a>
-    <a mat-menu-item [routerLink]="['/samples']" [class.hidden]="!(hasEntries$ | async)">
-      <mat-icon>folder</mat-icon>
+    <a class="mibi-navbar__link" [routerLink]="['/samples']"  [routerLinkActive]="['mibi-navbar__link--active']" [class.hidden]="!(hasEntries$ | async)">
       <span>Probendaten</span>
     </a>
-    <a mat-menu-item href="https://www.bfr.bund.de/de/einsendeformular_fuer_isolate_und_proben-9257.html" target="_blank">
-      <mat-icon>open_in_new</mat-icon>
-      <span>Excel-Vorlage</span>
-    </a>
-  </mat-menu>
 </nav>

@@ -265,27 +265,6 @@ ul li {
   width: $mibi-singleSpace;
 }
 
-// Action Items
-.mibi-action-item {
-  list-style: none;
-  margin-right: $mibi-doubleSpace;
-  cursor: pointer;
-
-  & .uploader {
-    display: flex;
-  }
-}
-
-.mibi-action-item:hover,
-.mibi-action-item:focus,
-.mibi-action-item:active {
-  color: $surface-color;
-}
-
-.mibi-action-item__icon {
-  line-height: 1.3;
-}
-
 // Buttons
 button {
   text-transform: uppercase;

@@ -9,7 +9,7 @@ import * as userActions from '../../../user/state/user.actions';
     selector: 'mibi-avatar-container',
     template: `<mibi-avatar
     [currentUser$]="currentUser$"
-    (onLogout)="onLogout()">
+    (onLogout)="onLogout()"  fxFlexFill fxLayout="row" fxLayoutAlign=" end">
     </mibi-avatar>`
 })
 export class AvatarContainerComponent implements OnInit {

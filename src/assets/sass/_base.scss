@@ -47,3 +47,13 @@ $mibi-typography: mat-typography-config(
 .hidden {
   display: none !important;
 }
+
+.primary-color {
+  background-color: $primary-color;
+  color: $on-primary-color;
+}
+
+.primary-color-light {
+  background-color: $primary-color-light;
+  color: $on-primary-color-light;
+}

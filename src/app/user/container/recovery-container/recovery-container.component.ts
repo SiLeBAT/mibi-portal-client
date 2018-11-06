@@ -5,6 +5,8 @@ import { Store } from '@ngrx/store';
 import { DataService } from '../../../core/services/data.service';
 import { AlertType } from '../../../core/model/alert.model';
 import { Router } from '@angular/router';
+import { UserActionService } from '../../../core/services/user-action.service';
+import { UserActionType } from '../../../shared/model/user-action.model';
 
 @Component({
     selector: 'mibi-recovery-container',
@@ -12,7 +14,8 @@ import { Router } from '@angular/router';
 })
 export class RecoveryContainerComponent {
 
-    constructor(private store: Store<fromUser.IState>, private dataService: DataService, private router: Router) { }
+    constructor(private store: Store<fromUser.IState>,
+        private dataService: DataService, private router: Router, private userActionService: UserActionService) { }
 
     recovery(email: string) {
         this.dataService.recoverPassword(
@@ -24,7 +27,8 @@ export class RecoveryContainerComponent {
                                 predefined: '',
                                 custom: {
                                     message: response.title,
-                                    type: AlertType.SUCCESS
+                                    type: AlertType.SUCCESS,
+                                    mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
                                 }
                             }));
                         }
@@ -38,7 +42,8 @@ export class RecoveryContainerComponent {
                         predefined: '',
                         custom: {
                             message: response.title,
-                            type: AlertType.ERROR
+                            type: AlertType.ERROR,
+                            mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
                         }
                     }));
                 }

@@ -2,10 +2,6 @@
 
 $nav-bar-color: $primary-color;
 
-.mibi-navbar {
-  background-color: $nav-bar-color;
-}
-
 .mibi-navbar__button {
   background-color: $nav-bar-color;
   color: $on-primary-color;
@@ -26,4 +22,27 @@ $nav-bar-color: $primary-color;
 
 .mibi-user-info__name {
   margin-left: $mibi-singleSpace;
+}
+
+.mibi-navbar__link {
+  background-color: $primary-color;
+  text-decoration: none;
+  font-size: 1.5rem;
+  text-align: center;
+  color: $on-primary-color;
+  padding: $mibi-singleSpace;
+
+  &--active {
+    background-color: $primary-color-light;
+    z-index: 8;
+  }
+}
+
+.mibi-navbar__link:visited {
+  color: $on-primary-color;
+}
+
+.mibi-navbar__link:hover,
+.mibi-navbar__link:active {
+  color: $surface-color;
 }

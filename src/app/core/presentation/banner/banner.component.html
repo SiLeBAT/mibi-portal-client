@@ -4,8 +4,8 @@
       'mibi-banner__icon--error': banner.type === 'error' }">{{banner.icon}}</mat-icon>
   <div class="mibi-banner__message mat-body-2">{{banner.message}}</div>
   <div class="mibi-banner__buttons">
-
-    <ng-template #mainAction></ng-template>
+    <button *ngIf="!!banner.auxilliaryAction" class="mibi-user-action" mat-button color="accent" (click)="onAuxAction()">{{banner.auxilliaryAction.label}}</button>
+    <button class="mibi-user-action" mat-button color="accent" (click)="onMainAction()">{{banner.mainAction.label}}</button>
   </div>
 
 </div>

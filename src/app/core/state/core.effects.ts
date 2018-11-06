@@ -19,7 +19,7 @@ export class CoreEffects {
         pluck('payload'),
         tap((content: DialogContent) => {
             this.dialog.open(DialogComponent, {
-                width: '250px',
+                width: '400px',
                 data: content
             });
         })

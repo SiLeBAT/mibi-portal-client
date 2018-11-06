@@ -3,17 +3,25 @@
 $nav-bar-color: $primary-color;
 
 .mibi-avatar {
-  background-color: $nav-bar-color;
+  padding-right: 8px;
 }
 
 .mibi-avatar__button {
-  background-color: $nav-bar-color;
-  color: $on-primary-color;
   border: solid;
+  position: fixed;
+  top: $mibi-halfSpace;
+  right: $mibi-sextupleSpace;
+
+  &.mat-icon-button {
+    width: 35px;
+    height: 35px;
+  }
 }
 
 .mibi-avatar__button-icon {
-  line-height: 0.7;
+  &.mat-icon {
+    vertical-align: text-bottom;
+  }
 }
 
 .mibi-user-info__icon {
@@ -30,4 +38,24 @@ $nav-bar-color: $primary-color;
 
 .mibi-user-info__name {
   margin-left: $mibi-singleSpace;
+}
+
+.mibi-avatar__register-link {
+  text-decoration: none;
+  font-size: 1rem;
+  text-align: center;
+  padding: $mibi-singleSpace;
+}
+
+.mibi-avatar__register-link:visited {
+  color: $on-primary-color;
+}
+
+.mibi-avatar__register-link:hover,
+.mibi-avatar__register-link:active {
+  color: $surface-color;
+}
+
+.mibi-avatar__register-text {
+  line-height: 1.5;
 }

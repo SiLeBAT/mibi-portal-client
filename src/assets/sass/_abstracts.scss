@@ -36,7 +36,7 @@ $error-color-light: rgb(255, 90, 53); // #ff5a35
 $error-color-dark: rgb(193, 0, 0); // #c10000
 
 $on-primary-color: $bfr-white;
-$on-primary-color-light: $bfr-black;
+$on-primary-color-light: $bfr-white;
 $on-primary-color-dark: $bfr-white;
 $on-secondary-color: $bfr-black;
 $on-secondary-color-light: $bfr-black;
@@ -126,3 +126,5 @@ $mibi-quintupleSpace: $mibi-singleSpace * 5;
 $mibi-sextupleSpace: $mibi-singleSpace * 6;
 $mibi-septupleSpace: $mibi-singleSpace * 7;
 $mibi-octupleSpace: $mibi-singleSpace * 8;
+$mibi-nonupleSpace: $mibi-singleSpace * 9;
+$mibi-decupleSpace: $mibi-singleSpace * 10;

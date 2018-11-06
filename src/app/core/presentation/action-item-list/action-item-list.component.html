@@ -1,22 +1,24 @@
 <ng-template #customActionItems let-icon="icon" let-onClick="onExecute" let-label="label">
     <li  mat-button  class="mibi-action-item">
-        <a fxLayout="row" fxLayoutAlign=" none" (click)="onClick($event)">
-            <mat-icon class="mibi-action-item__icon">{{icon}}</mat-icon>
-            <span class="mibi-action-item__label">{{label}}</span>
+        <a class="mibi-action-item__link" fxLayout="row" fxLayoutAlign=" none" (click)="onClick($event)">
+            <span class="mibi-action-item__label primary-color-light">{{label}}</span>
         </a>
     </li>
 </ng-template>
 
 <ng-template #uploadActionItem let-icon="icon" let-onClick="onExecute" let-label="label">
     <li mat-button  class="mibi-action-item">
-        <mibi-upload-container fxLayout="row" fxLayoutAlign=" none" (onFileUpload)="onClick($event)">
-            <mat-icon class="mibi-action-item__icon">{{icon}}</mat-icon>
-            <span class="mibi-action-item__label">{{label}}</span>
+        <mibi-upload-container class="mibi-action-item__link" fxLayout="row" fxLayoutAlign=" none" (onFileUpload)="onClick($event)">
+            <span class="mibi-action-item__label  primary-color-light">{{label}}</span>
         </mibi-upload-container>
 
     </li>
 </ng-template>
 
-<ul class="mibi-action-item-list" fxLayout="row" fxLayoutAlign="end none">
+<ul class="mibi-action-item-list" fxFlexFill fxLayout="row" fxLayoutAlign="end none" [ngClass]="{
+    'primary-color-light': hasElements,
+    'primary-color': !hasElements,
+    'mibi-action-item-list--foreground': hasElements
+  }">
     <ng-template #actionList></ng-template>
 </ul>

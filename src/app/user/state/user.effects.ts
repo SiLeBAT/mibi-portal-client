@@ -10,6 +10,8 @@ import { AlertType } from '../../core/model/alert.model';
 import { ILoginResponseDTO } from '../../core/model/response.model';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { UserActionService } from '../../core/services/user-action.service';
+import { UserActionType } from '../../shared/model/user-action.model';
 
 @Injectable()
 export class UserEffects {
@@ -17,7 +19,7 @@ export class UserEffects {
     constructor(private actions$: Actions,
         private dataService: DataService,
         private router: Router,
-        private store: Store<fromSamples.State>) {
+        private store: Store<fromSamples.State>, private userActionService: UserActionService) {
     }
 
     @Effect()
@@ -52,7 +54,8 @@ export class UserEffects {
                             predefined: '',
                             custom: {
                                 message: dataStateCombine[0].title,
-                                type: AlertType.ERROR
+                                type: AlertType.ERROR,
+                                mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
                             }
                         });
                     }

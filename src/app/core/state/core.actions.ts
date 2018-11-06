@@ -6,6 +6,7 @@ import {
     ExportExcelFileFailure,
     SendSamplesInitiate, ImportExcelFile, ImportExcelFileSuccess
 } from '../../samples/state/samples.actions';
+import { UUID } from 'angular2-uuid';
 import { Action } from '@ngrx/store';
 import {
     LoginUser,
@@ -35,7 +36,7 @@ export class DisplayBanner implements Action {
     readonly type = CoreActionTypes.DisplayBanner;
 
     constructor(public payload: BannerState) {
-        this.payload = { ...this.payload, ...{ show: true } };
+        this.payload = { ...this.payload, ...{ show: true, id: UUID.UUID() } };
 
     }
 }

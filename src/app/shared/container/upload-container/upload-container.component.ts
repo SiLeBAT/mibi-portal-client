@@ -22,9 +22,6 @@ export class UploadContainerComponent {
             case UploadErrorType.TYPE:
                 this.store.dispatch(new coreActions.DisplayBanner({ predefined: 'wrongUploadDatatype' }));
                 break;
-            case UploadErrorType.CLEAR:
-                this.store.dispatch(new coreActions.DestroyBanner());
-                break;
             default:
                 this.store.dispatch(new coreActions.DisplayBanner({ predefined: 'uploadFailure' }));
         }
