@@ -35,6 +35,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { AvatarComponent } from './presentation/avatar/avatar.component';
 import { AvatarContainerComponent } from './container/avatar-container/avatar-container.component';
+import { PageFooterContainerComponent } from './container/page-footer-container/page-footer-container.component';
 
 @NgModule({
     imports: [
@@ -57,6 +58,7 @@ import { AvatarContainerComponent } from './container/avatar-container/avatar-co
         EffectsModule.forFeature([CoreEffects])
     ],
     declarations: [
+        PageFooterContainerComponent,
         AvatarComponent,
         AvatarContainerComponent,
         GenericActionItemComponent,
