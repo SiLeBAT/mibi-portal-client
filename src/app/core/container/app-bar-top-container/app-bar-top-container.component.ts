@@ -55,7 +55,8 @@ export class AppBarTopContainerComponent implements OnInit {
                             return c.type !== UserActionType.SEND
                             && c.type !== UserActionType.UPLOAD
                             && c.type !== UserActionType.EXPORT
-                            && c.type !== UserActionType.VALIDATE;
+                            && c.type !== UserActionType.VALIDATE
+                            && c.type !== UserActionType.CLOSE;
                         });
                     }
                     if (!currentUser) {

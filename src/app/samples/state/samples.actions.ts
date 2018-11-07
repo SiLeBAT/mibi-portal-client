@@ -5,6 +5,7 @@ import { LogoutUser } from '../../user/state/user.actions';
 import { User } from '../../user/model/user.model';
 
 export enum SamplesActionTypes {
+    ClearSamples = '[Samples] Clear Samples',
     ImportExcelFile = '[Samples] Import Excel file',
     ImportExcelFileSuccess = '[Samples] Successfully imported Excel file',
     ExportExcelFile = '[Samples] Export Excel file',
@@ -29,6 +30,14 @@ export class ImportExcelFile implements Action {
     readonly type = SamplesActionTypes.ImportExcelFile;
 
     constructor(public payload: File) {
+
+    }
+}
+
+export class ClearSamples implements Action {
+    readonly type = SamplesActionTypes.ClearSamples;
+
+    constructor() {
 
     }
 }
@@ -94,6 +103,7 @@ export class SendSamplesFromStore implements Action {
 }
 
 export type SamplesActions = ImportExcelFile
+    | ClearSamples
     | ImportExcelFileSuccess
     | ValidateSamples
     | ValidateSamplesSuccess

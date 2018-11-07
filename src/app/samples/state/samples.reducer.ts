@@ -80,6 +80,7 @@ export const hasValidationErrors = createSelector(
 // REDUCER
 export function reducer(state: SamplesState = initialState, action: SamplesActions): SamplesState {
     switch (action.type) {
+        case SamplesActionTypes.ClearSamples:
         case UserActionTypes.LogoutUser:
             return { ...initialState };
         case SamplesActionTypes.ImportExcelFileSuccess:

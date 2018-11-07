@@ -54,6 +54,14 @@ export class UserActionService {
         color: ColorType.ACCENT
     },
     {
+        label: 'Schließen',
+        type: UserActionType.CLOSE,
+        onExecute: this.close.bind(this),
+        component: GenericActionItemComponent,
+        icon: '',
+        color: ColorType.ACCENT
+    },
+    {
         label: 'Excel-Vorlage',
         type: UserActionType.DOWNLOAD_TEMPLATE,
         onExecute: () => {
@@ -110,6 +118,11 @@ export class UserActionService {
 
     private export() {
         this.store.dispatch(new samplesActions.ExportExcelFile());
+    }
+
+    private close() {
+        this.store.dispatch(new samplesActions.ClearSamples());
+        this.navigate('/upload');
     }
 
     private import(file: File) {
