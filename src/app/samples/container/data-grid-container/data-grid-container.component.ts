@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as _ from 'lodash';
 import {
-    IAnnotatedSampleData, IColConfig, ITableDataOutput
+    AnnotatedSampleData, ColConfig, TableDataOutput
 } from '../../model/sample-management.model';
 import { map, tap, withLatestFrom } from 'rxjs/operators';
 import { Observable } from 'rxjs';
@@ -32,7 +32,7 @@ export class DataGridContainerComponent extends GuardedUnloadComponent implement
     viewModel$: Observable<IFormViewModel>;
     private hasData: boolean = true;
 
-    columnConfigArray: IColConfig[] = [
+    columnConfigArray: ColConfig[] = [
         {
             id: 'sample_id',
             title: 'Ihre Proben&shy;ummer'
@@ -126,7 +126,7 @@ export class DataGridContainerComponent extends GuardedUnloadComponent implement
             }),
             withLatestFrom(this.store),
             map(
-                (dataStateCombine: [IAnnotatedSampleData[], fromSamples.State]) => {
+                (dataStateCombine: [AnnotatedSampleData[], fromSamples.State]) => {
                     if (dataStateCombine[0]) {
                         return this.createViewModel(dataStateCombine);
                     }
@@ -138,7 +138,7 @@ export class DataGridContainerComponent extends GuardedUnloadComponent implement
         );
     }
 
-    onValueChanged(tableData: ITableDataOutput) {
+    onValueChanged(tableData: TableDataOutput) {
         this.store.dispatch(new samplesActions.ChangeFieldValue(tableData.changed));
     }
 
@@ -146,7 +146,7 @@ export class DataGridContainerComponent extends GuardedUnloadComponent implement
         return this.hasData;
     }
 
-    private createViewModel(dataStateCombine: [IAnnotatedSampleData[], fromSamples.State]) {
+    private createViewModel(dataStateCombine: [AnnotatedSampleData[], fromSamples.State]) {
         const rows = dataStateCombine[0].map(
             (row, index) => {
                 const result: IFormRowViewModel = {};

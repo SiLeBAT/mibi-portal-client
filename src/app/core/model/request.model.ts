@@ -1,11 +1,11 @@
 import { SampleData } from '../../samples/model/sample-management.model';
 
-interface IValidationRequestMetaInformation {
+interface ValidationRequestMetaInformation {
     state: string;
     nrl: string;
 }
 
-export interface IValidationRequest {
+export interface ValidationRequest {
     data: SampleData[];
-    meta: IValidationRequestMetaInformation;
+    meta: ValidationRequestMetaInformation;
 }

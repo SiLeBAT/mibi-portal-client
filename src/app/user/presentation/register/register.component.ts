@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef, Output, EventEmitter, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Institution } from '../../../user/model/institution.model';
+import { DefaultInstitution } from '../../../user/model/institution.model';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 
@@ -19,10 +19,10 @@ export interface RegistrationDetails {
 })
 export class RegisterComponent implements OnInit {
     registerForm: FormGroup;
-    @Input() institutions: Institution[];
+    @Input() institutions: DefaultInstitution[];
     private pwStrength: number;
     @Output() register = new EventEmitter();
-    filteredOptions: Observable<Institution[]>;
+    filteredOptions: Observable<DefaultInstitution[]>;
     constructor(
         private changeRef: ChangeDetectorRef) {
         this.pwStrength = -1;
@@ -53,7 +53,7 @@ export class RegisterComponent implements OnInit {
             );
     }
 
-    private _filter(value: string): Institution[] {
+    private _filter(value: string): DefaultInstitution[] {
         try {
             const filterValue = value.toLowerCase();
 

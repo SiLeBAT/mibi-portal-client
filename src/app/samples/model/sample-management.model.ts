@@ -26,63 +26,63 @@ export const FORM_PROPERTIES: string[] = [
     'comment'
 ];
 
-export interface IExcelFileBlob {
+export interface ExcelFileBlob {
     blob: Blob;
     fileName: string;
 }
 
-export interface IImportedExcelFileDetails {
+export interface ImportedExcelFileDetails {
     workSheet: WorkSheet;
     file: File;
     oriDataLength: number;
 }
 
-export interface ISampleSheet {
-    formData: IAnnotatedSampleData[];
-    workSheet: IImportedExcelFileDetails | null;
+export interface SampleSheet {
+    formData: AnnotatedSampleData[];
+    workSheet: ImportedExcelFileDetails | null;
 }
 
-export interface ISampleMetaData {
+export interface SampleMetaData {
     nrl: string;
 }
-export interface IExcelData {
+export interface ExcelData {
     data: SampleData[];
-    meta: ISampleMetaData;
-    workSheet: IImportedExcelFileDetails;
+    meta: SampleMetaData;
+    workSheet: ImportedExcelFileDetails;
 }
 
-export interface IValidationError {
+export interface ValidationError {
     code: number;
     level: number;
     message: string;
 }
 
-export interface IValidationErrorCollection {
-    [key: string]: IValidationError[];
+export interface ValidationErrorCollection {
+    [key: string]: ValidationError[];
 }
 
-export interface IAutoCorrectionEntry {
+export interface AutoCorrectionEntry {
     field: keyof SampleData;
     original: string;
     correctionOffer: string[];
 }
-export interface IAnnotatedSampleData {
+export interface AnnotatedSampleData {
     data: SampleData;
-    errors: IValidationErrorCollection;
+    errors: ValidationErrorCollection;
     edits: ChangedValueCollection;
-    corrections: IAutoCorrectionEntry[];
+    corrections: AutoCorrectionEntry[];
 }
 
-export interface IColConfig {
+export interface ColConfig {
     id: string;
     title: string;
 }
 
-export interface ITableDataOutput {
-    changed: IChangedDataGridField;
+export interface TableDataOutput {
+    changed: ChangedDataGridField;
 }
 
-export interface IChangedDataGridField {
+export interface ChangedDataGridField {
     rowIndex: number;
     columnId: string;
     originalValue: string;

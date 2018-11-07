@@ -6,7 +6,7 @@ import 'moment/locale/de';
 import * as samplesActions from './samples.actions';
 import * as coreActions from '../../core/state/core.actions';
 import { map, concatMap, catchError, exhaustMap, withLatestFrom, switchMap, mergeMap, tap } from 'rxjs/operators';
-import { IAnnotatedSampleData, IExcelFileBlob, IExcelData } from '../model/sample-management.model';
+import { AnnotatedSampleData, ExcelFileBlob, ExcelData } from '../model/sample-management.model';
 import { ExcelConverterService } from '../services/excel-converter.service';
 import { from, of } from 'rxjs';
 import { Store } from '@ngrx/store';
@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
 import { ExcelToJsonService } from '../services/excel-to-json.service';
 import { SendSampleService } from '../services/send-sample.service';
 import { DataService } from '../../core/services/data.service';
-import { IValidationRequest } from '../../core/model/request.model';
+import { ValidationRequest } from '../../core/model/request.model';
 import { LogService } from '../../core/services/log.service';
 import { ClientError } from '../../core/model/client-error';
 import { UserActionType, ColorType } from '../../shared/model/user-action.model';
@@ -39,9 +39,9 @@ export class SamplesEffects {
         ofType(samplesActions.SamplesActionTypes.ValidateSamples),
         withLatestFrom(this.store),
         concatMap((actionStoreCombine: [samplesActions.ValidateSamples, fromSamples.State & fromUser.IState]) => {
-            const validationRequest: IValidationRequest = this.createValidationRequestFromStore(actionStoreCombine[1]);
+            const validationRequest: ValidationRequest = this.createValidationRequestFromStore(actionStoreCombine[1]);
             return this.dataService.validateSampleData(validationRequest).pipe(
-                map((annotatedSamples: IAnnotatedSampleData[]) => {
+                map((annotatedSamples: AnnotatedSampleData[]) => {
                     return (new samplesActions.ValidateSamplesSuccess(annotatedSamples));
                 }),
                 catchError((error) => {
@@ -57,7 +57,7 @@ export class SamplesEffects {
         ofType(samplesActions.SamplesActionTypes.ImportExcelFile),
         exhaustMap((action: samplesActions.ImportExcelFile) => {
             return from(this.excelToJsonService.convertExcelToJSJson(action.payload)).pipe(
-                map((excelData: IExcelData) => {
+                map((excelData: ExcelData) => {
                     return (new samplesActions.ImportExcelFileSuccess(excelData));
                 }),
                 catchError((error) => {
@@ -87,7 +87,7 @@ export class SamplesEffects {
             const filenameAddon = '.MP_' + moment().unix();
             const sampleSheet = fromSamples.getSamplesFeatureState(actionStoreCombine[1]);
             return from(this.excelConverterService.convertToExcel(sampleSheet, filenameAddon)).pipe(
-                map((excelFileBlob: IExcelFileBlob) => {
+                map((excelFileBlob: ExcelFileBlob) => {
                     saveAs(excelFileBlob.blob, excelFileBlob.fileName);
                     return new samplesActions.ExportExcelFileSuccess();
                 }),
@@ -121,9 +121,9 @@ export class SamplesEffects {
         ofType(samplesActions.SamplesActionTypes.SendSamplesInitiate),
         withLatestFrom(this.store),
         switchMap((actionStoreCombine: [samplesActions.SendSamplesInitiate, fromSamples.State & fromUser.IState]) => {
-            const validationRequest: IValidationRequest = this.createValidationRequestFromStore(actionStoreCombine[1]);
+            const validationRequest: ValidationRequest = this.createValidationRequestFromStore(actionStoreCombine[1]);
             return this.dataService.validateSampleData(validationRequest).pipe(
-                tap((annotatedSamples: IAnnotatedSampleData[]) => {
+                tap((annotatedSamples: AnnotatedSampleData[]) => {
                     this.store.dispatch(new samplesActions.ValidateSamplesSuccess(annotatedSamples));
                 }),
                 catchError((error) => {
@@ -133,7 +133,7 @@ export class SamplesEffects {
             );
         }),
         withLatestFrom(this.store),
-        tap((combine: [IAnnotatedSampleData[], fromSamples.State & fromUser.IState]) => {
+        tap((combine: [AnnotatedSampleData[], fromSamples.State & fromUser.IState]) => {
             if (this.hasSampleError(combine[0])) {
                 this.store.dispatch(new coreActions.DisplayBanner({ predefined: 'validationErrors' }));
             } else if (this.hasSampleAutoCorrection(combine[0])) {
@@ -179,13 +179,13 @@ export class SamplesEffects {
         })
     );
 
-    private hasSampleError(annotatedSamples: IAnnotatedSampleData[]) {
+    private hasSampleError(annotatedSamples: AnnotatedSampleData[]) {
         return this.hasSampleFault(annotatedSamples, 2);
     }
-    private hasSampleAutoCorrection(annotatedSamples: IAnnotatedSampleData[]) {
+    private hasSampleAutoCorrection(annotatedSamples: AnnotatedSampleData[]) {
         return this.hasSampleFault(annotatedSamples, 4);
     }
-    private hasSampleFault(annotatedSamples: IAnnotatedSampleData[], errorLEvel: number) {
+    private hasSampleFault(annotatedSamples: AnnotatedSampleData[], errorLEvel: number) {
         return annotatedSamples.reduce(
             (acc, entry) => {
                 let count = 0;
@@ -200,7 +200,7 @@ export class SamplesEffects {
         );
     }
 
-    private createValidationRequestFromStore(state: fromSamples.State & fromUser.IState): IValidationRequest {
+    private createValidationRequestFromStore(state: fromSamples.State & fromUser.IState): ValidationRequest {
         const cu = fromUser.getCurrentUser(state) || null;
         return {
             data: fromSamples.getDataValues(state),

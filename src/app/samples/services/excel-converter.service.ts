@@ -5,8 +5,8 @@ import * as _ from 'lodash';
 import * as XlsxPopulate from 'xlsx-populate/browser/xlsx-populate';
 import { WindowRefService } from './window-ref.service';
 import {
-    ISampleSheet,
-    IImportedExcelFileDetails, SampleData, VALID_SHEET_NAME, FORM_PROPERTIES, IExcelFileBlob, ChangedValueCollection
+    SampleSheet,
+    ImportedExcelFileDetails, SampleData, VALID_SHEET_NAME, FORM_PROPERTIES, ExcelFileBlob, ChangedValueCollection
 } from '../model/sample-management.model';
 import { ClientError } from '../../core/model/client-error';
 
@@ -22,7 +22,7 @@ export class ExcelConverterService {
         this._window = windowRef.nativeWindow;
     }
 
-    async convertToExcel(data: ISampleSheet, fileNameAddon: string = ''): Promise<IExcelFileBlob> {
+    async convertToExcel(data: SampleSheet, fileNameAddon: string = ''): Promise<ExcelFileBlob> {
 
         if (!data.workSheet) {
             throw new ClientError('No Excel data available.');
@@ -73,7 +73,7 @@ export class ExcelConverterService {
     }
 
     private addValidatedDataToWorkbook(
-        originalWorkSheet: IImportedExcelFileDetails, workbook: any, dataToSave: any, highlights: ChangedValueCollection[] = []) {
+        originalWorkSheet: ImportedExcelFileDetails, workbook: any, dataToSave: any, highlights: ChangedValueCollection[] = []) {
 
         const oriDataLength = originalWorkSheet.oriDataLength;
         const searchTerm = 'Ihre Probe-';

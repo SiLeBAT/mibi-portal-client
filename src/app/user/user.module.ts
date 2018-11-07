@@ -40,6 +40,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { UserGuard } from './services/user-guard.service';
 @NgModule({
     imports: [
         CommonModule,
@@ -56,10 +57,10 @@ import { FlexLayoutModule } from '@angular/flex-layout';
         RouterModule.forChild([{
             path: 'users',
             children: [
-                { path: 'login', component: LoginViewComponent },
-                { path: 'register', component: RegisterViewComponent },
-                { path: 'recovery', component: RecoveryViewComponent },
-                { path: 'reset/:id', component: ResetViewComponent },
+                { path: 'login', component: LoginViewComponent, canActivate: [UserGuard] },
+                { path: 'register', component: RegisterViewComponent, canActivate: [UserGuard] },
+                { path: 'recovery', component: RecoveryViewComponent, canActivate: [UserGuard] },
+                { path: 'reset/:id', component: ResetViewComponent, canActivate: [UserGuard] },
                 { path: 'activate/:id', component: ActivateViewComponent, resolve: { tokenValid: TokenValidationResolver } },
                 // tslint:disable-next-line:max-line-length
                 { path: 'adminactivate/:id', component: AdminActivateViewComponent, resolve: { adminTokenValid: AdminTokenValidationResolver } },

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { DataService } from '../../../core/services/data.service';
-import { ISystemInformationResponseDTO } from '../../../core/model/response.model';
+import { SystemInformationResponseDTO } from '../../../core/model/response.model';
 import * as moment from 'moment';
 import 'moment/locale/de';
 import { BehaviorSubject } from 'rxjs';
@@ -31,7 +31,7 @@ export class LastChangeDisplayContainerComponent implements OnInit {
         this.clientLastChange = moment(environment.lastChange, this.dateParseString);
         this._lastChange = new BehaviorSubject(this.clientLastChange);
         this.dataService.getSystemInfo().toPromise().then(
-            (sysInfo: ISystemInformationResponseDTO) => {
+            (sysInfo: SystemInformationResponseDTO) => {
                 this.serverLastChange = moment(sysInfo.lastChange, this.dateParseString);
                 const dateCompare = [];
                 if (this.serverLastChange.isValid()) {

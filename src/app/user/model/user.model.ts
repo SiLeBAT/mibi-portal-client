@@ -1,4 +1,4 @@
-import { Institution } from './institution.model';
+import { DefaultInstitution } from './institution.model';
 
 export interface UserData {
     department: string;
@@ -12,7 +12,7 @@ export interface User {
     firstName?: string;
     lastName?: string;
     userData: UserData[];
-    institution: Institution;
+    institution: DefaultInstitution;
     _id: any;
 }
 export interface TokenizedUser extends User {
@@ -26,7 +26,7 @@ export interface UserDetails {
     firstName?: string;
     lastName?: string;
     userData: UserData[];
-    institution: Institution;
+    institution: DefaultInstitution;
 }
 
 // TODO: Possibly remove

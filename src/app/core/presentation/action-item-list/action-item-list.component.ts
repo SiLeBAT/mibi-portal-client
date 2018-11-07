@@ -1,10 +1,10 @@
 import {
     Component,
-    Input, OnInit, ViewChild, OnDestroy, ChangeDetectorRef, TemplateRef, ViewContainerRef
+    Input, OnInit, ViewChild, OnDestroy, TemplateRef, ViewContainerRef
 } from '@angular/core';
 import { UserActionViewModelConfiguration, UserActionType } from '../../../shared/model/user-action.model';
 import { Observable } from 'rxjs';
-import { takeWhile } from 'rxjs/operators';
+import { takeWhile, startWith, tap, delay } from 'rxjs/operators';
 import { UserActionService } from '../../services/user-action.service';
 
 @Component({
@@ -24,29 +24,34 @@ export class ActionItemListComponent implements OnInit, OnDestroy {
     private downloadTemplateItem: TemplateRef<any>;
     private componentActive: boolean = true;
     hasElements: boolean = false;
-    constructor(private _changeDetectionRef: ChangeDetectorRef, private userActionService: UserActionService) { }
+    constructor(private userActionService: UserActionService) { }
 
     ngOnInit(): void {
         this.configuration$.pipe(
-            takeWhile(() => this.componentActive)).subscribe(
-                (configuration: UserActionViewModelConfiguration[]) => {
-
-                    const viewContainerRef = this.actionItemHost;
-                    viewContainerRef.clear();
-                    for (let i = 0; i < configuration.length; i++) {
-                        const myConfig = { ...configuration[i] };
-                        myConfig.template = this.getTemplate(myConfig.type);
-                        this.userActionService.createComponent(viewContainerRef, myConfig);
-                    }
-                    this.hasElements = !!configuration.length;
-                    this._changeDetectionRef.detectChanges();
+            startWith([]),
+            delay(0),
+            takeWhile(() => this.componentActive),
+            tap((configuration: UserActionViewModelConfiguration[]) => {
+                this.hasElements = !!configuration.length;
+                if (this.hasElements) {
+                    this.createComponents(configuration);
                 }
-            );
-
+            }
+            )).subscribe();
     }
 
     ngOnDestroy(): void {
         this.componentActive = false;
+    }
+
+    private createComponents(configuration: UserActionViewModelConfiguration[]) {
+        const viewContainerRef = this.actionItemHost;
+        viewContainerRef.clear();
+        for (let i = 0; i < configuration.length; i++) {
+            const myConfig = { ...configuration[i] };
+            myConfig.template = this.getTemplate(myConfig.type);
+            this.userActionService.createComponent(viewContainerRef, myConfig);
+        }
     }
 
     private getTemplate(type: UserActionType): TemplateRef<any> {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { WorkBook, WorkSheet, read, utils } from 'xlsx';
-import { IImportedExcelFileDetails, SampleData, VALID_SHEET_NAME, FORM_PROPERTIES, IExcelData } from '../model/sample-management.model';
+import { ImportedExcelFileDetails, SampleData, VALID_SHEET_NAME, FORM_PROPERTIES, ExcelData } from '../model/sample-management.model';
 import * as moment from 'moment';
 import 'moment/locale/de';
 import { ClientError } from '../../core/model/client-error';
@@ -15,7 +15,7 @@ export class ExcelToJsonService {
 
     constructor() { }
 
-    async convertExcelToJSJson(file: File): Promise<IExcelData> {
+    async convertExcelToJSJson(file: File): Promise<ExcelData> {
         let sampleSheet: WorkSheet;
         let data: SampleData[];
         let nrl: string = '';
@@ -23,7 +23,7 @@ export class ExcelToJsonService {
             sampleSheet = await this.fromFileToWorkSheet(file);
             data = this.fromWorksheetToData(sampleSheet);
             nrl = this.getNRLFromWorkSheet(sampleSheet);
-            const currentWorkSheet: IImportedExcelFileDetails = {
+            const currentWorkSheet: ImportedExcelFileDetails = {
                 workSheet: sampleSheet,
                 file: file,
                 oriDataLength: data.length

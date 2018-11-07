@@ -4,7 +4,7 @@ import { environment } from '../../../../environments/environment';
 import * as fromUser from '../../state/user.reducer';
 import * as coreActions from '../../../core/state/core.actions';
 import { Store } from '@ngrx/store';
-import { IAdminActivateResponseDTO } from '../../../core/model/response.model';
+import { AdminActivateResponseDTO } from '../../../core/model/response.model';
 
 @Component({
     selector: 'mibi-admin-activate-container',
@@ -15,7 +15,7 @@ import { IAdminActivateResponseDTO } from '../../../core/model/response.model';
 })
 export class AdminActivateContainerComponent implements OnInit {
 
-    adminTokenValid: IAdminActivateResponseDTO;
+    adminTokenValid: AdminActivateResponseDTO;
     name: string;
     appName: string = environment.appName;
     constructor(private activatedRoute: ActivatedRoute,

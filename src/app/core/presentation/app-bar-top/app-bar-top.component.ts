@@ -1,8 +1,8 @@
-import { Component, Input, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from '../../../user/model/user.model';
 import { UserActionViewModelConfiguration } from '../../../shared/model/user-action.model';
-import { takeWhile } from 'rxjs/operators';
+import { takeWhile, startWith, tap, delay } from 'rxjs/operators';
 
 @Component({
     selector: 'mibi-app-bar-top',
@@ -15,15 +15,16 @@ export class AppBarTopComponent implements OnInit, OnDestroy {
     @Input() config$: Observable<UserActionViewModelConfiguration[]>;
     private componentActive = true;
     hasConfig = false;
-    constructor(private _changeDetectionRef: ChangeDetectorRef) { }
+    constructor() { }
 
     ngOnInit(): void {
         this.config$.pipe(
-            takeWhile(() => this.componentActive)
-        ).subscribe(config => {
-            this.hasConfig = !!config.length;
-            this._changeDetectionRef.detectChanges();
-        });
+            startWith([]),
+            delay(0),
+            takeWhile(() => this.componentActive),
+            tap(config => {
+                this.hasConfig = !!config.length;
+            })).subscribe();
 
     }
 

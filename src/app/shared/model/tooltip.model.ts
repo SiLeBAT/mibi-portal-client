@@ -16,7 +16,7 @@ export enum ToolTipTheme {
 
 export type ToolTipAlignment = 'bottom' | 'top' | 'left' | 'right';
 
-export interface IToolTipOptions {
+export interface ToolTipOptions {
     repositionOnScroll: boolean;
     animation: any;
     delay: number;
@@ -28,14 +28,14 @@ export interface IToolTipOptions {
     side: any;
     multiple: boolean;
 }
-export interface IToolTip {
+export interface ToolTip {
     theme: string;
     alignmemt: ToolTipAlignment;
     constructToolTipText(commentList: string[]): string;
-    getOptions(commentList: string[]): IToolTipOptions;
+    getOptions(commentList: string[]): ToolTipOptions;
 }
 
-class ToolTip implements IToolTip {
+class DefaultToolTip implements ToolTip {
 
     constructor(public theme: string,
         public alignmemt: 'bottom' | 'top' | 'left' | 'right') { }
@@ -69,5 +69,5 @@ class ToolTip implements IToolTip {
 
 export function createToolTip(theme: ToolTipTheme,
     alignmemt: ToolTipAlignment) {
-    return new ToolTip(theme, alignmemt);
+    return new DefaultToolTip(theme, alignmemt);
 }

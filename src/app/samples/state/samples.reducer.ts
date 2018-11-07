@@ -4,9 +4,9 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { SamplesActions, SamplesActionTypes } from './samples.actions';
 import { UserActionTypes } from '../../user/state/user.actions';
 import {
-    ISampleSheet,
+    SampleSheet,
     SampleData,
-    IAnnotatedSampleData
+    AnnotatedSampleData
 } from '../model/sample-management.model';
 
 export const STATE_SLICE_NAME = 'samples';
@@ -14,7 +14,7 @@ export interface State extends fromRoot.State {
     samples: SamplesState;
 }
 
-export interface SamplesState extends ISampleSheet {
+export interface SamplesState extends SampleSheet {
     importedData: SampleData[];
     nrl: string;
 }
@@ -119,7 +119,7 @@ export function reducer(state: SamplesState = initialState, action: SamplesActio
 
             if (originalValue !== newValue) {
 
-                const newEntries = state.formData.map((e: IAnnotatedSampleData, i: number) => {
+                const newEntries = state.formData.map((e: AnnotatedSampleData, i: number) => {
                     let newData = e.data;
                     let newEdits = e.edits;
                     let newErrors = e.errors;

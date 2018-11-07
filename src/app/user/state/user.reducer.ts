@@ -1,18 +1,19 @@
 import * as fromRoot from '../../state/app.state';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { UserActions, UserActionTypes } from './user.actions';
-import { User } from '../model/user.model';
+import { TokenizedUser } from '../model/user.model';
 export const STATE_SLICE_NAME = 'user';
+
 export interface IState extends fromRoot.State {
     user: IUserState;
 }
 
 export interface IUserState {
-    currentUser: User | null;
+    currentUser: TokenizedUser | null;
 }
 
 const initialState: IUserState = {
-    currentUser: null
+    currentUser: retrieveUserFromLocalStorage()
 };
 
 // SELECTORS
@@ -43,4 +44,14 @@ export function reducer(state: IUserState = initialState, action: UserActions): 
         default:
             return state;
     }
+}
+
+// Utilities
+
+function retrieveUserFromLocalStorage(): TokenizedUser | null {
+    const cu: string | null = localStorage.getItem('currentUser');
+    if (!cu) {
+        return null;
+    }
+    return JSON.parse(cu);
 }

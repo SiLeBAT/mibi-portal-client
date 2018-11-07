@@ -2,16 +2,16 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { IAnnotatedSampleData } from '../../samples/model/sample-management.model';
-import { Institution } from '../../user/model/institution.model';
+import { AnnotatedSampleData } from '../../samples/model/sample-management.model';
+import { DefaultInstitution } from '../../user/model/institution.model';
 import {
-    IAdminActivateResponseDTO,
-    IRecoverPasswordResponseDTO,
-    IRegisterUserResponseDTO,
-    ILoginResponseDTO, IActivationResponseDTO, ISystemInformationResponseDTO, IValidationResponseDTO, IFAQResponseDTO
+    AdminActivateResponseDTO,
+    RecoverPasswordResponseDTO,
+    RegisterUserResponseDTO,
+    LoginResponseDTO, ActivationResponseDTO, SystemInformationResponseDTO, ValidationResponseDTO, FAQResponseDTO
 } from '../model/response.model';
 import { TokenizedUser, Credentials, UserDetails, DefaultUser, DefaultUserData } from '../../user/model/user.model';
-import { IValidationRequest } from '../model/request.model';
+import { ValidationRequest } from '../model/request.model';
 import { ClientError } from '../model/client-error';
 
 @Injectable({
@@ -43,20 +43,12 @@ export class DataService {
         localStorage.setItem('currentUser', JSON.stringify(obj));
     }
 
-    getCurrentUser(): TokenizedUser | null {
-        const cu: string | null = localStorage.getItem('currentUser');
-        if (!cu) {
-            return null;
-        }
-        return JSON.parse(cu);
+    getFAQs(): Observable<FAQResponseDTO> {
+        return this.httpClient.get<FAQResponseDTO>(this.URL.faq);
     }
 
-    getFAQs(): Observable<IFAQResponseDTO> {
-        return this.httpClient.get<IFAQResponseDTO>(this.URL.faq);
-    }
-
-    getSystemInfo(): Observable<ISystemInformationResponseDTO> {
-        return this.httpClient.get<ISystemInformationResponseDTO>(this.URL.systemInfo);
+    getSystemInfo(): Observable<SystemInformationResponseDTO> {
+        return this.httpClient.get<SystemInformationResponseDTO>(this.URL.systemInfo);
     }
 
     logout() {
@@ -64,8 +56,8 @@ export class DataService {
         return new Observable<void>().toPromise();
     }
 
-    login(credentials: Credentials): Observable<ILoginResponseDTO> {
-        return this.httpClient.post<ILoginResponseDTO>(this.URL.login, credentials);
+    login(credentials: Credentials): Observable<LoginResponseDTO> {
+        return this.httpClient.post<LoginResponseDTO>(this.URL.login, credentials);
     }
 
     sendSampleSheet(sendableFormData: FormData) {
@@ -75,25 +67,25 @@ export class DataService {
             });
     }
 
-    validateSampleData(requestData: IValidationRequest): Observable<IAnnotatedSampleData[]> {
-        return this.httpClient.post<IAnnotatedSampleData[]>(this.URL.validateSample, requestData).pipe(
-            map((dtoArray: IValidationResponseDTO[]) => dtoArray.map(this.fromValidationResponseDTOToAnnotatedSampleData)),
+    validateSampleData(requestData: ValidationRequest): Observable<AnnotatedSampleData[]> {
+        return this.httpClient.post<AnnotatedSampleData[]>(this.URL.validateSample, requestData).pipe(
+            map((dtoArray: ValidationResponseDTO[]) => dtoArray.map(this.fromValidationResponseDTOToAnnotatedSampleData)),
             catchError(() => {
                 throw new ClientError('Beim Validieren ist ein Fehler aufgetreten');
             })
         );
     }
 
-    getAllInstitutions(): Observable<Institution[]> {
-        return this.httpClient.get<Institution[]>(this.URL.institutions);
+    getAllInstitutions(): Observable<DefaultInstitution[]> {
+        return this.httpClient.get<DefaultInstitution[]>(this.URL.institutions);
     }
 
-    registerUser(credentials: Credentials, userDetails: UserDetails): Observable<IRegisterUserResponseDTO> {
-        return this.httpClient.post<IRegisterUserResponseDTO>(this.URL.register, { ...credentials, ...userDetails });
+    registerUser(credentials: Credentials, userDetails: UserDetails): Observable<RegisterUserResponseDTO> {
+        return this.httpClient.post<RegisterUserResponseDTO>(this.URL.register, { ...credentials, ...userDetails });
     }
 
-    recoverPassword(email: String): Observable<IRecoverPasswordResponseDTO> {
-        return this.httpClient.post<IRecoverPasswordResponseDTO>(this.URL.recovery, { email: email });
+    recoverPassword(email: String): Observable<RecoverPasswordResponseDTO> {
+        return this.httpClient.post<RecoverPasswordResponseDTO>(this.URL.recovery, { email: email });
     }
 
     resetPassword(newPw: String, token: String) {
@@ -101,13 +93,13 @@ export class DataService {
     }
 
     activateAccount(token: String): Observable<boolean> {
-        return this.httpClient.post<IActivationResponseDTO>([this.URL.activate, token].join('/'), null).pipe(
+        return this.httpClient.post<ActivationResponseDTO>([this.URL.activate, token].join('/'), null).pipe(
             map(r => r.activation)
         );
     }
 
-    adminActivateAccount(adminToken: String): Observable<IAdminActivateResponseDTO> {
-        return this.httpClient.post<IAdminActivateResponseDTO>([this.URL.adminactivate, adminToken].join('/'), null);
+    adminActivateAccount(adminToken: String): Observable<AdminActivateResponseDTO> {
+        return this.httpClient.post<AdminActivateResponseDTO>([this.URL.adminactivate, adminToken].join('/'), null);
     }
 
     addUserData(user: DefaultUser, userData: DefaultUserData) {
@@ -122,7 +114,7 @@ export class DataService {
         return this.httpClient.delete(this.URL.userdata + userdataId + '&' + userId);
     }
 
-    private fromValidationResponseDTOToAnnotatedSampleData(dto: IValidationResponseDTO): IAnnotatedSampleData {
+    private fromValidationResponseDTOToAnnotatedSampleData(dto: ValidationResponseDTO): AnnotatedSampleData {
         return {
             data: dto.data,
             errors: dto.errors,

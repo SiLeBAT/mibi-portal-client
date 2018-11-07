@@ -4,10 +4,10 @@ import 'tooltipster';
 import * as Handsontable from 'handsontable';
 import * as _ from 'lodash';
 import {
-    ITableDataOutput, IColConfig
+    TableDataOutput, ColConfig
 } from '../../model/sample-management.model';
 import {
-    ToolTipTheme, IToolTip, createToolTip, ToolTipType
+    ToolTipTheme, ToolTip, createToolTip, ToolTipType
 } from '../../../shared/model/tooltip.model';
 
 enum HotChangeIndex {
@@ -81,7 +81,7 @@ export class DataGridComponent implements OnInit {
 
     settings: IHotSettings;
 
-    @Input() colConfig: IColConfig[];
+    @Input() colConfig: ColConfig[];
 
     @ViewChild(HotTableComponent) hotTableComponent: HotTableComponent;
     @Output() valueChanged = new EventEmitter();
@@ -91,7 +91,7 @@ export class DataGridComponent implements OnInit {
     }
 
     vm: IFormViewModel;
-    private ToolTips: { [key: number]: IToolTip } = {};
+    private ToolTips: { [key: number]: ToolTip } = {};
 
     constructor() { }
 
@@ -137,7 +137,7 @@ export class DataGridComponent implements OnInit {
                     const rowIndex = changeArray[HotChangeIndex.INDEX];
                     const columnId = changeArray[HotChangeIndex.COL_ID].replace('.value', '');
 
-                    const tableData: ITableDataOutput = {
+                    const tableData: TableDataOutput = {
                         changed: {
                             rowIndex,
                             columnId,

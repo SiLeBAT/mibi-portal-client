@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { IAnnotatedSampleData, IExcelData, IChangedDataGridField } from '../model/sample-management.model';
+import { AnnotatedSampleData, ExcelData, ChangedDataGridField } from '../model/sample-management.model';
 import { Alert } from '../../core/model/alert.model';
 import { LogoutUser } from '../../user/state/user.actions';
 import { User } from '../../user/model/user.model';
@@ -20,7 +20,7 @@ export enum SamplesActionTypes {
 export class ChangeFieldValue implements Action {
     readonly type = SamplesActionTypes.ChangeFieldValue;
 
-    constructor(public payload: IChangedDataGridField) {
+    constructor(public payload: ChangedDataGridField) {
 
     }
 }
@@ -36,7 +36,7 @@ export class ImportExcelFile implements Action {
 export class ImportExcelFileSuccess implements Action {
     readonly type = SamplesActionTypes.ImportExcelFileSuccess;
 
-    constructor(public payload: IExcelData) {
+    constructor(public payload: ExcelData) {
 
     }
 }
@@ -73,7 +73,7 @@ export class ValidateSamples implements Action {
 export class ValidateSamplesSuccess implements Action {
     readonly type = SamplesActionTypes.ValidateSamplesSuccess;
 
-    constructor(public payload: IAnnotatedSampleData[]) {
+    constructor(public payload: AnnotatedSampleData[]) {
 
     }
 }

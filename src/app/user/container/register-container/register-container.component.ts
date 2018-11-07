@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Institution } from '../../../user/model/institution.model';
+import { DefaultInstitution } from '../../../user/model/institution.model';
 import * as fromUser from '../../state/user.reducer';
 import * as coreActions from '../../../core/state/core.actions';
 import { Store } from '@ngrx/store';
@@ -20,7 +20,7 @@ export interface IHash {
     template: `<mibi-register (register)="register($event)" [institutions]="institutions"></mibi-register>`
 })
 export class RegisterContainerComponent implements OnInit {
-    institutions: Institution[] = [];
+    institutions: DefaultInstitution[] = [];
     instituteHash: IHash = {};
 
     constructor(
@@ -98,7 +98,7 @@ export class RegisterContainerComponent implements OnInit {
         this.dataService.getAllInstitutions().toPromise().then(
             data => {
                 for (const entry of data as Array<any>) {
-                    const institution = new Institution(entry);
+                    const institution = new DefaultInstitution(entry);
                     this.institutions.push(institution);
                     this.instituteHash[institution.toString()] = institution._id;
                 }

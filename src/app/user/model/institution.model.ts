@@ -1,6 +1,6 @@
 
 // TODO: Refactor
-export class Institution {
+export class DefaultInstitution {
     _id: string;
     stateShort: string;
     name1: string;

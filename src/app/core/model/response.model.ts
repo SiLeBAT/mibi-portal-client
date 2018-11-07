@@ -1,59 +1,59 @@
 import { TokenizedUser } from '../../user/model/user.model';
 import { SampleData } from '../../samples/model/sample-management.model';
 
-export interface IRecoverPasswordResponseDTO {
+export interface RecoverPasswordResponseDTO {
     title: string;
 }
 
-export interface IRegisterUserResponseDTO {
+export interface RegisterUserResponseDTO {
     title: string;
 }
 
-export interface ILoginResponseDTO {
+export interface LoginResponseDTO {
     obj: TokenizedUser;
     title: string;
 }
 
-export interface IActivationResponseDTO {
+export interface ActivationResponseDTO {
     activation: boolean;
 }
 
-export interface IAdminActivateResponseDTO extends IActivationResponseDTO {
+export interface AdminActivateResponseDTO extends ActivationResponseDTO {
     obj: string;
     title: string;
 }
 
-export interface ISystemInformationResponseDTO {
+export interface SystemInformationResponseDTO {
     version: string;
     lastChange: string;
 }
-interface IValidationResponseErrorEntryDTO {
+interface ValidationResponseErrorEntryDTO {
     code: number;
     level: number;
     message: string;
 }
 
-interface IValidationResponseErrorCollectionDTO {
-    [key: string]: IValidationResponseErrorEntryDTO[];
+interface ValidationResponseErrorCollectionDTO {
+    [key: string]: ValidationResponseErrorEntryDTO[];
 }
 
-interface IValidationResponseCorrectionEntryDTO {
+interface ValidationResponseCorrectionEntryDTO {
     field: keyof SampleData;
     original: string;
     correctionOffer: string[];
 }
 
-export interface IValidationResponseDTO {
+export interface ValidationResponseDTO {
     data: Record<string, string>;
-    errors: IValidationResponseErrorCollectionDTO;
-    corrections: IValidationResponseCorrectionEntryDTO[];
+    errors: ValidationResponseErrorCollectionDTO;
+    corrections: ValidationResponseCorrectionEntryDTO[];
     edits: Record<string, string>;
 }
 
-interface IQA {
+interface QA {
     q: string;
     a: string;
 }
-export interface IFAQResponseDTO {
-    [key: string]: IQA[];
+export interface FAQResponseDTO {
+    [key: string]: QA[];
 }

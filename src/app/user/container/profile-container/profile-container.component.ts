@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { User } from '../../../user/model/user.model';
 import * as userActions from '../../../user/state/user.actions';
+import * as fromUser from '../../../user/state/user.reducer';
 import { State } from '../../../state/app.state';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
+import { takeWhile, tap } from 'rxjs/operators';
 
 @Component({
     selector: 'mibi-profile-container',
@@ -11,18 +13,23 @@ import { Store } from '@ngrx/store';
     [currentUser]="currentUser"
     (logout)="logout()"></mibi-profile>`
 })
-export class ProfileContainerComponent implements OnInit {
-    currentUser: User;
-
+export class ProfileContainerComponent implements OnInit, OnDestroy {
+    currentUser: User | null;
+    private componentActive = true;
     constructor(
         private store: Store<State>) { }
 
     ngOnInit() {
-        const cu: string | null = localStorage.getItem('currentUser');
-        if (cu) {
-            this.currentUser = JSON.parse(cu);
-        }
+        this.store.pipe(select(fromUser.getCurrentUser),
+            takeWhile(() => this.componentActive),
+            tap(
+                currentUser => this.currentUser = currentUser
+            )).subscribe();
 
+    }
+
+    ngOnDestroy() {
+        this.componentActive = false;
     }
 
     logout() {
@@ -30,11 +37,14 @@ export class ProfileContainerComponent implements OnInit {
     }
 
     getInstitutionName() {
-        let name = this.currentUser.institution['name1'];
-        if (this.currentUser.institution['name2']) {
-            name = name + ', ' + this.currentUser.institution['name2'];
-        }
+        if (this.currentUser) {
+            let name = this.currentUser.institution['name1'];
+            if (this.currentUser.institution['name2']) {
+                name = name + ', ' + this.currentUser.institution['name2'];
+            }
 
-        return name;
+            return name;
+        }
+        return '';
     }
 }

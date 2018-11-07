@@ -7,20 +7,15 @@ $nav-bar-color: $primary-color;
 }
 
 .mibi-avatar__button {
+  @include nav-bar-link();
+
   border: solid;
   position: fixed;
-  top: $mibi-halfSpace;
+  top: $mibi-halfSpace/2;
   right: $mibi-sextupleSpace;
 
-  &.mat-icon-button {
-    width: 35px;
-    height: 35px;
-  }
-}
-
-.mibi-avatar__button-icon {
-  &.mat-icon {
-    vertical-align: text-bottom;
+  & .mat-icon {
+    margin-bottom: $mibi-tripleSpace;
   }
 }
 

@@ -1,6 +1,6 @@
-import { Component, Input, OnInit, OnDestroy, EventEmitter, Output, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, EventEmitter, Output } from '@angular/core';
 import { Observable } from 'rxjs';
-import { takeWhile } from 'rxjs/operators';
+import { takeWhile, startWith, tap, delay } from 'rxjs/operators';
 import { SlideInOutAnimation } from '../../../shared/animations/slideInOut.animation';
 import { fadeAnimation } from '../../../shared/animations/routerTransitionFade.animation';
 
@@ -16,22 +16,22 @@ export class PageBodyComponent implements OnInit, OnDestroy {
     private componentActive = true;
     animationState = 'out';
     @Output() onAnimationDone = new EventEmitter();
-    constructor(private _changeDetectionRef: ChangeDetectorRef) {
+    constructor() {
     }
 
     ngOnInit(): void {
-        this.isBanner$.pipe(takeWhile(() => this.componentActive)
-        ).subscribe(
-            showBanner => {
+        this.isBanner$.pipe(
+            startWith([]),
+            delay(0),
+            takeWhile(() => this.componentActive),
+            tap(showBanner => {
                 if (showBanner) {
                     this.animationState = 'in';
 
                 } else {
                     this.animationState = 'out';
                 }
-                this._changeDetectionRef.detectChanges();
-            }
-        );
+            })).subscribe();
     }
 
     ngOnDestroy() {
