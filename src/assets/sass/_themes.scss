@@ -2,15 +2,141 @@
 If you have different themes for your app (dark mode, admin, and so on) put them in this folder.
 */
 
-@import "~@angular/material/theming";
-@import "./abstracts";
-@import "./base";
-// Plus imports for other components in your app.
+$mibi-font-family: "Roboto, monospace";
 
-// Include the common styles for Angular Material. We include this here so that you only
-// have to load a single css file for Angular Material in your app.
-// Be sure that you only ever include this mixin once!
-@include mat-core($mibi-typography);
+/*
+BfR Colours
+*/
+
+$bfr-blue: rgb(3, 78, 162); // #034ea2
+$bfr-white: rgb(255, 255, 255); // #ffffff
+$bfr-lightgrey: rgb(204, 204, 204); // #cccccc
+$bfr-black: rgb(0, 0, 0); // #000000
+$bfr-lightblue: rgb(140, 190, 218); // #8cbeda
+$bfr-lightcyan: rgb(209, 237, 244); // #d1edf4
+$bfr-ocre: rgb(241, 199, 83); // #f1c753
+$bfr-lightocre: rgb(246, 231, 187); // #f6e7bb
+$bfr-darkgrey: rgb(102, 102, 102); // #666666
+$bfr-mintgreen: rgb(52, 172, 159); // #34ac9f
+$bfr-red: rgb(254, 0, 0); // #fe0000
+
+$primary-color: $bfr-blue;
+$secondary-color: $bfr-ocre;
+
+$background-color: $bfr-white;
+$surface-color: $bfr-lightgrey;
+$error-color: $bfr-red;
+
+$on-primary-color: $bfr-white;
+$on-secondary-color: $bfr-black;
+
+$on-background-color: $bfr-black;
+$on-surface-color: $bfr-black;
+$on-error-color: $bfr-white;
+
+/*
+* Theme generated using this tool: http://mcg.mbitson.com
+* The primary color (value 500) used was the bfr-blue.
+*/
+
+$bfr-primary-palette: (
+  50: #e1eaf4,
+  100: #b3cae3,
+  200: #81a7d1,
+  300: #4f83be,
+  400: #2969b0,
+  500: $primary-color,
+  600: #03479a,
+  700: #023d90,
+  800: #023586,
+  900: #012575,
+  A100: #a3b8ff,
+  A200: #7090ff,
+  A400: #3d69ff,
+  A700: #2455ff,
+  contrast: (
+    50: $bfr-black,
+    100: $bfr-black,
+    200: $bfr-black,
+    300: $on-primary-color,
+    400: $on-primary-color,
+    500: $on-primary-color,
+    600: $on-primary-color,
+    700: $on-primary-color,
+    800: $on-primary-color,
+    900: $on-primary-color,
+    A100: $bfr-black,
+    A200: $bfr-black,
+    A400: $on-primary-color,
+    A700: $on-primary-color
+  )
+);
+
+$bfr-secondary-palette: (
+  50: #fdf8ea,
+  100: #fbeecb,
+  200: #f8e3a9,
+  300: #f5d887,
+  400: #f3cf6d,
+  500: $secondary-color,
+  600: #efc14c,
+  700: #edba42,
+  800: #ebb339,
+  900: #e7a629,
+  A100: #fff,
+  A200: #fffaf1,
+  A400: #ffe8be,
+  A700: #ffdfa5,
+  contrast: (
+    50: $on-secondary-color,
+    100: $on-secondary-color,
+    200: $on-secondary-color,
+    300: $on-secondary-color,
+    400: $on-secondary-color,
+    500: $on-secondary-color,
+    600: $on-secondary-color,
+    700: $on-secondary-color,
+    800: $on-secondary-color,
+    900: $on-secondary-color,
+    A100: $on-secondary-color,
+    A200: $on-secondary-color,
+    A400: $on-secondary-color,
+    A700: $on-secondary-color
+  )
+);
+
+$bfr-error-palette: (
+  50: #ffe0e0,
+  100: #ffb3b3,
+  200: #ff8080,
+  300: #fe4d4d,
+  400: #fe2626,
+  500: $error-color,
+  600: #fe0000,
+  700: #fe0000,
+  800: #fe0000,
+  900: #fd0000,
+  A100: #fff,
+  A200: #fff1f1,
+  A400: #ffbebe,
+  A700: #ffa4a4,
+  contrast: (
+    50: $bfr-black,
+    100: $bfr-black,
+    200: $bfr-black,
+    300: $bfr-black,
+    400: $on-error-color,
+    500: $on-error-color,
+    600: $on-error-color,
+    700: $on-error-color,
+    800: $on-error-color,
+    900: $on-error-color,
+    A100: $bfr-black,
+    A200: $bfr-black,
+    A400: $bfr-black,
+    A700: $bfr-black
+  )
+);
 
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
@@ -23,40 +149,3 @@ $mibi-warn: mat-palette($bfr-error-palette);
 
 // Create the theme object (a Sass map containing all of the palettes).
 $mibi-theme: mat-light-theme($mibi-primary, $mibi-accent, $mibi-warn);
-
-// Include theme styles for core and each component used in your app.
-// Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
-@include angular-material-theme($mibi-theme);
-
-// .mat-h1, .mat-headline, .mat-typography h1 {
-//     font-family: 'Open Sans'
-//   }
-
-//   .mat-h2, .mat-title, .mat-typography h2 {
-//     font-family: $mibi-font-family-heading
-//   }
-
-//   .mat-h3, .mat-subheading-2, .mat-typography h3 {
-//     font-family: $mibi-font-family-heading
-//   }
-
-//   .mat-h4, .mat-subheading-1, .mat-typography h4 {
-//     font-family: $mibi-font-family-heading
-//   }
-
-//   .mat-display-4, .mat-typography .mat-display-4 {
-//     font-family: $mibi-font-family-heading
-//   }
-
-//   .mat-display-3, .mat-typography .mat-display-3{
-//     font-family: $mibi-font-family-heading
-//   }
-
-//   .mat-display-2, .mat-typography .mat-display-2 {
-//     font-family: $mibi-font-family-heading
-//   }
-
-//   .mat-display-1, .mat-typography .mat-display-1 {
-//     font-family: $mibi-font-family-heading
-//   }

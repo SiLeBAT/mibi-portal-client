@@ -7,7 +7,7 @@ $nav-bar-color: $primary-color;
 }
 
 .mibi-avatar__button {
-  @include nav-bar-link();
+  @include app-bar-link();
 
   border: solid;
   position: fixed;
@@ -36,5 +36,5 @@ $nav-bar-color: $primary-color;
 }
 
 .mibi-avatar__register-link {
-  @include nav-bar-link();
+  @include app-bar-link();
 }

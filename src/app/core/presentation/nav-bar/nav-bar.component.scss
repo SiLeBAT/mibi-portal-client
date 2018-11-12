@@ -1,10 +1,10 @@
 @import "../../../../assets/sass/abstracts";
 
 .mibi-navbar__link {
-  @include nav-bar-link();
+  @include app-bar-link();
 
   &--active {
-    background-color: $primary-color-light;
+    background-color: mat-color($primary-palette, $app-bar-action-item-background);
     z-index: 8;
   }
 }

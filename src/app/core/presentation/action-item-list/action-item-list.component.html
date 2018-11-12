@@ -1,7 +1,7 @@
 <ng-template #customActionItems let-icon="icon" let-onClick="onExecute" let-label="label">
     <li mat-button class="mibi-action-item">
         <a class="mibi-action-item__link" fxLayout="row" fxLayoutAlign=" none" (click)="onClick($event)">
-            <span class="mibi-action-item__label primary-color-light">{{label}}</span>
+            <span class="mibi-action-item__label ">{{label}}</span>
         </a>
     </li>
 </ng-template>
@@ -9,21 +9,13 @@
 <ng-template #uploadActionItem let-icon="icon" let-onClick="onExecute" let-label="label">
     <li mat-button class="mibi-action-item">
         <mibi-upload-container class="mibi-action-item__link" fxLayout="row" fxLayoutAlign=" none" (onFileUpload)="onClick($event)">
-            <span class="mibi-action-item__label  primary-color-light">{{label}}</span>
+            <mibi-upload-action-item #uploadChild>
+                <span class="mibi-action-item__label  ">{{label}}</span>
+            </mibi-upload-action-item>
         </mibi-upload-container>
 
     </li>
 </ng-template>
-
-<ng-template #downloadTemplateItem let-icon="icon" let-onClick="onExecute" let-label="label">
-    <li class="mibi-action-item">
-        <a mat-button (click)="onClick($event)" class="mibi-action-item__link"
-            fxLayout="row" fxLayoutAlign=" none" target="_blank">
-            <span  class="mibi-action-item__label  primary-color-light">{{label}}</span>
-        </a>
-    </li>
-</ng-template>
-
 
 
 <ul class="mibi-action-item-list" fxFlexFill fxLayout="row" fxLayoutAlign="end none" [ngClass]="{

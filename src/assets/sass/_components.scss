@@ -1,3 +1,5 @@
+@import "./abstracts";
+
 /*
 The name is explicit here. This folder contains all the components used to build your pages like your buttons, forms, swipers, popups, and so on.
 */
@@ -15,19 +17,19 @@ table thead th {
 }
 
 .handsontable td.warn {
-  @include background-opacity($secondary-color-light, 0.3);
+  @include background-opacity(mat-color($secondary-palette, 100), 0.3);
 
   font-weight: bold;
 }
 
 .handsontable td.error {
-  @include background-opacity($error-color, 0.3);
+  @include background-opacity(mat-color($error-palette, 400), 0.3);
 
   font-weight: bold;
 }
 
 .handsontable td.corrected {
-  @include background-opacity($primary-color-light, 0.3);
+  @include background-opacity(mat-color($primary-palette, 100), 0.3);
 
   font-weight: bold;
 }

@@ -1,93 +1,19 @@
+@import "~@angular/material/theming";
+@import "./themes";
+
 /*
 Put all your functions here, along with variables and mixins. In short, all your helpers.
 */
 
 /*
-BfR Colours
+* Palettes & colors
 */
 
-$bfr-blue: rgb(3, 78, 162); // #034ea2
-$bfr-white: rgb(255, 255, 255); // #ffffff
-$bfr-lightgrey: rgb(204, 204, 204); // #cccccc
-$bfr-black: rgb(0, 0, 0); // #000000
-$bfr-lightblue: rgb(140, 190, 218); // #8cbeda
-$bfr-lightcyan: rgb(209, 237, 244); // #d1edf4
-$bfr-ocre: rgb(241, 199, 83); // #f1c753
-$bfr-lightocre: rgb(246, 231, 187); // #f6e7bb
-$bfr-darkgrey: rgb(102, 102, 102); // #666666
-$bfr-mintgreen: rgb(52, 172, 159); // #34ac9f
-$bfr-red: rgb(254, 0, 0); // #fe0000
+$primary-palette: map-get($mibi-theme, primary);
+$secondary-palette: map-get($mibi-theme, accent);
+$error-palette: map-get($mibi-theme, warn);
 
-/*
-Material Design implementations: created using the Material Design Color tool: https://material.io/tools/color/#!/?view.left=0&view.right=1
-*/
-
-$primary-color: $bfr-blue;
-$primary-color-dark: rgb(0, 39, 115); // #002773
-$primary-color-light: rgb(82, 121, 212); // #5279d4
-$secondary-color: $bfr-ocre;
-$secondary-color-dark: rgb(187, 151, 32); // #bb9720
-$secondary-color-light: rgb(255, 250, 132); // #fffa84
-
-$background-color: $bfr-white;
-$surface-color: $bfr-lightgrey;
-$error-color: $bfr-red;
-$error-color-light: rgb(255, 90, 53); // #ff5a35
-$error-color-dark: rgb(193, 0, 0); // #c10000
-
-$on-primary-color: $bfr-white;
-$on-primary-color-light: $bfr-white;
-$on-primary-color-dark: $bfr-white;
-$on-secondary-color: $bfr-black;
-$on-secondary-color-light: $bfr-black;
-$on-secondary-color-dark: $bfr-black;
-
-$on-background-color: $bfr-black;
-$on-surface-color: $bfr-black;
-$on-error-color: $bfr-black;
-$on-error-color-light: $bfr-black;
-$on-error-color-dark: $bfr-white;
-
-/*
-*  If no numbers are provided Angular Material selects sensible defaults $default: 500, $lighter: 100, $darker: 700.
-*/
-$bfr-primary-palette: (
-  100: $primary-color-light,
-  500: $primary-color,
-  700: $primary-color-dark,
-  contrast: (
-    100: $on-primary-color-light,
-    500: $on-primary-color,
-    700: $on-primary-color-dark
-  )
-);
-
-$bfr-secondary-palette: (
-  100: $secondary-color-light,
-  500: $secondary-color,
-  700: $secondary-color-dark,
-  contrast: (
-    100: $on-secondary-color-light,
-    500: $on-secondary-color,
-    700: $on-secondary-color-dark
-  )
-);
-
-$bfr-error-palette: (
-  100: $error-color-light,
-  500: $error-color,
-  700: $error-color-dark,
-  contrast: (
-    100: $on-error-color-light,
-    500: $on-error-color,
-    700: $on-error-color-dark
-  )
-);
-
-/*
-Medium-emphasis text and hint text have opacities of 60%
-Disabled text has an opacity of 38%
-*/
+$app-bar-action-item-background: 300;
 
 /*
 Fonts
@@ -104,8 +30,6 @@ $mibi-font-weight-medium: 500;
 $mibi-font-weight-bold: 600;
 $mibi-font-weight-black: 700;
 
-$mibi-font-family: "Roboto, monospace";
-
 /*
 Mixins
 */
@@ -115,7 +39,7 @@ Mixins
   background: rgba($color, $opacity);
 }
 
-@mixin nav-bar-link() {
+@mixin app-bar-link() {
   text-decoration: none;
   font-size: 1.5rem;
   text-align: center;

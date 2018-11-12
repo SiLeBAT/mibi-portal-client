@@ -1,5 +1,4 @@
 @import "../../../../assets/sass/abstracts";
-@import "~@angular/material/theming";
 
 .mibi-action-item-list {
   width: 100%;
@@ -16,9 +15,17 @@
 }
 
 .mibi-action-item__label {
+  @include app-bar-link();
+
+  padding: 0;
   font-size: 1.1rem;
 }
 
 .mibi-action-item__link {
   cursor: pointer;
+}
+
+.primary-color-light {
+  background-color: mat-color($primary-palette, $app-bar-action-item-background);
+  color: mat-color($primary-palette, darker-contrast);
 }

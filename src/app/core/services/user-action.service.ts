@@ -4,6 +4,7 @@ import { UserActionViewModelConfiguration, UserActionType, ColorType, UserAction
 import { GenericActionItemComponent } from '../presentation/generic-action-item/generic-action-item.component';
 import * as samplesActions from '../../samples/state/samples.actions';
 import * as fromCore from '../state/core.reducer';
+import * as coreActions from '../state/core.actions';
 import { Store } from '@ngrx/store';
 import { ClientError } from '../model/client-error';
 import { Router } from '@angular/router';
@@ -120,16 +121,40 @@ export class UserActionService {
         this.store.dispatch(new samplesActions.ExportExcelFile());
     }
 
-    private close() {
-        this.store.dispatch(new samplesActions.ClearSamples());
-        this.navigate('/upload');
-    }
-
     private import(file: File) {
         this.store.dispatch(new samplesActions.ImportExcelFile(file));
     }
 
     private send() {
         this.store.dispatch(new samplesActions.SendSamplesInitiate());
+    }
+
+    private close() {
+        this.store.dispatch(new coreActions.DisplayDialog({
+            message: `<p>Wenn Sie die Tabelle schließen, gehen Ihre Änderungen verloren. Wollen Sie das?</p>`,
+            title: 'Schließen',
+            mainAction: {
+                type: UserActionType.CUSTOM,
+                label: 'Ok',
+                onExecute: () => {
+                    this.store.dispatch(new samplesActions.ClearSamples());
+                    this.navigate('/upload');
+                },
+                component: GenericActionItemComponent,
+                icon: '',
+                color: ColorType.PRIMARY,
+                focused: true
+            },
+            auxilliaryAction: {
+                type: UserActionType.CUSTOM,
+                label: 'Abbrechen',
+                onExecute: () => {
+                },
+                component: GenericActionItemComponent,
+                icon: '',
+                color: ColorType.PRIMARY
+            }
+        }));
+
     }
 }

@@ -5,7 +5,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { DropdownDirective } from './directive/dropdown.directive';
 import { SingleCenterCardLayoutComponent } from './presentation/single-center-card-layout/single-center-card-layout.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { WallOfTextLayoutComponent } from './presentation/wall-of-text-layout/wall-of-text-layout.component';
@@ -16,6 +15,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { DialogComponent } from './presentation/dialog/dialog.component';
 import { CompileDirective } from './directive/compile.directive';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { UploadActionItemComponent } from './presentation/upload-action-item/upload-action-item.component';
 
 @NgModule({
     imports: [
@@ -35,15 +35,15 @@ import { FlexLayoutModule } from '@angular/flex-layout';
         DialogComponent,
         UploadComponent,
         UploadContainerComponent,
-        DropdownDirective,
-
+        UploadActionItemComponent,
         SingleCenterCardLayoutComponent,
         WallOfTextLayoutComponent
     ],
     exports: [
         CompileDirective,
         DialogComponent,
-        DropdownDirective,
+        UploadActionItemComponent,
+        UploadComponent,
         UploadContainerComponent,
         SingleCenterCardLayoutComponent,
         WallOfTextLayoutComponent

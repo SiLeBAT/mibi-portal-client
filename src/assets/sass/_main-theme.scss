@@ -1,0 +1,67 @@
+/*
+BfR Colours
+*/
+
+$bfr-blue: rgb(3, 78, 162); // #034ea2
+$bfr-white: rgb(255, 255, 255); // #ffffff
+$bfr-lightgrey: rgb(204, 204, 204); // #cccccc
+$bfr-black: rgb(0, 0, 0); // #000000
+$bfr-lightblue: rgb(140, 190, 218); // #8cbeda
+$bfr-lightcyan: rgb(209, 237, 244); // #d1edf4
+$bfr-ocre: rgb(241, 199, 83); // #f1c753
+$bfr-lightocre: rgb(246, 231, 187); // #f6e7bb
+$bfr-darkgrey: rgb(102, 102, 102); // #666666
+$bfr-mintgreen: rgb(52, 172, 159); // #34ac9f
+$bfr-red: rgb(254, 0, 0); // #fe0000
+
+$primary-color: $bfr-blue;
+$secondary-color: $bfr-ocre;
+
+$background-color: $bfr-white;
+$surface-color: $bfr-lightgrey;
+$error-color: $bfr-red;
+
+$on-primary-color: $bfr-white;
+$on-secondary-color: $bfr-black;
+
+$on-background-color: $bfr-black;
+$on-surface-color: $bfr-black;
+$on-error-color: $bfr-black;
+
+/*
+* Theme generated using this tool: http://mcg.mbitson.com
+* The primary color (value 500) used was the bfr-blue.
+*/
+
+$bfr-primary-palette: (
+  50: #e1eaf4,
+  100: #b3cae3,
+  200: #81a7d1,
+  300: #4f83be,
+  400: #2969b0,
+  500: $primary-color,
+  600: #03479a,
+  700: #023d90,
+  800: #023586,
+  900: #012575,
+  A100: #a3b8ff,
+  A200: #7090ff,
+  A400: #3d69ff,
+  A700: #2455ff,
+  contrast: (
+    50: $bfr-black,
+    100: $bfr-black,
+    200: $bfr-black,
+    300: $on-primary-color,
+    400: $on-primary-color,
+    500: $on-primary-color,
+    600: $on-primary-color,
+    700: $on-primary-color,
+    800: $on-primary-color,
+    900: $on-primary-color,
+    A100: $bfr-black,
+    A200: $bfr-black,
+    A400: $on-primary-color,
+    A700: $on-primary-color
+  )
+);

@@ -3,7 +3,7 @@ in here, put all your boilerplate code. By boilerplate, I mean all CSS code youâ
 For example: typography rules, animations, utilities (by utilities, I mean classes like margin-right-large , text-center , â€¦) and so on.
 */
 @import "~@angular/material/theming";
-@import "./abstracts";
+@import "./themes";
 
 /*
 Typography
@@ -51,9 +51,4 @@ $mibi-typography: mat-typography-config(
 .primary-color {
   background-color: $primary-color;
   color: $on-primary-color;
-}
-
-.primary-color-light {
-  background-color: $primary-color-light;
-  color: $on-primary-color-light;
 }
