@@ -3,9 +3,8 @@ import * as _ from 'lodash';
 import {
     AnnotatedSampleData, ColConfig, TableDataOutput
 } from '../../model/sample-management.model';
-import { map, tap, withLatestFrom } from 'rxjs/operators';
+import { map, withLatestFrom } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { GuardedUnloadComponent } from '../../../shared/container/guarded-unload.component';
 import { Store, select } from '@ngrx/store';
 import * as fromSamples from '../../state/samples.reducer';
 import * as samplesActions from '../../state/samples.actions';
@@ -27,10 +26,9 @@ enum AlteredField {
         (valueChanged)="onValueChanged($event)">
     </mibi-data-grid>`
 })
-export class DataGridContainerComponent extends GuardedUnloadComponent implements OnInit {
+export class DataGridContainerComponent implements OnInit {
 
     viewModel$: Observable<IFormViewModel>;
-    private hasData: boolean = true;
 
     columnConfigArray: ColConfig[] = [
         {
@@ -112,18 +110,10 @@ export class DataGridContainerComponent extends GuardedUnloadComponent implement
     ];
 
     constructor(private store: Store<fromSamples.State>) {
-        super();
     }
 
     ngOnInit(): void {
         this.viewModel$ = this.store.pipe(select(fromSamples.getFormData)).pipe(
-            tap(data => {
-                if (data) {
-                    this.hasData = false;
-                } else {
-                    this.hasData = true;
-                }
-            }),
             withLatestFrom(this.store),
             map(
                 (dataStateCombine: [AnnotatedSampleData[], fromSamples.State]) => {
@@ -140,10 +130,6 @@ export class DataGridContainerComponent extends GuardedUnloadComponent implement
 
     onValueChanged(tableData: TableDataOutput) {
         this.store.dispatch(new samplesActions.ChangeFieldValue(tableData.changed));
-    }
-
-    unloadGuard() {
-        return this.hasData;
     }
 
     private createViewModel(dataStateCombine: [AnnotatedSampleData[], fromSamples.State]) {

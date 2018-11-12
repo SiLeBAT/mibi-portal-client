@@ -13,7 +13,8 @@
     "test:watch": "jest --watch",
     "test:ci": "jest --runInBand",
     "test:coverage": "jest --coverage",
-    "lint": "ng lint && npm run lint:styles",
+    "lint": "npm run lint:code && npm run lint:styles",
+    "lint:code": "tslint --project tsconfig.json --fix -c tslint.json 'src/**/*.ts'",
     "lint:styles": "stylelint \"src/**/*.scss\"",
     "e2e": "ng e2e",
     "clean": "rimraf public/*"
@@ -25,11 +26,11 @@
   },
   "lint-staged": {
     "*.ts": [
-      "ng lint",
+      "npm run lint:code",
       "git add"
     ],
     "*.scss": [
-      "stylelint \"src/**/*.scss\"",
+      "npm run lint:styles",
       "git add"
     ]
   },
