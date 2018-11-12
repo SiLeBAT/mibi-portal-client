@@ -45,6 +45,10 @@ Mixins
   text-align: center;
   padding: $mibi-singleSpace;
 
+  &:link {
+    color: $on-primary-color;
+  }
+
   &:visited {
     color: $on-primary-color;
   }
