@@ -29,3 +29,9 @@
   background-color: mat-color($primary-palette, $app-bar-action-item-background);
   color: mat-color($primary-palette, darker-contrast);
 }
+
+.mibi-action-item__icon {
+  line-height: 1.2;
+  font-size: 1rem;
+  text-align: right;
+}

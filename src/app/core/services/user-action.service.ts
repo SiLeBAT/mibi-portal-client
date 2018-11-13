@@ -59,7 +59,7 @@ export class UserActionService {
         type: UserActionType.CLOSE,
         onExecute: this.close.bind(this),
         component: GenericActionItemComponent,
-        icon: '',
+        icon: 'clear',
         color: ColorType.ACCENT
     },
     {
@@ -69,7 +69,7 @@ export class UserActionService {
             window.open('https://www.bfr.bund.de/cm/343/Einsendebogen-v14-1.xlsx', '_blank');
         },
         component: GenericActionItemComponent,
-        icon: '',
+        icon: 'assignment_returned',
         color: ColorType.ACCENT
     }];
 

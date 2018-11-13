@@ -1,5 +1,5 @@
 <div (click)="onClick($event)">
-  <span ngfSelect accept=".xlsx" [maxSize]="maxFileSize" [(lastInvalids)]="lastInvalids" (fileChange)="onFileChange($event)"
+  <span ngfSelect  fxLayout="row" fxLayoutAlign=" none" accept=".xlsx" [maxSize]="maxFileSize" [(lastInvalids)]="lastInvalids" (fileChange)="onFileChange($event)"
     #selector>
     <ng-content></ng-content>
   </span>

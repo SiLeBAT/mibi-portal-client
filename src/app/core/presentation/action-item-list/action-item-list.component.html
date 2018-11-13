@@ -1,6 +1,7 @@
 <ng-template #customActionItems let-icon="icon" let-onClick="onExecute" let-label="label">
     <li mat-button class="mibi-action-item">
         <a class="mibi-action-item__link" fxLayout="row" fxLayoutAlign=" none" (click)="onClick($event)">
+            <mat-icon class="mibi-action-item__icon">{{icon}}</mat-icon>
             <span class="mibi-action-item__label ">{{label}}</span>
         </a>
     </li>
@@ -9,7 +10,8 @@
 <ng-template #uploadActionItem let-icon="icon" let-onClick="onExecute" let-label="label">
     <li mat-button class="mibi-action-item">
         <mibi-upload-container class="mibi-action-item__link" fxLayout="row" fxLayoutAlign=" none" (onFileUpload)="onClick($event)">
-            <mibi-upload-action-item #uploadChild>
+            <mibi-upload-action-item #uploadChild fxLayout="row" fxLayoutAlign="center center">
+                <mat-icon class="mibi-action-item__icon mibi-action-item__upload-icon">{{icon}}</mat-icon>
                 <span class="mibi-action-item__label  ">{{label}}</span>
             </mibi-upload-action-item>
         </mibi-upload-container>
