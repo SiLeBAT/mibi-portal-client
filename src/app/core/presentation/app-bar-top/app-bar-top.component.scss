@@ -21,6 +21,8 @@
   font-size: 2rem;
   text-align: center;
   margin-top: $mibi-singleSpace;
+  min-width: 180px;
+  min-width: max-content;
 }
 
 .mibi-app-bar-top__title:visited {
@@ -30,4 +32,9 @@
 .mibi-app-bar-top__title:hover,
 .mibi-app-bar-top__title:active {
   color: $surface-color;
+}
+
+.mibi-app-bar-top__avatar {
+  min-width: 150px;
+  min-width: max-content;
 }

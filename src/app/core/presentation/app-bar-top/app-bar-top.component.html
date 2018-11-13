@@ -1,12 +1,12 @@
 <div class="mibi-app-bar-top" fxLayout="column" fxLayoutAlign=" none" [ngClass]="{
     'mibi-app-bar-top--small': !hasConfig
 }">
-    <div class="mibi-app-bar-top__main primary-color" fxLayout="row" fxLayoutAlign="space-between stretch" fxFlex="auto">
-        <a class="mibi-app-bar-top__title" fxFlex="15" [routerLink]="['/']">
+    <div class="mibi-app-bar-top__main primary-color" fxLayout="row" fxLayoutAlign="space-between stretch" fxFlex="auto" fxLayoutGap="32px">
+        <a class="mibi-app-bar-top__title" fxFlex="20" [routerLink]="['/']">
             {{ appName }}
         </a>
-        <mibi-nav-bar-container fxFlex="65" class="mibi-app-bar-top__navigation"></mibi-nav-bar-container>
-        <mibi-avatar-container fxFlex="20" class="mibi-app-bar-top__avatar"></mibi-avatar-container>
+        <mibi-nav-bar-container fxFlex class="mibi-app-bar-top__navigation"></mibi-nav-bar-container>
+        <mibi-avatar-container fxFlex="5" class="mibi-app-bar-top__avatar"></mibi-avatar-container>
     </div>
     <mibi-action-item-list *ngIf="hasConfig" fxLayout="row" fxFlex="40" class="mibi-app-bar-top__action-items" fxLayoutAlign="start stretch" [configuration$]="config$" fxFlexFill>
         </mibi-action-item-list>

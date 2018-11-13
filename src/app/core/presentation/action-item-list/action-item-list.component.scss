@@ -11,7 +11,7 @@
 }
 
 .mibi-action-item {
-  margin-right: $mibi-quadrupleSpace;
+  margin-right: $mibi-singleSpace;
 }
 
 .mibi-action-item__label {
@@ -34,4 +34,8 @@
   line-height: 1.2;
   font-size: 1rem;
   text-align: right;
+}
+
+.mibi-action-item__upload-icon {
+  margin-right: 2px;
 }

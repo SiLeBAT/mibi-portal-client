@@ -35,6 +35,13 @@ $nav-bar-color: $primary-color;
   margin-left: $mibi-singleSpace;
 }
 
+.mibi-avatar__register {
+  height: 100%;
+}
+
 .mibi-avatar__register-link {
   @include app-bar-link();
+
+  padding-left: 0;
+  margin-left: $alex-magic-number;
 }

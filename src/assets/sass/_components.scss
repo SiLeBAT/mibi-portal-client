@@ -46,6 +46,9 @@ table thead th {
   display: block;
 }
 
+.ht_master .wtHolder {
+  overflow: hidden;
+}
 // Tooltipster
 $tooltip-tip-color: $surface-color;
 $tooltip-error-color: $error-color;
