@@ -35,7 +35,7 @@ export class UserActionService {
         type: UserActionType.EXPORT,
         onExecute: this.export.bind(this),
         component: GenericActionItemComponent,
-        icon: 'save',
+        icon: 'file_copy',
         color: ColorType.ACCENT
     },
     {
