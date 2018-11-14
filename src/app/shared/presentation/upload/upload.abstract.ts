@@ -30,7 +30,7 @@ export class UploadAbstractComponent implements OnInit, OnDestroy, AfterContentI
                 if (trigger) {
                     this.canUpload = trigger;
                     if (trigger) {
-                        this.selector.nativeElement.children[1].children[0].click();
+                        this.selector.nativeElement.children[2].children[0].click();
                     }
                 }
             })
