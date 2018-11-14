@@ -15,13 +15,14 @@
 }
 
 .mibi-action-item__label {
-  @include app-bar-link();
-
+  text-align: center;
   padding: 0;
   font-size: 1.1rem;
 }
 
 .mibi-action-item__link {
+  @include app-bar-link();
+
   cursor: pointer;
 }
 

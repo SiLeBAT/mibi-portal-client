@@ -39,11 +39,14 @@ Mixins
   background: rgba($color, $opacity);
 }
 
-@mixin app-bar-link() {
-  text-decoration: none;
+@mixin nav-bar-link() {
   font-size: 1.5rem;
   text-align: center;
   padding: $mibi-singleSpace;
+}
+
+@mixin app-bar-link() {
+  text-decoration: none;
 
   &:link {
     color: $on-primary-color;

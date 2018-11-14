@@ -8,6 +8,7 @@ $nav-bar-color: $primary-color;
 
 .mibi-avatar__button {
   @include app-bar-link();
+  @include nav-bar-link();
 
   border: solid;
   position: fixed;
@@ -41,6 +42,7 @@ $nav-bar-color: $primary-color;
 
 .mibi-avatar__register-link {
   @include app-bar-link();
+  @include nav-bar-link();
 
   padding-left: 0;
   margin-left: $alex-magic-number;

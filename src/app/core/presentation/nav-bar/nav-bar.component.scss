@@ -2,6 +2,7 @@
 
 .mibi-navbar__link {
   @include app-bar-link();
+  @include nav-bar-link();
 
   &--active {
     background-color: mat-color($primary-palette, $app-bar-action-item-background);
