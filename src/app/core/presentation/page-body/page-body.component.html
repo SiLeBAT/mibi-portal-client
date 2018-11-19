@@ -2,7 +2,7 @@
   <div [@slideInOut]="animationState" (@slideInOut.done)="animationDone($event)">
     <mibi-banner-container></mibi-banner-container>
   </div>
-  <div class="mibi-view-outlet-content" [@fadeAnimation]="o.isActivated ? o.activatedRoute : ''" >
+  <div class="mibi-view-outlet-content" [@fadeAnimation]="o.isActivated ? o.activatedRoute : ''" fxFlexFill fxLayout="column" fxLayoutAlign=" none">
     <router-outlet #o="outlet"></router-outlet>
   </div>
 </div>

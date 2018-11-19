@@ -21,6 +21,7 @@ enum AlteredField {
     selector: 'mibi-data-grid-container',
     template: `
     <mibi-data-grid
+    fxFlexFill fxLayout="column" fxLayoutAlign="center center"
         [colConfig] = "columnConfigArray"
         [viewModel] = "viewModel$ | async"
         (valueChanged)="onValueChanged($event)">

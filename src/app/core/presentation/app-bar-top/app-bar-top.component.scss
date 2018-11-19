@@ -12,13 +12,13 @@
 }
 
 .mibi-app-bar-top__main {
-  padding-top: 8px;
+  padding-top: $mibi-halfSpace;
 }
 
 .mibi-app-bar-top__title {
   color: $on-primary-color;
   text-decoration: none;
-  font-size: 2rem;
+  font-size: 1.1rem;
   text-align: center;
   margin-top: $mibi-singleSpace;
   min-width: 180px;
