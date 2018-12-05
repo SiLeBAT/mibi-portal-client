@@ -47,7 +47,7 @@ export class UserActionService {
         color: ColorType.ACCENT
     },
     {
-        label: 'Verwerfen',
+        label: 'Schließen',
         type: UserActionType.DISMISS_BANNER,
         onExecute: () => null,
         component: GenericActionItemComponent,

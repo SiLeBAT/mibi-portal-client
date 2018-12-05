@@ -142,11 +142,11 @@
   "defaultProject": "mibi-portal-client",
   "schematics": {
     "@schematics/angular:component": {
-      "prefix": "app",
+      "prefix": "mibi",
       "styleext": "scss"
     },
     "@schematics/angular:directive": {
-      "prefix": "app"
+      "prefix": "mibi"
     }
   }
 }

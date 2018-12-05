@@ -7,7 +7,6 @@ import * as coreActions from '../../core/state/core.actions';
 import * as fromCore from '../../core/state/core.reducer';
 import { Store } from '@ngrx/store';
 
-// TODO: This should be handled in Effects & with different actions
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
 
