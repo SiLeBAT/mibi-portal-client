@@ -1,0 +1,22 @@
+@import "../../../../assets/sass/abstracts";
+
+.dateschutzerklaerung-item-header {
+  font-weight: bold;
+  margin-top: 5%;
+}
+
+.dateschutzerklaerung-item-subheader {
+  font-weight: bold;
+}
+
+.dateschutzerklaerung {
+  margin-top: $mibi-quadrupleSpace;
+}
+
+.dateschutzerklaerung-item {
+  width: 75%;
+}
+
+.dateschutzerklaerung-footer {
+  border-top: 1px solid $primary-color;
+}

@@ -1,0 +1,26 @@
+@import "../../../../assets/sass/abstracts";
+
+$barHeight: $mibi-nonupleSpace;
+$topBarHeight: $barHeight;
+$bottomBarHeight: $mibi-septupleSpace;
+
+.mibi-page-header {
+  position: fixed;
+  width: 100vw;
+  z-index: 999;
+}
+
+.mibi-page-footer {
+  position: fixed;
+  width: 100%;
+  height: $bottomBarHeight;
+  bottom: 0;
+  z-index: 999;
+}
+
+.mibi-page-body {
+  overflow: auto;
+  margin-top: $topBarHeight;
+  margin-bottom: $bottomBarHeight;
+  width: 100%;
+}

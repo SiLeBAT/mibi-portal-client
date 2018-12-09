@@ -1,0 +1,30 @@
+<br>
+<p>Bitte geben Sie ein neues Passwort ein</p>
+<br>
+<form [formGroup]="resetForm" (ngSubmit)="onReset()">
+  <div class="reset-form__form-fields"  fxLayout="column" fxLayoutAlign=" none">
+
+    <mat-form-field>
+      <input matInput placeholder="Neues Passwort (mind. 8 Zeichen)" type="password" name="password1" formControlName="password1"
+        required>
+    </mat-form-field>
+    <em class="mat-small" [hidden]="!validatePwStrength()">Zu schwaches oder zu kurzes Passwort.</em>
+
+    <div class="pw-strengt">
+      <password-strength-meter [password]="resetForm.value.password1" (strengthChange)="doStrengthChange($event)">
+      </password-strength-meter>
+    </div>
+    <mat-form-field>
+      <input matInput placeholder="Password bestätigen" type="password" name="password2" formControlName="password2"
+        required>
+    </mat-form-field>
+    <em class="mat-small" [hidden]="validateField('password2')  || !resetForm.controls.password2.errors?.validatePasswordConfirm">Passwörter
+      müssen übereinstimmen.</em>
+  </div>
+  <div class="reset-form__buttons"  fxLayout="row" fxLayoutAlign="space-around none">
+    <button mat-raised-button color="primary" type="submit" [disabled]="!resetForm.valid">Passwort zurücksetzen</button>
+    <a mat-button color="primary" [routerLink]="['/users/login']" >
+      Zurück
+    </a>
+  </div>
+</form>

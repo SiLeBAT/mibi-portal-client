@@ -1,0 +1,35 @@
+<nav class="mibi-avatar  primary-color" *ngIf="(currentUser$ | async) else anonymous ; let user" fxLayout="row" fxLayoutAlign="end start" fxFlexFill>
+  <button class="mibi-avatar__button primary-color" mat-icon-button [matMenuTriggerFor]="menu" fxLayout="row" fxLayoutAlign="center start">
+    <mat-icon class="mibi-avatar__button-icon">person</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <div class="mibi-user-info">
+      <span class="mibi-user-info__main" fxLayout="row" fxLayoutAlign=" none" >
+        <mat-icon class="mibi-user-info__icon">face</mat-icon>
+        <span class="mat-body-strong mibi-user-info__name"> {{ user.firstName }} {{ user.lastName }}</span>
+      </span>
+      <div class="mibi-user-info__auxilliary mat-small">
+        <div class="mibi-user-info__email">{{ user.email }}</div>
+        <div class="mibi-user-info__institute">{{ user.institution?.name1 }} {{ user.institution?.name2 }}</div>
+      </div>
+      <mat-divider></mat-divider>
+    </div>
+    <a mat-menu-item (click)="goToProfile()">
+      <mat-icon>person</mat-icon>
+      <span>Profil</span>
+    </a>
+    <a mat-menu-item (click)="logout()">
+      <mat-icon>exit_to_app</mat-icon>
+      <span>Abmelden</span>
+    </a>
+  </mat-menu>
+</nav>
+
+<ng-template #anonymous>
+    <nav class="mibi-avatar__register" fxLayout="row" fxLayoutAlign="end start"  >
+        <a class="mibi-avatar__register-link primary-color " [routerLink]="['/users/login']">
+          <span class="mibi-avatar__register-text">Anmelden</span>
+        </a>
+    
+    </nav>
+  </ng-template>

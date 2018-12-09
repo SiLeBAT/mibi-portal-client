@@ -7,9 +7,13 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "strictNullChecks": true,
+    "noImplicitAny": true,
     "target": "es5",
     "typeRoots": [
-      "node_modules/@types"
+      "./node_modules/@types",
+      "./typings"
     ],
     "lib": [
       "es2016",

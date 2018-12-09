@@ -1,0 +1,16 @@
+<br>
+<p>Bitte geben Sie Ihre Email Adresse an, die Sie für die Registrierung verwendet haben</p>
+<br>
+<form [formGroup]="recoveryForm" (ngSubmit)="onRecovery()">
+  <div class="recovery-form__form-fields" fxLayout="column" fxLayoutAlign=" none">
+    <mat-form-field>
+      <input matInput placeholder="Email" name="email" formControlName="email" required>
+    </mat-form-field>
+  </div>
+  <div class="recovery-form__buttons" fxLayout="row" fxLayoutAlign="space-around none" >
+    <button mat-raised-button color="primary" type="submit" [disabled]="!recoveryForm.valid">Passwort zurücksetzen</button>
+    <a [routerLink]="['/users/login']" mat-button color="primary">
+      Zurück
+    </a>
+  </div>
+</form>

@@ -1,0 +1,4 @@
+<div class="faq-group">
+    <h4  *ngIf="faqGroup.title" class="faq-group__title" [id]="faqGroup.id">{{faqGroup.title.toUpperCase()}}</h4>
+    <mibi-faq class="faq-group__faq-entry" *ngFor="let faq of faqGroup.faqs" [faqs]="faq"></mibi-faq>
+</div>

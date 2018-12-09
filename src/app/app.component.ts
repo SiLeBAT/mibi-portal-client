@@ -1,65 +1,37 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
-import { Router } from "@angular/router";
-
-import { AuthService } from './auth/services/auth.service';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { environment } from '../environments/environment';
-import { UploadService } from './services/upload.service';
-import { ValidateService } from './services/validate.service';
+import { GuardedUnloadComponent } from './shared/container/guarded-unload.component';
+import { Store, select } from '@ngrx/store';
+import { takeWhile, tap } from 'rxjs/operators';
+import * as fromSamples from './samples/state/samples.reducer';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+    selector: 'mibi-root',
+    templateUrl: './app.component.html'
 })
-export class AppComponent implements OnInit {
-  private isActive = false;
-  currentUser;
-  appName: string = environment.appName;
-  supportContact: string = environment.supportContact;
+export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDestroy {
 
-  constructor(public authService: AuthService,
-    public uploadService: UploadService,
-    public validateService: ValidateService,
-    private router: Router) {}
-
-  ngOnInit() {}
-
-  getCurrentUserEmail() {
-    if (this.authService.loggedIn()) {
-      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      return currentUser.email;
-    }
-  }
-
-  getUserInstitution() {
-    if (this.authService.loggedIn()) {
-      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      let name = currentUser.institution.name1;
-      if (currentUser.institution.name2) {
-        name = name + ', ' + currentUser.institution.name2;
-      }
-      return name;
-    }
-  }
-
-  onLogin() {
-    this.router.navigate(["/users/login"]);
-  }
-
-
-  getDisplayMode() {
-    let displayMode;
-    if (this.isActive) {
-      displayMode = 'block';
-    } else {
-      displayMode = 'none';
+    supportContact: string = environment.supportContact;
+    private componentActive = true;
+    private canUnload: boolean = true;
+    constructor(private store: Store<fromSamples.State>) {
+        super();
     }
 
-    return displayMode;
-  }
+    ngOnInit(): void {
+        this.store.pipe(select(fromSamples.hasEntries),
+        takeWhile(() => this.componentActive),
+        tap(
+            hasEntries => this.canUnload = !hasEntries
+        )
+        ).subscribe();
+    }
 
-  onLogout() {
-    this.authService.logout();
-  }
+    ngOnDestroy() {
+        this.componentActive = false;
+    }
 
+    unloadGuard(): boolean {
+        return this.canUnload;
+    }
 }

@@ -1,0 +1,24 @@
+@import "../../../../assets/sass/abstracts";
+
+.mibi-toc__row {
+  background: $primary-color;
+  width: 25%;
+  margin: $mibi-halfSpace;
+  padding: $mibi-halfSpace/2;
+  text-align: center;
+}
+
+.mibi-toc {
+  padding-bottom: $mibi-quadrupleSpace;
+}
+
+.mibi-toc__link {
+  color: $on-primary-color;
+  text-decoration: none;
+}
+
+.mibi-toc__link:hover,
+.mibi-toc__link:focus,
+.mibi-toc__link:active {
+  color: $surface-color;
+}

@@ -1,0 +1,4 @@
+ <div class="uploader" ngfDrop [selectable]="1" [maxSize]="maxFileSize" accept=".xlsx"
+  [fileDropDisabled]="dropDisabled" (fileChange)="onFileChange($event)" [(lastInvalids)]="lastInvalids">
+<ng-content></ng-content>
+</div> 

@@ -18,17 +18,14 @@
             "polyfills": "src/polyfills.ts",
             "assets": [
               "src/assets",
-              "src/favicon.ico"
+              "src/favicon.png"
             ],
             "styles": [
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/tooltipster/dist/css/tooltipster.bundle.min.css",
-              "src/mytooltipster.css",
-              "src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.min.js",
               "node_modules/tooltipster/dist/js/tooltipster.bundle.min.js"
             ]
           },
@@ -89,18 +86,16 @@
             "tsConfig": "src/tsconfig.spec.json",
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.min.js",
               "node_modules/tooltipster/dist/js/tooltipster.bundle.min.js"
             ],
             "styles": [
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+    
               "node_modules/tooltipster/dist/css/tooltipster.bundle.min.css",
-              "src/mytooltipster.css",
               "src/styles.css"
             ],
             "assets": [
               "src/assets",
-              "src/favicon.ico"
+              "src/favicon.png"
             ]
           }
         },
@@ -147,11 +142,11 @@
   "defaultProject": "mibi-portal-client",
   "schematics": {
     "@schematics/angular:component": {
-      "prefix": "app",
-      "styleext": "css"
+      "prefix": "mibi",
+      "styleext": "scss"
     },
     "@schematics/angular:directive": {
-      "prefix": "app"
+      "prefix": "mibi"
     }
   }
 }

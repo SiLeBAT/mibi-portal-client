@@ -1,0 +1,282 @@
+@import "./abstracts";
+
+/*
+The name is explicit here. This folder contains all the components used to build your pages like your buttons, forms, swipers, popups, and so on.
+*/
+.alphabetic-list {
+  list-style-type: lower-alpha;
+}
+
+// Handsontable
+table thead th {
+  word-wrap: break-all;
+}
+
+.handsontable th {
+  white-space: normal;
+}
+
+.handsontable td.warn {
+  @include background-opacity(mat-color($secondary-palette, 100), 0.3);
+
+  font-weight: bold;
+}
+
+.handsontable td.error {
+  @include background-opacity(mat-color($error-palette, 400), 0.3);
+
+  font-weight: bold;
+}
+
+.handsontable td.corrected {
+  @include background-opacity(mat-color($primary-palette, 100), 0.3);
+
+  font-weight: bold;
+}
+
+.handsontable td.changed {
+  box-shadow: inset 0 0 0 2px $primary-color;
+}
+
+.htAutocompleteArrow {
+  display: none;
+}
+
+.showArrow .htAutocompleteArrow {
+  display: block;
+}
+
+.ht_master .wtHolder {
+  overflow: auto;
+}
+// Tooltipster
+$tooltip-tip-color: $surface-color;
+$tooltip-error-color: $error-color;
+$tooltip-warning-color: $secondary-color;
+$tooltip-info-color: $primary-color;
+
+ul {
+  padding-left: 0;
+}
+
+ul li {
+  list-style-position: inside;
+}
+
+.tooltipster-box {
+  border-radius: 5px;
+  box-shadow: 0 0 14px rgba(0, 0, 0, 0.3);
+  border: 1px solid $on-background-color;
+}
+
+.tooltipster-content {
+  font-size: 12px;
+  font-style: italic;
+  padding: 2px 5px 3px 3px;
+  margin-top: 5px;
+}
+
+.tooltipster-sidetip {
+  .tooltipster-arrow-background {
+    border: 9px solid transparent;
+  }
+
+  .tooltipster-arrow-border {
+    border: 9px solid transparent;
+  }
+
+  &.tooltipster-bottom {
+    .tooltipster-arrow-uncropped {
+      top: -9px;
+    }
+
+    .tooltipster-arrow-border {
+      border-bottom-color: $on-background-color;
+    }
+
+    .tooltipster-arrow-background {
+      top: 1px;
+    }
+  }
+
+  &.tooltipster-right {
+    .tooltipster-arrow-uncropped {
+      left: -9px;
+    }
+
+    .tooltipster-arrow-border {
+      border-right-color: $on-background-color;
+    }
+
+    .tooltipster-arrow-background {
+      top: 1px;
+    }
+  }
+
+  &.tooltipster-left {
+    .tooltipster-arrow-border {
+      border-left-color: $on-background-color;
+    }
+
+    .tooltipster-arrow-background {
+      left: -1px;
+    }
+  }
+
+  &.tooltipster-top {
+    .tooltipster-arrow-border {
+      border-top-color: $on-background-color;
+    }
+
+    .tooltipster-arrow-background {
+      top: -1px;
+    }
+  }
+
+  &.tooltipster-tip {
+    &.tooltipster-bottom .tooltipster-arrow-background {
+      border-bottom-color: $tooltip-tip-color;
+    }
+
+    &.tooltipster-left .tooltipster-arrow-background {
+      border-left-color: $tooltip-tip-color;
+    }
+
+    &.tooltipster-top .tooltipster-arrow-background {
+      border-top-color: $tooltip-tip-color;
+    }
+
+    &.tooltipster-right .tooltipster-arrow-background {
+      border-right-color: $tooltip-tip-color;
+    }
+
+    .tooltipster-box {
+      background: $tooltip-tip-color;
+    }
+
+    .tooltipster-content {
+      color: $on-surface-color;
+    }
+  }
+
+  &.tooltipster-info {
+    &.tooltipster-bottom .tooltipster-arrow-background {
+      border-bottom-color: $tooltip-info-color;
+    }
+
+    &.tooltipster-left .tooltipster-arrow-background {
+      border-left-color: $tooltip-info-color;
+    }
+
+    &.tooltipster-top .tooltipster-arrow-background {
+      border-top-color: $tooltip-info-color;
+    }
+
+    &.tooltipster-right .tooltipster-arrow-background {
+      border-right-color: $tooltip-info-color;
+    }
+
+    .tooltipster-box {
+      background: $tooltip-info-color;
+    }
+
+    .tooltipster-content {
+      color: $on-primary-color;
+    }
+  }
+
+  &.tooltipster-warning {
+    &.tooltipster-bottom .tooltipster-arrow-background {
+      border-bottom-color: $tooltip-warning-color;
+    }
+
+    &.tooltipster-left .tooltipster-arrow-background {
+      border-left-color: $tooltip-warning-color;
+    }
+
+    &.tooltipster-top .tooltipster-arrow-background {
+      border-top-color: $tooltip-warning-color;
+    }
+
+    &.tooltipster-right .tooltipster-arrow-background {
+      border-right-color: $tooltip-warning-color;
+    }
+
+    .tooltipster-box {
+      background: $tooltip-warning-color;
+    }
+
+    .tooltipster-content {
+      color: $on-secondary-color;
+    }
+  }
+
+  &.tooltipster-error {
+    &.tooltipster-bottom .tooltipster-arrow-background {
+      border-bottom-color: $tooltip-error-color;
+    }
+
+    &.tooltipster-left .tooltipster-arrow-background {
+      border-left-color: $tooltip-error-color;
+    }
+
+    &.tooltipster-top .tooltipster-arrow-background {
+      border-top-color: $tooltip-error-color;
+    }
+
+    &.tooltipster-right .tooltipster-arrow-background {
+      border-right-color: $tooltip-error-color;
+    }
+
+    .tooltipster-box {
+      background: $tooltip-error-color;
+    }
+
+    .tooltipster-content {
+      color: $on-error-color;
+    }
+  }
+
+  .tooltipster-arrow {
+    height: 10px;
+    margin-left: -9px;
+    width: 18px;
+  }
+}
+
+.tooltipster-sidetip.tooltipster-error.tooltipster-left .tooltipster-arrow,
+.tooltipster-sidetip.tooltipster-error.tooltipster-right .tooltipster-arrow,
+.tooltipster-sidetip.tooltipster-warning.tooltipster-left .tooltipster-arrow,
+.tooltipster-sidetip.tooltipster-warning.tooltipster-right .tooltipster-arrow {
+  height: 14px;
+  margin-left: $mibi-halfSpace;
+  margin-top: -$mibi-doubleSpace;
+  width: 5px;
+}
+
+.tooltipster-sidetip.tooltipster-info.tooltipster-left .tooltipster-arrow,
+.tooltipster-sidetip.tooltipster-info.tooltipster-right .tooltipster-arrow {
+  height: 17px;
+  margin-left: $mibi-halfSpace;
+  margin-top: -$mibi-doubleSpace;
+  width: 10px;
+}
+
+.tooltipster-sidetip.tooltipster-tip.tooltipster-left .tooltipster-arrow,
+.tooltipster-sidetip.tooltipster-tip.tooltipster-right .tooltipster-arrow {
+  height: 18px;
+  margin-left: 2px;
+  margin-top: -$mibi-doubleSpace;
+  width: $mibi-singleSpace;
+}
+
+// Buttons
+button {
+  text-transform: uppercase;
+}
+
+// Router outlet
+router-outlet ~ * {
+  position: absolute;
+  width: 100%;
+}

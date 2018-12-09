@@ -1,0 +1,26 @@
+<footer class="mibi-main-footer" fxLayout="row" fxLayoutAlign=" center" fxFlexFill>
+  <mibi-last-change-display-container fxFlex="10" class="mibi-main-footer__last-change"></mibi-last-change-display-container>
+  <nav class="mibi-main-footer__nav"  fxLayout="row" fxLayoutAlign="center center" fxFlex="90" fyFlexFill>
+    <!-- <hr> -->
+    <ul class="mibi-main-footer__links" fxLayout="row" fxLayoutAlign="space-evenly center" fxFlexFill>
+      <li class="mibi-main-footer__link">
+        <a mat-button color="primary" href="https://www.bfr.bund.de" target="_blank">
+          BfR - Bundesinstitut für Risikobewertung</a>
+      </li>
+      <li class="mibi-main-footer__link">
+        <a mat-button color="primary" href="https://foodrisklabs.bfr.bund.de" target="_blank">FoodRisk - Labs</a>
+      </li>
+      <li class="mibi-main-footer__link">
+        <a mat-button color="primary" [routerLink]="['/content/faq']">FAQ</a>
+      </li>
+      <li class="mibi-main-footer__link">
+        <a mat-button color="primary" [routerLink]="['/content/datenschutzerklaerung']">Datenschutzerklärung</a>
+      </li>
+      <li class="mibi-main-footer__link">
+        <a mat-button color="primary" href="mailto:{{ supportContact }}" target="_top">
+          Problem melden
+        </a>
+      </li>
+    </ul>
+  </nav>
+</footer>

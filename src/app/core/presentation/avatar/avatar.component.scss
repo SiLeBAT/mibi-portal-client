@@ -1,0 +1,49 @@
+@import "../../../../assets/sass/abstracts";
+
+$nav-bar-color: $primary-color;
+
+.mibi-avatar {
+  padding-right: 8px;
+}
+
+.mibi-avatar__button {
+  @include app-bar-link();
+  @include nav-bar-link();
+
+  border: solid;
+  position: fixed;
+  top: $mibi-halfSpace/2;
+  right: $mibi-sextupleSpace;
+
+  & .mat-icon {
+    margin-bottom: $mibi-tripleSpace;
+  }
+}
+
+.mibi-user-info__icon {
+  color: $secondary-color;
+}
+
+.mibi-user-info {
+  padding: $mibi-singleSpace;
+}
+
+.mibi-user-info__auxilliary {
+  margin: $mibi-singleSpace $mibi-quadrupleSpace;
+}
+
+.mibi-user-info__name {
+  margin-left: $mibi-singleSpace;
+}
+
+.mibi-avatar__register {
+  height: 100%;
+}
+
+.mibi-avatar__register-link {
+  @include app-bar-link();
+  @include nav-bar-link();
+
+  padding-left: 0;
+  margin-left: $alex-magic-number;
+}

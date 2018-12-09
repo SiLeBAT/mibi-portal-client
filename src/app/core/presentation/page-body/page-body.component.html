@@ -1,0 +1,14 @@
+<div class="mibi-view-outlet" *ngIf="!(isBusy$ | async) else loading" fxFlexFill>
+  <div [@slideInOut]="animationState" (@slideInOut.done)="animationDone($event)">
+    <mibi-banner-container></mibi-banner-container>
+  </div>
+  <div class="mibi-view-outlet-content" [@fadeAnimation]="o.isActivated ? o.activatedRoute : ''" fxFlexFill fxLayout="column" fxLayoutAlign=" none">
+    <router-outlet #o="outlet"></router-outlet>
+  </div>
+</div>
+<ng-template #loading>
+  <div class="mibi-spinner-container" fxLayout="row" fxLayoutAlign="center end">
+    <mat-spinner class="mibi-spinner" [color]="primary">
+    </mat-spinner>
+  </div>
+</ng-template>

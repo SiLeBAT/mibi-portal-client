@@ -1,0 +1,79 @@
+@import "~@angular/material/theming";
+@import "./themes";
+
+/*
+Put all your functions here, along with variables and mixins. In short, all your helpers.
+*/
+
+/*
+* Palettes & colors
+*/
+
+$primary-palette: map-get($mibi-theme, primary);
+$secondary-palette: map-get($mibi-theme, accent);
+$error-palette: map-get($mibi-theme, warn);
+
+$app-bar-action-item-background: 300;
+
+/*
+Fonts
+*/
+
+$app-title-size-text: 16px;
+$mibi-font-size-text: 16px;
+$mibi-font-size-heading: 16px;
+// Thin, Light, Regular, Medium, Bold, and Black.
+$mibi-font-weight-thin: 200;
+$mibi-font-weight-light: 300;
+$mibi-font-weight-regular: 400;
+$mibi-font-weight-medium: 500;
+$mibi-font-weight-bold: 600;
+$mibi-font-weight-black: 700;
+
+/*
+Mixins
+*/
+
+@mixin background-opacity($color, $opacity: 0.3) {
+  background: $color; /* The Fallback */
+  background: rgba($color, $opacity);
+}
+
+@mixin nav-bar-link() {
+  font-size: 1rem;
+  text-align: center;
+  padding: $mibi-singleSpace;
+}
+
+@mixin app-bar-link() {
+  text-decoration: none;
+
+  &:link {
+    color: $on-primary-color;
+  }
+
+  &:visited {
+    color: $on-primary-color;
+  }
+
+  &:hover,
+  &:active {
+    color: $surface-color;
+  }
+}
+// Spaces
+
+$mibi-singleSpace: 8px;
+$mibi-halfSpace: $mibi-singleSpace/2;
+$mibi-doubleSpace: $mibi-singleSpace * 2;
+$mibi-tripleSpace: $mibi-singleSpace * 3;
+$mibi-quadrupleSpace: $mibi-singleSpace * 4;
+$mibi-quintupleSpace: $mibi-singleSpace * 5;
+$mibi-sextupleSpace: $mibi-singleSpace * 6;
+$mibi-septupleSpace: $mibi-singleSpace * 7;
+$mibi-octupleSpace: $mibi-singleSpace * 8;
+$mibi-nonupleSpace: $mibi-singleSpace * 9;
+$mibi-decupleSpace: $mibi-singleSpace * 10;
+
+// Maginc numbers
+$alex-magic-number: 27px;

@@ -1,0 +1,15 @@
+@import "../../../../assets/sass/abstracts";
+
+.single-center-card-layout {
+  padding-top: $mibi-quadrupleSpace;
+  padding-bottom: $mibi-octupleSpace;
+}
+
+.view-card {
+  max-width: 800px;
+  min-width: 400px;
+}
+
+.view-card__title {
+  font-size: 2em;
+}

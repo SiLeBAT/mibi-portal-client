@@ -1,0 +1,14 @@
+@import "../../../../assets/sass/abstracts";
+
+.faq-group {
+  margin-bottom: $mibi-doubleSpace;
+  background: $primary-color;
+  width: 70%;
+}
+
+.faq-group__title {
+  color: $on-primary-color;
+  text-align: center;
+  padding: $mibi-singleSpace;
+  margin: 0;
+}

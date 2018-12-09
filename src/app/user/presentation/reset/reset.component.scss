@@ -1,0 +1,30 @@
+@import "../../../../assets/sass/abstracts";
+
+em {
+  float: right;
+  color: $error-color;
+  padding-left: 5%;
+  margin-bottom: $mibi-singleSpace;
+  text-align: right;
+}
+
+.reset-form__buttons {
+  margin-top: 3rem;
+
+  & > a {
+    text-decoration: none;
+  }
+}
+
+em[hidden] {
+  visibility: hidden;
+  display: block;
+}
+
+.pw-strength {
+  margin-top: 2rem;
+}
+
+.reset-btn {
+  margin-top: 3rem;
+}

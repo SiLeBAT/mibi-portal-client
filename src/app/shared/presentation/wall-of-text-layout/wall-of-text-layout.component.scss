@@ -1,0 +1,12 @@
+@import "../../../../assets/sass/abstracts";
+
+.wot-title {
+  text-align: center;
+  margin-top: 2%;
+}
+
+.wot-preamble {
+  width: 75%;
+  padding-top: $mibi-singleSpace;
+  border-top: 1px solid $primary-color;
+}

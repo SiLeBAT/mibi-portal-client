@@ -1,0 +1,10 @@
+<mibi-wall-of-text-layout title="MiBi-Portal FAQ">
+    <wot-preamble>
+        <mibi-faq-toc [faqCollection]="faqCollection"></mibi-faq-toc>
+    </wot-preamble>
+    <wot-content>
+        <section class="faq__section" fxLayout="column" fxLayoutAlign=" none" >
+            <mibi-faq-section fxLayout="row" fxLayoutAlign="center none" *ngFor="let faqGroup of faqCollection" [faqGroup]="faqGroup"></mibi-faq-section>
+        </section>
+    </wot-content>
+</mibi-wall-of-text-layout>
