@@ -7,7 +7,7 @@ import { environment } from '../../../../environments/environment';
 
 @Component({
     selector: 'mibi-page-body-container',
-    template: `<mibi-page-body [isBusy$]="isBusy$" [isBanner$]="isBanner$" (onAnimationDone)="onAnimationDone($event)"></mibi-page-body>`
+    template: `<mibi-page-body [isBusy$]="isBusy$" [isBanner$]="isBanner$" (onAnimationDone)="onAnimationDone()"></mibi-page-body>`
 })
 export class PageBodyContainerComponent implements OnInit {
 
