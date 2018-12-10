@@ -140,9 +140,9 @@ export class SamplesEffects {
                 this.store.dispatch(new coreActions.DisplayBanner({ predefined: 'autocorrections' }));
             } else {
                 this.store.dispatch(new coreActions.DisplayDialog({
-                    message: `<p>Ihre Probendaten werden jetzt an das BfR gesendet.</p>
-                        <p>Bitte vergessen Sie nicht die Exceltabelle in Ihrem Mailanhang
-                        auszudrucken und Ihren Isolaten beizulegen.</p>`,
+                    message: `Ihre Probendaten werden jetzt an das BfR gesendet.
+                        Bitte vergessen Sie nicht die Exceltabelle in Ihrem Mailanhang
+                        auszudrucken und Ihren Isolaten beizulegen.`,
                     title: 'Senden',
                     mainAction: {
                         type: UserActionType.CUSTOM,
