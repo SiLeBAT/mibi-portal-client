@@ -131,7 +131,7 @@ export class UserActionService {
 
     private close() {
         this.store.dispatch(new coreActions.DisplayDialog({
-            message: `<p>Wenn Sie die Tabelle schließen, gehen Ihre Änderungen verloren. Wollen Sie das?</p>`,
+            message: `Wenn Sie die Tabelle schließen, gehen Ihre Änderungen verloren. Wollen Sie das?`,
             title: 'Schließen',
             mainAction: {
                 type: UserActionType.CUSTOM,

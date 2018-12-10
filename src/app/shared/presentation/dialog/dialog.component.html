@@ -1,6 +1,6 @@
 <h1 mat-dialog-title>{{data.title}}</h1>
 <div mat-dialog-content>
-        <ng-container *compile="data.message; context: {}"></ng-container>
+        <ng-container>{{data.message}}</ng-container>
 </div>
 <div mat-dialog-actions class="mibi-dialog-button-container"  fxLayout="row" fxLayoutAlign="space-between center">
     <button *ngIf="!!data.auxilliaryAction" class="mibi-user-action" mat-button color="primary" (click)="onAuxAction()">{{data.auxilliaryAction.label}}</button>
