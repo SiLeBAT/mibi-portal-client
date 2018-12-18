@@ -280,3 +280,7 @@ router-outlet ~ * {
   position: absolute;
   width: 100%;
 }
+
+.mibi-institute-select {
+  min-width: fit-content !important;
+}
