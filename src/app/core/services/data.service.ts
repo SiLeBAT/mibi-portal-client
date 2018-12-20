@@ -89,7 +89,7 @@ export class DataService {
     }
 
     resetPassword(newPw: String, token: String) {
-        return this.httpClient.post(this.URL.reset + token, { newPw: newPw });
+        return this.httpClient.post([this.URL.reset, token].join('/'), { newPw: newPw });
     }
 
     activateAccount(token: String): Observable<boolean> {
@@ -107,11 +107,11 @@ export class DataService {
     }
 
     updateUserData(_id: string, userData: DefaultUserData) {
-        return this.httpClient.put(this.URL.userdata + _id, userData);
+        return this.httpClient.put([this.URL.userdata, _id].join('/'), userData);
     }
 
     deleteUserData(userdataId: string, userId: string) {
-        return this.httpClient.delete(this.URL.userdata + userdataId + '&' + userId);
+        return this.httpClient.delete([this.URL.userdata, userdataId + '&' + userId].join('/'));
     }
 
     private fromValidationResponseDTOToAnnotatedSampleData(dto: ValidationResponseDTO): AnnotatedSampleData {
