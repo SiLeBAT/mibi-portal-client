@@ -102,7 +102,7 @@ export class BannerContainerComponent implements OnInit {
 
         },
         accountActivationFailure: {
-            message: 'Unable to activate account.',
+            message: 'Kontoaktivierung fehlgeschlagen.  Bitte kontaktieren Sie das MiBi-Portal team.',
             type: AlertType.ERROR,
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
 
