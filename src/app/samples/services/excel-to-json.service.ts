@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { WorkBook, WorkSheet, read, utils } from 'xlsx';
-import { ImportedExcelFileDetails, SampleData, VALID_SHEET_NAME, FORM_PROPERTIES, ExcelData } from '../model/sample-management.model';
+import * as _ from 'lodash';
 import * as moment from 'moment';
 import 'moment/locale/de';
+import { ImportedExcelFileDetails, SampleData, VALID_SHEET_NAME, FORM_PROPERTIES, ExcelData } from '../model/sample-management.model';
 import { ClientError } from '../../core/model/client-error';
 
 export type AOO = any[];
@@ -131,7 +132,16 @@ export class ExcelToJsonService {
     }
 
     private getVersionDependentLine(workSheet: WorkSheet): number {
-        return 41;
+        let num = 41;
+        _.find(workSheet, (o, i) => {
+            if (o.v === 'Ihre Probe-nummer') {
+                const h = i.replace(/\D/, '');
+                num = parseInt(h, 10);
+                return true;
+            }
+            return false;
+        });
+        return num;
     }
 
     private fromDataToCleanedSamples(data: AOO): AOO {
