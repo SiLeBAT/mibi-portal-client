@@ -39,8 +39,7 @@ export class ExcelToJsonService {
             };
 
         } catch (err) {
-            const errMessage: string = 'Ein Fehler ist aufgetreten beim einlesen der Datei.';
-            throw new ClientError(errMessage);
+            throw new ClientError('Ein Fehler ist aufgetreten beim einlesen der Datei.');
         }
     }
 
@@ -69,9 +68,50 @@ export class ExcelToJsonService {
             fileReader.readAsBinaryString(excelFile);
         });
     }
+
     private getNRLFromWorkSheet(workSheet: WorkSheet): string {
-        return workSheet['B7'].v || '';
+        const workSheetNRL: string = workSheet['B7'].v || '';
+        let nrl = '';
+
+        switch (workSheetNRL.trim()) {
+            case 'NRL Überwachung von Bakterien in zweischaligen Weichtieren':
+                nrl = 'NRL-Vibrio';
+                break;
+
+            case 'NRL Escherichia coli einschließlich verotoxinbildende E. coli':
+            case 'NRL Verotoxinbildende Escherichia coli':
+                nrl = 'NRL-VTEC';
+                break;
+
+            case 'Bacillus spp.':
+            case 'Clostridium spp. (C. difficile)':
+                nrl = 'Sporenbildner';
+                break;
+            case 'NRL koagulasepositive Staphylokokken einschließlich Staphylococcus aureus':
+                nrl = 'NRL-Staph';
+                break;
+
+            case 'NRL Salmonellen(Durchführung von Analysen und Tests auf Zoonosen)':
+                nrl = 'NRL-Salm';
+                break;
+            case 'NRL Listeria monocytogenes':
+                nrl = 'NRL-Listeria';
+                break;
+            case 'NRL Campylobacter':
+                nrl = 'NRL-Campy';
+                break;
+            case 'NRL Antibiotikaresistenz':
+                nrl = 'NRL-AR';
+                break;
+            case 'Yersinia':
+                nrl = 'KL-Yersinia';
+                break;
+            default:
+
+        }
+        return nrl;
     }
+
     private fromWorksheetToData(workSheet: WorkSheet): SampleData[] {
 
         let data: AOO;
