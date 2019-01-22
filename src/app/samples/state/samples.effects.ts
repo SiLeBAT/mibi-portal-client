@@ -58,10 +58,28 @@ export class SamplesEffects {
         exhaustMap((action: samplesActions.ImportExcelFile) => {
             return from(this.excelToJsonService.convertExcelToJSJson(action.payload)).pipe(
                 map((excelData: ExcelData) => {
+                    if (excelData.meta.nrl === '') {
+                        return (new coreActions.DisplayDialog({
+                            // tslint:disable-next-line:max-line-length
+                            message: `Das ausgewählte Labor im Kopf Ihres Probeneinsendebogens entspricht keiner der möglichen Vorauswahlen. Bitte wählen Sie ein Labor aus der vorhandenen Liste.`,
+                            title: 'Unbekanntes NRL',
+                            mainAction: {
+                                type: UserActionType.CUSTOM,
+                                label: 'Ok',
+                                onExecute: () => {
+                                    this.store.dispatch(new samplesActions.ImportExcelFileSuccess(excelData));
+                                },
+                                component: GenericActionItemComponent,
+                                icon: '',
+                                color: ColorType.PRIMARY,
+                                focused: true
+                            }
+                        }));
+                    }
                     return (new samplesActions.ImportExcelFileSuccess(excelData));
                 }),
                 catchError((error) => {
-                    this.logger.error('Failed to import Excel File', error);
+                    this.logger.error(`Failed to import Excel File. error=${error}`);
                     return of(new coreActions.DisplayBanner({ predefined: 'uploadFailure' }));
                 })
             );
