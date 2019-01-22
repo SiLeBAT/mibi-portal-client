@@ -67,7 +67,7 @@ export class SamplesEffects {
                                 type: UserActionType.CUSTOM,
                                 label: 'Ok',
                                 onExecute: () => {
-                                    this.store.dispatch(new coreActions.DisplayBanner({ predefined: 'uploadFailure' }));
+                                    this.store.dispatch(new samplesActions.ImportExcelFileSuccess(excelData));
                                 },
                                 component: GenericActionItemComponent,
                                 icon: '',
