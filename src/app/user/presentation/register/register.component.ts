@@ -57,7 +57,11 @@ export class RegisterComponent implements OnInit {
         try {
             const filterValue = value.toLowerCase();
 
-            return this.institutions.filter(inst => inst.name1.toLowerCase().includes(filterValue));
+            return this.institutions.filter(inst => {
+                return inst.name1.toLowerCase().includes(filterValue)
+                    || inst.name2.toLowerCase().includes(filterValue)
+                    || inst.location.toLowerCase().includes(filterValue);
+            });
         } catch (err) {
             return [];
         }

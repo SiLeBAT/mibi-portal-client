@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 import { UserActionService } from '../../../core/services/user-action.service';
 import { UserActionType } from '../../../shared/model/user-action.model';
 
-export interface IHash {
+export interface InstituteHash {
     [details: string]: string;
 }
 
@@ -21,7 +21,7 @@ export interface IHash {
 })
 export class RegisterContainerComponent implements OnInit {
     institutions: DefaultInstitution[] = [];
-    instituteHash: IHash = {};
+    private instituteHash: InstituteHash = {};
 
     constructor(
         private router: Router,
@@ -33,7 +33,6 @@ export class RegisterContainerComponent implements OnInit {
         this.loadInstitutions();
     }
 
-    // TODO: User can be removed & institution resolution should happen on the server
     register(details: RegistrationDetails) {
         const user = new DefaultUser(
             details.email,
