@@ -38,17 +38,17 @@ export class UploadContainerComponent implements OnInit, OnDestroy, AfterContent
     ngAfterContentInit(): void {
         if (this.uploadChild) {
             this.uploadChild.trigger$ = this.trigger$;
-            this.uploadChild.guard.asObservable().subscribe(
+            this.uploadChild.guard.asObservable().pipe(takeWhile(() => this.componentActive)).subscribe(
                 e => {
                     this.guard(e);
                 }
             );
-            this.uploadChild.invokeValidation.asObservable().subscribe(
+            this.uploadChild.invokeValidation.asObservable().pipe(takeWhile(() => this.componentActive)).subscribe(
                 (file: File) => {
                     this.invokeValidation(file);
                 }
             );
-            this.uploadChild.errorHandler.asObservable().subscribe(
+            this.uploadChild.errorHandler.asObservable().pipe(takeWhile(() => this.componentActive)).subscribe(
                 (error: UploadErrorType) => {
                     this.onError(error);
                 }
