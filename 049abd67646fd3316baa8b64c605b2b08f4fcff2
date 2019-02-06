@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ca45ad4c_f79650aa",
+        "filename": "src/app/user/container/login-container/login-container.component.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1015828
+      },
+      "writtenOn": "2019-02-06T14:11:17Z",
+      "side": 1,
+      "message": "this should be false",
+      "range": {
+        "startLine": 48,
+        "startChar": 31,
+        "endLine": 48,
+        "endChar": 35
+      },
+      "revId": "049abd67646fd3316baa8b64c605b2b08f4fcff2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
