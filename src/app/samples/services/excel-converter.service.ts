@@ -10,7 +10,6 @@ import {
 } from '../model/sample-management.model';
 import { ClientError } from '../../core/model/client-error';
 
-// TODO: Actionize
 @Injectable({
     providedIn: 'root'
 })
