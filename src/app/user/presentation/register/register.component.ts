@@ -8,7 +8,7 @@ export interface RegistrationDetails {
     email: string;
     firstName: string;
     lastName: string;
-    instituteName: string;
+    instituteId: string;
     password: string;
 }
 
@@ -58,8 +58,8 @@ export class RegisterComponent implements OnInit {
             const filterValue = value.toLowerCase();
 
             return this.institutions.filter(inst => {
-                return inst.name1.toLowerCase().includes(filterValue)
-                    || inst.name2.toLowerCase().includes(filterValue)
+                return inst.name.toLowerCase().includes(filterValue)
+                    || inst.addendum.toLowerCase().includes(filterValue)
                     || inst.location.toLowerCase().includes(filterValue);
             });
         } catch (err) {
@@ -73,7 +73,7 @@ export class RegisterComponent implements OnInit {
                 email: this.registerForm.value.email,
                 firstName: this.registerForm.value.firstName,
                 lastName: this.registerForm.value.lastName,
-                instituteName: this.registerForm.value.institution,
+                instituteId: this.registerForm.value.institution._id,
                 password: this.registerForm.value.password1
 
             };

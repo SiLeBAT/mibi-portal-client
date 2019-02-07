@@ -18,7 +18,7 @@ export class LoginContainerComponent implements OnInit, OnDestroy {
 
     private componentActive = true;
     constructor(private router: Router,
-        private store: Store<fromUser.IState>) { }
+        private store: Store<fromUser.State>) { }
 
     ngOnInit(): void {
 

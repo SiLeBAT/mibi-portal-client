@@ -14,7 +14,7 @@ import { UserActionType } from '../../../shared/model/user-action.model';
 })
 export class RecoveryContainerComponent {
 
-    constructor(private store: Store<fromUser.IState>,
+    constructor(private store: Store<fromUser.State>,
         private dataService: DataService, private router: Router, private userActionService: UserActionService) { }
 
     recovery(email: string) {

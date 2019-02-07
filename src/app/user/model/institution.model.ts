@@ -1,44 +1,71 @@
 
-// TODO: Refactor
-export class DefaultInstitution {
+export interface Institution {
+    name: string;
+    city: string;
+    zip: string;
     _id: string;
     stateShort: string;
+    addendum: string;
+    getFullName(): string;
+}
+
+export interface InstitutionDTO {
+    _id: string;
+    email: string[];
+    state_short: string;
     name1: string;
     name2: string;
     location: string;
-    address1: {
-        street: string,
-        city: string
-    };
-    address2: {
-        street: string,
-        city: string
-    };
     phone: string;
     fax: string;
-    email: Array<string>;
+    city: string;
+    zip: string;
+}
 
-    constructor(entry: any) {
+export class DefaultInstitution implements Institution {
+    _id: string;
+    stateShort: string;
+    name: string;
+    addendum: string;
+    location: string;
+    city: string;
+    zip: string;
+    phone: string;
+    fax: string;
+    email: string[];
+
+    constructor(entry: InstitutionDTO) {
         this._id = entry._id;
-        this.stateShort = entry.stateShort || '';
-        this.name1 = entry.name1;
-        this.name2 = entry.name2;
+        this.stateShort = entry.state_short || '';
+        this.name = entry.name1;
+        this.addendum = entry.name2;
         this.location = entry.location;
-        this.address1 = entry.address1;
-        this.address2 = entry.address2;
+        this.city = entry.city;
+        this.zip = entry.zip;
         this.phone = entry.phone;
         this.fax = entry.fax;
         this.email = entry.email;
     }
 
     toString = (): string => {
-        let name = this.name1;
-        if (this.name2) {
-            name = name + ', ' + this.name2;
+        let completeName = this.name;
+        if (this.addendum) {
+            completeName = completeName + ', ' + this.addendum;
         }
-        name = name + ', ' + this.location;
+        completeName = completeName + ', ' + this.location;
 
-        return name;
+        return completeName;
     }
 
+    getFullName(): string {
+        let fullName = this.name;
+        if (this.addendum) {
+            fullName = fullName + ', ' + this.addendum;
+        }
+        return fullName;
+    }
+
+}
+export function fromDTOToInstitution(entry: InstitutionDTO): Institution {
+    return new DefaultInstitution(entry);
 }

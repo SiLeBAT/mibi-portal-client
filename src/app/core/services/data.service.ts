@@ -3,14 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { AnnotatedSampleData } from '../../samples/model/sample-management.model';
-import { DefaultInstitution } from '../../user/model/institution.model';
+import { InstitutionDTO } from '../../user/model/institution.model';
 import {
     AdminActivateResponseDTO,
     RecoverPasswordResponseDTO,
     RegisterUserResponseDTO,
     LoginResponseDTO, ActivationResponseDTO, SystemInformationResponseDTO, ValidationResponseDTO, FAQResponseDTO
 } from '../model/response.model';
-import { TokenizedUser, Credentials, UserDetails, DefaultUser, DefaultUserData } from '../../user/model/user.model';
+import { TokenizedUser, Credentials } from '../../user/model/user.model';
 import { ValidationRequest } from '../model/request.model';
 import { ClientError } from '../model/client-error';
 
@@ -76,12 +76,12 @@ export class DataService {
         );
     }
 
-    getAllInstitutions(): Observable<DefaultInstitution[]> {
-        return this.httpClient.get<DefaultInstitution[]>(this.URL.institutions);
+    getAllInstitutions(): Observable<InstitutionDTO[]> {
+        return this.httpClient.get<InstitutionDTO[]>(this.URL.institutions);
     }
 
-    registerUser(credentials: Credentials, userDetails: UserDetails): Observable<RegisterUserResponseDTO> {
-        return this.httpClient.post<RegisterUserResponseDTO>(this.URL.register, { ...credentials, ...userDetails });
+    registerUser(credentials: Credentials): Observable<RegisterUserResponseDTO> {
+        return this.httpClient.post<RegisterUserResponseDTO>(this.URL.register, { ...credentials });
     }
 
     recoverPassword(email: String): Observable<RecoverPasswordResponseDTO> {
@@ -100,14 +100,6 @@ export class DataService {
 
     adminActivateAccount(adminToken: String): Observable<AdminActivateResponseDTO> {
         return this.httpClient.post<AdminActivateResponseDTO>([this.URL.adminactivate, adminToken].join('/'), null);
-    }
-
-    addUserData(user: DefaultUser, userData: DefaultUserData) {
-        return this.httpClient.post(this.URL.userdata, { user: user, userdata: userData });
-    }
-
-    updateUserData(_id: string, userData: DefaultUserData) {
-        return this.httpClient.put([this.URL.userdata, _id].join('/'), userData);
     }
 
     deleteUserData(userdataId: string, userId: string) {

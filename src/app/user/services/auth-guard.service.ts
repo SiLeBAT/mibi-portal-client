@@ -13,7 +13,7 @@ import { map } from 'rxjs/operators';
 export class AuthGuard implements CanActivate {
 
     constructor(private router: Router,
-        private store: Store<fromUser.IState>) { }
+        private store: Store<fromUser.State>) { }
 
     canActivate(activated: ActivatedRouteSnapshot, sanp: RouterStateSnapshot) {
         return this.store.pipe(select(fromUser.getCurrentUser)).pipe(

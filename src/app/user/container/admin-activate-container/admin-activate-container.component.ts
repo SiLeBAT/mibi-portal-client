@@ -19,7 +19,7 @@ export class AdminActivateContainerComponent implements OnInit {
     name: string;
     appName: string = environment.appName;
     constructor(private activatedRoute: ActivatedRoute,
-        private store: Store<fromUser.IState>) { }
+        private store: Store<fromUser.State>) { }
 
     ngOnInit() {
         this.adminTokenValid = this.activatedRoute.snapshot.data['adminTokenValid'];
