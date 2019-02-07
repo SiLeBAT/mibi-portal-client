@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { User } from '../../../user/model/user.model';
+import { User, TokenizedUser } from '../../../user/model/user.model';
 import * as userActions from '../../../user/state/user.actions';
 import * as fromUser from '../../../user/state/user.reducer';
-import { State } from '../../../state/app.state';
 import { Store, select } from '@ngrx/store';
-import { takeWhile, tap } from 'rxjs/operators';
+import { takeWhile, tap, withLatestFrom } from 'rxjs/operators';
+import { Institution, fromDTOToInstitution } from '../../model/institution.model';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'mibi-profile-container',
@@ -15,17 +16,29 @@ import { takeWhile, tap } from 'rxjs/operators';
 })
 export class ProfileContainerComponent implements OnInit, OnDestroy {
     currentUser: User | null;
+    private institution: Institution;
     private componentActive = true;
     constructor(
-        private store: Store<State>) { }
+        private store: Store<fromUser.State>) { }
 
     ngOnInit() {
         this.store.pipe(select(fromUser.getCurrentUser),
-            takeWhile(() => this.componentActive),
+            withLatestFrom(this.store),
             tap(
-                currentUser => this.currentUser = currentUser
-            )).subscribe();
+                (userData: [TokenizedUser | null, fromUser.State]) => {
+                    this.currentUser = userData[0];
+                    if (this.currentUser) {
+                        const queryId = this.currentUser.instituteId;
+                        const institutionDTO = _.find(userData[1].user.institutes, entry => entry._id === queryId);
 
+                        if (institutionDTO) {
+                            this.institution = fromDTOToInstitution(institutionDTO);
+                        }
+                    }
+
+                }
+            ),
+            takeWhile(() => this.componentActive)).subscribe();
     }
 
     ngOnDestroy() {
@@ -37,14 +50,6 @@ export class ProfileContainerComponent implements OnInit, OnDestroy {
     }
 
     getInstitutionName() {
-        if (this.currentUser) {
-            let name = this.currentUser.institution['name1'];
-            if (this.currentUser.institution['name2']) {
-                name = name + ', ' + this.currentUser.institution['name2'];
-            }
-
-            return name;
-        }
-        return '';
+        return this.institution ? this.institution.getFullName() : '';
     }
 }

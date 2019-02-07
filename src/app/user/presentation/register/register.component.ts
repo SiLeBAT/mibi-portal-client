@@ -3,14 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { DefaultInstitution } from '../../../user/model/institution.model';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
-
-export interface RegistrationDetails {
-    email: string;
-    firstName: string;
-    lastName: string;
-    instituteName: string;
-    password: string;
-}
+import { Credentials } from '../../model/user.model';
 
 @Component({
     selector: 'mibi-register',
@@ -58,8 +51,8 @@ export class RegisterComponent implements OnInit {
             const filterValue = value.toLowerCase();
 
             return this.institutions.filter(inst => {
-                return inst.name1.toLowerCase().includes(filterValue)
-                    || inst.name2.toLowerCase().includes(filterValue)
+                return inst.name.toLowerCase().includes(filterValue)
+                    || inst.addendum.toLowerCase().includes(filterValue)
                     || inst.location.toLowerCase().includes(filterValue);
             });
         } catch (err) {
@@ -69,11 +62,11 @@ export class RegisterComponent implements OnInit {
 
     onRegister() {
         if (this.registerForm.valid) {
-            const details: RegistrationDetails = {
+            const details: Credentials = {
                 email: this.registerForm.value.email,
                 firstName: this.registerForm.value.firstName,
                 lastName: this.registerForm.value.lastName,
-                instituteName: this.registerForm.value.institution,
+                instituteId: this.registerForm.value.institution._id,
                 password: this.registerForm.value.password1
 
             };
