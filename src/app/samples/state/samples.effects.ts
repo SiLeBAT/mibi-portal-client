@@ -123,13 +123,20 @@ export class SamplesEffects {
         withLatestFrom(this.store),
         mergeMap((actionStoreCombine: [samplesActions.SendSamplesFromStore, fromSamples.State]) => {
             const filenameAddon = '_validated';
-            return from(this.sendSampleService.sendData(actionStoreCombine[1].samples, filenameAddon, actionStoreCombine[0].payload)).pipe(
-                map(() => new coreActions.DisplayBanner({ predefined: 'sendSuccess' })),
-                catchError((error) => {
-                    this.logger.error('Failed to send samples from store', error);
-                    return of(new coreActions.DisplayBanner({ predefined: 'sendFailure' }));
-                })
-            );
+            return from(this.sendSampleService.sendData(
+                {
+                    formData: actionStoreCombine[1].samples.formData,
+                    workSheet: actionStoreCombine[1].samples.workSheet
+                },
+                filenameAddon,
+                actionStoreCombine[0].payload,
+                actionStoreCombine[1].samples.nrl)).pipe(
+                    map(() => new coreActions.DisplayBanner({ predefined: 'sendSuccess' })),
+                    catchError((error) => {
+                        this.logger.error('Failed to send samples from store', error);
+                        return of(new coreActions.DisplayBanner({ predefined: 'sendFailure' }));
+                    })
+                );
         }
         )
     );

@@ -14,7 +14,7 @@ export interface State extends fromRoot.State {
     samples: SamplesState;
 }
 
-export interface SamplesState extends SampleSheet {
+interface SamplesState extends SampleSheet {
     importedData: SampleData[];
     nrl: string;
 }
