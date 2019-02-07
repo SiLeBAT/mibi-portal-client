@@ -14,7 +14,7 @@ import { map } from 'rxjs/operators';
 export class UserGuard implements CanActivate {
 
     constructor(private router: Router,
-        private store: Store<fromUser.IState>) { }
+        private store: Store<fromUser.State>) { }
 
     canActivate(activated: ActivatedRouteSnapshot, sanp: RouterStateSnapshot) {
 

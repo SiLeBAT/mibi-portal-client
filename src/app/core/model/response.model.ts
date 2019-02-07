@@ -10,8 +10,8 @@ export interface RegisterUserResponseDTO {
 }
 
 export interface LoginResponseDTO {
-    obj: TokenizedUser;
-    title: string;
+    user: TokenizedUser;
+    status: string;
 }
 
 export interface ActivationResponseDTO {
