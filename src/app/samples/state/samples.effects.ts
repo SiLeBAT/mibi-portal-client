@@ -21,17 +21,22 @@ import { LogService } from '../../core/services/log.service';
 import { ClientError } from '../../core/model/client-error';
 import { UserActionType, ColorType } from '../../shared/model/user-action.model';
 import { GenericActionItemComponent } from '../../core/presentation/generic-action-item/generic-action-item.component';
+import { SendDialogComponent } from '../presentation/send-dialog/send-dialog.component';
+import { DialogService } from '../../core/services/dialog.service';
+import { SENDDIALOGCONFIG } from '../constants/send-dialog.constants';
+
 @Injectable()
 export class SamplesEffects {
 
     constructor(private actions$: Actions,
+        private dialogService: DialogService,
         private excelConverterService: ExcelConverterService,
         private sendSampleService: SendSampleService,
         private excelToJsonService: ExcelToJsonService,
         private dataService: DataService,
         private router: Router,
         private logger: LogService,
-        private store: Store<fromSamples.State>) {
+        private store: Store<fromSamples.State & fromUser.IState>) {
     }
 
     @Effect()
@@ -121,9 +126,13 @@ export class SamplesEffects {
     sendSamplesFromStore$ = this.actions$.pipe(
         ofType(samplesActions.SamplesActionTypes.SendSamplesFromStore),
         withLatestFrom(this.store),
-        mergeMap((actionStoreCombine: [samplesActions.SendSamplesFromStore, fromSamples.State]) => {
+        mergeMap((actionStoreCombine: [samplesActions.SendSamplesFromStore, fromSamples.State & fromUser.IState]) => {
             const filenameAddon = '_validated';
-            return from(this.sendSampleService.sendData(actionStoreCombine[1].samples, filenameAddon, actionStoreCombine[0].payload)).pipe(
+            return from(this.sendSampleService.sendData(
+                actionStoreCombine[1].samples,
+                filenameAddon,
+                actionStoreCombine[0].user,
+                actionStoreCombine[0].comment)).pipe(
                 map(() => new coreActions.DisplayBanner({ predefined: 'sendSuccess' })),
                 catchError((error) => {
                     this.logger.error('Failed to send samples from store', error);
@@ -150,50 +159,28 @@ export class SamplesEffects {
                 })
             );
         }),
-        withLatestFrom(this.store),
-        tap((combine: [AnnotatedSampleData[], fromSamples.State & fromUser.IState]) => {
-            if (this.hasSampleError(combine[0])) {
+        tap((sampleData: AnnotatedSampleData[]) => {
+            if (this.hasSampleError(sampleData)) {
                 this.store.dispatch(new coreActions.DisplayBanner({ predefined: 'validationErrors' }));
-            } else if (this.hasSampleAutoCorrection(combine[0])) {
+            } else if (this.hasSampleAutoCorrection(sampleData)) {
                 this.store.dispatch(new coreActions.DisplayBanner({ predefined: 'autocorrections' }));
             } else {
-                this.store.dispatch(new coreActions.DisplayDialog({
-                    message: `Ihre Probendaten werden jetzt an das BfR gesendet.
-                        Bitte vergessen Sie nicht die Exceltabelle in Ihrem Mailanhang
-                        auszudrucken und Ihren Isolaten beizulegen.`,
-                    title: 'Senden',
-                    mainAction: {
-                        type: UserActionType.CUSTOM,
-                        label: 'Senden',
-                        onExecute: () => {
-                            const currentUser = fromUser.getCurrentUser(combine[1]);
-                            if (currentUser) {
-                                this.store.dispatch(new samplesActions.SendSamplesFromStore(currentUser));
-                            } else {
-                                this.store.dispatch(new coreActions.DisplayBanner({ predefined: 'loginUnauthorized' }));
-                            }
-                        },
-                        component: GenericActionItemComponent,
-                        icon: '',
-                        color: ColorType.PRIMARY,
-                        focused: true
-                    },
-                    auxilliaryAction: {
-                        type: UserActionType.CUSTOM,
-                        label: 'Abbrechen',
-                        onExecute: () => {
-                            this.store.dispatch(new coreActions.DisplayBanner({ predefined: 'sendCancel' }));
-                        },
-                        component: GenericActionItemComponent,
-                        icon: '',
-                        color: ColorType.PRIMARY
-                    }
-                }));
+                this.dialogService.openDialog(SendDialogComponent, SENDDIALOGCONFIG);
             }
-        }),
-        catchError((error) => {
-            this.logger.error('Failed to initiate sending samples', error);
-            return of(new coreActions.DisplayBanner({ predefined: 'sendCancel' }));
+        })
+    );
+
+    @Effect({ dispatch: true })
+    sendSamplesConfirmed$ = this.actions$.pipe(
+        ofType(samplesActions.SamplesActionTypes.SendSamplesConfirmed),
+        withLatestFrom(this.store),
+        map((combined: [samplesActions.SendSamplesConfirmed, fromUser.IState & fromSamples.State]) => {
+            const currentUser = fromUser.getCurrentUser(combined[1]);
+            if (currentUser) {
+                return new samplesActions.SendSamplesFromStore(currentUser, combined[0].comment);
+            } else {
+                return new coreActions.DisplayBanner({ predefined: 'loginUnauthorized' });
+            }
         })
     );
 

@@ -1,0 +1,9 @@
+<h1 mat-dialog-title>{{config.title}}</h1>
+<div mat-dialog-content>
+    <ng-content></ng-content>
+</div>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between center">
+    <button class="mibi-dialog-button" *ngIf="config.cancelButtonConfig" mat-button color="primary" (click)="onCancel()">{{config.cancelButtonConfig.label}}</button>
+    <button class="mibi-dialog-button" cdkFocusInitial mat-raised-button color="primary" (click)="onConfirm()">{{config.confirmButtonConfig.label}}</button>
+    <ng-content select=".mibi-dialog-button"></ng-content>
+</div>

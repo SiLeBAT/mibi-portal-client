@@ -1,0 +1,7 @@
+<mibi-message-dialog (confirm)="onConfirm()" (cancel)="onCancel()">
+  <div fxLayout="column" >
+    <mat-form-field>
+      <textarea rows="3" [formControl]="commentControl" cdkFocusInitial matInput type="text" placeholder="{{config.commentMessage}}"></textarea>
+    </mat-form-field>
+  </div>
+</mibi-message-dialog>

@@ -14,14 +14,14 @@ export class SendSampleService {
         private excelConverter: ExcelConverterService,
         private httpFacade: DataService) { }
 
-    async sendData(sampleSheet: SampleSheet, filename: string, currentUser: User) {
+    async sendData(sampleSheet: SampleSheet, filename: string, currentUser: User, comment: string) {
         const excelFileBlob = await this.excelConverter.convertToExcel(sampleSheet, filename);
-        const formData = this.assembleForm(excelFileBlob, currentUser);
+        const formData = this.assembleForm(excelFileBlob, currentUser, comment);
         return this.httpFacade.sendSampleSheet(formData);
 
     }
 
-    private assembleForm(excelFileBlob: ExcelFileBlob, currentUser: User) {
+    private assembleForm(excelFileBlob: ExcelFileBlob, currentUser: User, comment: string) {
         const formData: FormData = new FormData();
 
         formData.append('myMemoryXSLX', excelFileBlob.blob, excelFileBlob.fileName);
@@ -30,6 +30,7 @@ export class SendSampleService {
         formData.append('email', currentUser.email);
         formData.append('institution', currentUser.institution.name1);
         formData.append('location', currentUser.institution.name2);
+        formData.append('comment', comment || '');
         return formData;
     }
 }
