@@ -2,6 +2,8 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DialogContent } from '../../../core/model/dialog.model';
 
+// Old dialog system
+
 @Component({
     selector: 'mibi-dialog',
     templateUrl: './dialog.component.html'

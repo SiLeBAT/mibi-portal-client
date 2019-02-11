@@ -14,6 +14,7 @@ export enum SamplesActionTypes {
     ValidateSamples = '[Samples] Validate samples',
     ValidateSamplesSuccess = '[Samples] Successfully validated samples',
     SendSamplesInitiate = '[Samples] Initiating sending samples',
+    SendSamplesConfirmed = '[Samples UI] User confirmed sending the samples',
     SendSamplesFromStore = '[Samples] Send samples from store',
     ChangeFieldValue = '[Samples] Change field value'
 }
@@ -95,10 +96,18 @@ export class SendSamplesInitiate implements Action {
     }
 }
 
+export class SendSamplesConfirmed implements Action {
+    readonly type = SamplesActionTypes.SendSamplesConfirmed;
+
+    constructor(public comment: string) {
+
+    }
+}
+
 export class SendSamplesFromStore implements Action {
     readonly type = SamplesActionTypes.SendSamplesFromStore;
 
-    constructor(public payload: User) {
+    constructor(public user: User, public comment: string) {
     }
 }
 
@@ -111,6 +120,7 @@ export type SamplesActions = ImportExcelFile
     | ExportExcelFileSuccess
     | ExportExcelFileFailure
     | SendSamplesInitiate
+    | SendSamplesConfirmed
     | SendSamplesFromStore
     | ChangeFieldValue
     | LogoutUser;
