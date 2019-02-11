@@ -15,6 +15,10 @@ import { SamplesEffects } from './state/samples.effects';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
+import { SendDialogComponent } from './presentation/send-dialog/send-dialog.component';
+import { CoreModule } from '../core/core.module';
+import { MatInputModule, MatFormFieldModule } from '@angular/material';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 const SAMPLES_ROUTES = [
     { path: 'upload', component: UploadViewComponent },
@@ -27,17 +31,23 @@ const SAMPLES_ROUTES = [
         MatIconModule,
         MatButtonModule,
         MatDialogModule,
+        MatInputModule,
+        MatFormFieldModule,
+        FlexLayoutModule,
         RouterModule.forChild(SAMPLES_ROUTES),
         StoreModule.forFeature(STATE_SLICE_NAME, reducer),
         EffectsModule.forFeature([SamplesEffects]),
-        SharedModule
+        SharedModule,
+        CoreModule
     ],
     declarations: [
         DataGridComponent,
         DataGridContainerComponent,
         SampleViewComponent,
-        UploadViewComponent
+        UploadViewComponent,
+        SendDialogComponent
     ],
+    entryComponents: [SendDialogComponent],
     exports: [],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

@@ -1,0 +1,7 @@
+<mibi-new-dialog (confirm)="onConfirm()" (cancel)="onCancel()">
+    <div> {{config.message}} </div>
+    <p></p>
+    <div><ng-content></ng-content></div>
+    <ng-content class="mibi-dialog-button" select=".mibi-dialog-buttonn"></ng-content>
+  </mibi-new-dialog>
+  
