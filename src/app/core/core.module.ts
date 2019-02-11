@@ -36,6 +36,9 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { AvatarComponent } from './presentation/avatar/avatar.component';
 import { AvatarContainerComponent } from './container/avatar-container/avatar-container.component';
 import { PageFooterContainerComponent } from './container/page-footer-container/page-footer-container.component';
+import { NewDialogComponent } from './presentation/dialog/dialog.component';
+import { MatDialogModule } from '@angular/material';
+import { MessageDialogComponent } from './presentation/message-dialog/message-dialog.component';
 
 @NgModule({
     imports: [
@@ -53,6 +56,7 @@ import { PageFooterContainerComponent } from './container/page-footer-container/
         MatMenuModule,
         MatIconModule,
         MatToolbarModule,
+        MatDialogModule,
         RouterModule.forChild([]),
         StoreModule.forFeature(STATE_SLICE_NAME, reducer),
         EffectsModule.forFeature([CoreEffects])
@@ -76,7 +80,9 @@ import { PageFooterContainerComponent } from './container/page-footer-container/
         PageHeaderComponent,
         PageFooterComponent,
         BannerComponent,
-        BannerContainerComponent
+        BannerContainerComponent,
+        NewDialogComponent,
+        MessageDialogComponent
     ],
     exports: [
         HomeComponent,
@@ -84,9 +90,11 @@ import { PageFooterContainerComponent } from './container/page-footer-container/
         FormsModule,
         ReactiveFormsModule,
         DefaultPageLayoutComponent,
-        BannerContainerComponent
+        BannerContainerComponent,
+        NewDialogComponent,
+        MessageDialogComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    entryComponents: [GenericActionItemComponent]
+    entryComponents: [GenericActionItemComponent, NewDialogComponent, MessageDialogComponent]
 })
 export class CoreModule { }
