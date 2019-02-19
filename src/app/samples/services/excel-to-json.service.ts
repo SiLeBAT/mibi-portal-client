@@ -91,7 +91,7 @@ export class ExcelToJsonService {
                 nrl = 'NRL-Staph';
                 break;
 
-            case 'NRL Salmonellen(Durchführung von Analysen und Tests auf Zoonosen)':
+            case 'NRL Salmonellen (Durchführung von Analysen und Tests auf Zoonosen)':
                 nrl = 'NRL-Salm';
                 break;
             case 'NRL Listeria monocytogenes':
@@ -106,9 +106,19 @@ export class ExcelToJsonService {
             case 'Yersinia':
                 nrl = 'KL-Yersinia';
                 break;
+            case 'NRL Trichinella':
+                nrl = 'NRL-Trichinella';
+                break;
+            case 'NRL Überwachung von Viren in zweischaligen Weichtieren':
+                nrl = 'NRL-Virus';
+                break;
+            case 'Leptospira':
+                nrl = 'KL-Leptospira';
+                break;
             default:
 
         }
+
         return nrl;
     }
 
