@@ -6,6 +6,7 @@ import { takeWhile, tap } from 'rxjs/operators';
 import * as fromSamples from './samples/state/samples.reducer';
 import { DataService } from './core/services/data.service';
 import * as userActions from './user/state/user.actions';
+import { TokenizedUser } from './user/model/user.model';
 
 @Component({
     selector: 'mibi-root',
@@ -22,12 +23,25 @@ export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDe
 
     ngOnInit(): void {
         this.store.pipe(select(fromSamples.hasEntries),
-            takeWhile(() => this.componentActive),
             tap(
                 hasEntries => this.canUnload = !hasEntries
-            )
+            ),
+            takeWhile(() => this.componentActive)
         ).subscribe();
 
+        this.loadInstitutions();
+        this.loadUser();
+    }
+
+    ngOnDestroy() {
+        this.componentActive = false;
+    }
+
+    unloadGuard(): boolean {
+        return this.canUnload;
+    }
+
+    private loadInstitutions() {
         this.dataService.getAllInstitutions().toPromise().then(
             data => {
                 this.store.dispatch(new userActions.PopulateInstitutions(data));
@@ -37,11 +51,27 @@ export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDe
         );
     }
 
-    ngOnDestroy() {
-        this.componentActive = false;
-    }
+    private loadUser() {
+        const userJson: string | null = localStorage.getItem('currentUser');
+        if (!userJson) {
+            return;
+        }
+        const user: TokenizedUser = JSON.parse(userJson);
 
-    unloadGuard(): boolean {
-        return this.canUnload;
+        this.dataService.isAuthorized(user).toPromise().then(
+            authorizationResponse => {
+                if (authorizationResponse.authorized) {
+                    user.token = authorizationResponse.token;
+                    this.dataService.setCurrentUser(user);
+                    this.store.dispatch(new userActions.LoginUserSuccess(user));
+                } else {
+                    this.store.dispatch(new userActions.LogoutUser());
+                }
+            }
+        ).catch(
+            () => {
+                this.store.dispatch(new userActions.LogoutUser());
+            }
+        );
     }
 }
