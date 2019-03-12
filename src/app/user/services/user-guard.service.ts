@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import * as fromUser from '../state/user.reducer';
 import * as fromSamples from '../../samples/state/samples.reducer';
+import * as userActions from '../state/user.actions';
 import { Store, select } from '@ngrx/store';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { TokenizedUser } from '../model/user.model';
@@ -28,6 +29,7 @@ export class UserGuard implements CanActivate {
                     const helper = new JwtHelperService();
                     const isExpired = !!helper.isTokenExpired(currentUser.token);
                     if (isExpired) {
+                        this.store.dispatch(new userActions.LogoutUser());
                         return isExpired;
                     }
                     if (hasEntries) {

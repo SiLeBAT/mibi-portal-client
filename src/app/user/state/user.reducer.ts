@@ -15,7 +15,7 @@ export interface IUserState {
 }
 
 const initialState: IUserState = {
-    currentUser: retrieveUserFromLocalStorage(),
+    currentUser: null,
     institutes: []
 };
 
@@ -59,14 +59,4 @@ export function reducer(state: IUserState = initialState, action: UserActions): 
         default:
             return state;
     }
-}
-
-// Utilities
-
-function retrieveUserFromLocalStorage(): TokenizedUser | null {
-    const cu: string | null = localStorage.getItem('currentUser');
-    if (!cu) {
-        return null;
-    }
-    return JSON.parse(cu);
 }
