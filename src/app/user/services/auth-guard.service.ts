@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import * as fromUser from '../state/user.reducer';
 import * as coreActions from '../../core/state/core.actions';
+import * as userActions from '../state/user.actions';
 import { Store, select } from '@ngrx/store';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { TokenizedUser } from '../model/user.model';
@@ -12,7 +13,7 @@ import { map } from 'rxjs/operators';
 })
 export class AuthGuard implements CanActivate {
 
-    constructor(private router: Router,
+    constructor(
         private store: Store<fromUser.State>) { }
 
     canActivate(activated: ActivatedRouteSnapshot, sanp: RouterStateSnapshot) {
@@ -23,10 +24,8 @@ export class AuthGuard implements CanActivate {
                     const isExpired = !!helper.isTokenExpired(currentUser.token);
 
                     if (isExpired) {
+                        this.store.dispatch(new userActions.LogoutUser());
                         this.store.dispatch(new coreActions.DisplayBanner({ predefined: 'loginUnauthorized' }));
-                        this.router.navigate(['/users/login']).catch(() => {
-                            throw new Error('Unable to navigate.');
-                        });
                     }
                     return !isExpired;
                 }

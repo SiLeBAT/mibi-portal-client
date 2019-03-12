@@ -8,7 +8,7 @@ import {
     AdminActivateResponseDTO,
     RecoverPasswordResponseDTO,
     RegisterUserResponseDTO,
-    LoginResponseDTO, ActivationResponseDTO, SystemInformationResponseDTO, ValidationResponseDTO, FAQResponseDTO
+    LoginResponseDTO, ActivationResponseDTO, SystemInformationResponseDTO, ValidationResponseDTO, FAQResponseDTO, AuthorizationResponseDTO
 } from '../model/response.model';
 import { TokenizedUser, Credentials } from '../../user/model/user.model';
 import { ValidationRequest } from '../model/request.model';
@@ -20,27 +20,29 @@ import { ClientError } from '../model/client-error';
 export class DataService {
 
     private API_ROOT = '/api';
-    private API_VERSION = '/v1';
+    private API_VERSION = 'v1';
+    private USERS = 'users';
+    private UTIL = 'util';
     private URL = {
-        sendFile: this.API_ROOT + this.API_VERSION + '/job',
-        validateSample: this.API_ROOT + this.API_VERSION + '/validation',
-        institutions: this.API_ROOT + this.API_VERSION + '/institutions',
-        login: this.API_ROOT + this.API_VERSION + '/users/login',
-        register: this.API_ROOT + this.API_VERSION + '/users/register',
-        recovery: this.API_ROOT + this.API_VERSION + '/users/recovery',
-        reset: this.API_ROOT + this.API_VERSION + '/users/reset',
-        activate: this.API_ROOT + this.API_VERSION + '/users/activate',
-        adminactivate: this.API_ROOT + this.API_VERSION + '/users/adminactivate',
-        userdata: this.API_ROOT + this.API_VERSION + '/users/userdata',
-        systemInfo: this.API_ROOT + this.API_VERSION + '/util/system-info',
+        sendFile: [this.API_ROOT, this.API_VERSION, 'job'].join('/'),
+        validateSample: [this.API_ROOT, this.API_VERSION, 'validation'].join('/'),
+        institutions: [this.API_ROOT, this.API_VERSION, 'institutions'].join('/'),
+        login:  [this.API_ROOT, this.API_VERSION, this.USERS, 'login'].join('/'),
+        register: [this.API_ROOT, this.API_VERSION, this.USERS, 'register'].join('/'),
+        recovery: [this.API_ROOT, this.API_VERSION, this.USERS, 'recovery'].join('/'),
+        reset: [this.API_ROOT, this.API_VERSION, this.USERS, 'reset'].join('/'),
+        activate: [this.API_ROOT, this.API_VERSION, this.USERS, 'activate'].join('/'),
+        adminactivate: [this.API_ROOT, this.API_VERSION, this.USERS, 'adminactivate'].join('/'),
+        isAuthorized: [this.API_ROOT, this.API_VERSION, this.USERS, 'isauthorized'].join('/'),
+        systemInfo: [this.API_ROOT, this.API_VERSION, this.UTIL, 'system-info'].join('/'),
         faq: './assets/faq.json'
     };
 
     constructor(private httpClient: HttpClient) {
     }
 
-    setCurrentUser(obj: TokenizedUser) {
-        localStorage.setItem('currentUser', JSON.stringify(obj));
+    setCurrentUser(user: TokenizedUser) {
+        localStorage.setItem('currentUser', JSON.stringify(user));
     }
 
     getFAQs(): Observable<FAQResponseDTO> {
@@ -102,10 +104,9 @@ export class DataService {
         return this.httpClient.post<AdminActivateResponseDTO>([this.URL.adminactivate, adminToken].join('/'), null);
     }
 
-    deleteUserData(userdataId: string, userId: string) {
-        return this.httpClient.delete([this.URL.userdata, userdataId + '&' + userId].join('/'));
+    isAuthorized(user: TokenizedUser): Observable<AuthorizationResponseDTO> {
+        return this.httpClient.post<AuthorizationResponseDTO>([this.URL.isAuthorized].join('/'), user);
     }
-
     private fromValidationResponseDTOToAnnotatedSampleData(dto: ValidationResponseDTO): AnnotatedSampleData {
         return {
             data: dto.data,

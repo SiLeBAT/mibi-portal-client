@@ -1,6 +1,10 @@
 import { TokenizedUser } from '../../user/model/user.model';
 import { SampleData } from '../../samples/model/sample-management.model';
 
+export interface AuthorizationResponseDTO {
+    authorized: boolean;
+    token: string;
+}
 export interface RecoverPasswordResponseDTO {
     title: string;
 }
