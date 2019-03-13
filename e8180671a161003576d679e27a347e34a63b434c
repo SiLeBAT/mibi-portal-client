@@ -114,6 +114,52 @@
       "revId": "e8180671a161003576d679e27a347e34a63b434c",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a09e9af2_6ef52232",
+        "filename": "src/app/user/services/user-guard.service.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1015828
+      },
+      "writtenOn": "2019-03-13T14:07:27Z",
+      "side": 1,
+      "message": "rename (anonymous?)",
+      "range": {
+        "startLine": 15,
+        "startChar": 13,
+        "endLine": 15,
+        "endChar": 23
+      },
+      "revId": "e8180671a161003576d679e27a347e34a63b434c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "16cbcc9f_05111c16",
+        "filename": "src/app/user/services/user-guard.service.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1015828
+      },
+      "writtenOn": "2019-03-13T14:07:27Z",
+      "side": 1,
+      "message": "true",
+      "range": {
+        "startLine": 33,
+        "startChar": 31,
+        "endLine": 33,
+        "endChar": 40
+      },
+      "revId": "e8180671a161003576d679e27a347e34a63b434c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
     }
   ]
 }
