@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e210419f_bf035750",
+        "filename": "src/app/app.component.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1015828
+      },
+      "writtenOn": "2019-03-13T11:12:26Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 62,
+        "startChar": 12,
+        "endLine": 62,
+        "endChar": 33
+      },
+      "revId": "e8180671a161003576d679e27a347e34a63b434c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c96521bf_5696817a",
+        "filename": "src/app/core/services/data.service.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1015828
+      },
+      "writtenOn": "2019-03-13T11:12:26Z",
+      "side": 1,
+      "message": "mixéd format",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 138
+      },
+      "revId": "e8180671a161003576d679e27a347e34a63b434c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7a7e6cd3_1f4b745a",
+        "filename": "src/app/core/services/data.service.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1015828
+      },
+      "writtenOn": "2019-03-13T11:12:26Z",
+      "side": 1,
+      "message": "would be nice to move to a function createURL(subURL:string):string",
+      "range": {
+        "startLine": 26,
+        "startChar": 1,
+        "endLine": 37,
+        "endChar": 90
+      },
+      "revId": "e8180671a161003576d679e27a347e34a63b434c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a352737c_32c48b56",
+        "filename": "src/app/core/services/data.service.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1015828
+      },
+      "writtenOn": "2019-03-13T11:12:26Z",
+      "side": 1,
+      "message": "?",
+      "range": {
+        "startLine": 108,
+        "startChar": 62,
+        "endLine": 108,
+        "endChar": 95
+      },
+      "revId": "e8180671a161003576d679e27a347e34a63b434c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "714483b6_1eaedf3e",
+        "filename": "src/app/core/services/jwt-interceptor.service.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1015828
+      },
+      "writtenOn": "2019-03-13T11:12:26Z",
+      "side": 1,
+      "message": "?",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 14
+      },
+      "revId": "e8180671a161003576d679e27a347e34a63b434c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
