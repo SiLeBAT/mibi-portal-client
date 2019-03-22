@@ -15,7 +15,7 @@ import { State } from '../../../state/app.state';
 export class SendDialogComponent implements OnInit {
     config: SendDialogConfiguration;
 
-    private commentControl = new FormControl('');
+    commentControl = new FormControl('');
 
     constructor(@Inject(MAT_DIALOG_DATA) private data: DialogData<SendDialogConfiguration>,
   private store: Store<State>) { }
