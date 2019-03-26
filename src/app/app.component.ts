@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { environment } from '../environments/environment';
 import { GuardedUnloadComponent } from './shared/container/guarded-unload.component';
 import { Store, select } from '@ngrx/store';
@@ -12,7 +12,7 @@ import { TokenizedUser } from './user/model/user.model';
     selector: 'mibi-root',
     templateUrl: './app.component.html'
 })
-export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDestroy {
+export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDestroy, AfterViewInit {
 
     supportContact: string = environment.supportContact;
     private componentActive = true;
@@ -30,6 +30,9 @@ export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDe
         ).subscribe();
 
         this.loadInstitutions();
+    }
+
+    ngAfterViewInit(): void {
         this.loadUser();
     }
 
