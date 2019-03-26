@@ -3,6 +3,7 @@ import * as _ from 'lodash';
 import { IFAQGroup } from '../faq-section/faq-section.component';
 import { ActivatedRoute } from '@angular/router';
 import { takeWhile } from 'rxjs/operators';
+import { ClientError } from '../../../core/model/client-error';
 
 @Component({
     selector: 'mibi-faq-view',
@@ -20,7 +21,9 @@ export class FAQViewComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.faqCollection = this.activatedRoute.snapshot.data['faqCollection'];
         this.activatedRoute.fragment.pipe(
             takeWhile(() => this.componentActive)
-        ).subscribe(fragment => { this.fragment = fragment; });
+        ).subscribe(fragment => { this.fragment = fragment; }, (error) => {
+            throw new ClientError(`Can't retieve view fragment. error=${error}`);
+        });
     }
 
     ngAfterViewChecked(): void {

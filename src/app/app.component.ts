@@ -17,12 +17,12 @@ export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDe
     supportContact: string = environment.supportContact;
     private componentActive = true;
     private canUnload: boolean = true;
-    constructor(private store: Store<fromSamples.State>, private dataService: DataService) {
+    constructor(private store$: Store<fromSamples.State>, private dataService: DataService) {
         super();
     }
 
     ngOnInit(): void {
-        this.store.pipe(select(fromSamples.hasEntries),
+        this.store$.pipe(select(fromSamples.hasEntries),
             tap(
                 hasEntries => this.canUnload = !hasEntries
             ),
@@ -47,7 +47,7 @@ export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDe
     private loadInstitutions() {
         this.dataService.getAllInstitutions().toPromise().then(
             data => {
-                this.store.dispatch(new userActions.PopulateInstitutions(data));
+                this.store$.dispatch(new userActions.PopulateInstitutions(data));
             }
         ).catch(
             () => { throw new Error(); }
@@ -66,14 +66,14 @@ export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDe
                 if (authorizationResponse.authorized) {
                     user.token = authorizationResponse.token;
                     this.dataService.setCurrentUser(user);
-                    this.store.dispatch(new userActions.LoginUserSuccess(user));
+                    this.store$.dispatch(new userActions.LoginUserSuccess(user));
                 } else {
-                    this.store.dispatch(new userActions.LogoutUser());
+                    this.store$.dispatch(new userActions.LogoutUser());
                 }
             }
         ).catch(
             () => {
-                this.store.dispatch(new userActions.LogoutUser());
+                this.store$.dispatch(new userActions.LogoutUser());
             }
         );
     }

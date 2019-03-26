@@ -10,13 +10,14 @@ import { BehaviorSubject } from 'rxjs';
     selector: 'mibi-last-change-display-container',
     template: `<mibi-last-change-display
     *ngIf="isDataAvailable"
-    [lastChange$]="_lastChange.asObservable()"
+    [lastChange$]="lastChangeObs"
     [serverVersion]="serverVersion"
     [clientVersion]="clientVersion"></mibi-last-change-display>`
 })
 export class LastChangeDisplayContainerComponent implements OnInit {
 
-    _lastChange: BehaviorSubject<moment.Moment>;
+    private lastChange$: BehaviorSubject<moment.Moment>;
+    lastChangeObs = this.lastChange$.asObservable();
     serverVersion: string;
     clientVersion: string;
     isDataAvailable: boolean;
@@ -29,7 +30,7 @@ export class LastChangeDisplayContainerComponent implements OnInit {
     ngOnInit(): void {
         moment.locale('en');
         this.clientLastChange = moment(environment.lastChange, this.dateParseString);
-        this._lastChange = new BehaviorSubject(this.clientLastChange);
+        this.lastChange$ = new BehaviorSubject(this.clientLastChange);
         this.dataService.getSystemInfo().toPromise().then(
             (sysInfo: SystemInformationResponseDTO) => {
                 this.serverLastChange = moment(sysInfo.lastChange, this.dateParseString);
@@ -40,7 +41,7 @@ export class LastChangeDisplayContainerComponent implements OnInit {
                 if (this.clientLastChange.isValid()) {
                     dateCompare.push(this.clientLastChange);
                 }
-                this._lastChange.next(moment.max(dateCompare));
+                this.lastChange$.next(moment.max(dateCompare));
                 this.serverVersion = sysInfo.version;
                 this.isDataAvailable = true;
             }

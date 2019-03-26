@@ -26,18 +26,18 @@ export class AppBarTopContainerComponent implements OnInit {
     config$: Observable<UserActionViewModelConfiguration[]>;
 
     constructor(
-        private store: Store<fromSamples.State>,
+        private store$: Store<fromSamples.State>,
         private userActionService: UserActionService) { }
 
     ngOnInit() {
-        this.currentUser$ = this.store.pipe(
+        this.currentUser$ = this.store$.pipe(
             select(fromUser.getCurrentUser)
         );
         this.config$ = combineLatest(of(this.userActionService.userActionConfiguration),
-            this.store.pipe(select(fromCore.getEnabledActionItems)),
-            this.store.pipe(select(fromSamples.hasEntries)),
-            this.store.pipe(select(fromUser.getCurrentUser)),
-            this.store.pipe(select(fromCore.isBusy))).pipe(
+            this.store$.pipe(select(fromCore.getEnabledActionItems)),
+            this.store$.pipe(select(fromSamples.hasEntries)),
+            this.store$.pipe(select(fromUser.getCurrentUser)),
+            this.store$.pipe(select(fromCore.isBusy))).pipe(
                 map(combined => {
 
                     const [configuration, enabled, hasEntries, currentUser, isBusy] = combined;

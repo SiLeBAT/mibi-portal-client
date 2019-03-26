@@ -6,6 +6,7 @@ import { Banner, AlertType } from '../../model/alert.model';
 import { takeWhile, debounceTime } from 'rxjs/operators';
 import { UserActionService } from '../../services/user-action.service';
 import { UserActionType } from '../../../shared/model/user-action.model';
+import { ClientError } from '../../model/client-error';
 
 @Component({
     selector: 'mibi-banner-container',
@@ -152,10 +153,10 @@ export class BannerContainerComponent implements OnInit {
 
     banner: Banner | null;
     private componentActive = true;
-    constructor(private store: Store<fromCore.State>, private userActionService: UserActionService) { }
+    constructor(private store$: Store<fromCore.State>, private userActionService: UserActionService) { }
 
     ngOnInit() {
-        this.store.pipe(select(fromCore.getBanner),
+        this.store$.pipe(select(fromCore.getBanner),
             debounceTime(600),
             takeWhile(() => this.componentActive)
         ).subscribe(bannerState => {
@@ -177,6 +178,9 @@ export class BannerContainerComponent implements OnInit {
                     }
                 }
             }
+        },
+        (error) => {
+            throw new ClientError(`Can't determine Banner state. error=${error}`);
         });
     }
 
@@ -185,7 +189,7 @@ export class BannerContainerComponent implements OnInit {
             if (this.banner.mainAction) {
                 this.banner.mainAction.onExecute();
             }
-            this.store.dispatch(new coreActions.HideBanner());
+            this.store$.dispatch(new coreActions.HideBanner());
         }
     }
 
@@ -194,7 +198,7 @@ export class BannerContainerComponent implements OnInit {
             if (this.banner.auxilliaryAction) {
                 this.banner.auxilliaryAction.onExecute();
             }
-            this.store.dispatch(new coreActions.HideBanner());
+            this.store$.dispatch(new coreActions.HideBanner());
         }
     }
 }
