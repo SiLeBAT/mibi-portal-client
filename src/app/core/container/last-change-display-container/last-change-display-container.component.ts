@@ -4,7 +4,7 @@ import { DataService } from '../../../core/services/data.service';
 import { SystemInformationResponseDTO } from '../../../core/model/response.model';
 import * as moment from 'moment';
 import 'moment/locale/de';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Component({
     selector: 'mibi-last-change-display-container',
@@ -17,7 +17,7 @@ import { BehaviorSubject } from 'rxjs';
 export class LastChangeDisplayContainerComponent implements OnInit {
 
     private lastChange$: BehaviorSubject<moment.Moment>;
-    lastChangeObs = this.lastChange$.asObservable();
+    lastChangeObs: Observable<moment.Moment>;
     serverVersion: string;
     clientVersion: string;
     isDataAvailable: boolean;
@@ -31,6 +31,7 @@ export class LastChangeDisplayContainerComponent implements OnInit {
         moment.locale('en');
         this.clientLastChange = moment(environment.lastChange, this.dateParseString);
         this.lastChange$ = new BehaviorSubject(this.clientLastChange);
+        this.lastChangeObs = this.lastChange$.asObservable();
         this.dataService.getSystemInfo().toPromise().then(
             (sysInfo: SystemInformationResponseDTO) => {
                 this.serverLastChange = moment(sysInfo.lastChange, this.dateParseString);
