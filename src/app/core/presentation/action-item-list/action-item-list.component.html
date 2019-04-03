@@ -1,29 +1,31 @@
 <ng-template #customActionItems let-icon="icon" let-onClick="onExecute" let-label="label">
-    <li mat-button class="mibi-action-item">
-        <a class="mibi-action-item__link" fxLayout="row" fxLayoutAlign=" none" (click)="onClick($event)" fxLayoutGap="2px">
-            <mat-icon class="mibi-action-item__icon">{{icon}}</mat-icon>
-            <span class="mibi-action-item__label ">{{label}}</span>
+    <li mat-button class="mibi-action-list__item">
+        <a class="mibi-action-link" (click)="onClick($event)">
+            <mat-icon [inline]="true" class="mibi-action-link__icon">{{icon}}</mat-icon>
+            <span class="mibi-action-link__label">{{label}}</span>
         </a>
     </li>
 </ng-template>
 
 <ng-template #uploadActionItem let-icon="icon" let-onClick="onExecute" let-label="label">
-    <li mat-button class="mibi-action-item">
-        <mibi-upload-container class="mibi-action-item__link" fxLayout="row" fxLayoutAlign=" none" (onFileUpload)="onClick($event)" fxLayoutGap="2px">
-            <mibi-upload-action-item #uploadChild fxLayout="row" fxLayoutAlign="center center">
-                <mat-icon class="mibi-action-item__icon mibi-action-item__upload-icon">{{icon}}</mat-icon>
-                <span class="mibi-action-item__label  ">{{label}}</span>
+    <li mat-button class="mibi-action-list__item">
+        <mibi-upload-container (onFileUpload)="onClick($event)">
+            <mibi-upload-action-item #uploadChild>
+                <a class="mibi-action-link">
+                    <mat-icon [inline]="true" class="mibi-action-link__icon">{{icon}}</mat-icon>
+                    <span class="mibi-action-link__label">{{label}}</span>
+                </a>
             </mibi-upload-action-item>
         </mibi-upload-container>
-
     </li>
 </ng-template>
 
-
-<ul class="mibi-action-item-list" fxFlexFill fxLayout="row" fxLayoutAlign="end none" [ngClass]="{
-    'primary-color-light': hasElements,
-    'primary-color': !hasElements,
-    'mibi-action-item-list--foreground': hasElements
-  }">
-    <ng-template #actionList></ng-template>
-</ul>
+<mibi-layout-box>
+    <div class="mibi-app-bar-bottom">
+        <div class="mibi-app-bar-bottom__content">
+            <ul class="mibi-action-list">
+                <ng-template #actionList></ng-template>
+            </ul>
+        </div>
+    </div>
+</mibi-layout-box>

@@ -1,2 +1,8 @@
-<hot-table fxFlexFill fxLayout="column" fxLayoutAlign="center center" [data]="vm.data" [settings]="settings" [afterChange]="onAfterChange">
-</hot-table>
+<mibi-layout-box  x-overflow-handling="enabled"  y-overflow-handling="enabled">
+
+    <div #hotTableContainer class="mibi-hot-table">
+        <hot-table [data]="vm.data" [settings]="settings" [afterChange]="onAfterChange">
+        </hot-table>
+    </div>
+
+</mibi-layout-box>

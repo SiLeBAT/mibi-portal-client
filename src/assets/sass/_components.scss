@@ -2,18 +2,25 @@
 
 /*
 The name is explicit here. This folder contains all the components used to build your pages like your buttons, forms, swipers, popups, and so on.
+(crossover component dependent styles and variables)
 */
-.alphabetic-list {
-  list-style-type: lower-alpha;
-}
 
 // Handsontable
-table thead th {
-  word-wrap: break-all;
+@mixin handsontable-text() {
+  font-size: 12px;
+  line-height: normal;
+  word-wrap: break-word;
 }
 
 .handsontable th {
+  @include handsontable-text();
+
+  line-height: 1.5;
   white-space: normal;
+}
+
+.handsontable td {
+  @include handsontable-text();
 }
 
 .handsontable td.warn {
@@ -49,24 +56,22 @@ table thead th {
 .ht_master .wtHolder {
   overflow: auto;
 }
+
 // Tooltipster
 $tooltip-tip-color: $surface-color;
 $tooltip-error-color: $error-color;
 $tooltip-warning-color: $secondary-color;
 $tooltip-info-color: $primary-color;
 
-ul {
-  padding-left: 0;
-}
-
-ul li {
-  list-style-position: inside;
+*[id^='tooltipster-'] ul {
+  padding-left: $mibi-double-space;
 }
 
 .tooltipster-box {
   border-radius: 5px;
   box-shadow: 0 0 14px rgba(0, 0, 0, 0.3);
   border: 1px solid $on-background-color;
+  margin: $mibi-single-space;
 }
 
 .tooltipster-content {
@@ -249,16 +254,16 @@ ul li {
 .tooltipster-sidetip.tooltipster-warning.tooltipster-left .tooltipster-arrow,
 .tooltipster-sidetip.tooltipster-warning.tooltipster-right .tooltipster-arrow {
   height: 14px;
-  margin-left: $mibi-halfSpace;
-  margin-top: -$mibi-doubleSpace;
+  margin-left: $mibi-half-space;
+  margin-top: -$mibi-double-space;
   width: 5px;
 }
 
 .tooltipster-sidetip.tooltipster-info.tooltipster-left .tooltipster-arrow,
 .tooltipster-sidetip.tooltipster-info.tooltipster-right .tooltipster-arrow {
   height: 17px;
-  margin-left: $mibi-halfSpace;
-  margin-top: -$mibi-doubleSpace;
+  margin-left: $mibi-half-space;
+  margin-top: -$mibi-double-space;
   width: 10px;
 }
 
@@ -266,21 +271,21 @@ ul li {
 .tooltipster-sidetip.tooltipster-tip.tooltipster-right .tooltipster-arrow {
   height: 18px;
   margin-left: 2px;
-  margin-top: -$mibi-doubleSpace;
-  width: $mibi-singleSpace;
+  margin-top: -$mibi-double-space;
+  width: $mibi-single-space;
 }
 
-// Buttons
-button {
-  text-transform: uppercase;
-}
+// Actions
+$mibi-action-color: mat-color($primary-palette, 300);
 
-// Router outlet
-router-outlet ~ * {
-  position: absolute;
-  width: 100%;
-}
+@mixin app-bar-link() {
+  font-size: 1rem;
+  line-height: 1rem;
+  text-decoration: none;
+  color: $on-primary-color;
 
-.mibi-institute-select {
-  min-width: fit-content !important;
+  &:hover,
+  &:active {
+    color: $surface-color;
+  }
 }

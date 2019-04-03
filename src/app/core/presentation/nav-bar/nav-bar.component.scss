@@ -1,11 +1,35 @@
 @import "../../../../assets/sass/abstracts";
+@import "../../../../assets/sass/components";
 
-.mibi-navbar__link {
+.hidden {
+  display: none !important;
+}
+
+.mibi-nav-bar {
+  height: 100%;
+  padding-top: $mibi-half-space;
+  display: flex;
+  justify-content: space-between;
+}
+
+.mibi-nav-bar__item {
+  flex: 0 1 auto;
+}
+
+.mibi-nav-bar-link {
   @include app-bar-link();
-  @include nav-bar-link();
+
+  padding: $mibi-single-space;
+  height: 100%;
+  display: flex;
+  align-items: center;
 
   &--active {
-    background-color: mat-color($primary-palette, $app-bar-action-item-background);
-    z-index: 8;
+    background-color: $mibi-action-color;
   }
+}
+
+.mibi-nav-bar-link__text {
+  flex: 0 1 auto;
+  padding-bottom: $mibi-half-space;
 }

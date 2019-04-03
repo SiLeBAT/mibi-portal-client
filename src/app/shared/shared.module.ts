@@ -16,6 +16,7 @@ import { DialogComponent } from './presentation/dialog/dialog.component';
 import { CompileDirective } from './directive/compile.directive';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { UploadActionItemComponent } from './presentation/upload-action-item/upload-action-item.component';
+import { LayoutBoxComponent } from './presentation/layout-box/layout-box.component';
 
 @NgModule({
     imports: [
@@ -37,7 +38,8 @@ import { UploadActionItemComponent } from './presentation/upload-action-item/upl
         UploadContainerComponent,
         UploadActionItemComponent,
         SingleCenterCardLayoutComponent,
-        WallOfTextLayoutComponent
+        WallOfTextLayoutComponent,
+        LayoutBoxComponent
     ],
     exports: [
         CompileDirective,
@@ -46,7 +48,8 @@ import { UploadActionItemComponent } from './presentation/upload-action-item/upl
         UploadComponent,
         UploadContainerComponent,
         SingleCenterCardLayoutComponent,
-        WallOfTextLayoutComponent
+        WallOfTextLayoutComponent,
+        LayoutBoxComponent
     ],
     entryComponents: [DialogComponent]
 })

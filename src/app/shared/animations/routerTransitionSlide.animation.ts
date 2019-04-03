@@ -1,3 +1,5 @@
+// not tested with actual css layout
+
 import { trigger, query, group, animate, style, transition } from '@angular/animations';
 
 export const routerTransition = trigger('routerTransition', [

@@ -4,7 +4,8 @@ import { UserActionViewModelConfiguration, UserActionComponent } from '../../../
 
 @Component({
     selector: 'mibi-generic-action-item',
-    templateUrl: './generic-action-item.component.html'
+    templateUrl: './generic-action-item.component.html',
+    styleUrls: ['./generic-action-item.component.scss']
 })
 export class GenericActionItemComponent implements UserActionComponent {
 

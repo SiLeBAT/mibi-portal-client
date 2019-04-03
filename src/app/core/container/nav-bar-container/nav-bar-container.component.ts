@@ -11,7 +11,7 @@ import * as userActions from '../../../user/state/user.actions';
     template: `<mibi-nav-bar
     [hasEntries$]="hasEntries$"
     [currentUser$]="currentUser$"
-    (onLogout)="onLogout()" fxFlexFill fxLayout="row" fxLayoutAlign=" none">
+    (onLogout)="onLogout()">
     </mibi-nav-bar>`
 })
 export class NavBarContainerComponent implements OnInit {

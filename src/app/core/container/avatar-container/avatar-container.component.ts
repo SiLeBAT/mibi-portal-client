@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
     template: `<mibi-avatar
     [currentUser$]="currentUser$"
     (onProfile)="onProfile()"
-    (onLogout)="onLogout()"  fxFlexFill fxLayout="row" fxLayoutAlign=" end">
+    (onLogout)="onLogout()">
     </mibi-avatar>`
 })
 export class AvatarContainerComponent implements OnInit {

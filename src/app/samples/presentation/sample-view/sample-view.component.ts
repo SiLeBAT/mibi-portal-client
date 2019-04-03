@@ -5,8 +5,7 @@ import { Store } from '@ngrx/store';
 import { UserActionType } from '../../../shared/model/user-action.model';
 @Component({
     selector: 'mibi-sample-view',
-    templateUrl: './sample-view.component.html',
-    styleUrls: ['./sample-view.component.scss']
+    templateUrl: './sample-view.component.html'
 })
 export class SampleViewComponent implements OnInit {
 

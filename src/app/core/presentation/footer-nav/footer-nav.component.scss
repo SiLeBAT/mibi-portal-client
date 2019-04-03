@@ -1,0 +1,25 @@
+@import "../../../../assets/sass/abstracts";
+@import "~@angular/material/theming";
+
+.mibi-footer-nav {
+  height: 100%;
+}
+
+.mibi-footer-nav-list {
+  height: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.mibi-footer-nav-list__item {
+  flex: 1 1 auto;
+}
+
+.mibi-footer-nav-link {
+  height: 100%;
+  display: block;
+}

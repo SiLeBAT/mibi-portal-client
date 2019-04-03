@@ -1,9 +1,11 @@
+@import "~@angular/material/theming";
+@import "./themes";
+
 /*
 in here, put all your boilerplate code. By boilerplate, I mean all CSS code you’re gonna write each time you’ll start a new project.
 For example: typography rules, animations, utilities (by utilities, I mean classes like margin-right-large , text-center , …) and so on.
+(component independent global html styles)
 */
-@import "~@angular/material/theming";
-@import "./themes";
 
 /*
 Typography
@@ -30,7 +32,7 @@ MD defaults:
   $display-1:     mat-typography-level(34px, 40px, 400),
   $headline:      mat-typography-level(24px, 32px, 400),
   $title:         mat-typography-level(20px, 32px, 500),
-  $subheading-2:  mat-typography-level($mibi-doubleSpace, 28px, 400),
+  $subheading-2:  mat-typography-level($mibi-double-space, 28px, 400),
   $subheading-1:  mat-typography-level(15px, 24px, 400),
   $body-2:        mat-typography-level(14px, 24px, 500),
   $body-1:        mat-typography-level(14px, 20px, 400),
@@ -40,20 +42,21 @@ MD defaults:
   $input:         mat-typography-level(inherit, 1.125, 400)
 */
 
-$mibi-typography: mat-typography-config(
-  $font-family: $mibi-font-family
-);
-
-.hidden {
-  display: none !important;
+html {
+  box-sizing: border-box;
 }
 
-.primary-color {
-  background-color: $primary-color;
-  color: $on-primary-color;
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
 }
 
-.showOutline {
-  outline-style: solid;
-  outline-offset: 27px;
+button {
+  text-transform: uppercase;
+}
+
+.inner-list {
+  text-indent: 20px;
+  list-style-position: outside;
 }

@@ -1,40 +1,55 @@
 @import "../../../../assets/sass/abstracts";
+@import "../../../../assets/sass/components";
 @import "~@angular/material/theming";
 
+.mibi-app-bar {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.mibi-app-bar__top {
+  flex: 0 1 auto;
+  height: min-content;
+}
+
 .mibi-app-bar-top {
-  @include mat-elevation(4);
-
-  height: $mibi-nonupleSpace;
-
-  &.mibi-app-bar-top--small {
-    height: $mibi-sextupleSpace;
-  }
+  overflow: auto;
+  display: flex;
+  background-color: $primary-color;
 }
 
-.mibi-app-bar-top__main {
-  padding-top: $mibi-halfSpace;
+.mibi-app-bar-top__left {
+  flex: 0 1 auto;
 }
 
-.mibi-app-bar-top__title {
-  color: $on-primary-color;
-  text-decoration: none;
-  font-size: 1.1rem;
+.mibi-app-title {
+  @include app-bar-link();
+
   text-align: center;
-  margin-top: $mibi-singleSpace;
-  min-width: 180px;
-  min-width: max-content;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: $mibi-single-space;
+  padding-left: $mibi-double-space;
+  font-size: 1.1rem;
+  line-height: 1;
 }
 
-.mibi-app-bar-top__title:visited {
-  color: $on-primary-color;
+.mibi-app-title__text {
+  flex: 0 1 auto;
 }
 
-.mibi-app-bar-top__title:hover,
-.mibi-app-bar-top__title:active {
-  color: $surface-color;
+.mibi-app-bar-top__center {
+  flex: 0 1 auto;
+  margin-left: auto;
 }
 
-.mibi-app-bar-top__avatar {
-  min-width: 150px;
-  min-width: max-content;
+.mibi-app-bar-top__right {
+  flex: 0 1 10%;
+}
+
+.mibi-app-bar__bottom {
+  flex: 0 1 auto;
+  overflow: auto;
 }

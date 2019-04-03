@@ -6,7 +6,8 @@ import { DialogComponent } from '../../../shared/presentation/dialog/dialog.comp
 
 @Component({
     selector: 'mibi-new-dialog',
-    templateUrl: './dialog.component.html'
+    templateUrl: './dialog.component.html',
+    styleUrls: ['./dialog.component.scss']
 })
 export class NewDialogComponent implements OnInit {
     config: DialogConfiguration;

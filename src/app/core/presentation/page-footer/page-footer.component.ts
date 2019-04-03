@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
     selector: 'mibi-page-footer',
@@ -6,8 +6,6 @@ import { Component, OnInit, Input } from '@angular/core';
     styleUrls: ['./page-footer.component.scss']
 })
 export class PageFooterComponent implements OnInit {
-
-    @Input() supportContact: string;
 
     constructor() { }
 
