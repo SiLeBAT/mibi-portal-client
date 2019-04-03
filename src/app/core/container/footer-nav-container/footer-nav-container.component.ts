@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 
 @Component({
-    selector: 'mibi-page-footer-container',
-    template: `<mibi-page-footer [supportContact]="supportContact" fxFlexFill></mibi-page-footer>`
+    selector: 'mibi-footer-nav-container',
+    template: `<mibi-footer-nav [supportContact]="supportContact"></mibi-footer-nav>`
 })
-export class PageFooterContainerComponent implements OnInit {
+export class FooterNavContainerComponent implements OnInit {
 
     supportContact: string;
 

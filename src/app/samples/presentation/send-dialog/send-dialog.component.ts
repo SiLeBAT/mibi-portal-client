@@ -10,7 +10,8 @@ import { State } from '../../../state/app.state';
 
 @Component({
     selector: 'mibi-send-dialog',
-    templateUrl: './send-dialog.component.html'
+    templateUrl: './send-dialog.component.html',
+    styleUrls: ['./send-dialog.component.scss']
 })
 export class SendDialogComponent implements OnInit {
     config: SendDialogConfiguration;

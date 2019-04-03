@@ -4,7 +4,8 @@ import { DialogContent } from '../../../core/model/dialog.model';
 
 @Component({
     selector: 'mibi-dialog',
-    templateUrl: './dialog.component.html'
+    templateUrl: './dialog.component.html',
+    styleUrls: ['./dialog.component.scss']
 })
 export class DialogComponent implements OnInit {
 

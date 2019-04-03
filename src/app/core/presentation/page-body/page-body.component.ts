@@ -42,6 +42,5 @@ export class PageBodyComponent implements OnInit, OnDestroy {
         if (event.fromState === 'in') {
             this.onAnimationDone.emit(event);
         }
-
     }
 }

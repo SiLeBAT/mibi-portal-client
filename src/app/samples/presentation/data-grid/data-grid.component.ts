@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, ViewChild, Output, EventEmitter, OnInit, ElementRef, AfterViewChecked } from '@angular/core';
 import { HotTableComponent } from '@handsontable/angular';
 import 'tooltipster';
 import * as Handsontable from 'handsontable';
@@ -75,10 +75,10 @@ export interface IFormCellViewModel {
 
 @Component({
     selector: 'mibi-data-grid',
-    templateUrl: './data-grid.component.html'
+    templateUrl: './data-grid.component.html',
+    styleUrls: ['./data-grid.component.scss']
 })
-export class DataGridComponent implements OnInit {
-
+export class DataGridComponent implements OnInit, AfterViewChecked {
     settings: IHotSettings;
 
     @Input() colConfig: ColConfig[];
@@ -89,6 +89,8 @@ export class DataGridComponent implements OnInit {
     @Input() set viewModel(vm: IFormViewModel) {
         this.vm = _.cloneDeep(vm);
     }
+
+    @ViewChild('hotTableContainer') private containerElement: ElementRef;
 
     vm: IFormViewModel;
     private ToolTips: { [key: number]: ToolTip } = {};
@@ -212,5 +214,30 @@ export class DataGridComponent implements OnInit {
         } else {
             return Handsontable.renderers.TextRenderer(instance, td, row, col, prop, value, cp);
         }
+    }
+
+    ngAfterViewChecked(): void {
+        // the handsontable updates its size if the page size is adjusted i.e. the <body> onresize event occurs
+        // it does not respond to size changes of its parent container, so the handsontable must be updated manually
+        // e.g. displaying the mibi-banner resizes the tables parent container but not the page itself
+        this.updateHotTableSize();
+    }
+
+    private updateHotTableSize() {
+        const containerRect = this.containerElement.nativeElement.getBoundingClientRect();
+
+        // use first handsontable element with defined size
+        const hotTableRect = this.containerElement.nativeElement.firstChild.firstChild.getBoundingClientRect();
+
+        if (hotTableRect.height !== containerRect.height || hotTableRect.width !== containerRect.width) {
+            this.hotTableComponent.updateHotTable({});
+        }
+    }
+
+    // called by the mouseenter event
+    // this is necessary to rearrange the scroll bar because handson table does not
+    // render properly after the page navigation animation
+    updateHotTable() {
+        this.hotTableComponent.updateHotTable({});
     }
 }

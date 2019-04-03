@@ -5,7 +5,8 @@ import { DialogData } from '../../model/dialog.model';
 
 @Component({
     selector: 'mibi-message-dialog',
-    templateUrl: './message-dialog.component.html'
+    templateUrl: './message-dialog.component.html',
+    styleUrls: ['./message-dialog.component.scss']
 })
 export class MessageDialogComponent implements OnInit {
     config: MessageDialogConfiguration;

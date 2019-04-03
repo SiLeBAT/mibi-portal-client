@@ -1,13 +1,14 @@
 @import '../../../../assets/sass/abstracts';
 
-.app-name {
+.mibi-home-title {
   color: $primary-color;
   text-align: center;
   font-size: 4em;
+  line-height: normal;
   font-style: bold;
   margin-bottom: 5%;
 }
 
-.logo {
+.mibi-home-logo {
   width: 14rem;
 }

@@ -1,0 +1,8 @@
+<div class="mibi-box" 
+  [ngClass]="{
+    'mibi-box__width-limited': xOverflowHandling === 'enabled',
+    'mibi-box__height-limited': yOverflowHandling === 'enabled'}">
+  <div>
+    <ng-content></ng-content>
+  </div>
+</div>

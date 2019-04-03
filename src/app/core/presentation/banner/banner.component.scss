@@ -1,13 +1,30 @@
 @import "../../../../assets/sass/abstracts";
 
 .mibi-banner {
-  padding: $mibi-halfSpace;
-  min-height: $mibi-quintupleSpace;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: center;
+  background-color: $background-color;
 }
 
-.mibi-banner__icon {
-  margin-right: $mibi-doubleSpace;
-  line-height: 1.5;
+.mibi-banner__message {
+  flex: 0 1 auto;
+}
+
+.mibi-banner__actions {
+  align-self: stretch;
+  flex: 0 1 auto;
+}
+
+.mibi-banner-message {
+  display: flex;
+  align-items: center;
+}
+
+.mibi-banner-message__icon {
+  flex: 0 0 auto;
+  margin: $mibi-single-space;
 
   &--error {
     color: $error-color;
@@ -22,6 +39,18 @@
   }
 }
 
-.mibi-banner__message {
-  line-height: 2.5;
+.mibi-banner-message__text {
+  flex: 0 1 auto;
+  padding: $mibi-single-space;
+}
+
+.mibi-banner-actions {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  flex-flow: row wrap;
+}
+
+.mibi-banner-actions__item {
+  flex: 1 1 auto;
 }
