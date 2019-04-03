@@ -1,22 +1,19 @@
 @import "../../../../assets/sass/abstracts";
 @import "~@angular/material/theming";
 
-.mibi-main-footer {
+.mibi-footer {
   @include mat-elevation(4);
 
+  height: 100%;
+  display: flex;
   border-top: 2px solid $primary-color;
   background-color: $surface-color;
-  padding-left: 1rem;
-  padding-right: 1rem;
 }
 
-.mibi-main-footer__links {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  text-align: center;
+.mibi-footer__left {
+  flex: 0 1 auto;
 }
 
-.mibi-main-footer__link {
-  display: inline-block;
+.mibi-footer__right {
+  flex: 1 1 auto;
 }

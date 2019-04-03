@@ -1,26 +1,47 @@
 @import "../../../../assets/sass/abstracts";
 
-$barHeight: $mibi-nonupleSpace;
-$topBarHeight: $barHeight;
-$bottomBarHeight: $mibi-septupleSpace;
-
-.mibi-page-header {
-  position: fixed;
-  width: 100vw;
-  z-index: 999;
-}
-
-.mibi-page-footer {
-  position: fixed;
-  width: 100%;
-  height: $bottomBarHeight;
-  bottom: 0;
-  z-index: 999;
-}
-
-.mibi-page-body {
+.mibi-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
   overflow: auto;
-  margin-top: $topBarHeight;
-  margin-bottom: $bottomBarHeight;
-  width: 100%;
+}
+
+.mibi-page__header {
+  @include mat-elevation(4);
+
+  z-index: 999;
+  flex: 0 0 auto;
+  height: min-content;
+  overflow: auto;
+}
+
+.mibi-page__main {
+  flex: 1 1 auto;
+  height: min-content;
+  overflow: auto;
+}
+
+.mibi-main-page {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.mibi-main-page__body {
+  flex: 1 1 auto;
+  height: min-content;
+  overflow: auto;
+}
+
+// @media only screen and (min-width:400px){
+//   .mibi-main-page__body{
+//     flex-shrink: 0;
+//   }
+// }
+
+.mibi-main-page__footer {
+  flex: 0 0 auto;
+  height: min-content;
+  overflow: auto;
 }

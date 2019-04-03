@@ -1,1 +1,8 @@
-<span class="version-display__text mat-small" [ngClass]="tooltipClassName" #entry>Letzte Änderung: {{lastChange$ | async | amDateFormat:'DD.MM.YYYY' }}</span>
+<mibi-layout-box>
+
+    <div class="last-change">
+        <div class="last-change__content mat-small" [ngClass]="tooltipClassName" #entry>Letzte Änderung:
+            {{lastChange$ | async | amDateFormat:'DD.MM.YYYY' }}</div>
+    </div>
+
+</mibi-layout-box>

@@ -1,5 +1,44 @@
 @import "../../../../assets/sass/abstracts";
 
-.mibi-spinner-container {
-  margin-top: $mibi-octupleSpace;
+.mibi-page-body {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+.mibi-page-body__banner {
+  flex: 0 0 auto;
+  height: min-content;
+  min-height: 0;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  overflow: visible;
+}
+
+.mibi-page-body__main {
+  flex: 1 1 auto;
+  height: min-content;
+  min-height: 0;
+}
+
+.mibi-banner {
+  display: flex;
+  overflow: auto;
+
+  @include mat-elevation(3);
+}
+
+.mibi-banner__content {
+  flex: 1 1 auto;
+}
+
+.mibi-spinner {
+  height: 100%;
+  overflow: hidden;
+}
+
+.mibi-spinner__content {
+  margin: $mibi-octuple-space auto;
 }

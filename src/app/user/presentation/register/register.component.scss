@@ -4,7 +4,7 @@ em {
   float: right;
   color: $error-color;
   padding-left: 5%;
-  margin-bottom: $mibi-singleSpace;
+  margin-bottom: $mibi-single-space;
   text-align: right;
 }
 
@@ -27,4 +27,9 @@ em[hidden] {
   & > a {
     text-decoration: none;
   }
+}
+
+.mibi-institute-select {
+  // needs overflow handling if activated
+  // min-width: fit-content !important;
 }

@@ -43,5 +43,6 @@ export class PageBodyComponent implements OnInit, OnDestroy {
             this.onAnimationDone.emit(event);
         }
 
+        // window.dispatchEvent(new Event('resize'));
     }
 }
