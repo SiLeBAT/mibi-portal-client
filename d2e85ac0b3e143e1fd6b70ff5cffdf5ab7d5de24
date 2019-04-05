@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a12073f6_371ea7ba",
+        "filename": "src/app/core/presentation/action-item-list/action-item-list.component.scss",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1013694
+      },
+      "writtenOn": "2019-04-05T13:39:09Z",
+      "side": 1,
+      "message": "Please remove commented out code",
+      "range": {
+        "startLine": 30,
+        "startChar": 16,
+        "endLine": 30,
+        "endChar": 22
+      },
+      "revId": "d2e85ac0b3e143e1fd6b70ff5cffdf5ab7d5de24",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "65456095_5af4b48a",
+        "filename": "src/app/core/presentation/last-change-display/last-change-display.component.html",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1013694
+      },
+      "writtenOn": "2019-04-05T13:39:09Z",
+      "side": 1,
+      "message": "mibi-last-change",
+      "range": {
+        "startLine": 3,
+        "startChar": 16,
+        "endLine": 3,
+        "endChar": 20
+      },
+      "revId": "d2e85ac0b3e143e1fd6b70ff5cffdf5ab7d5de24",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7bdc9e0e_bf5de356",
+        "filename": "src/app/core/presentation/page-body/page-body.component.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1013694
+      },
+      "writtenOn": "2019-04-05T13:39:09Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 46,
+        "startChar": 18,
+        "endLine": 46,
+        "endChar": 31
+      },
+      "revId": "d2e85ac0b3e143e1fd6b70ff5cffdf5ab7d5de24",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cbcc089e_6db3b8bc",
+        "filename": "src/app/shared/animations/routerTransitionSlide.animation.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1013694
+      },
+      "writtenOn": "2019-04-05T13:39:09Z",
+      "side": 1,
+      "message": "?",
+      "range": {
+        "startLine": 1,
+        "startChar": 29,
+        "endLine": 1,
+        "endChar": 30
+      },
+      "revId": "d2e85ac0b3e143e1fd6b70ff5cffdf5ab7d5de24",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9736d575_7638ad2f",
+        "filename": "src/app/user/presentation/register/register.component.scss",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1013694
+      },
+      "writtenOn": "2019-04-05T13:39:09Z",
+      "side": 1,
+      "message": "?",
+      "range": {
+        "startLine": 34,
+        "startChar": 29,
+        "endLine": 34,
+        "endChar": 38
+      },
+      "revId": "d2e85ac0b3e143e1fd6b70ff5cffdf5ab7d5de24",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5149e4fe_d8631e6a",
+        "filename": "src/assets/sass/_abstracts.scss",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1013694
+      },
+      "writtenOn": "2019-04-05T13:39:09Z",
+      "side": 1,
+      "message": "If no longer necessary, please remove",
+      "range": {
+        "startLine": 34,
+        "startChar": 14,
+        "endLine": 34,
+        "endChar": 20
+      },
+      "revId": "d2e85ac0b3e143e1fd6b70ff5cffdf5ab7d5de24",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e0fc48a7_2f8e4715",
+        "filename": "src/assets/sass/_abstracts.scss",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1013694
+      },
+      "writtenOn": "2019-04-05T13:39:09Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 58,
+        "startChar": 8,
+        "endLine": 58,
+        "endChar": 13
+      },
+      "revId": "d2e85ac0b3e143e1fd6b70ff5cffdf5ab7d5de24",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
