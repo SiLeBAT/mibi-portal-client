@@ -56,7 +56,7 @@ export class BannerContainerComponent implements OnInit {
 
         },
         sendFailure: {
-            message: 'Es gab einen Fehler beim Versenden der Datei and das MiBi-Portal.',
+            message: 'Es gab einen Fehler beim Versenden der Datei an das MiBi-Portal.',
             type: AlertType.ERROR,
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
 
