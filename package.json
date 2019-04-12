@@ -80,8 +80,8 @@
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^0.13.6",
-    "@angular/cli": "^6.2.6",
+    "@angular-devkit/build-angular": "^0.13.8",
+    "@angular/cli": "^7.3.8",
     "@angular/compiler-cli": "^7.2.6",
     "@angular/language-service": "^6.1.10",
     "@ngrx/schematics": "^6.1.2",
