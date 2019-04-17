@@ -3,7 +3,7 @@
 .mibi-card-layout {
   display: flex;
   justify-content: center;
-  align-items: start;
+  align-items: flex-start;
 }
 
 .mibi-card-layout__content {
@@ -18,4 +18,8 @@
 .mibi-card-title {
   font-size: 2em;
   line-height: normal;
+}
+
+.mibi-mat-card-title {
+  margin-left: -8px;
 }
