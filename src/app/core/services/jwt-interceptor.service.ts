@@ -24,7 +24,7 @@ export class JwtInterceptor implements HttpInterceptor {
                     this.store.dispatch(new coreActions.DisplayBanner({ predefined: 'noAuthorizationOrActivation' }));
                 }
             }
-            throw new ClientError('User token invalid.');
+            throw err;
         }));
     }
 }
