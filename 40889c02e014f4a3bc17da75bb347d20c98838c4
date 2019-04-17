@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b418ee79_f3a07995",
+        "filename": "src/app/core/container/banner-container/banner-container.component.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1015828
+      },
+      "writtenOn": "2019-04-17T08:48:48Z",
+      "side": 1,
+      "message": "Bindestrich",
+      "range": {
+        "startLine": 120,
+        "startChar": 109,
+        "endLine": 120,
+        "endChar": 129
+      },
+      "revId": "40889c02e014f4a3bc17da75bb347d20c98838c4",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "00e8a738_244f0696",
+        "filename": "src/app/core/container/banner-container/banner-container.component.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1015828
+      },
+      "writtenOn": "2019-04-17T08:48:48Z",
+      "side": 1,
+      "message": "Bindestrich",
+      "revId": "40889c02e014f4a3bc17da75bb347d20c98838c4",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
