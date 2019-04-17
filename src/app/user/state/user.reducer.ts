@@ -2,18 +2,21 @@ import * as fromRoot from '../../state/app.state';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { UserActions, UserActionTypes } from './user.actions';
 import { TokenizedUser } from '../model/user.model';
+import { InstitutionDTO } from '../model/institution.model';
 export const STATE_SLICE_NAME = 'user';
 
-export interface IState extends fromRoot.State {
+export interface State extends fromRoot.State {
     user: IUserState;
 }
 
 export interface IUserState {
     currentUser: TokenizedUser | null;
+    institutes: InstitutionDTO[];
 }
 
 const initialState: IUserState = {
-    currentUser: retrieveUserFromLocalStorage()
+    currentUser: null,
+    institutes: []
 };
 
 // SELECTORS
@@ -24,9 +27,21 @@ export const getCurrentUser = createSelector(
     state => state.currentUser
 );
 
+export const getInstitutions = createSelector(
+    getUserFeatureState,
+    state => state.institutes
+);
+
 // REDUCER
 export function reducer(state: IUserState = initialState, action: UserActions): IUserState {
     switch (action.type) {
+        case UserActionTypes.PopulateInstitutions:
+            return {
+                ...state,
+                ...{
+                    institutes: action.payload
+                }
+            };
         case UserActionTypes.LoginUserSuccess:
             return {
                 ...state,
@@ -44,14 +59,4 @@ export function reducer(state: IUserState = initialState, action: UserActions): 
         default:
             return state;
     }
-}
-
-// Utilities
-
-function retrieveUserFromLocalStorage(): TokenizedUser | null {
-    const cu: string | null = localStorage.getItem('currentUser');
-    if (!cu) {
-        return null;
-    }
-    return JSON.parse(cu);
 }

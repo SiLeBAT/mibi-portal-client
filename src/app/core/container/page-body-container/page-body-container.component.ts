@@ -15,15 +15,15 @@ export class PageBodyContainerComponent implements OnInit {
     isBusy$: Observable<boolean>;
     isBanner$: Observable<boolean>;
     constructor(
-        private store: Store<fromCore.State>) { }
+        private store$: Store<fromCore.State>) { }
 
     ngOnInit() {
-        this.isBusy$ = this.store.pipe(select(fromCore.isBusy));
-        this.isBanner$ = this.store.pipe(select(fromCore.showBanner));
+        this.isBusy$ = this.store$.pipe(select(fromCore.isBusy));
+        this.isBanner$ = this.store$.pipe(select(fromCore.showBanner));
         this.supportContact = environment.supportContact;
     }
 
     onAnimationDone() {
-        this.store.dispatch(new coreActions.DestroyBanner());
+        this.store$.dispatch(new coreActions.DestroyBanner());
     }
 }

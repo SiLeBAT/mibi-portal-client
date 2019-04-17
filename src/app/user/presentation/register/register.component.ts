@@ -1,16 +1,9 @@
 import { Component, OnInit, ChangeDetectorRef, Output, EventEmitter, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { DefaultInstitution } from '../../../user/model/institution.model';
+import { Institution } from '../../../user/model/institution.model';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
-
-export interface RegistrationDetails {
-    email: string;
-    firstName: string;
-    lastName: string;
-    instituteName: string;
-    password: string;
-}
+import { Credentials } from '../../model/user.model';
 
 @Component({
     selector: 'mibi-register',
@@ -19,10 +12,10 @@ export interface RegistrationDetails {
 })
 export class RegisterComponent implements OnInit {
     registerForm: FormGroup;
-    @Input() institutions: DefaultInstitution[];
+    @Input() institutions: Institution[];
     private pwStrength: number;
     @Output() register = new EventEmitter();
-    filteredOptions: Observable<DefaultInstitution[]>;
+    filteredOptions: Observable<Institution[]>;
     constructor(
         private changeRef: ChangeDetectorRef) {
         this.pwStrength = -1;
@@ -53,11 +46,14 @@ export class RegisterComponent implements OnInit {
             );
     }
 
-    private _filter(value: string): DefaultInstitution[] {
+    private _filter(value: string): Institution[] {
         try {
             const filterValue = value.toLowerCase();
 
-            return this.institutions.filter(inst => inst.name1.toLowerCase().includes(filterValue));
+            return this.institutions.filter(inst => {
+                const completeName = inst.toString();
+                return completeName.toLowerCase().includes(filterValue);
+            });
         } catch (err) {
             return [];
         }
@@ -65,11 +61,11 @@ export class RegisterComponent implements OnInit {
 
     onRegister() {
         if (this.registerForm.valid) {
-            const details: RegistrationDetails = {
+            const details: Credentials = {
                 email: this.registerForm.value.email,
                 firstName: this.registerForm.value.firstName,
                 lastName: this.registerForm.value.lastName,
-                instituteName: this.registerForm.value.institution,
+                instituteId: this.registerForm.value.institution._id,
                 password: this.registerForm.value.password1
 
             };

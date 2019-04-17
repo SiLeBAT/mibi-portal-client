@@ -9,7 +9,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DefaultPageLayoutComponent } from './presentation/default-page-layout/default-page-layout.component';
 import { PageBodyComponent } from './presentation/page-body/page-body.component';
-import { PageHeaderComponent } from './presentation/page-header/page-header.component';
 import { PageFooterComponent } from './presentation/page-footer/page-footer.component';
 import { StoreModule } from '@ngrx/store';
 import { reducer, STATE_SLICE_NAME } from './state/core.reducer';
@@ -35,7 +34,11 @@ import { EffectsModule } from '@ngrx/effects';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { AvatarComponent } from './presentation/avatar/avatar.component';
 import { AvatarContainerComponent } from './container/avatar-container/avatar-container.component';
-import { PageFooterContainerComponent } from './container/page-footer-container/page-footer-container.component';
+import { FooterNavContainerComponent } from './container/footer-nav-container/footer-nav-container.component';
+import { NewDialogComponent } from './presentation/dialog/dialog.component';
+import { MatDialogModule } from '@angular/material';
+import { MessageDialogComponent } from './presentation/message-dialog/message-dialog.component';
+import { FooterNavComponent } from './presentation/footer-nav/footer-nav.component';
 
 @NgModule({
     imports: [
@@ -53,12 +56,13 @@ import { PageFooterContainerComponent } from './container/page-footer-container/
         MatMenuModule,
         MatIconModule,
         MatToolbarModule,
+        MatDialogModule,
         RouterModule.forChild([]),
         StoreModule.forFeature(STATE_SLICE_NAME, reducer),
         EffectsModule.forFeature([CoreEffects])
     ],
     declarations: [
-        PageFooterContainerComponent,
+        FooterNavContainerComponent,
         AvatarComponent,
         AvatarContainerComponent,
         GenericActionItemComponent,
@@ -73,10 +77,12 @@ import { PageFooterContainerComponent } from './container/page-footer-container/
         DefaultPageLayoutComponent,
         PageBodyComponent,
         PageBodyContainerComponent,
-        PageHeaderComponent,
         PageFooterComponent,
         BannerComponent,
-        BannerContainerComponent
+        BannerContainerComponent,
+        NewDialogComponent,
+        MessageDialogComponent,
+        FooterNavComponent
     ],
     exports: [
         HomeComponent,
@@ -84,9 +90,11 @@ import { PageFooterContainerComponent } from './container/page-footer-container/
         FormsModule,
         ReactiveFormsModule,
         DefaultPageLayoutComponent,
-        BannerContainerComponent
+        BannerContainerComponent,
+        NewDialogComponent,
+        MessageDialogComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    entryComponents: [GenericActionItemComponent]
+    entryComponents: [GenericActionItemComponent, NewDialogComponent, MessageDialogComponent]
 })
 export class CoreModule { }

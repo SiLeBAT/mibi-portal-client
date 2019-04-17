@@ -6,21 +6,37 @@ import {
 export const SlideInOutAnimation = [
     trigger('slideInOut', [
         state('in', style({
-            'max-height': '100%', 'opacity': '1'
         })),
         state('out', style({
-            'max-height': '0px', 'opacity': '0'
+            // only display: none doesnt work with safari
+            // 'display' : 'none',
+            'visibility' : 'hidden',
+            'overflow': 'hidden',
+            'max-height': '0'
         })),
         transition('in => out', [group([
+            style({
+                'overflow': 'hidden',
+                'max-height': '100vh'
+            }),
             animate('400ms ease-in-out', style({
-                'max-height': '0px',
+                'max-height': '0',
+                'overflow': 'hidden',
                 'opacity': '0'
             }))
         ]
         )]),
-        transition('out => in', [group([
+        transition('* => in', [group([
+            style({
+                'visibility' : 'visible',
+                'overflow': 'hidden',
+                'max-height': '0',
+                'opacity': '0'
+            }),
             animate('400ms ease-in-out', style({
-                'max-height': '100%',
+                'visibility' : 'visible',
+                'max-height': '100vh',
+                'overflow': 'hidden',
                 'opacity': '1'
             }))
         ]

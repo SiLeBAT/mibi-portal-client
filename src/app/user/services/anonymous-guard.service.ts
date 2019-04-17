@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import * as fromUser from '../state/user.reducer';
 import * as fromSamples from '../../samples/state/samples.reducer';
+import * as userActions from '../state/user.actions';
 import { Store, select } from '@ngrx/store';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { TokenizedUser } from '../model/user.model';
@@ -11,10 +12,10 @@ import { map } from 'rxjs/operators';
 @Injectable({
     providedIn: 'root'
 })
-export class UserGuard implements CanActivate {
+export class AnonymousGuard implements CanActivate {
 
     constructor(private router: Router,
-        private store: Store<fromUser.IState>) { }
+        private store: Store<fromUser.State>) { }
 
     canActivate(activated: ActivatedRouteSnapshot, sanp: RouterStateSnapshot) {
 
@@ -28,6 +29,7 @@ export class UserGuard implements CanActivate {
                     const helper = new JwtHelperService();
                     const isExpired = !!helper.isTokenExpired(currentUser.token);
                     if (isExpired) {
+                        this.store.dispatch(new userActions.LogoutUser());
                         return isExpired;
                     }
                     if (hasEntries) {

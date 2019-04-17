@@ -1,42 +1,52 @@
 @import "../../../../assets/sass/abstracts";
+@import "../../../../assets/sass/components";
 
-.mibi-action-item-list {
-  width: 100%;
-  list-style: none;
-  padding-top: $mibi-halfSpace;
-
-  &--foreground {
-    z-index: 12;
-  }
-}
-
-.mibi-action-item {
-  margin-right: $mibi-singleSpace;
-}
-
-.mibi-action-item__label {
-  text-align: center;
-  padding: 0;
-  font-size: 1rem;
-}
-
-.mibi-action-item__link {
-  @include app-bar-link();
-
-  cursor: pointer;
-}
-
-.primary-color-light {
-  background-color: mat-color($primary-palette, $app-bar-action-item-background);
+.mibi-app-bar-bottom {
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+  background-color: $mibi-action-color;
   color: mat-color($primary-palette, darker-contrast);
 }
 
-.mibi-action-item__icon {
-  line-height: 1.2;
-  font-size: 1rem;
-  text-align: right;
+.mibi-app-bar-bottom__content {
+  flex: 0 1 auto;
 }
 
-.mibi-action-item__upload-icon {
-  margin-right: 2px;
+.mibi-action-list {
+  height: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.mibi-action-list__gap {
+  flex: 1 0 auto;
+}
+
+//.mibi-action-list__item {
+// see: generic-action-item-component
+// it is not possible to style the flex behaviour here because the item is wrapped by the generic-action-item-component
+//flex:0 1 auto;
+//}
+
+.mibi-action-link {
+  @include app-bar-link();
+
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: $mibi-half-space $mibi-single-space;
+  cursor: pointer;
+}
+
+.mibi-action-link__label {
+  flex: 0 1 auto;
+}
+
+.mibi-action-link__icon {
+  flex: 0 1 auto;
+  padding-right: $mibi-half-space / 2;
 }

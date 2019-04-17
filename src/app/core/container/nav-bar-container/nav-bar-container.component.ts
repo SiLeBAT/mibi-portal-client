@@ -11,7 +11,7 @@ import * as userActions from '../../../user/state/user.actions';
     template: `<mibi-nav-bar
     [hasEntries$]="hasEntries$"
     [currentUser$]="currentUser$"
-    (onLogout)="onLogout()" fxFlexFill fxLayout="row" fxLayoutAlign=" none">
+    (onLogout)="onLogout()">
     </mibi-nav-bar>`
 })
 export class NavBarContainerComponent implements OnInit {
@@ -20,19 +20,19 @@ export class NavBarContainerComponent implements OnInit {
     currentUser$: Observable<User | null>;
 
     constructor(
-        private store: Store<fromSamples.State>) { }
+        private store$: Store<fromSamples.State>) { }
 
     ngOnInit() {
 
-        this.hasEntries$ = this.store.pipe(select(fromSamples.hasEntries));
+        this.hasEntries$ = this.store$.pipe(select(fromSamples.hasEntries));
 
-        this.currentUser$ = this.store.pipe(
+        this.currentUser$ = this.store$.pipe(
             select(fromUser.getCurrentUser)
         );
 
     }
 
     onLogout() {
-        this.store.dispatch(new userActions.LogoutUser());
+        this.store$.dispatch(new userActions.LogoutUser());
     }
 }

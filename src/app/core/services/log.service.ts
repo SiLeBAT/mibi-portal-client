@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { LogPublisher } from '../model/log-publishers';
 import { LogPublishersService } from './log-publishers.service';
+import { ClientError } from '../model/client-error';
 
 export enum LogLevel {
     ALL = 0,
@@ -109,7 +110,9 @@ export class LogService {
             entry.logWithDate = this.logWithDate;
 
             for (const logger of this.publishers) {
-                logger.log(entry).subscribe(response => ({}));
+                logger.log(entry).subscribe(response => ({}), (error) => {
+                    throw new ClientError(`Unable to log. error=${error}`);
+                });
             }
         }
     }

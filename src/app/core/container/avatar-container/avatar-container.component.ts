@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
     template: `<mibi-avatar
     [currentUser$]="currentUser$"
     (onProfile)="onProfile()"
-    (onLogout)="onLogout()"  fxFlexFill fxLayout="row" fxLayoutAlign=" end">
+    (onLogout)="onLogout()">
     </mibi-avatar>`
 })
 export class AvatarContainerComponent implements OnInit {
@@ -19,17 +19,17 @@ export class AvatarContainerComponent implements OnInit {
     currentUser$: Observable<User | null>;
 
     constructor(private router: Router,
-        private store: Store<fromUser.IState>) { }
+        private store$: Store<fromUser.State>) { }
 
     ngOnInit() {
-        this.currentUser$ = this.store.pipe(
+        this.currentUser$ = this.store$.pipe(
             select(fromUser.getCurrentUser)
         );
 
     }
 
     onLogout() {
-        this.store.dispatch(new userActions.LogoutUser());
+        this.store$.dispatch(new userActions.LogoutUser());
     }
 
     onProfile() {

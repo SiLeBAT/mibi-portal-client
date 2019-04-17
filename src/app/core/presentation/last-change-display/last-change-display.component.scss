@@ -1,5 +1,13 @@
 @import "../../../../assets/sass/abstracts";
 
-.version-display__text {
+.mibi-last-change {
+  height: 100%;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+}
+
+.mibi-last-change__content {
+  padding: $mibi-single-space 1rem;
   color: $on-background-color;
 }

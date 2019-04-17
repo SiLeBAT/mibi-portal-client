@@ -1,13 +1,51 @@
 {
-  "extends": "tslint-config-standard",
+  "extends": [
+    "tslint-config-standard",
+    "rxjs-tslint-rules"
+  ],
   "rulesDirectory": [
     "node_modules/codelyzer"
   ],
   "rules": {
+    "rxjs-finnish": {
+      "options": [
+        {
+          "functions": false,
+          "methods": false,
+          "parameters": false,
+          "properties": false,
+          "variables": true
+        }
+      ],
+      "severity": "error"
+    },
+    "rxjs-no-exposed-subjects": {
+      "severity": "error"
+    },
+    "rxjs-no-ignored-error": {
+      "severity": "error"
+    },
+    "rxjs-no-subject-value": {
+      "severity": "error"
+    },
+    "rxjs-no-unsafe-catch": {
+      "severity": "error"
+    },
+    "rxjs-no-unsafe-first": {
+      "severity": "error"
+    },
+    "rxjs-no-unsafe-switchmap": {
+      "severity": "error"
+    },
+    "rxjs-no-unsafe-takeuntil": {
+      "severity": "error"
+    },
     "ter-indent": [
       true,
       4,
-      { "SwitchCase": 1 }
+      {
+        "SwitchCase": 1
+      }
     ],
     "space-before-function-paren": [
       true,
@@ -22,7 +60,9 @@
       true,
       "no-public"
     ],
-    "no-console": [true],
+    "no-console": [
+      true
+    ],
     "arrow-return-shorthand": true,
     "callable-types": true,
     "class-name": true,
@@ -75,6 +115,7 @@
     "no-trailing-whitespace": true,
     "no-unnecessary-initializer": true,
     "no-unused-expression": true,
+    "no-unused-variable": false,
     "no-use-before-declare": true,
     "no-var-keyword": true,
     "object-literal-sort-keys": false,
@@ -139,9 +180,6 @@
     "use-life-cycle-interface": true,
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,
-    "directive-class-suffix": true,
-    "no-access-missing-member": true,
-    "templates-use-public": true,
-    "invoke-injectable": true
+    "directive-class-suffix": true
   }
 }

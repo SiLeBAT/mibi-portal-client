@@ -26,14 +26,14 @@ export class UserEffects {
         exhaustMap((action: userActions.LoginUser) => this.dataService.login(action.payload).pipe(
             map(
                 (loginResponse: LoginResponseDTO) => {
-                    if (loginResponse.obj && loginResponse.obj.token) {
-                        this.dataService.setCurrentUser(loginResponse.obj);
-                        return new userActions.LoginUserSuccess(loginResponse.obj);
+                    if (loginResponse.user && loginResponse.user.token) {
+                        this.dataService.setCurrentUser(loginResponse.user);
+                        return new userActions.LoginUserSuccess(loginResponse.user);
                     } else {
                         return new coreActions.DisplayBanner({
                             predefined: '',
                             custom: {
-                                message: loginResponse.title,
+                                message: loginResponse.status,
                                 type: AlertType.ERROR,
                                 mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
                             }

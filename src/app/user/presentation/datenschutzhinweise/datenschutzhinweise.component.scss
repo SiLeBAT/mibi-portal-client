@@ -15,7 +15,7 @@ body {
 }
 
 .dateschutz-hinweis {
-  margin-top: $mibi-quadrupleSpace;
+  margin-top: $mibi-quadruple-space;
 }
 
 .dateschutzhinweise-footer {
@@ -24,4 +24,8 @@ body {
 
 .dateschutzhinweise-item {
   width: 75%;
+}
+
+.dateschutzhinweise-item__list {
+  list-style-type: lower-alpha;
 }

@@ -9,6 +9,7 @@ import { GenericActionItemComponent } from '../../../core/presentation/generic-a
 import { Observable, Subject } from 'rxjs';
 import { UploadAbstractComponent } from '../../presentation/upload/upload.abstract';
 import { UploadErrorType } from '../../model/upload.model';
+import { ClientError } from '../../../core/model/client-error';
 
 @Component({
     selector: 'mibi-upload-container',
@@ -38,19 +39,28 @@ export class UploadContainerComponent implements OnInit, OnDestroy, AfterContent
     ngAfterContentInit(): void {
         if (this.uploadChild) {
             this.uploadChild.trigger$ = this.trigger$;
-            this.uploadChild.guard.asObservable().subscribe(
+            this.uploadChild.guard.asObservable().pipe(takeWhile(() => this.componentActive)).subscribe(
                 e => {
                     this.guard(e);
+                },
+                (error) => {
+                    throw new ClientError(`Can't determine guard. error=${error}`);
                 }
             );
-            this.uploadChild.invokeValidation.asObservable().subscribe(
+            this.uploadChild.invokeValidation.asObservable().pipe(takeWhile(() => this.componentActive)).subscribe(
                 (file: File) => {
                     this.invokeValidation(file);
+                },
+                (error) => {
+                    throw new ClientError(`Can't invoke validation. error=${error}`);
                 }
             );
-            this.uploadChild.errorHandler.asObservable().subscribe(
+            this.uploadChild.errorHandler.asObservable().pipe(takeWhile(() => this.componentActive)).subscribe(
                 (error: UploadErrorType) => {
                     this.onError(error);
+                },
+                (error) => {
+                    throw new ClientError(`Can't invoke error handler. error=${error}`);
                 }
             );
 

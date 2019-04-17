@@ -1,26 +1,32 @@
 @import "../../../../assets/sass/abstracts";
 
-$barHeight: $mibi-nonupleSpace;
-$topBarHeight: $barHeight;
-$bottomBarHeight: $mibi-septupleSpace;
-
-.mibi-page-header {
-  position: fixed;
-  width: 100vw;
-  z-index: 999;
-}
-
-.mibi-page-footer {
-  position: fixed;
-  width: 100%;
-  height: $bottomBarHeight;
-  bottom: 0;
-  z-index: 999;
-}
-
-.mibi-page-body {
+.mibi-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
   overflow: auto;
-  margin-top: $topBarHeight;
-  margin-bottom: $bottomBarHeight;
-  width: 100%;
+}
+
+.mibi-page__header {
+  @include mat-elevation(4);
+
+  z-index: 999;
+  flex: 0 0 auto;
+  // fix for safari, opera not setting the height to flexed height
+  height: max-content;
+  overflow: auto;
+}
+
+.mibi-page__body {
+  flex: 1 1 auto;
+  // fix for safari, opera not setting the height to flexed height
+  height: max-content;
+  overflow: auto;
+}
+
+.mibi-page__footer {
+  flex: 0 0 auto;
+  // fix for safari, opera not setting the height to flexed height
+  height: max-content;
+  overflow: auto;
 }

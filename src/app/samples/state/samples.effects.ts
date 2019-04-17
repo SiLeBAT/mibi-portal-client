@@ -3,6 +3,7 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { saveAs } from 'file-saver';
 import * as moment from 'moment';
 import 'moment/locale/de';
+import * as _ from 'lodash';
 import * as samplesActions from './samples.actions';
 import * as coreActions from '../../core/state/core.actions';
 import { map, concatMap, catchError, exhaustMap, withLatestFrom, switchMap, mergeMap, tap } from 'rxjs/operators';
@@ -21,24 +22,30 @@ import { LogService } from '../../core/services/log.service';
 import { ClientError } from '../../core/model/client-error';
 import { UserActionType, ColorType } from '../../shared/model/user-action.model';
 import { GenericActionItemComponent } from '../../core/presentation/generic-action-item/generic-action-item.component';
+import { SendDialogComponent } from '../presentation/send-dialog/send-dialog.component';
+import { DialogService } from '../../core/services/dialog.service';
+import { SENDDIALOGCONFIG } from '../constants/send-dialog.constants';
+import { InstitutionDTO } from '../../user/model/institution.model';
+
 @Injectable()
 export class SamplesEffects {
 
     constructor(private actions$: Actions,
+        private dialogService: DialogService,
         private excelConverterService: ExcelConverterService,
         private sendSampleService: SendSampleService,
         private excelToJsonService: ExcelToJsonService,
         private dataService: DataService,
         private router: Router,
         private logger: LogService,
-        private store: Store<fromSamples.State>) {
+        private store: Store<fromSamples.State & fromUser.State>) {
     }
 
     @Effect()
     validateSamples$ = this.actions$.pipe(
         ofType(samplesActions.SamplesActionTypes.ValidateSamples),
         withLatestFrom(this.store),
-        concatMap((actionStoreCombine: [samplesActions.ValidateSamples, fromSamples.State & fromUser.IState]) => {
+        concatMap((actionStoreCombine: [samplesActions.ValidateSamples, fromSamples.State & fromUser.State]) => {
             const validationRequest: ValidationRequest = this.createValidationRequestFromStore(actionStoreCombine[1]);
             return this.dataService.validateSampleData(validationRequest).pipe(
                 map((annotatedSamples: AnnotatedSampleData[]) => {
@@ -101,7 +108,7 @@ export class SamplesEffects {
     exportExcel$ = this.actions$.pipe(
         ofType(samplesActions.SamplesActionTypes.ExportExcelFile),
         withLatestFrom(this.store),
-        mergeMap((actionStoreCombine: [samplesActions.ExportExcelFile, fromSamples.State & fromUser.IState]) => {
+        mergeMap((actionStoreCombine: [samplesActions.ExportExcelFile, fromSamples.State & fromUser.State]) => {
             const filenameAddon = '.MP_' + moment().unix();
             const sampleSheet = fromSamples.getSamplesFeatureState(actionStoreCombine[1]);
             return from(this.excelConverterService.convertToExcel(sampleSheet, filenameAddon)).pipe(
@@ -121,15 +128,23 @@ export class SamplesEffects {
     sendSamplesFromStore$ = this.actions$.pipe(
         ofType(samplesActions.SamplesActionTypes.SendSamplesFromStore),
         withLatestFrom(this.store),
-        mergeMap((actionStoreCombine: [samplesActions.SendSamplesFromStore, fromSamples.State]) => {
+        mergeMap((actionStoreCombine: [samplesActions.SendSamplesFromStore, fromSamples.State & fromUser.State]) => {
             const filenameAddon = '_validated';
-            return from(this.sendSampleService.sendData(actionStoreCombine[1].samples, filenameAddon, actionStoreCombine[0].payload)).pipe(
-                map(() => new coreActions.DisplayBanner({ predefined: 'sendSuccess' })),
-                catchError((error) => {
-                    this.logger.error('Failed to send samples from store', error);
-                    return of(new coreActions.DisplayBanner({ predefined: 'sendFailure' }));
-                })
-            );
+            return from(this.sendSampleService.sendData(
+                {
+                    formData: actionStoreCombine[1].samples.formData,
+                    workSheet: actionStoreCombine[1].samples.workSheet
+                },
+                filenameAddon,
+                actionStoreCombine[0].user,
+                actionStoreCombine[0].comment,
+                actionStoreCombine[1].samples.nrl)).pipe(
+                    map(() => new coreActions.DisplayBanner({ predefined: 'sendSuccess' })),
+                    catchError((error) => {
+                        this.logger.error('Failed to send samples from store', error);
+                        return of(new coreActions.DisplayBanner({ predefined: 'sendFailure' }));
+                    })
+                );
         }
         )
     );
@@ -138,7 +153,7 @@ export class SamplesEffects {
     sendSamplesInitation$ = this.actions$.pipe(
         ofType(samplesActions.SamplesActionTypes.SendSamplesInitiate),
         withLatestFrom(this.store),
-        switchMap((actionStoreCombine: [samplesActions.SendSamplesInitiate, fromSamples.State & fromUser.IState]) => {
+        switchMap((actionStoreCombine: [samplesActions.SendSamplesInitiate, fromSamples.State & fromUser.State]) => {
             const validationRequest: ValidationRequest = this.createValidationRequestFromStore(actionStoreCombine[1]);
             return this.dataService.validateSampleData(validationRequest).pipe(
                 tap((annotatedSamples: AnnotatedSampleData[]) => {
@@ -150,50 +165,28 @@ export class SamplesEffects {
                 })
             );
         }),
-        withLatestFrom(this.store),
-        tap((combine: [AnnotatedSampleData[], fromSamples.State & fromUser.IState]) => {
-            if (this.hasSampleError(combine[0])) {
+        tap((sampleData: AnnotatedSampleData[]) => {
+            if (this.hasSampleError(sampleData)) {
                 this.store.dispatch(new coreActions.DisplayBanner({ predefined: 'validationErrors' }));
-            } else if (this.hasSampleAutoCorrection(combine[0])) {
+            } else if (this.hasSampleAutoCorrection(sampleData)) {
                 this.store.dispatch(new coreActions.DisplayBanner({ predefined: 'autocorrections' }));
             } else {
-                this.store.dispatch(new coreActions.DisplayDialog({
-                    message: `Ihre Probendaten werden jetzt an das BfR gesendet.
-                        Bitte vergessen Sie nicht die Exceltabelle in Ihrem Mailanhang
-                        auszudrucken und Ihren Isolaten beizulegen.`,
-                    title: 'Senden',
-                    mainAction: {
-                        type: UserActionType.CUSTOM,
-                        label: 'Senden',
-                        onExecute: () => {
-                            const currentUser = fromUser.getCurrentUser(combine[1]);
-                            if (currentUser) {
-                                this.store.dispatch(new samplesActions.SendSamplesFromStore(currentUser));
-                            } else {
-                                this.store.dispatch(new coreActions.DisplayBanner({ predefined: 'loginUnauthorized' }));
-                            }
-                        },
-                        component: GenericActionItemComponent,
-                        icon: '',
-                        color: ColorType.PRIMARY,
-                        focused: true
-                    },
-                    auxilliaryAction: {
-                        type: UserActionType.CUSTOM,
-                        label: 'Abbrechen',
-                        onExecute: () => {
-                            this.store.dispatch(new coreActions.DisplayBanner({ predefined: 'sendCancel' }));
-                        },
-                        component: GenericActionItemComponent,
-                        icon: '',
-                        color: ColorType.PRIMARY
-                    }
-                }));
+                this.dialogService.openDialog(SendDialogComponent, SENDDIALOGCONFIG);
             }
-        }),
-        catchError((error) => {
-            this.logger.error('Failed to initiate sending samples', error);
-            return of(new coreActions.DisplayBanner({ predefined: 'sendCancel' }));
+        })
+    );
+
+    @Effect({ dispatch: true })
+    sendSamplesConfirmed$ = this.actions$.pipe(
+        ofType(samplesActions.SamplesActionTypes.SendSamplesConfirmed),
+        withLatestFrom(this.store),
+        map((combined: [samplesActions.SendSamplesConfirmed, fromUser.State & fromSamples.State]) => {
+            const currentUser = fromUser.getCurrentUser(combined[1]);
+            if (currentUser) {
+                return new samplesActions.SendSamplesFromStore(currentUser, combined[0].comment);
+            } else {
+                return new coreActions.DisplayBanner({ predefined: 'loginUnauthorized' });
+            }
         })
     );
 
@@ -218,14 +211,25 @@ export class SamplesEffects {
         );
     }
 
-    private createValidationRequestFromStore(state: fromSamples.State & fromUser.IState): ValidationRequest {
-        const cu = fromUser.getCurrentUser(state) || null;
+    private createValidationRequestFromStore(state: fromSamples.State & fromUser.State): ValidationRequest {
+
         return {
             data: fromSamples.getDataValues(state),
-            meta: {
-                state: cu ? cu.institution.stateShort : '',
-                nrl: fromSamples.getNRL(state)
-            }
+            meta: this.getValidationRequestMetaData(state)
         };
+    }
+
+    private getValidationRequestMetaData(state: fromSamples.State & fromUser.State) {
+        const cu = fromUser.getCurrentUser(state) || null;
+        return {
+            state: cu ? this.getStateShortFor(cu.instituteId, state) : '',
+            nrl: fromSamples.getNRL(state)
+        };
+    }
+
+    private getStateShortFor(id: string, state: fromUser.State): string {
+        const inst: InstitutionDTO[] = fromUser.getInstitutions(state);
+        const entry = _.find(inst, e => e._id === id);
+        return entry ? entry.short : '';
     }
 }

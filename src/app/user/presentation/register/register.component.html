@@ -6,7 +6,7 @@ when the submit button is clocked. On submit the register() method is called if 
 <form [formGroup]="registerForm" (ngSubmit)="onRegister()" novalidate>
   <div class="register-form__form-fields" fxLayout="column" fxLayoutAlign=" none">
     <mat-form-field>
-      <input type="text" matInput placeholder="Wählen Sie Ihr Institut" formControlName="institution" required
+      <input type="text" matInput placeholder="Wählen Sie Ihr Institut" formControlName="institution" autocomplete="off" required
         [matAutocomplete]="autoGroup">
       <mat-autocomplete  class="mibi-institute-select" #autoGroup="matAutocomplete">
         <mat-option *ngFor="let institution of filteredOptions | async" [value]="institution">

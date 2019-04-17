@@ -1,0 +1,13 @@
+.mibi-box {
+  height: 100%;
+  display: grid;
+  grid-template: minmax(min-content, auto) / minmax(min-content, auto);
+}
+
+.mibi-box__width-limited {
+  grid-template-columns: 100%;
+}
+
+.mibi-box__height-limited {
+  grid-template-rows: 100%;
+}

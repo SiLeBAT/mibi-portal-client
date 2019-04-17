@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Credentials, TokenizedUser } from '../../../user/model/user.model';
 import * as fromUser from '../../state/user.reducer';
 import * as userActions from '../../state/user.actions';
 import * as fromSamples from '../../../samples/state/samples.reducer';
 import { Store, select } from '@ngrx/store';
-import { tap } from 'rxjs/operators';
+import { tap, takeWhile } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
 
@@ -14,10 +14,11 @@ import { combineLatest } from 'rxjs';
     (login)="login($event)">
     </mibi-login>`
 })
-export class LoginContainerComponent implements OnInit {
+export class LoginContainerComponent implements OnInit, OnDestroy {
 
+    private componentActive = true;
     constructor(private router: Router,
-        private store: Store<fromUser.IState>) { }
+        private store: Store<fromUser.State>) { }
 
     ngOnInit(): void {
 
@@ -25,6 +26,7 @@ export class LoginContainerComponent implements OnInit {
             this.store.pipe(select(fromUser.getCurrentUser)),
             this.store.pipe(select(fromSamples.hasEntries))
         ).pipe(
+            takeWhile(() => this.componentActive),
             tap((combined: [TokenizedUser | null, boolean]) => {
                 const [currentUser, hasEntries] = combined;
                 if (currentUser) {
@@ -40,6 +42,10 @@ export class LoginContainerComponent implements OnInit {
                 }
             })
         ).subscribe();
+    }
+
+    ngOnDestroy() {
+        this.componentActive = false;
     }
 
     login(credentials: Credentials) {

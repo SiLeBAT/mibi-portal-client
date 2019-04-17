@@ -1,35 +1,30 @@
 import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse } from '@angular/common/http';
-import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import * as coreActions from '../../core/state/core.actions';
 import * as fromCore from '../../core/state/core.reducer';
+import * as userActions from '../../user/state/user.actions';
 import { Store } from '@ngrx/store';
+import { ClientError } from '../model/client-error';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
 
-    constructor(private router: Router,
+    constructor(
         private store: Store<fromCore.State>) { }
 
     intercept(req: HttpRequest<any>,
         next: HttpHandler): Observable<HttpEvent<any>> {
 
-        return next.handle(req).pipe(tap(
-            () => {
-                // doing nothing
-            },
-            (err: Error) => {
-                if (err instanceof HttpErrorResponse) {
-                    if (err.status === 401) {
-                        this.store.dispatch(new coreActions.DisplayBanner({ predefined: 'noAuthorizationOrActivation' }));
-                        this.router.navigate(['/users/login']).catch(() => {
-                            throw new Error();
-                        });
-                    }
+        return next.handle(req).pipe(catchError((err: Error) => {
+            if (err instanceof HttpErrorResponse) {
+                if (err.status === 401) {
+                    this.store.dispatch(new userActions.LogoutUser());
+                    this.store.dispatch(new coreActions.DisplayBanner({ predefined: 'noAuthorizationOrActivation' }));
                 }
             }
-        ));
+            throw err;
+        }));
     }
 }

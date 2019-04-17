@@ -6,6 +6,7 @@ import { Banner, AlertType } from '../../model/alert.model';
 import { takeWhile, debounceTime } from 'rxjs/operators';
 import { UserActionService } from '../../services/user-action.service';
 import { UserActionType } from '../../../shared/model/user-action.model';
+import { ClientError } from '../../model/client-error';
 
 @Component({
     selector: 'mibi-banner-container',
@@ -55,7 +56,7 @@ export class BannerContainerComponent implements OnInit {
 
         },
         sendFailure: {
-            message: 'Es gab einen Fehler beim Versenden der Datei and das MiBi-Portal.',
+            message: 'Es gab einen Fehler beim Versenden der Datei an das MiBi-Portal.',
             type: AlertType.ERROR,
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
 
@@ -102,7 +103,7 @@ export class BannerContainerComponent implements OnInit {
 
         },
         accountActivationFailure: {
-            message: 'Kontoaktivierung fehlgeschlagen.  Bitte kontaktieren Sie das MiBi-Portal team.',
+            message: 'Kontoaktivierung fehlgeschlagen.  Bitte kontaktieren Sie das MiBi-Portal-Team.',
             type: AlertType.ERROR,
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
 
@@ -116,7 +117,7 @@ export class BannerContainerComponent implements OnInit {
         },
         passwordChangeFailure: {
             // tslint:disable-next-line:max-line-length
-            message: `Fehler beim Passwort zurücksetzten, Token ungültig. Bitte lassen Sie sich einen neuen 'Passwort-Reset' Link mit Hilfe der Option 'Passwort vergessen?' zuschicken.`,
+            message: `Fehler beim Zurücksetzen des Passworts. Bitte klicken Sie im Bereich "Anmelden" auf "Passwort vergessen?" und lassen Sie sich einen neuen Link zum Zurücksetzen des Passworts zuschicken.`,
             type: AlertType.ERROR,
             auxilliaryAction: { ...this.userActionService.getNavigationConfig('/users/recovery'), ...{ label: 'Zum Passwort-Reset' } },
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
@@ -124,7 +125,7 @@ export class BannerContainerComponent implements OnInit {
         },
         loginFailure: {
             // tslint:disable-next-line:max-line-length
-            message: 'Es gab einen Fehler beim einloggen.  Bitte registrieren Sie sich oder, wenn Sie sich schon registriert haben, kontaktieren Sie das MiBi-Portal team.',
+            message: 'Es gab einen Fehler beim Einloggen.  Bitte registrieren Sie sich oder, wenn Sie sich schon registriert haben, kontaktieren Sie das MiBi-Portal-Team.',
             type: AlertType.ERROR,
             auxilliaryAction: { ...this.userActionService.getNavigationConfig('/users/register'), ...{ label: 'Zur Registrierung' } },
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
@@ -132,7 +133,7 @@ export class BannerContainerComponent implements OnInit {
         },
         registrationFailure: {
             // tslint:disable-next-line:max-line-length
-            message: 'Es gab einen Fehler beim registrieren.  Bitte kontaktieren Sie das MiBi-Portal team.',
+            message: 'Es gab einen Fehler beim Registrieren.  Bitte kontaktieren Sie das MiBi-Portal-Team.',
             type: AlertType.ERROR,
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
 
@@ -152,10 +153,10 @@ export class BannerContainerComponent implements OnInit {
 
     banner: Banner | null;
     private componentActive = true;
-    constructor(private store: Store<fromCore.State>, private userActionService: UserActionService) { }
+    constructor(private store$: Store<fromCore.State>, private userActionService: UserActionService) { }
 
     ngOnInit() {
-        this.store.pipe(select(fromCore.getBanner),
+        this.store$.pipe(select(fromCore.getBanner),
             debounceTime(600),
             takeWhile(() => this.componentActive)
         ).subscribe(bannerState => {
@@ -177,6 +178,9 @@ export class BannerContainerComponent implements OnInit {
                     }
                 }
             }
+        },
+        (error) => {
+            throw new ClientError(`Can't determine Banner state. error=${error}`);
         });
     }
 
@@ -185,7 +189,7 @@ export class BannerContainerComponent implements OnInit {
             if (this.banner.mainAction) {
                 this.banner.mainAction.onExecute();
             }
-            this.store.dispatch(new coreActions.HideBanner());
+            this.store$.dispatch(new coreActions.HideBanner());
         }
     }
 
@@ -194,7 +198,7 @@ export class BannerContainerComponent implements OnInit {
             if (this.banner.auxilliaryAction) {
                 this.banner.auxilliaryAction.onExecute();
             }
-            this.store.dispatch(new coreActions.HideBanner());
+            this.store$.dispatch(new coreActions.HideBanner());
         }
     }
 }

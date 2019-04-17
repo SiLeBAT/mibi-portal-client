@@ -1,49 +1,72 @@
 @import "../../../../assets/sass/abstracts";
+@import "../../../../assets/sass/components";
 
 $nav-bar-color: $primary-color;
 
 .mibi-avatar {
-  padding-right: 8px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: $mibi-half-space/2 $mibi-single-space;
 }
 
-.mibi-avatar__button {
+.mibi-avatar__content {
+  flex: 0 0 auto;
+}
+
+.mibi-avatar-button {
   @include app-bar-link();
-  @include nav-bar-link();
 
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: solid;
-  position: fixed;
-  top: $mibi-halfSpace/2;
-  right: $mibi-sextupleSpace;
+}
 
-  & .mat-icon {
-    margin-bottom: $mibi-tripleSpace;
-  }
+.mibi-avatar-button__icon {
+  display: block;
+  flex: 0 0 auto;
+}
+
+.mibi-user-info {
+  padding: $mibi-single-space $mibi-double-space;
+  display: grid;
+  grid-template: auto auto / auto auto;
+  grid-gap: $mibi-single-space;
 }
 
 .mibi-user-info__icon {
   color: $secondary-color;
 }
 
-.mibi-user-info {
-  padding: $mibi-singleSpace;
-}
-
 .mibi-user-info__auxilliary {
-  margin: $mibi-singleSpace $mibi-quadrupleSpace;
+  grid-column-start: 2;
 }
 
-.mibi-user-info__name {
-  margin-left: $mibi-singleSpace;
+.mibi-user-info__divider {
+  margin: $mibi-single-space;
 }
 
-.mibi-avatar__register {
+.mibi-register {
   height: 100%;
+  display: flex;
+  justify-content: flex-end;
 }
 
-.mibi-avatar__register-link {
-  @include app-bar-link();
-  @include nav-bar-link();
+.mibi-register__content {
+  flex: 0 1 auto;
+}
 
-  padding-left: 0;
-  margin-left: $alex-magic-number;
+.mibi-register-link {
+  @include app-bar-link();
+
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: $mibi-single-space;
+}
+
+.mibi-register-link__text {
+  flex: 0 1 auto;
 }
