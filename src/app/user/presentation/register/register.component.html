@@ -29,7 +29,7 @@ when the submit button is clocked. On submit the register() method is called if 
     <em class="mat-small" [hidden]="validateField('email') || !registerForm.controls.email.errors?.email">Muss eine
       gültige Email sein.</em>
     <mat-form-field>
-      <input matInput placeholder="Password" type="password" name="password1" formControlName="password1" required>
+      <input matInput placeholder="Passwort" type="password" name="password1" formControlName="password1" required>
     </mat-form-field>
     <em class="mat-small" [hidden]="!validatePwStrength()">Zu schwaches oder zu kurzes Passwort.</em>
     <div class="pw-strengt">
@@ -37,7 +37,7 @@ when the submit button is clocked. On submit the register() method is called if 
       </password-strength-meter>
     </div>
     <mat-form-field>
-      <input matInput placeholder="Password bestätigen" type="password" name="password2" formControlName="password2"
+      <input matInput placeholder="Passwort bestätigen" type="password" name="password2" formControlName="password2"
         required>
     </mat-form-field>
     <em class="mat-small" [hidden]="validateField('password2')  || !registerForm.controls.password2.errors?.validatePasswordConfirm">Passwörter
