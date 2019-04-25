@@ -19,7 +19,9 @@
     "lint:code": "tslint --project tsconfig.json --fix -c tslint.json 'src/**/*.ts'",
     "lint:styles": "stylelint \"src/**/*.scss\"",
     "e2e": "ng e2e",
-    "clean": "rimraf public/*"
+    "clean": "rimraf public/*",
+    "cypress:open": "node_modules\\.bin\\cypress open",
+    "cypress:run": "node_modules\\.bin\\cypress run"
   },
   "husky": {
     "hooks": {
@@ -84,6 +86,7 @@
     "@angular/cli": "^7.3.8",
     "@angular/compiler-cli": "^7.2.12",
     "@angular/language-service": "^7.2.12",
+    "@bahmutov/add-typescript-to-cypress": "^2.0.0",
     "@ngrx/schematics": "^6.1.2",
     "@types/core-js": "^2.5.0",
     "@types/file-saver": "^1.3.1",
@@ -94,6 +97,7 @@
     "@types/xlsx": "^0.0.36",
     "@types/zxcvbn": "^4.4.0",
     "codelyzer": "^4.5.0",
+    "cypress": "^3.2.0",
     "husky": "^1.1.3",
     "jest": "^24.1.0",
     "jest-preset-angular": "^6.0.1",

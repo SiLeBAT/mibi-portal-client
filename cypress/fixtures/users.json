@@ -1,0 +1,35 @@
+[
+  {
+    "id": 1,
+    "firstName": "User1",
+    "lastName": "User1",
+    "email": "user1@test.com",
+    "instituteId": "1235",
+    "password": "user1secrettestpassword"
+  },
+  {
+    "id": 2,
+    "firstName": "User2",
+    "lastName": "User2",
+    "email": "user2@test.com",
+    "instituteId": "1235",
+    "password": "user2secrettestpassword"
+  },
+  {
+    "id": 3,
+    "firstName": "User3",
+    "lastName": "User3",
+    "email": "user3@test.com",
+    "instituteId": "1235",
+    "password": "user3secrettestpassword"
+  },
+  {
+    "id": 4,
+    "firstName": "User4",
+    "lastName": "User4",
+    "email": "user4@test.com",
+    "instituteId": "1235",
+    "password": "user4secrettestpassword"
+  }
+
+]
