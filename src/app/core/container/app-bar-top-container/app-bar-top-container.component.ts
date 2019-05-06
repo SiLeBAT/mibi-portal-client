@@ -10,6 +10,8 @@ import { User } from '../../../user/model/user.model';
 import { environment } from '../../../../environments/environment';
 import { UserActionViewModelConfiguration, UserActionType } from '../../../shared/model/user-action.model';
 import { UserActionService } from '../../services/user-action.service';
+import { Samples } from '../../../samples/samples.store';
+import { Core } from '../../core.state';
 
 @Component({
     selector: 'mibi-app-bar-top-container',
@@ -26,7 +28,7 @@ export class AppBarTopContainerComponent implements OnInit {
     config$: Observable<UserActionViewModelConfiguration[]>;
 
     constructor(
-        private store$: Store<fromSamples.State>,
+        private store$: Store<Samples & Core>,
         private userActionService: UserActionService) { }
 
     ngOnInit() {
@@ -38,10 +40,7 @@ export class AppBarTopContainerComponent implements OnInit {
             this.store$.pipe(select(fromSamples.hasEntries)),
             this.store$.pipe(select(fromUser.getCurrentUser)),
             this.store$.pipe(select(fromCore.isBusy))).pipe(
-                map(combined => {
-
-                    const [configuration, enabled, hasEntries, currentUser, isBusy] = combined;
-
+                map(([configuration, enabled, hasEntries, currentUser, isBusy]) => {
                     if (isBusy || !enabled.length) {
                         return [];
                     }

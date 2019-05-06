@@ -7,7 +7,7 @@ import { DialogComponent } from '../../shared/presentation/dialog/dialog.compone
 import { DialogContent } from '../model/dialog.model';
 
 @Injectable()
-export class CoreEffects {
+export class CoreMainEffects {
 
     constructor(private actions$: Actions,
         private dialog: MatDialog) {
@@ -15,7 +15,7 @@ export class CoreEffects {
 
     @Effect({ dispatch: false })
     displayDialog$ = this.actions$.pipe(
-        ofType(coreActions.CoreActionTypes.DisplayDialog),
+        ofType(coreActions.CoreMainActionTypes.DisplayDialog),
         pluck('payload'),
         tap((content: DialogContent) => {
             this.dialog.open(DialogComponent, {

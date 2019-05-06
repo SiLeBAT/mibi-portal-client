@@ -1,0 +1,8 @@
+<mibi-dialog-view [config]="config$ | async" (confirm)="onConfirm()" (cancel)="onCancel()">
+  <mibi-layout-box>
+    <mat-form-field class="mibi-comment">
+        <mat-label>{{(config$ | async).commentTitle}}</mat-label>
+      <textarea rows="3" [formControl]="commentControl" cdkFocusInitial matInput type="text" placeholder="{{(config$ | async)?.commentPlaceHolder}}" value="{{(config$ | async)?.initialComment}}"></textarea>
+    </mat-form-field>
+  </mibi-layout-box>
+</mibi-dialog-view>
