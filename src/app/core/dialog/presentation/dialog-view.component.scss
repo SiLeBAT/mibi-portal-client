@@ -1,0 +1,38 @@
+@import "../../../../assets/sass/abstracts";
+@import "../../../../assets/sass/layout";
+
+.mibi-mat-dialog {
+  margin: -24px;
+  max-height: 100vh;
+}
+
+.mibi-dialog {
+  height: 100%;
+  padding: 24px;
+  overflow: auto;
+}
+
+.mibi-mat-dialog-content {
+  margin: 0;
+  padding: 0;
+}
+
+.mibi-dialog-message {
+  margin-bottom: $mibi-single-space;
+}
+
+.mibi-dialog-warnings {
+  @include list-style-none();
+}
+
+.mibi-dialog-warnings__item {
+  background-color: $bfr-lightocre;
+  margin-bottom: $mibi-single-space;
+}
+
+.mibi-mat-dialog-actions {
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}

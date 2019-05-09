@@ -17,6 +17,10 @@ import { CompileDirective } from './directive/compile.directive';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { UploadActionItemComponent } from './presentation/upload-action-item/upload-action-item.component';
 import { LayoutBoxComponent } from './presentation/layout-box/layout-box.component';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { SHARED_SLICE_NAME } from './shared.state';
+import { sharedReducerMap, sharedEffects, sharedMetaReducers } from './shared.store';
 
 @NgModule({
     imports: [
@@ -29,7 +33,9 @@ import { LayoutBoxComponent } from './presentation/layout-box/layout-box.compone
         MatInputModule,
         MatCardModule,
         MatButtonModule,
-        FlexLayoutModule
+        FlexLayoutModule,
+        StoreModule.forFeature(SHARED_SLICE_NAME, sharedReducerMap, { metaReducers: sharedMetaReducers }),
+        EffectsModule.forFeature(sharedEffects)
     ],
     declarations: [
         CompileDirective,

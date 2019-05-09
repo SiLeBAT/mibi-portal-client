@@ -13,7 +13,7 @@ export interface UserActionViewModelConfiguration {
 
 export enum ColorType {
     PRIMARY = 'primary',
-    SECONDAYR = 'accent',
+    SECONDARY = 'accent',
     ACCENT = 'accent'
 }
 export enum UserActionType {
