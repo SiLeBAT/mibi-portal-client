@@ -2,3 +2,9 @@
 used to layout the different parts of your page, that is to say, your header, footer, navigation, section, your own grid, and more.
 (component independent layout styles)
 */
+
+@mixin list-style-none() {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
