@@ -1,5 +1,6 @@
 @import "../../../../assets/sass/abstracts";
 @import "~@angular/material/theming";
+@import "../../../../assets/sass/layout";
 
 .mibi-footer-nav {
   height: 100%;
@@ -10,9 +11,8 @@
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
-  list-style: none;
-  margin: 0;
-  padding: 0;
+
+  @include list-style-none();
 }
 
 .mibi-footer-nav-list__item {

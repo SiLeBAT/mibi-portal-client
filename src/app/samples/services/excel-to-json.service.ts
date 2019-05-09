@@ -35,7 +35,7 @@ export class ExcelToJsonService {
                 meta: {
                     nrl
                 },
-                workSheet: currentWorkSheet
+                fileDetails: currentWorkSheet
             };
 
         } catch (err) {

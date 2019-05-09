@@ -5,6 +5,7 @@ import * as fromUser from '../../../user/state/user.reducer';
 import { Observable } from 'rxjs';
 import { User } from '../../../user/model/user.model';
 import * as userActions from '../../../user/state/user.actions';
+import { Samples } from '../../../samples/samples.store';
 
 @Component({
     selector: 'mibi-nav-bar-container',
@@ -20,7 +21,7 @@ export class NavBarContainerComponent implements OnInit {
     currentUser$: Observable<User | null>;
 
     constructor(
-        private store$: Store<fromSamples.State>) { }
+        private store$: Store<Samples>) { }
 
     ngOnInit() {
 

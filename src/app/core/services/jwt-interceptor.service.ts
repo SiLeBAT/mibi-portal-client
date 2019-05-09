@@ -7,12 +7,13 @@ import * as fromCore from '../../core/state/core.reducer';
 import * as userActions from '../../user/state/user.actions';
 import { Store } from '@ngrx/store';
 import { ClientError } from '../model/client-error';
+import { Core } from '../core.state';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
 
     constructor(
-        private store: Store<fromCore.State>) { }
+        private store: Store<Core>) { }
 
     intercept(req: HttpRequest<any>,
         next: HttpHandler): Observable<HttpEvent<any>> {
