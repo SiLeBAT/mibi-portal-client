@@ -39,7 +39,7 @@ export interface ImportedExcelFileDetails {
 
 export interface SampleSheet {
     formData: AnnotatedSampleData[];
-    workSheet: ImportedExcelFileDetails | null;
+    fileDetails: ImportedExcelFileDetails | null;
 }
 
 export interface SampleMetaData {
@@ -48,7 +48,7 @@ export interface SampleMetaData {
 export interface ExcelData {
     data: SampleData[];
     meta: SampleMetaData;
-    workSheet: ImportedExcelFileDetails;
+    fileDetails: ImportedExcelFileDetails;
 }
 
 export interface ValidationError {

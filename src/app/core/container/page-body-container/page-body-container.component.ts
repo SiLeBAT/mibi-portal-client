@@ -4,6 +4,7 @@ import { Store, select } from '@ngrx/store';
 import * as fromCore from '../../state/core.reducer';
 import * as coreActions from '../../state/core.actions';
 import { environment } from '../../../../environments/environment';
+import { Core } from '../../core.state';
 
 @Component({
     selector: 'mibi-page-body-container',
@@ -15,7 +16,7 @@ export class PageBodyContainerComponent implements OnInit {
     isBusy$: Observable<boolean>;
     isBanner$: Observable<boolean>;
     constructor(
-        private store$: Store<fromCore.State>) { }
+        private store$: Store<Core>) { }
 
     ngOnInit() {
         this.isBusy$ = this.store$.pipe(select(fromCore.isBusy));
