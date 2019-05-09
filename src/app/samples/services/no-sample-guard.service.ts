@@ -3,6 +3,7 @@ import { CanActivate, Router } from '@angular/router';
 import * as fromSamples from '../state/samples.reducer';
 import { Store, select } from '@ngrx/store';
 import { take } from 'rxjs/operators';
+import { Samples } from '../samples.store';
 
 @Injectable({
     providedIn: 'root'
@@ -10,7 +11,7 @@ import { take } from 'rxjs/operators';
 export class NoSampleGuard implements CanActivate {
 
     constructor(
-        private store: Store<fromSamples.State>,
+        private store: Store<Samples>,
         private router: Router) { }
 
     async canActivate() {

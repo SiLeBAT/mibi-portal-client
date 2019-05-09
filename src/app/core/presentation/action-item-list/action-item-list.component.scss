@@ -1,5 +1,6 @@
 @import "../../../../assets/sass/abstracts";
 @import "../../../../assets/sass/components";
+@import "../../../../assets/sass/layout";
 
 .mibi-app-bar-bottom {
   height: 100%;
@@ -17,9 +18,8 @@
   height: 100%;
   display: flex;
   flex-flow: row wrap;
-  padding: 0;
-  margin: 0;
-  list-style: none;
+
+  @include list-style-none();
 }
 
 .mibi-action-list__gap {
