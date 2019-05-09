@@ -8,6 +8,9 @@ import * as coreActions from '../state/core.actions';
 import { Store } from '@ngrx/store';
 import { ClientError } from '../model/client-error';
 import { Router } from '@angular/router';
+import { SendSamples } from '../../samples/send-samples/state/send-samples.actions';
+import { ValidateSamples } from '../../samples/validate-samples/state/validate-samples.actions';
+import { Core } from '../core.state';
 
 @Injectable({
     providedIn: 'root'
@@ -74,7 +77,7 @@ export class UserActionService {
     }];
 
     constructor(
-        private store: Store<fromCore.State>, private router: Router, private componentFactoryResolver: ComponentFactoryResolver) {
+        private store: Store<Core>, private router: Router, private componentFactoryResolver: ComponentFactoryResolver) {
     }
 
     getConfigOfType(type: UserActionType): UserActionViewModelConfiguration {
@@ -114,7 +117,7 @@ export class UserActionService {
     }
 
     private validate() {
-        this.store.dispatch(new samplesActions.ValidateSamples());
+        this.store.dispatch(new ValidateSamples('[UserAction] Validate clicked'));
     }
 
     private export() {
@@ -126,7 +129,7 @@ export class UserActionService {
     }
 
     private send() {
-        this.store.dispatch(new samplesActions.SendSamplesInitiate());
+        this.store.dispatch(new SendSamples('[UserAction] Send clicked'));
     }
 
     private close() {
