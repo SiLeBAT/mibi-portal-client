@@ -23,10 +23,10 @@ export class ExcelConverterService {
 
     async convertToExcel(data: SampleSheet, fileNameAddon: string = ''): Promise<ExcelFileBlob> {
 
-        if (!data.workSheet) {
+        if (!data.fileDetails) {
             throw new ClientError('No Excel data available.');
         }
-        const file: File = data.workSheet.file;
+        const file: File = data.fileDetails.file;
         const oriFileName = file.name;
         const entries: string[] = oriFileName.split('.xlsx');
         let fileName: string = '';
@@ -39,7 +39,7 @@ export class ExcelConverterService {
         const highlights = data.formData.map(e => e.edits);
         const dataToSave = this.fromDataObjToAOO(data.formData.map(e => e.data));
         let workbook = await this.fromFileToWorkbook(file);
-        workbook = this.addValidatedDataToWorkbook(data.workSheet, workbook, dataToSave, highlights);
+        workbook = this.addValidatedDataToWorkbook(data.fileDetails, workbook, dataToSave, highlights);
 
         const blob = await workbook.outputAsync();
 

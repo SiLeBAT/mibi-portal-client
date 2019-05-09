@@ -7,6 +7,7 @@ import * as fromSamples from './samples/state/samples.reducer';
 import { DataService } from './core/services/data.service';
 import * as userActions from './user/state/user.actions';
 import { TokenizedUser } from './user/model/user.model';
+import { Samples } from './samples/samples.store';
 
 @Component({
     selector: 'mibi-root',
@@ -17,7 +18,7 @@ export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDe
     supportContact: string = environment.supportContact;
     private componentActive = true;
     private canUnload: boolean = true;
-    constructor(private store$: Store<fromSamples.State>, private dataService: DataService) {
+    constructor(private store$: Store<Samples>, private dataService: DataService) {
         super();
     }
 

@@ -17,6 +17,15 @@ import { CompileDirective } from './directive/compile.directive';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { UploadActionItemComponent } from './presentation/upload-action-item/upload-action-item.component';
 import { LayoutBoxComponent } from './presentation/layout-box/layout-box.component';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { SHARED_SLICE_NAME } from './shared.state';
+import { sharedReducerMap, sharedEffects, sharedMetaReducers } from './shared.store';
+import { NewDialogComponent } from './dialog/container/dialog.component';
+import { DialogViewComponent } from './dialog/presentation/dialog-view.component';
+import { CommentDialogComponent } from './comment-dialog/container/comment-dialog.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatProgressSpinnerModule, MatMenuModule, MatIconModule, MatToolbarModule } from '@angular/material';
 
 @NgModule({
     imports: [
@@ -29,7 +38,15 @@ import { LayoutBoxComponent } from './presentation/layout-box/layout-box.compone
         MatInputModule,
         MatCardModule,
         MatButtonModule,
-        FlexLayoutModule
+        MatProgressSpinnerModule,
+        MatMenuModule,
+        MatIconModule,
+        MatToolbarModule,
+        FormsModule,
+        ReactiveFormsModule,
+        FlexLayoutModule,
+        StoreModule.forFeature(SHARED_SLICE_NAME, sharedReducerMap, { metaReducers: sharedMetaReducers }),
+        EffectsModule.forFeature(sharedEffects)
     ],
     declarations: [
         CompileDirective,
@@ -39,7 +56,10 @@ import { LayoutBoxComponent } from './presentation/layout-box/layout-box.compone
         UploadActionItemComponent,
         SingleCenterCardLayoutComponent,
         WallOfTextLayoutComponent,
-        LayoutBoxComponent
+        LayoutBoxComponent,
+        DialogViewComponent,
+        NewDialogComponent,
+        CommentDialogComponent
     ],
     exports: [
         CompileDirective,
@@ -49,8 +69,11 @@ import { LayoutBoxComponent } from './presentation/layout-box/layout-box.compone
         UploadContainerComponent,
         SingleCenterCardLayoutComponent,
         WallOfTextLayoutComponent,
-        LayoutBoxComponent
+        LayoutBoxComponent,
+        DialogViewComponent,
+        NewDialogComponent,
+        CommentDialogComponent
     ],
-    entryComponents: [DialogComponent]
+    entryComponents: [DialogComponent, NewDialogComponent, CommentDialogComponent]
 })
 export class SharedModule { }

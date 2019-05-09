@@ -1,11 +1,10 @@
-import * as fromRoot from '../../state/app.state';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { UserActions, UserActionTypes } from './user.actions';
 import { TokenizedUser } from '../model/user.model';
 import { InstitutionDTO } from '../model/institution.model';
 export const STATE_SLICE_NAME = 'user';
 
-export interface State extends fromRoot.State {
+export interface State {
     user: IUserState;
 }
 
