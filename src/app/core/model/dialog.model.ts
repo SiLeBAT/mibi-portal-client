@@ -7,19 +7,3 @@ export interface DialogContent {
     mainAction: UserActionViewModelConfiguration;
     auxilliaryAction?: UserActionViewModelConfiguration;
 }
-
-export interface DialogButtonConfiguration {
-    label: string;
-}
-
-export interface DialogConfiguration {
-    title: string;
-    confirmButtonConfig: DialogButtonConfiguration;
-    cancelButtonConfig?: DialogButtonConfiguration;
-}
-
-export interface DialogData<T extends DialogConfiguration> {
-    configuration: T;
-    confirmAction?: Action;
-    cancelAction?: Action;
-}

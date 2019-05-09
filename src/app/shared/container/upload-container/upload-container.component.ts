@@ -10,6 +10,7 @@ import { Observable, Subject } from 'rxjs';
 import { UploadAbstractComponent } from '../../presentation/upload/upload.abstract';
 import { UploadErrorType } from '../../model/upload.model';
 import { ClientError } from '../../../core/model/client-error';
+import { Samples } from '../../../samples/samples.store';
 
 @Component({
     selector: 'mibi-upload-container',
@@ -25,7 +26,7 @@ export class UploadContainerComponent implements OnInit, OnDestroy, AfterContent
     private hasEntries = false;
     private isGuardActive = true;
     constructor(
-        private store: Store<fromCore.State>) { }
+        private store: Store<Samples>) { }
 
     ngOnInit() {
         this.store.pipe(select(fromSample.hasEntries),

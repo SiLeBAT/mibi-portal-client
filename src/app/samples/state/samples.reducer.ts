@@ -1,66 +1,88 @@
 import * as _ from 'lodash';
-import * as fromRoot from '../../state/app.state';
-import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { SamplesActions, SamplesActionTypes } from './samples.actions';
-import { UserActionTypes } from '../../user/state/user.actions';
+import { createSelector } from '@ngrx/store';
+import { SamplesMainAction, SamplesMainActionTypes } from './samples.actions';
+import { UserActionTypes, LogoutUser } from '../../user/state/user.actions';
 import {
     SampleSheet,
     SampleData,
-    AnnotatedSampleData
-} from '../model/sample-management.model';
+    AnnotatedSampleData} from '../model/sample-management.model';
+import { selectSamplesSlice } from '../samples.state';
+import { ValidateSamplesActionTypes, ValidateSamplesAction } from '../validate-samples/state/validate-samples.actions';
 
-export const STATE_SLICE_NAME = 'samples';
-export interface State extends fromRoot.State {
-    samples: SamplesState;
+export interface SamplesMainStates {
+    mainData: SamplesMainData;
 }
 
-interface SamplesState extends SampleSheet {
+export interface SamplesMainData extends SampleSheet {
     importedData: SampleData[];
     nrl: string;
 }
 
-const initialState: SamplesState = {
+const initialState: SamplesMainData = {
     formData: [],
-    workSheet: null,
+    fileDetails: null,
     importedData: [],
     nrl: ''
 };
 
 // SELECTORS
-export const getSamplesFeatureState = createFeatureSelector<SamplesState>(STATE_SLICE_NAME);
 
-export const getFormData = createSelector(
-    getSamplesFeatureState,
+export const selectSamplesMainStates = selectSamplesSlice<SamplesMainStates>();
+
+export const selectSamplesMainData = createSelector(
+    selectSamplesMainStates,
+    state => state.mainData
+);
+
+export const selectFormData = createSelector(
+    selectSamplesMainData,
     state => state.formData
 );
 
-export const getImportedData = createSelector(
-    getSamplesFeatureState,
+export const selectImportedData = createSelector(
+    selectSamplesMainData,
     state => state.importedData
 );
 
-export const getNRL = createSelector(
-    getSamplesFeatureState,
+export const selectNRL = createSelector(
+    selectSamplesMainData,
     state => state.nrl
 );
 
-export const getDataValues = createSelector(
-    getFormData,
+export const selectFileDetails = createSelector(
+    selectSamplesMainData,
+    state => state.fileDetails
+);
+
+export const selectFileName = createSelector(
+    selectFileDetails,
+    (fileDetails) => {
+        // this should never be null
+        if (fileDetails !== null) {
+            return fileDetails.file.name;
+        } else {
+            return '';
+        }
+    }
+);
+
+export const selectDataValues = createSelector(
+    selectFormData,
     state => state.map(e => e.data)
 );
 
-export const getDataEdits = createSelector(
-    getFormData,
+export const selectDataEdits = createSelector(
+    selectFormData,
     state => state.map(e => e.edits)
 );
 
 export const hasEntries = createSelector(
-    getFormData,
+    selectFormData,
     state => !!state.length
 );
 
 export const hasValidationErrors = createSelector(
-    getFormData,
+    selectFormData,
     state => {
         return !!state.reduce(
             (acc, entry) => {
@@ -78,12 +100,15 @@ export const hasValidationErrors = createSelector(
 );
 
 // REDUCER
-export function reducer(state: SamplesState = initialState, action: SamplesActions): SamplesState {
+
+export function samplesMainReducer(
+    state: SamplesMainData = initialState, action: SamplesMainAction | LogoutUser | ValidateSamplesAction
+    ): SamplesMainData {
     switch (action.type) {
-        case SamplesActionTypes.ClearSamples:
+        case SamplesMainActionTypes.ClearSamples:
         case UserActionTypes.LogoutUser:
             return { ...initialState };
-        case SamplesActionTypes.ImportExcelFileSuccess:
+        case SamplesMainActionTypes.ImportExcelFileSuccess:
             const excelData = action.payload;
             return {
                 ...state, ...{
@@ -93,12 +118,12 @@ export function reducer(state: SamplesState = initialState, action: SamplesActio
                         corrections: [],
                         edits: {}
                     })),
-                    workSheet: excelData.workSheet,
+                    fileDetails: excelData.fileDetails,
                     importedData: excelData.data,
                     nrl: excelData.meta.nrl
                 }
             };
-        case SamplesActionTypes.ValidateSamplesSuccess:
+        case ValidateSamplesActionTypes.ValidateSamplesSuccess:
             const mergedEntries = action.payload.map(
                 (response, i) => {
                     return {
@@ -110,7 +135,7 @@ export function reducer(state: SamplesState = initialState, action: SamplesActio
                 }
             );
             return { ...state, ...{ formData: mergedEntries } };
-        case SamplesActionTypes.ChangeFieldValue:
+        case SamplesMainActionTypes.ChangeFieldValue:
             const {
                 rowIndex,
                 columnId,
