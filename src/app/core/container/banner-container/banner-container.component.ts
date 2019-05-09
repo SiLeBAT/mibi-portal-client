@@ -7,6 +7,7 @@ import { takeWhile, debounceTime } from 'rxjs/operators';
 import { UserActionService } from '../../services/user-action.service';
 import { UserActionType } from '../../../shared/model/user-action.model';
 import { ClientError } from '../../model/client-error';
+import { Core } from '../../core.state';
 
 @Component({
     selector: 'mibi-banner-container',
@@ -153,7 +154,7 @@ export class BannerContainerComponent implements OnInit {
 
     banner: Banner | null;
     private componentActive = true;
-    constructor(private store$: Store<fromCore.State>, private userActionService: UserActionService) { }
+    constructor(private store$: Store<Core>, private userActionService: UserActionService) { }
 
     ngOnInit() {
         this.store$.pipe(select(fromCore.getBanner),

@@ -1,0 +1,26 @@
+<div class="mibi-mat-dialog">
+
+    <mibi-layout-box>
+    
+        <div class="mibi-dialog">
+            <h1 mat-dialog-title>{{config.title}}</h1>
+            <div mat-dialog-content class="mibi-mat-dialog-content">
+                <ul class="mibi-dialog-warnings">
+                    <li class="mibi-dialog-warnings__item" *ngFor="let warning of config.warnings">
+                        {{warning}}
+                    </li>
+                </ul>
+                <div class="mibi-dialog-message"> {{config.message}} </div>
+                <ng-content></ng-content>
+            </div>
+            <div mat-dialog-actions class="mibi-mat-dialog-actions">
+                <button mat-button *ngIf="config.cancelButtonConfig" color="primary"
+                    (click)="onCancel()">{{config.cancelButtonConfig.label}}</button>
+                <button mat-raised-button cdkFocusInitial color="primary"
+                    (click)="onConfirm()">{{config.confirmButtonConfig.label}}</button>
+            </div>
+        </div>
+    
+    </mibi-layout-box>
+    
+</div>
