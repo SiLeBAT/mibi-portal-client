@@ -17,7 +17,7 @@
         <a class="mibi-footer-nav-link" mat-button color="primary" [routerLink]="['/content/datenschutzerklaerung']">Datenschutzerklärung</a>
       </li>
       <li class="mibi-footer-nav-list__item">
-        <a class="mibi-footer-nav-link" mat-button color="primary" href="mailto:{{ supportContact }}" target="_top">
+        <a class="mibi-footer-nav-link" mat-button color="primary" href="mailto:{{ supportMailConfig.recipient }}?subject={{ supportMailConfig.subject }}:&body={{ supportMailConfig.body }}" target="_top">
           Problem melden
         </a>
       </li>

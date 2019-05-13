@@ -1,18 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from '../../../../environments/environment';
+import { MailConfiguration } from '../../model/mail.model';
+import { supportMailConfiguration } from '../../constants/support-contact.constants';
 
 @Component({
     selector: 'mibi-footer-nav-container',
-    template: `<mibi-footer-nav [supportContact]="supportContact"></mibi-footer-nav>`
+    template: `<mibi-footer-nav [supportMailConfig]="supportMailConfig"></mibi-footer-nav>`
 })
 export class FooterNavContainerComponent implements OnInit {
 
-    supportContact: string;
+    supportMailConfig: MailConfiguration;
 
     constructor() { }
 
     ngOnInit() {
-        this.supportContact = environment.supportContact;
+        this.supportMailConfig = supportMailConfiguration;
     }
 
 }
