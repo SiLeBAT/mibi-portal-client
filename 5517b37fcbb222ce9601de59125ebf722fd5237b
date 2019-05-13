@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9aa07917_7da06153",
+        "filename": "src/app/core/state/core.actions.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1015828
+      },
+      "writtenOn": "2019-05-13T10:56:34Z",
+      "side": 1,
+      "message": "do",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 1
+      },
+      "revId": "5517b37fcbb222ce9601de59125ebf722fd5237b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bc8a1829_a5b31b50",
+        "filename": "src/app/samples/samples.state.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1015828
+      },
+      "writtenOn": "2019-05-13T10:56:34Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 4
+      },
+      "revId": "5517b37fcbb222ce9601de59125ebf722fd5237b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
