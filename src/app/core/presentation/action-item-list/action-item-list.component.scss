@@ -5,12 +5,19 @@
 .mibi-app-bar-bottom {
   height: 100%;
   display: flex;
+  flex-wrap: wrap;
   justify-content: flex-end;
+  align-items: center;
   background-color: $mibi-action-color;
   color: mat-color($primary-palette, darker-contrast);
 }
 
-.mibi-app-bar-bottom__content {
+.mibi-app-bar-bottom__left {
+  flex: 1 1 auto;
+  padding: 0 $mibi-single-space;
+}
+
+.mibi-app-bar-bottom__right {
   flex: 0 1 auto;
 }
 
