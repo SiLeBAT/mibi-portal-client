@@ -11,7 +11,7 @@
     "id": 2,
     "firstName": "User2",
     "lastName": "User2",
-    "email": "user2@test.com",
+    "email": "not-admin-enabled@test.com",
     "instituteId": "1235",
     "password": "user2secrettestpassword"
   },
@@ -19,7 +19,7 @@
     "id": 3,
     "firstName": "User3",
     "lastName": "User3",
-    "email": "user3@test.com",
+    "email": "not-enabled@test.com",
     "instituteId": "1235",
     "password": "user3secrettestpassword"
   },
@@ -27,7 +27,7 @@
     "id": 4,
     "firstName": "User4",
     "lastName": "User4",
-    "email": "user4@test.com",
+    "email": "not-enabled-not-admin-enabled@test.com",
     "instituteId": "1235",
     "password": "user4secrettestpassword"
   }

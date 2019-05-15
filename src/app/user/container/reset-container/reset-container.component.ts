@@ -14,7 +14,7 @@ export class ResetContainerComponent {
 
     constructor(
         private activatedRoute: ActivatedRoute,
-        private store: Store<fromUser.State>, private dataService: DataService, private router: Router) {
+        private store: Store<fromUser.UserMainState>, private dataService: DataService, private router: Router) {
     }
 
     reset(password: string) {

@@ -33,13 +33,13 @@ export class AppBarTopContainerComponent implements OnInit {
 
     ngOnInit() {
         this.currentUser$ = this.store$.pipe(
-            select(fromUser.getCurrentUser)
+            select(fromUser.selectCurrentUser)
         );
         this.config$ = combineLatest(
             of(this.userActionService.userActionConfiguration),
             this.store$.pipe(select(fromCore.getEnabledActionItems)),
             this.store$.pipe(select(fromSamples.hasEntries)),
-            this.store$.pipe(select(fromUser.getCurrentUser)),
+            this.store$.pipe(select(fromUser.selectCurrentUser)),
             this.store$.pipe(select(fromCore.isBusy))
         ).pipe(
             map(([configuration, enabled, hasEntries, currentUser, isBusy]) => {

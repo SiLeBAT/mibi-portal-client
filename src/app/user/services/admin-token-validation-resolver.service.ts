@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterStateSnapshot, Resolve } from '@angular/router';
 import { DataService } from '../../core/services/data.service';
-import { AdminActivateResponseDTO } from '../../core/model/response.model';
 import { Observable } from 'rxjs';
+import { UserActivation } from '../model/user.model';
 
 @Injectable({
     providedIn: 'root'
 })
-export class AdminTokenValidationResolver implements Resolve<AdminActivateResponseDTO> {
+export class AdminTokenValidationResolver implements Resolve<UserActivation> {
 
     constructor(
         private dataService: DataService) { }
 
-    resolve(activatedRoute: ActivatedRouteSnapshot, sanp: RouterStateSnapshot): Observable<AdminActivateResponseDTO> {
+    resolve(activatedRoute: ActivatedRouteSnapshot, sanp: RouterStateSnapshot): Observable<UserActivation> {
         const token = activatedRoute.params['id'];
-        return this.dataService.adminActivateAccount(token);
+        return this.dataService.activateAccount(token);
     }
 }

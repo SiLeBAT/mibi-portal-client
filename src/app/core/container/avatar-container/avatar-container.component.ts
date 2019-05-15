@@ -19,11 +19,11 @@ export class AvatarContainerComponent implements OnInit {
     currentUser$: Observable<User | null>;
 
     constructor(private router: Router,
-        private store$: Store<fromUser.State>) { }
+        private store$: Store<fromUser.UserMainState>) { }
 
     ngOnInit() {
         this.currentUser$ = this.store$.pipe(
-            select(fromUser.getCurrentUser)
+            select(fromUser.selectCurrentUser)
         );
 
     }

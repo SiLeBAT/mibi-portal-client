@@ -3,11 +3,11 @@ import { environment } from '../environments/environment';
 import { GuardedUnloadComponent } from './shared/container/guarded-unload.component';
 import { Store, select } from '@ngrx/store';
 import { takeWhile, tap } from 'rxjs/operators';
-import * as fromSamples from './samples/state/samples.reducer';
 import { DataService } from './core/services/data.service';
 import * as userActions from './user/state/user.actions';
 import { TokenizedUser } from './user/model/user.model';
 import { Samples } from './samples/samples.store';
+import { hasEntries } from './samples/state/samples.reducer';
 
 @Component({
     selector: 'mibi-root',
@@ -23,17 +23,16 @@ export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDe
     }
 
     ngOnInit(): void {
-        this.store$.pipe(select(fromSamples.hasEntries),
+        this.store$.pipe(select(hasEntries),
             tap(
-                hasEntries => this.canUnload = !hasEntries
+                entries => this.canUnload = !entries
             ),
             takeWhile(() => this.componentActive)
         ).subscribe();
-
-        this.loadInstitutions();
     }
 
     ngAfterViewInit(): void {
+        this.loadInstitutions();
         this.loadUser();
     }
 
@@ -62,10 +61,10 @@ export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDe
         }
         const user: TokenizedUser = JSON.parse(userJson);
 
-        this.dataService.isAuthorized(user).toPromise().then(
-            authorizationResponse => {
-                if (authorizationResponse.authorized) {
-                    user.token = authorizationResponse.token;
+        this.dataService.refreshToken().toPromise().then(
+            refreshResponse => {
+                if (refreshResponse.refresh) {
+                    user.token = refreshResponse.token;
                     this.dataService.setCurrentUser(user);
                     this.store$.dispatch(new userActions.LoginUserSuccess(user));
                 } else {

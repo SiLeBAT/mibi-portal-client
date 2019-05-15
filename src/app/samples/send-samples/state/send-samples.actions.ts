@@ -1,5 +1,4 @@
 import { Action } from '@ngrx/store';
-import { User } from '../../../user/model/user.model';
 import { CommandAction, ResponseAction } from '../../../shared/command/command.actions';
 import { SendSamplesWarnings } from '../model/send-samples-warnings';
 
@@ -8,7 +7,7 @@ export enum SendSamplesActionTypes {
     SendSamplesSuccess = '[Samples/SendSamples] Successfully sent samples',
     SendSamplesFailure = '[Samples/SendSamples] Sending samples failed',
     SendSamplesCancel = '[Samples/SendSamples] Sending samples cancelled',
-    SendSamplesOpenDialog = '[Samples/SendSamples] Warnings generated'
+    StoreSampleWarnings = '[Samples/SendSamples] Warnings generated'
 }
 
 // SendSamples
@@ -36,8 +35,8 @@ export class SendSamplesCancel implements ResponseAction {
     readonly command = SendSamplesActionTypes.SendSamples;
 }
 
-export class SendSamplesOpenDialog implements Action {
-    readonly type = SendSamplesActionTypes.SendSamplesOpenDialog;
+export class StoreSampleWarnings implements Action {
+    readonly type = SendSamplesActionTypes.StoreSampleWarnings;
 
     constructor(public payload: {warnings: SendSamplesWarnings}) {}
 }
@@ -47,4 +46,4 @@ export type SendSamplesAction =
     | SendSamplesSuccess
     | SendSamplesFailure
     | SendSamplesCancel
-    | SendSamplesOpenDialog;
+    | StoreSampleWarnings;

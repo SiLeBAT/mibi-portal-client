@@ -15,7 +15,7 @@ export class ActivateContainerComponent implements OnInit {
 
     constructor(private activatedRoute: ActivatedRoute,
         private router: Router,
-        private store: Store<fromUser.State>) { }
+        private store: Store<fromUser.UserMainState>) { }
 
     ngOnInit() {
         this.tokenValid = this.activatedRoute.snapshot.data['tokenValid'];

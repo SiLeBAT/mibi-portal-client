@@ -1,63 +1,63 @@
-import { TokenizedUser } from '../../user/model/user.model';
-import { SampleData } from '../../samples/model/sample-management.model';
-
-export interface AuthorizationResponseDTO {
-    authorized: boolean;
-    token: string;
+export interface TokenRefreshResponseDTO {
+    readonly refresh: boolean;
+    readonly token: string;
 }
-export interface RecoverPasswordResponseDTO {
-    title: string;
+export interface RegistrationRequestResponseDTO {
+    readonly registerRequest: boolean;
+    readonly email: string;
 }
 
-export interface RegisterUserResponseDTO {
-    title: string;
+export interface PasswordResetRequestResponseDTO {
+    readonly passwordResetRequest: boolean;
+    readonly email: string;
 }
 
-export interface LoginResponseDTO {
-    user: TokenizedUser;
-    status: string;
+export interface PasswordResetResponseDTO {
+    readonly passwordReset: boolean;
 }
 
 export interface ActivationResponseDTO {
-    activation: boolean;
+    readonly activation: boolean;
+    readonly username: string;
 }
 
-export interface AdminActivateResponseDTO extends ActivationResponseDTO {
-    obj: string;
-    title: string;
+export interface TokenizedUserDTO {
+    readonly email: string;
+    readonly firstName: string;
+    readonly lastName: string;
+    readonly instituteId: string;
+    readonly token: string;
 }
 
 export interface SystemInformationResponseDTO {
-    version: string;
-    lastChange: string;
+    readonly version: string;
+    readonly lastChange: string;
+    readonly supportContact: string;
 }
-interface ValidationResponseErrorEntryDTO {
-    code: number;
-    level: number;
-    message: string;
+export interface InstituteDTO {
+    readonly id: string;
+    readonly short: string;
+    readonly name: string;
+    readonly addendum: string;
+    readonly city: string;
+    readonly zip: string;
+    readonly phone: string;
+    readonly fax: string;
+    readonly email: string[];
 }
-
-interface ValidationResponseErrorCollectionDTO {
-    [key: string]: ValidationResponseErrorEntryDTO[];
+export interface InstituteCollectionDTO {
+    readonly institutes: InstituteDTO[];
 }
-
-interface ValidationResponseCorrectionEntryDTO {
-    field: keyof SampleData;
-    original: string;
-    correctionOffer: string[];
-}
-
-export interface ValidationResponseDTO {
-    data: Record<string, string>;
-    errors: ValidationResponseErrorCollectionDTO;
-    corrections: ValidationResponseCorrectionEntryDTO[];
-    edits: Record<string, string>;
+export interface MarshalledDataResponseDTO {
+    readonly data: string;
+    readonly fileName: string;
+    readonly type: string;
 }
 
 interface QA {
-    q: string;
-    a: string;
+    readonly q: string;
+    readonly a: string;
 }
 export interface FAQResponseDTO {
-    [key: string]: QA[];
+    readonly [key: string]: QA[];
 }
