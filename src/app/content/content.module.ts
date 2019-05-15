@@ -12,6 +12,9 @@ import { MatCardModule } from '@angular/material/card';
 import { DatenschutzerklaerungComponent } from './presentation/datenschutzerklaerung/datenschutzerklaerung.component';
 import { DatenschutzerklaerungViewComponent } from './presentation/datenschutzerklaerung-view/datenschutzerklaerung-view.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { CONTENT_SLICE_NAME } from './content.state';
+import { contentReducerMap } from './content.store';
+import { StoreModule } from '@ngrx/store';
 @NgModule({
     imports: [
         CommonModule,
@@ -25,7 +28,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
             ]
         }]),
         MatExpansionModule,
-        MatCardModule
+        MatCardModule,
+        StoreModule.forFeature(CONTENT_SLICE_NAME, contentReducerMap)
     ],
     declarations: [
         FAQComponent,

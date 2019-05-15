@@ -12,7 +12,7 @@ import { Core } from '../../core.state';
 @Component({
     selector: 'mibi-banner-container',
     template: `<mibi-banner
-    *ngIf="banner" [banner]="banner" (mainAction)="onMainAction($even)" (auxilliaryAction)="onAuxAction($even)"></mibi-banner>`
+    *ngIf="banner" [banner]="banner" (mainAction)="onMainAction($event)" (auxilliaryAction)="onAuxAction($event)"></mibi-banner>`
 })
 export class BannerContainerComponent implements OnInit {
 

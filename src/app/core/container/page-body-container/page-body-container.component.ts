@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store, select } from '@ngrx/store';
-import * as fromCore from '../../state/core.reducer';
-import * as coreActions from '../../state/core.actions';
 import { environment } from '../../../../environments/environment';
 import { Core } from '../../core.state';
+import { DestroyBanner } from '../../state/core.actions';
+import { isBusy, showBanner } from '../../state/core.reducer';
 
 @Component({
     selector: 'mibi-page-body-container',
@@ -19,12 +19,12 @@ export class PageBodyContainerComponent implements OnInit {
         private store$: Store<Core>) { }
 
     ngOnInit() {
-        this.isBusy$ = this.store$.pipe(select(fromCore.isBusy));
-        this.isBanner$ = this.store$.pipe(select(fromCore.showBanner));
+        this.isBusy$ = this.store$.pipe(select(isBusy));
+        this.isBanner$ = this.store$.pipe(select(showBanner));
         this.supportContact = environment.supportContact;
     }
 
     onAnimationDone() {
-        this.store$.dispatch(new coreActions.DestroyBanner());
+        this.store$.dispatch(new DestroyBanner());
     }
 }

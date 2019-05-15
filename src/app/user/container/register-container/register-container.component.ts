@@ -1,37 +1,52 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { fromDTOToInstitution, Institution, InstitutionDTO } from '../../../user/model/institution.model';
-import * as fromUser from '../../state/user.reducer';
-import * as coreActions from '../../../core/state/core.actions';
 import { Store, select } from '@ngrx/store';
 import { DataService } from '../../../core/services/data.service';
 import { AlertType } from '../../../core/model/alert.model';
 import { Router } from '@angular/router';
 import { UserActionService } from '../../../core/services/user-action.service';
 import { UserActionType } from '../../../shared/model/user-action.model';
-import { Credentials } from '../../model/user.model';
+import { RegistrationDetails, UserRegistrationRequest } from '../../model/user.model';
 import { Observable } from 'rxjs/internal/Observable';
-import { map } from 'rxjs/internal/operators/map';
+import { takeWhile, map } from 'rxjs/operators';
+import { ClientError } from '../../../core/model/client-error';
+import { selectInstitutions } from '../../state/user.reducer';
+import { selectSupportContact, ContentMainStates } from '../../../content/state/content.reducer';
+import { DisplayBanner } from '../../../core/state/core.actions';
+import { ContentSlice } from '../../../content/content.state';
 
 @Component({
     selector: 'mibi-register-container',
     template: `<mibi-register (register)="register($event)" [institutions]="institutions$ | async"></mibi-register>`
 })
-export class RegisterContainerComponent implements OnInit {
-    institutions$: Observable<Institution[]>;
+export class RegisterContainerComponent implements OnInit, OnDestroy {
 
+    institutions$: Observable<Institution[]>;
+    private supportContact: string = '';
+    private componentActive: boolean = true;
     constructor(
         private router: Router,
-        private store: Store<fromUser.State>,
+        private store: Store<ContentSlice<ContentMainStates>>,
         private dataService: DataService, private userActionService: UserActionService) {
     }
 
     ngOnInit() {
         this.loadInstitutions();
+        this.store.pipe(select(selectSupportContact),
+            takeWhile(() => this.componentActive)
+        ).subscribe(contact => this.supportContact = contact,
+            (error) => {
+                throw new ClientError(`Can't determine Support contact detail. error=${error}`);
+            });
     }
 
-    register(details: Credentials) {
+    ngOnDestroy(): void {
+        this.componentActive = false;
+    }
 
-        this.dataService.registerUser(
+    register(details: RegistrationDetails) {
+
+        this.dataService.registrationRequest(
             {
                 email: details.email,
                 password: details.password,
@@ -40,14 +55,14 @@ export class RegisterContainerComponent implements OnInit {
                 instituteId: details.instituteId
             }
         ).toPromise().then(
-            () => {
+            (response: UserRegistrationRequest) => {
                 this.router.navigate(['users/login']).then(
                     () => {
-                        this.store.dispatch(new coreActions.DisplayBanner({
+                        this.store.dispatch(new DisplayBanner({
                             predefined: '',
                             custom: {
                                 // tslint:disable-next-line:max-line-length
-                                message: `Bitte aktivieren Sie Ihren Account: Eine Email mit weiteren Anweisungen wurde an ${details.email} gesendet`,
+                                message: `Bitte aktivieren Sie Ihren Account: Eine E-mail mit weiteren Anweisungen wurde an ${response.email} gesendet`,
                                 type: AlertType.SUCCESS,
                                 mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
                             }
@@ -59,11 +74,12 @@ export class RegisterContainerComponent implements OnInit {
 
             }
         ).catch(
-            (response) => {
-                this.store.dispatch(new coreActions.DisplayBanner({
+            () => {
+                this.store.dispatch(new DisplayBanner({
                     predefined: '',
                     custom: {
-                        message: response.error.title,
+                        // tslint:disable-next-line: max-line-length
+                        message: `Fehler beim Registrieren. Eine E-mail mit weiteren Informationen wurde an ${details.email} gesendet. Wenn Sie keine E-mail erhalten, wenden Sie sich bitte direkt per E-mail an uns: ${this.supportContact}.`,
                         type: AlertType.ERROR,
                         mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
                     }
@@ -74,7 +90,7 @@ export class RegisterContainerComponent implements OnInit {
 
     private loadInstitutions() {
         this.institutions$ = this.store.pipe(
-            select(fromUser.getInstitutions),
+            select(selectInstitutions),
             map((data: InstitutionDTO[]) => {
                 return data.map(institution => {
                     return fromDTOToInstitution(institution);

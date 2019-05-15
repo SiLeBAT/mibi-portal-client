@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import * as fromSample from '../../state/samples.reducer';
 import * as samplesActions from '../../state/samples.actions';
 import * as coreActions from '../../../core/state/core.actions';
 import { Store } from '@ngrx/store';
@@ -17,12 +16,16 @@ export class UploadViewComponent implements OnInit {
 
     ngOnInit(): void {
         this.store.dispatch(new coreActions.EnableActionItems(
-            [UserActionType.VALIDATE,
+            [
+                UserActionType.VALIDATE,
                 UserActionType.SEND,
-                UserActionType.EXPORT, UserActionType.UPLOAD, UserActionType.DOWNLOAD_TEMPLATE]));
+                UserActionType.EXPORT,
+                UserActionType.UPLOAD,
+                UserActionType.DOWNLOAD_TEMPLATE
+            ]));
     }
     // Container not really necessary here, or is it?
     fileUpload(file: File) {
-        this.store.dispatch(new samplesActions.ImportExcelFile(file));
+        this.store.dispatch(new samplesActions.ImportExcelFile({ file }));
     }
 }

@@ -19,12 +19,12 @@ export class LoginContainerComponent implements OnInit, OnDestroy {
 
     private componentActive = true;
     constructor(private router: Router,
-        private store: Store<fromUser.State & Samples>) { }
+        private store: Store<fromUser.UserMainState & Samples>) { }
 
     ngOnInit(): void {
 
         combineLatest(
-            this.store.pipe(select(fromUser.getCurrentUser)),
+            this.store.pipe(select(fromUser.selectCurrentUser)),
             this.store.pipe(select(fromSamples.hasEntries))
         ).pipe(
             takeWhile(() => this.componentActive),

@@ -19,17 +19,17 @@ export class ProfileContainerComponent implements OnInit, OnDestroy {
     private institution: Institution;
     private componentActive = true;
     constructor(
-        private store: Store<fromUser.State>) { }
+        private store: Store<fromUser.UserMainState>) { }
 
     ngOnInit() {
-        this.store.pipe(select(fromUser.getCurrentUser),
+        this.store.pipe(select(fromUser.selectCurrentUser),
             withLatestFrom(this.store),
             tap(
-                (userData: [TokenizedUser | null, fromUser.State]) => {
+                (userData: [TokenizedUser | null, fromUser.UserMainState]) => {
                     this.currentUser = userData[0];
                     if (this.currentUser) {
                         const queryId = this.currentUser.instituteId;
-                        const institutionDTO = _.find(userData[1].user.institutes, entry => entry._id === queryId);
+                        const institutionDTO = _.find(userData[1].user.institutes, entry => entry.id === queryId);
 
                         if (institutionDTO) {
                             this.institution = fromDTOToInstitution(institutionDTO);
