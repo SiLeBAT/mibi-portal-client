@@ -5,8 +5,6 @@ import { SamplesMainAction } from './state/samples.actions';
 import { SamplesSlice } from './samples.state';
 import { LogoutUser } from '../user/state/user.actions';
 import { SendSamplesAction } from './send-samples/state/send-samples.actions';
-import { CommentDialogStates, commentDialogReducer } from '../shared/comment-dialog/state/comment-dialog.state';
-import { CommentDialogAction } from '../shared/comment-dialog/state/comment-dialog.actions';
 import { CommentDialogEffects } from '../shared/comment-dialog/effects/comment-dialog.effects';
 import { ValidateSamplesAction } from './validate-samples/state/validate-samples.actions';
 import { ValidateSamplesEffects } from './validate-samples/effects/validate-samples.effects';

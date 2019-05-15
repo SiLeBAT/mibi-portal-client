@@ -1,76 +1,81 @@
-import { WorkSheet } from 'xlsx/types';
+import { Urgency } from './sample.enums';
 
-export type SampleData = Record<string, string>;
-export type ChangedValueCollection = Record<string, string>;
-export const VALID_SHEET_NAME: string = 'Einsendeformular';
+export type SampleProperty = keyof SampleData;
+export type SamplePropertyValues = Record<SampleProperty, string>;
+export type SampleAutoCorrection = Record<SampleProperty, string>;
+export type SampleEdits = Record<SampleProperty, string>;
 
-export const FORM_PROPERTIES: string[] = [
-    'sample_id',
-    'sample_id_avv',
-    'pathogen_adv',
-    'pathogen_text',
-    'sampling_date',
-    'isolation_date',
-    'sampling_location_adv',
-    'sampling_location_zip',
-    'sampling_location_text',
-    'topic_adv',
-    'matrix_adv',
-    'matrix_text',
-    'process_state_adv',
-    'sampling_reason_adv',
-    'sampling_reason_text',
-    'operations_mode_adv',
-    'operations_mode_text',
-    'vvvo',
-    'comment'
-];
+interface Address {
+    instituteName: string;
+    department?: string;
+    street: string;
+    zip: string;
+    city: string;
+    contactPerson: string;
+    telephone: string;
+    email: string;
+}
 
-export interface ExcelFileBlob {
-    blob: Blob;
+interface Analysis {
+    species: boolean;
+    serological: boolean;
+    phageTyping: boolean;
+    resistance: boolean;
+    vaccination: boolean;
+    molecularTyping: boolean;
+    toxin: boolean;
+    zoonosenIsolate: boolean;
+    esblAmpCCarbapenemasen: boolean;
+    other: string;
+    compareHuman: boolean;
+}
+export interface SampleSetMetaData {
+    nrl: string;
+    sender: Address;
+    analysis: Analysis;
+    urgency: Urgency;
     fileName: string;
 }
 
-export interface ImportedExcelFileDetails {
-    workSheet: WorkSheet;
-    file: File;
-    oriDataLength: number;
+export interface SampleSet {
+    samples: SampleData[];
+    meta: SampleSetMetaData;
 }
 
-export interface SampleSheet {
-    formData: AnnotatedSampleData[];
-    fileDetails: ImportedExcelFileDetails | null;
-}
-
-export interface SampleMetaData {
-    nrl: string;
-}
-export interface ExcelData {
-    data: SampleData[];
-    meta: SampleMetaData;
-    fileDetails: ImportedExcelFileDetails;
-}
-
-export interface ValidationError {
+export interface SampleValidationError {
     code: number;
     level: number;
     message: string;
 }
 
-export interface ValidationErrorCollection {
-    [key: string]: ValidationError[];
+export interface AnnotatedSampleDataEntry {
+    value: string;
+    errors: SampleValidationError[];
+    correctionOffer: string[];
+    oldValue?: string;
 }
 
-export interface AutoCorrectionEntry {
-    field: keyof SampleData;
-    original: string;
-    correctionOffer: string[];
-}
-export interface AnnotatedSampleData {
-    data: SampleData;
-    errors: ValidationErrorCollection;
-    edits: ChangedValueCollection;
-    corrections: AutoCorrectionEntry[];
+export interface SampleData {
+    sample_id: AnnotatedSampleDataEntry;
+    sample_id_avv: AnnotatedSampleDataEntry;
+    pathogen_adv: AnnotatedSampleDataEntry;
+    pathogen_text: AnnotatedSampleDataEntry;
+    sampling_date: AnnotatedSampleDataEntry;
+    isolation_date: AnnotatedSampleDataEntry;
+    sampling_location_adv: AnnotatedSampleDataEntry;
+    sampling_location_zip: AnnotatedSampleDataEntry;
+    sampling_location_text: AnnotatedSampleDataEntry;
+    topic_adv: AnnotatedSampleDataEntry;
+    matrix_adv: AnnotatedSampleDataEntry;
+    matrix_text: AnnotatedSampleDataEntry;
+    process_state_adv: AnnotatedSampleDataEntry;
+    sampling_reason_adv: AnnotatedSampleDataEntry;
+    sampling_reason_text: AnnotatedSampleDataEntry;
+    operations_mode_adv: AnnotatedSampleDataEntry;
+    operations_mode_text: AnnotatedSampleDataEntry;
+    vvvo: AnnotatedSampleDataEntry;
+    comment: AnnotatedSampleDataEntry;
+    [key: string]: AnnotatedSampleDataEntry;
 }
 
 export interface ColConfig {
@@ -87,4 +92,19 @@ export interface ChangedDataGridField {
     columnId: string;
     originalValue: string;
     newValue: string;
+}
+
+export interface ExcelFile {
+    file: File;
+}
+
+export interface MarshalledData {
+    binaryData: string;
+    fileName: string;
+    mimeType: string;
+}
+
+export interface SampleSubmission {
+    order: SampleSet;
+    comment: string;
 }

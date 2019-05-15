@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Institution } from '../../../user/model/institution.model';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
-import { Credentials } from '../../model/user.model';
+import { RegistrationDetails } from '../../model/user.model';
 
 @Component({
     selector: 'mibi-register',
@@ -61,11 +61,11 @@ export class RegisterComponent implements OnInit {
 
     onRegister() {
         if (this.registerForm.valid) {
-            const details: Credentials = {
+            const details: RegistrationDetails = {
                 email: this.registerForm.value.email,
                 firstName: this.registerForm.value.firstName,
                 lastName: this.registerForm.value.lastName,
-                instituteId: this.registerForm.value.institution._id,
+                instituteId: this.registerForm.value.institution.id,
                 password: this.registerForm.value.password1
 
             };

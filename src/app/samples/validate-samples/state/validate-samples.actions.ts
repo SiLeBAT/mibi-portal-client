@@ -1,5 +1,5 @@
 import { CommandAction, ResponseAction } from '../../../shared/command/command.actions';
-import { AnnotatedSampleData } from '../../model/sample-management.model';
+import { SampleData } from '../../model/sample-management.model';
 
 export enum ValidateSamplesActionTypes {
     ValidateSamples = '[Samples/ValidateSamples] Validate samples',
@@ -17,7 +17,7 @@ export class ValidateSamplesSuccess implements ResponseAction {
     readonly type = ValidateSamplesActionTypes.ValidateSamplesSuccess;
     readonly command = ValidateSamplesActionTypes.ValidateSamples;
 
-    constructor(public payload: AnnotatedSampleData[]) { }
+    constructor(public payload: SampleData[]) { }
 }
 
 export class ValidateSamplesFailure implements ResponseAction {

@@ -6,6 +6,7 @@
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.config.json",
     "serve": "ng serve --proxy-config proxy.config.json --watch",
+    "debug": "ng serve -o --proxy-config proxy.config.json --watch",
     "serve:local": "ng serve",
     "build:qa": "npm run clean && ng build --configuration=qa --output-path \"public\"",
     "build:prod": "npm run clean && ng build --configuration=production --output-path \"public\"",
@@ -114,6 +115,6 @@
     "typescript": "3.2.4"
   },
   "mibiConfig": {
-    "lastChange": "Mon Sep 17 11:21:33 2018 +0200"
+    "lastChange": "2019-04-16 11:25:17 +0200"
   }
 }

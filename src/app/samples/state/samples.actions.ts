@@ -1,6 +1,5 @@
 import { Action } from '@ngrx/store';
-import { ExcelData, ChangedDataGridField } from '../model/sample-management.model';
-import { Alert } from '../../core/model/alert.model';
+import { ChangedDataGridField, SampleSet, ExcelFile } from '../model/sample-management.model';
 
 export enum SamplesMainActionTypes {
     ClearSamples = '[Samples] Clear Samples',
@@ -8,7 +7,6 @@ export enum SamplesMainActionTypes {
     ImportExcelFileSuccess = '[Samples] Successfully imported Excel file',
     ExportExcelFile = '[Samples] Export Excel file',
     ExportExcelFileSuccess = '[Samples] Successfully exported Excel file',
-    ExportExcelFileFailure = '[Samples] Failure exporting Excel file',
     ChangeFieldValue = '[Samples] Change field value'
 }
 
@@ -18,18 +16,20 @@ export class ClearSamples implements Action {
     readonly type = SamplesMainActionTypes.ClearSamples;
 }
 
-// ImportExcelFile
-
 export class ImportExcelFile implements Action {
     readonly type = SamplesMainActionTypes.ImportExcelFile;
 
-    constructor(public payload: File) { }
+    constructor(public payload: ExcelFile) {
+
+    }
 }
 
 export class ImportExcelFileSuccess implements Action {
     readonly type = SamplesMainActionTypes.ImportExcelFileSuccess;
 
-    constructor(public payload: ExcelData) { }
+    constructor(public payload: SampleSet) {
+
+    }
 }
 
 // ExportExcelFile
@@ -42,14 +42,6 @@ export class ExportExcelFileSuccess implements Action {
     readonly type = SamplesMainActionTypes.ExportExcelFileSuccess;
 }
 
-export class ExportExcelFileFailure implements Action {
-    readonly type = SamplesMainActionTypes.ExportExcelFileFailure;
-
-    constructor(public payload: Alert) { }
-}
-
-// ChangeFieldValue
-
 export class ChangeFieldValue implements Action {
     readonly type = SamplesMainActionTypes.ChangeFieldValue;
 
@@ -57,10 +49,9 @@ export class ChangeFieldValue implements Action {
 }
 
 export type SamplesMainAction =
-ClearSamples
+    ClearSamples
     | ImportExcelFile
     | ImportExcelFileSuccess
     | ExportExcelFile
     | ExportExcelFileSuccess
-    | ExportExcelFileFailure
     | ChangeFieldValue;
