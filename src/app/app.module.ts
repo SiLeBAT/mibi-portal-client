@@ -5,7 +5,7 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AppComponent } from './app.component';
 import { TokenInterceptor } from './core/services/token-interceptor.service';
-import { JwtInterceptor } from './core/services/jwt-interceptor.service';
+import { HttpErrorMapperService } from './core/services/http-error-mapper.service';
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
@@ -50,7 +50,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         },
         {
             provide: HTTP_INTERCEPTORS,
-            useClass: JwtInterceptor,
+            useClass: HttpErrorMapperService,
             multi: true
         }
     ],

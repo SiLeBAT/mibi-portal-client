@@ -1,49 +1,79 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { AnnotatedSampleData } from '../../samples/model/sample-management.model';
-import { InstitutionDTO } from '../../user/model/institution.model';
+import * as _ from 'lodash';
 import {
-    AdminActivateResponseDTO,
-    RecoverPasswordResponseDTO,
-    RegisterUserResponseDTO,
-    LoginResponseDTO,
+    SampleData,
+    Einsendebogen,
+    SampleSet,
+    MarshalledData,
+    SampleSubmission,
+    AnnotatedSampleDataEntry,
+    SampleProperty,
+    SampleSetMetaData
+} from '../../samples/model/sample-management.model';
+import {
     ActivationResponseDTO,
     SystemInformationResponseDTO,
-    ValidationResponseDTO,
     FAQResponseDTO,
-    AuthorizationResponseDTO
+    TokenRefreshResponseDTO,
+    MarshalledDataResponseDTO,
+    TokenizedUserDTO,
+    RegistrationRequestResponseDTO,
+    PasswordResetRequestResponseDTO,
+    InstituteCollectionDTO
 } from '../model/response.model';
-import { TokenizedUser, Credentials } from '../../user/model/user.model';
-import { ValidationRequest } from '../model/request.model';
+import { TokenizedUser, Credentials, RegistrationDetails } from '../../user/model/user.model';
+import {
+    ResetRequestDTO,
+    NewPasswordRequestDTO,
+    RegistrationDetailsDTO,
+    SampleSubmissionDTO
+} from '../model/request.model';
 import { ClientError } from '../model/client-error';
+import {
+    AnnotatedSampleDTO,
+    AnnotatedSampleDataEntryDTO,
+    AnnotatedSampleSetDTO,
+    AnnotatedOrderDTO,
+    SampleSetMetaDTO,
+    SampleSetDTO,
+    SampleDataEntryDTO
+} from '../model/shared-dto.model';
+import { LogService } from './log.service';
+import { InstitutionDTO } from '../../user/model/institution.model';
+import { Urgency } from '../../samples/model/sample.enums';
+import { SamplesMainData } from '../../samples/state/samples.reducer';
 
 @Injectable({
     providedIn: 'root'
 })
 export class DataService {
 
-    private API_ROOT = '/api';
     private API_VERSION = 'v1';
-    private USERS = 'users';
-    private UTIL = 'util';
+    private USER = 'users';
+    private SAMPLE = 'samples';
+    private TOKEN = 'tokens';
+    private INSTITUTE = 'institutes';
     private URL = {
-        sendFile: [this.API_ROOT, this.API_VERSION, 'job'].join('/'),
-        validateSample: [this.API_ROOT, this.API_VERSION, 'validation'].join('/'),
-        institutions: [this.API_ROOT, this.API_VERSION, 'institutions'].join('/'),
-        login:  [this.API_ROOT, this.API_VERSION, this.USERS, 'login'].join('/'),
-        register: [this.API_ROOT, this.API_VERSION, this.USERS, 'register'].join('/'),
-        recovery: [this.API_ROOT, this.API_VERSION, this.USERS, 'recovery'].join('/'),
-        reset: [this.API_ROOT, this.API_VERSION, this.USERS, 'reset'].join('/'),
-        activate: [this.API_ROOT, this.API_VERSION, this.USERS, 'activate'].join('/'),
-        adminactivate: [this.API_ROOT, this.API_VERSION, this.USERS, 'adminactivate'].join('/'),
-        isAuthorized: [this.API_ROOT, this.API_VERSION, this.USERS, 'isauthorized'].join('/'),
-        systemInfo: [this.API_ROOT, this.API_VERSION, this.UTIL, 'system-info'].join('/'),
+        submit: [this.API_VERSION, this.SAMPLE, 'submitted'].join('/'),
+        validate: [this.API_VERSION, this.SAMPLE, 'validated'].join('/'),
+        marshal: [this.API_VERSION, this.SAMPLE].join('/'),
+        unmarshal: [this.API_VERSION, this.SAMPLE].join('/'),
+        institutions: [this.API_VERSION, this.INSTITUTE].join('/'),
+        login: [this.API_VERSION, this.USER, 'login'].join('/'),
+        register: [this.API_VERSION, this.USER, 'registration'].join('/'),
+        resetPasswordRequest: [this.API_VERSION, this.USER, 'reset-password-request'].join('/'),
+        resetPassword: [this.API_VERSION, this.USER, 'reset-password'].join('/'),
+        verifyEmail: [this.API_VERSION, this.USER, 'verification'].join('/'),
+        activateAccount: [this.API_VERSION, this.USER, 'activation'].join('/'),
+        refresh: [this.API_VERSION, this.TOKEN].join('/'),
+        systemInfo: [this.API_VERSION, 'info'].join('/'),
         faq: './assets/faq.json'
     };
 
-    constructor(private httpClient: HttpClient) {
+    constructor(private httpClient: HttpClient, private logger: LogService) {
     }
 
     setCurrentUser(user: TokenizedUser) {
@@ -63,61 +93,196 @@ export class DataService {
         return new Observable<void>().toPromise();
     }
 
-    login(credentials: Credentials): Observable<LoginResponseDTO> {
-        return this.httpClient.post<LoginResponseDTO>(this.URL.login, credentials);
-    }
-
-    sendSampleSheet(sendableFormData: FormData) {
-        return this.httpClient.post(this.URL.sendFile, sendableFormData).toPromise()
-            .catch(() => {
-                throw new ClientError('Beim Versenden ist ein Fehler aufgetreten');
-            });
-    }
-
-    validateSampleData(requestData: ValidationRequest): Observable<AnnotatedSampleData[]> {
-        return this.httpClient.post<AnnotatedSampleData[]>(this.URL.validateSample, requestData).pipe(
-            map((dtoArray: ValidationResponseDTO[]) => dtoArray.map(this.fromValidationResponseDTOToAnnotatedSampleData)),
-            catchError(() => {
-                throw new ClientError('Beim Validieren ist ein Fehler aufgetreten');
+    login(credentials: Credentials): Observable<TokenizedUser> {
+        return this.httpClient.post<TokenizedUserDTO>(this.URL.login, credentials).pipe(
+            map((dto: TokenizedUserDTO) => {
+                return dto;
             })
         );
     }
 
+    sendSampleSheet(sendableFormData: SampleSubmission) {
+        const requestDTO: SampleSubmissionDTO = {
+            order: this.fromSampleSetToDTO(sendableFormData.order),
+            comment: sendableFormData.comment
+        };
+        return this.httpClient.post<AnnotatedSampleDTO[]>(this.URL.submit, requestDTO).pipe(
+            map((dtoArray: AnnotatedSampleDTO[]) => dtoArray.map(dto => this.fromAnnotatedDTOToSampleData(dto)))
+        );
+    }
+
+    validateSampleData(requestData: SamplesMainData): Observable<SampleData[]> {
+        const requestDTO: AnnotatedOrderDTO = this.fromSamplesMainDataToAnnotatedOrderDTO(requestData);
+        return this.httpClient.put<AnnotatedOrderDTO>(this.URL.validate, requestDTO).pipe(
+            map((dto: AnnotatedOrderDTO) => dto.order.samples.map(container => this.fromAnnotatedDTOToSampleData(container.sample)))
+        );
+    }
+
+    unmarshalExcel(requestData: Einsendebogen): Observable<SampleSet> {
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Accept': 'application/json'
+            })
+        };
+        const formData: FormData = new FormData();
+        formData.append('file', requestData.file, requestData.file.name);
+        return this.httpClient.put<AnnotatedOrderDTO>(this.URL.unmarshal, formData, httpOptions).pipe(
+            map((dto: AnnotatedOrderDTO) => this.fromDTOToAnnotatedSampleSet(dto.order)),
+            catchError((error) => {
+                throw new ClientError(`Failed to read excel file. error=${error}`);
+            }));
+    }
+
+    marshalJSON(requestData: SamplesMainData): Observable<MarshalledData> {
+        const requestBody: AnnotatedOrderDTO = this.fromSamplesMainDataToAnnotatedOrderDTO(requestData);
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'Accept': 'multipart/form-data'
+            })
+        };
+        return this.httpClient.put<MarshalledDataResponseDTO>(this.URL.marshal, requestBody, httpOptions).pipe(
+            map((dto: MarshalledDataResponseDTO) => this.fromMarshalledDataResponseDTOToMarshalledData(dto)));
+    }
+
     getAllInstitutions(): Observable<InstitutionDTO[]> {
-        return this.httpClient.get<InstitutionDTO[]>(this.URL.institutions);
+        return this.httpClient.get<InstituteCollectionDTO>(this.URL.institutions).pipe(
+            map((dto: InstituteCollectionDTO) => {
+                return dto.institutes;
+            }));
     }
 
-    registerUser(credentials: Credentials): Observable<RegisterUserResponseDTO> {
-        return this.httpClient.post<RegisterUserResponseDTO>(this.URL.register, { ...credentials });
+    registrationRequest(registrationDetails: RegistrationDetails): Observable<RegistrationRequestResponseDTO> {
+        const registrationDetailsDTO: RegistrationDetailsDTO = { ...registrationDetails };
+        return this.httpClient.post<RegistrationRequestResponseDTO>(this.URL.register, registrationDetailsDTO);
     }
 
-    recoverPassword(email: String): Observable<RecoverPasswordResponseDTO> {
-        return this.httpClient.post<RecoverPasswordResponseDTO>(this.URL.recovery, { email: email });
+    resetPasswordRequest(email: string): Observable<PasswordResetRequestResponseDTO> {
+        const resetRequest: ResetRequestDTO = { email };
+        return this.httpClient.put<PasswordResetRequestResponseDTO>(this.URL.resetPasswordRequest, resetRequest);
     }
 
-    resetPassword(newPw: String, token: String) {
-        return this.httpClient.post([this.URL.reset, token].join('/'), { newPw: newPw });
+    resetPassword(password: string, token: string) {
+        const newPassword: NewPasswordRequestDTO = { password };
+        return this.httpClient.patch([this.URL.resetPassword, token].join('/'), newPassword);
     }
 
-    activateAccount(token: String): Observable<boolean> {
-        return this.httpClient.post<ActivationResponseDTO>([this.URL.activate, token].join('/'), null).pipe(
+    verifyEmail(token: string): Observable<boolean> {
+        return this.httpClient.patch<ActivationResponseDTO>([this.URL.verifyEmail, token].join('/'), null).pipe(
             map(r => r.activation)
         );
     }
 
-    adminActivateAccount(adminToken: String): Observable<AdminActivateResponseDTO> {
-        return this.httpClient.post<AdminActivateResponseDTO>([this.URL.adminactivate, adminToken].join('/'), null);
+    activateAccount(adminToken: string): Observable<ActivationResponseDTO> {
+        return this.httpClient.patch<ActivationResponseDTO>([this.URL.activateAccount, adminToken].join('/'), null);
     }
 
-    isAuthorized(user: TokenizedUser): Observable<AuthorizationResponseDTO> {
-        return this.httpClient.post<AuthorizationResponseDTO>(this.URL.isAuthorized, user);
+    refreshToken(): Observable<TokenRefreshResponseDTO> {
+        return this.httpClient.post<TokenRefreshResponseDTO>(this.URL.refresh, null);
     }
-    private fromValidationResponseDTOToAnnotatedSampleData(dto: ValidationResponseDTO): AnnotatedSampleData {
-        return {
-            data: dto.data,
-            errors: dto.errors,
-            corrections: dto.corrections,
-            edits: dto.edits
+
+    private fromMarshalledDataResponseDTOToMarshalledData(dto: MarshalledDataResponseDTO): MarshalledData {
+        return dto;
+    }
+
+    private fromDTOToAnnotatedSampleSet(dto: AnnotatedSampleSetDTO): SampleSet {
+        const annotatedSampleSet: SampleSet = {
+            meta: this.fromDTOToSampleSetMetaData(dto.meta),
+            samples: dto.samples.map(sampleContainerDTO => {
+                return this.fromAnnotatedDTOToSampleData(sampleContainerDTO.sample);
+            })
         };
+        return annotatedSampleSet;
+    }
+
+    private fromSampleSetToAnnotatedDTO(sampleSet: SampleSet): AnnotatedSampleSetDTO {
+        const dto: AnnotatedSampleSetDTO = {
+            meta: this.fromSampleSetMetaDataToDTO(sampleSet.meta),
+            samples: sampleSet.samples.map(sample => ({ sample: sample }))
+        };
+        return dto;
+    }
+
+    private fromSampleSetToDTO(sampleSet: SampleSet): SampleSetDTO {
+        const dto: SampleSetDTO = {
+            meta: this.fromSampleSetMetaDataToDTO(sampleSet.meta),
+            samples: sampleSet.samples.map(sample => ({ sample: this.fromSampleDataToDTO(sample) }))
+        };
+        return dto;
+    }
+
+    private fromSampleDataToDTO(sampleData: SampleData) {
+        const dto: Record<SampleProperty, SampleDataEntryDTO> = {};
+        Object.keys(sampleData).forEach(prop => dto[prop] = {
+            value: sampleData[prop].value,
+            oldValue: sampleData[prop].oldValue
+        });
+        return dto;
+    }
+
+    private fromDTOToSampleSetMetaData(dto: SampleSetMetaDTO): SampleSetMetaData {
+        return {
+            nrl: dto.nrl,
+            analysis: dto.analysis,
+            sender: dto.sender,
+            urgency: this.fromStringToEnum(dto.urgency),
+            fileName: dto.fileName ? dto.fileName : ''
+        };
+    }
+
+    private fromSampleSetMetaDataToDTO(meta: SampleSetMetaData): SampleSetMetaDTO {
+        return {
+            nrl: meta.nrl,
+            analysis: meta.analysis,
+            sender: meta.sender,
+            urgency: meta.urgency
+        };
+    }
+
+    private fromStringToEnum(str: string): Urgency {
+        switch (str.trim().toLowerCase()) {
+            case 'eilt':
+                return Urgency.URGENT;
+            case 'normal':
+            default:
+                return Urgency.NORMAL;
+        }
+    }
+    private fromSamplesMainDataToAnnotatedOrderDTO({ meta, formData }: SamplesMainData): AnnotatedOrderDTO {
+        const dto: AnnotatedSampleSetDTO = this.fromSampleSetToAnnotatedDTO({
+            meta,
+            samples: formData
+        });
+        return { order: dto };
+    }
+    private fromSampleSetToAnnotatedOrderDTO(sampleSet: SampleSet): AnnotatedOrderDTO {
+        const dto: AnnotatedSampleSetDTO = this.fromSampleSetToAnnotatedDTO(sampleSet);
+        return { order: dto };
+    }
+
+    private fromAnnotatedDTOToSampleData(dto: AnnotatedSampleDTO): SampleData {
+        const annotatedSampleData: Record<SampleProperty, AnnotatedSampleDataEntry> = {};
+        Object.keys(dto).forEach(prop => annotatedSampleData[prop] = this.fromDTOToAnnotatedSampleDataEntry(dto[prop]));
+        return annotatedSampleData as SampleData;
+    }
+
+    private fromDTOToAnnotatedSampleDataEntry(dto: AnnotatedSampleDataEntryDTO): AnnotatedSampleDataEntry {
+        try {
+            const annotatedSampleDataEntry: AnnotatedSampleDataEntry = {
+                value: dto.value,
+                errors: dto.errors ? dto.errors : [],
+                correctionOffer: dto.correctionOffer ? dto.correctionOffer : []
+            };
+
+            if (!_.isNil(dto.oldValue)) {
+                annotatedSampleDataEntry.oldValue = dto.oldValue;
+            }
+
+            return annotatedSampleDataEntry;
+        } catch (error) {
+            throw new ClientError(
+                `Error parsing input. error=${error}`
+            );
+        }
     }
 }

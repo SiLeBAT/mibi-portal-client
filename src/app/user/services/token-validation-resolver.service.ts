@@ -12,7 +12,7 @@ export class TokenValidationResolver implements Resolve<boolean> {
 
     resolve(activatedRoute: ActivatedRouteSnapshot, sanp: RouterStateSnapshot): Promise<boolean> {
         const token = activatedRoute.params['id'];
-        return this.dataService.activateAccount(token).toPromise().then(
+        return this.dataService.verifyEmail(token).toPromise().then(
             (t: boolean) => t,
             () => false)
             .catch(

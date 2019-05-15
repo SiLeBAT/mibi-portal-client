@@ -1,5 +1,5 @@
 
-import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { createSelector } from '@ngrx/store';
 import { CoreMainAction, CoreMainActionTypes } from './core.actions';
 import { SamplesMainActionTypes, SamplesMainAction } from '../../samples/state/samples.actions';
 import { Alert, Banner } from '../model/alert.model';
@@ -19,6 +19,7 @@ export interface BannerState {
     custom?: Banner;
     id?: string;
 }
+
 export interface UIState {
     isBusy: boolean;
     banner: BannerState | null;
@@ -69,6 +70,7 @@ export const getEnabledActionItems = createSelector(
 
 // REDUCER
 type coreUIReducerAction = CoreMainAction | ValidateSamplesAction | SamplesMainAction | UserActions | RouterNavigationAction;
+
 export function coreUIReducer(state: UIState = initialUIState, action: coreUIReducerAction): UIState {
     switch (action.type) {
         case CoreMainActionTypes.EnableActionItems:

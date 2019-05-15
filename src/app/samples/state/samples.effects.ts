@@ -1,19 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { saveAs } from 'file-saver';
-import * as moment from 'moment';
 import 'moment/locale/de';
 import * as _ from 'lodash';
 import * as coreActions from '../../core/state/core.actions';
 import { map, catchError, exhaustMap, withLatestFrom, mergeMap, tap } from 'rxjs/operators';
-import { ExcelFileBlob, ExcelData } from '../model/sample-management.model';
-import { ExcelConverterService } from '../services/excel-converter.service';
+import { SampleSet, MarshalledData } from '../model/sample-management.model';
 import { from, of } from 'rxjs';
-import { Store, select } from '@ngrx/store';
-import * as fromSamples from '../state/samples.reducer';
-import * as fromUser from '../../user/state/user.reducer';
+import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
-import { ExcelToJsonService } from '../services/excel-to-json.service';
+import { DataService } from '../../core/services/data.service';
 import { LogService } from '../../core/services/log.service';
 import { ClientError } from '../../core/model/client-error';
 import { UserActionType, ColorType } from '../../shared/model/user-action.model';
@@ -28,29 +24,28 @@ import {
     ExportExcelFileSuccess
 } from './samples.actions';
 import { ValidateSamples } from '../validate-samples/state/validate-samples.actions';
-import { selectCommentDialog } from '../../shared/comment-dialog/state/comment-dialog.selectors';
+import { SamplesMainData, selectSamplesMainData } from '../state/samples.reducer';
 
 @Injectable()
 export class SamplesMainEffects {
 
     constructor(
         private actions$: Actions<SamplesMainAction>,
-        private excelConverterService: ExcelConverterService,
-        private excelToJsonService: ExcelToJsonService,
+        private dataService: DataService,
         private router: Router,
         private logger: LogService,
-        private store$: Store<Samples & fromUser.State>
-        ) {}
+        private store$: Store<Samples>
+    ) { }
 
     // ImportExcelFile
 
     @Effect()
-    importExcelFile$ = this.actions$.pipe(
+    importExcel$ = this.actions$.pipe(
         ofType<ImportExcelFile>(SamplesMainActionTypes.ImportExcelFile),
         exhaustMap((action) => {
-            return from(this.excelToJsonService.convertExcelToJSJson(action.payload)).pipe(
-                map((excelData: ExcelData) => {
-                    if (excelData.meta.nrl === '') {
+            return from(this.dataService.unmarshalExcel(action.payload)).pipe(
+                map((unmarshalledResponse: SampleSet) => {
+                    if (unmarshalledResponse.meta.nrl === '') {
                         return (new coreActions.DisplayDialog({
                             // tslint:disable-next-line:max-line-length
                             message: `Das ausgewählte Labor im Kopf Ihres Probeneinsendebogens entspricht keiner der möglichen Vorauswahlen. Bitte wählen Sie ein Labor aus der vorhandenen Liste.`,
@@ -59,7 +54,7 @@ export class SamplesMainEffects {
                                 type: UserActionType.CUSTOM,
                                 label: 'Ok',
                                 onExecute: () => {
-                                    this.store$.dispatch(new ImportExcelFileSuccess(excelData));
+                                    this.store$.dispatch(new ImportExcelFileSuccess(unmarshalledResponse));
                                 },
                                 component: GenericActionItemComponent,
                                 icon: '',
@@ -68,7 +63,7 @@ export class SamplesMainEffects {
                             }
                         }));
                     }
-                    return (new ImportExcelFileSuccess(excelData));
+                    return (new ImportExcelFileSuccess(unmarshalledResponse));
                 }),
                 catchError((error) => {
                     this.logger.error(`Failed to import Excel File. error=${error}`);
@@ -96,11 +91,10 @@ export class SamplesMainEffects {
         ofType<ExportExcelFile>(SamplesMainActionTypes.ExportExcelFile),
         withLatestFrom(this.store$),
         mergeMap(([, state]) => {
-            const filenameAddon = '.MP_' + moment().unix();
-            const sampleSheet = fromSamples.selectSamplesMainData(state);
-            return from(this.excelConverterService.convertToExcel(sampleSheet, filenameAddon)).pipe(
-                map((excelFileBlob: ExcelFileBlob) => {
-                    saveAs(excelFileBlob.blob, excelFileBlob.fileName);
+            const marshalData: SamplesMainData = selectSamplesMainData(state);
+            return from(this.dataService.marshalJSON(marshalData)).pipe(
+                map((marshalledData: MarshalledData) => {
+                    saveAs(this.b64toBlob(marshalledData.data, marshalledData.type), marshalledData.fileName);
                     return new ExportExcelFileSuccess();
                 }),
                 catchError((error) => {
@@ -110,4 +104,24 @@ export class SamplesMainEffects {
             );
         })
     );
+
+    private b64toBlob(b64Data: string, contentType: string = '', sliceSize: number = 512) {
+        const byteCharacters = atob(b64Data);
+        const byteArrays = [];
+
+        for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+            const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+            const byteNumbers = new Array(slice.length);
+            for (let i = 0; i < slice.length; i++) {
+                byteNumbers[i] = slice.charCodeAt(i);
+            }
+
+            const byteArray = new Uint8Array(byteNumbers);
+            byteArrays.push(byteArray);
+        }
+
+        const blob = new Blob(byteArrays, { type: contentType });
+        return blob;
+    }
 }

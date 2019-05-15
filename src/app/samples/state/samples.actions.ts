@@ -1,6 +1,5 @@
 import { Action } from '@ngrx/store';
-import { ExcelData, ChangedDataGridField } from '../model/sample-management.model';
-import { Alert } from '../../core/model/alert.model';
+import { ChangedDataGridField, Einsendebogen, SampleSet, SampleData } from '../model/sample-management.model';
 
 export enum SamplesMainActionTypes {
     ClearSamples = '[Samples] Clear Samples',
@@ -18,18 +17,20 @@ export class ClearSamples implements Action {
     readonly type = SamplesMainActionTypes.ClearSamples;
 }
 
-// ImportExcelFile
-
 export class ImportExcelFile implements Action {
     readonly type = SamplesMainActionTypes.ImportExcelFile;
 
-    constructor(public payload: File) { }
+    constructor(public payload: Einsendebogen) {
+
+    }
 }
 
 export class ImportExcelFileSuccess implements Action {
     readonly type = SamplesMainActionTypes.ImportExcelFileSuccess;
 
-    constructor(public payload: ExcelData) { }
+    constructor(public payload: SampleSet) {
+
+    }
 }
 
 // ExportExcelFile
@@ -45,11 +46,9 @@ export class ExportExcelFileSuccess implements Action {
 export class ExportExcelFileFailure implements Action {
     readonly type = SamplesMainActionTypes.ExportExcelFileFailure;
 
-    constructor(public payload: Alert) { }
+    constructor(public payload: SampleData[]) {
+    }
 }
-
-// ChangeFieldValue
-
 export class ChangeFieldValue implements Action {
     readonly type = SamplesMainActionTypes.ChangeFieldValue;
 
@@ -57,7 +56,7 @@ export class ChangeFieldValue implements Action {
 }
 
 export type SamplesMainAction =
-ClearSamples
+    ClearSamples
     | ImportExcelFile
     | ImportExcelFileSuccess
     | ExportExcelFile
