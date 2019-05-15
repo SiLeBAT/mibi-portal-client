@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { DataService } from '../../../core/services/data.service';
-import { SystemInformationResponseDTO } from '../../../core/model/response.model';
 import * as moment from 'moment';
 import 'moment/locale/de';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { SystemInformation } from '../../model/system-information.model';
+import { CoreMainStates } from '../../state/core.reducer';
+import { UpdateSupportDetail } from '../../../content/state/content.actions';
 
 @Component({
     selector: 'mibi-last-change-display-container',
@@ -21,11 +24,11 @@ export class LastChangeDisplayContainerComponent implements OnInit {
     serverVersion: string;
     clientVersion: string;
     isDataAvailable: boolean;
-    private dateParseString = 'ddd MMM DD HH:mm:ss YYYY +-HHmm';
+    private dateParseString = 'YYYY-MM-DD HH:mm:ss +-HHmm';
     private clientLastChange: moment.Moment;
     private serverLastChange: moment.Moment;
 
-    constructor(private dataService: DataService) { }
+    constructor(private store$: Store<CoreMainStates>, private dataService: DataService) { }
 
     ngOnInit(): void {
         moment.locale('en');
@@ -33,7 +36,7 @@ export class LastChangeDisplayContainerComponent implements OnInit {
         this.lastChange$ = new BehaviorSubject(this.clientLastChange);
         this.lastChangeObs = this.lastChange$.asObservable();
         this.dataService.getSystemInfo().toPromise().then(
-            (sysInfo: SystemInformationResponseDTO) => {
+            (sysInfo: SystemInformation) => {
                 this.serverLastChange = moment(sysInfo.lastChange, this.dateParseString);
                 const dateCompare = [];
                 if (this.serverLastChange.isValid()) {
@@ -45,6 +48,7 @@ export class LastChangeDisplayContainerComponent implements OnInit {
                 this.lastChange$.next(moment.max(dateCompare));
                 this.serverVersion = sysInfo.version;
                 this.isDataAvailable = true;
+                this.store$.dispatch(new UpdateSupportDetail({ supportContact: sysInfo.supportContact }));
             }
         ).catch(
             () => {

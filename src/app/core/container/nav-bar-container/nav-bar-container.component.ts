@@ -28,7 +28,7 @@ export class NavBarContainerComponent implements OnInit {
         this.hasEntries$ = this.store$.pipe(select(fromSamples.hasEntries));
 
         this.currentUser$ = this.store$.pipe(
-            select(fromUser.getCurrentUser)
+            select(fromUser.selectCurrentUser)
         );
 
     }

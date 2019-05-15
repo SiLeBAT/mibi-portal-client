@@ -3,26 +3,62 @@ import { createSelector } from '@ngrx/store';
 import { SamplesMainAction, SamplesMainActionTypes } from './samples.actions';
 import { UserActionTypes, LogoutUser } from '../../user/state/user.actions';
 import {
-    SampleSheet,
+    SamplePropertyValues,
     SampleData,
-    AnnotatedSampleData} from '../model/sample-management.model';
+    SampleSetMetaData,
+    SampleEdits,
+    SampleSet
+} from '../model/sample-management.model';
 import { selectSamplesSlice } from '../samples.state';
 import { ValidateSamplesActionTypes, ValidateSamplesAction } from '../validate-samples/state/validate-samples.actions';
+import { Urgency } from '../model/sample.enums';
 
 export interface SamplesMainStates {
     mainData: SamplesMainData;
 }
 
-export interface SamplesMainData extends SampleSheet {
-    importedData: SampleData[];
-    nrl: string;
+export interface ImportedFile {
+    fileName: string;
+    data: SamplePropertyValues[];
+}
+export interface SamplesMainData {
+    formData: SampleData[];
+    importedFile: ImportedFile | null;
+    meta: SampleSetMetaData;
 }
 
 const initialState: SamplesMainData = {
     formData: [],
-    fileDetails: null,
-    importedData: [],
-    nrl: ''
+    importedFile: null,
+    meta: {
+        nrl: '',
+        urgency: Urgency.NORMAL,
+        sender: {
+            instituteName: '',
+            department: '',
+            street: '',
+            zip: '',
+            city: '',
+            contactPerson: '',
+            telephone: '',
+            email: ''
+        },
+        analysis: {
+            species: false,
+            serological: false,
+            phageTyping: false,
+            resistance: false,
+            vaccination: false,
+            molecularTyping: false,
+            toxin: false,
+            zoonosenIsolate: false,
+            esblAmpCCarbapenemasen: false,
+            other: '',
+            compareHuman: false
+        },
+        fileName: ''
+
+    }
 };
 
 // SELECTORS
@@ -39,27 +75,27 @@ export const selectFormData = createSelector(
     state => state.formData
 );
 
-export const selectImportedData = createSelector(
+export const selectImportedFile = createSelector(
     selectSamplesMainData,
-    state => state.importedData
+    state => state.importedFile
 );
 
-export const selectNRL = createSelector(
-    selectSamplesMainData,
-    state => state.nrl
+export const selectImportedFileData = createSelector(
+    selectImportedFile,
+    state => state ? state.data : []
 );
 
-export const selectFileDetails = createSelector(
+export const selectMetaData = createSelector(
     selectSamplesMainData,
-    state => state.fileDetails
+    state => state.meta
 );
 
-export const selectFileName = createSelector(
-    selectFileDetails,
-    (fileDetails) => {
+export const selectImportedFileName = createSelector(
+    selectImportedFile,
+    (file) => {
         // this should never be null
-        if (fileDetails !== null) {
-            return fileDetails.file.name;
+        if (file !== null) {
+            return file.fileName;
         } else {
             return '';
         }
@@ -68,12 +104,29 @@ export const selectFileName = createSelector(
 
 export const selectDataValues = createSelector(
     selectFormData,
-    state => state.map(e => e.data)
+    state => state.map(getDataValuesFromAnnotatedData)
 );
 
 export const selectDataEdits = createSelector(
     selectFormData,
-    state => state.map(e => e.edits)
+    state => state.map(e => {
+        const result: SampleEdits = {};
+        Object.keys(e).forEach(prop => {
+            if (_.isString(e[prop].oldValue)) {
+                result[prop] = e[prop].oldValue || '';
+            }
+        });
+        return result;
+    })
+
+);
+
+export const getMarshalData = createSelector(
+    selectSamplesMainData,
+    state => ({
+        samples: state.formData,
+        meta: state.meta
+    })
 );
 
 export const hasEntries = createSelector(
@@ -83,55 +136,41 @@ export const hasEntries = createSelector(
 
 export const hasValidationErrors = createSelector(
     selectFormData,
-    state => {
-        return !!state.reduce(
-            (acc, entry) => {
-                let count = 0;
-                for (const err of Object.keys(entry.errors)) {
-                    count += entry.errors[err].filter(
-                        e => e.level === 2
-                    ).length;
-                }
-                return acc += count;
-            },
-            0
-        );
-    }
+    state => !!state.length
 );
 
 // REDUCER
 
 export function samplesMainReducer(
     state: SamplesMainData = initialState, action: SamplesMainAction | LogoutUser | ValidateSamplesAction
-    ): SamplesMainData {
+): SamplesMainData {
     switch (action.type) {
         case SamplesMainActionTypes.ClearSamples:
         case UserActionTypes.LogoutUser:
             return { ...initialState };
         case SamplesMainActionTypes.ImportExcelFileSuccess:
-            const excelData = action.payload;
+            const unmarshalledData: SampleSet = action.payload;
             return {
                 ...state, ...{
-                    formData: excelData.data.map((e: any) => ({
-                        data: e,
-                        errors: {},
-                        corrections: [],
-                        edits: {}
-                    })),
-                    fileDetails: excelData.fileDetails,
-                    importedData: excelData.data,
-                    nrl: excelData.meta.nrl
+                    formData: [...unmarshalledData.samples],
+                    importedFile: {
+                        fileName: unmarshalledData.meta.fileName || '',
+                        data: unmarshalledData.samples.map(getDataValuesFromAnnotatedData)
+                    },
+                    meta: unmarshalledData.meta
                 }
             };
         case ValidateSamplesActionTypes.ValidateSamplesSuccess:
-            const mergedEntries = action.payload.map(
-                (response, i) => {
-                    return {
-                        data: response.data,
-                        errors: response.errors,
-                        corrections: response.corrections,
-                        edits: { ...state.formData[i].edits, ...response.edits }
-                    };
+            const mergedEntries: SampleData[] = action.payload.map(
+                (sample, i) => {
+                    const result: SampleData = { ...sample };
+                    Object.keys(result).forEach(prop => {
+                        if (state.formData[i][prop].oldValue && !result[prop].oldValue) {
+                            result[prop].oldValue = state.formData[i][prop].oldValue;
+                        }
+                    });
+                    return result;
+
                 }
             );
             return { ...state, ...{ formData: mergedEntries } };
@@ -145,38 +184,30 @@ export function samplesMainReducer(
 
             if (originalValue !== newValue) {
 
-                const newEntries = state.formData.map((e: AnnotatedSampleData, i: number) => {
-                    let newData = e.data;
-                    let newEdits = e.edits;
-                    let newErrors = e.errors;
-                    let newCorrections = e.corrections;
+                const newEntries = state.formData.map((sampleData: SampleData, i: number) => {
+
+                    const newData = { ...sampleData };
 
                     if (i === rowIndex) {
-                        newData = {
-                            ...e.data, ...{
-                                [columnId]: newValue
+
+                        newData[columnId] = {
+                            ...sampleData[columnId], ...{
+                                value: newValue
                             }
                         };
-                        newEdits = { ...e.edits };
-                        if (newValue === state.importedData[i][columnId]) {
-                            delete newEdits[columnId];
-                        } else {
-                            newEdits[columnId] = state.importedData[i][columnId] ;
+                        if (state.importedFile) {
+                            if (newValue === state.importedFile.data[i][columnId]) {
+                                delete newData[columnId].oldValue;
+                            } else {
+                                newData[columnId].oldValue = state.importedFile.data[i][columnId];
+                            }
                         }
-                        newErrors = {
-                            ...e.errors, ...{
-                                [columnId]: []
-                            }
-                        };
-                        newCorrections = _.filter(e.corrections, c => c.field !== columnId);
+
+                        newData[columnId].errors = [];
+                        newData[columnId].correctionOffer = [];
                     }
 
-                    return {
-                        data: newData,
-                        errors: newErrors,
-                        edits: newEdits,
-                        corrections: newCorrections
-                    };
+                    return newData;
                 });
 
                 return {
@@ -190,4 +221,10 @@ export function samplesMainReducer(
         default:
             return state;
     }
+}
+
+function getDataValuesFromAnnotatedData(sampleData: SampleData): SamplePropertyValues {
+    const result: SamplePropertyValues = {};
+    Object.keys(sampleData).forEach(prop => result[prop] = sampleData[prop].value);
+    return result;
 }

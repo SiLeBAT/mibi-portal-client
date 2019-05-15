@@ -2,15 +2,14 @@ import { Injectable, ViewContainerRef, ComponentFactoryResolver } from '@angular
 import * as _ from 'lodash';
 import { UserActionViewModelConfiguration, UserActionType, ColorType, UserActionComponent } from '../../shared/model/user-action.model';
 import { GenericActionItemComponent } from '../presentation/generic-action-item/generic-action-item.component';
-import * as samplesActions from '../../samples/state/samples.actions';
-import * as fromCore from '../state/core.reducer';
-import * as coreActions from '../state/core.actions';
 import { Store } from '@ngrx/store';
 import { ClientError } from '../model/client-error';
 import { Router } from '@angular/router';
 import { SendSamples } from '../../samples/send-samples/state/send-samples.actions';
 import { ValidateSamples } from '../../samples/validate-samples/state/validate-samples.actions';
 import { Core } from '../core.state';
+import { ExportExcelFile, ImportExcelFile, ClearSamples } from '../../samples/state/samples.actions';
+import { DisplayDialog } from '../state/core.actions';
 
 @Injectable({
     providedIn: 'root'
@@ -121,11 +120,11 @@ export class UserActionService {
     }
 
     private export() {
-        this.store.dispatch(new samplesActions.ExportExcelFile());
+        this.store.dispatch(new ExportExcelFile());
     }
 
     private import(file: File) {
-        this.store.dispatch(new samplesActions.ImportExcelFile(file));
+        this.store.dispatch(new ImportExcelFile({ file }));
     }
 
     private send() {
@@ -133,14 +132,14 @@ export class UserActionService {
     }
 
     private close() {
-        this.store.dispatch(new coreActions.DisplayDialog({
+        this.store.dispatch(new DisplayDialog({
             message: `Wenn Sie die Tabelle schließen, gehen Ihre Änderungen verloren. Wollen Sie das?`,
             title: 'Schließen',
             mainAction: {
                 type: UserActionType.CUSTOM,
                 label: 'Ok',
                 onExecute: () => {
-                    this.store.dispatch(new samplesActions.ClearSamples());
+                    this.store.dispatch(new ClearSamples());
                     this.navigate('/upload');
                 },
                 component: GenericActionItemComponent,

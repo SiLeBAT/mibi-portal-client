@@ -1,11 +1,27 @@
-import { SampleData } from '../../samples/model/sample-management.model';
+import { SampleSetDTO, AnnotatedSampleSetDTO } from './shared-dto.model';
 
-interface ValidationRequestMetaInformation {
-    state: string;
-    nrl: string;
+export interface MarshalDataRequestDTO {
+    readonly data: AnnotatedSampleSetDTO;
+    readonly filenameAddon: string;
 }
 
-export interface ValidationRequest {
-    data: SampleData[];
-    meta: ValidationRequestMetaInformation;
+export interface SampleSubmissionDTO {
+    readonly order: SampleSetDTO;
+    readonly comment: string;
+}
+
+export interface ResetRequestDTO {
+    readonly email: string;
+}
+
+export interface NewPasswordRequestDTO {
+    readonly password: string;
+}
+
+export interface RegistrationDetailsDTO {
+    readonly email: string;
+    readonly password: string;
+    readonly firstName: string;
+    readonly lastName: string;
+    readonly instituteId: string;
 }

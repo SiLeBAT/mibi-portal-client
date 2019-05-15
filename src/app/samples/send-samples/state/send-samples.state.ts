@@ -26,7 +26,7 @@ export function sendSamplesLastSentFileReducer(state: string[] = [], action: Sen
 
 export function sendSamplesWarningsReducer(state: SendSamplesWarnings = initialWarnings, action: SendSamplesAction): SendSamplesWarnings {
     switch (action.type) {
-        case SendSamplesActionTypes.SendSamplesOpenDialog:
+        case SendSamplesActionTypes.StoreSampleWarnings:
             return _.cloneDeep(action.payload.warnings);
         default:
             return state;
