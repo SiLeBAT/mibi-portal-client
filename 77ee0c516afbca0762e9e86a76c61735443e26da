@@ -22,6 +22,30 @@
       "revId": "77ee0c516afbca0762e9e86a76c61735443e26da",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cfda2dac_e5dbd520",
+        "filename": "src/app/samples/state/samples.effects.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1015828
+      },
+      "writtenOn": "2019-05-16T11:53:11Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "4e617645_02115931",
+      "range": {
+        "startLine": 42,
+        "startChar": 40,
+        "endLine": 42,
+        "endChar": 48
+      },
+      "revId": "77ee0c516afbca0762e9e86a76c61735443e26da",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }
