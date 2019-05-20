@@ -1,4 +1,4 @@
- <div class="mibi-uploader" ngfDrop [selectable]="1" [maxSize]="maxFileSize" accept=".xlsx"
-  [fileDropDisabled]="dropDisabled" (fileChange)="onFileChange($event)" [(lastInvalids)]="lastInvalids">
-<ng-content></ng-content>
-</div> 
+<div ngfDrop [selectable]="1" [maxSize]="maxFileSize" accept=".xlsx" [fileDropDisabled]="dropDisabled"
+  (fileChange)="onFileChange($event)" [(lastInvalids)]="lastInvalids">
+  <ng-content></ng-content>
+</div>

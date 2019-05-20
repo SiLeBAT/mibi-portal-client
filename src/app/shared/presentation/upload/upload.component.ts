@@ -3,8 +3,7 @@ import { UploadAbstractComponent } from './upload.abstract';
 
 @Component({
     selector: 'mibi-upload',
-    templateUrl: './upload.component.html',
-    styleUrls: ['./upload.component.scss']
+    templateUrl: './upload.component.html'
 })
 export class UploadComponent extends UploadAbstractComponent {
 

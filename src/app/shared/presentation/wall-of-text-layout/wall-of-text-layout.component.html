@@ -4,7 +4,9 @@
         <div class="mibi-wot__content">
             <h1 class="mibi-wot-title">{{title}}</h1>
             <div class="mibi-wot-preamble">
-                <ng-content select="wot-preamble"></ng-content>
+                <div class="mibi-wot-preamble__content">
+                    <ng-content select="wot-preamble"></ng-content>
+                </div>
             </div>
             <ng-content select="wot-content"></ng-content>
         </div>
