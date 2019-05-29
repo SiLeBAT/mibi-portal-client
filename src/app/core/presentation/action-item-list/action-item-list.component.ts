@@ -8,7 +8,7 @@ import { takeWhile, startWith, tap, delay } from 'rxjs/operators';
 import { UserActionService } from '../../services/user-action.service';
 import { Store, select } from '@ngrx/store';
 import { Samples } from '../../../samples/samples.store';
-import { selectFileName } from '../../../samples/state/samples.reducer';
+import { selectImportedFileName } from '../../../samples/state/samples.reducer';
 
 @Component({
     selector: 'mibi-action-item-list',
@@ -25,7 +25,7 @@ export class ActionItemListComponent implements OnInit, OnDestroy {
     private uploadActionItem: TemplateRef<any>;
     private componentActive: boolean = true;
     hasElements: boolean = false;
-    uploadedFile$ = this.store$.pipe(select(selectFileName));
+    uploadedFile$ = this.store$.pipe(select(selectImportedFileName));
 
     constructor(
         private userActionService: UserActionService,
