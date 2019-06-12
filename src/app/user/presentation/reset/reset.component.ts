@@ -17,8 +17,8 @@ export class ResetComponent implements OnInit {
 
     ngOnInit() {
         this.resetForm = new FormGroup({
-            password1: new FormControl(null, Validators.required),
-            password2: new FormControl(null, [Validators.required, Validators.minLength(8)])
+            password1: new FormControl(null, [Validators.required, Validators.minLength(8)]),
+            password2: new FormControl(null, Validators.required)
         }, this.passwordConfirmationValidator);
     }
 
@@ -28,7 +28,7 @@ export class ResetComponent implements OnInit {
     }
 
     validatePwStrength() {
-        return (this.pwStrength >= 0 && this.pwStrength < 2);
+        return !(this.pwStrength >= 0 && this.pwStrength < 2);
     }
 
     doStrengthChange(pwStrength: number) {

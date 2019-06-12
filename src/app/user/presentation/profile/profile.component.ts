@@ -3,8 +3,7 @@ import { User } from '../../../user/model/user.model';
 
 @Component({
     selector: 'mibi-profile',
-    templateUrl: './profile.component.html',
-    styleUrls: ['./profile.component.scss']
+    templateUrl: './profile.component.html'
 })
 export class ProfileComponent {
 

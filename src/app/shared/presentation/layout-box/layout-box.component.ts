@@ -1,7 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-export enum OverflowHandlingValues { 'enabled', 'disabled' }
-
 @Component({
     selector: 'mibi-layout-box',
     templateUrl: './layout-box.component.html',
@@ -9,33 +7,18 @@ export enum OverflowHandlingValues { 'enabled', 'disabled' }
 })
 export class LayoutBoxComponent implements OnInit {
 
-    private _xOverflowHandling: string;
-
+// tslint:disable-next-line: no-input-rename
     @Input('x-overflow-handling')
-    get xOverflowHandling(): string {
-        return this._xOverflowHandling;
-    }
-    set xOverflowHandling(val: string) {
-        if (val in OverflowHandlingValues) {
-            this._xOverflowHandling = val;
-        }
-    }
+    xOverflowHandling: string;
 
-    private _yOverflowHandling: string;
-
+// tslint:disable-next-line: no-input-rename
     @Input('y-overflow-handling')
-    get yOverflowHandling(): string {
-        return this._yOverflowHandling;
-    }
-    set yOverflowHandling(val: string) {
-        if (val in OverflowHandlingValues) {
-            this._yOverflowHandling = val;
-        }
-    }
+    yOverflowHandling: string;
+
+    @Input()
+    test: string;
 
     constructor() {
-        this.xOverflowHandling = 'disabled';
-        this.yOverflowHandling = 'disabled';
     }
 
     ngOnInit() {

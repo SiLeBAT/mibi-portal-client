@@ -2,8 +2,10 @@
     <mibi-view-card-body>
         <mibi-login-container></mibi-login-container>
     </mibi-view-card-body>
-    <mibi-view-card-actions class="mibi-view-card__actions" fxLayout="row" fxLayoutAlign="space-between center">
-        <button mat-button [routerLink]="['/users/register']" color="primary">Registrierung</button>
-        <button mat-button [routerLink]="['/users/recovery']" color="primary">Passwort vergessen?</button>
+    <mibi-view-card-actions  class="mibi-login-actions">
+        <a class="mibi-login-actions__button" mat-button [routerLink]="['/users/register']"
+            color="primary">Registrierung</a>
+            <a class="mibi-login-actions__button" mat-button [routerLink]="['/users/recovery']"
+            color="primary">Passwort vergessen?</a>
     </mibi-view-card-actions>
 </mibi-single-center-card-layout>

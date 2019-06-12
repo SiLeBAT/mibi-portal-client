@@ -1,8 +1,12 @@
 <div class="mibi-box" 
   [ngClass]="{
-    'mibi-box__width-limited': xOverflowHandling === 'enabled',
-    'mibi-box__height-limited': yOverflowHandling === 'enabled'}">
-  <div>
+    'mibi-box--width-limited': xOverflowHandling !== undefined,
+    'mibi-box--height-limited': yOverflowHandling !== undefined,
+    'mibi-box--test': test !== undefined
+  }">
+  <div [ngClass]="{
+    'mibi-box__content--test': test !== undefined
+  }">
     <ng-content></ng-content>
   </div>
 </div>

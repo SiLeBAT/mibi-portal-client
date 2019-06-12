@@ -31,7 +31,7 @@ export class RegisterComponent implements OnInit {
                 Validators.email
             ]),
             password1: new FormControl(null, [Validators.required, Validators.minLength(8)]),
-            password2: new FormControl(null)
+            password2: new FormControl(null, Validators.required)
         }, this.passwordConfirmationValidator);
 
         this.filteredOptions = this.registerForm.controls.institution.valueChanges
@@ -67,20 +67,14 @@ export class RegisterComponent implements OnInit {
                 lastName: this.registerForm.value.lastName,
                 instituteId: this.registerForm.value.institution.id,
                 password: this.registerForm.value.password1
-
             };
             this.register.emit(details);
 
         }
     }
 
-    validateField(fieldName: string) {
-        return this.registerForm.controls[fieldName].valid
-            || this.registerForm.controls[fieldName].untouched;
-    }
-
     validatePwStrength() {
-        return (this.pwStrength >= 0 && this.pwStrength < 2);
+        return !(this.pwStrength >= 0 && this.pwStrength < 2);
     }
 
     doStrengthChange(pwStrength: number) {
