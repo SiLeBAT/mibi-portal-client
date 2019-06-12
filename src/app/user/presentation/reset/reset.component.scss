@@ -1,30 +1,27 @@
 @import "../../../../assets/sass/abstracts";
 
-em {
-  float: right;
-  color: $error-color;
-  padding-left: 5%;
-  margin-bottom: $mibi-single-space;
-  text-align: right;
+.mibi-reset-info {
+  margin-bottom: $mibi-double-space;
 }
 
-.reset-form__buttons {
-  margin-top: 3rem;
-
-  & > a {
-    text-decoration: none;
-  }
-}
-
-em[hidden] {
-  visibility: hidden;
+.mibi-reset-field {
   display: block;
 }
 
-.pw-strength {
-  margin-top: 2rem;
+.mibi-reset-field__error {
+  text-align: right;
 }
 
-.reset-btn {
-  margin-top: 3rem;
+.mibi-reset-strength-meter {
+  margin-bottom: $mibi-double-space;
+}
+
+.mibi-reset-actions {
+  margin-top: $mibi-double-space;
+  display: flex;
+  justify-content: space-between;
+}
+
+.mibi-reset-actions__button {
+  flex: 0 0 auto;
 }

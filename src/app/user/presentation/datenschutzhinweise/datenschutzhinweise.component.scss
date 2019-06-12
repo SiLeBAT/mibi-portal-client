@@ -1,31 +1,29 @@
 @import "../../../../assets/sass/abstracts";
+@import "../../../../assets/sass/base";
 
-body {
-  counter-reset: datenschutz-section;
+.mibi-datenschutzhinweise {
+  text-align: justify;
 }
 
-.dateschutzhinweise-item-header {
+.mibi-datenschutzhinweise-item-header {
   counter-increment: datenschutz-section;
   font-weight: bold;
   margin-top: 3%;
+  text-align: center;
 }
 
-.dateschutzhinweise-item-header::before {
+.mibi-datenschutzhinweise-item-header::before {
   content: counter(datenschutz-section) ". ";
 }
 
-.dateschutz-hinweis {
-  margin-top: $mibi-quadruple-space;
+.mibi-datenschutzhinweise-item {
+  padding: 0 25% * 0.5;
 }
 
-.dateschutzhinweise-footer {
+.datenschutzhinweise-footer {
   border-top: 1px solid $primary-color;
 }
 
-.dateschutzhinweise-item {
-  width: 75%;
-}
-
-.dateschutzhinweise-item__list {
+.datenschutzhinweise-list {
   list-style-type: lower-alpha;
 }

@@ -23,6 +23,7 @@
   // fix for safari, opera not setting the height to flexed height
   height: max-content;
   min-height: 0;
+  overflow: auto;
 }
 
 .mibi-banner {

@@ -1,10 +1,8 @@
-<div *ngIf="adminTokenValid else invalidToken">
-  <mibi-single-center-card-layout title="Konto aktiviert">
-    <mibi-view-card-body>
-      <p>Sie haben das {{ appName }} Konto für {{ name }} als Admin aktiviert</p>
-    </mibi-view-card-body>
-  </mibi-single-center-card-layout>
-</div>
+<mibi-single-center-card-layout *ngIf="adminTokenValid else invalidToken" title="Konto aktiviert">
+  <mibi-view-card-body>
+    <p>Sie haben das {{ appName }} Konto für {{ name }} als Admin aktiviert</p>
+  </mibi-view-card-body>
+</mibi-single-center-card-layout>
 
 <ng-template #invalidToken>
   <mibi-single-center-card-layout title="Fehler">
