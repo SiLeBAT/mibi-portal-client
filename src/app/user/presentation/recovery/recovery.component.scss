@@ -1,7 +1,12 @@
-.recovery-form__buttons {
-  margin-top: 3rem;
+.mibi-recovery-form-field {
+  display: block;
+}
 
-  & > a {
-    text-decoration: none;
-  }
+.mibi-recocery-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.mibi-recocery-actions__button {
+  flex: 0 0 auto;
 }

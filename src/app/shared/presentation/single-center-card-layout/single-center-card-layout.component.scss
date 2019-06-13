@@ -1,18 +1,24 @@
 @import "../../../../assets/sass/abstracts";
 
 .mibi-card-layout {
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  padding-top: $mibi-octuple-space;
+  padding-bottom: $mibi-quadruple-space;
 }
 
 .mibi-card-layout__content {
+  max-height: 100%;
+  flex: 0 1 auto;
+  margin: 0 10%;
+  overflow: auto;
+}
+
+.mibi-card-layout-item {
   max-width: 800px;
   min-width: 400px;
-  flex: 0 1 auto;
-  margin: 10%;
-  margin-top: $mibi-octuple-space;
-  margin-bottom: $mibi-quadruple-space;
 }
 
 .mibi-card-title {

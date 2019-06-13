@@ -1,11 +1,14 @@
 <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="login-form">
-  <div class="login-form__form-fields" fxLayout="column" fxLayoutAlign=" none">
-  <mat-form-field>
-    <input matInput placeholder="Email" name="email" formControlName="email" required>
-  </mat-form-field>
-  <mat-form-field>
-    <input matInput placeholder="Passwort" type="password" name="password" formControlName="password" required>
-  </mat-form-field>
-</div>
-  <button  class="login-form__submit-button" mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">Anmelden</button>
+  <div>
+    <mat-form-field class="mibi-login-form-field">
+      <input matInput placeholder="E-Mail" name="email" formControlName="email" required>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field class="mibi-login-form-field">
+      <input matInput placeholder="Passwort" type="password" name="password" formControlName="password" required>
+    </mat-form-field>
+  </div>
+  <button class="mibi-login-submit-button" mat-raised-button color="primary" type="submit"
+    [disabled]="!loginForm.valid">Anmelden</button>
 </form>
