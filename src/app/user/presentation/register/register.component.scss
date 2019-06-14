@@ -1,13 +1,5 @@
 @import "../../../../assets/sass/abstracts";
-@import "../../../../assets/sass/components";
-
-.mibi-register-field {
-  display: block;
-}
-
-.mibi-register-field__error {
-  text-align: right;
-}
+@import "../../../../assets/sass/layout";
 
 .mibi-register-mat-option {
   white-space: normal;
@@ -15,10 +7,6 @@
   line-height: 1.5;
   padding-top: $mibi-single-space;
   padding-bottom: $mibi-single-space;
-}
-
-.mibi-register-strength-meter {
-  margin-bottom: $mibi-double-space;
 }
 
 .mibi-register-actions {

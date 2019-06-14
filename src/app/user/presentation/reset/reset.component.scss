@@ -1,18 +1,7 @@
 @import "../../../../assets/sass/abstracts";
+@import "../../../../assets/sass/layout";
 
 .mibi-reset-info {
-  margin-bottom: $mibi-double-space;
-}
-
-.mibi-reset-field {
-  display: block;
-}
-
-.mibi-reset-field__error {
-  text-align: right;
-}
-
-.mibi-reset-strength-meter {
   margin-bottom: $mibi-double-space;
 }
 

@@ -1,56 +1,31 @@
-import { Component, OnInit, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, Output, EventEmitter, ViewChild, AfterViewInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { PasswordComponent } from '../../password/component/password.component';
 
 @Component({
     selector: 'mibi-reset',
     templateUrl: './reset.component.html',
     styleUrls: ['./reset.component.scss']
 })
-export class ResetComponent implements OnInit {
+export class ResetComponent implements OnInit, AfterViewInit {
     resetForm: FormGroup;
-    private pwStrength: number;
+
     @Output() reset = new EventEmitter();
 
-    constructor(private changeRef: ChangeDetectorRef) {
-        this.pwStrength = -1;
-    }
+    @ViewChild(PasswordComponent) private passwordComponent: PasswordComponent;
+
+    constructor() { }
 
     ngOnInit() {
-        this.resetForm = new FormGroup({
-            password1: new FormControl(null, [Validators.required, Validators.minLength(8)]),
-            password2: new FormControl(null, Validators.required)
-        }, this.passwordConfirmationValidator);
+        this.resetForm = new FormGroup({ });
     }
 
-    validateField(fieldName: string) {
-        return this.resetForm.controls[fieldName].valid
-            || this.resetForm.controls[fieldName].untouched;
-    }
-
-    validatePwStrength() {
-        return !(this.pwStrength >= 0 && this.pwStrength < 2);
-    }
-
-    doStrengthChange(pwStrength: number) {
-        this.pwStrength = pwStrength;
-        this.changeRef.detectChanges();
+    ngAfterViewInit(): void {
+        this.resetForm.addControl('password', this.passwordComponent.passwordForm);
     }
 
     onReset() {
-        const password = this.resetForm.value.password1;
+        const password = this.passwordComponent.passwordControl.value;
         this.reset.emit(password);
     }
-
-    private passwordConfirmationValidator(fg: FormGroup) {
-        const pw1 = fg.controls.password1;
-        const pw2 = fg.controls.password2;
-
-        if (pw1.value !== pw2.value) {
-            pw2.setErrors({ validatePasswordConfirm: true });
-        } else {
-            pw2.setErrors(null);
-        }
-        return null;
-    }
-
 }

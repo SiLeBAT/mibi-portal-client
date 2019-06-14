@@ -41,6 +41,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { AnonymousGuard } from './services/anonymous-guard.service';
+import { PasswordComponent } from './password/component/password.component';
+
 @NgModule({
     imports: [
         CommonModule,
@@ -72,6 +74,7 @@ import { AnonymousGuard } from './services/anonymous-guard.service';
         EffectsModule.forFeature([UserEffects])
     ],
     declarations: [
+        PasswordComponent,
         AdminActivateComponent,
         AdminActivateContainerComponent,
         AdminActivateViewComponent,

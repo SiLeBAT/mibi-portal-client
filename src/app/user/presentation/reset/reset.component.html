@@ -2,24 +2,7 @@
 
   <div class="mibi-reset-info">Bitte geben Sie ein neues Passwort ein.</div>
 
-  <mat-form-field class="mibi-reset-field">
-    <input matInput placeholder="Neues Passwort (mind. 8 Zeichen)" type="password" name="password1"
-      formControlName="password1" required>
-    <mat-error class="mibi-reset-field__error" *ngIf="resetForm.controls.password1.errors?.minlength">Zu schwaches oder zu
-      kurzes Passwort.
-    </mat-error>
-  </mat-form-field>
-
-  <div class="mibi-reset-strength-meter">
-    <password-strength-meter [password]=" resetForm.value.password1" (strengthChange)="doStrengthChange($event)">
-    </password-strength-meter>
-  </div>
-
-  <mat-form-field class="mibi-reset-field">
-    <input matInput placeholder="Passwort bestätigen" type="password" name="password2" formControlName="password2"
-      required>
-    <mat-error class="mibi-reset-field__error">Passwörter müssen übereinstimmen.</mat-error>
-  </mat-form-field>
+  <mibi-password></mibi-password>
 
   <div class="mibi-reset-actions">
     <button class="mibi-reset-actions__button" mat-raised-button color="primary" type="submit"

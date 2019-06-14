@@ -1,11 +1,11 @@
-<form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="login-form">
+<form [formGroup]="loginForm" (ngSubmit)="onLogin()">
   <div>
-    <mat-form-field class="mibi-login-form-field">
+    <mat-form-field class="mibi-form-field">
       <input matInput placeholder="E-Mail" name="email" formControlName="email" required>
     </mat-form-field>
   </div>
   <div>
-    <mat-form-field class="mibi-login-form-field">
+    <mat-form-field class="mibi-form-field">
       <input matInput placeholder="Passwort" type="password" name="password" formControlName="password" required>
     </mat-form-field>
   </div>

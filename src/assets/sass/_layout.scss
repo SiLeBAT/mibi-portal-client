@@ -8,3 +8,11 @@ used to layout the different parts of your page, that is to say, your header, fo
   margin: 0;
   padding: 0;
 }
+
+.mibi-form-field {
+  display: block;
+}
+
+.mibi-form-field__mat-error {
+  text-align: right;
+}

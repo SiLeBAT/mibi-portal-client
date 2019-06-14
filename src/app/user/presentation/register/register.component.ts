@@ -1,25 +1,26 @@
-import { Component, OnInit, ChangeDetectorRef, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, ViewChild, AfterViewInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Institution } from '../../../user/model/institution.model';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { RegistrationDetails } from '../../model/user.model';
+import { PasswordComponent } from '../../password/component/password.component';
 
 @Component({
     selector: 'mibi-register',
     templateUrl: './register.component.html',
     styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, AfterViewInit {
     registerForm: FormGroup;
-    @Input() institutions: Institution[];
-    private pwStrength: number;
-    @Output() register = new EventEmitter();
     filteredOptions: Observable<Institution[]>;
-    constructor(
-        private changeRef: ChangeDetectorRef) {
-        this.pwStrength = -1;
-    }
+
+    @Input() institutions: Institution[];
+    @Output() register = new EventEmitter();
+
+    @ViewChild(PasswordComponent) private passwordComponent: PasswordComponent;
+
+    constructor() { }
 
     ngOnInit() {
         this.registerForm = new FormGroup({
@@ -29,10 +30,8 @@ export class RegisterComponent implements OnInit {
             email: new FormControl(null, [
                 Validators.required,
                 Validators.email
-            ]),
-            password1: new FormControl(null, [Validators.required, Validators.minLength(8)]),
-            password2: new FormControl(null, Validators.required)
-        }, this.passwordConfirmationValidator);
+            ])
+        });
 
         this.filteredOptions = this.registerForm.controls.institution.valueChanges
             .pipe(
@@ -59,6 +58,10 @@ export class RegisterComponent implements OnInit {
         }
     }
 
+    ngAfterViewInit(): void {
+        this.registerForm.addControl('password', this.passwordComponent.passwordForm);
+    }
+
     onRegister() {
         if (this.registerForm.valid) {
             const details: RegistrationDetails = {
@@ -66,31 +69,9 @@ export class RegisterComponent implements OnInit {
                 firstName: this.registerForm.value.firstName,
                 lastName: this.registerForm.value.lastName,
                 instituteId: this.registerForm.value.institution.id,
-                password: this.registerForm.value.password1
+                password: this.passwordComponent.passwordControl.value
             };
             this.register.emit(details);
-
         }
-    }
-
-    validatePwStrength() {
-        return !(this.pwStrength >= 0 && this.pwStrength < 2);
-    }
-
-    doStrengthChange(pwStrength: number) {
-        this.pwStrength = pwStrength;
-        this.changeRef.detectChanges();
-    }
-
-    private passwordConfirmationValidator(fg: FormGroup) {
-        const pw1 = fg.controls.password1;
-        const pw2 = fg.controls.password2;
-
-        if (pw1.value !== pw2.value) {
-            pw2.setErrors({ validatePasswordConfirm: true });
-        } else {
-            pw2.setErrors(null);
-        }
-        return null;
     }
 }

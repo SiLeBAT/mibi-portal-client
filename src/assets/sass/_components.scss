@@ -294,11 +294,3 @@ $mibi-action-color: mat-color($primary-palette, 300);
     color: $surface-color;
   }
 }
-
-// this class should be defined in the components scss file
-// but the compiler only does recognize the new css attribute max-content
-// if it is defined globally (bug in the config?)
-.mibi-institute-select {
-  // this attribute should be replaced with proper overflow handling
-  min-width: max-content !important;
-}
