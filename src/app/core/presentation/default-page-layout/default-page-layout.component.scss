@@ -1,4 +1,5 @@
 @import "../../../../assets/sass/abstracts";
+@import "../../../../assets/sass/layout";
 
 .mibi-page {
   display: flex;
@@ -12,21 +13,24 @@
 
   z-index: 999;
   flex: 0 0 auto;
-  // fix for safari, opera not setting the height to flexed height
-  height: max-content;
+
+  @include mibi-layout-safari-fix();
+
   overflow: auto;
 }
 
 .mibi-page__body {
   flex: 1 1 auto;
-  // fix for safari, opera not setting the height to flexed height
-  height: max-content;
+
+  @include mibi-layout-safari-fix();
+
   overflow: auto;
 }
 
 .mibi-page__footer {
   flex: 0 0 auto;
-  // fix for safari, opera not setting the height to flexed height
-  height: max-content;
+
+  @include mibi-layout-safari-fix();
+
   overflow: auto;
 }

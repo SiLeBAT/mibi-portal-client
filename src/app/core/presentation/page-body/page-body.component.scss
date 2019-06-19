@@ -1,4 +1,5 @@
 @import "../../../../assets/sass/abstracts";
+@import "../../../../assets/sass/layout";
 
 .mibi-page-body {
   height: 100%;
@@ -9,9 +10,10 @@
 
 .mibi-page-body__banner {
   flex: 0 0 auto;
-  // fix for safari, opera not setting the height to flexed height
-  height: max-content;
-  min-height: 0;
+
+  @include mibi-layout-safari-fix();
+  // min-height: 0;
+
   position: sticky;
   top: 0;
   z-index: 1;
@@ -20,8 +22,9 @@
 
 .mibi-page-body__main {
   flex: 1 1 auto;
-  // fix for safari, opera not setting the height to flexed height
-  height: max-content;
+
+  @include mibi-layout-safari-fix();
+
   min-height: 0;
 }
 
