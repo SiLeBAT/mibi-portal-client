@@ -16,3 +16,10 @@ used to layout the different parts of your page, that is to say, your header, fo
 .mibi-form-field__mat-error {
   text-align: right;
 }
+// fix for flex-column in safari, opera not setting the height to flexed height
+@mixin mibi-layout-safari-fix {
+  height: max-content;
+
+  // fix for chrome 75 because of changed height calculation
+  min-height: max-content;
+}

@@ -1,5 +1,6 @@
 @import "../../../../assets/sass/abstracts";
 @import "../../../../assets/sass/components";
+@import "../../../../assets/sass/layout";
 @import "~@angular/material/theming";
 
 .mibi-app-bar {
@@ -10,8 +11,8 @@
 
 .mibi-app-bar__top {
   flex: 0 1 auto;
-  // fix for safari, opera not setting the height to flexed height
-  height: max-content;
+
+  @include mibi-layout-safari-fix();
 }
 
 .mibi-app-bar-top {
