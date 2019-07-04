@@ -5,18 +5,18 @@ import {
     ValidateSamplesActionTypes,
     ValidateSamplesSuccess,
     ValidateSamplesFailure
-} from '../state/validate-samples.actions';
+} from './validate-samples.actions';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { withLatestFrom, concatMap, map, catchError } from 'rxjs/operators';
-import { DataService } from '../../../core/services/data.service';
-import { SampleData } from '../../model/sample-management.model';
+import { DataService } from '../../core/services/data.service';
+import { SampleData } from '../model/sample-management.model';
 import { of, Observable } from 'rxjs';
-import { DisplayBanner } from '../../../core/state/core.actions';
-import { LogService } from '../../../core/services/log.service';
-import { Samples } from '../../samples.store';
+import { DisplayBanner } from '../../core/state/core.actions';
+import { LogService } from '../../core/services/log.service';
+import { Samples } from '../samples.store';
 import * as _ from 'lodash';
-import { selectSamplesMainData } from '../../state/samples.reducer';
+import { selectSamplesMainData } from '../state/samples.selectors';
 
 @Injectable()
 export class ValidateSamplesEffects {

@@ -44,7 +44,7 @@ import {
 import { LogService } from './log.service';
 import { InstitutionDTO } from '../../user/model/institution.model';
 import { Urgency } from '../../samples/model/sample.enums';
-import { SamplesMainData } from '../../samples/state/samples.reducer';
+import { SamplesMainData } from '../../samples/state/samples.state';
 
 @Injectable({
     providedIn: 'root'

@@ -1,4 +1,4 @@
-import { CommentDialogConfiguration } from '../../../shared/comment-dialog/model/comment-dialog-config.model';
+import { CommentDialogConfiguration } from '../../shared/comment-dialog/comment-dialog.model';
 
 export const sendSamplesDefaultDialogConfiguration: CommentDialogConfiguration = {
     title: 'Senden',

@@ -9,7 +9,8 @@ import { UserPasswordResetRequest } from '../../model/user.model';
 import { takeWhile } from 'rxjs/operators';
 import { ClientError } from '../../../core/model/client-error';
 import { DisplayBanner } from '../../../core/state/core.actions';
-import { selectSupportContact, ContentMainStates } from '../../../content/state/content.reducer';
+import { ContentMainStates } from '../../../content/state/content.state';
+import { selectSupportContact } from '../../../content/state/content.selectors';
 import { ContentSlice } from '../../../content/content.state';
 
 @Component({

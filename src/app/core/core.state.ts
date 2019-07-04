@@ -1,4 +1,4 @@
-import { CoreMainStates } from './state/core.reducer';
+import { CoreMainStates } from './state/core.state';
 import { createFeatureSelector } from '@ngrx/store';
 
 export const CORE_SLICE_NAME = 'core';

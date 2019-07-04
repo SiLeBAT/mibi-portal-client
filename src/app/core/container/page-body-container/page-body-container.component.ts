@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { environment } from '../../../../environments/environment';
 import { Core } from '../../core.state';
 import { DestroyBanner } from '../../state/core.actions';
-import { isBusy, showBanner } from '../../state/core.reducer';
+import { isBusy, showBanner } from '../../state/core.selectors';
 
 @Component({
     selector: 'mibi-page-body-container',

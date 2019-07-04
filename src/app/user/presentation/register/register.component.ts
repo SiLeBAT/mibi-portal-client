@@ -4,7 +4,7 @@ import { Institution } from '../../../user/model/institution.model';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { RegistrationDetails } from '../../model/user.model';
-import { PasswordComponent } from '../../password/component/password.component';
+import { PasswordComponent } from '../../password/password.component';
 
 @Component({
     selector: 'mibi-register',

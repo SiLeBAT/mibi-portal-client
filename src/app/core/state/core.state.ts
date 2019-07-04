@@ -1,13 +1,13 @@
 
-import { createSelector } from '@ngrx/store';
 import { CoreMainAction, CoreMainActionTypes } from './core.actions';
 import { SamplesMainActionTypes, SamplesMainAction } from '../../samples/state/samples.actions';
 import { Alert, Banner } from '../model/alert.model';
 import { UserActionTypes, UserActions } from '../../user/state/user.actions';
 import { ROUTER_NAVIGATION, RouterNavigationAction } from '@ngrx/router-store';
 import { UserActionType } from '../../shared/model/user-action.model';
-import { ValidateSamplesActionTypes, ValidateSamplesAction } from '../../samples/validate-samples/state/validate-samples.actions';
-import { selectCoreSlice } from '../core.state';
+import { ValidateSamplesActionTypes, ValidateSamplesAction } from '../../samples/validate-samples/validate-samples.actions';
+
+// STATE
 
 export interface CoreMainStates {
     ui: UIState;
@@ -34,41 +34,8 @@ const initialUIState: UIState = {
     enabledActionItems: []
 };
 
-// SELECTORS
-
-export const selectCoreMainStates = selectCoreSlice<CoreMainStates>();
-
-export const selectUIState = createSelector(
-    selectCoreMainStates,
-    state => state.ui
-);
-
-export const isBusy = createSelector(
-    selectUIState,
-    state => state.isBusy
-);
-
-export const getBanner = createSelector(
-    selectUIState,
-    state => state.banner
-);
-
-export const showBanner = createSelector(
-    selectUIState,
-    state => !!state.banner && !!state.banner.show
-);
-
-export const getSnackbar = createSelector(
-    selectUIState,
-    state => state.snackbar
-);
-
-export const getEnabledActionItems = createSelector(
-    selectUIState,
-    state => state.enabledActionItems
-);
-
 // REDUCER
+
 type coreUIReducerAction = CoreMainAction | ValidateSamplesAction | SamplesMainAction | UserActions | RouterNavigationAction;
 
 export function coreUIReducer(state: UIState = initialUIState, action: coreUIReducerAction): UIState {

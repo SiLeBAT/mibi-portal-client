@@ -1,4 +1,4 @@
-import { CommentDialogConfiguration } from '../model/comment-dialog-config.model';
+import { CommentDialogConfiguration } from '../comment-dialog.model';
 import { CommentDialogAction, CommentDialogActionTypes } from './comment-dialog.actions';
 import * as _ from 'lodash';
 

@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter, Input } from '@angular/core';
-import { DialogConfiguration } from '../model/dialog-config.model';
+import { DialogConfiguration } from '../dialog.model';
 
 @Component({
     selector: 'mibi-dialog-view',

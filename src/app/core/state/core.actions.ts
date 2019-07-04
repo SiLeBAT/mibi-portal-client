@@ -2,7 +2,7 @@ import { UUID } from 'angular2-uuid';
 import { Action } from '@ngrx/store';
 import { UserActionType } from '../../shared/model/user-action.model';
 import { DialogContent } from '../model/dialog.model';
-import { BannerState } from './core.reducer';
+import { BannerState } from './core.state';
 
 export enum CoreMainActionTypes {
     DisplayBanner = '[Core] Display Banner',

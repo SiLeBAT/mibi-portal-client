@@ -5,8 +5,8 @@ import { DialogStates, dialogConfigurationReducer } from './dialog/state/dialog.
 import { DialogAction } from './dialog/state/dialog.actions';
 import { CommentDialogStates, commentDialogReducer } from './comment-dialog/state/comment-dialog.state';
 import { CommentDialogAction } from './comment-dialog/state/comment-dialog.actions';
-import { DialogEffects } from './dialog/effects/dialog.effects';
-import { CommentDialogEffects } from './comment-dialog/effects/comment-dialog.effects';
+import { DialogEffects } from './dialog/dialog.effects';
+import { CommentDialogEffects } from './comment-dialog/comment-dialog.effects';
 
 type SharedStates = CommandStates & DialogStates & CommentDialogStates;
 type SharedReducerAction = CommandActionType | DialogAction | CommentDialogAction;

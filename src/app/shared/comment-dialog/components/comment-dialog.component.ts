@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { MatDialogRef } from '@angular/material';
-import { CommentDialogConfiguration } from '../model/comment-dialog-config.model';
+import { CommentDialogConfiguration } from '../comment-dialog.model';
 import { FormControl } from '@angular/forms';
 import { CommentDialogConfirm, CommentDialogCancel } from '../state/comment-dialog.actions';
 import { CommentDialogStates } from '../state/comment-dialog.state';

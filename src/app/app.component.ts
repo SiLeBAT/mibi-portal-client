@@ -7,7 +7,7 @@ import { DataService } from './core/services/data.service';
 import * as userActions from './user/state/user.actions';
 import { TokenizedUser } from './user/model/user.model';
 import { Samples } from './samples/samples.store';
-import { hasEntries } from './samples/state/samples.reducer';
+import { selectHasEntries } from './samples/state/samples.selectors';
 
 @Component({
     selector: 'mibi-root',
@@ -23,7 +23,7 @@ export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDe
     }
 
     ngOnInit(): void {
-        this.store$.pipe(select(hasEntries),
+        this.store$.pipe(select(selectHasEntries),
             tap(
                 entries => this.canUnload = !entries
             ),

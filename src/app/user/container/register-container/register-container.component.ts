@@ -10,8 +10,9 @@ import { RegistrationDetails, UserRegistrationRequest } from '../../model/user.m
 import { Observable } from 'rxjs/internal/Observable';
 import { takeWhile, map } from 'rxjs/operators';
 import { ClientError } from '../../../core/model/client-error';
-import { selectInstitutions } from '../../state/user.reducer';
-import { selectSupportContact, ContentMainStates } from '../../../content/state/content.reducer';
+import { selectInstitutions } from '../../state/user.selectors';
+import { ContentMainStates } from '../../../content/state/content.state';
+import { selectSupportContact } from '../../../content/state/content.selectors';
 import { DisplayBanner } from '../../../core/state/core.actions';
 import { ContentSlice } from '../../../content/content.state';
 

@@ -8,7 +8,7 @@ import { UploadAbstractComponent } from '../../presentation/upload/upload.abstra
 import { UploadErrorType } from '../../model/upload.model';
 import { ClientError } from '../../../core/model/client-error';
 import { Samples } from '../../../samples/samples.store';
-import { hasEntries } from '../../../samples/state/samples.reducer';
+import { selectHasEntries } from '../../../samples/state/samples.selectors';
 import { DisplayBanner, DisplayDialog } from '../../../core/state/core.actions';
 
 @Component({
@@ -28,7 +28,7 @@ export class UploadContainerComponent implements OnInit, OnDestroy, AfterContent
         private store: Store<Samples>) { }
 
     ngOnInit() {
-        this.store.pipe(select(hasEntries),
+        this.store.pipe(select(selectHasEntries),
             takeWhile(() => this.componentActive),
             tap(
                 entries => this.hasEntries = entries

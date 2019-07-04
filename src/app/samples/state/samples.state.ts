@@ -1,17 +1,16 @@
-import * as _ from 'lodash';
-import { createSelector } from '@ngrx/store';
 import { SamplesMainAction, SamplesMainActionTypes } from './samples.actions';
 import { UserActionTypes, LogoutUser } from '../../user/state/user.actions';
 import {
     SamplePropertyValues,
     SampleData,
     SampleSetMetaData,
-    SampleEdits,
     SampleSet
 } from '../model/sample-management.model';
-import { selectSamplesSlice } from '../samples.state';
-import { ValidateSamplesActionTypes, ValidateSamplesAction } from '../validate-samples/state/validate-samples.actions';
+import { ValidateSamplesActionTypes, ValidateSamplesAction } from '../validate-samples/validate-samples.actions';
 import { Urgency } from '../model/sample.enums';
+import { getDataValuesFromAnnotatedData } from './samples.selectors';
+
+// STATE
 
 export interface SamplesMainStates {
     mainData: SamplesMainData;
@@ -60,84 +59,6 @@ const initialState: SamplesMainData = {
 
     }
 };
-
-// SELECTORS
-
-export const selectSamplesMainStates = selectSamplesSlice<SamplesMainStates>();
-
-export const selectSamplesMainData = createSelector(
-    selectSamplesMainStates,
-    state => state.mainData
-);
-
-export const selectFormData = createSelector(
-    selectSamplesMainData,
-    state => state.formData
-);
-
-export const selectImportedFile = createSelector(
-    selectSamplesMainData,
-    state => state.importedFile
-);
-
-export const selectImportedFileData = createSelector(
-    selectImportedFile,
-    state => state ? state.data : []
-);
-
-export const selectMetaData = createSelector(
-    selectSamplesMainData,
-    state => state.meta
-);
-
-export const selectImportedFileName = createSelector(
-    selectImportedFile,
-    (file) => {
-        // this should never be null
-        if (file !== null) {
-            return file.fileName;
-        } else {
-            return '';
-        }
-    }
-);
-
-export const selectDataValues = createSelector(
-    selectFormData,
-    state => state.map(getDataValuesFromAnnotatedData)
-);
-
-export const selectDataEdits = createSelector(
-    selectFormData,
-    state => state.map(e => {
-        const result: SampleEdits = {};
-        Object.keys(e).forEach(prop => {
-            if (_.isString(e[prop].oldValue)) {
-                result[prop] = e[prop].oldValue || '';
-            }
-        });
-        return result;
-    })
-
-);
-
-export const getMarshalData = createSelector(
-    selectSamplesMainData,
-    state => ({
-        samples: state.formData,
-        meta: state.meta
-    })
-);
-
-export const hasEntries = createSelector(
-    selectFormData,
-    state => !!state.length
-);
-
-export const hasValidationErrors = createSelector(
-    selectFormData,
-    state => !!state.length
-);
 
 // REDUCER
 
@@ -221,10 +142,4 @@ export function samplesMainReducer(
         default:
             return state;
     }
-}
-
-function getDataValuesFromAnnotatedData(sampleData: SampleData): SamplePropertyValues {
-    const result: SamplePropertyValues = {};
-    Object.keys(sampleData).forEach(prop => result[prop] = sampleData[prop].value);
-    return result;
 }

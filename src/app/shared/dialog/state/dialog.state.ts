@@ -1,4 +1,4 @@
-import { DialogConfiguration } from '../model/dialog-config.model';
+import { DialogConfiguration } from '../dialog.model';
 import { DialogAction, DialogActionTypes } from './dialog.actions';
 import * as _ from 'lodash';
 

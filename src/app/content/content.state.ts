@@ -1,4 +1,4 @@
-import { ContentMainStates } from './state/content.reducer';
+import { ContentMainStates } from './state/content.state';
 import { createFeatureSelector } from '@ngrx/store';
 
 export const CONTENT_SLICE_NAME = 'content';

@@ -26,8 +26,8 @@ import { AdminActivateContainerComponent } from './container/admin-activate-cont
 import { AdminActivateViewComponent } from './presentation/admin-activate-view/admin-activate-view.component';
 import { AdminActivateComponent } from './presentation/admin-activate/admin-activate.component';
 import { StoreModule } from '@ngrx/store';
-import { STATE_SLICE_NAME, reducer } from './state/user.reducer';
-import { UserEffects } from './state/user.effects';
+import { STATE_SLICE_NAME, reducer } from './state/user.state';
+import { UserEffects } from './user.effects';
 import { EffectsModule } from '@ngrx/effects';
 import { TokenValidationResolver } from './services/token-validation-resolver.service';
 import { AdminTokenValidationResolver } from './services/admin-token-validation-resolver.service';
@@ -41,7 +41,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { AnonymousGuard } from './services/anonymous-guard.service';
-import { PasswordComponent } from './password/component/password.component';
+import { PasswordComponent } from './password/password.component';
 
 @NgModule({
     imports: [

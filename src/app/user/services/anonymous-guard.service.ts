@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import * as fromUser from '../state/user.reducer';
-import * as fromSamples from '../../samples/state/samples.reducer';
+import * as fromSamples from '../../samples/state/samples.state';
 import * as userActions from '../state/user.actions';
 import { Store, select } from '@ngrx/store';
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -9,6 +8,9 @@ import { TokenizedUser } from '../model/user.model';
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Samples } from '../../samples/samples.store';
+import { UserMainState } from '../state/user.state';
+import { selectHasEntries } from '../../samples/state/samples.selectors';
+import { selectCurrentUser } from '../state/user.selectors';
 
 @Injectable({
     providedIn: 'root'
@@ -16,14 +18,14 @@ import { Samples } from '../../samples/samples.store';
 export class AnonymousGuard implements CanActivate {
 
     constructor(private router: Router,
-        private store: Store<fromUser.UserMainState & Samples>) { }
+        private store: Store<UserMainState & Samples>) { }
 
     canActivate(activated: ActivatedRouteSnapshot, sanp: RouterStateSnapshot) {
 
-        return combineLatest(
-            this.store.pipe(select(fromUser.selectCurrentUser)),
-            this.store.pipe(select(fromSamples.hasEntries))
-        ).pipe(
+        return combineLatest([
+            this.store.pipe(select(selectCurrentUser)),
+            this.store.pipe(select(selectHasEntries))
+        ]).pipe(
             map(([currentUser, hasEntries]) => {
                 if (currentUser) {
                     const helper = new JwtHelperService();

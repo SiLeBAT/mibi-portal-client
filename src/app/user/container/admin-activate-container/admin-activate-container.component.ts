@@ -1,10 +1,10 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { environment } from '../../../../environments/environment';
-import * as fromUser from '../../state/user.reducer';
-import * as coreActions from '../../../core/state/core.actions';
 import { Store } from '@ngrx/store';
 import { UserActivation } from '../../model/user.model';
+import { UserMainState } from '../../state/user.state';
+import { DisplayBanner } from '../../../core/state/core.actions';
 
 @Component({
     selector: 'mibi-admin-activate-container',
@@ -19,17 +19,17 @@ export class AdminActivateContainerComponent implements OnInit {
     name: string;
     appName: string = environment.appName;
     constructor(private activatedRoute: ActivatedRoute,
-        private store: Store<fromUser.UserMainState>) { }
+        private store: Store<UserMainState>) { }
 
     ngOnInit() {
         this.adminTokenValid = this.activatedRoute.snapshot.data['adminTokenValid'];
 
         if (this.adminTokenValid.activation) {
             this.name = this.adminTokenValid.username;
-            this.store.dispatch(new coreActions.DisplayBanner({ predefined: 'accountActivationSuccess' }));
+            this.store.dispatch(new DisplayBanner({ predefined: 'accountActivationSuccess' }));
         } else {
             this.name = '';
-            this.store.dispatch(new coreActions.DisplayBanner({ predefined: 'accountActivationFailure' }));
+            this.store.dispatch(new DisplayBanner({ predefined: 'accountActivationFailure' }));
         }
     }
 }

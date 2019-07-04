@@ -1,5 +1,5 @@
 import { SendSamplesAction, SendSamplesActionTypes } from './send-samples.actions';
-import { SendSamplesWarnings } from '../model/send-samples-warnings';
+import { SendSamplesWarnings } from '../send-samples.model';
 import * as _ from 'lodash';
 
 // STATE

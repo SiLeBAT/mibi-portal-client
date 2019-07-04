@@ -6,7 +6,7 @@ import 'moment/locale/de';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { SystemInformation } from '../../model/system-information.model';
-import { CoreMainStates } from '../../state/core.reducer';
+import { CoreMainStates } from '../../state/core.state';
 import { UpdateSupportDetail } from '../../../content/state/content.actions';
 
 @Component({

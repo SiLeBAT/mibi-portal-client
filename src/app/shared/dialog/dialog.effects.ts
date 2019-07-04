@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { DialogAction, DialogActionTypes } from '../state/dialog.actions';
+import { DialogAction, DialogActionTypes } from './state/dialog.actions';
 import { Observable } from 'rxjs';
-import { NewDialogComponent } from '../container/dialog.component';
+import { NewDialogComponent } from './components/dialog.component';
 import { map } from 'rxjs/operators';
-import { DialogService } from '../services/dialog.service';
+import { DialogService } from './dialog.service';
 
 @Injectable()
 export class DialogEffects {

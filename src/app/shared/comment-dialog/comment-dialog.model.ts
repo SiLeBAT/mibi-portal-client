@@ -1,4 +1,4 @@
-import { DialogConfiguration } from '../../dialog/model/dialog-config.model';
+import { DialogConfiguration } from '../dialog/dialog.model';
 
 export interface CommentDialogConfiguration extends DialogConfiguration {
     commentTitle: string;

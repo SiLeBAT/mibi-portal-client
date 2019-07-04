@@ -8,7 +8,7 @@ import { takeWhile, startWith, tap, delay } from 'rxjs/operators';
 import { UserActionService } from '../../services/user-action.service';
 import { Store, select } from '@ngrx/store';
 import { Samples } from '../../../samples/samples.store';
-import { selectImportedFileName } from '../../../samples/state/samples.reducer';
+import { selectImportedFileName } from '../../../samples/state/samples.selectors';
 
 @Component({
     selector: 'mibi-action-item-list',

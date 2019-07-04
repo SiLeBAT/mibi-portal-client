@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import * as moment from 'moment';
-import * as userActions from './user.actions';
+import * as userActions from './state/user.actions';
 import { map, catchError, exhaustMap, mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { DataService } from '../../core/services/data.service';
+import { DataService } from '../core/services/data.service';
 import { Router } from '@angular/router';
-import { TokenizedUser } from '../model/user.model';
-import { DisplayBanner } from '../../core/state/core.actions';
-import { DelayLoginError, AuthorizationError } from '../../core/model/client-error';
-import { LogService } from '../../core/services/log.service';
-import { AlertType } from '../../core/model/alert.model';
-import { UserActionType } from '../../shared/model/user-action.model';
-import { UserActionService } from '../../core/services/user-action.service';
+import { TokenizedUser } from './model/user.model';
+import { DisplayBanner } from '../core/state/core.actions';
+import { DelayLoginError, AuthorizationError } from '../core/model/client-error';
+import { LogService } from '../core/services/log.service';
+import { AlertType } from '../core/model/alert.model';
+import { UserActionType } from '../shared/model/user-action.model';
+import { UserActionService } from '../core/services/user-action.service';
 
 @Injectable()
 export class UserEffects {

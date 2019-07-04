@@ -21,9 +21,9 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { SHARED_SLICE_NAME } from './shared.state';
 import { sharedReducerMap, sharedEffects, sharedMetaReducers } from './shared.store';
-import { NewDialogComponent } from './dialog/container/dialog.component';
-import { DialogViewComponent } from './dialog/presentation/dialog-view.component';
-import { CommentDialogComponent } from './comment-dialog/container/comment-dialog.component';
+import { NewDialogComponent } from './dialog/components/dialog.component';
+import { DialogViewComponent } from './dialog/components/dialog-view.component';
+import { CommentDialogComponent } from './comment-dialog/components/comment-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule, MatMenuModule, MatIconModule, MatToolbarModule } from '@angular/material';
 
