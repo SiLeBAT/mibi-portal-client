@@ -1,5 +1,9 @@
-<section class="mibi-toc" fxLayout="column" fxLayoutAlign=" center">
-    <div class="mibi-toc__row" *ngFor="let entry of faqTocEntries">
-        <a class="mibi-toc__link" [routerLink]="['.']" [fragment]="entry.id">{{entry.title}}</a>
+<section class="mibi-faq-toc">
+    <div class="mibi-faq-toc__content">
+        <div class="mibi-faq-toc-item" *ngFor="let entry of faqTocEntries">
+            <a class="mibi-faq-toc-link" [routerLink]="['.']"
+                [fragment]="entry.id">{{entry.title}}
+            </a>
+        </div>
     </div>
 </section>

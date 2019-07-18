@@ -1,5 +1,4 @@
 @import "../../../../assets/sass/abstracts";
-@import "../../../../assets/sass/base";
 
 .mibi-datenschutzhinweise {
   text-align: justify;
@@ -20,10 +19,10 @@
   padding: 0 25% * 0.5;
 }
 
-.datenschutzhinweise-footer {
+.mibi-datenschutzhinweise-footer {
   border-top: 1px solid $primary-color;
 }
 
-.datenschutzhinweise-list {
+.mibi-datenschutzhinweise-list {
   list-style-type: lower-alpha;
 }

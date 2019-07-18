@@ -14,7 +14,6 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DialogComponent } from './presentation/dialog/dialog.component';
 import { CompileDirective } from './directive/compile.directive';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { UploadActionItemComponent } from './presentation/upload-action-item/upload-action-item.component';
 import { LayoutBoxComponent } from './presentation/layout-box/layout-box.component';
 import { StoreModule } from '@ngrx/store';
@@ -44,7 +43,6 @@ import { MatProgressSpinnerModule, MatMenuModule, MatIconModule, MatToolbarModul
         MatToolbarModule,
         FormsModule,
         ReactiveFormsModule,
-        FlexLayoutModule,
         StoreModule.forFeature(SHARED_SLICE_NAME, sharedReducerMap, { metaReducers: sharedMetaReducers }),
         EffectsModule.forFeature(sharedEffects)
     ],

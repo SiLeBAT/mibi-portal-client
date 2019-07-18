@@ -30,7 +30,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDividerModule } from '@angular/material/divider';
 import { CoreMainEffects } from './state/core.effects';
 import { EffectsModule } from '@ngrx/effects';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { AvatarComponent } from './presentation/avatar/avatar.component';
 import { AvatarContainerComponent } from './container/avatar-container/avatar-container.component';
 import { FooterNavContainerComponent } from './container/footer-nav-container/footer-nav-container.component';
@@ -41,7 +40,6 @@ import { CORE_SLICE_NAME } from './core.state';
 
 @NgModule({
     imports: [
-        FlexLayoutModule,
         MatButtonModule,
         MatProgressSpinnerModule,
         BrowserAnimationsModule,

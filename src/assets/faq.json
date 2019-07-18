@@ -40,7 +40,7 @@
         },
         {
             "q": "Mein Einsendeformular wird nicht akzeptiert. Dabei hatte ich es damals von der BfR- Website heruntergeladen.",
-            "a": "Das MiBi-Portal akzeptiert ausschließlich Dateien mit der Endung *.xlsx. Das seit Oktober 2017 aktuelle <a href=\"https://www.bfr.bund.de/de/einsendeformular_fuer_isolate_und_proben-9257.html\">Einsendeformular v14</a> hat diese Dateiendung. Sollten Sie eine ältere Version des Einsendeformulars verwenden, bitten wir Sie, sich von der oben angegebenen Website die aktuelle Version herunterzuladen und diese zu verwenden."
+            "a": "Das MiBi-Portal akzeptiert ausschließlich Dateien mit der Endung *.xlsx. Das seit Oktober 2017 aktuelle <a href=\"https://www.bfr.bund.de/de/einsendeformular_fuer_isolate_und_proben-9257.html\" target=\"_blank\" rel=\"noopener\">Einsendeformular v14</a> hat diese Dateiendung. Sollten Sie eine ältere Version des Einsendeformulars verwenden, bitten wir Sie, sich von der oben angegebenen Website die aktuelle Version herunterzuladen und diese zu verwenden."
         },
         {
             "q": "Ich habe eine Excel-Datei mit der Endung *.xls, aber diese wird vom MiBi-Portal nicht akzeptiert. Was nun?",
@@ -95,7 +95,7 @@
     ],
     "andere themen": [
         {
-            "q": "Ich sehe nach dem Eingeben des <a href=\"https://mibi-portal.bfr.bund.de\">MiBi-Portal-Weblinks</a> nur eine weiße Fläche im Browser. Was läuft hier schief?",
+            "q": "Ich sehe nach dem Eingeben des <a href=\"https://mibi-portal.bfr.bund.de\" target=\"_blank\">MiBi-Portal-Weblinks</a> nur eine weiße Fläche im Browser. Was läuft hier schief?",
             "a": "Das MiBi-Portal verwendet Ressourcen, die von den folgenden Browsern unterstützt werden: <ul><li>Mozilla Firefox: ab Version 52</li><li>Google Chrome: ab Version 64</li><li>Microsoft Edge: ab Version 41</li><li>Apple Safari: ab Version 11</li><li>Opera: ab Version 54</li></ul>Bei älteren Browserversionen ist nach dem Aufruf des MiBi-Portal-Weblinks möglicherweise nur ein weißes Browserfenster zu sehen. Dies kann auch bei anderen Browsern passieren, wie z.B. dem Internet Explorer. Bitte verwenden Sie in diesem Fall einen der oben aufgelisteten Browser."
         },
         {

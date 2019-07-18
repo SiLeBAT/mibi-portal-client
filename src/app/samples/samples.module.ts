@@ -14,7 +14,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CoreModule } from '../core/core.module';
 import { MatInputModule, MatFormFieldModule } from '@angular/material';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { SAMPLES_SLICE_NAME } from './samples.state';
 import { samplesReducerMap, samplesEffects } from './samples.store';
 import { NoSampleGuard } from './services/no-sample-guard.service';
@@ -33,7 +32,6 @@ const SAMPLES_ROUTES = [
         MatDialogModule,
         MatInputModule,
         MatFormFieldModule,
-        FlexLayoutModule,
         RouterModule.forChild(SAMPLES_ROUTES),
         StoreModule.forFeature(SAMPLES_SLICE_NAME, samplesReducerMap),
         EffectsModule.forFeature(samplesEffects),

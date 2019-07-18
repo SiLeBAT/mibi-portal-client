@@ -39,7 +39,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { AnonymousGuard } from './services/anonymous-guard.service';
 import { PasswordComponent } from './password/component/password.component';
 
@@ -47,7 +46,6 @@ import { PasswordComponent } from './password/component/password.component';
     imports: [
         CommonModule,
         ReactiveFormsModule,
-        FlexLayoutModule,
         BrowserAnimationsModule,
         MatFormFieldModule,
         MatInputModule,
