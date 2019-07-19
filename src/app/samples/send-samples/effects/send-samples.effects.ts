@@ -102,21 +102,21 @@ export class SendSamplesEffects {
                 comment: comment
             })).pipe(
                 map(() => of(
-                    new DisplayBanner({ predefined: 'sendSuccess' }),
-                    new SendSamplesSuccess({ sentFile: fileName })
+                    new SendSamplesSuccess({ sentFile: fileName }),
+                    new DisplayBanner({ predefined: 'sendSuccess' })
                 )),
                 concatAll(),
                 catchError((error) => {
                     this.logger.error('Failed to send samples from store', error);
                     if (error instanceof InvalidInputError) {
                         return of(
-                            new DisplayBanner({ predefined: 'validationErrors' }),
-                            new ValidateSamplesSuccess(error.data)
+                            new ValidateSamplesSuccess(error.data),
+                            new DisplayBanner({ predefined: 'validationErrors' })
                         );
                     } else if (error instanceof InputChangedError) {
                         return of(
-                            new DisplayBanner({ predefined: 'autocorrections' }),
-                            new ValidateSamplesSuccess(error.data)
+                            new ValidateSamplesSuccess(error.data),
+                            new DisplayBanner({ predefined: 'autocorrections' })
                         );
                     } else if (error instanceof AuthorizationError) {
                         return of(
@@ -137,8 +137,8 @@ export class SendSamplesEffects {
         fromSource<CommentDialogCancel>(SendSamplesActionTypes.SendSamples),
         concatMap(() => {
             return of(
-                new DisplayBanner({ predefined: 'sendCancel' }),
-                new SendSamplesCancel()
+                new SendSamplesCancel(),
+                new DisplayBanner({ predefined: 'sendCancel' })
             );
         })
     );

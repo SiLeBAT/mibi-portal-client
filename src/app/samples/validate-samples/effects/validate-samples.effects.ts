@@ -41,8 +41,8 @@ export class ValidateSamplesEffects {
                 catchError((error) => {
                     this.logger.error('Failed to validate samples', error);
                     return of(
-                        new DisplayBanner({ predefined: 'validationFailure' }),
-                        new ValidateSamplesFailure()
+                        new ValidateSamplesFailure(),
+                        new DisplayBanner({ predefined: 'validationFailure' })
                     );
                 })
             );

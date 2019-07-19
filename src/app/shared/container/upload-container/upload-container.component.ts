@@ -9,7 +9,7 @@ import { UploadErrorType } from '../../model/upload.model';
 import { ClientError } from '../../../core/model/client-error';
 import { Samples } from '../../../samples/samples.store';
 import { hasEntries } from '../../../samples/state/samples.reducer';
-import { DisplayBanner, DisplayDialog } from '../../../core/state/core.actions';
+import { DisplayBanner, DisplayDialog, HideBanner } from '../../../core/state/core.actions';
 
 @Component({
     selector: 'mibi-upload-container',
@@ -74,6 +74,9 @@ export class UploadContainerComponent implements OnInit, OnDestroy, AfterContent
                 break;
             case UploadErrorType.TYPE:
                 this.store.dispatch(new DisplayBanner({ predefined: 'wrongUploadDatatype' }));
+                break;
+            case UploadErrorType.CLEAR:
+                this.store.dispatch(new HideBanner());
                 break;
             default:
                 this.store.dispatch(new DisplayBanner({ predefined: 'uploadFailure' }));
