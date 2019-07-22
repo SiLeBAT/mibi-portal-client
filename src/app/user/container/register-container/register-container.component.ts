@@ -8,7 +8,7 @@ import { UserActionService } from '../../../core/services/user-action.service';
 import { UserActionType } from '../../../shared/model/user-action.model';
 import { RegistrationDetails, UserRegistrationRequest } from '../../model/user.model';
 import { Observable } from 'rxjs/internal/Observable';
-import { takeWhile, map } from 'rxjs/operators';
+import { takeWhile, map, filter } from 'rxjs/operators';
 import { ClientError } from '../../../core/model/client-error';
 import { selectInstitutions } from '../../state/user.reducer';
 import { selectSupportContact, ContentMainStates } from '../../../content/state/content.reducer';
@@ -17,7 +17,13 @@ import { ContentSlice } from '../../../content/content.state';
 
 @Component({
     selector: 'mibi-register-container',
-    template: `<mibi-register (register)="register($event)" [institutions]="institutions$ | async"></mibi-register>`
+    template:   `<div *ngIf="(institutions$ | async) as institutions">
+                    <mibi-register
+                    (register)="register($event)"
+                    [institutions]="institutions"
+                    [supportContact]="supportContact">
+                    </mibi-register>
+                </div>`
 })
 export class RegisterContainerComponent implements OnInit, OnDestroy {
 
@@ -91,11 +97,11 @@ export class RegisterContainerComponent implements OnInit, OnDestroy {
     private loadInstitutions() {
         this.institutions$ = this.store.pipe(
             select(selectInstitutions),
+            filter((value) => value.length > 0),
             map((data: InstitutionDTO[]) => {
                 return data.map(institution => {
                     return fromDTOToInstitution(institution);
                 });
-
             }));
     }
 }
