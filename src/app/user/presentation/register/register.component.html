@@ -8,12 +8,15 @@ when the submit button is clicked. On submit the register() method is called if 
   <mat-form-field class="mibi-form-field">
     <input type="text" matInput placeholder="Wählen Sie Ihr Institut" formControlName="institution" autocomplete="off"
       required [matAutocomplete]="autoGroup">
+    <mat-error class="mibi-form-field__mat-error">Muss ein gültiges Institut sein.</mat-error>
     <mat-autocomplete #autoGroup="matAutocomplete">
-      <mat-option class="mibi-register-mat-option" *ngFor="let institution of filteredOptions | async" [value]="institution">
+      <mat-option class="mibi-register-mat-option" *ngFor="let institution of filteredOptions$ | async" [value]="institution">
         {{institution}}
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>
+
+  <p>Sollte Ihr Institut hier nicht aufgelistet sein, senden Sie uns bitte eine <a href="mailto:{{supportContact}}"> Nachricht</a>.</p>
 
   <mat-form-field class="mibi-form-field">
     <input matInput placeholder="Vorname" name="firstName" formControlName="firstName" required>
