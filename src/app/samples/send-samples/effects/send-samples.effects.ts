@@ -38,8 +38,9 @@ import {
 } from '../../state/samples.reducer';
 import { LogService } from '../../../core/services/log.service';
 import { DataService } from '../../../core/services/data.service';
-import { InvalidInputError, InputChangedError, AuthorizationError } from '../../../core/model/client-error';
+import { AuthorizationError } from '../../../core/model/client-error';
 import { LogoutUser } from '../../../user/state/user.actions';
+import { InvalidInputError, InputChangedError } from '../../../core/model/data-service-error';
 
 @Injectable()
 export class SendSamplesEffects {
