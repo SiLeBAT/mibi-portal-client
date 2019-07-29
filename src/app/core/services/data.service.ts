@@ -39,7 +39,8 @@ import {
     AnnotatedOrderDTO,
     SampleSetMetaDTO,
     SampleSetDTO,
-    SampleDataEntryDTO
+    SampleDataEntryDTO,
+    AnnotatedSampleContainerDTO
 } from '../model/shared-dto.model';
 import { LogService } from './log.service';
 import { InstitutionDTO } from '../../user/model/institution.model';
@@ -106,8 +107,8 @@ export class DataService {
             order: this.fromSampleSetToDTO(sendableFormData.order),
             comment: sendableFormData.comment
         };
-        return this.httpClient.post<AnnotatedSampleDTO[]>(this.URL.submit, requestDTO).pipe(
-            map((dtoArray: AnnotatedSampleDTO[]) => dtoArray.map(dto => this.fromAnnotatedDTOToSampleData(dto)))
+        return this.httpClient.post<AnnotatedSampleContainerDTO[]>(this.URL.submit, requestDTO).pipe(
+            map((dtoArray: AnnotatedSampleContainerDTO[]) => dtoArray.map(container => this.fromAnnotatedDTOToSampleData(container.sample)))
         );
     }
 
@@ -264,7 +265,7 @@ export class DataService {
         return { order: dto };
     }
 
-    private fromAnnotatedDTOToSampleData(dto: AnnotatedSampleDTO): SampleData {
+    fromAnnotatedDTOToSampleData(dto: AnnotatedSampleDTO): SampleData {
         const annotatedSampleData: Record<SampleProperty, AnnotatedSampleDataEntry> = {};
         Object.keys(dto).forEach(prop => annotatedSampleData[prop] = this.fromDTOToAnnotatedSampleDataEntry(dto[prop]));
         return annotatedSampleData as SampleData;

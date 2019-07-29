@@ -3,11 +3,14 @@ import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ClientError, InputChangedError, DelayLoginError, AuthorizationError, InvalidInputError } from '../model/client-error';
+import { DataService } from './data.service';
+import { SampleData } from '../../samples/model/sample-management.model';
+import { AnnotatedSampleContainerDTO } from '../model/shared-dto.model';
 
 @Injectable()
 export class HttpErrorMapperService implements HttpInterceptor {
 
-    constructor() { }
+    constructor(public dataService: DataService) { }
 
     intercept(req: HttpRequest<any>,
         next: HttpHandler): Observable<HttpEvent<any>> {
@@ -42,14 +45,16 @@ export class HttpErrorMapperService implements HttpInterceptor {
     }
 
     private handle422(errorResponse: HttpErrorResponse) {
+        const dtoToData = (dto: AnnotatedSampleContainerDTO[]): SampleData[] =>
+            dto.map(container => this.dataService.fromAnnotatedDTOToSampleData(container.sample));
+
         switch (errorResponse.error.code) {
             case 5:
-                throw new InvalidInputError(errorResponse.error.samples, 'Input changed error.');
+                throw new InvalidInputError(dtoToData(errorResponse.error.samples), 'Invalid input error.');
             case 6:
-                throw new InputChangedError(errorResponse.error.samples, 'Input changed error.');
+                throw new InputChangedError(dtoToData(errorResponse.error.samples), 'Input changed error.');
             default:
                 throw new ClientError('Invalid Input error.');
         }
     }
-
 }

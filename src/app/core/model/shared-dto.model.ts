@@ -43,7 +43,7 @@ interface SampleValidationErrorDTO {
     readonly message: string;
 }
 
-interface AnnotatedSampleContainerDTO {
+export interface AnnotatedSampleContainerDTO {
     sample: AnnotatedSampleDTO;
 }
 
