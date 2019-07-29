@@ -1,18 +1,10 @@
 import { Component, OnInit, Output, EventEmitter, Input, ViewChild, AfterViewInit } from '@angular/core';
-import { FormGroup, FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Institution } from '../../../user/model/institution.model';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { RegistrationDetails } from '../../model/user.model';
 import { PasswordComponent } from '../../password/component/password.component';
-
-// InstituteValidator
-
-const instituteValidator = (control: AbstractControl): ValidationErrors | null => {
-    return control.value && control.value.id ? null : { 'institutionError': true };
-};
-
-// Component
 
 @Component({
     selector: 'mibi-register',
@@ -21,11 +13,9 @@ const instituteValidator = (control: AbstractControl): ValidationErrors | null =
 })
 export class RegisterComponent implements OnInit, AfterViewInit {
     registerForm: FormGroup;
-    filteredOptions$: Observable<Institution[]>;
+    filteredOptions: Observable<Institution[]>;
 
     @Input() institutions: Institution[];
-    @Input() supportContact: string;
-
     @Output() register = new EventEmitter();
 
     @ViewChild(PasswordComponent) private passwordComponent: PasswordComponent;
@@ -34,7 +24,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 
     ngOnInit() {
         this.registerForm = new FormGroup({
-            institution: new FormControl(null, [Validators.required, instituteValidator]),
+            institution: new FormControl(null, Validators.required),
             firstName: new FormControl(null, Validators.required),
             lastName: new FormControl(null, Validators.required),
             email: new FormControl(null, [
@@ -43,16 +33,16 @@ export class RegisterComponent implements OnInit, AfterViewInit {
             ])
         });
 
-        this.filteredOptions$ = this.registerForm.controls.institution.valueChanges
-                .pipe(
-                    startWith(''),
-                    map(value => {
-                        if (!value) {
-                            return this.institutions;
-                        }
-                        return this._filter(value);
-                    })
-                );
+        this.filteredOptions = this.registerForm.controls.institution.valueChanges
+            .pipe(
+                startWith(''),
+                map(value => {
+                    if (!value) {
+                        return this.institutions;
+                    }
+                    return this._filter(value);
+                })
+            );
     }
 
     private _filter(value: string): Institution[] {
