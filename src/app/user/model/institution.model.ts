@@ -7,7 +7,6 @@ export interface Institution {
     stateShort: string;
     addendum: string;
     getFullName(): string;
-    toString(): string;
 }
 
 export interface InstitutionDTO {
