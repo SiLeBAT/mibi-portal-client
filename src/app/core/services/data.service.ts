@@ -31,7 +31,7 @@ import {
     RegistrationDetailsDTO,
     SampleSubmissionDTO
 } from '../model/request.model';
-import { ClientError } from '../model/client-error';
+import { ClientError, EndpointError } from '../model/client-error';
 import {
     AnnotatedSampleDTO,
     AnnotatedSampleDataEntryDTO,
@@ -39,12 +39,13 @@ import {
     AnnotatedOrderDTO,
     SampleSetMetaDTO,
     SampleSetDTO,
-    SampleDataEntryDTO
+    SampleDataEntryDTO,
+    AnnotatedSampleContainerDTO
 } from '../model/shared-dto.model';
-import { LogService } from './log.service';
 import { InstitutionDTO } from '../../user/model/institution.model';
 import { Urgency } from '../../samples/model/sample.enums';
 import { SamplesMainData } from '../../samples/state/samples.reducer';
+import { InvalidInputError, InputChangedError } from '../model/data-service-error';
 
 @Injectable({
     providedIn: 'root'
@@ -73,7 +74,7 @@ export class DataService {
         faq: './assets/faq.json'
     };
 
-    constructor(private httpClient: HttpClient, private logger: LogService) {
+    constructor(private httpClient: HttpClient) {
     }
 
     setCurrentUser(user: TokenizedUser) {
@@ -106,8 +107,26 @@ export class DataService {
             order: this.fromSampleSetToDTO(sendableFormData.order),
             comment: sendableFormData.comment
         };
-        return this.httpClient.post<AnnotatedSampleDTO[]>(this.URL.submit, requestDTO).pipe(
-            map((dtoArray: AnnotatedSampleDTO[]) => dtoArray.map(dto => this.fromAnnotatedDTOToSampleData(dto)))
+        return this.httpClient.post<AnnotatedSampleContainerDTO[]>(this.URL.submit, requestDTO).pipe(
+            map((dtoArray: AnnotatedSampleContainerDTO[]) =>
+                dtoArray.map(container => this.fromAnnotatedDTOToSampleData(container.sample))),
+            catchError(err => {
+                if (err instanceof EndpointError) {
+                    if (err.data.samples) {
+                        const samplesDTO = err.data.samples as AnnotatedSampleContainerDTO[];
+                        const sampleData: SampleData[] = samplesDTO.map(container => this.fromAnnotatedDTOToSampleData(container.sample));
+                        switch (err.data.code) {
+                            case 5:
+                                throw new InvalidInputError(sampleData, 'Invalid sample data error.');
+                            case 6:
+                                throw new InputChangedError(sampleData, 'Input changed error.');
+                            default:
+                                throw err;
+                        }
+                    }
+                }
+                throw err;
+            })
         );
     }
 
@@ -264,7 +283,7 @@ export class DataService {
         return { order: dto };
     }
 
-    private fromAnnotatedDTOToSampleData(dto: AnnotatedSampleDTO): SampleData {
+    fromAnnotatedDTOToSampleData(dto: AnnotatedSampleDTO): SampleData {
         const annotatedSampleData: Record<SampleProperty, AnnotatedSampleDataEntry> = {};
         Object.keys(dto).forEach(prop => annotatedSampleData[prop] = this.fromDTOToAnnotatedSampleDataEntry(dto[prop]));
         return annotatedSampleData as SampleData;
