@@ -1,8 +1,8 @@
 import { SampleProperty } from '../../samples/model/sample-management.model';
 
 export type SamplePropertyValuesDTO = Record<SampleProperty, string>;
-export type AnnotatedSampleDTO = Record<SampleProperty, AnnotatedSampleDataEntryDTO>;
-export type SampleDTO = Record<SampleProperty, SampleDataEntryDTO>;
+export type AnnotatedSampleDataDTO = Record<SampleProperty, AnnotatedSampleDataEntryDTO>;
+export type SampleDataDTO = Record<SampleProperty, SampleDataEntryDTO>;
 type UrgencyDTO = 'NORMAL' | 'EILT';
 
 interface AddressDTO {
@@ -43,12 +43,12 @@ interface SampleValidationErrorDTO {
     readonly message: string;
 }
 
-export interface AnnotatedSampleContainerDTO {
-    sample: AnnotatedSampleDTO;
+export interface AnnotatedSampleDTO {
+    sampleData: AnnotatedSampleDataDTO;
 }
 
-interface SampleContainerDTO {
-    sample: SampleDTO;
+interface SampleDTO {
+    sampleData: SampleDataDTO;
 }
 
 export interface SampleDataEntryDTO {
@@ -66,15 +66,15 @@ interface SampleSetDTOBase {
 }
 
 export interface AnnotatedSampleSetDTO extends SampleSetDTOBase {
-    readonly samples: AnnotatedSampleContainerDTO[];
+    readonly samples: AnnotatedSampleDTO[];
 }
 export interface SampleSetDTO extends SampleSetDTOBase {
-    readonly samples: SampleContainerDTO[];
+    readonly samples: SampleDTO[];
 }
 
 export interface AnnotatedOrderDTO {
-    order: AnnotatedSampleSetDTO;
+    sampleSet: AnnotatedSampleSetDTO;
 }
 export interface OrderDTO {
-    order: SampleSetDTO;
+    sampleSet: SampleSetDTO;
 }

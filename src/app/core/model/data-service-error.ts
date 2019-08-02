@@ -3,7 +3,7 @@ import { SampleData } from '../../samples/model/sample-management.model';
 
 export class InvalidInputError extends ClientError {
     // tslint:disable-next-line
-    constructor(public data: SampleData[], ...args: any[]) {
+    constructor(public sampleData: SampleData[], ...args: any[]) {
         super(...args);
         Object.setPrototypeOf(this, InvalidInputError.prototype);
         this.name = this.constructor.name;
@@ -12,7 +12,7 @@ export class InvalidInputError extends ClientError {
 
 export class InputChangedError extends ClientError {
     // tslint:disable-next-line
-    constructor(public data: SampleData[], ...args: any[]) {
+    constructor(public sampleData: SampleData[], ...args: any[]) {
         super(...args);
         Object.setPrototypeOf(this, InputChangedError.prototype);
         this.name = this.constructor.name;

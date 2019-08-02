@@ -25,7 +25,7 @@ export class AuthorizationError extends ClientError {
 
 export class EndpointError extends ClientError {
     // tslint:disable-next-line
-    constructor(public data: any, ...args: any[]) {
+    constructor(public errorDTO: any, ...args: any[]) {
         super(...args);
         Object.setPrototypeOf(this, EndpointError.prototype);
         this.name = this.constructor.name;

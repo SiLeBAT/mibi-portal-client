@@ -1,3 +1,5 @@
+import { OrderDTO, AnnotatedOrderDTO } from './shared-dto.model';
+
 export interface TokenRefreshResponseDTO {
     readonly refresh: boolean;
     readonly token: string;
@@ -48,10 +50,22 @@ export interface InstituteDTO {
 export interface InstituteCollectionDTO {
     readonly institutes: InstituteDTO[];
 }
-export interface MarshalledDataResponseDTO {
+export interface PutSamplesXLSXResponseDTO {
     readonly data: string;
     readonly fileName: string;
     readonly type: string;
+}
+
+export interface PutSamplesJSONResponseDTO {
+    order: OrderDTO;
+}
+
+export interface PutValidatedResponseDTO {
+    order: AnnotatedOrderDTO;
+}
+
+export interface PostSubmittedResponseDTO {
+    order: AnnotatedOrderDTO;
 }
 
 interface QA {

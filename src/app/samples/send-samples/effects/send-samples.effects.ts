@@ -111,12 +111,12 @@ export class SendSamplesEffects {
                     this.logger.error('Failed to send samples from store', error);
                     if (error instanceof InvalidInputError) {
                         return of(
-                            new ValidateSamplesSuccess(error.data),
+                            new ValidateSamplesSuccess(error.sampleData),
                             new DisplayBanner({ predefined: 'validationErrors' })
                         );
                     } else if (error instanceof InputChangedError) {
                         return of(
-                            new ValidateSamplesSuccess(error.data),
+                            new ValidateSamplesSuccess(error.sampleData),
                             new DisplayBanner({ predefined: 'autocorrections' })
                         );
                     } else if (error instanceof AuthorizationError) {
