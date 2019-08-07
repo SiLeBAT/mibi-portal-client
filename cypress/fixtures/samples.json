@@ -1,210 +1,137 @@
 [
-    {  
-        "order":{  
-          "meta":{  
-            "nrl":"NRL-AR",
-            "analysis":{  
-              "species":false,
-              "serological":false,
-              "phageTyping":false,
-              "resistance":false,
-              "vaccination":false,
-              "molecularTyping":false,
-              "toxin":false,
-              "zoonosenIsolate":false,
-              "esblAmpCCarbapenemasen":false,
-              "other":"",
-              "compareHuman":false
-            },
-            "sender":{  
-              "instituteName":"",
-              "department":"",
-              "street":"",
-              "zip":"",
-              "city":"",
-              "contactPerson":"",
-              "telephone":"",
-              "email":""
-            },
-            "urgency":"NORMAL"
+  {
+    "order": {
+      "sampleSet": {
+        "meta": {
+          "nrl": "NRL-AR",
+          "analysis": {
+            "species": false,
+            "serological": false,
+            "phageTyping": false,
+            "resistance": false,
+            "vaccination": false,
+            "molecularTyping": false,
+            "toxin": false,
+            "zoonosenIsolate": false,
+            "esblAmpCCarbapenemasen": false,
+            "other": "",
+            "compareHuman": false
           },
-          "samples":[  
-            {  
-              "sample":{  
-                "sample_id":{  
-                  "value":"1",
-                  "errors":[  
-      
-                  ],
-                  "correctionOffer":[  
-      
-                  ]
-                },
-                "sample_id_avv":{  
-                  "value":"1-ABC",
-                  "errors":[  
-      
-                  ],
-                  "correctionOffer":[  
-      
-                  ]
-                },
-                "pathogen_adv":{  
-                  "value":"Escherichia coli",
-                  "errors":[  
-      
-                  ],
-                  "correctionOffer":[  
-      
-                  ]
-                },
-                "pathogen_text":{  
-                  "value":"",
-                  "errors":[  
-      
-                  ],
-                  "correctionOffer":[  
-      
-                  ]
-                },
-                "sampling_date":{  
-                  "value":"14.09.2017",
-                  "errors":[  
-      
-                  ],
-                  "correctionOffer":[  
-      
-                  ]
-                },
-                "isolation_date":{  
-                  "value":"15.09.2017",
-                  "errors":[  
-      
-                  ],
-                  "correctionOffer":[  
-      
-                  ]
-                },
-                "sampling_location_adv":{  
-                  "value":"11000000",
-                  "errors":[  
-      
-                  ],
-                  "correctionOffer":[  
-      
-                  ]
-                },
-                "sampling_location_zip":{  
-                  "value":"10178",
-                  "errors":[  
-      
-                  ],
-                  "correctionOffer":[  
-      
-                  ]
-                },
-                "sampling_location_text":{  
-                  "value":"Berlin",
-                  "errors":[  
-      
-                  ],
-                  "correctionOffer":[  
-      
-                  ]
-                },
-                "topic_adv":{  
-                  "value":"01",
-                  "errors":[  
-      
-                  ],
-                  "correctionOffer":[  
-      
-                  ]
-                },
-                "matrix_adv":{  
-                  "value":"063502",
-                  "errors":[  
-      
-                  ],
-                  "correctionOffer":[  
-      
-                  ]
-                },
-                "matrix_text":{  
-                  "value":"Hähnchen auch tiefgefroren",
-                  "errors":[  
-      
-                  ],
-                  "correctionOffer":[  
-      
-                  ]
-                },
-                "process_state_adv":{  
-                  "value":"999",
-                  "errors":[  
-      
-                  ],
-                  "correctionOffer":[  
-      
-                  ]
-                },
-                "sampling_reason_adv":{  
-                  "value":"10",
-                  "errors":[  
-      
-                  ],
-                  "correctionOffer":[  
-      
-                  ]
-                },
-                "sampling_reason_text":{  
-                  "value":"Planprobe",
-                  "errors":[  
-      
-                  ],
-                  "correctionOffer":[  
-      
-                  ]
-                },
-                "operations_mode_adv":{  
-                  "value":"4010000",
-                  "errors":[  
-      
-                  ],
-                  "correctionOffer":[  
-      
-                  ]
-                },
-                "operations_mode_text":{  
-                  "value":"Lebensmitteleinzelhandel",
-                  "errors":[  
-      
-                  ],
-                  "correctionOffer":[  
-      
-                  ]
-                },
-                "vvvo":{  
-                  "value":"",
-                  "errors":[  
-      
-                  ],
-                  "correctionOffer":[  
-      
-                  ]
-                },
-                "comment":{  
-                  "value":"",
-                  "errors":[  
-      
-                  ],
-                  "correctionOffer":[  
-      
-                  ]
-                }
+          "sender": {
+            "instituteName": "",
+            "department": "",
+            "street": "",
+            "zip": "",
+            "city": "",
+            "contactPerson": "",
+            "telephone": "",
+            "email": ""
+          },
+          "urgency": "NORMAL",
+          "fileName": "none"
+        },
+        "samples": [
+          {
+            "sampleData": {
+              "sample_id": {
+                "value": "1",
+                "errors": [],
+                "correctionOffer": []
+              },
+              "sample_id_avv": {
+                "value": "1-ABC",
+                "errors": [],
+                "correctionOffer": []
+              },
+              "pathogen_adv": {
+                "value": "Escherichia coli",
+                "errors": [],
+                "correctionOffer": []
+              },
+              "pathogen_text": {
+                "value": "",
+                "errors": [],
+                "correctionOffer": []
+              },
+              "sampling_date": {
+                "value": "14.09.2017",
+                "errors": [],
+                "correctionOffer": []
+              },
+              "isolation_date": {
+                "value": "15.09.2017",
+                "errors": [],
+                "correctionOffer": []
+              },
+              "sampling_location_adv": {
+                "value": "11000000",
+                "errors": [],
+                "correctionOffer": []
+              },
+              "sampling_location_zip": {
+                "value": "10178",
+                "errors": [],
+                "correctionOffer": []
+              },
+              "sampling_location_text": {
+                "value": "Berlin",
+                "errors": [],
+                "correctionOffer": []
+              },
+              "topic_adv": {
+                "value": "01",
+                "errors": [],
+                "correctionOffer": []
+              },
+              "matrix_adv": {
+                "value": "063502",
+                "errors": [],
+                "correctionOffer": []
+              },
+              "matrix_text": {
+                "value": "Hähnchen auch tiefgefroren",
+                "errors": [],
+                "correctionOffer": []
+              },
+              "process_state_adv": {
+                "value": "999",
+                "errors": [],
+                "correctionOffer": []
+              },
+              "sampling_reason_adv": {
+                "value": "10",
+                "errors": [],
+                "correctionOffer": []
+              },
+              "sampling_reason_text": {
+                "value": "Planprobe",
+                "errors": [],
+                "correctionOffer": []
+              },
+              "operations_mode_adv": {
+                "value": "4010000",
+                "errors": [],
+                "correctionOffer": []
+              },
+              "operations_mode_text": {
+                "value": "Lebensmitteleinzelhandel",
+                "errors": [],
+                "correctionOffer": []
+              },
+              "vvvo": {
+                "value": "",
+                "errors": [],
+                "correctionOffer": []
+              },
+              "comment": {
+                "value": "",
+                "errors": [],
+                "correctionOffer": []
               }
             }
-          ]
-        }
+          }
+        ]
       }
+    }
+  }
 ]

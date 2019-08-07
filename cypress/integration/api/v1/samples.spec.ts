@@ -41,12 +41,13 @@ describe('Testing the /samples endpoint', function () {
                     'accept': 'application/json'
                 },
                 body: this.samples[0],
-                failOnStatusCode: false
+                failOnStatusCode: true
             }).then(response => {
                 expect(response.status).to.equal(200);
                 expect(response.body.order).to.be.a('object');
-                expect(response.body.order.meta).to.be.a('object');
-                expect(response.body.order.samples).to.be.a('array');
+                expect(response.body.order.sampleSet).to.be.a('object');
+                expect(response.body.order.sampleSet.meta).to.be.a('object');
+                expect(response.body.order.sampleSet.samples).to.be.a('array');
             });
         });
 
@@ -113,9 +114,9 @@ describe('Testing the /samples endpoint', function () {
                     const order = response.body.order;
                     expect(response.status).to.equal(200);
                     expect(order).to.be.a('object');
-                    expect(order.meta).to.be.a('object');
-                    expect(order.samples).to.be.a('array');
-                    expect(order.samples[0].sample.sample_id_avv.errors[0].code).to.equal(72);
+                    expect(order.sampleSet.meta).to.be.a('object');
+                    expect(order.sampleSet.samples).to.be.a('array');
+                    expect(order.sampleSet.samples[0].sampleData.sample_id_avv.errors[0].code).to.equal(72);
                 });
             });
 

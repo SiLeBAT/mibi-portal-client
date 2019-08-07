@@ -3,10 +3,11 @@
 describe('Testing the /users endpoint', function () {
 
     const baseUrl = '/v1/users';
-    const genericErrorMessage = 'An unknown error occured';
-    const genericErrorCode = 1;
+
     before(() => {
         cy.fixture('users.json').as('users');
+        cy.fixture('error-responses.json').as('errors');
+        cy.fixture('success-responses.json').as('success');
     });
 
     describe('Testing the /users/login endpoint', function () {
@@ -51,9 +52,8 @@ describe('Testing the /users endpoint', function () {
                     },
                     failOnStatusCode: false
                 }).then(response => {
-                    expect(response.status).to.equal(401);
-                    expect(response.body.message).to.equal('Authentication failure');
-                    expect(response.body.code).to.equal(3);
+                    expect(response.status).to.equal(this.errors[1].status);
+                    expect(response.body).to.deep.equal(this.errors[1].body);
                 });
             });
 
@@ -72,9 +72,8 @@ describe('Testing the /users endpoint', function () {
                     },
                     failOnStatusCode: false
                 }).then(response => {
-                    expect(response.status).to.equal(500);
-                    expect(response.body.message).to.equal(genericErrorMessage);
-                    expect(response.body.code).to.equal(genericErrorCode);
+                    expect(response.status).to.equal(this.errors[0].status);
+                    expect(response.body).to.deep.equal(this.errors[0].body);
                 });
             });
 
@@ -93,9 +92,8 @@ describe('Testing the /users endpoint', function () {
                     },
                     failOnStatusCode: false
                 }).then(response => {
-                    expect(response.status).to.equal(401);
-                    expect(response.body.message).to.be.a('string');
-                    expect(response.body.code).to.equal(3);
+                    expect(response.status).to.equal(this.errors[0].status);
+                    expect(response.body).to.deep.equal(this.errors[0].body);
                 });
             });
 
@@ -114,9 +112,8 @@ describe('Testing the /users endpoint', function () {
                     },
                     failOnStatusCode: false
                 }).then(response => {
-                    expect(response.status).to.equal(500);
-                    expect(response.body.message).to.equal(genericErrorMessage);
-                    expect(response.body.code).to.equal(genericErrorCode);
+                    expect(response.status).to.equal(this.errors[0].status);
+                    expect(response.body).to.deep.equal(this.errors[0].body);
                 });
             });
 
@@ -135,9 +132,8 @@ describe('Testing the /users endpoint', function () {
                     },
                     failOnStatusCode: false
                 }).then(response => {
-                    expect(response.status).to.equal(500);
-                    expect(response.body.message).to.equal(genericErrorMessage);
-                    expect(response.body.code).to.equal(genericErrorCode);
+                    expect(response.status).to.equal(this.errors[0].status);
+                    expect(response.body).to.deep.equal(this.errors[0].body);
                 });
             });
 
@@ -156,9 +152,8 @@ describe('Testing the /users endpoint', function () {
                     },
                     failOnStatusCode: false
                 }).then(response => {
-                    expect(response.status).to.equal(500);
-                    expect(response.body.message).to.equal(genericErrorMessage);
-                    expect(response.body.code).to.equal(genericErrorCode);
+                    expect(response.status).to.equal(this.errors[0].status);
+                    expect(response.body).to.deep.equal(this.errors[0].body);
                 });
             });
 
@@ -188,9 +183,8 @@ describe('Testing the /users endpoint', function () {
                     },
                     failOnStatusCode: false
                 }).then(response => {
-                    expect(response.status).to.equal(500);
-                    expect(response.body.message).to.equal(genericErrorMessage);
-                    expect(response.body.code).to.equal(genericErrorCode);
+                    expect(response.status).to.equal(this.errors[0].status);
+                    expect(response.body).to.deep.equal(this.errors[0].body);
                 });
             });
 
@@ -209,9 +203,8 @@ describe('Testing the /users endpoint', function () {
                     },
                     failOnStatusCode: false
                 }).then(response => {
-                    expect(response.status).to.equal(400);
-                    expect(response.body.message).to.equal('Malformed request');
-                    expect(response.body.code).to.equal(4);
+                    expect(response.status).to.equal(this.errors[3].status);
+                    expect(response.body).to.deep.equal(this.errors[3].body);
                 });
             });
 
@@ -235,9 +228,8 @@ describe('Testing the /users endpoint', function () {
                         email: this.users[0].email
                     }
                 }).then(response => {
-                    expect(response.status).to.equal(200);
-                    expect(response.body.email).to.equal(this.users[0].email);
-                    expect(response.body.passwordResetRequest).to.equal(true);
+                    expect(response.status).to.equal(this.success[0].status);
+                    expect(response.body).to.deep.equal(this.success[0].body);
                 });
             });
 
@@ -255,9 +247,8 @@ describe('Testing the /users endpoint', function () {
                     },
                     failOnStatusCode: false
                 }).then(response => {
-                    expect(response.status).to.equal(400);
-                    expect(response.body.message).to.equal('Malformed request');
-                    expect(response.body.code).to.equal(4);
+                    expect(response.status).to.equal(this.errors[3].status);
+                    expect(response.body).to.deep.equal(this.errors[3].body);
                 });
             });
 
@@ -283,9 +274,8 @@ describe('Testing the /users endpoint', function () {
                     },
                     failOnStatusCode: false
                 }).then(response => {
-                    expect(response.status).to.equal(401);
-                    expect(response.body.message).to.equal('Unauthorized request');
-                    expect(response.body.code).to.equal(2);
+                    expect(response.status).to.equal(this.errors[4].status);
+                    expect(response.body).to.deep.equal(this.errors[4].body);
                 });
             });
 
@@ -303,9 +293,8 @@ describe('Testing the /users endpoint', function () {
                     },
                     failOnStatusCode: false
                 }).then(response => {
-                    expect(response.status).to.equal(400);
-                    expect(response.body.message).to.equal('Malformed request');
-                    expect(response.body.code).to.equal(4);
+                    expect(response.status).to.equal(this.errors[3].status);
+                    expect(response.body).to.deep.equal(this.errors[3].body);
                 });
             });
 
@@ -328,9 +317,8 @@ describe('Testing the /users endpoint', function () {
                     },
                     failOnStatusCode: false
                 }).then(response => {
-                    expect(response.status).to.equal(401);
-                    expect(response.body.message).to.equal('Unauthorized request');
-                    expect(response.body.code).to.equal(2);
+                    expect(response.status).to.equal(this.errors[4].status);
+                    expect(response.body).to.deep.equal(this.errors[4].body);
                 });
             });
 
@@ -353,9 +341,8 @@ describe('Testing the /users endpoint', function () {
                     },
                     failOnStatusCode: false
                 }).then(response => {
-                    expect(response.status).to.equal(401);
-                    expect(response.body.message).to.equal('Unauthorized request');
-                    expect(response.body.code).to.equal(2);
+                    expect(response.status).to.equal(this.errors[4].status);
+                    expect(response.body).to.deep.equal(this.errors[4].body);
                 });
             });
 

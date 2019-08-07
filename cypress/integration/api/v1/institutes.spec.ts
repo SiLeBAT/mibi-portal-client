@@ -4,7 +4,7 @@ describe('Testing the /institutes endpoint', function () {
     const baseUrl = '/v1/institutes';
     describe('GET', function () {
         const method = 'GET';
-        it('should respond with error if invalid token', function () {
+        it('should respond with 200', function () {
             cy.request({
                 method: method,
                 log: true,

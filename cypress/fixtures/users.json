@@ -30,6 +30,13 @@
     "email": "not-enabled-not-admin-enabled@test.com",
     "instituteId": "1235",
     "password": "user4secrettestpassword"
+  },
+  {
+    "id": 5,
+    "firstName": "User5",
+    "lastName": "User5",
+    "email": "newUser@test.com",
+    "instituteId": "1235",
+    "password": "user5secrettestpassword"
   }
-
 ]
