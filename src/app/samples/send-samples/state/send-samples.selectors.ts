@@ -1,15 +1,15 @@
 import { selectSamplesSlice } from '../../samples.state';
-import { SendSamplesStates } from './send-samples.state';
+import { SendSamplesState } from './send-samples.reducer';
 import { createSelector } from '@ngrx/store';
 
-export const selectSendSamplesStates = selectSamplesSlice<SendSamplesStates>();
+export const selectSendSamplesState = selectSamplesSlice<SendSamplesState>();
 
 export const selectSendSamplesLastSentFiles = createSelector(
-    selectSendSamplesStates,
+    selectSendSamplesState,
     state => state.lastSentFiles
 );
 
 export const selectSendSamplesWarnings = createSelector(
-    selectSendSamplesStates,
+    selectSendSamplesState,
     state => state.sendWarnings
 );

@@ -1,60 +1,34 @@
-import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { UserActions, UserActionTypes } from './user.actions';
+import { UserMainAction, UserMainActionTypes } from './user.actions';
 import { TokenizedUser } from '../model/user.model';
 import { InstitutionDTO } from '../model/institution.model';
-export const STATE_SLICE_NAME = 'user';
+import * as _ from 'lodash';
+
+// STATE
 
 export interface UserMainState {
-    user: UserState;
-}
-
-export interface UserState {
-    currentUser: TokenizedUser | null;
+    currentUser: CurrentUser;
     institutes: InstitutionDTO[];
 }
 
-const initialState: UserState = {
-    currentUser: null,
-    institutes: []
-};
-
-// SELECTORS
-export const getUserFeatureState = createFeatureSelector<UserState>(STATE_SLICE_NAME);
-
-export const selectCurrentUser = createSelector(
-    getUserFeatureState,
-    state => state.currentUser
-);
-
-export const selectInstitutions = createSelector(
-    getUserFeatureState,
-    state => state.institutes
-);
+export type CurrentUser = TokenizedUser | null;
 
 // REDUCER
-export function reducer(state: UserState = initialState, action: UserActions): UserState {
+
+export function userCurrentUserReducer(state: CurrentUser = null, action: UserMainAction): CurrentUser {
     switch (action.type) {
-        case UserActionTypes.PopulateInstitutions:
-            return {
-                ...state,
-                ...{
-                    institutes: action.payload
-                }
-            };
-        case UserActionTypes.LoginUserSuccess:
-            return {
-                ...state,
-                ...{
-                    currentUser: action.payload
-                }
-            };
-        case UserActionTypes.LogoutUser:
-            return {
-                ...state,
-                ...{
-                    currentUser: null
-                }
-            };
+        case UserMainActionTypes.LoginUserSuccess:
+            return _.cloneDeep(action.payload);
+        case UserMainActionTypes.LogoutUser:
+            return null;
+        default:
+            return state;
+    }
+}
+
+export function userInstitutesReducer(state: InstitutionDTO[] = [], action: UserMainAction): InstitutionDTO[] {
+    switch (action.type) {
+        case UserMainActionTypes.PopulateInstitutions:
+            return _.cloneDeep(action.payload);
         default:
             return state;
     }

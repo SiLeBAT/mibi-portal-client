@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 import { CommandAction, ResponseAction } from '../../../shared/command/command.actions';
-import { SendSamplesWarnings } from '../model/send-samples-warnings';
+import { SendSamplesWarnings } from '../send-samples.model';
 
 export enum SendSamplesActionTypes {
     SendSamples = '[Samples/SendSamples] Send samples',

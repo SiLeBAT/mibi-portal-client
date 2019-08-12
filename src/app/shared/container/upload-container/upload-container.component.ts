@@ -7,8 +7,8 @@ import { Observable, Subject } from 'rxjs';
 import { UploadAbstractComponent } from '../../presentation/upload/upload.abstract';
 import { UploadErrorType } from '../../model/upload.model';
 import { ClientError } from '../../../core/model/client-error';
-import { Samples } from '../../../samples/samples.store';
-import { hasEntries } from '../../../samples/state/samples.reducer';
+import { SamplesMainSlice } from '../../../samples/samples.state';
+import { selectHasEntries } from '../../../samples/state/samples.selectors';
 import { DisplayBanner, DisplayDialog, HideBanner } from '../../../core/state/core.actions';
 
 @Component({
@@ -25,10 +25,10 @@ export class UploadContainerComponent implements OnInit, OnDestroy, AfterContent
     private hasEntries = false;
     private isGuardActive = true;
     constructor(
-        private store: Store<Samples>) { }
+        private store: Store<SamplesMainSlice>) { }
 
     ngOnInit() {
-        this.store.pipe(select(hasEntries),
+        this.store.pipe(select(selectHasEntries),
             takeWhile(() => this.componentActive),
             tap(
                 entries => this.hasEntries = entries

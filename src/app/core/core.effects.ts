@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import * as coreActions from './core.actions';
-import { tap, pluck, map } from 'rxjs/operators';
+import { tap, pluck } from 'rxjs/operators';
 import { MatDialog } from '@angular/material';
-import { DialogComponent } from '../../shared/presentation/dialog/dialog.component';
-import { DialogContent } from '../model/dialog.model';
+import { DialogComponent } from '../shared/presentation/dialog/dialog.component';
+import { DialogContent } from './model/dialog.model';
+import { CoreMainActionTypes } from './state/core.actions';
 
 @Injectable()
 export class CoreMainEffects {
@@ -15,7 +15,7 @@ export class CoreMainEffects {
 
     @Effect({ dispatch: false })
     displayDialog$ = this.actions$.pipe(
-        ofType(coreActions.CoreMainActionTypes.DisplayDialog),
+        ofType(CoreMainActionTypes.DisplayDialog),
         pluck('payload'),
         tap((content: DialogContent) => {
             this.dialog.open(DialogComponent, {

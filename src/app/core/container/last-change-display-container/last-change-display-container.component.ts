@@ -6,7 +6,7 @@ import 'moment/locale/de';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { SystemInformation } from '../../model/system-information.model';
-import { CoreMainStates } from '../../state/core.reducer';
+import { CoreMainState } from '../../state/core.reducer';
 import { UpdateSupportDetail } from '../../../content/state/content.actions';
 
 @Component({
@@ -28,7 +28,7 @@ export class LastChangeDisplayContainerComponent implements OnInit {
     private clientLastChange: moment.Moment;
     private serverLastChange: moment.Moment;
 
-    constructor(private store$: Store<CoreMainStates>, private dataService: DataService) { }
+    constructor(private store$: Store<CoreMainState>, private dataService: DataService) { }
 
     ngOnInit(): void {
         moment.locale('en');

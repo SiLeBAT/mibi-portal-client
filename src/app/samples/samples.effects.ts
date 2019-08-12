@@ -3,18 +3,18 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { saveAs } from 'file-saver';
 import 'moment/locale/de';
 import * as _ from 'lodash';
-import * as coreActions from '../../core/state/core.actions';
+import * as coreActions from '../core/state/core.actions';
 import { map, catchError, exhaustMap, withLatestFrom, mergeMap, tap } from 'rxjs/operators';
-import { SampleSet, MarshalledData } from '../model/sample-management.model';
+import { SampleSet, MarshalledData } from './model/sample-management.model';
 import { from, of } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
-import { DataService } from '../../core/services/data.service';
-import { LogService } from '../../core/services/log.service';
-import { ClientError } from '../../core/model/client-error';
-import { UserActionType, ColorType } from '../../shared/model/user-action.model';
-import { GenericActionItemComponent } from '../../core/presentation/generic-action-item/generic-action-item.component';
-import { Samples } from '../samples.store';
+import { DataService } from '../core/services/data.service';
+import { LogService } from '../core/services/log.service';
+import { ClientError } from '../core/model/client-error';
+import { UserActionType, ColorType } from '../shared/model/user-action.model';
+import { GenericActionItemComponent } from '../core/presentation/generic-action-item/generic-action-item.component';
+import { SamplesMainSlice } from './samples.state';
 import {
     SamplesMainAction,
     ImportExcelFile,
@@ -22,9 +22,10 @@ import {
     ImportExcelFileSuccess,
     ExportExcelFile,
     ExportExcelFileSuccess
-} from './samples.actions';
-import { ValidateSamples } from '../validate-samples/state/validate-samples.actions';
-import { SamplesMainData, selectSamplesMainData } from '../state/samples.reducer';
+} from './state/samples.actions';
+import { ValidateSamples } from './validate-samples/validate-samples.actions';
+import { SamplesMainData } from './state/samples.reducer';
+import { selectSamplesMainData } from './state/samples.selectors';
 
 @Injectable()
 export class SamplesMainEffects {
@@ -34,7 +35,7 @@ export class SamplesMainEffects {
         private dataService: DataService,
         private router: Router,
         private logger: LogService,
-        private store$: Store<Samples>
+        private store$: Store<SamplesMainSlice>
     ) { }
 
     // ImportExcelFile

@@ -1,5 +1,5 @@
 import { CommandAction, ResponseAction } from '../../../shared/command/command.actions';
-import { DialogConfiguration } from '../model/dialog-config.model';
+import { DialogConfiguration } from '../dialog.model';
 
 export enum DialogActionTypes {
     DialogOpen = '[Shared/Dialog] Open Dialog',

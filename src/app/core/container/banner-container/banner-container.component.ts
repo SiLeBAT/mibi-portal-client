@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import * as fromCore from '../../state/core.reducer';
-import * as coreActions from '../../state/core.actions';
 import { Banner, AlertType } from '../../model/alert.model';
 import { takeWhile, debounceTime } from 'rxjs/operators';
 import { UserActionService } from '../../services/user-action.service';
 import { UserActionType } from '../../../shared/model/user-action.model';
 import { ClientError } from '../../model/client-error';
-import { Core } from '../../core.state';
+import { CoreMainSlice } from '../../core.state';
+import { selectBannerData } from '../../state/core.selectors';
+import { HideBanner } from '../../state/core.actions';
 
 @Component({
     selector: 'mibi-banner-container',
@@ -154,10 +155,10 @@ export class BannerContainerComponent implements OnInit {
 
     banner: Banner | null;
     private componentActive = true;
-    constructor(private store$: Store<Core>, private userActionService: UserActionService) { }
+    constructor(private store$: Store<CoreMainSlice>, private userActionService: UserActionService) { }
 
     ngOnInit() {
-        this.store$.pipe(select(fromCore.getBanner),
+        this.store$.pipe(select(selectBannerData),
             debounceTime(600),
             takeWhile(() => this.componentActive)
         ).subscribe(bannerState => {
@@ -190,7 +191,7 @@ export class BannerContainerComponent implements OnInit {
             if (this.banner.mainAction) {
                 this.banner.mainAction.onExecute();
             }
-            this.store$.dispatch(new coreActions.HideBanner());
+            this.store$.dispatch(new HideBanner());
         }
     }
 
@@ -199,7 +200,7 @@ export class BannerContainerComponent implements OnInit {
             if (this.banner.auxilliaryAction) {
                 this.banner.auxilliaryAction.onExecute();
             }
-            this.store$.dispatch(new coreActions.HideBanner());
+            this.store$.dispatch(new HideBanner());
         }
     }
 }

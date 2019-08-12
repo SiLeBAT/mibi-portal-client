@@ -3,7 +3,7 @@ import { ActionReducer } from '@ngrx/store';
 
 // STATE
 
-export interface CommandStates {
+export interface CommandState {
     commandSources: Record<string, string>;
 }
 
@@ -27,8 +27,8 @@ export function commandSourcesReducer(
 // META REDUCER
 
 export function responseMetaReducer(
-    reducer: ActionReducer<CommandStates, CommandActionType>
-    ): ActionReducer<CommandStates, CommandActionType> {
+    reducer: ActionReducer<CommandState, CommandActionType>
+    ): ActionReducer<CommandState, CommandActionType> {
     return function (state, action) {
         if (state) {
             if ('command' in action) {

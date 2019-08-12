@@ -1,13 +1,15 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Credentials, TokenizedUser } from '../../../user/model/user.model';
-import * as fromUser from '../../state/user.reducer';
 import * as userActions from '../../state/user.actions';
-import * as fromSamples from '../../../samples/state/samples.reducer';
 import { Store, select } from '@ngrx/store';
 import { tap, takeWhile } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
-import { Samples } from '../../../samples/samples.store';
+import { SamplesMainSlice } from '../../../samples/samples.state';
+import { UserMainState } from '../../state/user.reducer';
+import { selectHasEntries } from '../../../samples/state/samples.selectors';
+import { selectCurrentUser } from '../../state/user.selectors';
+import { UserMainSlice } from '../../user.state';
 
 @Component({
     selector: 'mibi-login-container',
@@ -19,14 +21,14 @@ export class LoginContainerComponent implements OnInit, OnDestroy {
 
     private componentActive = true;
     constructor(private router: Router,
-        private store: Store<fromUser.UserMainState & Samples>) { }
+        private store: Store<UserMainSlice & SamplesMainSlice>) { }
 
     ngOnInit(): void {
 
-        combineLatest(
-            this.store.pipe(select(fromUser.selectCurrentUser)),
-            this.store.pipe(select(fromSamples.hasEntries))
-        ).pipe(
+        combineLatest([
+            this.store.pipe(select(selectCurrentUser)),
+            this.store.pipe(select(selectHasEntries))
+        ]).pipe(
             takeWhile(() => this.componentActive),
             tap(([currentUser, hasEntries]) => {
                 if (currentUser) {

@@ -6,8 +6,8 @@ import { Store } from '@ngrx/store';
 import { ClientError } from '../model/client-error';
 import { Router } from '@angular/router';
 import { SendSamples } from '../../samples/send-samples/state/send-samples.actions';
-import { ValidateSamples } from '../../samples/validate-samples/state/validate-samples.actions';
-import { Core } from '../core.state';
+import { ValidateSamples } from '../../samples/validate-samples/validate-samples.actions';
+import { CoreMainSlice } from '../core.state';
 import { ExportExcelFile, ImportExcelFile, ClearSamples } from '../../samples/state/samples.actions';
 import { DisplayDialog } from '../state/core.actions';
 
@@ -76,7 +76,7 @@ export class UserActionService {
     }];
 
     constructor(
-        private store: Store<Core>, private router: Router, private componentFactoryResolver: ComponentFactoryResolver) {
+        private store: Store<CoreMainSlice>, private router: Router, private componentFactoryResolver: ComponentFactoryResolver) {
     }
 
     getConfigOfType(type: UserActionType): UserActionViewModelConfiguration {

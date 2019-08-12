@@ -1,77 +1,44 @@
 
-import { createSelector } from '@ngrx/store';
 import { CoreMainAction, CoreMainActionTypes } from './core.actions';
 import { SamplesMainActionTypes, SamplesMainAction } from '../../samples/state/samples.actions';
 import { Alert, Banner } from '../model/alert.model';
-import { UserActionTypes, UserActions } from '../../user/state/user.actions';
+import { UserMainActionTypes, UserMainAction } from '../../user/state/user.actions';
 import { ROUTER_NAVIGATION, RouterNavigationAction } from '@ngrx/router-store';
 import { UserActionType } from '../../shared/model/user-action.model';
-import { ValidateSamplesActionTypes, ValidateSamplesAction } from '../../samples/validate-samples/state/validate-samples.actions';
-import { selectCoreSlice } from '../core.state';
+import { ValidateSamplesActionTypes, ValidateSamplesAction } from '../../samples/validate-samples/validate-samples.actions';
 
-export interface CoreMainStates {
-    ui: UIState;
+// STATE
+
+export interface CoreMainState {
+    ui: UIData;
 }
 
-export interface BannerState {
+export interface BannerData {
     show?: boolean;
     predefined: string;
     custom?: Banner;
     id?: string;
 }
 
-export interface UIState {
+export interface UIData {
     isBusy: boolean;
-    banner: BannerState | null;
+    banner: BannerData | null;
     snackbar: Alert | null;
     enabledActionItems: UserActionType[];
 }
 
-const initialUIState: UIState = {
+const initialUIData: UIData = {
     isBusy: false,
     banner: null,
     snackbar: null,
     enabledActionItems: []
 };
 
-// SELECTORS
-
-export const selectCoreMainStates = selectCoreSlice<CoreMainStates>();
-
-export const selectUIState = createSelector(
-    selectCoreMainStates,
-    state => state.ui
-);
-
-export const isBusy = createSelector(
-    selectUIState,
-    state => state.isBusy
-);
-
-export const getBanner = createSelector(
-    selectUIState,
-    state => state.banner
-);
-
-export const showBanner = createSelector(
-    selectUIState,
-    state => !!state.banner && !!state.banner.show
-);
-
-export const getSnackbar = createSelector(
-    selectUIState,
-    state => state.snackbar
-);
-
-export const getEnabledActionItems = createSelector(
-    selectUIState,
-    state => state.enabledActionItems
-);
-
 // REDUCER
-type coreUIReducerAction = CoreMainAction | ValidateSamplesAction | SamplesMainAction | UserActions | RouterNavigationAction;
 
-export function coreUIReducer(state: UIState = initialUIState, action: coreUIReducerAction): UIState {
+type coreUIReducerAction = CoreMainAction | ValidateSamplesAction | SamplesMainAction | UserMainAction | RouterNavigationAction;
+
+export function coreUIReducer(state: UIData = initialUIData, action: coreUIReducerAction): UIData {
     switch (action.type) {
         case CoreMainActionTypes.EnableActionItems:
             const enabledAIState = { ...state };
@@ -98,11 +65,11 @@ export function coreUIReducer(state: UIState = initialUIState, action: coreUIRed
             return navigatedState;
         case ValidateSamplesActionTypes.ValidateSamples:
         case SamplesMainActionTypes.ImportExcelFile:
-        case UserActionTypes.LoginUser:
+        case UserMainActionTypes.LoginUser:
             return { ...state, isBusy: true };
         case SamplesMainActionTypes.ImportExcelFileSuccess:
         case ValidateSamplesActionTypes.ValidateSamplesSuccess:
-        case UserActionTypes.LoginUserSuccess:
+        case UserMainActionTypes.LoginUserSuccess:
             return { ...state, isBusy: false, banner: null };
         case CoreMainActionTypes.DisplayBanner:
             return { ...state, isBusy: false, banner: action.payload };

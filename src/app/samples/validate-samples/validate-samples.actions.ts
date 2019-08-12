@@ -1,5 +1,5 @@
-import { CommandAction, ResponseAction } from '../../../shared/command/command.actions';
-import { SampleData } from '../../model/sample-management.model';
+import { CommandAction, ResponseAction } from '../../shared/command/command.actions';
+import { SampleData } from '../model/sample-management.model';
 
 export enum ValidateSamplesActionTypes {
     ValidateSamples = '[Samples/ValidateSamples] Validate samples',

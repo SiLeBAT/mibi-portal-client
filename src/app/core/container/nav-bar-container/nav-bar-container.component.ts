@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import * as fromSamples from '../../../samples/state/samples.reducer';
-import * as fromUser from '../../../user/state/user.reducer';
 import { Observable } from 'rxjs';
 import { User } from '../../../user/model/user.model';
 import * as userActions from '../../../user/state/user.actions';
-import { Samples } from '../../../samples/samples.store';
+import { SamplesMainSlice } from '../../../samples/samples.state';
+import { selectCurrentUser } from '../../../user/state/user.selectors';
+import { selectHasEntries } from '../../../samples/state/samples.selectors';
+import { UserMainSlice } from '../../../user/user.state';
 
 @Component({
     selector: 'mibi-nav-bar-container',
@@ -21,14 +22,14 @@ export class NavBarContainerComponent implements OnInit {
     currentUser$: Observable<User | null>;
 
     constructor(
-        private store$: Store<Samples>) { }
+        private store$: Store<SamplesMainSlice & UserMainSlice>) { }
 
     ngOnInit() {
 
-        this.hasEntries$ = this.store$.pipe(select(fromSamples.hasEntries));
+        this.hasEntries$ = this.store$.pipe(select(selectHasEntries));
 
         this.currentUser$ = this.store$.pipe(
-            select(fromUser.selectCurrentUser)
+            select(selectCurrentUser)
         );
 
     }

@@ -3,7 +3,7 @@ import * as samplesActions from '../../state/samples.actions';
 import * as coreActions from '../../../core/state/core.actions';
 import { Store } from '@ngrx/store';
 import { UserActionType } from '../../../shared/model/user-action.model';
-import { Samples } from '../../samples.store';
+import { SamplesMainSlice } from '../../samples.state';
 
 @Component({
     selector: 'mibi-upload-view',
@@ -12,7 +12,7 @@ import { Samples } from '../../samples.store';
 })
 export class UploadViewComponent implements OnInit {
     constructor(
-        private store: Store<Samples>) { }
+        private store: Store<SamplesMainSlice>) { }
 
     ngOnInit(): void {
         this.store.dispatch(new coreActions.EnableActionItems(

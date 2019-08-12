@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef, Output, EventEmitter, ViewChild, AfterViewInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { PasswordComponent } from '../../password/component/password.component';
+import { PasswordComponent } from '../../password/password.component';
 
 @Component({
     selector: 'mibi-reset',

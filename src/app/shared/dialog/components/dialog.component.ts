@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 import { Store, select } from '@ngrx/store';
-import { DialogStates } from '../state/dialog.state';
-import { selectDialogConfiguration } from '../state/dialog.selectors';
+import { DialogState } from './../state/dialog.reducer';
+import { selectDialogConfiguration } from './../state/dialog.selectors';
 import { Observable } from 'rxjs';
-import { DialogConfirm, DialogCancel } from '../state/dialog.actions';
-import { DialogConfiguration } from '../model/dialog-config.model';
+import { DialogConfirm, DialogCancel } from './../state/dialog.actions';
+import { DialogConfiguration } from './../dialog.model';
 import { SharedSlice } from '../../shared.state';
 
 @Component({
@@ -21,7 +21,7 @@ export class NewDialogComponent {
 
     constructor(
         private dialogRef: MatDialogRef<NewDialogComponent>,
-        private store$: Store<SharedSlice<DialogStates>>) { }
+        private store$: Store<SharedSlice<DialogState>>) { }
 
     onConfirm() {
         this.store$.dispatch(new DialogConfirm());

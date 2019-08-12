@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { environment } from '../../../../environments/environment';
-import { Core } from '../../core.state';
+import { CoreMainSlice } from '../../core.state';
 import { DestroyBanner } from '../../state/core.actions';
-import { isBusy, showBanner } from '../../state/core.reducer';
+import { selectIsBusy, selectIsBannerShown } from '../../state/core.selectors';
 
 @Component({
     selector: 'mibi-page-body-container',
@@ -16,11 +16,11 @@ export class PageBodyContainerComponent implements OnInit {
     isBusy$: Observable<boolean>;
     isBanner$: Observable<boolean>;
     constructor(
-        private store$: Store<Core>) { }
+        private store$: Store<CoreMainSlice>) { }
 
     ngOnInit() {
-        this.isBusy$ = this.store$.pipe(select(isBusy));
-        this.isBanner$ = this.store$.pipe(select(showBanner));
+        this.isBusy$ = this.store$.pipe(select(selectIsBusy));
+        this.isBanner$ = this.store$.pipe(select(selectIsBannerShown));
         this.supportContact = environment.supportContact;
     }
 

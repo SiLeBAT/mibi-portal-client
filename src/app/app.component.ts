@@ -6,8 +6,8 @@ import { takeWhile, tap } from 'rxjs/operators';
 import { DataService } from './core/services/data.service';
 import * as userActions from './user/state/user.actions';
 import { TokenizedUser } from './user/model/user.model';
-import { Samples } from './samples/samples.store';
-import { hasEntries } from './samples/state/samples.reducer';
+import { SamplesMainSlice } from './samples/samples.state';
+import { selectHasEntries } from './samples/state/samples.selectors';
 
 @Component({
     selector: 'mibi-root',
@@ -18,12 +18,12 @@ export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDe
     supportContact: string = environment.supportContact;
     private componentActive = true;
     private canUnload: boolean = true;
-    constructor(private store$: Store<Samples>, private dataService: DataService) {
+    constructor(private store$: Store<SamplesMainSlice>, private dataService: DataService) {
         super();
     }
 
     ngOnInit(): void {
-        this.store$.pipe(select(hasEntries),
+        this.store$.pipe(select(selectHasEntries),
             tap(
                 entries => this.canUnload = !entries
             ),

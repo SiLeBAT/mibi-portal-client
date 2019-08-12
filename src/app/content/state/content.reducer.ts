@@ -1,41 +1,26 @@
 
-import { createSelector, MemoizedSelector } from '@ngrx/store';
 import { ContentMainAction, ContentMainActionTypes } from './content.actions';
-import { selectContentSlice, ContentSlice } from '../content.state';
 
-export interface ContentMainStates {
-    masterData: MasterDataState;
+// STATE
+
+export interface ContentMainState {
+    masterData: MasterData;
 }
 
-export interface MasterDataState {
+export interface MasterData {
     supportContact: string;
 }
 
-const initialMasterDataState: MasterDataState = {
+const initialMasterData: MasterData = {
     supportContact: ''
 };
 
-// SELECTORS
-
-export const selectContentMainStates = selectContentSlice<ContentMainStates>();
-
-export const selectMasterDataState = createSelector(
-    selectContentMainStates,
-    state => state.masterData
-);
-
-export const selectSupportContact = createSelector(
-    selectMasterDataState,
-    state => state.supportContact
-);
-
 // REDUCER
-type contentMasterDataReducerAction = ContentMainAction;
 
 export function contentMasterDataReducer(
-    state: MasterDataState = initialMasterDataState,
-    action: contentMasterDataReducerAction
-): MasterDataState {
+    state: MasterData = initialMasterData,
+    action: ContentMainAction
+): MasterData {
     switch (action.type) {
         case ContentMainActionTypes.UpdateSupportDetail:
             return { ...state, supportContact: action.payload.supportContact };

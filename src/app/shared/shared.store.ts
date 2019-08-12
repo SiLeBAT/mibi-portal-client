@@ -1,17 +1,17 @@
-import { CommandAction, ResponseAction, CommandActionType } from './command/command.actions';
+import { CommandActionType } from './command/command.actions';
 import { ActionReducerMap, MetaReducer } from '@ngrx/store';
-import { CommandStates, commandSourcesReducer, responseMetaReducer } from './command/command.state';
-import { DialogStates, dialogConfigurationReducer } from './dialog/state/dialog.state';
+import { CommandState, commandSourcesReducer, responseMetaReducer } from './command/command.reducer';
+import { DialogState, dialogConfigurationReducer } from './dialog/state/dialog.reducer';
 import { DialogAction } from './dialog/state/dialog.actions';
-import { CommentDialogStates, commentDialogReducer } from './comment-dialog/state/comment-dialog.state';
+import { CommentDialogState, commentDialogReducer } from './comment-dialog/state/comment-dialog.reducer';
 import { CommentDialogAction } from './comment-dialog/state/comment-dialog.actions';
-import { DialogEffects } from './dialog/effects/dialog.effects';
-import { CommentDialogEffects } from './comment-dialog/effects/comment-dialog.effects';
+import { DialogEffects } from './dialog/dialog.effects';
+import { CommentDialogEffects } from './comment-dialog/comment-dialog.effects';
 
-type SharedStates = CommandStates & DialogStates & CommentDialogStates;
+type SharedState = CommandState & DialogState & CommentDialogState;
 type SharedReducerAction = CommandActionType | DialogAction | CommentDialogAction;
 
-export const sharedReducerMap: ActionReducerMap<SharedStates, SharedReducerAction> = {
+export const sharedReducerMap: ActionReducerMap<SharedState, SharedReducerAction> = {
     commandSources: commandSourcesReducer,
     dialogConfiguration: dialogConfigurationReducer,
     commentDialog: commentDialogReducer
@@ -20,4 +20,4 @@ export const sharedEffects = [
     DialogEffects, CommentDialogEffects
 ];
 
-export const sharedMetaReducers: MetaReducer<CommandStates, CommandActionType>[] = [responseMetaReducer];
+export const sharedMetaReducers: MetaReducer<CommandState, CommandActionType>[] = [responseMetaReducer];

@@ -1,4 +1,4 @@
-import { SampleSet } from '../../model/sample-management.model';
+import { SampleSet } from '../model/sample-management.model';
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import {
@@ -8,51 +8,44 @@ import {
     StoreSampleWarnings,
     SendSamples,
     SendSamplesSuccess
-} from '../state/send-samples.actions';
-import { SamplesSlice } from '../../samples.state';
+} from './state/send-samples.actions';
+import { SamplesSlice, SamplesMainSlice } from '../samples.state';
 import { Store } from '@ngrx/store';
 import { withLatestFrom, map, concatAll, concatMap, catchError } from 'rxjs/operators';
-import { SamplesMainAction } from '../../state/samples.actions';
-import { fromSource } from '../../../shared/command/command.selectors';
-import { DisplayBanner } from '../../../core/state/core.actions';
+import { SamplesMainAction } from '../state/samples.actions';
+import { fromSource } from '../../shared/command/command.selectors';
+import { DisplayBanner } from '../../core/state/core.actions';
 import { Observable, of, from } from 'rxjs';
 import {
     ValidateSamplesSuccess
-} from '../../validate-samples/state/validate-samples.actions';
-import { Samples } from '../../samples.store';
-import { SendSamplesStates } from '../state/send-samples.state';
-import { selectSendSamplesLastSentFiles, selectSendSamplesWarnings } from '../state/send-samples.selectors';
+} from '../validate-samples/validate-samples.actions';
+import { SendSamplesState } from './state/send-samples.reducer';
+import { selectSendSamplesLastSentFiles, selectSendSamplesWarnings } from './state/send-samples.selectors';
 import * as _ from 'lodash';
 import {
     CommentDialogOpen,
     CommentDialogConfirm,
     CommentDialogActionTypes,
     CommentDialogCancel
-} from '../../../shared/comment-dialog/state/comment-dialog.actions';
-import { sendSamplesDialogStrings, sendSamplesDefaultDialogConfiguration } from '../constants/send-samples-dialog.constants';
-import { CommentDialogConfiguration } from '../../../shared/comment-dialog/model/comment-dialog-config.model';
-import {
-    selectImportedFileName,
-    selectFormData,
-    selectMetaData
-} from '../../state/samples.reducer';
-import { LogService } from '../../../core/services/log.service';
-import { DataService } from '../../../core/services/data.service';
-import { AuthorizationError } from '../../../core/model/client-error';
-import { LogoutUser } from '../../../user/state/user.actions';
-import { InvalidInputError, InputChangedError } from '../../../core/model/data-service-error';
+} from '../../shared/comment-dialog/state/comment-dialog.actions';
+import { sendSamplesDialogStrings, sendSamplesDefaultDialogConfiguration } from './send-samples.constants';
+import { CommentDialogConfiguration } from '../../shared/comment-dialog/comment-dialog.model';
+import { selectImportedFileName, selectFormData, selectMetaData } from '../state/samples.selectors';
+import { LogService } from '../../core/services/log.service';
+import { DataService } from '../../core/services/data.service';
+import { AuthorizationError } from '../../core/model/client-error';
+import { LogoutUser } from '../../user/state/user.actions';
+import { InvalidInputError, InputChangedError } from '../../core/model/data-service-error';
 
 @Injectable()
 export class SendSamplesEffects {
 
     constructor(
         private actions$: Actions<SendSamplesAction | SamplesMainAction>,
-        private store$: Store<Samples & SamplesSlice<SendSamplesStates>>,
+        private store$: Store<SamplesMainSlice & SamplesSlice<SendSamplesState>>,
         private dataService: DataService,
         private logger: LogService
     ) { }
-
-    // SendSamplesOpenDialog
 
     @Effect()
     sendSamples$: Observable<CommentDialogOpen> = this.actions$.pipe(
@@ -79,8 +72,6 @@ export class SendSamplesEffects {
             return new CommentDialogOpen(SendSamplesActionTypes.SendSamples, { configuration });
         })
     );
-
-    // CommentDialogOpen
 
     @Effect()
     commentDialogConfirm$: Observable<DisplayBanner | ValidateSamplesSuccess | SendSamplesSuccess | LogoutUser> = this.actions$.pipe(
@@ -155,7 +146,7 @@ export class SendSamplesEffects {
         return configuration;
     }
 
-    private isFileAlreadySent(state: Samples & SamplesSlice<SendSamplesStates>): boolean {
+    private isFileAlreadySent(state: SamplesMainSlice & SamplesSlice<SendSamplesState>): boolean {
         const fileName = selectImportedFileName(state);
         const lastSentFiles = selectSendSamplesLastSentFiles(state);
         return lastSentFiles.includes(fileName);

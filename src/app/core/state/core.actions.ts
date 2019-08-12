@@ -2,7 +2,7 @@ import { UUID } from 'angular2-uuid';
 import { Action } from '@ngrx/store';
 import { UserActionType } from '../../shared/model/user-action.model';
 import { DialogContent } from '../model/dialog.model';
-import { BannerState } from './core.reducer';
+import { BannerData } from './core.reducer';
 
 export enum CoreMainActionTypes {
     DisplayBanner = '[Core] Display Banner',
@@ -21,7 +21,7 @@ export class DisplayDialog implements Action {
 export class DisplayBanner implements Action {
     readonly type = CoreMainActionTypes.DisplayBanner;
 
-    constructor(public payload: BannerState) {
+    constructor(public payload: BannerData) {
         this.payload = { ...this.payload, ...{ show: true, id: UUID.UUID() } };
     }
 }

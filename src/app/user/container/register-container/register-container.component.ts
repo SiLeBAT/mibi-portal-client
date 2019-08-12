@@ -10,10 +10,11 @@ import { RegistrationDetails, UserRegistrationRequest } from '../../model/user.m
 import { Observable } from 'rxjs/internal/Observable';
 import { takeWhile, map, filter } from 'rxjs/operators';
 import { ClientError } from '../../../core/model/client-error';
-import { selectInstitutions } from '../../state/user.reducer';
-import { selectSupportContact, ContentMainStates } from '../../../content/state/content.reducer';
+import { selectInstitutions } from '../../state/user.selectors';
+import { selectSupportContact } from '../../../content/state/content.selectors';
 import { DisplayBanner } from '../../../core/state/core.actions';
-import { ContentSlice } from '../../../content/content.state';
+import { ContentMainSlice } from '../../../content/content.state';
+import { UserMainSlice } from '../../user.state';
 
 @Component({
     selector: 'mibi-register-container',
@@ -30,7 +31,7 @@ export class RegisterContainerComponent implements OnInit, OnDestroy {
     private componentActive: boolean = true;
     constructor(
         private router: Router,
-        private store: Store<ContentSlice<ContentMainStates>>,
+        private store: Store<ContentMainSlice & UserMainSlice>,
         private dataService: DataService, private userActionService: UserActionService) {
     }
 
