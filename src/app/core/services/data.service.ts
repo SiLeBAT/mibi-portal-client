@@ -18,33 +18,38 @@ import {
     SystemInformationResponseDTO,
     FAQResponseDTO,
     TokenRefreshResponseDTO,
-    MarshalledDataResponseDTO,
+    PutSamplesXLSXResponseDTO,
     TokenizedUserDTO,
     RegistrationRequestResponseDTO,
     PasswordResetRequestResponseDTO,
-    InstituteCollectionDTO
+    InstituteCollectionDTO,
+    PutSamplesJSONResponseDTO,
+    PostSubmittedResponseDTO,
+    PutValidatedResponseDTO
 } from '../model/response.model';
 import { TokenizedUser, Credentials, RegistrationDetails } from '../../user/model/user.model';
 import {
     ResetRequestDTO,
     NewPasswordRequestDTO,
     RegistrationDetailsDTO,
-    SampleSubmissionDTO
+    PostSubmittedRequestDTO,
+    PutValidatedRequestDTO,
+    PutSamplesJSONRequestDTO
 } from '../model/request.model';
-import { ClientError } from '../model/client-error';
+import { ClientError, EndpointError } from '../model/client-error';
 import {
-    AnnotatedSampleDTO,
+    AnnotatedSampleDataDTO,
     AnnotatedSampleDataEntryDTO,
     AnnotatedSampleSetDTO,
     AnnotatedOrderDTO,
     SampleSetMetaDTO,
     SampleSetDTO,
-    SampleDataEntryDTO
+    SampleDataDTO
 } from '../model/shared-dto.model';
-import { LogService } from './log.service';
 import { InstitutionDTO } from '../../user/model/institution.model';
 import { Urgency } from '../../samples/model/sample.enums';
 import { SamplesMainData } from '../../samples/state/samples.reducer';
+import { InvalidInputError, InputChangedError } from '../model/data-service-error';
 
 @Injectable({
     providedIn: 'root'
@@ -73,7 +78,7 @@ export class DataService {
         faq: './assets/faq.json'
     };
 
-    constructor(private httpClient: HttpClient, private logger: LogService) {
+    constructor(private httpClient: HttpClient) {
     }
 
     setCurrentUser(user: TokenizedUser) {
@@ -102,47 +107,70 @@ export class DataService {
     }
 
     sendSampleSheet(sendableFormData: SampleSubmission) {
-        const requestDTO: SampleSubmissionDTO = {
-            order: this.fromSampleSetToDTO(sendableFormData.order),
+        const requestDTO: PostSubmittedRequestDTO = {
+            order: { sampleSet: this.fromSampleSetToDTO(sendableFormData.order) },
             comment: sendableFormData.comment
         };
-        return this.httpClient.post<AnnotatedSampleDTO[]>(this.URL.submit, requestDTO).pipe(
-            map((dtoArray: AnnotatedSampleDTO[]) => dtoArray.map(dto => this.fromAnnotatedDTOToSampleData(dto)))
+        return this.httpClient.post<PostSubmittedResponseDTO>(this.URL.submit, requestDTO).pipe(
+            map((dto: PostSubmittedResponseDTO) =>
+                dto.order.sampleSet.samples.map(sample => this.fromAnnotatedDTOToSampleData(sample.sampleData))),
+            catchError(err => {
+                if (err instanceof EndpointError) {
+                    if (err.errorDTO.order) {
+                        const order: AnnotatedOrderDTO = err.errorDTO.order;
+                        const sampleData: SampleData[] = order.sampleSet.samples.map(
+                            sample => this.fromAnnotatedDTOToSampleData(sample.sampleData)
+                            );
+                        switch (err.errorDTO.code) {
+                            case 5:
+                                throw new InvalidInputError(sampleData, 'Invalid sample data error.');
+                            case 6:
+                                throw new InputChangedError(sampleData, 'Input changed error.');
+                            default:
+                                throw err;
+                        }
+                    }
+                }
+                throw err;
+            })
         );
     }
 
     validateSampleData(requestData: SamplesMainData): Observable<SampleData[]> {
-        const requestDTO: AnnotatedOrderDTO = this.fromSamplesMainDataToAnnotatedOrderDTO(requestData);
-        return this.httpClient.put<AnnotatedOrderDTO>(this.URL.validate, requestDTO).pipe(
-            map((dto: AnnotatedOrderDTO) => dto.order.samples.map(container => this.fromAnnotatedDTOToSampleData(container.sample)))
-        );
+        const requestDTO: PutValidatedRequestDTO = { order: this.fromSamplesMainDataToAnnotatedOrderDTO(requestData) };
+        return this.httpClient.put<PutValidatedResponseDTO>(this.URL.validate, requestDTO).pipe(
+            map((dto: PutValidatedResponseDTO) =>
+                dto.order.sampleSet.samples.map(sample =>
+                    this.fromAnnotatedDTOToSampleData(sample.sampleData)
+                )));
     }
 
     unmarshalExcel(requestData: ExcelFile): Observable<SampleSet> {
         const httpOptions = {
             headers: new HttpHeaders({
+                // 'Content-Type': 'multipart/form-data',
                 'Accept': 'application/json'
             })
         };
         const formData: FormData = new FormData();
         formData.append('file', requestData.file, requestData.file.name);
-        return this.httpClient.put<AnnotatedOrderDTO>(this.URL.unmarshal, formData, httpOptions).pipe(
-            map((dto: AnnotatedOrderDTO) => this.fromDTOToAnnotatedSampleSet(dto.order)),
+        return this.httpClient.put<PutSamplesJSONResponseDTO>(this.URL.unmarshal, formData, httpOptions).pipe(
+            map((dto: PutSamplesJSONResponseDTO) => this.fromDTOToAnnotatedSampleSet(dto.order.sampleSet)),
             catchError((error) => {
                 throw new ClientError(`Failed to read excel file. error=${error}`);
             }));
     }
 
     marshalJSON(requestData: SamplesMainData): Observable<MarshalledData> {
-        const requestBody: AnnotatedOrderDTO = this.fromSamplesMainDataToAnnotatedOrderDTO(requestData);
+        const requestBody: PutSamplesJSONRequestDTO = { order: this.fromSamplesMainDataToAnnotatedOrderDTO(requestData) };
         const httpOptions = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
                 'Accept': 'multipart/form-data'
             })
         };
-        return this.httpClient.put<MarshalledDataResponseDTO>(this.URL.marshal, requestBody, httpOptions).pipe(
-            map((dto: MarshalledDataResponseDTO) => this.fromMarshalledDataResponseDTOToMarshalledData(dto)));
+        return this.httpClient.put<PutSamplesXLSXResponseDTO>(this.URL.marshal, requestBody, httpOptions).pipe(
+            map((dto: PutSamplesXLSXResponseDTO) => this.fromPutSamplesXLSXResponseDTOToMarshalledData(dto)));
     }
 
     getAllInstitutions(): Observable<InstitutionDTO[]> {
@@ -181,7 +209,7 @@ export class DataService {
         return this.httpClient.post<TokenRefreshResponseDTO>(this.URL.refresh, null);
     }
 
-    private fromMarshalledDataResponseDTOToMarshalledData(dto: MarshalledDataResponseDTO): MarshalledData {
+    private fromPutSamplesXLSXResponseDTOToMarshalledData(dto: PutSamplesXLSXResponseDTO): MarshalledData {
         return {
             binaryData: dto.data,
             mimeType: dto.type,
@@ -193,7 +221,7 @@ export class DataService {
         const annotatedSampleSet: SampleSet = {
             meta: this.fromDTOToSampleSetMetaData(dto.meta),
             samples: dto.samples.map(sampleContainerDTO => {
-                return this.fromAnnotatedDTOToSampleData(sampleContainerDTO.sample);
+                return this.fromAnnotatedDTOToSampleData(sampleContainerDTO.sampleData);
             })
         };
         return annotatedSampleSet;
@@ -202,7 +230,7 @@ export class DataService {
     private fromSampleSetToAnnotatedDTO(sampleSet: SampleSet): AnnotatedSampleSetDTO {
         const dto: AnnotatedSampleSetDTO = {
             meta: this.fromSampleSetMetaDataToDTO(sampleSet.meta),
-            samples: sampleSet.samples.map(sample => ({ sample: sample }))
+            samples: sampleSet.samples.map(sample => ({ sampleData: sample }))
         };
         return dto;
     }
@@ -210,13 +238,13 @@ export class DataService {
     private fromSampleSetToDTO(sampleSet: SampleSet): SampleSetDTO {
         const dto: SampleSetDTO = {
             meta: this.fromSampleSetMetaDataToDTO(sampleSet.meta),
-            samples: sampleSet.samples.map(sample => ({ sample: this.fromSampleDataToDTO(sample) }))
+            samples: sampleSet.samples.map(sample => ({ sampleData: this.fromSampleDataToDTO(sample) }))
         };
         return dto;
     }
 
-    private fromSampleDataToDTO(sampleData: SampleData) {
-        const dto: Record<SampleProperty, SampleDataEntryDTO> = {};
+    private fromSampleDataToDTO(sampleData: SampleData): SampleDataDTO {
+        const dto: SampleDataDTO = {};
         Object.keys(sampleData).forEach(prop => dto[prop] = {
             value: sampleData[prop].value,
             oldValue: sampleData[prop].oldValue
@@ -229,7 +257,7 @@ export class DataService {
             nrl: dto.nrl,
             analysis: dto.analysis,
             sender: dto.sender,
-            urgency: this.fromStringToEnum(dto.urgency),
+            urgency: this.fromUrgencyStringToEnum(dto.urgency),
             fileName: dto.fileName ? dto.fileName : ''
         };
     }
@@ -243,7 +271,7 @@ export class DataService {
         };
     }
 
-    private fromStringToEnum(str: string): Urgency {
+    private fromUrgencyStringToEnum(str: string): Urgency {
         switch (str.trim().toLowerCase()) {
             case 'eilt':
                 return Urgency.URGENT;
@@ -257,14 +285,10 @@ export class DataService {
             meta,
             samples: formData
         });
-        return { order: dto };
-    }
-    private fromSampleSetToAnnotatedOrderDTO(sampleSet: SampleSet): AnnotatedOrderDTO {
-        const dto: AnnotatedSampleSetDTO = this.fromSampleSetToAnnotatedDTO(sampleSet);
-        return { order: dto };
+        return { sampleSet: dto };
     }
 
-    private fromAnnotatedDTOToSampleData(dto: AnnotatedSampleDTO): SampleData {
+    fromAnnotatedDTOToSampleData(dto: AnnotatedSampleDataDTO): SampleData {
         const annotatedSampleData: Record<SampleProperty, AnnotatedSampleDataEntry> = {};
         Object.keys(dto).forEach(prop => annotatedSampleData[prop] = this.fromDTOToAnnotatedSampleDataEntry(dto[prop]));
         return annotatedSampleData as SampleData;

@@ -1,13 +1,16 @@
-import { SampleSetDTO, AnnotatedSampleSetDTO } from './shared-dto.model';
+import { OrderDTO } from './shared-dto.model';
 
-export interface MarshalDataRequestDTO {
-    readonly data: AnnotatedSampleSetDTO;
-    readonly filenameAddon: string;
+export interface PutSamplesJSONRequestDTO {
+    readonly order: OrderDTO;
 }
 
-export interface SampleSubmissionDTO {
-    readonly order: SampleSetDTO;
+export interface PostSubmittedRequestDTO {
+    readonly order: OrderDTO;
     readonly comment: string;
+}
+
+export interface PutValidatedRequestDTO {
+    readonly order: OrderDTO;
 }
 
 export interface ResetRequestDTO {

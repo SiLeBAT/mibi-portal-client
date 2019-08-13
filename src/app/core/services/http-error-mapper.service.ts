@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { ClientError, InputChangedError, DelayLoginError, AuthorizationError, InvalidInputError } from '../model/client-error';
+import { ClientError, DelayLoginError, AuthorizationError, EndpointError } from '../model/client-error';
 
 @Injectable()
 export class HttpErrorMapperService implements HttpInterceptor {
@@ -44,12 +44,10 @@ export class HttpErrorMapperService implements HttpInterceptor {
     private handle422(errorResponse: HttpErrorResponse) {
         switch (errorResponse.error.code) {
             case 5:
-                throw new InvalidInputError(errorResponse.error.samples, 'Input changed error.');
             case 6:
-                throw new InputChangedError(errorResponse.error.samples, 'Input changed error.');
+                throw new EndpointError(errorResponse.error, 'Invalid Input error.');
             default:
                 throw new ClientError('Invalid Input error.');
         }
     }
-
 }
