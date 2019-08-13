@@ -1,7 +1,11 @@
-.recovery-form__buttons {
-  margin-top: 3rem;
+@import "../../../../assets/sass/abstracts";
+@import "../../../../assets/sass/layout";
 
-  & > a {
-    text-decoration: none;
-  }
+.mibi-recocery-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.mibi-recocery-actions__button {
+  flex: 0 0 auto;
 }

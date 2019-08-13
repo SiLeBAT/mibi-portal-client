@@ -1,8 +1,5 @@
 import { Component, Output, EventEmitter, OnInit, OnDestroy, ContentChild, AfterContentInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import * as fromCore from '../../../core/state/core.reducer';
-import * as fromSample from '../../../samples/state/samples.reducer';
-import * as coreActions from '../../../core/state/core.actions';
 import { takeWhile, tap } from 'rxjs/operators';
 import { UserActionType, ColorType } from '../../model/user-action.model';
 import { GenericActionItemComponent } from '../../../core/presentation/generic-action-item/generic-action-item.component';
@@ -10,6 +7,9 @@ import { Observable, Subject } from 'rxjs';
 import { UploadAbstractComponent } from '../../presentation/upload/upload.abstract';
 import { UploadErrorType } from '../../model/upload.model';
 import { ClientError } from '../../../core/model/client-error';
+import { Samples } from '../../../samples/samples.store';
+import { hasEntries } from '../../../samples/state/samples.reducer';
+import { DisplayBanner, DisplayDialog, HideBanner } from '../../../core/state/core.actions';
 
 @Component({
     selector: 'mibi-upload-container',
@@ -25,13 +25,13 @@ export class UploadContainerComponent implements OnInit, OnDestroy, AfterContent
     private hasEntries = false;
     private isGuardActive = true;
     constructor(
-        private store: Store<fromCore.State>) { }
+        private store: Store<Samples>) { }
 
     ngOnInit() {
-        this.store.pipe(select(fromSample.hasEntries),
+        this.store.pipe(select(hasEntries),
             takeWhile(() => this.componentActive),
             tap(
-                hasEntries => this.hasEntries = hasEntries
+                entries => this.hasEntries = entries
             )).subscribe();
 
     }
@@ -70,13 +70,16 @@ export class UploadContainerComponent implements OnInit, OnDestroy, AfterContent
     onError(error: UploadErrorType) {
         switch (error) {
             case UploadErrorType.SIZE:
-                this.store.dispatch(new coreActions.DisplayBanner({ predefined: 'wrongUploadFilesize' }));
+                this.store.dispatch(new DisplayBanner({ predefined: 'wrongUploadFilesize' }));
                 break;
             case UploadErrorType.TYPE:
-                this.store.dispatch(new coreActions.DisplayBanner({ predefined: 'wrongUploadDatatype' }));
+                this.store.dispatch(new DisplayBanner({ predefined: 'wrongUploadDatatype' }));
+                break;
+            case UploadErrorType.CLEAR:
+                this.store.dispatch(new HideBanner());
                 break;
             default:
-                this.store.dispatch(new coreActions.DisplayBanner({ predefined: 'uploadFailure' }));
+                this.store.dispatch(new DisplayBanner({ predefined: 'uploadFailure' }));
         }
     }
 
@@ -99,7 +102,7 @@ export class UploadContainerComponent implements OnInit, OnDestroy, AfterContent
             return;
         }
         if (this.hasEntries) {
-            this.store.dispatch(new coreActions.DisplayDialog({
+            this.store.dispatch(new DisplayDialog({
                 message: `Wenn Sie die Tabelle schließen, gehen Ihre Änderungen verloren. Wollen Sie das?`,
                 title: 'Schließen',
                 mainAction: {

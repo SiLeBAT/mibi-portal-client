@@ -1,3 +1,6 @@
-.datenschutz-link-container {
-  padding: 2% 5%;
+@import "../../../../assets/sass/abstracts";
+
+.mibi-register-footer {
+  padding: $mibi-quadruple-space;
+  padding-bottom: 0;
 }

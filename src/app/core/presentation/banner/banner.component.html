@@ -11,9 +11,9 @@
     </div>
     <div class="mibi-banner__actions">
       <div class="mibi-banner-actions">
-        <button *ngIf="!!banner.auxilliaryAction" class="mibi-banner-actions__item" mat-button color="accent"
+        <button *ngIf="!!banner.auxilliaryAction" class="mibi-banner-actions__item" type="button" mat-button color="accent"
           (click)="onAuxAction()">{{banner.auxilliaryAction.label}}</button>
-        <button class="mibi-banner-actions__item" mat-button color="accent"
+        <button class="mibi-banner-actions__item" type="button" mat-button color="accent"
           (click)="onMainAction()">{{banner.mainAction.label}}</button>
       </div>
     </div>

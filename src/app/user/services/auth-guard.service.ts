@@ -14,10 +14,10 @@ import { map } from 'rxjs/operators';
 export class AuthGuard implements CanActivate {
 
     constructor(
-        private store: Store<fromUser.State>) { }
+        private store: Store<fromUser.UserMainState>) { }
 
     canActivate(activated: ActivatedRouteSnapshot, sanp: RouterStateSnapshot) {
-        return this.store.pipe(select(fromUser.getCurrentUser)).pipe(
+        return this.store.pipe(select(fromUser.selectCurrentUser)).pipe(
             map((currentUser: TokenizedUser) => {
                 if (currentUser) {
                     const helper = new JwtHelperService();

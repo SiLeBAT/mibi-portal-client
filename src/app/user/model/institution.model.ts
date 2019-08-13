@@ -3,14 +3,15 @@ export interface Institution {
     name: string;
     city: string;
     zip: string;
-    _id: string;
+    id: string;
     stateShort: string;
     addendum: string;
     getFullName(): string;
+    toString(): string;
 }
 
 export interface InstitutionDTO {
-    _id: string;
+    id: string;
     email: string[];
     short: string;
     name: string;
@@ -22,7 +23,7 @@ export interface InstitutionDTO {
 }
 
 export class DefaultInstitution implements Institution {
-    _id: string;
+    id: string;
     stateShort: string;
     name: string;
     addendum: string;
@@ -33,7 +34,7 @@ export class DefaultInstitution implements Institution {
     email: string[];
 
     constructor(entry: InstitutionDTO) {
-        this._id = entry._id;
+        this.id = entry.id;
         this.stateShort = entry.short || '';
         this.name = entry.name;
         this.addendum = entry.addendum;

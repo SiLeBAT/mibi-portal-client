@@ -11,7 +11,6 @@ import { DefaultPageLayoutComponent } from './presentation/default-page-layout/d
 import { PageBodyComponent } from './presentation/page-body/page-body.component';
 import { PageFooterComponent } from './presentation/page-footer/page-footer.component';
 import { StoreModule } from '@ngrx/store';
-import { reducer, STATE_SLICE_NAME } from './state/core.reducer';
 import { PageBodyContainerComponent } from './container/page-body-container/page-body-container.component';
 import { LastChangeDisplayComponent } from './presentation/last-change-display/last-change-display.component';
 import { LastChangeDisplayContainerComponent } from './container/last-change-display-container/last-change-display-container.component';
@@ -29,20 +28,18 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDividerModule } from '@angular/material/divider';
-import { CoreEffects } from './state/core.effects';
+import { CoreMainEffects } from './state/core.effects';
 import { EffectsModule } from '@ngrx/effects';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { AvatarComponent } from './presentation/avatar/avatar.component';
 import { AvatarContainerComponent } from './container/avatar-container/avatar-container.component';
 import { FooterNavContainerComponent } from './container/footer-nav-container/footer-nav-container.component';
-import { NewDialogComponent } from './presentation/dialog/dialog.component';
 import { MatDialogModule } from '@angular/material';
-import { MessageDialogComponent } from './presentation/message-dialog/message-dialog.component';
 import { FooterNavComponent } from './presentation/footer-nav/footer-nav.component';
+import { coreReducerMap, coreEffects } from './core.store';
+import { CORE_SLICE_NAME } from './core.state';
 
 @NgModule({
     imports: [
-        FlexLayoutModule,
         MatButtonModule,
         MatProgressSpinnerModule,
         BrowserAnimationsModule,
@@ -58,8 +55,8 @@ import { FooterNavComponent } from './presentation/footer-nav/footer-nav.compone
         MatToolbarModule,
         MatDialogModule,
         RouterModule.forChild([]),
-        StoreModule.forFeature(STATE_SLICE_NAME, reducer),
-        EffectsModule.forFeature([CoreEffects])
+        StoreModule.forFeature(CORE_SLICE_NAME, coreReducerMap),
+        EffectsModule.forFeature(coreEffects)
     ],
     declarations: [
         FooterNavContainerComponent,
@@ -80,8 +77,6 @@ import { FooterNavComponent } from './presentation/footer-nav/footer-nav.compone
         PageFooterComponent,
         BannerComponent,
         BannerContainerComponent,
-        NewDialogComponent,
-        MessageDialogComponent,
         FooterNavComponent
     ],
     exports: [
@@ -90,11 +85,9 @@ import { FooterNavComponent } from './presentation/footer-nav/footer-nav.compone
         FormsModule,
         ReactiveFormsModule,
         DefaultPageLayoutComponent,
-        BannerContainerComponent,
-        NewDialogComponent,
-        MessageDialogComponent
+        BannerContainerComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    entryComponents: [GenericActionItemComponent, NewDialogComponent, MessageDialogComponent]
+    entryComponents: [GenericActionItemComponent]
 })
 export class CoreModule { }

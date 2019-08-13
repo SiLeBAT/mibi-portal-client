@@ -22,7 +22,10 @@
 
 <mibi-layout-box>
     <div class="mibi-app-bar-bottom">
-        <div class="mibi-app-bar-bottom__content">
+        <div class="mibi-app-bar-bottom__left">
+            {{uploadedFile$ | async}}
+        </div>
+        <div class="mibi-app-bar-bottom__right">
             <ul class="mibi-action-list">
                 <ng-template #actionList></ng-template>
             </ul>

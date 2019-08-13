@@ -6,6 +6,9 @@ import { UserActionViewModelConfiguration, UserActionType } from '../../../share
 import { Observable } from 'rxjs';
 import { takeWhile, startWith, tap, delay } from 'rxjs/operators';
 import { UserActionService } from '../../services/user-action.service';
+import { Store, select } from '@ngrx/store';
+import { Samples } from '../../../samples/samples.store';
+import { selectImportedFileName } from '../../../samples/state/samples.reducer';
 
 @Component({
     selector: 'mibi-action-item-list',
@@ -22,7 +25,12 @@ export class ActionItemListComponent implements OnInit, OnDestroy {
     private uploadActionItem: TemplateRef<any>;
     private componentActive: boolean = true;
     hasElements: boolean = false;
-    constructor(private userActionService: UserActionService) { }
+    uploadedFile$ = this.store$.pipe(select(selectImportedFileName));
+
+    constructor(
+        private userActionService: UserActionService,
+        private store$: Store<Samples>
+        ) { }
 
     ngOnInit(): void {
         this.configuration$.pipe(

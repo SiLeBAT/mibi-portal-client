@@ -1,19 +1,15 @@
 
-import * as fromRoot from '../../state/app.state';
-import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { SystemActions, CoreActionTypes } from './core.actions';
-import { SamplesActionTypes } from '../../samples/state/samples.actions';
+import { createSelector } from '@ngrx/store';
+import { CoreMainAction, CoreMainActionTypes } from './core.actions';
+import { SamplesMainActionTypes, SamplesMainAction } from '../../samples/state/samples.actions';
 import { Alert, Banner } from '../model/alert.model';
-import { UserActionTypes } from '../../user/state/user.actions';
-import { ROUTER_NAVIGATION } from '@ngrx/router-store';
+import { UserActionTypes, UserActions } from '../../user/state/user.actions';
+import { ROUTER_NAVIGATION, RouterNavigationAction } from '@ngrx/router-store';
 import { UserActionType } from '../../shared/model/user-action.model';
+import { ValidateSamplesActionTypes, ValidateSamplesAction } from '../../samples/validate-samples/state/validate-samples.actions';
+import { selectCoreSlice } from '../core.state';
 
-export const STATE_SLICE_NAME = 'core';
-export interface State extends fromRoot.State {
-    core: CoreState;
-}
-
-export interface CoreState {
+export interface CoreMainStates {
     ui: UIState;
 }
 
@@ -23,6 +19,7 @@ export interface BannerState {
     custom?: Banner;
     id?: string;
 }
+
 export interface UIState {
     isBusy: boolean;
     banner: BannerState | null;
@@ -30,112 +27,86 @@ export interface UIState {
     enabledActionItems: UserActionType[];
 }
 
-const initialState: CoreState = {
-    ui: {
-        isBusy: false,
-        banner: null,
-        snackbar: null,
-        enabledActionItems: []
-    }
+const initialUIState: UIState = {
+    isBusy: false,
+    banner: null,
+    snackbar: null,
+    enabledActionItems: []
 };
 
 // SELECTORS
-export const getCoreFeatureState = createFeatureSelector<CoreState>(STATE_SLICE_NAME);
+
+export const selectCoreMainStates = selectCoreSlice<CoreMainStates>();
+
+export const selectUIState = createSelector(
+    selectCoreMainStates,
+    state => state.ui
+);
 
 export const isBusy = createSelector(
-    getCoreFeatureState,
-    state => state.ui.isBusy
+    selectUIState,
+    state => state.isBusy
 );
 
 export const getBanner = createSelector(
-    getCoreFeatureState,
-    state => state.ui.banner
+    selectUIState,
+    state => state.banner
 );
 
 export const showBanner = createSelector(
-    getCoreFeatureState,
-    state => !!state.ui.banner && !!state.ui.banner.show
+    selectUIState,
+    state => !!state.banner && !!state.banner.show
 );
 
 export const getSnackbar = createSelector(
-    getCoreFeatureState,
-    state => state.ui.snackbar
+    selectUIState,
+    state => state.snackbar
 );
 
 export const getEnabledActionItems = createSelector(
-    getCoreFeatureState,
-    state => state.ui.enabledActionItems
+    selectUIState,
+    state => state.enabledActionItems
 );
 
 // REDUCER
-export function reducer(state: CoreState = initialState, action: SystemActions): CoreState {
-    switch (action.type) {
-        case CoreActionTypes.EnableActionItems:
-            const enabledAIState = { ...state };
-            enabledAIState.ui.enabledActionItems = action.payload;
-            return enabledAIState;
-        case CoreActionTypes.DestroyBanner:
+type coreUIReducerAction = CoreMainAction | ValidateSamplesAction | SamplesMainAction | UserActions | RouterNavigationAction;
 
-            const banner = state.ui.banner;
+export function coreUIReducer(state: UIState = initialUIState, action: coreUIReducerAction): UIState {
+    switch (action.type) {
+        case CoreMainActionTypes.EnableActionItems:
+            const enabledAIState = { ...state };
+            enabledAIState.enabledActionItems = action.payload;
+            return enabledAIState;
+        case CoreMainActionTypes.DestroyBanner:
+
+            const banner = state.banner;
             if (banner && !banner.show) {
-                const clearedAlertState = setUI({
-                    ...state.ui, ...{
-                        banner: null
-                    }
-                }, state);
+                const clearedAlertState = { ...state, banner: null };
                 return clearedAlertState;
             }
             return state;
-        case CoreActionTypes.HideBanner:
+        case CoreMainActionTypes.HideBanner:
             const hideBanner = { ...state };
-            if (hideBanner.ui.banner) {
-                hideBanner.ui.banner.show = false;
-            }
+            if (hideBanner.banner) { hideBanner.banner.show = false; }
             return hideBanner;
         case ROUTER_NAVIGATION:
             const navigatedState = { ...state };
-            navigatedState.ui.enabledActionItems = [];
-            if (navigatedState.ui.banner) {
-                navigatedState.ui.banner = null;
+            navigatedState.enabledActionItems = [];
+            if (navigatedState.banner) {
+                navigatedState.banner = null;
             }
             return navigatedState;
-        case SamplesActionTypes.ValidateSamples:
-        case SamplesActionTypes.ImportExcelFile:
+        case ValidateSamplesActionTypes.ValidateSamples:
+        case SamplesMainActionTypes.ImportExcelFile:
         case UserActionTypes.LoginUser:
-            return setUI({
-                ...state.ui, ...{
-                    isBusy: true
-                }
-            }, state);
-        case SamplesActionTypes.ImportExcelFileSuccess:
-        case SamplesActionTypes.ValidateSamplesSuccess:
+            return { ...state, isBusy: true };
+        case SamplesMainActionTypes.ImportExcelFileSuccess:
+        case ValidateSamplesActionTypes.ValidateSamplesSuccess:
         case UserActionTypes.LoginUserSuccess:
-            return setUI({
-                ...state.ui, ...{
-                    isBusy: false,
-                    banner: null
-                }
-            }, state);
-        case CoreActionTypes.DisplayBanner:
-            return {
-                ...state, ...{
-                    ui: {
-                        ...state.ui, ...{
-                            isBusy: false,
-                            banner: action.payload
-                        }
-                    }
-                }
-            };
+            return { ...state, isBusy: false, banner: null };
+        case CoreMainActionTypes.DisplayBanner:
+            return { ...state, isBusy: false, banner: action.payload };
         default:
             return state;
     }
-}
-
-// Utility
-
-function setUI(ui: UIState, state: CoreState) {
-    const newState = { ...state };
-    newState.ui = ui;
-    return newState;
 }

@@ -24,6 +24,5 @@ export class RecoveryComponent implements OnInit {
     onRecovery() {
         const email = this.recoveryForm.value.email;
         this.recovery.emit(email);
-        this.recoveryForm.reset();
     }
 }

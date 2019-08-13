@@ -7,8 +7,7 @@ import { ClientError } from '../../../core/model/client-error';
 
 @Component({
     selector: 'mibi-faq-view',
-    templateUrl: './faq-view.component.html',
-    styleUrls: ['./faq-view.component.scss']
+    templateUrl: './faq-view.component.html'
 })
 export class FAQViewComponent implements OnInit, AfterViewChecked, OnDestroy {
 

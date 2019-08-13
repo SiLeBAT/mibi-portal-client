@@ -1,13 +1,12 @@
 <mibi-single-center-card-layout title="Registrierung">
     <mibi-view-card-body>
+        <mibi-layout-box>
         <mibi-register-container></mibi-register-container>
-    </mibi-view-card-body>
-    <mibi-view-card-actions>
-        <div class="datenschutz-link-container mat-small" fxLayout="row" fxLayoutAlign="space-around none" >
-            <span>
-                Bitte beachten Sie unsere <a [routerLink]="['/users/datenschutzhinweise']">Datenschutzhinweise</a>
-                für die Registrierung sowie unsere allgemeine <a [routerLink]="['/content/datenschutzerklaerung']">Datenschutzerklärung</a>
-            </span>
+        <div class="mibi-register-footer mat-small">
+            Bitte beachten Sie unsere <a [routerLink]="['/users/datenschutzhinweise']">Datenschutzhinweise</a>
+            für die Registrierung sowie unsere allgemeine <a
+                [routerLink]="['/content/datenschutzerklaerung']">Datenschutzerklärung</a>
         </div>
-    </mibi-view-card-actions>
+    </mibi-layout-box>
+    </mibi-view-card-body>
 </mibi-single-center-card-layout>

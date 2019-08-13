@@ -1,126 +1,57 @@
 import { Action } from '@ngrx/store';
-import { AnnotatedSampleData, ExcelData, ChangedDataGridField } from '../model/sample-management.model';
-import { Alert } from '../../core/model/alert.model';
-import { LogoutUser } from '../../user/state/user.actions';
-import { User } from '../../user/model/user.model';
+import { ChangedDataGridField, SampleSet, ExcelFile } from '../model/sample-management.model';
 
-export enum SamplesActionTypes {
+export enum SamplesMainActionTypes {
     ClearSamples = '[Samples] Clear Samples',
     ImportExcelFile = '[Samples] Import Excel file',
     ImportExcelFileSuccess = '[Samples] Successfully imported Excel file',
     ExportExcelFile = '[Samples] Export Excel file',
     ExportExcelFileSuccess = '[Samples] Successfully exported Excel file',
-    ExportExcelFileFailure = '[Samples] Failure exporting Excel file',
-    ValidateSamples = '[Samples] Validate samples',
-    ValidateSamplesSuccess = '[Samples] Successfully validated samples',
-    SendSamplesInitiate = '[Samples] Initiating sending samples',
-    SendSamplesConfirmed = '[Samples UI] User confirmed sending the samples',
-    SendSamplesFromStore = '[Samples] Send samples from store',
     ChangeFieldValue = '[Samples] Change field value'
 }
 
-export class ChangeFieldValue implements Action {
-    readonly type = SamplesActionTypes.ChangeFieldValue;
+// ClearSamples
 
-    constructor(public payload: ChangedDataGridField) {
-
-    }
+export class ClearSamples implements Action {
+    readonly type = SamplesMainActionTypes.ClearSamples;
 }
 
 export class ImportExcelFile implements Action {
-    readonly type = SamplesActionTypes.ImportExcelFile;
+    readonly type = SamplesMainActionTypes.ImportExcelFile;
 
-    constructor(public payload: File) {
-
-    }
-}
-
-export class ClearSamples implements Action {
-    readonly type = SamplesActionTypes.ClearSamples;
-
-    constructor() {
+    constructor(public payload: ExcelFile) {
 
     }
 }
 
 export class ImportExcelFileSuccess implements Action {
-    readonly type = SamplesActionTypes.ImportExcelFileSuccess;
+    readonly type = SamplesMainActionTypes.ImportExcelFileSuccess;
 
-    constructor(public payload: ExcelData) {
+    constructor(public payload: SampleSet) {
 
     }
 }
 
-export class ExportExcelFile implements Action {
-    readonly type = SamplesActionTypes.ExportExcelFile;
+// ExportExcelFile
 
-    constructor() {
-    }
+export class ExportExcelFile implements Action {
+    readonly type = SamplesMainActionTypes.ExportExcelFile;
 }
 
 export class ExportExcelFileSuccess implements Action {
-    readonly type = SamplesActionTypes.ExportExcelFileSuccess;
-
-    constructor() {
-    }
+    readonly type = SamplesMainActionTypes.ExportExcelFileSuccess;
 }
 
-export class ExportExcelFileFailure implements Action {
-    readonly type = SamplesActionTypes.ExportExcelFileFailure;
+export class ChangeFieldValue implements Action {
+    readonly type = SamplesMainActionTypes.ChangeFieldValue;
 
-    constructor(public payload: Alert) {
-    }
+    constructor(public payload: ChangedDataGridField) { }
 }
 
-export class ValidateSamples implements Action {
-    readonly type = SamplesActionTypes.ValidateSamples;
-
-    constructor() {
-
-    }
-}
-
-export class ValidateSamplesSuccess implements Action {
-    readonly type = SamplesActionTypes.ValidateSamplesSuccess;
-
-    constructor(public payload: AnnotatedSampleData[]) {
-
-    }
-}
-
-export class SendSamplesInitiate implements Action {
-    readonly type = SamplesActionTypes.SendSamplesInitiate;
-
-    constructor() {
-
-    }
-}
-
-export class SendSamplesConfirmed implements Action {
-    readonly type = SamplesActionTypes.SendSamplesConfirmed;
-
-    constructor(public comment: string) {
-
-    }
-}
-
-export class SendSamplesFromStore implements Action {
-    readonly type = SamplesActionTypes.SendSamplesFromStore;
-
-    constructor(public user: User, public comment: string) {
-    }
-}
-
-export type SamplesActions = ImportExcelFile
-    | ClearSamples
+export type SamplesMainAction =
+    ClearSamples
+    | ImportExcelFile
     | ImportExcelFileSuccess
-    | ValidateSamples
-    | ValidateSamplesSuccess
     | ExportExcelFile
     | ExportExcelFileSuccess
-    | ExportExcelFileFailure
-    | SendSamplesInitiate
-    | SendSamplesConfirmed
-    | SendSamplesFromStore
-    | ChangeFieldValue
-    | LogoutUser;
+    | ChangeFieldValue;

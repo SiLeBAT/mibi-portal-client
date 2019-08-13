@@ -1,83 +1,48 @@
-import {
-    ValidateSamples,
-    ValidateSamplesSuccess,
-    ExportExcelFile,
-    ExportExcelFileSuccess,
-    ExportExcelFileFailure,
-    SendSamplesInitiate, ImportExcelFile, ImportExcelFileSuccess
-} from '../../samples/state/samples.actions';
 import { UUID } from 'angular2-uuid';
 import { Action } from '@ngrx/store';
-import {
-    LoginUser,
-    LoginUserSuccess
-} from '../../user/state/user.actions';
-import { RouterNavigationAction } from '@ngrx/router-store';
 import { UserActionType } from '../../shared/model/user-action.model';
-import { BannerState } from './core.reducer';
 import { DialogContent } from '../model/dialog.model';
+import { BannerState } from './core.reducer';
 
-export enum CoreActionTypes {
+export enum CoreMainActionTypes {
     DisplayBanner = '[Core] Display Banner',
     DisplayDialog = '[Core] Display Dialog',
     DestroyBanner = '[Core] Destroy Banner',
     HideBanner = '[Core] Hide Banner',
     EnableActionItems = '[Core] Enable Action Items'
 }
+
 export class DisplayDialog implements Action {
-    readonly type = CoreActionTypes.DisplayDialog;
+    readonly type = CoreMainActionTypes.DisplayDialog;
 
-    constructor(public payload: DialogContent) {
-
-    }
+    constructor(public payload: DialogContent) { }
 }
 
 export class DisplayBanner implements Action {
-    readonly type = CoreActionTypes.DisplayBanner;
+    readonly type = CoreMainActionTypes.DisplayBanner;
 
     constructor(public payload: BannerState) {
         this.payload = { ...this.payload, ...{ show: true, id: UUID.UUID() } };
-
     }
 }
+
 export class EnableActionItems implements Action {
-    readonly type = CoreActionTypes.EnableActionItems;
+    readonly type = CoreMainActionTypes.EnableActionItems;
 
-    constructor(public payload: UserActionType[]) {
-
-    }
+    constructor(public payload: UserActionType[]) { }
 }
 
 export class DestroyBanner implements Action {
-    readonly type = CoreActionTypes.DestroyBanner;
-
-    constructor() {
-
-    }
+    readonly type = CoreMainActionTypes.DestroyBanner;
 }
 
 export class HideBanner implements Action {
-    readonly type = CoreActionTypes.HideBanner;
-
-    constructor() {
-
-    }
+    readonly type = CoreMainActionTypes.HideBanner;
 }
 
-// TODO: Is this correct?
-export type SystemActions = ValidateSamples
-    | ValidateSamplesSuccess
+export type CoreMainAction =
     | DisplayDialog
     | HideBanner
-    | ImportExcelFile
-    | ImportExcelFileSuccess
-    | ExportExcelFile
-    | ExportExcelFileSuccess
-    | ExportExcelFileFailure
-    | SendSamplesInitiate
     | DisplayBanner
     | DestroyBanner
-    | EnableActionItems
-    | LoginUser
-    | LoginUserSuccess
-    | RouterNavigationAction;
+    | EnableActionItems;

@@ -1,11 +1,30 @@
-import { SampleData } from '../../samples/model/sample-management.model';
+import { OrderDTO } from './shared-dto.model';
 
-interface ValidationRequestMetaInformation {
-    state: string;
-    nrl: string;
+export interface PutSamplesJSONRequestDTO {
+    readonly order: OrderDTO;
 }
 
-export interface ValidationRequest {
-    data: SampleData[];
-    meta: ValidationRequestMetaInformation;
+export interface PostSubmittedRequestDTO {
+    readonly order: OrderDTO;
+    readonly comment: string;
+}
+
+export interface PutValidatedRequestDTO {
+    readonly order: OrderDTO;
+}
+
+export interface ResetRequestDTO {
+    readonly email: string;
+}
+
+export interface NewPasswordRequestDTO {
+    readonly password: string;
+}
+
+export interface RegistrationDetailsDTO {
+    readonly email: string;
+    readonly password: string;
+    readonly firstName: string;
+    readonly lastName: string;
+    readonly instituteId: string;
 }

@@ -26,6 +26,7 @@
   @include mibi-layout-safari-fix();
 
   min-height: 0;
+  overflow: auto;
 }
 
 .mibi-banner {

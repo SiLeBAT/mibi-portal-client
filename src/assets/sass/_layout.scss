@@ -3,6 +3,19 @@ used to layout the different parts of your page, that is to say, your header, fo
 (component independent layout styles)
 */
 
+@mixin list-style-none() {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.mibi-form-field {
+  display: block;
+}
+
+.mibi-form-field__mat-error {
+  text-align: right;
+}
 // fix for flex-column in safari, opera not setting the height to flexed height
 @mixin mibi-layout-safari-fix {
   height: max-content;

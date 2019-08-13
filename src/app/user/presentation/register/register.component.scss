@@ -1,31 +1,20 @@
 @import "../../../../assets/sass/abstracts";
-@import "../../../../assets/sass/components";
+@import "../../../../assets/sass/layout";
 
-em {
-  float: right;
-  color: $error-color;
-  padding-left: 5%;
-  margin-bottom: $mibi-single-space;
-  text-align: right;
+.mibi-register-mat-option {
+  white-space: normal;
+  height: auto;
+  line-height: 1.5;
+  padding-top: $mibi-single-space;
+  padding-bottom: $mibi-single-space;
 }
 
-em[hidden] {
-  visibility: hidden;
-  display: block;
+.mibi-register-actions {
+  margin-top: $mibi-double-space;
+  display: flex;
+  justify-content: space-between;
 }
 
-.pw-1 {
-  margin-top: 3em;
-}
-
-.pw-strength {
-  margin-top: 2rem;
-}
-
-.register-form__buttons {
-  margin-top: 3rem;
-
-  & > a {
-    text-decoration: none;
-  }
+.mibi-register-actions__button {
+  flex: 0 0 auto;
 }

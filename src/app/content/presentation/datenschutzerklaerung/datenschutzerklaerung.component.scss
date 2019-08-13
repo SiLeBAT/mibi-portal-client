@@ -1,22 +1,28 @@
 @import "../../../../assets/sass/abstracts";
 
-.dateschutzerklaerung-item-header {
+.mibi-datenschutzerklaerung {
+  text-align: justify;
+}
+
+.mibi-datenschutzerklaerung-item-header {
   font-weight: bold;
-  margin-top: 5%;
+  margin-top: 3%;
+  text-align: center;
 }
 
-.dateschutzerklaerung-item-subheader {
+.mibi-datenschutzerklaerung-item-subheader {
   font-weight: bold;
+  text-align: center;
 }
 
-.dateschutzerklaerung {
-  margin-top: $mibi-quadruple-space;
+.mibi-datenschutzerklaerung-item {
+  padding: 0 25% * 0.5;
 }
 
-.dateschutzerklaerung-item {
-  width: 75%;
-}
-
-.dateschutzerklaerung-footer {
+.mibi-datenschutzerklaerung-footer {
   border-top: 1px solid $primary-color;
+}
+
+.mibi-datenschutzerklaerung-list {
+  list-style-type: lower-alpha;
 }

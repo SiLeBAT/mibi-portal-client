@@ -8,6 +8,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { TokenizedUser } from '../model/user.model';
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Samples } from '../../samples/samples.store';
 
 @Injectable({
     providedIn: 'root'
@@ -15,16 +16,15 @@ import { map } from 'rxjs/operators';
 export class AnonymousGuard implements CanActivate {
 
     constructor(private router: Router,
-        private store: Store<fromUser.State>) { }
+        private store: Store<fromUser.UserMainState & Samples>) { }
 
     canActivate(activated: ActivatedRouteSnapshot, sanp: RouterStateSnapshot) {
 
         return combineLatest(
-            this.store.pipe(select(fromUser.getCurrentUser)),
+            this.store.pipe(select(fromUser.selectCurrentUser)),
             this.store.pipe(select(fromSamples.hasEntries))
         ).pipe(
-            map((combined: [TokenizedUser | null, boolean]) => {
-                const [currentUser, hasEntries] = combined;
+            map(([currentUser, hasEntries]) => {
                 if (currentUser) {
                     const helper = new JwtHelperService();
                     const isExpired = !!helper.isTokenExpired(currentUser.token);

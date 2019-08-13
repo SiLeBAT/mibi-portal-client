@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import * as _ from 'lodash';
 import {
-    AnnotatedSampleData, ColConfig, TableDataOutput
+ ColConfig, TableDataOutput, SampleData, SamplePropertyValues
 } from '../../model/sample-management.model';
-import { map, withLatestFrom } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { Store, select } from '@ngrx/store';
+import { Store, select, createSelector } from '@ngrx/store';
 import * as fromSamples from '../../state/samples.reducer';
+
 import * as samplesActions from '../../state/samples.actions';
 import { IFormViewModel, IFormRowViewModel } from '../../presentation/data-grid/data-grid.component';
 import { ToolTipType } from '../../../shared/model/tooltip.model';
+import { Samples } from '../../samples.store';
 
 enum AlteredField {
     WARNING = 'warn',
@@ -109,74 +111,60 @@ export class DataGridContainerComponent implements OnInit {
         }
     ];
 
-    constructor(private store: Store<fromSamples.State>) {
+    constructor(private store$: Store<Samples>) {
     }
 
     ngOnInit(): void {
-        this.viewModel$ = this.store.pipe(select(fromSamples.getFormData)).pipe(
-            withLatestFrom(this.store),
-            map(
-                (dataStateCombine: [AnnotatedSampleData[], fromSamples.State]) => {
-                    if (dataStateCombine[0]) {
-                        return this.createViewModel(dataStateCombine);
-                    }
-                    return {
-                        data: []
-                    };
+        this.viewModel$ = this.store$.pipe(
+            select(createSelector(
+                fromSamples.selectFormData,
+                fromSamples.selectImportedFileData,
+                (annotatedSampleData, sampleData) => ({ annotatedSampleData, sampleData })
+            )),
+            map(({ annotatedSampleData, sampleData }) => {
+                if (annotatedSampleData) {
+                    return this.createViewModel(annotatedSampleData, sampleData);
                 }
-            )
+                return {
+                    data: []
+                };
+            })
         );
     }
 
     onValueChanged(tableData: TableDataOutput) {
-        this.store.dispatch(new samplesActions.ChangeFieldValue(tableData.changed));
+        this.store$.dispatch(new samplesActions.ChangeFieldValue(tableData.changed));
     }
-
-    private createViewModel(dataStateCombine: [AnnotatedSampleData[], fromSamples.State]) {
-        const rows = dataStateCombine[0].map(
-            (row, index) => {
+    private createViewModel(formSampleData: SampleData[], importedFileData: SamplePropertyValues[]) {
+        const rows = formSampleData.map(
+            (row: SampleData, index) => {
                 const result: IFormRowViewModel = {};
 
-                // Add values
-                _.forEach(row.data, (v, k) => {
-                    result[k] = {
-                        id: k,
-                        value: v,
-                        correctionOffer: [],
+                _.forEach(row, (samplePropertyEntry, sampleProperty) => {
+                    result[sampleProperty] = {
+                        id: sampleProperty,
+                        value: samplePropertyEntry.value,
+                        correctionOffer: samplePropertyEntry.correctionOffer,
                         editMessage: []
                     };
-                });
-
-                // Add correction Offers
-                row.corrections.forEach(
-                    correction => {
-                        if (result[correction.field]) {
-                            result[correction.field].correctionOffer = correction.correctionOffer;
-                        }
+                    if (result[sampleProperty].value !== importedFileData[index][sampleProperty]) {
+                        result[sampleProperty].editMessage = ['Ursprünglich: ' +
+                            (importedFileData[index][sampleProperty] || '&lt;leer&gt;')];
                     }
-                );
-
-                // Add errors
-                _.forEach(row.errors, (v, k) => {
-                    if (result[k]) {
-                        result[k].errors = {
-                            severity: this.getFieldBackground(v.map(error => error.level)),
-                            errorMessage: v.filter(error => error.level === ToolTipType.ERROR).map(error => error.message),
-                            warningMessage: v.filter(
-                                error => error.level === ToolTipType.WARNING).map(error => error.message),
-                            autoCorrectMessage: v.filter(
-                                error => error.level === ToolTipType.INFO).map(error => error.message)
+                    if (samplePropertyEntry.errors.length > 0) {
+                        result[sampleProperty].errors = {
+                            severity: this.getFieldBackground(samplePropertyEntry.errors.map(error => error.level)),
+                            errorMessage: samplePropertyEntry.errors.filter(error => error.level === ToolTipType.ERROR)
+                                .map(error => error.message),
+                            warningMessage: samplePropertyEntry.errors.filter(error => error.level === ToolTipType.WARNING)
+                                .map(error => error.message),
+                            autoCorrectMessage: samplePropertyEntry.errors.filter(error => error.level === ToolTipType.INFO)
+                                .map(error => error.message)
                         };
                     }
+
                 });
 
-                // Add edits
-                _.forEach(row.edits, (v, k) => {
-                    if (result[k] && result[k].value !== dataStateCombine[1].samples.importedData[index][k]) {
-                        result[k].editMessage = ['Ursprünglich: ' +
-                            (dataStateCombine[1].samples.importedData[index][k] || '&lt;leer&gt;')];
-                    }
-                });
                 return result;
             }
         );

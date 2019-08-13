@@ -7,6 +7,7 @@ import { Store, select } from '@ngrx/store';
 import { tap, takeWhile } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
+import { Samples } from '../../../samples/samples.store';
 
 @Component({
     selector: 'mibi-login-container',
@@ -18,17 +19,16 @@ export class LoginContainerComponent implements OnInit, OnDestroy {
 
     private componentActive = true;
     constructor(private router: Router,
-        private store: Store<fromUser.State>) { }
+        private store: Store<fromUser.UserMainState & Samples>) { }
 
     ngOnInit(): void {
 
         combineLatest(
-            this.store.pipe(select(fromUser.getCurrentUser)),
+            this.store.pipe(select(fromUser.selectCurrentUser)),
             this.store.pipe(select(fromSamples.hasEntries))
         ).pipe(
             takeWhile(() => this.componentActive),
-            tap((combined: [TokenizedUser | null, boolean]) => {
-                const [currentUser, hasEntries] = combined;
+            tap(([currentUser, hasEntries]) => {
                 if (currentUser) {
                     if (hasEntries) {
                         this.router.navigate(['/samples']).catch(() => {

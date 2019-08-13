@@ -2,16 +2,18 @@
   <wot-preamble>
     <mibi-upload-container (onFileUpload)="fileUpload($event)">
       <mibi-upload #uploadChild>
-        <label for="file-upload" id="file-drag">
-          <div id="start">
-            <i class="material-icons mibi-uploader-icon">
-              save_alt
-            </i>
-            <div class="select-text">Per Drag&Drop in dieses Feld ziehen</div>
-            <div class="select-text">oder</div>
-            <button class="btn select-button" mat-flat-button color="primary">Datei wählen</button>
+        <mibi-layout-box x-overflow-handling>
+          <div class="mibi-upload">
+            <div class="mibi-upload-icon">
+              <mat-icon [inline]="true">save_alt</mat-icon>
+            </div>
+            <div class="mibi-upload-text">
+              Per Drag&Drop in dieses Feld ziehen
+            </div>
+            <div class="mibi-upload-text">oder</div>
+            <button class="mibi-upload-button" type="button" mat-flat-button>Datei wählen</button>
           </div>
-        </label>
+        </mibi-layout-box>
       </mibi-upload>
     </mibi-upload-container>
   </wot-preamble>

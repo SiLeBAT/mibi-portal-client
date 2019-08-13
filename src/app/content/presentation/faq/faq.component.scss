@@ -1,10 +1,14 @@
 @import "../../../../assets/sass/abstracts";
 
-.faq__question-text {
-  font-weight: bold;
+.mibi-faq {
+  background-color: $background-color;
 }
 
-.faq {
+.mibi-faq-title {
+  font-weight: bold;
+  padding: $mibi-double-space $mibi-single-space;
+}
+
+.mibi-faq-text {
   padding: $mibi-single-space;
-  background-color: $background-color;
 }

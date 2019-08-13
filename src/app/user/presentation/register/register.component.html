@@ -1,53 +1,41 @@
 <!-- the register component template contains a simple registration form with fields for
 first name, last name, username and password. It displays validation messages for invalid fields
-when the submit button is clocked. On submit the register() method is called if the form is valid. -->
+when the submit button is clicked. On submit the register() method is called if the form is valid. -->
 
 
-<form [formGroup]="registerForm" (ngSubmit)="onRegister()" novalidate>
-  <div class="register-form__form-fields" fxLayout="column" fxLayoutAlign=" none">
-    <mat-form-field>
-      <input type="text" matInput placeholder="Wählen Sie Ihr Institut" formControlName="institution" autocomplete="off" required
-        [matAutocomplete]="autoGroup">
-      <mat-autocomplete  class="mibi-institute-select" #autoGroup="matAutocomplete">
-        <mat-option *ngFor="let institution of filteredOptions | async" [value]="institution">
-          {{institution}}
-        </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
-    <em class="mat-small" [hidden]="true"></em>
-    <mat-form-field>
-      <input matInput placeholder="Vorname" name="firstName" formControlName="firstName" required>
-    </mat-form-field>
-    <em class="mat-small" [hidden]="true"></em>
-    <mat-form-field>
-      <input matInput placeholder="Nachname" name="lastName" formControlName="lastName" required>
-    </mat-form-field>
-    <em class="mat-small" [hidden]="true"></em>
-    <mat-form-field>
-      <input matInput placeholder="Email" name="email" formControlName="email" required>
-    </mat-form-field>
-    <em class="mat-small" [hidden]="validateField('email') || !registerForm.controls.email.errors?.email">Muss eine
-      gültige Email sein.</em>
-    <mat-form-field>
-      <input matInput placeholder="Password" type="password" name="password1" formControlName="password1" required>
-    </mat-form-field>
-    <em class="mat-small" [hidden]="!validatePwStrength()">Zu schwaches oder zu kurzes Passwort.</em>
-    <div class="pw-strengt">
-      <password-strength-meter [password]="registerForm.value.password1" (strengthChange)="doStrengthChange($event)">
-      </password-strength-meter>
-    </div>
-    <mat-form-field>
-      <input matInput placeholder="Password bestätigen" type="password" name="password2" formControlName="password2"
-        required>
-    </mat-form-field>
-    <em class="mat-small" [hidden]="validateField('password2')  || !registerForm.controls.password2.errors?.validatePasswordConfirm">Passwörter
-      müssen übereinstimmen.</em>
-  </div>
-  <div class="register-form__buttons"  fxLayout="row" fxLayoutAlign="space-around none">
-    <button mat-raised-button color="primary" type="submit" [disabled]="!registerForm.valid">Submit</button>
-    <a mat-button color="primary" [routerLink]="['/users/login']">
-      Zurück
-    </a>
+<form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+
+  <mat-form-field class="mibi-form-field">
+    <input type="text" matInput placeholder="Wählen Sie Ihr Institut" formControlName="institution" autocomplete="off"
+      required [matAutocomplete]="autoGroup">
+    <mat-error class="mibi-form-field__mat-error">Muss ein gültiges Institut sein.</mat-error>
+    <mat-autocomplete #autoGroup="matAutocomplete">
+      <mat-option class="mibi-register-mat-option" *ngFor="let institution of filteredOptions$ | async" [value]="institution">
+        {{institution}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+
+  <p>Sollte Ihr Institut hier nicht aufgelistet sein, senden Sie uns bitte eine <a href="mailto:{{supportContact}}"> Nachricht</a>.</p>
+
+  <mat-form-field class="mibi-form-field">
+    <input matInput placeholder="Vorname" name="firstName" formControlName="firstName" required>
+  </mat-form-field>
+
+  <mat-form-field class="mibi-form-field">
+    <input matInput placeholder="Nachname" name="lastName" formControlName="lastName" required>
+  </mat-form-field>
+
+  <mat-form-field class="mibi-form-field">
+    <input matInput placeholder="Email" name="email" formControlName="email" required>
+    <mat-error class="mibi-form-field__mat-error" *ngIf="registerForm.controls.email.errors?.email">Muss eine gültige Email sein.</mat-error>
+  </mat-form-field>
+
+  <mibi-password></mibi-password>
+
+  <div class="mibi-register-actions">
+    <button class="mibi-register-actions__button" mat-raised-button color="primary" type="submit" [disabled]="!registerForm.valid">Registrieren</button>
+    <a class="mibi-register-actions__button" mat-button color="primary" [routerLink]="['/users/login']">Zurück</a>
   </div>
 
 </form>
