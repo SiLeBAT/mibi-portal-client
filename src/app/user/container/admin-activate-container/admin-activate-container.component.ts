@@ -4,7 +4,7 @@ import { environment } from '../../../../environments/environment';
 import { Store } from '@ngrx/store';
 import { UserActivation } from '../../model/user.model';
 import { UserMainState } from '../../state/user.reducer';
-import { DisplayBanner } from '../../../core/state/core.actions';
+import { DisplayBannerSOA, UpdateIsBusySOA } from '../../../core/state/core.actions';
 
 @Component({
     selector: 'mibi-admin-activate-container',
@@ -24,12 +24,14 @@ export class AdminActivateContainerComponent implements OnInit {
     ngOnInit() {
         this.adminTokenValid = this.activatedRoute.snapshot.data['adminTokenValid'];
 
+        this.store.dispatch(new UpdateIsBusySOA(false));
+
         if (this.adminTokenValid.activation) {
             this.name = this.adminTokenValid.username;
-            this.store.dispatch(new DisplayBanner({ predefined: 'accountActivationSuccess' }));
+            this.store.dispatch(new DisplayBannerSOA({ predefined: 'accountActivationSuccess' }));
         } else {
             this.name = '';
-            this.store.dispatch(new DisplayBanner({ predefined: 'accountActivationFailure' }));
+            this.store.dispatch(new DisplayBannerSOA({ predefined: 'accountActivationFailure' }));
         }
     }
 }

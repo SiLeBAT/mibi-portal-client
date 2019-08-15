@@ -14,7 +14,7 @@ export class CommentDialogEffects {
 
     @Effect({ dispatch: false })
     commentDialogOpen$: Observable<void> = this.actions$.pipe(
-        ofType(CommentDialogActionTypes.CommentDialogOpen),
+        ofType(CommentDialogActionTypes.CommentDialogOpenMTA),
         map(() => this.dialogService.openDialog(CommentDialogComponent))
     );
 }

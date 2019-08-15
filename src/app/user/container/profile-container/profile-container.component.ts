@@ -5,7 +5,6 @@ import { Store, select } from '@ngrx/store';
 import { takeWhile, tap, withLatestFrom } from 'rxjs/operators';
 import { Institution, fromDTOToInstitution } from '../../model/institution.model';
 import * as _ from 'lodash';
-import { UserMainState } from '../../state/user.reducer';
 import { selectCurrentUser } from '../../state/user.selectors';
 import { UserMainSlice } from '../../user.state';
 
@@ -48,7 +47,7 @@ export class ProfileContainerComponent implements OnInit, OnDestroy {
     }
 
     logout() {
-        this.store.dispatch(new userActions.LogoutUser());
+        this.store.dispatch(new userActions.LogoutUserMSA());
     }
 
     getInstitutionName() {

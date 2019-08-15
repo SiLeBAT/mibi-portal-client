@@ -13,7 +13,7 @@ export class SampleViewComponent implements OnInit {
         private store: Store<CoreMainSlice>) { }
 
     ngOnInit(): void {
-        this.store.dispatch(new coreActions.EnableActionItems(
+        this.store.dispatch(new coreActions.UpdateActionItemsSOA(
             [
                 UserActionType.SEND,
                 UserActionType.VALIDATE,

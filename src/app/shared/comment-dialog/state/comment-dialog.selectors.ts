@@ -4,17 +4,22 @@ import { selectSharedSlice } from '../../shared.state';
 
 export const selectCommentDialogState = selectSharedSlice<CommentDialogState>();
 
-export const selectCommentDialog = createSelector(
+export const selectCommentDialogData = createSelector(
     selectCommentDialogState,
-    state => state.commentDialog
+    state => state.commentDialogData
 );
 
 export const selectCommentDialogConfiguration = createSelector(
-    selectCommentDialog,
+    selectCommentDialogData,
     state => state.configuration
 );
 
 export const selectCommentDialogComment = createSelector(
-    selectCommentDialog,
+    selectCommentDialogData,
     state => state.comment
+);
+
+export const selectCommentDialogCaller = createSelector(
+    selectCommentDialogData,
+    state => state.caller
 );

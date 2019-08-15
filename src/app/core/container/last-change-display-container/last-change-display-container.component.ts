@@ -7,7 +7,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { SystemInformation } from '../../model/system-information.model';
 import { CoreMainState } from '../../state/core.reducer';
-import { UpdateSupportDetail } from '../../../content/state/content.actions';
+import { UpdateSupportDetailSOA } from '../../../content/state/content.actions';
 
 @Component({
     selector: 'mibi-last-change-display-container',
@@ -48,7 +48,7 @@ export class LastChangeDisplayContainerComponent implements OnInit {
                 this.lastChange$.next(moment.max(dateCompare));
                 this.serverVersion = sysInfo.version;
                 this.isDataAvailable = true;
-                this.store$.dispatch(new UpdateSupportDetail({ supportContact: sysInfo.supportContact }));
+                this.store$.dispatch(new UpdateSupportDetailSOA({ supportContact: sysInfo.supportContact }));
             }
         ).catch(
             () => {

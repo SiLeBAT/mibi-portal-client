@@ -15,7 +15,7 @@ export class DialogEffects {
 
     @Effect({ dispatch: false })
     dialogOpen$: Observable<void> = this.actions$.pipe(
-        ofType(DialogActionTypes.DialogOpen),
+        ofType(DialogActionTypes.DialogOpenMTA),
         map(() => {
             this.dialogService.openDialog(NewDialogComponent);
         })

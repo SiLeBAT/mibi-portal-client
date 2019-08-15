@@ -15,7 +15,7 @@ export class UploadViewComponent implements OnInit {
         private store: Store<SamplesMainSlice>) { }
 
     ngOnInit(): void {
-        this.store.dispatch(new coreActions.EnableActionItems(
+        this.store.dispatch(new coreActions.UpdateActionItemsSOA(
             [
                 UserActionType.VALIDATE,
                 UserActionType.SEND,
@@ -26,6 +26,7 @@ export class UploadViewComponent implements OnInit {
     }
     // Container not really necessary here, or is it?
     fileUpload(file: File) {
-        this.store.dispatch(new samplesActions.ImportExcelFile({ file }));
+        this.store.dispatch(new coreActions.UpdateIsBusySOA(true));
+        this.store.dispatch(new samplesActions.ImportExcelFileMSA({ file }));
     }
 }

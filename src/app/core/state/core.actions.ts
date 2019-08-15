@@ -5,44 +5,52 @@ import { DialogContent } from '../model/dialog.model';
 import { BannerData } from './core.reducer';
 
 export enum CoreMainActionTypes {
-    DisplayBanner = '[Core] Display Banner',
-    DisplayDialog = '[Core] Display Dialog',
-    DestroyBanner = '[Core] Destroy Banner',
-    HideBanner = '[Core] Hide Banner',
-    EnableActionItems = '[Core] Enable Action Items'
+    DisplayBannerSOA = '[Core] Create and show Banner',
+    HideBannerSOA = '[Core] Hide Banner',
+    DestroyBannerSOA = '[Core] Destroy Banner',
+    UpdateActionItemsSOA = '[Core] Create and enable Action Items',
+    DisplayDialogMSA = '[Core] Display Dialog',
+    UpdateIsBusySOA = '[Core] Show or hide Busy Spinner'
 }
 
-export class DisplayDialog implements Action {
-    readonly type = CoreMainActionTypes.DisplayDialog;
-
-    constructor(public payload: DialogContent) { }
-}
-
-export class DisplayBanner implements Action {
-    readonly type = CoreMainActionTypes.DisplayBanner;
+export class DisplayBannerSOA implements Action {
+    readonly type = CoreMainActionTypes.DisplayBannerSOA;
 
     constructor(public payload: BannerData) {
         this.payload = { ...this.payload, ...{ show: true, id: UUID.UUID() } };
     }
 }
 
-export class EnableActionItems implements Action {
-    readonly type = CoreMainActionTypes.EnableActionItems;
+export class HideBannerSOA implements Action {
+    readonly type = CoreMainActionTypes.HideBannerSOA;
+}
+
+export class DestroyBannerSOA implements Action {
+    readonly type = CoreMainActionTypes.DestroyBannerSOA;
+}
+
+export class UpdateActionItemsSOA implements Action {
+    readonly type = CoreMainActionTypes.UpdateActionItemsSOA;
 
     constructor(public payload: UserActionType[]) { }
 }
 
-export class DestroyBanner implements Action {
-    readonly type = CoreMainActionTypes.DestroyBanner;
+export class DisplayDialogMSA implements Action {
+    readonly type = CoreMainActionTypes.DisplayDialogMSA;
+
+    constructor(public payload: DialogContent) { }
 }
 
-export class HideBanner implements Action {
-    readonly type = CoreMainActionTypes.HideBanner;
+export class UpdateIsBusySOA implements Action {
+    readonly type = CoreMainActionTypes.UpdateIsBusySOA;
+
+    constructor(public payload: boolean) {}
 }
 
 export type CoreMainAction =
-    | DisplayDialog
-    | HideBanner
-    | DisplayBanner
-    | DestroyBanner
-    | EnableActionItems;
+    | DisplayBannerSOA
+    | HideBannerSOA
+    | DestroyBannerSOA
+    | UpdateActionItemsSOA
+    | DisplayDialogMSA
+    | UpdateIsBusySOA;

@@ -2,8 +2,7 @@ import { ActionReducerMap } from '@ngrx/store';
 import { SamplesMainEffects } from './samples.effects';
 import { SamplesMainState, samplesMainReducer } from './state/samples.reducer';
 import { SamplesMainAction } from './state/samples.actions';
-import { SamplesSlice } from './samples.state';
-import { LogoutUser } from '../user/state/user.actions';
+import { LogoutUserMSA } from '../user/state/user.actions';
 import { SendSamplesAction } from './send-samples/state/send-samples.actions';
 import { CommentDialogEffects } from '../shared/comment-dialog/comment-dialog.effects';
 import { ValidateSamplesAction } from './validate-samples/validate-samples.actions';
@@ -16,7 +15,7 @@ type SamplesReducerAction =
 SamplesMainAction
 | SendSamplesAction
 | ValidateSamplesAction
-| LogoutUser;
+| LogoutUserMSA;
 
 export const samplesReducerMap: ActionReducerMap<SamplesState, SamplesReducerAction> = {
     mainData: samplesMainReducer,

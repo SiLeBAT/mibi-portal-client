@@ -5,12 +5,13 @@ import * as _ from 'lodash';
 // STATE
 
 export interface CommentDialogState {
-    commentDialog: CommentDialog;
+    commentDialogData: CommentDialogData;
 }
 
-export interface CommentDialog {
+export interface CommentDialogData {
     configuration: CommentDialogConfiguration;
     comment: string;
+    caller: string;
 }
 
 const initialConfiguration: CommentDialogConfiguration = {
@@ -23,33 +24,20 @@ const initialConfiguration: CommentDialogConfiguration = {
     visibleCommentLines: 0
 };
 
-const initialCommentDialog: CommentDialog = {
+const initialData: CommentDialogData = {
     configuration: initialConfiguration,
-    comment: ''
+    comment: '',
+    caller: ''
 };
 
 // REDUCER
 
-export function commentDialogReducer(state: CommentDialog = initialCommentDialog, action: CommentDialogAction): CommentDialog {
-    return {
-        configuration: reduceConfiguration(state.configuration, action),
-        comment: reduceComment(state.comment, action)
-    };
-}
-
-function reduceConfiguration(state: CommentDialogConfiguration, action: CommentDialogAction): CommentDialogConfiguration {
+export function commentDialogReducer(state: CommentDialogData = initialData, action: CommentDialogAction): CommentDialogData {
     switch (action.type) {
-        case CommentDialogActionTypes.CommentDialogOpen:
-            return _.cloneDeep(action.payload.configuration);
-        default:
-            return state;
-    }
-}
-
-function reduceComment(state: string, action: CommentDialogAction): string {
-    switch (action.type) {
-        case CommentDialogActionTypes.CommentDialogConfirm:
-            return action.payload.comment;
+        case CommentDialogActionTypes.CommentDialogOpenMTA:
+            return { ...state, configuration: _.cloneDeep(action.payload.configuration), caller: action.target };
+        case CommentDialogActionTypes.CommentDialogConfirmMTA:
+            return { ..._.cloneDeep(state), comment: action.payload.comment };
         default:
             return state;
     }

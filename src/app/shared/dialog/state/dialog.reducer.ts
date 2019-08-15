@@ -5,7 +5,12 @@ import * as _ from 'lodash';
 // STATE
 
 export interface DialogState {
-    dialogConfiguration: DialogConfiguration;
+    dialogData: DialogData;
+}
+
+export interface DialogData {
+    configuration: DialogConfiguration;
+    caller: string;
 }
 
 const initialConfiguration: DialogConfiguration = {
@@ -17,13 +22,18 @@ const initialConfiguration: DialogConfiguration = {
     }
 };
 
+const initialData: DialogData = {
+    configuration: initialConfiguration,
+    caller: ''
+};
+
 // REDUCER
 
-export function dialogConfigurationReducer(
-    state: DialogConfiguration = initialConfiguration, action: DialogAction): DialogConfiguration {
+export function dialogReducer(
+    state: DialogData = initialData, action: DialogAction): DialogData {
     switch (action.type) {
-        case DialogActionTypes.DialogOpen:
-            return _.cloneDeep(action.payload.configuration);
+        case DialogActionTypes.DialogOpenMTA:
+            return { caller: action.target, configuration: _.cloneDeep(action.payload.configuration) };
         default:
             return state;
     }
