@@ -17,7 +17,7 @@ const initialWarnings: SendSamplesWarnings = {
 
 export function sendSamplesLastSentFileReducer(state: string[] = [], action: SendSamplesAction): string[] {
     switch (action.type) {
-        case SendSamplesActionTypes.SendSamplesSuccess:
+        case SendSamplesActionTypes.AddSentFileSOA:
             return _.union(state, [action.payload.sentFile]);
         default:
             return state;
@@ -26,7 +26,7 @@ export function sendSamplesLastSentFileReducer(state: string[] = [], action: Sen
 
 export function sendSamplesWarningsReducer(state: SendSamplesWarnings = initialWarnings, action: SendSamplesAction): SendSamplesWarnings {
     switch (action.type) {
-        case SendSamplesActionTypes.StoreSampleWarnings:
+        case SendSamplesActionTypes.UpdateSampleWarningsSOA:
             return _.cloneDeep(action.payload.warnings);
         default:
             return state;

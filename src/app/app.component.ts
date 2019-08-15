@@ -8,6 +8,7 @@ import * as userActions from './user/state/user.actions';
 import { TokenizedUser } from './user/model/user.model';
 import { SamplesMainSlice } from './samples/samples.state';
 import { selectHasEntries } from './samples/state/samples.selectors';
+import { UpdateIsBusySOA, DestroyBannerSOA } from './core/state/core.actions';
 
 @Component({
     selector: 'mibi-root',
@@ -47,7 +48,7 @@ export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDe
     private loadInstitutions() {
         this.dataService.getAllInstitutions().toPromise().then(
             data => {
-                this.store$.dispatch(new userActions.PopulateInstitutions(data));
+                this.store$.dispatch(new userActions.UpdateInstitutionsSOA(data));
             }
         ).catch(
             () => { throw new Error(); }
@@ -66,14 +67,16 @@ export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDe
                 if (refreshResponse.refresh) {
                     user.token = refreshResponse.token;
                     this.dataService.setCurrentUser(user);
-                    this.store$.dispatch(new userActions.LoginUserSuccess(user));
+                    this.store$.dispatch(new userActions.UpdateCurrentUserSOA(user));
+                    this.store$.dispatch(new DestroyBannerSOA());
+                    this.store$.dispatch(new UpdateIsBusySOA({ isBusy: false }));
                 } else {
-                    this.store$.dispatch(new userActions.LogoutUser());
+                    this.store$.dispatch(new userActions.LogoutUserMSA());
                 }
             }
         ).catch(
             () => {
-                this.store$.dispatch(new userActions.LogoutUser());
+                this.store$.dispatch(new userActions.LogoutUserMSA());
             }
         );
     }

@@ -5,12 +5,11 @@ import { GenericActionItemComponent } from '../presentation/generic-action-item/
 import { Store } from '@ngrx/store';
 import { ClientError } from '../model/client-error';
 import { Router } from '@angular/router';
-import { SendSamples } from '../../samples/send-samples/state/send-samples.actions';
-import { ValidateSamples } from '../../samples/validate-samples/validate-samples.actions';
+import { SendSamplesSSA } from '../../samples/send-samples/state/send-samples.actions';
+import { ValidateSamplesMSA } from '../../samples/validate-samples/validate-samples.actions';
 import { CoreMainSlice } from '../core.state';
-import { ExportExcelFile, ImportExcelFile, ClearSamples } from '../../samples/state/samples.actions';
-import { DisplayDialog } from '../state/core.actions';
-
+import { ExportExcelFileSSA, ImportExcelFileMSA, DestroySampleSetSOA } from '../../samples/state/samples.actions';
+import { DisplayDialogMSA, UpdateIsBusySOA } from '../state/core.actions';
 @Injectable({
     providedIn: 'root'
 })
@@ -116,30 +115,32 @@ export class UserActionService {
     }
 
     private validate() {
-        this.store.dispatch(new ValidateSamples('[UserAction] Validate clicked'));
+        this.store.dispatch(new UpdateIsBusySOA({ isBusy: true }));
+        this.store.dispatch(new ValidateSamplesMSA());
     }
 
     private export() {
-        this.store.dispatch(new ExportExcelFile());
+        this.store.dispatch(new ExportExcelFileSSA());
     }
 
     private import(file: File) {
-        this.store.dispatch(new ImportExcelFile({ file }));
+        this.store.dispatch(new UpdateIsBusySOA({ isBusy: true }));
+        this.store.dispatch(new ImportExcelFileMSA({ file }));
     }
 
     private send() {
-        this.store.dispatch(new SendSamples('[UserAction] Send clicked'));
+        this.store.dispatch(new SendSamplesSSA());
     }
 
     private close() {
-        this.store.dispatch(new DisplayDialog({
+        this.store.dispatch(new DisplayDialogMSA({
             message: `Wenn Sie die Tabelle schließen, gehen Ihre Änderungen verloren. Wollen Sie das?`,
             title: 'Schließen',
             mainAction: {
                 type: UserActionType.CUSTOM,
                 label: 'Ok',
                 onExecute: () => {
-                    this.store.dispatch(new ClearSamples());
+                    this.store.dispatch(new DestroySampleSetSOA());
                     this.navigate('/upload');
                 },
                 component: GenericActionItemComponent,

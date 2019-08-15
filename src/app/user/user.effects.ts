@@ -2,17 +2,18 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import * as moment from 'moment';
 import * as userActions from './state/user.actions';
-import { map, catchError, exhaustMap, mergeMap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { map, catchError, exhaustMap, mergeMap, concatAll } from 'rxjs/operators';
+import { of, Observable } from 'rxjs';
 import { DataService } from '../core/services/data.service';
 import { Router } from '@angular/router';
 import { TokenizedUser } from './model/user.model';
-import { DisplayBanner } from '../core/state/core.actions';
+import { DisplayBannerSOA, UpdateIsBusySOA, DestroyBannerSOA } from '../core/state/core.actions';
 import { DelayLoginError, AuthorizationError } from '../core/model/client-error';
 import { LogService } from '../core/services/log.service';
 import { AlertType } from '../core/model/alert.model';
 import { UserActionType } from '../shared/model/user-action.model';
 import { UserActionService } from '../core/services/user-action.service';
+import { DestroySampleSetSOA } from '../samples/state/samples.actions';
 
 @Injectable()
 export class UserMainEffects {
@@ -26,18 +27,19 @@ export class UserMainEffects {
 
     @Effect()
     loginUser$ = this.actions$.pipe(
-        ofType(userActions.UserMainActionTypes.LoginUser),
-        exhaustMap((action: userActions.LoginUser) => this.dataService.login(action.payload).pipe(
+        ofType(userActions.UserMainActionTypes.LoginUserSSA),
+        exhaustMap((action: userActions.LoginUserSSA) => this.dataService.login(action.payload).pipe(
             map(
                 (user: TokenizedUser) => {
                     this.dataService.setCurrentUser(user);
-                    return new userActions.LoginUserSuccess(user);
+                    return of(new userActions.UpdateCurrentUserSOA(user), new DestroyBannerSOA(), new UpdateIsBusySOA({ isBusy: false }));
                 }),
+            concatAll(),
             catchError((error) => {
                 this.logger.error('User authentication failed.', error);
                 if (error instanceof DelayLoginError) {
                     const waitTime = this.timeConversion(error.timeToWait);
-                    return of(new DisplayBanner({
+                    return of(new UpdateIsBusySOA({ isBusy: false }), new DisplayBannerSOA({
                         predefined: '',
                         custom: {
                             message: `Zu viele fehlgeschlagene Logins, bitte warten Sie ${
@@ -49,22 +51,23 @@ export class UserMainEffects {
                     }));
 
                 } if (error instanceof AuthorizationError) {
-                    return of(new DisplayBanner({ predefined: 'loginFailure' }));
+                    return of(new UpdateIsBusySOA({ isBusy: false }), new DisplayBannerSOA({ predefined: 'loginFailure' }));
                 }
 
-                return of(new DisplayBanner({ predefined: 'loginFailure' }));
+                return of(new UpdateIsBusySOA({ isBusy: false }), new DisplayBannerSOA({ predefined: 'loginFailure' }));
             })
         ))
     );
 
     @Effect()
-    logoutUser$ = this.actions$.pipe(
-        ofType(userActions.UserMainActionTypes.LogoutUser),
+    logoutUser$: Observable<userActions.DestroyCurrentUserSOA | DestroySampleSetSOA> = this.actions$.pipe(
+        ofType(userActions.UserMainActionTypes.LogoutUserMSA),
         mergeMap(() => {
             this.router.navigate(['users/login']).catch(() => {
                 throw new Error('Unable to navigate.');
             });
-            return this.dataService.logout();
+            this.dataService.logout();
+            return of(new userActions.DestroyCurrentUserSOA(), new DestroySampleSetSOA());
         })
     );
 

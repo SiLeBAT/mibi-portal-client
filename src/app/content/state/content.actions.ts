@@ -2,14 +2,12 @@ import { Action } from '@ngrx/store';
 import { SupportDetail } from '../model/support-detail.model';
 
 export enum ContentMainActionTypes {
-    UpdateSupportDetail = '[Content] Update Support detail'
+    UpdateSupportDetailSOA = '[Content] Update Support detail'
 }
-export class UpdateSupportDetail implements Action {
-    readonly type = ContentMainActionTypes.UpdateSupportDetail;
+export class UpdateSupportDetailSOA implements Action {
+    readonly type = ContentMainActionTypes.UpdateSupportDetailSOA;
 
-    constructor(public payload: SupportDetail) {
-
-    }
+    constructor(public payload: SupportDetail) { }
 }
 
-export type ContentMainAction = UpdateSupportDetail;
+export type ContentMainAction = UpdateSupportDetailSOA;

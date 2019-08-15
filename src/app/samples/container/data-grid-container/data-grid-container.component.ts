@@ -132,7 +132,7 @@ export class DataGridContainerComponent implements OnInit {
     }
 
     onValueChanged(tableData: TableDataOutput) {
-        this.store$.dispatch(new samplesActions.ChangeFieldValue(tableData.changed));
+        this.store$.dispatch(new samplesActions.UpdateSampleDataEntrySOA(tableData.changed));
     }
     private createViewModel(formSampleData: SampleData[], importedFileData: SamplePropertyValues[]) {
         const rows = formSampleData.map(

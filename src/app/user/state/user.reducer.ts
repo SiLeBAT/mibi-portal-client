@@ -6,19 +6,17 @@ import * as _ from 'lodash';
 // STATE
 
 export interface UserMainState {
-    currentUser: CurrentUser;
+    currentUser: TokenizedUser | null;
     institutes: InstitutionDTO[];
 }
 
-export type CurrentUser = TokenizedUser | null;
-
 // REDUCER
 
-export function userCurrentUserReducer(state: CurrentUser = null, action: UserMainAction): CurrentUser {
+export function userCurrentUserReducer(state: TokenizedUser | null = null, action: UserMainAction): TokenizedUser | null {
     switch (action.type) {
-        case UserMainActionTypes.LoginUserSuccess:
+        case UserMainActionTypes.UpdateCurrentUserSOA:
             return _.cloneDeep(action.payload);
-        case UserMainActionTypes.LogoutUser:
+        case UserMainActionTypes.DestroyCurrentUserSOA:
             return null;
         default:
             return state;
@@ -27,7 +25,7 @@ export function userCurrentUserReducer(state: CurrentUser = null, action: UserMa
 
 export function userInstitutesReducer(state: InstitutionDTO[] = [], action: UserMainAction): InstitutionDTO[] {
     switch (action.type) {
-        case UserMainActionTypes.PopulateInstitutions:
+        case UserMainActionTypes.UpdateInstitutionsSOA:
             return _.cloneDeep(action.payload);
         default:
             return state;

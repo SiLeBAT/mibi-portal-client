@@ -1,15 +1,15 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Credentials, TokenizedUser } from '../../../user/model/user.model';
+import { Credentials } from '../../../user/model/user.model';
 import * as userActions from '../../state/user.actions';
 import { Store, select } from '@ngrx/store';
 import { tap, takeWhile } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
 import { SamplesMainSlice } from '../../../samples/samples.state';
-import { UserMainState } from '../../state/user.reducer';
 import { selectHasEntries } from '../../../samples/state/samples.selectors';
 import { selectCurrentUser } from '../../state/user.selectors';
 import { UserMainSlice } from '../../user.state';
+import { UpdateIsBusySOA } from '../../../core/state/core.actions';
 
 @Component({
     selector: 'mibi-login-container',
@@ -51,6 +51,7 @@ export class LoginContainerComponent implements OnInit, OnDestroy {
     }
 
     login(credentials: Credentials) {
-        this.store.dispatch(new userActions.LoginUser(credentials));
+        this.store.dispatch(new UpdateIsBusySOA({ isBusy: true }));
+        this.store.dispatch(new userActions.LoginUserSSA(credentials));
     }
 }

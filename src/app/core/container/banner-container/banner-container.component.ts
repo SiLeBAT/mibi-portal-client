@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import * as fromCore from '../../state/core.reducer';
 import { Banner, AlertType } from '../../model/alert.model';
 import { takeWhile, debounceTime } from 'rxjs/operators';
 import { UserActionService } from '../../services/user-action.service';
@@ -8,7 +7,7 @@ import { UserActionType } from '../../../shared/model/user-action.model';
 import { ClientError } from '../../model/client-error';
 import { CoreMainSlice } from '../../core.state';
 import { selectBannerData } from '../../state/core.selectors';
-import { HideBanner } from '../../state/core.actions';
+import { HideBannerSOA } from '../../state/core.actions';
 
 @Component({
     selector: 'mibi-banner-container',
@@ -191,7 +190,7 @@ export class BannerContainerComponent implements OnInit {
             if (this.banner.mainAction) {
                 this.banner.mainAction.onExecute();
             }
-            this.store$.dispatch(new HideBanner());
+            this.store$.dispatch(new HideBannerSOA());
         }
     }
 
@@ -200,7 +199,7 @@ export class BannerContainerComponent implements OnInit {
             if (this.banner.auxilliaryAction) {
                 this.banner.auxilliaryAction.onExecute();
             }
-            this.store$.dispatch(new HideBanner());
+            this.store$.dispatch(new HideBannerSOA());
         }
     }
 }

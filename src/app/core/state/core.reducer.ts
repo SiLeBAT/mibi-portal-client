@@ -1,16 +1,16 @@
 
 import { CoreMainAction, CoreMainActionTypes } from './core.actions';
-import { SamplesMainActionTypes, SamplesMainAction } from '../../samples/state/samples.actions';
-import { Alert, Banner } from '../model/alert.model';
-import { UserMainActionTypes, UserMainAction } from '../../user/state/user.actions';
+import { Banner } from '../model/alert.model';
 import { ROUTER_NAVIGATION, RouterNavigationAction } from '@ngrx/router-store';
 import { UserActionType } from '../../shared/model/user-action.model';
-import { ValidateSamplesActionTypes, ValidateSamplesAction } from '../../samples/validate-samples/validate-samples.actions';
+import * as _ from 'lodash';
 
 // STATE
 
 export interface CoreMainState {
-    ui: UIData;
+    isBusy: boolean;
+    enabledActionItems: UserActionType[];
+    banner: BannerData | null;
 }
 
 export interface BannerData {
@@ -20,59 +20,43 @@ export interface BannerData {
     id?: string;
 }
 
-export interface UIData {
-    isBusy: boolean;
-    banner: BannerData | null;
-    snackbar: Alert | null;
-    enabledActionItems: UserActionType[];
-}
-
-const initialUIData: UIData = {
-    isBusy: false,
-    banner: null,
-    snackbar: null,
-    enabledActionItems: []
-};
-
 // REDUCER
 
-type coreUIReducerAction = CoreMainAction | ValidateSamplesAction | SamplesMainAction | UserMainAction | RouterNavigationAction;
-
-export function coreUIReducer(state: UIData = initialUIData, action: coreUIReducerAction): UIData {
+export function coreIsBusyReducer(state: boolean = false, action: CoreMainAction): boolean {
     switch (action.type) {
-        case CoreMainActionTypes.EnableActionItems:
-            const enabledAIState = { ...state };
-            enabledAIState.enabledActionItems = action.payload;
-            return enabledAIState;
-        case CoreMainActionTypes.DestroyBanner:
+        case CoreMainActionTypes.UpdateIsBusySOA:
+            return action.payload.isBusy;
+        default:
+            return state;
+    }
+}
 
-            const banner = state.banner;
-            if (banner && !banner.show) {
-                const clearedAlertState = { ...state, banner: null };
-                return clearedAlertState;
+export function coreActionItemsReducer(state: UserActionType[] = [], action: CoreMainAction | RouterNavigationAction): UserActionType[] {
+    switch (action.type) {
+        case CoreMainActionTypes.UpdateActionItemsSOA:
+            return _.cloneDeep(action.payload);
+        case ROUTER_NAVIGATION:
+            return [];
+        default:
+            return state;
+    }
+}
+
+export function coreBannerReducer(state: BannerData | null = null, action: CoreMainAction | RouterNavigationAction): BannerData | null {
+    switch (action.type) {
+        case CoreMainActionTypes.DestroyBannerSOA:
+            return null;
+        case CoreMainActionTypes.HideBannerSOA:
+            if (state) {
+                const newState = _.cloneDeep(state);
+                newState.show = false;
+                return newState;
             }
             return state;
-        case CoreMainActionTypes.HideBanner:
-            const hideBanner = { ...state };
-            if (hideBanner.banner) { hideBanner.banner.show = false; }
-            return hideBanner;
         case ROUTER_NAVIGATION:
-            const navigatedState = { ...state };
-            navigatedState.enabledActionItems = [];
-            if (navigatedState.banner) {
-                navigatedState.banner = null;
-            }
-            return navigatedState;
-        case ValidateSamplesActionTypes.ValidateSamples:
-        case SamplesMainActionTypes.ImportExcelFile:
-        case UserMainActionTypes.LoginUser:
-            return { ...state, isBusy: true };
-        case SamplesMainActionTypes.ImportExcelFileSuccess:
-        case ValidateSamplesActionTypes.ValidateSamplesSuccess:
-        case UserMainActionTypes.LoginUserSuccess:
-            return { ...state, isBusy: false, banner: null };
-        case CoreMainActionTypes.DisplayBanner:
-            return { ...state, isBusy: false, banner: action.payload };
+            return null;
+        case CoreMainActionTypes.DisplayBannerSOA:
+            return _.cloneDeep(action.payload);
         default:
             return state;
     }

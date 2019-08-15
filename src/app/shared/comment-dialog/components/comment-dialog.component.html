@@ -1,12 +1,12 @@
-<mibi-dialog-view [config]="config$ | async" (confirm)="onConfirm()" (cancel)="onCancel()">
+<mibi-dialog-view [config]="(data$ | async).configuration" (confirm)="onConfirm()" (cancel)="onCancel()">
   <mibi-layout-box>
     <mat-form-field class="mibi-comment">
         <mat-label>
-          {{(config$ | async).commentTitle}}
+          {{(data$ | async).configuration.commentTitle}}
         </mat-label>
-      <textarea #commentInput matInput [formControl]="commentControl" rows="{{(config$ | async).visibleCommentLines}}" cdkFocusInitial type="text" maxlength="{{(config$ | async).maxCommentLength}}" placeholder="{{(config$ | async)?.commentPlaceHolder}}"></textarea>
-      <mat-hint align="start" [class.mibi-comment-hint--maxCharsReached]="(commentInput.value?.length || 0) === (config$ | async).maxCommentLength">          
-        {{commentInput.value?.length || 0}}/{{(config$ | async).maxCommentLength}}
+      <textarea #commentInput matInput [formControl]="commentControl" rows="{{(data$ | async).configuration.visibleCommentLines}}" cdkFocusInitial type="text" maxlength="{{(data$ | async).configuration.maxCommentLength}}" placeholder="{{(data$ | async).configuration?.commentPlaceHolder}}"></textarea>
+      <mat-hint align="start" [class.mibi-comment-hint--maxCharsReached]="(commentInput.value?.length || 0) === (data$ | async).configuration.maxCommentLength">          
+        {{commentInput.value?.length || 0}}/{{(data$ | async).configuration.maxCommentLength}}
       </mat-hint>
     </mat-form-field>
   </mibi-layout-box>

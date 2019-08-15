@@ -1,12 +1,11 @@
 import { SamplesMainAction, SamplesMainActionTypes } from './samples.actions';
-import { UserMainActionTypes, LogoutUser } from '../../user/state/user.actions';
 import {
     SamplePropertyValues,
     SampleData,
     SampleSetMetaData,
     SampleSet
 } from '../model/sample-management.model';
-import { ValidateSamplesActionTypes, ValidateSamplesAction } from '../validate-samples/validate-samples.actions';
+import { ValidateSamplesAction } from '../validate-samples/validate-samples.actions';
 import { Urgency } from '../model/sample.enums';
 import { getDataValuesFromAnnotatedData } from './samples.selectors';
 
@@ -63,13 +62,12 @@ const initialMainData: SamplesMainData = {
 // REDUCER
 
 export function samplesMainReducer(
-    state: SamplesMainData = initialMainData, action: SamplesMainAction | LogoutUser | ValidateSamplesAction
+    state: SamplesMainData = initialMainData, action: SamplesMainAction | ValidateSamplesAction
 ): SamplesMainData {
     switch (action.type) {
-        case SamplesMainActionTypes.ClearSamples:
-        case UserMainActionTypes.LogoutUser:
+        case SamplesMainActionTypes.DestroySampleSetSOA:
             return { ...initialMainData };
-        case SamplesMainActionTypes.ImportExcelFileSuccess:
+        case SamplesMainActionTypes.UpdateSampleSetSOA:
             const unmarshalledData: SampleSet = action.payload;
             return {
                 ...state, ...{
@@ -81,7 +79,7 @@ export function samplesMainReducer(
                     meta: unmarshalledData.meta
                 }
             };
-        case ValidateSamplesActionTypes.ValidateSamplesSuccess:
+        case SamplesMainActionTypes.UpdateSampleDataSOA:
             const mergedEntries: SampleData[] = action.payload.map(
                 (sample, i) => {
                     const result: SampleData = { ...sample };
@@ -95,7 +93,7 @@ export function samplesMainReducer(
                 }
             );
             return { ...state, ...{ formData: mergedEntries } };
-        case SamplesMainActionTypes.ChangeFieldValue:
+        case SamplesMainActionTypes.UpdateSampleDataEntrySOA:
             const {
                 rowIndex,
                 columnId,

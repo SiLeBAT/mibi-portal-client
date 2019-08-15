@@ -35,6 +35,6 @@ export class NavBarContainerComponent implements OnInit {
     }
 
     onLogout() {
-        this.store$.dispatch(new userActions.LogoutUser());
+        this.store$.dispatch(new userActions.LogoutUserMSA());
     }
 }

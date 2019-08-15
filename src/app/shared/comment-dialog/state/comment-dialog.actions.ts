@@ -1,31 +1,31 @@
-import { CommandAction, ResponseAction } from '../../command/command.actions';
+import { MultiTargetAction } from '../../ngrx/multi-target-action';
 import { CommentDialogConfiguration } from '../comment-dialog.model';
 
 export enum CommentDialogActionTypes {
-    CommentDialogOpen = '[Shared/CommentDialog] Open comment dialog',
-    CommentDialogConfirm = '[Shared/CommentDialog] Confirm clicked',
-    CommentDialogCancel = '[Shared/CommentDialog] Cancel clicked'
+    CommentDialogOpenMTA = '[Shared/CommentDialog] Open comment dialog',
+    CommentDialogConfirmMTA = '[Shared/CommentDialog] Inform of comment dialog confirmed',
+    CommentDialogCancelMTA = '[Shared/CommentDialog] Inform of comment dialog cancelled'
 }
 
-export class CommentDialogOpen implements CommandAction {
-    readonly type = CommentDialogActionTypes.CommentDialogOpen;
+export class CommentDialogOpenMTA implements MultiTargetAction {
+    readonly type = CommentDialogActionTypes.CommentDialogOpenMTA;
 
-    constructor(public source: string, public payload: { configuration: CommentDialogConfiguration }) { }
+    constructor(public target: string, public payload: { configuration: CommentDialogConfiguration }) { }
 }
 
-export class CommentDialogConfirm implements ResponseAction {
-    readonly type = CommentDialogActionTypes.CommentDialogConfirm;
-    readonly command = CommentDialogActionTypes.CommentDialogOpen;
+export class CommentDialogConfirmMTA implements MultiTargetAction {
+    readonly type = CommentDialogActionTypes.CommentDialogConfirmMTA;
 
-    constructor(public payload: { comment: string }) { }
+    constructor(public target: string, public payload: { comment: string }) { }
 }
 
-export class CommentDialogCancel implements ResponseAction {
-    readonly type = CommentDialogActionTypes.CommentDialogCancel;
-    readonly command = CommentDialogActionTypes.CommentDialogOpen;
+export class CommentDialogCancelMTA implements MultiTargetAction {
+    readonly type = CommentDialogActionTypes.CommentDialogCancelMTA;
+
+    constructor(public target: string) { }
 }
 
 export type CommentDialogAction =
-    CommentDialogOpen
-    | CommentDialogConfirm
-    | CommentDialogCancel;
+    CommentDialogOpenMTA
+    | CommentDialogConfirmMTA
+    | CommentDialogCancelMTA;

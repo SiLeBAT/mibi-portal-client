@@ -1,35 +1,39 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 import { Store, select } from '@ngrx/store';
-import { DialogState } from './../state/dialog.reducer';
-import { selectDialogConfiguration } from './../state/dialog.selectors';
+import { DialogState, DialogData } from './../state/dialog.reducer';
+import { selectDialogData } from './../state/dialog.selectors';
 import { Observable } from 'rxjs';
-import { DialogConfirm, DialogCancel } from './../state/dialog.actions';
-import { DialogConfiguration } from './../dialog.model';
+import { DialogConfirmMTA, DialogCancelMTA } from './../state/dialog.actions';
 import { SharedSlice } from '../../shared.state';
+import { tap } from 'rxjs/operators';
 
 @Component({
     selector: 'mibi-new-dialog',
     template: `<mibi-dialog-view
-    [config]="config$ | async"
+    [config]="(data$ | async).configuration"
     (onConfirm) = "onConfirm()"
     (onCancel) = "onCancel()">
     </mibi-dialog-view>`
 })
 export class NewDialogComponent {
-    config$: Observable<DialogConfiguration> = this.store$.pipe(select(selectDialogConfiguration));
+    data$: Observable<DialogData> = this.store$.pipe(
+        select(selectDialogData),
+        tap((data) => { this.caller = data.caller; })
+        );
+    private caller: string;
 
     constructor(
         private dialogRef: MatDialogRef<NewDialogComponent>,
         private store$: Store<SharedSlice<DialogState>>) { }
 
     onConfirm() {
-        this.store$.dispatch(new DialogConfirm());
+        this.store$.dispatch(new DialogConfirmMTA(this.caller));
         this.close();
     }
 
     onCancel() {
-        this.store$.dispatch(new DialogCancel());
+        this.store$.dispatch(new DialogCancelMTA(this.caller));
         this.close();
     }
 

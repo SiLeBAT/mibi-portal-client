@@ -19,7 +19,7 @@ import { LayoutBoxComponent } from './presentation/layout-box/layout-box.compone
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { SHARED_SLICE_NAME } from './shared.state';
-import { sharedReducerMap, sharedEffects, sharedMetaReducers } from './shared.store';
+import { sharedReducerMap, sharedEffects } from './shared.store';
 import { NewDialogComponent } from './dialog/components/dialog.component';
 import { DialogViewComponent } from './dialog/components/dialog-view.component';
 import { CommentDialogComponent } from './comment-dialog/components/comment-dialog.component';
@@ -43,7 +43,7 @@ import { MatProgressSpinnerModule, MatMenuModule, MatIconModule, MatToolbarModul
         MatToolbarModule,
         FormsModule,
         ReactiveFormsModule,
-        StoreModule.forFeature(SHARED_SLICE_NAME, sharedReducerMap, { metaReducers: sharedMetaReducers }),
+        StoreModule.forFeature(SHARED_SLICE_NAME, sharedReducerMap),
         EffectsModule.forFeature(sharedEffects)
     ],
     declarations: [
