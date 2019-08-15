@@ -1,14 +1,16 @@
 import { ActionReducerMap } from '@ngrx/store';
-import { CoreMainStates, coreUIReducer } from './state/core.reducer';
+import { CoreMainState, coreIsBusyReducer, coreActionItemsReducer, coreBannerReducer } from './state/core.reducer';
 import { CoreMainAction } from './state/core.actions';
-import { ValidateSamplesAction } from '../samples/validate-samples/state/validate-samples.actions';
-import { CoreMainEffects } from './state/core.effects';
+import { CoreMainEffects } from './core.effects';
+import { RouterNavigationAction } from '@ngrx/router-store';
 
-type CoreStates = CoreMainStates;
-type CoreReducerAction = CoreMainAction | ValidateSamplesAction;
+type CoreState = CoreMainState;
+type CoreReducerAction = CoreMainAction | RouterNavigationAction;
 
-export const coreReducerMap: ActionReducerMap<CoreStates, CoreReducerAction> = {
-    ui: coreUIReducer
+export const coreReducerMap: ActionReducerMap<CoreState, CoreReducerAction> = {
+    isBusy: coreIsBusyReducer,
+    enabledActionItems: coreActionItemsReducer,
+    banner: coreBannerReducer
 };
 
 export const coreEffects = [

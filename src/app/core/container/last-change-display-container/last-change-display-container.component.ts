@@ -6,8 +6,8 @@ import 'moment/locale/de';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { SystemInformation } from '../../model/system-information.model';
-import { CoreMainStates } from '../../state/core.reducer';
-import { UpdateSupportDetail } from '../../../content/state/content.actions';
+import { CoreMainState } from '../../state/core.reducer';
+import { UpdateSupportDetailSOA } from '../../../content/state/content.actions';
 
 @Component({
     selector: 'mibi-last-change-display-container',
@@ -28,7 +28,7 @@ export class LastChangeDisplayContainerComponent implements OnInit {
     private clientLastChange: moment.Moment;
     private serverLastChange: moment.Moment;
 
-    constructor(private store$: Store<CoreMainStates>, private dataService: DataService) { }
+    constructor(private store$: Store<CoreMainState>, private dataService: DataService) { }
 
     ngOnInit(): void {
         moment.locale('en');
@@ -48,7 +48,7 @@ export class LastChangeDisplayContainerComponent implements OnInit {
                 this.lastChange$.next(moment.max(dateCompare));
                 this.serverVersion = sysInfo.version;
                 this.isDataAvailable = true;
-                this.store$.dispatch(new UpdateSupportDetail({ supportContact: sysInfo.supportContact }));
+                this.store$.dispatch(new UpdateSupportDetailSOA({ supportContact: sysInfo.supportContact }));
             }
         ).catch(
             () => {

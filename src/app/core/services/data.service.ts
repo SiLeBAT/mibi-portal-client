@@ -95,7 +95,6 @@ export class DataService {
 
     logout() {
         localStorage.removeItem('currentUser');
-        return new Observable<void>().toPromise();
     }
 
     login(credentials: Credentials): Observable<TokenizedUser> {

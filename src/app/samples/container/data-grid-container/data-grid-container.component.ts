@@ -6,12 +6,11 @@ import {
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Store, select, createSelector } from '@ngrx/store';
-import * as fromSamples from '../../state/samples.reducer';
-
 import * as samplesActions from '../../state/samples.actions';
 import { IFormViewModel, IFormRowViewModel } from '../../presentation/data-grid/data-grid.component';
 import { ToolTipType } from '../../../shared/model/tooltip.model';
-import { Samples } from '../../samples.store';
+import { SamplesMainSlice } from '../../samples.state';
+import { selectFormData, selectImportedFileData } from '../../state/samples.selectors';
 
 enum AlteredField {
     WARNING = 'warn',
@@ -111,14 +110,14 @@ export class DataGridContainerComponent implements OnInit {
         }
     ];
 
-    constructor(private store$: Store<Samples>) {
+    constructor(private store$: Store<SamplesMainSlice>) {
     }
 
     ngOnInit(): void {
         this.viewModel$ = this.store$.pipe(
             select(createSelector(
-                fromSamples.selectFormData,
-                fromSamples.selectImportedFileData,
+                selectFormData,
+                selectImportedFileData,
                 (annotatedSampleData, sampleData) => ({ annotatedSampleData, sampleData })
             )),
             map(({ annotatedSampleData, sampleData }) => {
@@ -133,7 +132,7 @@ export class DataGridContainerComponent implements OnInit {
     }
 
     onValueChanged(tableData: TableDataOutput) {
-        this.store$.dispatch(new samplesActions.ChangeFieldValue(tableData.changed));
+        this.store$.dispatch(new samplesActions.UpdateSampleDataEntrySOA(tableData.changed));
     }
     private createViewModel(formSampleData: SampleData[], importedFileData: SamplePropertyValues[]) {
         const rows = formSampleData.map(

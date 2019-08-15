@@ -1,10 +1,20 @@
-import { DialogStates } from './dialog.state';
+import { DialogState } from './dialog.reducer';
 import { createSelector } from '@ngrx/store';
 import { selectSharedSlice } from '../../shared.state';
 
-export const selectDialogStates = selectSharedSlice<DialogStates>();
+export const selectDialogState = selectSharedSlice<DialogState>();
+
+export const selectDialogData = createSelector(
+    selectDialogState,
+    state => state.dialogData
+);
 
 export const selectDialogConfiguration = createSelector(
-    selectDialogStates,
-    state => state.dialogConfiguration
+    selectDialogData,
+    state => state.configuration
+);
+
+export const selectDialogCaller = createSelector(
+    selectDialogData,
+    state => state.caller
 );

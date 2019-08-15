@@ -1,11 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { User, TokenizedUser } from '../../../user/model/user.model';
 import * as userActions from '../../../user/state/user.actions';
-import * as fromUser from '../../../user/state/user.reducer';
 import { Store, select } from '@ngrx/store';
 import { takeWhile, tap, withLatestFrom } from 'rxjs/operators';
 import { Institution, fromDTOToInstitution } from '../../model/institution.model';
 import * as _ from 'lodash';
+import { selectCurrentUser } from '../../state/user.selectors';
+import { UserMainSlice } from '../../user.state';
 
 @Component({
     selector: 'mibi-profile-container',
@@ -19,13 +20,13 @@ export class ProfileContainerComponent implements OnInit, OnDestroy {
     private institution: Institution;
     private componentActive = true;
     constructor(
-        private store: Store<fromUser.UserMainState>) { }
+        private store: Store<UserMainSlice>) { }
 
     ngOnInit() {
-        this.store.pipe(select(fromUser.selectCurrentUser),
+        this.store.pipe(select(selectCurrentUser),
             withLatestFrom(this.store),
             tap(
-                (userData: [TokenizedUser | null, fromUser.UserMainState]) => {
+                (userData: [TokenizedUser | null, UserMainSlice]) => {
                     this.currentUser = userData[0];
                     if (this.currentUser) {
                         const queryId = this.currentUser.instituteId;
@@ -46,7 +47,7 @@ export class ProfileContainerComponent implements OnInit, OnDestroy {
     }
 
     logout() {
-        this.store.dispatch(new userActions.LogoutUser());
+        this.store.dispatch(new userActions.LogoutUserMSA());
     }
 
     getInstitutionName() {

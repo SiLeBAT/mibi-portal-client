@@ -6,8 +6,9 @@ import { takeWhile, tap } from 'rxjs/operators';
 import { DataService } from './core/services/data.service';
 import * as userActions from './user/state/user.actions';
 import { TokenizedUser } from './user/model/user.model';
-import { Samples } from './samples/samples.store';
-import { hasEntries } from './samples/state/samples.reducer';
+import { SamplesMainSlice } from './samples/samples.state';
+import { selectHasEntries } from './samples/state/samples.selectors';
+import { UpdateIsBusySOA, DestroyBannerSOA } from './core/state/core.actions';
 
 @Component({
     selector: 'mibi-root',
@@ -18,12 +19,12 @@ export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDe
     supportContact: string = environment.supportContact;
     private componentActive = true;
     private canUnload: boolean = true;
-    constructor(private store$: Store<Samples>, private dataService: DataService) {
+    constructor(private store$: Store<SamplesMainSlice>, private dataService: DataService) {
         super();
     }
 
     ngOnInit(): void {
-        this.store$.pipe(select(hasEntries),
+        this.store$.pipe(select(selectHasEntries),
             tap(
                 entries => this.canUnload = !entries
             ),
@@ -47,7 +48,7 @@ export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDe
     private loadInstitutions() {
         this.dataService.getAllInstitutions().toPromise().then(
             data => {
-                this.store$.dispatch(new userActions.PopulateInstitutions(data));
+                this.store$.dispatch(new userActions.UpdateInstitutionsSOA(data));
             }
         ).catch(
             () => { throw new Error(); }
@@ -66,14 +67,16 @@ export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDe
                 if (refreshResponse.refresh) {
                     user.token = refreshResponse.token;
                     this.dataService.setCurrentUser(user);
-                    this.store$.dispatch(new userActions.LoginUserSuccess(user));
+                    this.store$.dispatch(new userActions.UpdateCurrentUserSOA(user));
+                    this.store$.dispatch(new DestroyBannerSOA());
+                    this.store$.dispatch(new UpdateIsBusySOA({ isBusy: false }));
                 } else {
-                    this.store$.dispatch(new userActions.LogoutUser());
+                    this.store$.dispatch(new userActions.LogoutUserMSA());
                 }
             }
         ).catch(
             () => {
-                this.store$.dispatch(new userActions.LogoutUser());
+                this.store$.dispatch(new userActions.LogoutUserMSA());
             }
         );
     }

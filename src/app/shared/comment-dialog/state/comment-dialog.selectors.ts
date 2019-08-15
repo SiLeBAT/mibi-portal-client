@@ -1,20 +1,25 @@
-import { CommentDialogStates } from './comment-dialog.state';
+import { CommentDialogState } from './comment-dialog.reducer';
 import { createSelector } from '@ngrx/store';
 import { selectSharedSlice } from '../../shared.state';
 
-export const selectCommentDialogStates = selectSharedSlice<CommentDialogStates>();
+export const selectCommentDialogState = selectSharedSlice<CommentDialogState>();
 
-export const selectCommentDialog = createSelector(
-    selectCommentDialogStates,
-    state => state.commentDialog
+export const selectCommentDialogData = createSelector(
+    selectCommentDialogState,
+    state => state.commentDialogData
 );
 
 export const selectCommentDialogConfiguration = createSelector(
-    selectCommentDialog,
+    selectCommentDialogData,
     state => state.configuration
 );
 
 export const selectCommentDialogComment = createSelector(
-    selectCommentDialog,
+    selectCommentDialogData,
     state => state.comment
+);
+
+export const selectCommentDialogCaller = createSelector(
+    selectCommentDialogData,
+    state => state.caller
 );
