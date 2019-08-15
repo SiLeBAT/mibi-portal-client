@@ -4,7 +4,17 @@ import { selectSharedSlice } from '../../shared.state';
 
 export const selectDialogState = selectSharedSlice<DialogState>();
 
-export const selectDialogConfiguration = createSelector(
+export const selectDialogData = createSelector(
     selectDialogState,
-    state => state.dialogConfiguration
+    state => state.dialogData
+);
+
+export const selectDialogConfiguration = createSelector(
+    selectDialogData,
+    state => state.configuration
+);
+
+export const selectDialogCaller = createSelector(
+    selectDialogData,
+    state => state.caller
 );

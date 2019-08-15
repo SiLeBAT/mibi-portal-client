@@ -4,29 +4,24 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import {
     SendSamplesAction,
     SendSamplesActionTypes,
-    SendSamplesCancel,
-    StoreSampleWarnings,
-    SendSamples,
-    SendSamplesSuccess
+    UpdateSampleWarningsSOA,
+    SendSamplesSSA,
+    AddSentFileSOA
 } from './state/send-samples.actions';
 import { SamplesSlice, SamplesMainSlice } from '../samples.state';
 import { Store } from '@ngrx/store';
 import { withLatestFrom, map, concatAll, concatMap, catchError } from 'rxjs/operators';
-import { SamplesMainAction } from '../state/samples.actions';
-import { fromSource } from '../../shared/command/command.selectors';
-import { DisplayBanner } from '../../core/state/core.actions';
+import { SamplesMainAction, UpdateSampleDataSOA } from '../state/samples.actions';
+import { DisplayBannerSOA, UpdateIsBusySOA, DestroyBannerSOA } from '../../core/state/core.actions';
 import { Observable, of, from } from 'rxjs';
-import {
-    ValidateSamplesSuccess
-} from '../validate-samples/validate-samples.actions';
 import { SendSamplesState } from './state/send-samples.reducer';
 import { selectSendSamplesLastSentFiles, selectSendSamplesWarnings } from './state/send-samples.selectors';
 import * as _ from 'lodash';
 import {
-    CommentDialogOpen,
-    CommentDialogConfirm,
+    CommentDialogOpenMTA,
+    CommentDialogConfirmMTA,
     CommentDialogActionTypes,
-    CommentDialogCancel
+    CommentDialogCancelMTA
 } from '../../shared/comment-dialog/state/comment-dialog.actions';
 import { sendSamplesDialogStrings, sendSamplesDefaultDialogConfiguration } from './send-samples.constants';
 import { CommentDialogConfiguration } from '../../shared/comment-dialog/comment-dialog.model';
@@ -34,8 +29,9 @@ import { selectImportedFileName, selectFormData, selectMetaData } from '../state
 import { LogService } from '../../core/services/log.service';
 import { DataService } from '../../core/services/data.service';
 import { AuthorizationError } from '../../core/model/client-error';
-import { LogoutUser } from '../../user/state/user.actions';
+import { LogoutUserMSA } from '../../user/state/user.actions';
 import { InvalidInputError, InputChangedError } from '../../core/model/data-service-error';
+import { ofTarget } from '../../shared/ngrx/multi-target-action';
 
 @Injectable()
 export class SendSamplesEffects {
@@ -48,13 +44,13 @@ export class SendSamplesEffects {
     ) { }
 
     @Effect()
-    sendSamples$: Observable<CommentDialogOpen> = this.actions$.pipe(
-        ofType<SendSamples>(SendSamplesActionTypes.SendSamples),
+    sendSamples$: Observable<CommentDialogOpenMTA> = this.actions$.pipe(
+        ofType<SendSamplesSSA>(SendSamplesActionTypes.SendSamplesSSA),
         withLatestFrom(this.store$),
         map(([, state]) => {
             let warnings: string[] = [];
             if (this.isFileAlreadySent(state)) {
-                this.store$.dispatch(new StoreSampleWarnings({
+                this.store$.dispatch(new UpdateSampleWarningsSOA({
                     warnings: {
                         fileAlreadySent: true
                     }
@@ -69,14 +65,21 @@ export class SendSamplesEffects {
             const configuration = this.createDialogConfiguration(
                 warnings
             );
-            return new CommentDialogOpen(SendSamplesActionTypes.SendSamples, { configuration });
+            return new CommentDialogOpenMTA(SendSamplesActionTypes.SendSamplesSSA, { configuration });
         })
     );
 
     @Effect()
-    commentDialogConfirm$: Observable<DisplayBanner | ValidateSamplesSuccess | SendSamplesSuccess | LogoutUser> = this.actions$.pipe(
-        ofType<CommentDialogConfirm>(CommentDialogActionTypes.CommentDialogConfirm),
-        fromSource<CommentDialogConfirm>(SendSamplesActionTypes.SendSamples),
+    commentDialogConfirm$: Observable<
+        DisplayBannerSOA
+        | UpdateSampleDataSOA
+        | AddSentFileSOA
+        | LogoutUserMSA
+        | UpdateIsBusySOA
+        | DestroyBannerSOA
+    > = this.actions$.pipe(
+        ofType<CommentDialogConfirmMTA>(CommentDialogActionTypes.CommentDialogConfirmMTA),
+        ofTarget<CommentDialogConfirmMTA>(SendSamplesActionTypes.SendSamplesSSA),
         withLatestFrom(this.store$),
         map(([action, state]) => {
             const fileName = selectImportedFileName(state);
@@ -94,29 +97,35 @@ export class SendSamplesEffects {
                 comment: comment
             })).pipe(
                 map(() => of(
-                    new SendSamplesSuccess({ sentFile: fileName }),
-                    new DisplayBanner({ predefined: 'sendSuccess' })
+                    new AddSentFileSOA({ sentFile: fileName }),
+                    new UpdateIsBusySOA(false),
+                    new DisplayBannerSOA({ predefined: 'sendSuccess' })
                 )),
                 concatAll(),
                 catchError((error) => {
                     this.logger.error('Failed to send samples from store', error);
                     if (error instanceof InvalidInputError) {
                         return of(
-                            new ValidateSamplesSuccess(error.sampleData),
-                            new DisplayBanner({ predefined: 'validationErrors' })
+                            new UpdateSampleDataSOA(error.sampleData),
+                            new DestroyBannerSOA(),
+                            new UpdateIsBusySOA(false),
+                            new DisplayBannerSOA({ predefined: 'validationErrors' })
                         );
                     } else if (error instanceof InputChangedError) {
                         return of(
-                            new ValidateSamplesSuccess(error.sampleData),
-                            new DisplayBanner({ predefined: 'autocorrections' })
+                            new UpdateSampleDataSOA(error.sampleData),
+                            new DestroyBannerSOA(),
+                            new UpdateIsBusySOA(false),
+                            new DisplayBannerSOA({ predefined: 'autocorrections' })
                         );
                     } else if (error instanceof AuthorizationError) {
                         return of(
-                            new LogoutUser(),
-                            new DisplayBanner({ predefined: 'noAuthorizationOrActivation' })
+                            new LogoutUserMSA(),
+                            new UpdateIsBusySOA(false),
+                            new DisplayBannerSOA({ predefined: 'noAuthorizationOrActivation' })
                         );
                     }
-                    return of(new DisplayBanner({ predefined: 'sendFailure' }));
+                    return of(new UpdateIsBusySOA(false), new DisplayBannerSOA({ predefined: 'sendFailure' }));
                 })
             );
         }),
@@ -124,13 +133,13 @@ export class SendSamplesEffects {
     );
 
     @Effect()
-    commentDialogCancel$: Observable<SendSamplesCancel | DisplayBanner> = this.actions$.pipe(
-        ofType<CommentDialogCancel>(CommentDialogActionTypes.CommentDialogCancel),
-        fromSource<CommentDialogCancel>(SendSamplesActionTypes.SendSamples),
+    commentDialogCancel$: Observable<DisplayBannerSOA | UpdateIsBusySOA> = this.actions$.pipe(
+        ofType<CommentDialogCancelMTA>(CommentDialogActionTypes.CommentDialogCancelMTA),
+        ofTarget<CommentDialogCancelMTA>(SendSamplesActionTypes.SendSamplesSSA),
         concatMap(() => {
             return of(
-                new SendSamplesCancel(),
-                new DisplayBanner({ predefined: 'sendCancel' })
+                new UpdateIsBusySOA(false),
+                new DisplayBannerSOA({ predefined: 'sendCancel' })
             );
         })
     );

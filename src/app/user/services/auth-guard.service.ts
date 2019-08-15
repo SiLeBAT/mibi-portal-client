@@ -25,8 +25,9 @@ export class AuthGuard implements CanActivate {
                     const isExpired = !!helper.isTokenExpired(currentUser.token);
 
                     if (isExpired) {
-                        this.store.dispatch(new userActions.LogoutUser());
-                        this.store.dispatch(new coreActions.DisplayBanner({ predefined: 'loginUnauthorized' }));
+                        this.store.dispatch(new userActions.LogoutUserMSA());
+                        this.store.dispatch(new coreActions.UpdateIsBusySOA(false));
+                        this.store.dispatch(new coreActions.DisplayBannerSOA({ predefined: 'loginUnauthorized' }));
                     }
                     return !isExpired;
                 }

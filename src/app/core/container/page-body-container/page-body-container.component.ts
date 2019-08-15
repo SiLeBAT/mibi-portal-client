@@ -3,8 +3,9 @@ import { Observable } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { environment } from '../../../../environments/environment';
 import { CoreMainSlice } from '../../core.state';
-import { DestroyBanner } from '../../state/core.actions';
+import { DestroyBannerSOA } from '../../state/core.actions';
 import { selectIsBusy, selectIsBannerShown } from '../../state/core.selectors';
+import { tap } from 'rxjs/operators';
 
 @Component({
     selector: 'mibi-page-body-container',
@@ -15,16 +16,19 @@ export class PageBodyContainerComponent implements OnInit {
     supportContact: string;
     isBusy$: Observable<boolean>;
     isBanner$: Observable<boolean>;
+    isBanner: boolean;
     constructor(
         private store$: Store<CoreMainSlice>) { }
 
     ngOnInit() {
         this.isBusy$ = this.store$.pipe(select(selectIsBusy));
-        this.isBanner$ = this.store$.pipe(select(selectIsBannerShown));
+        this.isBanner$ = this.store$.pipe(select(selectIsBannerShown), tap(isBanner => { this.isBanner = isBanner; }));
         this.supportContact = environment.supportContact;
     }
 
     onAnimationDone() {
-        this.store$.dispatch(new DestroyBanner());
+        if (!this.isBanner) {
+            this.store$.dispatch(new DestroyBannerSOA());
+        }
     }
 }

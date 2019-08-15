@@ -20,10 +20,12 @@ export class ActivateContainerComponent implements OnInit {
     ngOnInit() {
         this.tokenValid = this.activatedRoute.snapshot.data['tokenValid'];
 
+        this.store.dispatch(new coreActions.UpdateIsBusySOA(false));
+
         if (this.tokenValid) {
-            this.store.dispatch(new coreActions.DisplayBanner({ predefined: 'accountActivationSuccess' }));
+            this.store.dispatch(new coreActions.DisplayBannerSOA({ predefined: 'accountActivationSuccess' }));
         } else {
-            this.store.dispatch(new coreActions.DisplayBanner({ predefined: 'accountActivationFailure' }));
+            this.store.dispatch(new coreActions.DisplayBannerSOA({ predefined: 'accountActivationFailure' }));
         }
     }
 

@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { MatDialogRef } from '@angular/material';
-import { CommentDialogConfiguration } from '../comment-dialog.model';
 import { FormControl } from '@angular/forms';
-import { CommentDialogConfirm, CommentDialogCancel } from '../state/comment-dialog.actions';
-import { CommentDialogState } from '../state/comment-dialog.reducer';
-import { selectCommentDialogConfiguration } from '../state/comment-dialog.selectors';
+import { CommentDialogConfirmMTA, CommentDialogCancelMTA } from '../state/comment-dialog.actions';
+import { CommentDialogState, CommentDialogData } from '../state/comment-dialog.reducer';
+import { selectCommentDialogData } from '../state/comment-dialog.selectors';
 import { Observable } from 'rxjs';
 import { SharedSlice } from '../../shared.state';
+import { tap } from 'rxjs/operators';
 
 @Component({
     selector: 'mibi-comment-dialog',
@@ -15,9 +15,12 @@ import { SharedSlice } from '../../shared.state';
     styleUrls: ['./comment-dialog.component.scss']
 })
 export class CommentDialogComponent {
-    config$: Observable<CommentDialogConfiguration> = this.store$.pipe(
-        select(selectCommentDialogConfiguration)
+    data$: Observable<CommentDialogData> = this.store$.pipe(
+        select(selectCommentDialogData),
+        tap((data) => { this.caller = data.caller; })
     );
+
+    private caller: string;
 
     commentControl = new FormControl('');
 
@@ -26,12 +29,12 @@ export class CommentDialogComponent {
         private store$: Store<SharedSlice<CommentDialogState>>) { }
 
     onConfirm() {
-        this.store$.dispatch(new CommentDialogConfirm({ comment: this.commentControl.value }));
+        this.store$.dispatch(new CommentDialogConfirmMTA(this.caller, { comment: this.commentControl.value }));
         this.close();
     }
 
     onCancel() {
-        this.store$.dispatch(new CommentDialogCancel());
+        this.store$.dispatch(new CommentDialogCancelMTA(this.caller));
         this.close();
     }
 

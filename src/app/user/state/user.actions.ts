@@ -3,45 +3,42 @@ import { Action } from '@ngrx/store';
 import { InstitutionDTO } from '../model/institution.model';
 
 export enum UserMainActionTypes {
-    LoginUser = '[User] Log in user',
-    LoginUserSuccess = '[User] Successfully logged in user',
-    LogoutUser = '[User] Log out user',
+    LoginUserSSA = '[User] Log in user',
+    LogoutUserMSA = '[User] Log out user',
+    DestroyCurrentUserSOA = '[User] Delete current user',
+    UpdateCurrentUserSOA = '[User] Store tokenized user',
     PopulateInstitutions = '[User] Populate institutions'
 }
 
-export class LoginUser implements Action {
-    readonly type = UserMainActionTypes.LoginUser;
+export class LoginUserSSA implements Action {
+    readonly type = UserMainActionTypes.LoginUserSSA;
 
-    constructor(public payload: Credentials) {
-
-    }
+    constructor(public payload: Credentials) { }
 }
 
-export class LoginUserSuccess implements Action {
-    readonly type = UserMainActionTypes.LoginUserSuccess;
-
-    constructor(public payload: TokenizedUser) {
-
-    }
+export class LogoutUserMSA implements Action {
+    readonly type = UserMainActionTypes.LogoutUserMSA;
 }
 
-export class LogoutUser implements Action {
-    readonly type = UserMainActionTypes.LogoutUser;
+export class UpdateCurrentUserSOA implements Action {
+    readonly type = UserMainActionTypes.UpdateCurrentUserSOA;
 
-    constructor() {
+    constructor(public payload: TokenizedUser) { }
+}
 
-    }
+export class DestroyCurrentUserSOA implements Action {
+    readonly type = UserMainActionTypes.DestroyCurrentUserSOA;
 }
 
 export class PopulateInstitutions implements Action {
     readonly type = UserMainActionTypes.PopulateInstitutions;
 
-    constructor(public payload: InstitutionDTO[]) {
-
-    }
+    constructor(public payload: InstitutionDTO[]) { }
 }
 
-export type UserMainAction = LoginUser
-    | LoginUserSuccess
-    | LogoutUser
+export type UserMainAction =
+    LoginUserSSA
+    | LogoutUserMSA
+    | UpdateCurrentUserSOA
+    | DestroyCurrentUserSOA
     | PopulateInstitutions;

@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import * as fromSamples from '../../samples/state/samples.reducer';
 import * as userActions from '../state/user.actions';
 import { Store, select } from '@ngrx/store';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { TokenizedUser } from '../model/user.model';
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SamplesMainSlice } from '../../samples/samples.state';
@@ -32,7 +30,7 @@ export class AnonymousGuard implements CanActivate {
                     const helper = new JwtHelperService();
                     const isExpired = !!helper.isTokenExpired(currentUser.token);
                     if (isExpired) {
-                        this.store.dispatch(new userActions.LogoutUser());
+                        this.store.dispatch(new userActions.LogoutUserMSA());
                         return isExpired;
                     }
                     if (hasEntries) {

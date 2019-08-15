@@ -22,7 +22,7 @@ export function contentMasterDataReducer(
     action: ContentMainAction
 ): MasterData {
     switch (action.type) {
-        case ContentMainActionTypes.UpdateSupportDetail:
+        case ContentMainActionTypes.UpdateSupportDetailSOA:
             return { ...state, supportContact: action.payload.supportContact };
         default:
             return state;

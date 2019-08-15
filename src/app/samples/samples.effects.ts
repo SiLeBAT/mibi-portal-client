@@ -4,7 +4,7 @@ import { saveAs } from 'file-saver';
 import 'moment/locale/de';
 import * as _ from 'lodash';
 import * as coreActions from '../core/state/core.actions';
-import { map, catchError, exhaustMap, withLatestFrom, mergeMap, tap } from 'rxjs/operators';
+import { map, catchError, exhaustMap, withLatestFrom, mergeMap, concatAll } from 'rxjs/operators';
 import { SampleSet, MarshalledData } from './model/sample-management.model';
 import { from, of } from 'rxjs';
 import { Store } from '@ngrx/store';
@@ -17,13 +17,13 @@ import { GenericActionItemComponent } from '../core/presentation/generic-action-
 import { SamplesMainSlice } from './samples.state';
 import {
     SamplesMainAction,
-    ImportExcelFile,
+    ImportExcelFileMSA,
     SamplesMainActionTypes,
-    ImportExcelFileSuccess,
-    ExportExcelFile,
-    ExportExcelFileSuccess
+    UpdateSampleSetSOA,
+    ExportExcelFileSSA,
+    ShowSamplesSSA
 } from './state/samples.actions';
-import { ValidateSamples } from './validate-samples/validate-samples.actions';
+import { ValidateSamplesMSA } from './validate-samples/validate-samples.actions';
 import { SamplesMainData } from './state/samples.reducer';
 import { selectSamplesMainData } from './state/samples.selectors';
 
@@ -41,13 +41,13 @@ export class SamplesMainEffects {
     // ImportExcelFile
 
     @Effect()
-    importExcel$ = this.actions$.pipe(
-        ofType<ImportExcelFile>(SamplesMainActionTypes.ImportExcelFile),
+    importExcelFile$ = this.actions$.pipe(
+        ofType<ImportExcelFileMSA>(SamplesMainActionTypes.ImportExcelFileMSA),
         exhaustMap((action) => {
             return from(this.dataService.unmarshalExcel(action.payload)).pipe(
                 map((unmarshalledResponse: SampleSet) => {
                     if (unmarshalledResponse.meta.nrl === '') {
-                        return (new coreActions.DisplayDialog({
+                        return of(new coreActions.DisplayDialogMSA({
                             // tslint:disable-next-line:max-line-length
                             message: `Das ausgewählte Labor im Kopf Ihres Probeneinsendebogens entspricht keiner der möglichen Vorauswahlen. Bitte wählen Sie ein Labor aus der vorhandenen Liste.`,
                             title: 'Unbekanntes NRL',
@@ -55,7 +55,10 @@ export class SamplesMainEffects {
                                 type: UserActionType.CUSTOM,
                                 label: 'Ok',
                                 onExecute: () => {
-                                    this.store$.dispatch(new ImportExcelFileSuccess(unmarshalledResponse));
+                                    this.store$.dispatch(new UpdateSampleSetSOA(unmarshalledResponse));
+                                    this.store$.dispatch(new ShowSamplesSSA());
+                                    this.store$.dispatch(new coreActions.DestroyBannerSOA());
+                                    this.store$.dispatch(new coreActions.UpdateIsBusySOA(false));
                                 },
                                 component: GenericActionItemComponent,
                                 icon: '',
@@ -64,43 +67,49 @@ export class SamplesMainEffects {
                             }
                         }));
                     }
-                    return (new ImportExcelFileSuccess(unmarshalledResponse));
+                    return of(
+                        new UpdateSampleSetSOA(unmarshalledResponse),
+                        new ShowSamplesSSA(), new coreActions.DestroyBannerSOA(),
+                        new coreActions.UpdateIsBusySOA(false)
+                        );
                 }),
+                concatAll(),
                 catchError((error) => {
                     this.logger.error(`Failed to import Excel File. error=${error}`);
-                    return of(new coreActions.DisplayBanner({ predefined: 'uploadFailure' }));
+                    return of(new coreActions.UpdateIsBusySOA(false), new coreActions.DisplayBannerSOA({ predefined: 'uploadFailure' }));
                 })
             );
         })
     );
 
     @Effect()
-    importExcelFileSuccess$ = this.actions$.pipe(
-        ofType<ImportExcelFileSuccess>(SamplesMainActionTypes.ImportExcelFileSuccess),
+    showSamples$ = this.actions$.pipe(
+        ofType<ShowSamplesSSA>(SamplesMainActionTypes.ShowSamplesSSA),
         map(() => {
             this.router.navigate(['/samples']).catch(() => {
                 throw new ClientError('Unable to navigate.');
             });
-            return new ValidateSamples(SamplesMainActionTypes.ImportExcelFile);
-        })
+            return of(new coreActions.UpdateIsBusySOA(true), new ValidateSamplesMSA());
+        }),
+        concatAll()
     );
 
     // ExportExcelFile
 
     @Effect()
     exportExcelFile$ = this.actions$.pipe(
-        ofType<ExportExcelFile>(SamplesMainActionTypes.ExportExcelFile),
+        ofType<ExportExcelFileSSA>(SamplesMainActionTypes.ExportExcelFileSSA),
         withLatestFrom(this.store$),
         mergeMap(([, state]) => {
             const marshalData: SamplesMainData = selectSamplesMainData(state);
             return from(this.dataService.marshalJSON(marshalData)).pipe(
                 map((marshalledData: MarshalledData) => {
                     saveAs(this.b64toBlob(marshalledData.binaryData, marshalledData.mimeType), marshalledData.fileName);
-                    return new ExportExcelFileSuccess();
+                    return new coreActions.UpdateIsBusySOA(false);
                 }),
                 catchError((error) => {
                     this.logger.error('Failed to export Excel File', error);
-                    return of(new coreActions.DisplayBanner({ predefined: 'exportFailure' }));
+                    return of(new coreActions.UpdateIsBusySOA(false), new coreActions.DisplayBannerSOA({ predefined: 'exportFailure' }));
                 })
             );
         })

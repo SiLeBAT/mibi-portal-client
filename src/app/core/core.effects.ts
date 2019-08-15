@@ -15,7 +15,7 @@ export class CoreMainEffects {
 
     @Effect({ dispatch: false })
     displayDialog$ = this.actions$.pipe(
-        ofType(CoreMainActionTypes.DisplayDialog),
+        ofType(CoreMainActionTypes.DisplayDialogMSA),
         pluck('payload'),
         tap((content: DialogContent) => {
             this.dialog.open(DialogComponent, {

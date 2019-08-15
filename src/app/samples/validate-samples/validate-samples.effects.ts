@@ -1,22 +1,21 @@
 import { Injectable } from '@angular/core';
 import {
     ValidateSamplesAction,
-    ValidateSamples,
-    ValidateSamplesActionTypes,
-    ValidateSamplesSuccess,
-    ValidateSamplesFailure
+    ValidateSamplesMSA,
+    ValidateSamplesActionTypes
 } from './validate-samples.actions';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { withLatestFrom, concatMap, map, catchError } from 'rxjs/operators';
+import { withLatestFrom, concatMap, map, catchError, concatAll } from 'rxjs/operators';
 import { DataService } from '../../core/services/data.service';
 import { SampleData } from '../model/sample-management.model';
 import { of, Observable } from 'rxjs';
-import { DisplayBanner } from '../../core/state/core.actions';
+import { DisplayBannerSOA, UpdateIsBusySOA, DestroyBannerSOA } from '../../core/state/core.actions';
 import { LogService } from '../../core/services/log.service';
 import { SamplesMainSlice } from '../samples.state';
 import * as _ from 'lodash';
 import { selectSamplesMainData } from '../state/samples.selectors';
+import { UpdateSampleDataSOA } from '../state/samples.actions';
 
 @Injectable()
 export class ValidateSamplesEffects {
@@ -29,20 +28,21 @@ export class ValidateSamplesEffects {
     ) { }
 
     @Effect()
-    validateSamples$: Observable<ValidateSamplesSuccess | ValidateSamplesFailure | DisplayBanner> = this.actions$.pipe(
-        ofType<ValidateSamples>(ValidateSamplesActionTypes.ValidateSamples),
+    validateSamples$: Observable<UpdateSampleDataSOA | DisplayBannerSOA | UpdateIsBusySOA | DestroyBannerSOA> = this.actions$.pipe(
+        ofType<ValidateSamplesMSA>(ValidateSamplesActionTypes.ValidateSamplesMSA),
         withLatestFrom(this.store$),
         concatMap(([, state]) => {
             const sampleData = selectSamplesMainData(state);
             return this.dataService.validateSampleData(sampleData).pipe(
                 map((annotatedSamples: SampleData[]) => {
-                    return new ValidateSamplesSuccess(annotatedSamples);
+                    return of(new UpdateSampleDataSOA(annotatedSamples), new DestroyBannerSOA(), new UpdateIsBusySOA(false));
                 }),
+                concatAll(),
                 catchError((error) => {
                     this.logger.error('Failed to validate samples', error);
                     return of(
-                        new ValidateSamplesFailure(),
-                        new DisplayBanner({ predefined: 'validationFailure' })
+                        new UpdateIsBusySOA(false),
+                        new DisplayBannerSOA({ predefined: 'validationFailure' })
                     );
                 })
             );
