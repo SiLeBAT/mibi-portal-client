@@ -11,7 +11,7 @@ import {
 import { SamplesSlice, SamplesMainSlice } from '../samples.state';
 import { Store } from '@ngrx/store';
 import { withLatestFrom, map, concatAll, concatMap, catchError } from 'rxjs/operators';
-import { SamplesMainAction, UpdateSampleDataSOA } from '../state/samples.actions';
+import { SamplesMainAction, UpdateSampleSOA } from '../state/samples.actions';
 import { DisplayBannerSOA, UpdateIsBusySOA, DestroyBannerSOA } from '../../core/state/core.actions';
 import { Observable, of, from } from 'rxjs';
 import { SendSamplesState } from './state/send-samples.reducer';
@@ -72,7 +72,7 @@ export class SendSamplesEffects {
     @Effect()
     commentDialogConfirm$: Observable<
         DisplayBannerSOA
-        | UpdateSampleDataSOA
+        | UpdateSampleSOA
         | AddSentFileSOA
         | LogoutUserMSA
         | UpdateIsBusySOA
@@ -106,14 +106,14 @@ export class SendSamplesEffects {
                     this.logger.error('Failed to send samples from store', error);
                     if (error instanceof InvalidInputError) {
                         return of(
-                            new UpdateSampleDataSOA(error.sampleData),
+                            new UpdateSampleSOA(error.samples),
                             new DestroyBannerSOA(),
                             new UpdateIsBusySOA({ isBusy: false }),
                             new DisplayBannerSOA({ predefined: 'validationErrors' })
                         );
                     } else if (error instanceof InputChangedError) {
                         return of(
-                            new UpdateSampleDataSOA(error.sampleData),
+                            new UpdateSampleSOA(error.samples),
                             new DestroyBannerSOA(),
                             new UpdateIsBusySOA({ isBusy: false }),
                             new DisplayBannerSOA({ predefined: 'autocorrections' })
@@ -128,7 +128,7 @@ export class SendSamplesEffects {
                     return of(
                         new UpdateIsBusySOA({ isBusy: false }),
                         new DisplayBannerSOA({ predefined: 'sendFailure' })
-                        );
+                    );
                 })
             );
         }),

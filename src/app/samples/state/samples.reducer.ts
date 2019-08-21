@@ -1,12 +1,13 @@
+import { SampleData } from './../model/sample-management.model';
 import { SamplesMainAction, SamplesMainActionTypes } from './samples.actions';
 import {
     SamplePropertyValues,
-    SampleData,
+    Sample,
     SampleSetMetaData,
     SampleSet
 } from '../model/sample-management.model';
 import { ValidateSamplesAction } from '../validate-samples/validate-samples.actions';
-import { Urgency } from '../model/sample.enums';
+import { Urgency, NRL } from '../model/sample.enums';
 import { getDataValuesFromAnnotatedData } from './samples.selectors';
 
 // STATE
@@ -20,7 +21,7 @@ export interface ImportedFile {
     data: SamplePropertyValues[];
 }
 export interface SamplesMainData {
-    formData: SampleData[];
+    formData: Sample[];
     importedFile: ImportedFile | null;
     meta: SampleSetMetaData;
 }
@@ -29,7 +30,7 @@ const initialMainData: SamplesMainData = {
     formData: [],
     importedFile: null,
     meta: {
-        nrl: '',
+        nrl: NRL.UNKNOWN,
         urgency: Urgency.NORMAL,
         sender: {
             instituteName: '',
@@ -74,18 +75,23 @@ export function samplesMainReducer(
                     formData: [...unmarshalledData.samples],
                     importedFile: {
                         fileName: unmarshalledData.meta.fileName || '',
-                        data: unmarshalledData.samples.map(getDataValuesFromAnnotatedData)
+                        data: unmarshalledData.samples.map(
+                            sample => {
+                                return getDataValuesFromAnnotatedData(sample.sampleData);
+                            }
+                        )
                     },
                     meta: unmarshalledData.meta
                 }
             };
-        case SamplesMainActionTypes.UpdateSampleDataSOA:
-            const mergedEntries: SampleData[] = action.payload.map(
+        case SamplesMainActionTypes.UpdateSampleSOA:
+            const mergedEntries: Sample[] = action.payload.map(
                 (sample, i) => {
-                    const result: SampleData = { ...sample };
-                    Object.keys(result).forEach(prop => {
-                        if (state.formData[i][prop].oldValue && !result[prop].oldValue) {
-                            result[prop].oldValue = state.formData[i][prop].oldValue;
+                    const entry: Sample = state.formData[i];
+                    const result: Sample = { ...sample };
+                    Object.keys(result.sampleData).forEach(prop => {
+                        if (entry.sampleData[prop].oldValue && !result.sampleData[prop].oldValue) {
+                            result.sampleData[prop].oldValue = entry.sampleData[prop].oldValue;
                         }
                     });
                     return result;
@@ -103,27 +109,27 @@ export function samplesMainReducer(
 
             if (originalValue !== newValue) {
 
-                const newEntries = state.formData.map((sampleData: SampleData, i: number) => {
+                const newEntries = state.formData.map((sampleEntry: Sample, i: number) => {
 
-                    const newData = { ...sampleData };
+                    const newData: Sample = { ...sampleEntry };
 
                     if (i === rowIndex) {
 
-                        newData[columnId] = {
-                            ...sampleData[columnId], ...{
+                        newData.sampleData[columnId] = {
+                            ...sampleEntry.sampleData[columnId], ...{
                                 value: newValue
                             }
                         };
                         if (state.importedFile) {
                             if (newValue === state.importedFile.data[i][columnId]) {
-                                delete newData[columnId].oldValue;
+                                delete newData.sampleData[columnId].oldValue;
                             } else {
-                                newData[columnId].oldValue = state.importedFile.data[i][columnId];
+                                newData.sampleData[columnId].oldValue = state.importedFile.data[i][columnId];
                             }
                         }
 
-                        newData[columnId].errors = [];
-                        newData[columnId].correctionOffer = [];
+                        newData.sampleData[columnId].errors = [];
+                        newData.sampleData[columnId].correctionOffer = [];
                     }
 
                     return newData;

@@ -118,7 +118,8 @@ export class DataGridComponent implements OnInit, AfterViewChecked {
             columns: (col: number) => {
                 if (col < this.colConfig.length) {
                     return {
-                        data: this.colConfig[col].id + '.value'
+                        data: this.colConfig[col].id + '.value',
+                        readOnly: !!this.colConfig[col].readOnly
                     };
                 }
                 return undefined;
@@ -165,6 +166,9 @@ export class DataGridComponent implements OnInit, AfterViewChecked {
                 renderer: this.cellRenderer
             };
 
+            if (this.colConfig[cellCol].readOnly) {
+                cellProperties.className = cellProperties.className + ' readonly';
+            }
             if (cellConfig.correctionOffer.length) {
                 cellProperties.source = cellConfig.correctionOffer;
                 cellProperties.type = 'autocomplete';

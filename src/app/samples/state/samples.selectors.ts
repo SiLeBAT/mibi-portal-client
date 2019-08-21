@@ -1,5 +1,6 @@
+import { SampleData, Sample } from './../model/sample-management.model';
 import { createSelector } from '@ngrx/store';
-import { SampleEdits, SampleData, SamplePropertyValues } from '../model/sample-management.model';
+import { SamplePropertyValues } from '../model/sample-management.model';
 import { selectSamplesSlice } from '../samples.state';
 import { SamplesMainState } from './samples.reducer';
 import * as _ from 'lodash';
@@ -8,6 +9,10 @@ export function getDataValuesFromAnnotatedData(sampleData: SampleData): SamplePr
     const result: SamplePropertyValues = {};
     Object.keys(sampleData).forEach(prop => result[prop] = sampleData[prop].value);
     return result;
+}
+
+export function getDataFromAnnotatedData(sample: Sample): SampleData {
+    return sample.sampleData;
 }
 
 export const selectSamplesMainState = selectSamplesSlice<SamplesMainState>();
@@ -30,18 +35,6 @@ export const selectImportedFileName = createSelector(selectImportedFile, (file) 
         return '';
     }
 });
-
-export const selectDataValues = createSelector(selectFormData, state => state.map(getDataValuesFromAnnotatedData));
-
-export const selectDataEdits = createSelector(selectFormData, state => state.map(e => {
-    const result: SampleEdits = {};
-    Object.keys(e).forEach(prop => {
-        if (_.isString(e[prop].oldValue)) {
-            result[prop] = e[prop].oldValue || '';
-        }
-    });
-    return result;
-}));
 
 export const selectMarshalData = createSelector(selectSamplesMainData, state => ({
     samples: state.formData,

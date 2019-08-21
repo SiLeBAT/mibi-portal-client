@@ -45,6 +45,11 @@ The name is explicit here. This folder contains all the components used to build
   box-shadow: inset 0 0 0 2px $primary-color;
 }
 
+.handsontable td.readonly {
+  background-color: #f3f3f3;
+  color: black;
+}
+
 .htAutocompleteArrow {
   display: none;
 }
