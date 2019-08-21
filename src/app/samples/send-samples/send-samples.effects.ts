@@ -106,14 +106,14 @@ export class SendSamplesEffects {
                     this.logger.error('Failed to send samples from store', error);
                     if (error instanceof InvalidInputError) {
                         return of(
-                            new UpdateSampleDataSOA(error.sampleData),
+                            new UpdateSampleDataSOA(error.samples),
                             new DestroyBannerSOA(),
                             new UpdateIsBusySOA({ isBusy: false }),
                             new DisplayBannerSOA({ predefined: 'validationErrors' })
                         );
                     } else if (error instanceof InputChangedError) {
                         return of(
-                            new UpdateSampleDataSOA(error.sampleData),
+                            new UpdateSampleDataSOA(error.samples),
                             new DestroyBannerSOA(),
                             new UpdateIsBusySOA({ isBusy: false }),
                             new DisplayBannerSOA({ predefined: 'autocorrections' })
@@ -128,7 +128,7 @@ export class SendSamplesEffects {
                     return of(
                         new UpdateIsBusySOA({ isBusy: false }),
                         new DisplayBannerSOA({ predefined: 'sendFailure' })
-                        );
+                    );
                 })
             );
         }),

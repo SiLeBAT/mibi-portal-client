@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as _ from 'lodash';
 import {
- ColConfig, TableDataOutput, SampleData, SamplePropertyValues
+    ColConfig, TableDataOutput, SamplePropertyValues, Sample
 } from '../../model/sample-management.model';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
@@ -10,7 +10,7 @@ import * as samplesActions from '../../state/samples.actions';
 import { IFormViewModel, IFormRowViewModel } from '../../presentation/data-grid/data-grid.component';
 import { ToolTipType } from '../../../shared/model/tooltip.model';
 import { SamplesMainSlice } from '../../samples.state';
-import { selectFormData, selectImportedFileData } from '../../state/samples.selectors';
+import { selectImportedFileData, selectFormData } from '../../state/samples.selectors';
 
 enum AlteredField {
     WARNING = 'warn',
@@ -32,6 +32,11 @@ export class DataGridContainerComponent implements OnInit {
     viewModel$: Observable<IFormViewModel>;
 
     columnConfigArray: ColConfig[] = [
+        {
+            id: 'nrl',
+            title: 'NRL',
+            readOnly: true
+        },
         {
             id: 'sample_id',
             title: 'Ihre Proben&shy;ummer'
@@ -118,11 +123,11 @@ export class DataGridContainerComponent implements OnInit {
             select(createSelector(
                 selectFormData,
                 selectImportedFileData,
-                (annotatedSampleData, sampleData) => ({ annotatedSampleData, sampleData })
+                (samples, sampleData) => ({ samples, sampleData })
             )),
-            map(({ annotatedSampleData, sampleData }) => {
-                if (annotatedSampleData) {
-                    return this.createViewModel(annotatedSampleData, sampleData);
+            map(({ samples, sampleData }) => {
+                if (samples) {
+                    return this.createViewModel(samples, sampleData);
                 }
                 return {
                     data: []
@@ -134,12 +139,12 @@ export class DataGridContainerComponent implements OnInit {
     onValueChanged(tableData: TableDataOutput) {
         this.store$.dispatch(new samplesActions.UpdateSampleDataEntrySOA(tableData.changed));
     }
-    private createViewModel(formSampleData: SampleData[], importedFileData: SamplePropertyValues[]) {
-        const rows = formSampleData.map(
-            (row: SampleData, index) => {
+    private createViewModel(formSamples: Sample[], importedFileData: SamplePropertyValues[]) {
+        const rows = formSamples.map(
+            (row: Sample, index) => {
                 const result: IFormRowViewModel = {};
 
-                _.forEach(row, (samplePropertyEntry, sampleProperty) => {
+                _.forEach(row.sampleData, (samplePropertyEntry, sampleProperty) => {
                     result[sampleProperty] = {
                         id: sampleProperty,
                         value: samplePropertyEntry.value,
@@ -162,6 +167,15 @@ export class DataGridContainerComponent implements OnInit {
                         };
                     }
 
+                });
+
+                _.forEach(row.sampleMeta, (samplePropertyEntry, sampleProperty) => {
+                    result[sampleProperty] = {
+                        id: sampleProperty,
+                        value: samplePropertyEntry,
+                        correctionOffer: [],
+                        editMessage: []
+                    };
                 });
 
                 return result;

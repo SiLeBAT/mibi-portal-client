@@ -1,8 +1,9 @@
-import { SampleProperty } from '../../samples/model/sample-management.model';
+import { SampleProperty, SampleMetaProperty } from '../../samples/model/sample-management.model';
 
 export type SamplePropertyValuesDTO = Record<SampleProperty, string>;
 export type AnnotatedSampleDataDTO = Record<SampleProperty, AnnotatedSampleDataEntryDTO>;
 export type SampleDataDTO = Record<SampleProperty, SampleDataEntryDTO>;
+export type SampleMetaDTO = Record<SampleMetaProperty, string>;
 type UrgencyDTO = 'NORMAL' | 'EILT';
 
 interface AddressDTO {
@@ -43,11 +44,14 @@ interface SampleValidationErrorDTO {
     readonly message: string;
 }
 
-export interface AnnotatedSampleDTO {
+interface SampleBaseDTO {
+    sampleMeta: SampleMetaDTO;
+}
+export interface AnnotatedSampleDTO extends SampleBaseDTO {
     sampleData: AnnotatedSampleDataDTO;
 }
 
-interface SampleDTO {
+export interface SampleDTO extends SampleBaseDTO {
     sampleData: SampleDataDTO;
 }
 

@@ -26,6 +26,7 @@ import {
 import { ValidateSamplesMSA } from './validate-samples/validate-samples.actions';
 import { SamplesMainData } from './state/samples.reducer';
 import { selectSamplesMainData } from './state/samples.selectors';
+import { NRL } from './model/sample.enums';
 
 @Injectable()
 export class SamplesMainEffects {
@@ -46,38 +47,16 @@ export class SamplesMainEffects {
         exhaustMap((action) => {
             return from(this.dataService.unmarshalExcel(action.payload)).pipe(
                 map((unmarshalledResponse: SampleSet) => {
-                    if (unmarshalledResponse.meta.nrl === '') {
-                        return of(new coreActions.DisplayDialogMSA({
-                            // tslint:disable-next-line:max-line-length
-                            message: `Das ausgewählte Labor im Kopf Ihres Probeneinsendebogens entspricht keiner der möglichen Vorauswahlen. Bitte wählen Sie ein Labor aus der vorhandenen Liste.`,
-                            title: 'Unbekanntes NRL',
-                            mainAction: {
-                                type: UserActionType.CUSTOM,
-                                label: 'Ok',
-                                onExecute: () => {
-                                    this.store$.dispatch(new UpdateSampleSetSOA(unmarshalledResponse));
-                                    this.store$.dispatch(new ShowSamplesSSA());
-                                    this.store$.dispatch(new coreActions.DestroyBannerSOA());
-                                    this.store$.dispatch(new coreActions.UpdateIsBusySOA({ isBusy: false }));
-                                },
-                                component: GenericActionItemComponent,
-                                icon: '',
-                                color: ColorType.PRIMARY,
-                                focused: true
-                            }
-                        }));
-                    }
                     return of(
                         new UpdateSampleSetSOA(unmarshalledResponse),
-                        new ShowSamplesSSA(), new coreActions.DestroyBannerSOA(),
-                        new coreActions.UpdateIsBusySOA({ isBusy: false })
-                        );
+                        new ShowSamplesSSA()
+                    );
                 }),
                 concatAll(),
                 catchError((error) => {
                     this.logger.error(`Failed to import Excel File. error=${error}`);
                     return of(new coreActions.UpdateIsBusySOA({ isBusy: false }),
-                    new coreActions.DisplayBannerSOA({ predefined: 'uploadFailure' })
+                        new coreActions.DisplayBannerSOA({ predefined: 'uploadFailure' })
                     );
                 })
             );
