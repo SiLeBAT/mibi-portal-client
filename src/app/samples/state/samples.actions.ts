@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { ChangedDataGridField, SampleSet, ExcelFile, SampleData } from '../model/sample-management.model';
+import { ChangedDataGridField, SampleSet, ExcelFile, Sample } from '../model/sample-management.model';
 
 export enum SamplesMainActionTypes {
     UpdateSampleSetSOA = '[Samples] Set sample set',
@@ -26,7 +26,7 @@ export class DestroySampleSetSOA implements Action {
 export class UpdateSampleDataSOA implements Action {
     readonly type = SamplesMainActionTypes.UpdateSampleDataSOA;
 
-    constructor(public payload: SampleData[]) { }
+    constructor(public payload: Sample[]) { }
 }
 
 export class UpdateSampleDataEntrySOA implements Action {

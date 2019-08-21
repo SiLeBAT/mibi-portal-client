@@ -8,7 +8,7 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { withLatestFrom, concatMap, map, catchError, concatAll } from 'rxjs/operators';
 import { DataService } from '../../core/services/data.service';
-import { SampleData } from '../model/sample-management.model';
+import { Sample } from '../model/sample-management.model';
 import { of, Observable } from 'rxjs';
 import { DisplayBannerSOA, UpdateIsBusySOA, DestroyBannerSOA } from '../../core/state/core.actions';
 import { LogService } from '../../core/services/log.service';
@@ -34,7 +34,7 @@ export class ValidateSamplesEffects {
         concatMap(([, state]) => {
             const sampleData = selectSamplesMainData(state);
             return this.dataService.validateSampleData(sampleData).pipe(
-                map((annotatedSamples: SampleData[]) => {
+                map((annotatedSamples: Sample[]) => {
                     return of(
                         new UpdateSampleDataSOA(annotatedSamples),
                         new DestroyBannerSOA(),
