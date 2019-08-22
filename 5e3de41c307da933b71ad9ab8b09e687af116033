@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ed989e01_21c4342b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1015828
+      },
+      "writtenOn": "2019-08-22T11:02:31Z",
+      "side": 1,
+      "message": "I would add a comment for extracting the DTO conversions to services",
+      "revId": "5e3de41c307da933b71ad9ab8b09e687af116033",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6c2f9f1e_42686945",
+        "filename": "src/app/core/services/entity-factory.service.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1015828
+      },
+      "writtenOn": "2019-08-22T11:02:31Z",
+      "side": 1,
+      "message": "typo, i\u0027ve seen this elsewhere :)",
+      "range": {
+        "startLine": 70,
+        "startChar": 32,
+        "endLine": 70,
+        "endChar": 41
+      },
+      "revId": "5e3de41c307da933b71ad9ab8b09e687af116033",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ebf59f96_ab3b4c97",
+        "filename": "src/app/core/services/entity-factory.service.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1015828
+      },
+      "writtenOn": "2019-08-22T11:02:31Z",
+      "side": 1,
+      "message": "I dont understand this. I thought the server already uses this enum and puts it to the validated response sample meta. Why this gets parsed here again?",
+      "revId": "5e3de41c307da933b71ad9ab8b09e687af116033",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9bd4da94_bd116fc8",
+        "filename": "src/app/samples/state/samples.actions.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1015828
+      },
+      "writtenOn": "2019-08-22T11:02:31Z",
+      "side": 1,
+      "message": "rename to UpdateSampleSOA",
+      "range": {
+        "startLine": 26,
+        "startChar": 13,
+        "endLine": 26,
+        "endChar": 33
+      },
+      "revId": "5e3de41c307da933b71ad9ab8b09e687af116033",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
