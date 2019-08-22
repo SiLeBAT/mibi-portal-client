@@ -4,8 +4,7 @@ import {
     Sample,
     SampleSet,
     SampleSetMetaData,
-    SampleData,
-    SampleMeta
+    SampleData
 } from '../../samples/model/sample-management.model';
 import {
     AnnotatedSampleSetDTO,
@@ -15,7 +14,6 @@ import {
     SampleDataDTO,
     OrderDTO,
     SampleDTO,
-    SampleMetaDTO,
     AnnotatedSampleDTO,
     AnnotatedSampleDataDTO
 } from '../model/shared-dto.model';
@@ -55,8 +53,7 @@ export class DTOFactoryService {
 
     private fromSample(sample: Sample): SampleDTO {
         return {
-            sampleData: this.fromSampleData(sample.sampleData),
-            sampleMeta: this.fromSampleMeta(sample.sampleMeta)
+            sampleData: this.fromSampleData(sample.sampleData)
         };
     }
 
@@ -67,12 +64,6 @@ export class DTOFactoryService {
             oldValue: sampleData[prop].oldValue
         });
         return dto;
-    }
-
-    private fromSampleMeta(sampleMeta: SampleMeta): SampleMetaDTO {
-        return {
-            nrl: sampleMeta.nrl.toString()
-        };
     }
 
     private fromSampleSetMeta(meta: SampleSetMetaData): SampleSetMetaDTO {
@@ -95,8 +86,7 @@ export class DTOFactoryService {
 
     private fromSampleToAnnotatedDTO(sample: Sample): AnnotatedSampleDTO {
         return {
-            sampleData: this.fromSampleDataToAnnotatedDTO(sample.sampleData),
-            sampleMeta: this.fromSampleMeta(sample.sampleMeta)
+            sampleData: this.fromSampleDataToAnnotatedDTO(sample.sampleData)
         };
     }
 

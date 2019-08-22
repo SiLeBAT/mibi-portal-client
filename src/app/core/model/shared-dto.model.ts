@@ -1,9 +1,9 @@
 import { SampleProperty, SampleMetaProperty } from '../../samples/model/sample-management.model';
+import { NRL } from '../../samples/model/sample.enums';
 
 export type SamplePropertyValuesDTO = Record<SampleProperty, string>;
 export type AnnotatedSampleDataDTO = Record<SampleProperty, AnnotatedSampleDataEntryDTO>;
 export type SampleDataDTO = Record<SampleProperty, SampleDataEntryDTO>;
-export type SampleMetaDTO = Record<SampleMetaProperty, string>;
 type UrgencyDTO = 'NORMAL' | 'EILT';
 
 interface AddressDTO {
@@ -44,8 +44,12 @@ interface SampleValidationErrorDTO {
     readonly message: string;
 }
 
+export interface SampleMetaDTO {
+    nrl?: NRL;
+}
+
 interface SampleBaseDTO {
-    sampleMeta: SampleMetaDTO;
+    sampleMeta?: SampleMetaDTO;
 }
 export interface AnnotatedSampleDTO extends SampleBaseDTO {
     sampleData: AnnotatedSampleDataDTO;

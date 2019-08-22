@@ -33,7 +33,7 @@ export class EntityFactoryService {
     toSample(dto: SampleDTO): Sample {
         return {
             sampleData: this.toSampleData(dto.sampleData),
-            sampleMeta: this.toSampleMeta(dto.sampleMeta)
+            sampleMeta: dto.sampleMeta ? this.toSampleMeta(dto.sampleMeta) : { nrl: NRL.UNKNOWN }
         };
     }
 
@@ -63,7 +63,7 @@ export class EntityFactoryService {
 
     private toSampleMeta(dto: SampleMetaDTO): SampleMeta {
         return {
-            nrl: this.fromNRLStringToEnum(dto.nrl)
+            nrl: dto.nrl ? this.fromNRLStringToEnum(dto.nrl) : NRL.UNKNOWN
         };
     }
 
