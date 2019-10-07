@@ -102,6 +102,8 @@ export class RegisterContainerComponent implements OnInit, OnDestroy {
             map((data: InstitutionDTO[]) => {
                 return data.map(institution => {
                     return fromDTOToInstitution(institution);
+                }).sort((a: Institution, b: Institution) => {
+                    return a.getFullName().localeCompare(b.getFullName());
                 });
             }));
     }
