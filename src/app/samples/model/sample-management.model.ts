@@ -113,7 +113,13 @@ export interface MarshalledData {
     mimeType: string;
 }
 
+export enum ReceiveAs {
+    EXCEL,
+    PDF
+}
+
 export interface SampleSubmission {
     order: SampleSet;
     comment: string;
+    receiveAs: ReceiveAs;
 }

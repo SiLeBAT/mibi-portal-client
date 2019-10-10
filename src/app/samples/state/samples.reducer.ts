@@ -84,7 +84,7 @@ export function samplesMainReducer(
                     meta: unmarshalledData.meta
                 }
             };
-        case SamplesMainActionTypes.UpdateSampleSOA:
+        case SamplesMainActionTypes.UpdateSamplesSOA:
             const mergedEntries: Sample[] = action.payload.map(
                 (sample, i) => {
                     const entry: Sample = state.formData[i];

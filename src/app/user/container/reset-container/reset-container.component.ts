@@ -18,15 +18,15 @@ export class ResetContainerComponent {
     }
 
     reset(password: string) {
-
         const token = this.activatedRoute.snapshot.params['id'];
 
+        this.store.dispatch(new coreActions.UpdateIsBusySOA({ isBusy: true }));
         this.dataService.resetPassword(
             password, token).toPromise().then(
-                (response) => {
+                () => {
+                    this.store.dispatch(new coreActions.UpdateIsBusySOA({ isBusy: false }));
                     this.router.navigate(['users/login']).then(
                         () => {
-                            this.store.dispatch(new coreActions.UpdateIsBusySOA({ isBusy: false }));
                             this.store.dispatch(new coreActions.DisplayBannerSOA({ predefined: 'passwordChangeSuccess' }));
                         }
                     ).catch(() => {
@@ -34,7 +34,7 @@ export class ResetContainerComponent {
                     });
                 }
             ).catch(
-                (response) => {
+                () => {
                     this.store.dispatch(new coreActions.UpdateIsBusySOA({ isBusy: false }));
                     this.store.dispatch(new coreActions.DisplayBannerSOA({ predefined: 'passwordChangeFailure' }));
                 }

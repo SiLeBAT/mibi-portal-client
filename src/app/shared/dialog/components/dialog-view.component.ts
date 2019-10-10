@@ -11,10 +11,10 @@ export class DialogViewComponent {
     config: DialogConfiguration;
 
     @Output()
-    confirm: EventEmitter<string> = new EventEmitter();
+    confirm: EventEmitter<void> = new EventEmitter();
 
     @Output()
-    cancel: EventEmitter<string> = new EventEmitter();
+    cancel: EventEmitter<void> = new EventEmitter();
 
     onConfirm() {
         this.confirm.emit();

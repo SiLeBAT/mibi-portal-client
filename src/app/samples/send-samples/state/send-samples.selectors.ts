@@ -1,6 +1,7 @@
-import { selectSamplesSlice } from '../../samples.state';
+import { selectSamplesSlice, SamplesMainSlice, SamplesSlice } from '../../samples.state';
 import { SendSamplesState } from './send-samples.reducer';
 import { createSelector } from '@ngrx/store';
+import { selectImportedFileName } from '../../state/samples.selectors';
 
 export const selectSendSamplesState = selectSamplesSlice<SendSamplesState>();
 
@@ -9,7 +10,9 @@ export const selectSendSamplesLastSentFiles = createSelector(
     state => state.lastSentFiles
 );
 
-export const selectSendSamplesWarnings = createSelector(
-    selectSendSamplesState,
-    state => state.sendWarnings
+export const selectSendSamplesIsFileAlreadySent = createSelector<
+SamplesMainSlice & SamplesSlice<SendSamplesState>, string, string[], boolean>(
+    selectImportedFileName,
+    selectSendSamplesLastSentFiles,
+    (fileName, lastSentFiles) => lastSentFiles.includes(fileName)
 );

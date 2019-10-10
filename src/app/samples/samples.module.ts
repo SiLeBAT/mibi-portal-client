@@ -17,6 +17,8 @@ import { MatInputModule, MatFormFieldModule } from '@angular/material';
 import { SAMPLES_SLICE_NAME } from './samples.state';
 import { samplesReducerMap, samplesEffects } from './samples.store';
 import { NoSampleGuard } from './services/no-sample-guard.service';
+import { SendDialogComponent } from './send-samples/components/send-dialog.component';
+import { SendDialogViewComponent } from './send-samples/components/send-dialog-view.component';
 
 const SAMPLES_ROUTES = [
     { path: 'upload', component: UploadViewComponent },
@@ -42,9 +44,11 @@ const SAMPLES_ROUTES = [
         DataGridComponent,
         DataGridContainerComponent,
         SampleViewComponent,
-        UploadViewComponent
+        UploadViewComponent,
+        SendDialogViewComponent,
+        SendDialogComponent
     ],
-    entryComponents: [],
+    entryComponents: [SendDialogComponent],
     exports: [],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

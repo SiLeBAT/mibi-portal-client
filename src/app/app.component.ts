@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { environment } from '../environments/environment';
 import { GuardedUnloadComponent } from './shared/container/guarded-unload.component';
 import { Store, select } from '@ngrx/store';
@@ -8,13 +8,13 @@ import * as userActions from './user/state/user.actions';
 import { TokenizedUser } from './user/model/user.model';
 import { SamplesMainSlice } from './samples/samples.state';
 import { selectHasEntries } from './samples/state/samples.selectors';
-import { UpdateIsBusySOA, DestroyBannerSOA } from './core/state/core.actions';
+import { UpdateIsBusySOA, DestroyBannerSOA, DisplayBannerSOA } from './core/state/core.actions';
 
 @Component({
     selector: 'mibi-root',
     templateUrl: './app.component.html'
 })
-export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDestroy, AfterViewInit {
+export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDestroy {
 
     supportContact: string = environment.supportContact;
     private componentActive = true;
@@ -30,9 +30,7 @@ export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDe
             ),
             takeWhile(() => this.componentActive)
         ).subscribe();
-    }
 
-    ngAfterViewInit(): void {
         this.loadInstitutions();
         this.loadUser();
     }
@@ -46,12 +44,18 @@ export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDe
     }
 
     private loadInstitutions() {
+        this.store$.dispatch(new UpdateIsBusySOA({ isBusy: true }));
         this.dataService.getAllInstitutions().toPromise().then(
             data => {
+                this.store$.dispatch(new UpdateIsBusySOA({ isBusy: false }));
                 this.store$.dispatch(new userActions.UpdateInstitutionsSOA(data));
             }
         ).catch(
-            () => { throw new Error(); }
+            () => {
+                this.store$.dispatch(new UpdateIsBusySOA({ isBusy: false }));
+                this.store$.dispatch(new DisplayBannerSOA({ predefined: 'defaultError' }));
+                throw new Error();
+            }
         );
     }
 
@@ -62,20 +66,22 @@ export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDe
         }
         const user: TokenizedUser = JSON.parse(userJson);
 
+        this.store$.dispatch(new UpdateIsBusySOA({ isBusy: true }));
         this.dataService.refreshToken().toPromise().then(
             refreshResponse => {
+                this.store$.dispatch(new UpdateIsBusySOA({ isBusy: false }));
                 if (refreshResponse.refresh) {
                     user.token = refreshResponse.token;
                     this.dataService.setCurrentUser(user);
                     this.store$.dispatch(new userActions.UpdateCurrentUserSOA(user));
                     this.store$.dispatch(new DestroyBannerSOA());
-                    this.store$.dispatch(new UpdateIsBusySOA({ isBusy: false }));
                 } else {
                     this.store$.dispatch(new userActions.LogoutUserMSA());
                 }
             }
         ).catch(
             () => {
+                this.store$.dispatch(new UpdateIsBusySOA({ isBusy: false }));
                 this.store$.dispatch(new userActions.LogoutUserMSA());
             }
         );

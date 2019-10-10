@@ -4,7 +4,7 @@ import { ChangedDataGridField, SampleSet, ExcelFile, Sample } from '../model/sam
 export enum SamplesMainActionTypes {
     UpdateSampleSetSOA = '[Samples] Set sample set',
     DestroySampleSetSOA = '[Samples] Clear store of all samples related data',
-    UpdateSampleSOA = '[Samples] Set sample',
+    UpdateSamplesSOA = '[Samples] Set samples',
     UpdateSampleDataEntrySOA = '[Samples] Change single sample data field value',
     ShowSamplesSSA = '[Samples] Navigate to samples view and validate samples',
     ImportExcelFileMSA = '[Samples] Import Excel file',
@@ -23,8 +23,8 @@ export class DestroySampleSetSOA implements Action {
     readonly type = SamplesMainActionTypes.DestroySampleSetSOA;
 }
 
-export class UpdateSampleSOA implements Action {
-    readonly type = SamplesMainActionTypes.UpdateSampleSOA;
+export class UpdateSamplesSOA implements Action {
+    readonly type = SamplesMainActionTypes.UpdateSamplesSOA;
 
     constructor(public payload: Sample[]) { }
 }
@@ -54,7 +54,7 @@ export class ExportExcelFileSSA implements Action {
 export type SamplesMainAction =
     UpdateSampleSetSOA
     | DestroySampleSetSOA
-    | UpdateSampleSOA
+    | UpdateSamplesSOA
     | UpdateSampleDataEntrySOA
     | ShowSamplesSSA
     | ImportExcelFileMSA

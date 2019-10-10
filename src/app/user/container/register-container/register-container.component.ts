@@ -50,7 +50,7 @@ export class RegisterContainerComponent implements OnInit, OnDestroy {
     }
 
     register(details: RegistrationDetails) {
-
+        this.store.dispatch(new UpdateIsBusySOA({ isBusy: true }));
         this.dataService.registrationRequest(
             {
                 email: details.email,
@@ -61,9 +61,9 @@ export class RegisterContainerComponent implements OnInit, OnDestroy {
             }
         ).toPromise().then(
             (response: UserRegistrationRequest) => {
+                this.store.dispatch(new UpdateIsBusySOA({ isBusy: false }));
                 this.router.navigate(['users/login']).then(
                     () => {
-                        this.store.dispatch(new UpdateIsBusySOA({ isBusy: false }));
                         this.store.dispatch(new DisplayBannerSOA({
                             predefined: '',
                             custom: {

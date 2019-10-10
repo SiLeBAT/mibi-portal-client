@@ -1,31 +1,30 @@
 import { Action } from '@ngrx/store';
-import { SendSamplesWarnings } from '../send-samples.model';
 
 export enum SendSamplesActionTypes {
-    SendSamplesSSA = '[Samples/SendSamples] Send samples',
-    AddSentFileSOA = '[Samples/SendSamples] Add name of successfully sent file to list of sent files',
-    UpdateSampleWarningsSOA = '[Samples/SendSamples] Set warnings for samples to be sent'
+    OpenSendDialogSSA = '[Samples/SendSamples] Open send dialog',
+    SendSamplesSSA = '[Samples/SendSamples] Send samples to server',
+    AddSentFilesSOA = '[Samples/SendSamples] Add name of sent file to list of sent files'
 }
 
 // SendSamples
 
-export class SendSamplesSSA implements Action {
-    readonly type = SendSamplesActionTypes.SendSamplesSSA;
+export class SendSamplesOpenSendDialogSSA implements Action {
+    readonly type = SendSamplesActionTypes.OpenSendDialogSSA;
 }
 
-export class AddSentFileSOA implements Action {
-    readonly type = SendSamplesActionTypes.AddSentFileSOA;
+export class SendSamplesSSA implements Action {
+    readonly type = SendSamplesActionTypes.SendSamplesSSA;
+
+    constructor(public payload: {comment: string}) {}
+}
+
+export class SendSamplesAddSentFileSOA implements Action {
+    readonly type = SendSamplesActionTypes.AddSentFilesSOA;
 
     constructor(public payload: {sentFile: string}) {}
 }
 
-export class UpdateSampleWarningsSOA implements Action {
-    readonly type = SendSamplesActionTypes.UpdateSampleWarningsSOA;
-
-    constructor(public payload: {warnings: SendSamplesWarnings}) {}
-}
-
 export type SendSamplesAction =
+    SendSamplesOpenSendDialogSSA
     | SendSamplesSSA
-    | AddSentFileSOA
-    | UpdateSampleWarningsSOA;
+    | SendSamplesAddSentFileSOA;

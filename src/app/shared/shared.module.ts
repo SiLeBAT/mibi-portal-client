@@ -22,7 +22,6 @@ import { SHARED_SLICE_NAME } from './shared.state';
 import { sharedReducerMap, sharedEffects } from './shared.store';
 import { NewDialogComponent } from './dialog/components/dialog.component';
 import { DialogViewComponent } from './dialog/components/dialog-view.component';
-import { CommentDialogComponent } from './comment-dialog/components/comment-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule, MatMenuModule, MatIconModule, MatToolbarModule } from '@angular/material';
 
@@ -56,8 +55,7 @@ import { MatProgressSpinnerModule, MatMenuModule, MatIconModule, MatToolbarModul
         WallOfTextLayoutComponent,
         LayoutBoxComponent,
         DialogViewComponent,
-        NewDialogComponent,
-        CommentDialogComponent
+        NewDialogComponent
     ],
     exports: [
         CompileDirective,
@@ -69,9 +67,8 @@ import { MatProgressSpinnerModule, MatMenuModule, MatIconModule, MatToolbarModul
         WallOfTextLayoutComponent,
         LayoutBoxComponent,
         DialogViewComponent,
-        NewDialogComponent,
-        CommentDialogComponent
+        NewDialogComponent
     ],
-    entryComponents: [DialogComponent, NewDialogComponent, CommentDialogComponent]
+    entryComponents: [DialogComponent, NewDialogComponent]
 })
 export class SharedModule { }

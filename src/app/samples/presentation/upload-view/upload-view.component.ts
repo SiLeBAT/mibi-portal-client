@@ -26,7 +26,6 @@ export class UploadViewComponent implements OnInit {
     }
     // Container not really necessary here, or is it?
     fileUpload(file: File) {
-        this.store.dispatch(new coreActions.UpdateIsBusySOA({ isBusy: true }));
         this.store.dispatch(new samplesActions.ImportExcelFileMSA({ file }));
     }
 }

@@ -103,7 +103,8 @@ export class DataService {
     sendSampleSheet(sendableFormData: SampleSubmission) {
         const requestDTO: PostSubmittedRequestDTO = {
             order: { sampleSet: this.dtoService.fromSampleSet(sendableFormData.order) },
-            comment: sendableFormData.comment
+            comment: sendableFormData.comment,
+            receiveAs: sendableFormData.receiveAs.toString()
         };
         return this.httpClient.post<PostSubmittedResponseDTO>(this.URL.submit, requestDTO).pipe(
             map((dto: PostSubmittedResponseDTO) =>

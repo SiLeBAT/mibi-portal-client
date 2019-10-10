@@ -6,7 +6,7 @@ import {
 } from './validate-samples.actions';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { withLatestFrom, concatMap, map, catchError, concatAll } from 'rxjs/operators';
+import { withLatestFrom, concatMap, map, catchError, concatAll, tap } from 'rxjs/operators';
 import { DataService } from '../../core/services/data.service';
 import { Sample } from '../model/sample-management.model';
 import { of, Observable } from 'rxjs';
@@ -15,7 +15,7 @@ import { LogService } from '../../core/services/log.service';
 import { SamplesMainSlice } from '../samples.state';
 import * as _ from 'lodash';
 import { selectSamplesMainData } from '../state/samples.selectors';
-import { UpdateSampleSOA } from '../state/samples.actions';
+import { UpdateSamplesSOA } from '../state/samples.actions';
 
 @Injectable()
 export class ValidateSamplesEffects {
@@ -28,17 +28,20 @@ export class ValidateSamplesEffects {
     ) { }
 
     @Effect()
-    validateSamples$: Observable<UpdateSampleSOA | DisplayBannerSOA | UpdateIsBusySOA | DestroyBannerSOA> = this.actions$.pipe(
+    validateSamples$: Observable<UpdateSamplesSOA | DisplayBannerSOA | DestroyBannerSOA | UpdateIsBusySOA> = this.actions$.pipe(
         ofType<ValidateSamplesMSA>(ValidateSamplesActionTypes.ValidateSamplesMSA),
         withLatestFrom(this.store$),
+        tap(() => {
+            this.store$.dispatch(new UpdateIsBusySOA({ isBusy: true }));
+        }),
         concatMap(([, state]) => {
             const sampleData = selectSamplesMainData(state);
             return this.dataService.validateSampleData(sampleData).pipe(
                 map((annotatedSamples: Sample[]) => {
                     return of(
-                        new UpdateSampleSOA(annotatedSamples),
+                        new UpdateIsBusySOA({ isBusy: false }),
                         new DestroyBannerSOA(),
-                        new UpdateIsBusySOA({ isBusy: false })
+                        new UpdateSamplesSOA(annotatedSamples)
                     );
                 }),
                 concatAll(),

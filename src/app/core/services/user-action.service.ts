@@ -5,11 +5,11 @@ import { GenericActionItemComponent } from '../presentation/generic-action-item/
 import { Store } from '@ngrx/store';
 import { ClientError } from '../model/client-error';
 import { Router } from '@angular/router';
-import { SendSamplesSSA } from '../../samples/send-samples/state/send-samples.actions';
 import { ValidateSamplesMSA } from '../../samples/validate-samples/validate-samples.actions';
 import { CoreMainSlice } from '../core.state';
 import { ExportExcelFileSSA, ImportExcelFileMSA, DestroySampleSetSOA } from '../../samples/state/samples.actions';
-import { DisplayDialogMSA, UpdateIsBusySOA } from '../state/core.actions';
+import { DisplayDialogMSA } from '../state/core.actions';
+import { SendSamplesOpenSendDialogSSA } from '../../samples/send-samples/state/send-samples.actions';
 @Injectable({
     providedIn: 'root'
 })
@@ -115,7 +115,6 @@ export class UserActionService {
     }
 
     private validate() {
-        this.store.dispatch(new UpdateIsBusySOA({ isBusy: true }));
         this.store.dispatch(new ValidateSamplesMSA());
     }
 
@@ -124,12 +123,11 @@ export class UserActionService {
     }
 
     private import(file: File) {
-        this.store.dispatch(new UpdateIsBusySOA({ isBusy: true }));
         this.store.dispatch(new ImportExcelFileMSA({ file }));
     }
 
     private send() {
-        this.store.dispatch(new SendSamplesSSA());
+        this.store.dispatch(new SendSamplesOpenSendDialogSSA());
     }
 
     private close() {

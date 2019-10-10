@@ -38,12 +38,13 @@ export class RecoveryContainerComponent implements OnInit, OnDestroy {
     }
 
     recovery(email: string) {
+        this.store$.dispatch(new UpdateIsBusySOA({ isBusy: true }));
         this.dataService.resetPasswordRequest(
             email).toPromise().then(
                 (response: UserPasswordResetRequest) => {
+                    this.store$.dispatch(new UpdateIsBusySOA({ isBusy: false }));
                     this.router.navigate(['users/login']).then(
                         () => {
-                            this.store$.dispatch(new UpdateIsBusySOA({ isBusy: false }));
                             this.store$.dispatch(new DisplayBannerSOA({
                                 predefined: '',
                                 custom: {
@@ -59,7 +60,7 @@ export class RecoveryContainerComponent implements OnInit, OnDestroy {
                     });
                 }
             ).catch(
-                (response) => {
+                () => {
                     this.store$.dispatch(new UpdateIsBusySOA({ isBusy: false }));
                     this.store$.dispatch(new DisplayBannerSOA({
                         predefined: '',

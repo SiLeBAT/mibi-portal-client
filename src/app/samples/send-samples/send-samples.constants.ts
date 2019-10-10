@@ -1,27 +1,22 @@
-import { CommentDialogConfiguration } from '../../shared/comment-dialog/comment-dialog.model';
+import { DialogConfiguration } from '../../shared/dialog/dialog.model';
 
-export const sendSamplesDefaultDialogConfiguration: CommentDialogConfiguration = {
+export const sendSamplesSendDialogConfiguration: DialogConfiguration = {
     title: 'Senden',
     message: 'Ihre Probendaten werden jetzt an das BfR gesendet.'
-        + ' Bitte vergessen Sie nicht die Exceltabelle in Ihrem Mailanhang auszudrucken und Ihren Isolaten beizulegen.',
+        + ' Bitte vergessen Sie nicht den Einsendebogen in Ihrem Mailanhang auszudrucken und Ihren Isolaten beizulegen.',
     warnings: [],
-    commentTitle: 'Kommentar für das NRL',
     confirmButtonConfig: {
         label: 'Senden'
     },
     cancelButtonConfig: {
         label: 'Abbrechen'
-    },
-    maxCommentLength: 2000,
-    visibleCommentLines: 5
+    }
 };
 
-const PORTAL_WARNING_COMMENT_PREFIX = 'Warnung vom MiBi-Portal: ';
-
-export const sendSamplesDialogStrings = {
-    PORTAL_ALREADY_SENT_COMMENT: PORTAL_WARNING_COMMENT_PREFIX
-    + 'Der Einsendebogen wurde vom Benutzer in der selben Browser-Session bereits gesendet.',
-    ALREADY_SENT_WARNING_PRE: 'Sie haben den Einsendebogen:\n"',
-    ALREADY_SENT_WARNING_POST: '" bereits gesendet. Wollen Sie die Daten wirklich nochmal senden?',
-    REGARDLESS_BUTTON_LABEL: 'Trotzdem senden'
+export const sendSamplesSendDialogStrings = {
+    commentWarningPreamble: 'Warnung vom MiBi-Portal: ',
+    commentAlreadySent: 'Der Einsendebogen wurde vom Benutzer in der selben Browser-Session bereits gesendet.',
+    warningAlreadySendPre: 'Sie haben den Einsendebogen:\n"',
+    warningAlreadySendPost: '" bereits gesendet. Wollen Sie die Daten wirklich nochmal senden?',
+    confirmWithWarningsLabel: 'Trotzdem senden'
 };

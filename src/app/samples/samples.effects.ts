@@ -3,17 +3,14 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { saveAs } from 'file-saver';
 import 'moment/locale/de';
 import * as _ from 'lodash';
-import * as coreActions from '../core/state/core.actions';
-import { map, catchError, exhaustMap, withLatestFrom, mergeMap, concatAll } from 'rxjs/operators';
+import { map, catchError, exhaustMap, withLatestFrom, mergeMap, concatAll, tap } from 'rxjs/operators';
 import { SampleSet, MarshalledData } from './model/sample-management.model';
-import { from, of } from 'rxjs';
+import { from, of, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import { DataService } from '../core/services/data.service';
 import { LogService } from '../core/services/log.service';
 import { ClientError } from '../core/model/client-error';
-import { UserActionType, ColorType } from '../shared/model/user-action.model';
-import { GenericActionItemComponent } from '../core/presentation/generic-action-item/generic-action-item.component';
 import { SamplesMainSlice } from './samples.state';
 import {
     SamplesMainAction,
@@ -26,7 +23,7 @@ import {
 import { ValidateSamplesMSA } from './validate-samples/validate-samples.actions';
 import { SamplesMainData } from './state/samples.reducer';
 import { selectSamplesMainData } from './state/samples.selectors';
-import { NRL } from './model/sample.enums';
+import { UpdateIsBusySOA, DisplayBannerSOA } from '../core/state/core.actions';
 
 @Injectable()
 export class SamplesMainEffects {
@@ -42,12 +39,16 @@ export class SamplesMainEffects {
     // ImportExcelFile
 
     @Effect()
-    importExcelFile$ = this.actions$.pipe(
+    importExcelFile$: Observable<UpdateSampleSetSOA | ShowSamplesSSA | DisplayBannerSOA | UpdateIsBusySOA> = this.actions$.pipe(
         ofType<ImportExcelFileMSA>(SamplesMainActionTypes.ImportExcelFileMSA),
+        tap(() => {
+            this.store$.dispatch(new UpdateIsBusySOA({ isBusy: true }));
+        }),
         exhaustMap((action) => {
             return from(this.dataService.unmarshalExcel(action.payload)).pipe(
                 map((unmarshalledResponse: SampleSet) => {
                     return of(
+                        new UpdateIsBusySOA({ isBusy: false }),
                         new UpdateSampleSetSOA(unmarshalledResponse),
                         new ShowSamplesSSA()
                     );
@@ -55,8 +56,9 @@ export class SamplesMainEffects {
                 concatAll(),
                 catchError((error) => {
                     this.logger.error(`Failed to import Excel File. error=${error}`);
-                    return of(new coreActions.UpdateIsBusySOA({ isBusy: false }),
-                        new coreActions.DisplayBannerSOA({ predefined: 'uploadFailure' })
+                    return of(
+                        new UpdateIsBusySOA({ isBusy: false }),
+                        new DisplayBannerSOA({ predefined: 'uploadFailure' })
                     );
                 })
             );
@@ -64,39 +66,38 @@ export class SamplesMainEffects {
     );
 
     @Effect()
-    showSamples$ = this.actions$.pipe(
+    showSamples$: Observable<ValidateSamplesMSA> = this.actions$.pipe(
         ofType<ShowSamplesSSA>(SamplesMainActionTypes.ShowSamplesSSA),
         map(() => {
             this.router.navigate(['/samples']).catch(() => {
                 throw new ClientError('Unable to navigate.');
             });
-            return of(
-                new coreActions.UpdateIsBusySOA({ isBusy: true }),
-                new ValidateSamplesMSA()
-            );
-        }),
-        concatAll()
+            return new ValidateSamplesMSA();
+        })
     );
 
     // ExportExcelFile
 
     @Effect()
-    exportExcelFile$ = this.actions$.pipe(
+    exportExcelFile$: Observable<DisplayBannerSOA | UpdateIsBusySOA> = this.actions$.pipe(
         ofType<ExportExcelFileSSA>(SamplesMainActionTypes.ExportExcelFileSSA),
         withLatestFrom(this.store$),
+        tap(() => {
+            this.store$.dispatch(new UpdateIsBusySOA({ isBusy: true }));
+        }),
         mergeMap(([, state]) => {
             const marshalData: SamplesMainData = selectSamplesMainData(state);
             return from(this.dataService.marshalJSON(marshalData)).pipe(
                 map((marshalledData: MarshalledData) => {
                     saveAs(this.b64toBlob(marshalledData.binaryData, marshalledData.mimeType), marshalledData.fileName);
-                    return new coreActions.UpdateIsBusySOA({ isBusy: false });
+                    return new UpdateIsBusySOA({ isBusy: false });
                 }),
                 catchError((error) => {
                     this.logger.error('Failed to export Excel File', error);
                     return of(
-                        new coreActions.UpdateIsBusySOA({ isBusy: false }),
-                        new coreActions.DisplayBannerSOA({ predefined: 'exportFailure' })
-                    );
+                        new UpdateIsBusySOA({ isBusy: false }),
+                        new DisplayBannerSOA({ predefined: 'exportFailure' })
+                        );
                 })
             );
         })

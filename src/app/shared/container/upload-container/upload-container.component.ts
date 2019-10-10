@@ -9,7 +9,7 @@ import { UploadErrorType } from '../../model/upload.model';
 import { ClientError } from '../../../core/model/client-error';
 import { SamplesMainSlice } from '../../../samples/samples.state';
 import { selectHasEntries } from '../../../samples/state/samples.selectors';
-import { DisplayBannerSOA, DisplayDialogMSA, HideBannerSOA, UpdateIsBusySOA } from '../../../core/state/core.actions';
+import { DisplayBannerSOA, DisplayDialogMSA, HideBannerSOA } from '../../../core/state/core.actions';
 
 @Component({
     selector: 'mibi-upload-container',
@@ -68,7 +68,6 @@ export class UploadContainerComponent implements OnInit, OnDestroy, AfterContent
     }
 
     onError(error: UploadErrorType) {
-        this.store.dispatch(new UpdateIsBusySOA({ isBusy: false }));
         switch (error) {
             case UploadErrorType.SIZE:
                 this.store.dispatch(new DisplayBannerSOA({ predefined: 'wrongUploadFilesize' }));
