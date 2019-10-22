@@ -1,8 +1,9 @@
 import { Action } from '@ngrx/store';
-import { ChangedDataGridField, SampleSet, ExcelFile, Sample } from '../model/sample-management.model';
+import { ChangedDataGridField, SampleSet, ExcelFile, Sample, MetaDataCollection } from '../model/sample-management.model';
 
 export enum SamplesMainActionTypes {
     UpdateSampleSetSOA = '[Samples] Set sample set',
+    UpdateSampleMetaDataSSA = '[Samples] Set sample metadata',
     DestroySampleSetSOA = '[Samples] Clear store of all samples related data',
     UpdateSamplesSOA = '[Samples] Set samples',
     UpdateSampleDataEntrySOA = '[Samples] Change single sample data field value',
@@ -29,6 +30,11 @@ export class UpdateSamplesSOA implements Action {
     constructor(public payload: Sample[]) { }
 }
 
+export class UpdateSampleMetaDataSSA implements Action {
+    readonly type = SamplesMainActionTypes.UpdateSampleMetaDataSSA;
+
+    constructor(public payload: MetaDataCollection) { }
+}
 export class UpdateSampleDataEntrySOA implements Action {
     readonly type = SamplesMainActionTypes.UpdateSampleDataEntrySOA;
 
@@ -58,4 +64,5 @@ export type SamplesMainAction =
     | UpdateSampleDataEntrySOA
     | ShowSamplesSSA
     | ImportExcelFileMSA
-    | ExportExcelFileSSA;
+    | ExportExcelFileSSA
+    | UpdateSampleMetaDataSSA;

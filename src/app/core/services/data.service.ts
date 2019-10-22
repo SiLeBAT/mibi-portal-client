@@ -22,9 +22,11 @@ import {
     RegistrationRequestResponseDTO,
     PasswordResetRequestResponseDTO,
     InstituteCollectionDTO,
+    NRLCollectionDTO,
     PutSamplesJSONResponseDTO,
     PostSubmittedResponseDTO,
-    PutValidatedResponseDTO
+    PutValidatedResponseDTO,
+    NRLDTO
 } from '../model/response.model';
 import { TokenizedUser, Credentials, RegistrationDetails } from '../../user/model/user.model';
 import {
@@ -48,17 +50,19 @@ import { InvalidInputError, InputChangedError } from '../model/data-service-erro
 })
 export class DataService {
 
-    private API_VERSION = 'v1';
+    private API_VERSION = 'v2';
     private USER = 'users';
     private SAMPLE = 'samples';
     private TOKEN = 'tokens';
     private INSTITUTE = 'institutes';
+    private NRL = 'nrls';
     private URL = {
         submit: [this.API_VERSION, this.SAMPLE, 'submitted'].join('/'),
         validate: [this.API_VERSION, this.SAMPLE, 'validated'].join('/'),
         marshal: [this.API_VERSION, this.SAMPLE].join('/'),
         unmarshal: [this.API_VERSION, this.SAMPLE].join('/'),
         institutions: [this.API_VERSION, this.INSTITUTE].join('/'),
+        nrls: [this.API_VERSION, this.NRL].join('/'),
         login: [this.API_VERSION, this.USER, 'login'].join('/'),
         register: [this.API_VERSION, this.USER, 'registration'].join('/'),
         resetPasswordRequest: [this.API_VERSION, this.USER, 'reset-password-request'].join('/'),
@@ -172,6 +176,13 @@ export class DataService {
         return this.httpClient.get<InstituteCollectionDTO>(this.URL.institutions).pipe(
             map((dto: InstituteCollectionDTO) => {
                 return dto.institutes;
+            }));
+    }
+
+    getAllNRLs(): Observable<NRLDTO[]> {
+        return this.httpClient.get<NRLCollectionDTO>(this.URL.nrls).pipe(
+            map((dto: NRLCollectionDTO) => {
+                return dto.nrls;
             }));
     }
 

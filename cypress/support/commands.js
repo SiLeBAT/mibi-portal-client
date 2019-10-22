@@ -29,7 +29,7 @@ Cypress.Commands.add("login", user => {
     return cy
         .request({
             method: "POST",
-            url: "/v1/users/login",
+            url: "/v2/users/login",
             body: {
                 email: user.email,
                 password: user.password
@@ -46,8 +46,8 @@ Cypress.Commands.add("login", user => {
 // Not working in Headless mode
 Cypress.Commands.add("loadSamplesFile", fileName => {
     cy.server();
-    cy.route("PUT", "/v1/samples").as("samples");
-    cy.route("PUT", "/v1/samples/validated").as("validated");
+    cy.route("PUT", "/v2/samples").as("samples");
+    cy.route("PUT", "/v2/samples/validated").as("validated");
     cy.visit("/upload");
     const fileType =
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";

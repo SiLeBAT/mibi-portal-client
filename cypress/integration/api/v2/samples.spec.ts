@@ -2,7 +2,7 @@
 
 describe('Testing the /samples endpoint', function () {
 
-    const baseUrl = '/v1/samples';
+    const baseUrl = '/v2/samples';
 
     before(() => {
         cy.fixture('samples.json').as('samples');

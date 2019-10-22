@@ -3,20 +3,6 @@
     "order": {
       "sampleSet": {
         "meta": {
-          "nrl": "NRL-AR",
-          "analysis": {
-            "species": false,
-            "serological": false,
-            "phageTyping": false,
-            "resistance": false,
-            "vaccination": false,
-            "molecularTyping": false,
-            "toxin": false,
-            "zoonosenIsolate": false,
-            "esblAmpCCarbapenemasen": false,
-            "other": "",
-            "compareHuman": false
-          },
           "sender": {
             "instituteName": "",
             "department": "",
@@ -27,7 +13,7 @@
             "telephone": "",
             "email": ""
           },
-          "urgency": "NORMAL",
+
           "fileName": "none"
         },
         "samples": [
@@ -128,6 +114,11 @@
                 "errors": [],
                 "correctionOffer": []
               }
+            },
+            "sampleMeta": {
+              "urgency": "NORMAL",
+              "nrl": "NRL-AR",
+              "analysis": {}
             }
           }
         ]

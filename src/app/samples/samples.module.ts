@@ -13,12 +13,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CoreModule } from '../core/core.module';
-import { MatInputModule, MatFormFieldModule } from '@angular/material';
+import { MatInputModule, MatFormFieldModule, MatStepperModule, MatRadioModule, MatCheckboxModule } from '@angular/material';
 import { SAMPLES_SLICE_NAME } from './samples.state';
 import { samplesReducerMap, samplesEffects } from './samples.store';
 import { NoSampleGuard } from './services/no-sample-guard.service';
 import { SendDialogComponent } from './send-samples/components/send-dialog.component';
 import { SendDialogViewComponent } from './send-samples/components/send-dialog-view.component';
+import { AnalysisStepperComponent } from './analysis-stepper/components/analysis-stepper.component';
 
 const SAMPLES_ROUTES = [
     { path: 'upload', component: UploadViewComponent },
@@ -33,6 +34,9 @@ const SAMPLES_ROUTES = [
         MatButtonModule,
         MatDialogModule,
         MatInputModule,
+        MatStepperModule,
+        MatRadioModule,
+        MatCheckboxModule,
         MatFormFieldModule,
         RouterModule.forChild(SAMPLES_ROUTES),
         StoreModule.forFeature(SAMPLES_SLICE_NAME, samplesReducerMap),
@@ -46,9 +50,10 @@ const SAMPLES_ROUTES = [
         SampleViewComponent,
         UploadViewComponent,
         SendDialogViewComponent,
-        SendDialogComponent
+        SendDialogComponent,
+        AnalysisStepperComponent
     ],
-    entryComponents: [SendDialogComponent],
+    entryComponents: [SendDialogComponent, AnalysisStepperComponent],
     exports: [],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

@@ -1,7 +1,7 @@
 /// <reference types="Cypress" />
 
 describe('Testing the /tokens endpoint', function () {
-    const baseUrl = '/v1/tokens';
+    const baseUrl = '/v2/tokens';
     describe('POST', function () {
         const method = 'POST';
         it('should respond with error if invalid token', function () {

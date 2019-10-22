@@ -1,3 +1,5 @@
-export const dialogMatConfiguration = {
-    width : '400px'
+import { MatDialogConfig } from '@angular/material';
+
+export const dialogMatConfiguration: MatDialogConfig = {
+    width: '400px'
 };
