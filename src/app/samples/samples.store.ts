@@ -11,10 +11,10 @@ import { SendSamplesEffects } from './send-samples/send-samples.effects';
 
 type SamplesState = SamplesMainState & SendSamplesState;
 type SamplesReducerAction =
-SamplesMainAction
-| SendSamplesAction
-| ValidateSamplesAction
-| LogoutUserMSA;
+    SamplesMainAction
+    | SendSamplesAction
+    | ValidateSamplesAction
+    | LogoutUserMSA;
 
 export const samplesReducerMap: ActionReducerMap<SamplesState, SamplesReducerAction> = {
     mainData: samplesMainReducer,

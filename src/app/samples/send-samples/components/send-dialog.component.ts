@@ -12,11 +12,12 @@ import * as _ from 'lodash';
 import { SendSamplesSSA } from '../state/send-samples.actions';
 import { DisplayBannerSOA } from '../../../core/state/core.actions';
 import { selectImportedFileName } from '../../state/samples.selectors';
+import { SendSamplesOpenAnalysisDialogSSA } from '../../analysis-stepper/state/analysis-stepper.actions';
 
 @Component({
     selector: 'mibi-send-dialog',
     template:
-    `<mibi-send-dialog-view
+        `<mibi-send-dialog-view
                 [config]="dialogConfig$ | async"
                 (confirm)="onConfirm($event)"
                 (cancel)="onCancel()"
@@ -53,7 +54,7 @@ export class SendDialogComponent {
     }
 
     onCancel() {
-        this.store$.dispatch(new DisplayBannerSOA({ predefined: 'sendCancel' }));
+        this.store$.dispatch(new SendSamplesOpenAnalysisDialogSSA());
         this.close();
     }
 

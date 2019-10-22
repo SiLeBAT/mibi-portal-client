@@ -9,7 +9,7 @@ export const sendSamplesSendDialogConfiguration: DialogConfiguration = {
         label: 'Senden'
     },
     cancelButtonConfig: {
-        label: 'Abbrechen'
+        label: 'Zurück'
     }
 };
 

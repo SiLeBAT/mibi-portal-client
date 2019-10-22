@@ -5,6 +5,16 @@ The name is explicit here. This folder contains all the components used to build
 (crossover component dependent styles and variables)
 */
 
+// Analysis stepper
+.mibi-stepper-dialog-container > .mat-dialog-container {
+  padding: 0 0 $mibi-triple-space 0;
+}
+
+.mibi-analysis-stepper > .mat-horizontal-content-container {
+  padding: 0 $mibi-double-space;
+  margin: 0 0 $mibi-double-space 0;
+}
+
 // Handsontable
 @mixin handsontable-text() {
   font-size: 12px;

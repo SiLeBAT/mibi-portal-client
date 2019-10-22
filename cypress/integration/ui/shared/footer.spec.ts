@@ -43,7 +43,7 @@ describe('Testing the Footer', function () {
         it('should open a new tab for the API-docs page', function () {
             cy.get('footer').within(() => {
                 cy.contains('API-docs')
-                    .should('have.attr', 'href', 'api-docs/v1')
+                    .should('have.attr', 'href', 'api-docs/v2')
                     .should('have.attr', 'target', '_blank');
             });
         });

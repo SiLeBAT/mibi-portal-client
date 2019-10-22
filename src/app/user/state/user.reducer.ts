@@ -2,6 +2,7 @@ import { UserMainAction, UserMainActionTypes } from './user.actions';
 import { TokenizedUser } from '../model/user.model';
 import { InstitutionDTO } from '../model/institution.model';
 import * as _ from 'lodash';
+import { NRLDTO } from '../../core/model/response.model';
 
 // STATE
 

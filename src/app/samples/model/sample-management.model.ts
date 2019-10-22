@@ -1,3 +1,4 @@
+import { NewAnalysis } from './sample-management.model';
 import { Urgency, NRL } from './sample.enums';
 
 export type SampleProperty = keyof SampleData;
@@ -17,24 +18,28 @@ interface Address {
     email: string;
 }
 
-interface Analysis {
-    species: boolean;
-    serological: boolean;
-    phageTyping: boolean;
-    resistance: boolean;
-    vaccination: boolean;
-    molecularTyping: boolean;
-    toxin: boolean;
-    zoonosenIsolate: boolean;
-    esblAmpCCarbapenemasen: boolean;
-    other: string;
-    compareHuman: boolean;
+export interface MetaDataCollection {
+    [nrl: string]: Partial<SampleMeta>;
 }
+
+export interface NewAnalysis {
+    species?: boolean;
+    serological?: boolean;
+    resistance?: boolean;
+    vaccination?: boolean;
+    molecularTyping?: boolean;
+    toxin?: boolean;
+    esblAmpCCarbapenemasen?: boolean;
+    sample?: boolean;
+    other?: string;
+    compareHuman?: {
+        value: string;
+        active: boolean;
+    };
+}
+
 export interface SampleSetMetaData {
-    nrl: NRL;
     sender: Address;
-    analysis: Analysis;
-    urgency: Urgency;
     fileName: string;
 }
 
@@ -58,6 +63,8 @@ export interface AnnotatedSampleDataEntry {
 
 export interface SampleMeta {
     nrl: NRL;
+    analysis: NewAnalysis;
+    urgency: Urgency;
 }
 export interface Sample {
     sampleData: SampleData;

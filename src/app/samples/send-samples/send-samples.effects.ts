@@ -24,6 +24,10 @@ import { LogoutUserMSA } from '../../user/state/user.actions';
 import { InvalidInputError, InputChangedError } from '../../core/model/data-service-error';
 import { DialogService } from '../../shared/dialog/dialog.service';
 import { SendDialogComponent } from './components/send-dialog.component';
+import { AnalysisStepperComponent } from '../analysis-stepper/components/analysis-stepper.component';
+import { SendSamplesOpenAnalysisDialogSSA, AnalysisStepperActionTypes } from '../analysis-stepper/state/analysis-stepper.actions';
+import { NRL } from '../model/sample.enums';
+import { log } from 'util';
 
 @Injectable()
 export class SendSamplesEffects {
@@ -41,6 +45,26 @@ export class SendSamplesEffects {
         ofType<SendSamplesOpenSendDialogSSA>(SendSamplesActionTypes.OpenSendDialogSSA),
         map(() => {
             this.dialogService.openDialog(SendDialogComponent);
+        })
+    );
+
+    @Effect({ dispatch: false })
+    openAnalysisStepperDialog$: Observable<void> = this.actions$.pipe(
+        ofType<SendSamplesOpenAnalysisDialogSSA>(AnalysisStepperActionTypes.OpenAnalysisStepperSSA),
+        withLatestFrom(this.store$),
+        map(([, state]) => {
+            const numberOfNRLs = _.uniq(selectFormData(state).map(d => d.sampleMeta.nrl)).length;
+            let width = '50%';
+            if (numberOfNRLs > 5) {
+                width = '65%';
+            }
+            if (numberOfNRLs > 9) {
+                width = '80%';
+            }
+            this.dialogService.openDialog(AnalysisStepperComponent, {
+                width: width,
+                panelClass: 'mibi-stepper-dialog-container'
+            });
         })
     );
 

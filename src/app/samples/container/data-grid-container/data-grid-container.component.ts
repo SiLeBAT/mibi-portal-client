@@ -169,14 +169,12 @@ export class DataGridContainerComponent implements OnInit {
 
                 });
 
-                _.forEach(row.sampleMeta, (samplePropertyEntry, sampleProperty) => {
-                    result[sampleProperty] = {
-                        id: sampleProperty,
-                        value: samplePropertyEntry,
-                        correctionOffer: [],
-                        editMessage: []
-                    };
-                });
+                result.nrl = {
+                    id: 'nrl',
+                    value: row.sampleMeta.nrl,
+                    correctionOffer: [],
+                    editMessage: []
+                };
 
                 return result;
             }

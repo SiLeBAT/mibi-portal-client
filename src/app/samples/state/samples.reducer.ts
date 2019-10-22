@@ -1,4 +1,4 @@
-import { SampleData } from './../model/sample-management.model';
+import * as _ from 'lodash';
 import { SamplesMainAction, SamplesMainActionTypes } from './samples.actions';
 import {
     SamplePropertyValues,
@@ -30,8 +30,6 @@ const initialMainData: SamplesMainData = {
     formData: [],
     importedFile: null,
     meta: {
-        nrl: NRL.UNKNOWN,
-        urgency: Urgency.NORMAL,
         sender: {
             instituteName: '',
             department: '',
@@ -42,21 +40,7 @@ const initialMainData: SamplesMainData = {
             telephone: '',
             email: ''
         },
-        analysis: {
-            species: false,
-            serological: false,
-            phageTyping: false,
-            resistance: false,
-            vaccination: false,
-            molecularTyping: false,
-            toxin: false,
-            zoonosenIsolate: false,
-            esblAmpCCarbapenemasen: false,
-            other: '',
-            compareHuman: false
-        },
         fileName: ''
-
     }
 };
 
@@ -66,6 +50,18 @@ export function samplesMainReducer(
     state: SamplesMainData = initialMainData, action: SamplesMainAction | ValidateSamplesAction
 ): SamplesMainData {
     switch (action.type) {
+        case SamplesMainActionTypes.UpdateSampleMetaDataSSA:
+            const metaData = action.payload;
+            return {
+                ...state, ...{
+                    formData: [...state.formData.map(s => {
+                        if (metaData[s.sampleMeta.nrl]) {
+                            s.sampleMeta = { ...s.sampleMeta, ...metaData[s.sampleMeta.nrl] };
+                        }
+                        return s;
+                    })]
+                }
+            };
         case SamplesMainActionTypes.DestroySampleSetSOA:
             return { ...initialMainData };
         case SamplesMainActionTypes.UpdateSampleSetSOA:
@@ -98,7 +94,16 @@ export function samplesMainReducer(
 
                 }
             );
-            return { ...state, ...{ formData: mergedEntries } };
+            return {
+                ...state, ...{
+                    formData: mergedEntries,
+                    meta: {
+                        ...state.meta, ...{
+                            nrl: _.uniq(mergedEntries.map(s => s.sampleMeta.nrl))
+                        }
+                    }
+                }
+            };
         case SamplesMainActionTypes.UpdateSampleDataEntrySOA:
             const {
                 rowIndex,

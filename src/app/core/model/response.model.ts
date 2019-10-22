@@ -47,6 +47,21 @@ export interface InstituteDTO {
     readonly fax: string;
     readonly email: string[];
 }
+
+export interface NRLDTO {
+    readonly id: string;
+    readonly standardProcedures: AnalysisProcedureDTO[];
+    readonly optionalProcedures: AnalysisProcedureDTO[];
+}
+
+export interface AnalysisProcedureDTO {
+    readonly value: string;
+    readonly key: number;
+}
+
+export interface NRLCollectionDTO {
+    readonly nrls: NRLDTO[];
+}
 export interface InstituteCollectionDTO {
     readonly institutes: InstituteDTO[];
 }

@@ -1,7 +1,7 @@
 /// <reference types="Cypress" />
 
 describe('Testing the /institutes endpoint', function () {
-    const baseUrl = '/v1/institutes';
+    const baseUrl = '/v2/institutes';
     describe('GET', function () {
         const method = 'GET';
         it('should respond with 200', function () {
