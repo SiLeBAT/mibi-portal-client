@@ -9,7 +9,8 @@ import { ValidateSamplesMSA } from '../../samples/validate-samples/validate-samp
 import { CoreMainSlice } from '../core.state';
 import { ExportExcelFileSSA, ImportExcelFileMSA, DestroySampleSetSOA } from '../../samples/state/samples.actions';
 import { DisplayDialogMSA } from '../state/core.actions';
-import { SendSamplesOpenSendDialogSSA } from '../../samples/send-samples/state/send-samples.actions';
+import { SendSamplesOpenAnalysisDialogSSA } from '../../samples/analysis-stepper/state/analysis-stepper.actions';
+
 @Injectable({
     providedIn: 'root'
 })
@@ -127,7 +128,7 @@ export class UserActionService {
     }
 
     private send() {
-        this.store.dispatch(new SendSamplesOpenSendDialogSSA());
+        this.store.dispatch(new SendSamplesOpenAnalysisDialogSSA());
     }
 
     private close() {

@@ -1,3 +1,4 @@
+
 import { SampleData, Sample, SampleMeta } from './../../samples/model/sample-management.model';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
@@ -33,7 +34,11 @@ export class EntityFactoryService {
     toSample(dto: SampleDTO): Sample {
         return {
             sampleData: this.toSampleData(dto.sampleData),
-            sampleMeta: dto.sampleMeta ? this.toSampleMeta(dto.sampleMeta) : { nrl: NRL.UNKNOWN }
+            sampleMeta: dto.sampleMeta ? this.toSampleMeta(dto.sampleMeta) : {
+                nrl: NRL.UNKNOWN,
+                analysis: {},
+                urgency: Urgency.NORMAL
+            }
         };
     }
 
@@ -63,7 +68,9 @@ export class EntityFactoryService {
 
     private toSampleMeta(dto: SampleMetaDTO): SampleMeta {
         return {
-            nrl: dto.nrl ? this.fromNRLStringToEnum(dto.nrl) : NRL.UNKNOWN
+            nrl: dto.nrl ? this.fromNRLStringToEnum(dto.nrl) : NRL.UNKNOWN,
+            analysis: dto.analysis,
+            urgency: dto.urgency ? this.fromUrgencyStringToEnum(dto.urgency) : Urgency.NORMAL
         };
     }
 
@@ -103,10 +110,7 @@ export class EntityFactoryService {
 
     private toSampleSetMetaData(dto: SampleSetMetaDTO): SampleSetMetaData {
         return {
-            nrl: this.fromNRLStringToEnum(dto.nrl),
-            analysis: dto.analysis,
             sender: dto.sender,
-            urgency: this.fromUrgencyStringToEnum(dto.urgency),
             fileName: dto.fileName ? dto.fileName : ''
         };
     }

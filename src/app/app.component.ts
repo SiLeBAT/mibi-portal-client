@@ -5,6 +5,7 @@ import { Store, select } from '@ngrx/store';
 import { takeWhile, tap } from 'rxjs/operators';
 import { DataService } from './core/services/data.service';
 import * as userActions from './user/state/user.actions';
+import * as nrlActions from './shared/nrl/state/nrl.actions';
 import { TokenizedUser } from './user/model/user.model';
 import { SamplesMainSlice } from './samples/samples.state';
 import { selectHasEntries } from './samples/state/samples.selectors';
@@ -32,6 +33,7 @@ export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDe
         ).subscribe();
 
         this.loadInstitutions();
+        this.loadNRLs();
         this.loadUser();
     }
 
@@ -56,6 +58,16 @@ export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDe
                 this.store$.dispatch(new DisplayBannerSOA({ predefined: 'defaultError' }));
                 throw new Error();
             }
+        );
+    }
+
+    private loadNRLs() {
+        this.dataService.getAllNRLs().toPromise().then(
+            data => {
+                this.store$.dispatch(new nrlActions.UpdateNRLsSOA(data));
+            }
+        ).catch(
+            () => { throw new Error(); }
         );
     }
 

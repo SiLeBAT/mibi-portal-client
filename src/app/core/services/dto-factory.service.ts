@@ -4,7 +4,8 @@ import {
     Sample,
     SampleSet,
     SampleSetMetaData,
-    SampleData
+    SampleData,
+    SampleMeta
 } from '../../samples/model/sample-management.model';
 import {
     AnnotatedSampleSetDTO,
@@ -15,7 +16,8 @@ import {
     OrderDTO,
     SampleDTO,
     AnnotatedSampleDTO,
-    AnnotatedSampleDataDTO
+    AnnotatedSampleDataDTO,
+    SampleMetaDTO
 } from '../model/shared-dto.model';
 import { SamplesMainData } from '../../samples/state/samples.reducer';
 
@@ -53,7 +55,8 @@ export class DTOFactoryService {
 
     private fromSample(sample: Sample): SampleDTO {
         return {
-            sampleData: this.fromSampleData(sample.sampleData)
+            sampleData: this.fromSampleData(sample.sampleData),
+            sampleMeta: this.fromSampleMeta(sample.sampleMeta)
         };
     }
 
@@ -66,12 +69,18 @@ export class DTOFactoryService {
         return dto;
     }
 
+    private fromSampleMeta(sampleMeta: SampleMeta): SampleMetaDTO {
+        return {
+            nrl: sampleMeta.nrl,
+            analysis: sampleMeta.analysis,
+            urgency: sampleMeta.urgency
+        };
+    }
+
     private fromSampleSetMeta(meta: SampleSetMetaData): SampleSetMetaDTO {
         return {
-            nrl: meta.nrl,
-            analysis: meta.analysis,
             sender: meta.sender,
-            urgency: meta.urgency
+            fileName: meta.fileName
         };
     }
 
@@ -86,7 +95,8 @@ export class DTOFactoryService {
 
     private fromSampleToAnnotatedDTO(sample: Sample): AnnotatedSampleDTO {
         return {
-            sampleData: this.fromSampleDataToAnnotatedDTO(sample.sampleData)
+            sampleData: this.fromSampleDataToAnnotatedDTO(sample.sampleData),
+            sampleMeta: this.fromSampleMeta(sample.sampleMeta)
         };
     }
 

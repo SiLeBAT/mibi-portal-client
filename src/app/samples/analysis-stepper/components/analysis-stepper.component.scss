@@ -1,0 +1,54 @@
+@import "../../../../assets/sass/abstracts";
+@import "../../../../assets/sass/layout";
+
+.mibi-button-group {
+  display: flex;
+  justify-content: space-between;
+}
+
+.mibi-button-group__stepper-button-group {
+  display: flex;
+  justify-content: space-around;
+}
+
+.mibi-button-group__button {
+  margin: 0 $mibi-double-space;
+}
+
+.mibi-optional-selection {
+  display: flex;
+  flex-direction: column;
+}
+
+.mibi-urgency-selection {
+  margin: $mibi-double-space 0;
+}
+
+.mibi-urgency-selection__button-group {
+  margin: 0 $mibi-double-space;
+  display: inline-flex;
+}
+
+.mibi-urgency-selection__button {
+  margin: 0 $mibi-single-space;
+}
+
+.mibi-header {
+  background-color: $primary-color;
+  color: $on-primary-color;
+  padding: $mibi-single-space;
+  text-align: center;
+}
+
+.mibi-dialog-warnings {
+  @include list-style-none();
+
+  box-shadow: 0 1px $bfr-darkgrey;
+  margin: $mibi-single-space;
+}
+
+.mibi-dialog-warnings__item {
+  background-color: $bfr-lightocre;
+  margin-bottom: $mibi-single-space;
+  padding: $mibi-single-space;
+}
