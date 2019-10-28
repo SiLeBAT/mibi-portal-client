@@ -104,7 +104,10 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
     onChangeCompareHuman(nrl: string) {
         if (!this.showCompareHuman[nrl]) {
             this.analysisForm[nrl].controls.compareHuman.setValue('');
+        } else {
+            this.analysisForm[nrl].controls.compareHuman.setValue(this.analysisForm[nrl].controls.compareHuman.value);
         }
+
     }
     private mapFormValues(nrl: string, values: any): Partial<SampleMeta> {
 
@@ -117,10 +120,13 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
             default:
                 urgencyEnum = Urgency.NORMAL;
         }
+
         return Object.keys(values).reduce((acc: { analysis: Partial<Analysis>, urgency: Urgency}, v) => {
 
             const prop: keyof Analysis = this.getPropertyForAnalysisKey(v);
-            acc.analysis[prop] = values[v];
+            if (v !== 'compareHuman' && v !== 'other') {
+                acc.analysis[prop] = values[v];
+            }
 
             return acc;
         }, {
@@ -236,7 +242,7 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
             case '7':
                 return 'sample';
             default:
-                throw new ClientError('Can not find property withe key: ' + key);
+                return key as keyof Analysis;
         }
     }
 }
