@@ -72,6 +72,11 @@ The name is explicit here. This folder contains all the components used to build
   overflow: auto;
 }
 
+.handsontable span.colHeader {
+  display: block;
+  line-height: 1.5;
+}
+
 // Tooltipster
 body {
   // this is necessary because a tooltip can overflow a scrollbar unintentionally activating the page scroll bars

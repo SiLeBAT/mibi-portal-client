@@ -33,6 +33,11 @@ export class DataGridContainerComponent implements OnInit {
 
     columnConfigArray: ColConfig[] = [
         {
+            id: 'row_index',
+            title: '',
+            readOnly: true
+        },
+        {
             id: 'nrl',
             title: 'NRL',
             readOnly: true
@@ -99,11 +104,11 @@ export class DataGridContainerComponent implements OnInit {
         },
         {
             id: 'operations_mode_adv',
-            title: 'Betriebsart (Code aus ADV-Kat-Nr.8)'
+            title: 'Betriebs&shy;art (Code aus ADV-Kat-Nr.8)'
         },
         {
             id: 'operations_mode_text',
-            title: 'Betriebsart (Textfeld / Ergänzung)'
+            title: 'Betriebs&shy;art (Textfeld / Ergänzung)'
         },
         {
             id: 'vvvo',
@@ -111,7 +116,7 @@ export class DataGridContainerComponent implements OnInit {
         },
         {
             id: 'comment',
-            title: 'Bemerkung (u.a. Untersuchungs&shy;programm)'
+            title: 'Be&shy;merkung (u.a. Unter&shy;suchungs&shy;programm)'
         }
     ];
 
@@ -172,6 +177,13 @@ export class DataGridContainerComponent implements OnInit {
                 result.nrl = {
                     id: 'nrl',
                     value: row.sampleMeta.nrl,
+                    correctionOffer: [],
+                    editMessage: []
+                };
+
+                result.row_index = {
+                    id: 'row_index',
+                    value: (index + 1).toString(),
                     correctionOffer: [],
                     editMessage: []
                 };

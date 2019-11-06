@@ -26,6 +26,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         BrowserAnimationsModule,
         StoreModule.forRoot({
             router: routerReducer
+        }, {
+            runtimeChecks: {
+                strictStateImmutability: false,
+                strictActionImmutability: false
+            }
         }),
         StoreDevtoolsModule.instrument({
             name: 'MiBi Portal Devtools',

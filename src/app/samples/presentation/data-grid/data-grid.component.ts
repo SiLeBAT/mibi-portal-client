@@ -1,7 +1,7 @@
 import { Component, Input, ViewChild, Output, EventEmitter, OnInit, ElementRef, AfterViewChecked } from '@angular/core';
 import { HotTableComponent } from '@handsontable/angular';
 import 'tooltipster';
-import * as Handsontable from 'handsontable';
+import Handsontable, * as HT from 'handsontable';
 import * as _ from 'lodash';
 import {
     TableDataOutput, ColConfig
@@ -15,35 +15,6 @@ enum HotChangeIndex {
     COL_ID = 1,
     ORIGINAL_VALUE = 2,
     NEW_VALUE = 3
-
-}
-
-interface ICellProperties {
-    tooltipOptionList: any[];
-    className: string;
-    renderer?: (instance: any, td: any, row: any, col: any, prop: any, value: any, cp: any) => void;
-    source?: string[];
-    type?: string;
-    strict?: boolean;
-    filter?: boolean;
-    trimDropdown?: boolean;
-    visibleRows?: number;
-}
-
-interface IColumnProperties {
-    data: string;
-}
-interface IHotSettings {
-
-    colHeaders: string[];
-    rowHeaders: boolean;
-    stretchH: string;
-    colWidths: number[];
-    manualColumnResize: boolean;
-    manualRowResize: boolean;
-    renderAllRows: boolean;
-    cells: (cellRow: number, cellCol: number, cellProp: string) => any;
-    columns?: (col: number) => IColumnProperties | undefined;
 }
 
 enum HotSource {
@@ -79,19 +50,18 @@ export interface IFormCellViewModel {
     styleUrls: ['./data-grid.component.scss']
 })
 export class DataGridComponent implements OnInit, AfterViewChecked {
-    settings: IHotSettings;
-
-    @Input() colConfig: ColConfig[];
-
-    @ViewChild(HotTableComponent) hotTableComponent: HotTableComponent;
-    @Output() valueChanged = new EventEmitter();
 
     @Input() set viewModel(vm: IFormViewModel) {
         this.vm = _.cloneDeep(vm);
     }
 
-    @ViewChild('hotTableContainer') private containerElement: ElementRef;
+    @Input() colConfig: ColConfig[];
+    @Output() valueChanged = new EventEmitter<TableDataOutput>();
 
+    @ViewChild(HotTableComponent, { static: false }) hotTableComponent: HotTableComponent;
+    @ViewChild('hotTableContainer', { static: false }) private containerElement: ElementRef;
+
+    settings: Handsontable.GridSettings;
     vm: IFormViewModel;
     private ToolTips: { [key: number]: ToolTip } = {};
 
@@ -107,28 +77,31 @@ export class DataGridComponent implements OnInit, AfterViewChecked {
             = createToolTip(ToolTipTheme.INFO, 'left');
 
         this.settings = {
+            licenseKey: 'non-commercial-and-evaluation',
             colHeaders: this.colConfig.map(c => c.title),
-            rowHeaders: true,
+            // causes layout issues
+            // rowHeaders: true,
             stretchH: 'all',
-            colWidths: [50],
+            colWidths: 70,
+            columnHeaderHeight: 150,
+            renderAllRows: true,
+            viewportColumnRenderingOffset: 100,
+            viewportRowRenderingOffset: 100,
+            autoColumnSize: { useHeaders: true },
             manualColumnResize: true,
             manualRowResize: true,
-            renderAllRows: true,
+            wordWrap: true,
             cells: this.createCellVisitor(),
-            columns: (col: number) => {
-                if (col < this.colConfig.length) {
-                    return {
-                        data: this.colConfig[col].id + '.value',
-                        readOnly: !!this.colConfig[col].readOnly
-                    };
-                }
-                return undefined;
-            }
+            columns: this.colConfig.map(col => {
+                return {
+                    data: col.id + '.value',
+                    readOnly: !!col.readOnly
+                };
+            })
         };
     }
 
-    // Handsontable dictates that this should be an arrow function.
-    onAfterChange = (hotInstance: any, changes: any, source: string) => {
+    onAfterChange = (changes: any, source: string) => {
         // context -> AppComponent
         switch (source) {
             case HotSource.EDIT:
@@ -158,9 +131,9 @@ export class DataGridComponent implements OnInit, AfterViewChecked {
     }
 
     private createCellVisitor() {
-        return (cellRow: number, cellCol: number, cellProp: string): any => {
+        return (cellRow: number, cellCol: number): Handsontable.CellMeta => {
             const cellConfig: IFormCellViewModel = this.vm.data[cellRow][this.colConfig[cellCol].id];
-            const cellProperties: ICellProperties = {
+            const cellProperties: Handsontable.CellMeta = {
                 tooltipOptionList: [],
                 className: '',
                 renderer: this.cellRenderer
@@ -201,7 +174,6 @@ export class DataGridComponent implements OnInit, AfterViewChecked {
         };
     }
 
-    // Handsontable dictates that this should be an arrow function.
     private cellRenderer = (instance: any, td: any, row: any, col: any, prop: any, value: any, cp: any) => {
         const instances = $.tooltipster.instances(td);
         for (const i of instances) {
@@ -214,16 +186,21 @@ export class DataGridComponent implements OnInit, AfterViewChecked {
 
         if (cp.type === 'autocomplete') {
             cp.className = cp.className + ' showArrow';
-            return Handsontable.renderers.AutocompleteRenderer(instance, td, row, col, prop, value, cp);
+            return HT.default.renderers.AutocompleteRenderer(instance, td, row, col, prop, value, cp);
         } else {
-            return Handsontable.renderers.TextRenderer(instance, td, row, col, prop, value, cp);
+            return HT.default.renderers.TextRenderer(instance, td, row, col, prop, value, cp);
         }
     }
 
+    onResize() {
+        // for firefox (throws a elementToCheck exception on resize)
+        this.hotTableComponent.updateHotTable({});
+    }
+
     ngAfterViewChecked(): void {
-        // the handsontable updates its size if the page size is adjusted i.e. the <body> onresize event occurs
-        // it does not respond to size changes of its parent container, so the handsontable must be updated manually
-        // e.g. displaying the mibi-banner resizes the tables parent container but not the page itself
+        // // the handsontable updates its size if the page size is adjusted i.e. the <body> onresize event occurs
+        // // it does not respond to size changes of its parent container, so the handsontable must be updated manually
+        // // e.g. displaying the mibi-banner resizes the tables parent container but not the page itself
         this.updateHotTableSize();
     }
 
@@ -236,12 +213,5 @@ export class DataGridComponent implements OnInit, AfterViewChecked {
         if (hotTableRect.height !== containerRect.height || hotTableRect.width !== containerRect.width) {
             this.hotTableComponent.updateHotTable({});
         }
-    }
-
-    // called by the mouseenter event
-    // this is necessary to rearrange the scroll bar because handson table does not
-    // render properly after the page navigation animation
-    updateHotTable() {
-        this.hotTableComponent.updateHotTable({});
     }
 }
