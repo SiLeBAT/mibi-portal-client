@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 import { Store, select } from '@ngrx/store';
 import { DialogState, DialogData } from './../state/dialog.reducer';
 import { selectDialogData } from './../state/dialog.selectors';

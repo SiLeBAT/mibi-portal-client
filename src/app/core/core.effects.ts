@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { tap, pluck } from 'rxjs/operators';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../shared/presentation/dialog/dialog.component';
 import { DialogContent } from './model/dialog.model';
 import { CoreMainActionTypes } from './state/core.actions';

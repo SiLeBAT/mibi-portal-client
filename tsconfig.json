@@ -1,17 +1,46 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "module": "esnext",
+    "moduleResolution": "node",
     "outDir": "./dist/out-tsc",
+    "target": "es2015",
+    "typeRoots": ["./node_modules/@types"],
+    "lib": ["es2017", "dom"],
     "sourceMap": true,
     "declaration": false,
-    "moduleResolution": "node",
+    "incremental": true,
+    "downlevelIteration": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "resolveJsonModule": true,
+    "removeComments": true,
     "forceConsistentCasingInFileNames": true,
-    "strictNullChecks": true,
+
     "noImplicitAny": true,
-    "target": "es5",
-    "typeRoots": ["./node_modules/@types"],
-    "lib": ["es2016", "dom"]
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "strictBindCallApply": true,
+    // "strictFunctionTypes": true,
+    // "strictPropertyInitialization": true,
+    // "strict": true
+
+    "noImplicitReturns": true,
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true,
+
+    "newLine": "lf"
+  },
+  "jest": {
+    "globals": {
+      "ts-jest": {
+        "tsConfig": "src/tsconfig.spec.json",
+        "stringifyContentPathRegex": "\\.html$",
+        "astTransformers": [
+          "jest-preset-angular/build/InlineFilesTransformer",
+          "jest-preset-angular/build/StripStylesTransformer"
+        ],
+      }
+    }
   }
 }

@@ -1,0 +1,23 @@
+# This file is used by the build system to adjust CSS and JS output to support the specified browsers below.
+# For additional information regarding the format and rule options, please see:
+# https://github.com/browserslist/browserslist#queries
+
+# You can see what browsers were selected by your queries by running:
+#   npx browserslist
+
+> 0.5%
+last 2 versions
+Firefox ESR
+not dead
+not Explorer > 0
+not ExplorerMobile > 0
+not Android > 0
+not QQAndroid > 0
+not UCAndroid > 0
+not Baidu > 0
+not iOS > 0
+not kaios > 0
+not OperaMobile > 0
+not OperaMini all
+not Samsung > 0
+maintained node versions

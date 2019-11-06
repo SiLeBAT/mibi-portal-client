@@ -23,7 +23,10 @@ import { sharedReducerMap, sharedEffects } from './shared.store';
 import { NewDialogComponent } from './dialog/components/dialog.component';
 import { DialogViewComponent } from './dialog/components/dialog-view.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatProgressSpinnerModule, MatMenuModule, MatIconModule, MatToolbarModule } from '@angular/material';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @NgModule({
     imports: [
