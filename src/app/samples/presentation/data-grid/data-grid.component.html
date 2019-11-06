@@ -1,8 +1,12 @@
-<mibi-layout-box  x-overflow-handling  y-overflow-handling>
+<mibi-layout-box x-overflow-handling y-overflow-handling>
 
-    <div #hotTableContainer class="mibi-hot-table" (mouseenter)="updateHotTable()">
-        <hot-table [data]="vm.data" [settings]="settings" [afterChange]="onAfterChange">
-        </hot-table>
+    <div class="mibi-dynamic-handson-width">
+        <div class="mibi-dynamic-handson-width__item mibi-dynamic-handson-height">
+            <div #hotTableContainer class="mibi-dynamic-handson-height__item mibi-handson-container" (window:resize)="onResize()">
+                <hot-table [data]="vm.data" [settings]="settings" [afterChange]="onAfterChange">
+                </hot-table>
+            </div>
+        </div>
     </div>
 
 </mibi-layout-box>

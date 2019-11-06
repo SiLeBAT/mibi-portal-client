@@ -12,7 +12,7 @@ export class ResetComponent implements OnInit, AfterViewInit {
 
     @Output() reset = new EventEmitter();
 
-    @ViewChild(PasswordComponent) private passwordComponent: PasswordComponent;
+    @ViewChild(PasswordComponent, { static: false }) private passwordComponent: PasswordComponent;
 
     constructor() { }
 

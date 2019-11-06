@@ -12,7 +12,7 @@ import { Store, select, createSelector } from '@ngrx/store';
 import { selectFormData } from '../../state/samples.selectors';
 import { Sample, Analysis, SampleMeta } from '../../model/sample-management.model';
 import { SamplesMainSlice, SamplesSlice } from '../../samples.state';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 import { NRLDTO, AnalysisProcedureDTO } from '../../../core/model/response.model';
 import { sendSamplesSendDialogStrings } from '../../send-samples/send-samples.constants';
 import { SendSamplesOpenSendDialogSSA } from '../../send-samples/state/send-samples.actions';

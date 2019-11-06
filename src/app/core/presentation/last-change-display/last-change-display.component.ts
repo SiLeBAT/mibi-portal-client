@@ -12,7 +12,7 @@ export class LastChangeDisplayComponent implements AfterViewInit {
     @Input() lastChange$: Observable<moment.Moment>;
     @Input() serverVersion: string;
     @Input() clientVersion: string;
-    @ViewChild('entry', { read: ElementRef }) entry: ElementRef;
+    @ViewChild('entry', { read: ElementRef, static: false }) entry: ElementRef;
     tooltipClassName = TOOLTIP_CLASS_HOOK;
     private toolTip: ToolTip;
 

@@ -18,10 +18,10 @@ import { selectImportedFileName } from '../../../samples/state/samples.selectors
 export class ActionItemListComponent implements OnInit, OnDestroy {
 
     @Input() configuration$: Observable<UserActionViewModelConfiguration[]>;
-    @ViewChild('actionList', { read: ViewContainerRef }) actionItemHost: ViewContainerRef;
-    @ViewChild('customActionItems')
+    @ViewChild('actionList', { read: ViewContainerRef, static: true }) actionItemHost: ViewContainerRef;
+    @ViewChild('customActionItems', { static: true })
     private customActionItems: TemplateRef<any>;
-    @ViewChild('uploadActionItem')
+    @ViewChild('uploadActionItem', { static: true })
     private uploadActionItem: TemplateRef<any>;
     private componentActive: boolean = true;
     hasElements: boolean = false;

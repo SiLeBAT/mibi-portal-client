@@ -33,7 +33,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { AvatarComponent } from './presentation/avatar/avatar.component';
 import { AvatarContainerComponent } from './container/avatar-container/avatar-container.component';
 import { FooterNavContainerComponent } from './container/footer-nav-container/footer-nav-container.component';
-import { MatDialogModule } from '@angular/material';
+import { MatDialogModule } from '@angular/material/dialog';
 import { FooterNavComponent } from './presentation/footer-nav/footer-nav.component';
 import { coreReducerMap, coreEffects } from './core.store';
 import { CORE_SLICE_NAME } from './core.state';
