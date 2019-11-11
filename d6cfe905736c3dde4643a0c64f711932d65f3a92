@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7d65214a_60eb1492",
+        "filename": "browserslist",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1013694
+      },
+      "writtenOn": "2019-11-11T08:14:36Z",
+      "side": 1,
+      "message": "Please check with our supported browser list in the wiki",
+      "range": {
+        "startLine": 9,
+        "startChar": 7,
+        "endLine": 9,
+        "endChar": 15
+      },
+      "revId": "d6cfe905736c3dde4643a0c64f711932d65f3a92",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7a366dc4_e03ce930",
+        "filename": "src/app/samples/presentation/data-grid/data-grid.component.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1013694
+      },
+      "writtenOn": "2019-11-11T08:14:36Z",
+      "side": 1,
+      "message": "unnecessary comment",
+      "range": {
+        "startLine": 5,
+        "startChar": 25,
+        "endLine": 5,
+        "endChar": 26
+      },
+      "revId": "d6cfe905736c3dde4643a0c64f711932d65f3a92",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
