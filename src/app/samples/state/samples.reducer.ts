@@ -50,7 +50,7 @@ export function samplesMainReducer(
     state: SamplesMainData = initialMainData, action: SamplesMainAction | ValidateSamplesAction
 ): SamplesMainData {
     switch (action.type) {
-        case SamplesMainActionTypes.UpdateSampleMetaDataSSA:
+        case SamplesMainActionTypes.UpdateSampleMetaDataSOA:
             const metaData = action.payload;
             return {
                 ...state, ...{

@@ -17,7 +17,7 @@ import { NRLDTO, AnalysisProcedureDTO } from '../../../core/model/response.model
 import { sendSamplesSendDialogStrings } from '../../send-samples/send-samples.constants';
 import { SendSamplesOpenSendDialogSSA } from '../../send-samples/state/send-samples.actions';
 import { selectSendSamplesIsFileAlreadySent } from '../../send-samples/state/send-samples.selectors';
-import { UpdateSampleMetaDataSSA } from '../../state/samples.actions';
+import { UpdateSampleMetaDataSOA } from '../../state/samples.actions';
 import { selectNRLs } from '../../../shared/nrl/state/nrl.selectors';
 import { NRLState } from '../../../shared/nrl/state/nrl.reducer';
 import { SharedSlice } from '../../../shared/shared.state';
@@ -152,7 +152,7 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
         const assignedNRLs: NRLDTO[] = this.determineAssignedNRLs(samples, nrls);
 
         const vm = this.determineAnalysisProcedures(assignedNRLs);
-        this.analysisForm = this.createCreateFormControls(vm, samples);
+        this.analysisForm = this.createFormControls(vm, samples);
         return vm;
 
     }
@@ -180,7 +180,7 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
         });
     }
 
-    private createCreateFormControls(analysisStepVM: AnalysisStepViewModel[], samples: Sample[]) {
+    private createFormControls(analysisStepVM: AnalysisStepViewModel[], samples: Sample[]) {
 
         return analysisStepVM.reduce((accumulator: { [key: string]: FormGroup }, vm) => {
             const exampleSample = _.find(samples, s => s.sampleMeta.nrl === vm.abbreviation);
@@ -211,7 +211,7 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
                 takeWhile(() => this.componentActive)).subscribe(
                 val => {
                     this.store$.dispatch(
-                        new UpdateSampleMetaDataSSA(
+                        new UpdateSampleMetaDataSOA(
                             {
                                 [vm.abbreviation]: this.mapFormValues(vm.abbreviation, val)
                             })
@@ -219,6 +219,11 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
                 },
                 error => { throw error; }
             );
+            this.store$.dispatch(new UpdateSampleMetaDataSOA(
+                {
+                    [vm.abbreviation]: this.mapFormValues(vm.abbreviation, accumulator[vm.abbreviation].value)
+                }
+            ));
             return accumulator;
         }, {});
     }
