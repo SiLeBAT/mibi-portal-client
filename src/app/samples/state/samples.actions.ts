@@ -3,7 +3,7 @@ import { ChangedDataGridField, SampleSet, ExcelFile, Sample, MetaDataCollection 
 
 export enum SamplesMainActionTypes {
     UpdateSampleSetSOA = '[Samples] Set sample set',
-    UpdateSampleMetaDataSSA = '[Samples] Set sample metadata',
+    UpdateSampleMetaDataSOA = '[Samples] Set sample metadata',
     DestroySampleSetSOA = '[Samples] Clear store of all samples related data',
     UpdateSamplesSOA = '[Samples] Set samples',
     UpdateSampleDataEntrySOA = '[Samples] Change single sample data field value',
@@ -30,8 +30,8 @@ export class UpdateSamplesSOA implements Action {
     constructor(public payload: Sample[]) { }
 }
 
-export class UpdateSampleMetaDataSSA implements Action {
-    readonly type = SamplesMainActionTypes.UpdateSampleMetaDataSSA;
+export class UpdateSampleMetaDataSOA implements Action {
+    readonly type = SamplesMainActionTypes.UpdateSampleMetaDataSOA;
 
     constructor(public payload: MetaDataCollection) { }
 }
@@ -65,4 +65,4 @@ export type SamplesMainAction =
     | ShowSamplesSSA
     | ImportExcelFileMSA
     | ExportExcelFileSSA
-    | UpdateSampleMetaDataSSA;
+    | UpdateSampleMetaDataSOA;
