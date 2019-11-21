@@ -3,7 +3,7 @@ import * as samplesActions from '../../state/samples.actions';
 import * as coreActions from '../../../core/state/core.actions';
 import { Store } from '@ngrx/store';
 import { UserActionType } from '../../../shared/model/user-action.model';
-import { Samples } from '../../samples.store';
+import { SamplesMainSlice } from '../../samples.state';
 
 @Component({
     selector: 'mibi-upload-view',
@@ -12,10 +12,10 @@ import { Samples } from '../../samples.store';
 })
 export class UploadViewComponent implements OnInit {
     constructor(
-        private store: Store<Samples>) { }
+        private store: Store<SamplesMainSlice>) { }
 
     ngOnInit(): void {
-        this.store.dispatch(new coreActions.EnableActionItems(
+        this.store.dispatch(new coreActions.UpdateActionItemsSOA(
             [
                 UserActionType.VALIDATE,
                 UserActionType.SEND,
@@ -26,6 +26,6 @@ export class UploadViewComponent implements OnInit {
     }
     // Container not really necessary here, or is it?
     fileUpload(file: File) {
-        this.store.dispatch(new samplesActions.ImportExcelFile({ file }));
+        this.store.dispatch(new samplesActions.ImportExcelFileMSA({ file }));
     }
 }

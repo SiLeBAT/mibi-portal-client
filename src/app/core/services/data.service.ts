@@ -1,16 +1,15 @@
+import { EntityFactoryService } from './entity-factory.service';
+import { DTOFactoryService } from './dto-factory.service';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import * as _ from 'lodash';
 import {
-    SampleData,
+    Sample,
     SampleSet,
     MarshalledData,
     SampleSubmission,
-    AnnotatedSampleDataEntry,
-    SampleProperty,
-    SampleSetMetaData,
     ExcelFile
 } from '../../samples/model/sample-management.model';
 import {
@@ -23,9 +22,11 @@ import {
     RegistrationRequestResponseDTO,
     PasswordResetRequestResponseDTO,
     InstituteCollectionDTO,
+    NRLCollectionDTO,
     PutSamplesJSONResponseDTO,
     PostSubmittedResponseDTO,
-    PutValidatedResponseDTO
+    PutValidatedResponseDTO,
+    NRLDTO
 } from '../model/response.model';
 import { TokenizedUser, Credentials, RegistrationDetails } from '../../user/model/user.model';
 import {
@@ -38,16 +39,9 @@ import {
 } from '../model/request.model';
 import { ClientError, EndpointError } from '../model/client-error';
 import {
-    AnnotatedSampleDataDTO,
-    AnnotatedSampleDataEntryDTO,
-    AnnotatedSampleSetDTO,
-    AnnotatedOrderDTO,
-    SampleSetMetaDTO,
-    SampleSetDTO,
-    SampleDataDTO
+    AnnotatedOrderDTO
 } from '../model/shared-dto.model';
 import { InstitutionDTO } from '../../user/model/institution.model';
-import { Urgency } from '../../samples/model/sample.enums';
 import { SamplesMainData } from '../../samples/state/samples.reducer';
 import { InvalidInputError, InputChangedError } from '../model/data-service-error';
 
@@ -56,17 +50,19 @@ import { InvalidInputError, InputChangedError } from '../model/data-service-erro
 })
 export class DataService {
 
-    private API_VERSION = 'v1';
+    private API_VERSION = 'v2';
     private USER = 'users';
     private SAMPLE = 'samples';
     private TOKEN = 'tokens';
     private INSTITUTE = 'institutes';
+    private NRL = 'nrls';
     private URL = {
         submit: [this.API_VERSION, this.SAMPLE, 'submitted'].join('/'),
         validate: [this.API_VERSION, this.SAMPLE, 'validated'].join('/'),
         marshal: [this.API_VERSION, this.SAMPLE].join('/'),
         unmarshal: [this.API_VERSION, this.SAMPLE].join('/'),
         institutions: [this.API_VERSION, this.INSTITUTE].join('/'),
+        nrls: [this.API_VERSION, this.NRL].join('/'),
         login: [this.API_VERSION, this.USER, 'login'].join('/'),
         register: [this.API_VERSION, this.USER, 'registration'].join('/'),
         resetPasswordRequest: [this.API_VERSION, this.USER, 'reset-password-request'].join('/'),
@@ -78,7 +74,10 @@ export class DataService {
         faq: './assets/faq.json'
     };
 
-    constructor(private httpClient: HttpClient) {
+    constructor(
+        private httpClient: HttpClient,
+        private dtoService: DTOFactoryService,
+        private entityFactoryService: EntityFactoryService) {
     }
 
     setCurrentUser(user: TokenizedUser) {
@@ -95,7 +94,6 @@ export class DataService {
 
     logout() {
         localStorage.removeItem('currentUser');
-        return new Observable<void>().toPromise();
     }
 
     login(credentials: Credentials): Observable<TokenizedUser> {
@@ -108,24 +106,25 @@ export class DataService {
 
     sendSampleSheet(sendableFormData: SampleSubmission) {
         const requestDTO: PostSubmittedRequestDTO = {
-            order: { sampleSet: this.fromSampleSetToDTO(sendableFormData.order) },
-            comment: sendableFormData.comment
+            order: { sampleSet: this.dtoService.fromSampleSet(sendableFormData.order) },
+            comment: sendableFormData.comment,
+            receiveAs: sendableFormData.receiveAs.toString()
         };
         return this.httpClient.post<PostSubmittedResponseDTO>(this.URL.submit, requestDTO).pipe(
             map((dto: PostSubmittedResponseDTO) =>
-                dto.order.sampleSet.samples.map(sample => this.fromAnnotatedDTOToSampleData(sample.sampleData))),
+                dto.order.sampleSet.samples.map(sample => this.entityFactoryService.toSample(sample))),
             catchError(err => {
                 if (err instanceof EndpointError) {
                     if (err.errorDTO.order) {
                         const order: AnnotatedOrderDTO = err.errorDTO.order;
-                        const sampleData: SampleData[] = order.sampleSet.samples.map(
-                            sample => this.fromAnnotatedDTOToSampleData(sample.sampleData)
-                            );
+                        const samples: Sample[] = order.sampleSet.samples.map(
+                            sample => this.entityFactoryService.toSample(sample)
+                        );
                         switch (err.errorDTO.code) {
                             case 5:
-                                throw new InvalidInputError(sampleData, 'Invalid sample data error.');
+                                throw new InvalidInputError(samples, 'Invalid sample data error.');
                             case 6:
-                                throw new InputChangedError(sampleData, 'Input changed error.');
+                                throw new InputChangedError(samples, 'Input changed error.');
                             default:
                                 throw err;
                         }
@@ -136,12 +135,12 @@ export class DataService {
         );
     }
 
-    validateSampleData(requestData: SamplesMainData): Observable<SampleData[]> {
-        const requestDTO: PutValidatedRequestDTO = { order: this.fromSamplesMainDataToAnnotatedOrderDTO(requestData) };
+    validateSampleData(requestData: SamplesMainData): Observable<Sample[]> {
+        const requestDTO: PutValidatedRequestDTO = { order: this.dtoService.fromSamplesMainDataToOrderDTO(requestData) };
         return this.httpClient.put<PutValidatedResponseDTO>(this.URL.validate, requestDTO).pipe(
             map((dto: PutValidatedResponseDTO) =>
                 dto.order.sampleSet.samples.map(sample =>
-                    this.fromAnnotatedDTOToSampleData(sample.sampleData)
+                    this.entityFactoryService.toSample(sample)
                 )));
     }
 
@@ -155,14 +154,14 @@ export class DataService {
         const formData: FormData = new FormData();
         formData.append('file', requestData.file, requestData.file.name);
         return this.httpClient.put<PutSamplesJSONResponseDTO>(this.URL.unmarshal, formData, httpOptions).pipe(
-            map((dto: PutSamplesJSONResponseDTO) => this.fromDTOToAnnotatedSampleSet(dto.order.sampleSet)),
+            map((dto: PutSamplesJSONResponseDTO) => this.entityFactoryService.toSampleSet(dto.order.sampleSet)),
             catchError((error) => {
                 throw new ClientError(`Failed to read excel file. error=${error}`);
             }));
     }
 
     marshalJSON(requestData: SamplesMainData): Observable<MarshalledData> {
-        const requestBody: PutSamplesJSONRequestDTO = { order: this.fromSamplesMainDataToAnnotatedOrderDTO(requestData) };
+        const requestBody: PutSamplesJSONRequestDTO = { order: this.dtoService.fromSamplesMainDataToAnnotatedOrderDTO(requestData) };
         const httpOptions = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
@@ -170,13 +169,20 @@ export class DataService {
             })
         };
         return this.httpClient.put<PutSamplesXLSXResponseDTO>(this.URL.marshal, requestBody, httpOptions).pipe(
-            map((dto: PutSamplesXLSXResponseDTO) => this.fromPutSamplesXLSXResponseDTOToMarshalledData(dto)));
+            map((dto: PutSamplesXLSXResponseDTO) => this.entityFactoryService.fromPutSamplesXLSXResponseDTOToMarshalledData(dto)));
     }
 
     getAllInstitutions(): Observable<InstitutionDTO[]> {
         return this.httpClient.get<InstituteCollectionDTO>(this.URL.institutions).pipe(
             map((dto: InstituteCollectionDTO) => {
                 return dto.institutes;
+            }));
+    }
+
+    getAllNRLs(): Observable<NRLDTO[]> {
+        return this.httpClient.get<NRLCollectionDTO>(this.URL.nrls).pipe(
+            map((dto: NRLCollectionDTO) => {
+                return dto.nrls;
             }));
     }
 
@@ -207,110 +213,5 @@ export class DataService {
 
     refreshToken(): Observable<TokenRefreshResponseDTO> {
         return this.httpClient.post<TokenRefreshResponseDTO>(this.URL.refresh, null);
-    }
-
-    private fromPutSamplesXLSXResponseDTOToMarshalledData(dto: PutSamplesXLSXResponseDTO): MarshalledData {
-        return {
-            binaryData: dto.data,
-            mimeType: dto.type,
-            fileName: dto.fileName
-        };
-    }
-
-    private fromDTOToAnnotatedSampleSet(dto: AnnotatedSampleSetDTO): SampleSet {
-        const annotatedSampleSet: SampleSet = {
-            meta: this.fromDTOToSampleSetMetaData(dto.meta),
-            samples: dto.samples.map(sampleContainerDTO => {
-                return this.fromAnnotatedDTOToSampleData(sampleContainerDTO.sampleData);
-            })
-        };
-        return annotatedSampleSet;
-    }
-
-    private fromSampleSetToAnnotatedDTO(sampleSet: SampleSet): AnnotatedSampleSetDTO {
-        const dto: AnnotatedSampleSetDTO = {
-            meta: this.fromSampleSetMetaDataToDTO(sampleSet.meta),
-            samples: sampleSet.samples.map(sample => ({ sampleData: sample }))
-        };
-        return dto;
-    }
-
-    private fromSampleSetToDTO(sampleSet: SampleSet): SampleSetDTO {
-        const dto: SampleSetDTO = {
-            meta: this.fromSampleSetMetaDataToDTO(sampleSet.meta),
-            samples: sampleSet.samples.map(sample => ({ sampleData: this.fromSampleDataToDTO(sample) }))
-        };
-        return dto;
-    }
-
-    private fromSampleDataToDTO(sampleData: SampleData): SampleDataDTO {
-        const dto: SampleDataDTO = {};
-        Object.keys(sampleData).forEach(prop => dto[prop] = {
-            value: sampleData[prop].value,
-            oldValue: sampleData[prop].oldValue
-        });
-        return dto;
-    }
-
-    private fromDTOToSampleSetMetaData(dto: SampleSetMetaDTO): SampleSetMetaData {
-        return {
-            nrl: dto.nrl,
-            analysis: dto.analysis,
-            sender: dto.sender,
-            urgency: this.fromUrgencyStringToEnum(dto.urgency),
-            fileName: dto.fileName ? dto.fileName : ''
-        };
-    }
-
-    private fromSampleSetMetaDataToDTO(meta: SampleSetMetaData): SampleSetMetaDTO {
-        return {
-            nrl: meta.nrl,
-            analysis: meta.analysis,
-            sender: meta.sender,
-            urgency: meta.urgency
-        };
-    }
-
-    private fromUrgencyStringToEnum(str: string): Urgency {
-        switch (str.trim().toLowerCase()) {
-            case 'eilt':
-                return Urgency.URGENT;
-            case 'normal':
-            default:
-                return Urgency.NORMAL;
-        }
-    }
-    private fromSamplesMainDataToAnnotatedOrderDTO({ meta, formData }: SamplesMainData): AnnotatedOrderDTO {
-        const dto: AnnotatedSampleSetDTO = this.fromSampleSetToAnnotatedDTO({
-            meta,
-            samples: formData
-        });
-        return { sampleSet: dto };
-    }
-
-    fromAnnotatedDTOToSampleData(dto: AnnotatedSampleDataDTO): SampleData {
-        const annotatedSampleData: Record<SampleProperty, AnnotatedSampleDataEntry> = {};
-        Object.keys(dto).forEach(prop => annotatedSampleData[prop] = this.fromDTOToAnnotatedSampleDataEntry(dto[prop]));
-        return annotatedSampleData as SampleData;
-    }
-
-    private fromDTOToAnnotatedSampleDataEntry(dto: AnnotatedSampleDataEntryDTO): AnnotatedSampleDataEntry {
-        try {
-            const annotatedSampleDataEntry: AnnotatedSampleDataEntry = {
-                value: dto.value,
-                errors: dto.errors ? dto.errors : [],
-                correctionOffer: dto.correctionOffer ? dto.correctionOffer : []
-            };
-
-            if (!_.isNil(dto.oldValue)) {
-                annotatedSampleDataEntry.oldValue = dto.oldValue;
-            }
-
-            return annotatedSampleDataEntry;
-        } catch (error) {
-            throw new ClientError(
-                `Error parsing input. error=${error}`
-            );
-        }
     }
 }

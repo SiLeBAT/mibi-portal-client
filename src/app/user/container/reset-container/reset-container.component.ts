@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as fromUser from '../../state/user.reducer';
 import { Store } from '@ngrx/store';
 import { DataService } from '../../../core/services/data.service';
 import * as coreActions from '../../../core/state/core.actions';
+import { UserMainState } from '../../state/user.reducer';
 
 @Component({
     selector: 'mibi-reset-container',
@@ -14,27 +14,29 @@ export class ResetContainerComponent {
 
     constructor(
         private activatedRoute: ActivatedRoute,
-        private store: Store<fromUser.UserMainState>, private dataService: DataService, private router: Router) {
+        private store: Store<UserMainState>, private dataService: DataService, private router: Router) {
     }
 
     reset(password: string) {
-
         const token = this.activatedRoute.snapshot.params['id'];
 
+        this.store.dispatch(new coreActions.UpdateIsBusySOA({ isBusy: true }));
         this.dataService.resetPassword(
             password, token).toPromise().then(
-                (response) => {
+                () => {
+                    this.store.dispatch(new coreActions.UpdateIsBusySOA({ isBusy: false }));
                     this.router.navigate(['users/login']).then(
                         () => {
-                            this.store.dispatch(new coreActions.DisplayBanner({ predefined: 'passwordChangeSuccess' }));
+                            this.store.dispatch(new coreActions.DisplayBannerSOA({ predefined: 'passwordChangeSuccess' }));
                         }
                     ).catch(() => {
                         throw new Error('Unable to navigate.');
                     });
                 }
             ).catch(
-                (response) => {
-                    this.store.dispatch(new coreActions.DisplayBanner({ predefined: 'passwordChangeFailure' }));
+                () => {
+                    this.store.dispatch(new coreActions.UpdateIsBusySOA({ isBusy: false }));
+                    this.store.dispatch(new coreActions.DisplayBannerSOA({ predefined: 'passwordChangeFailure' }));
                 }
 
             );

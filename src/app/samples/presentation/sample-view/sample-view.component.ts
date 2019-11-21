@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import * as coreActions from '../../../core/state/core.actions';
 import { Store } from '@ngrx/store';
 import { UserActionType } from '../../../shared/model/user-action.model';
-import { Core } from '../../../core/core.state';
+import { CoreMainSlice } from '../../../core/core.state';
+import { UpdateActionItemsSOA } from '../../../core/state/core.actions';
 @Component({
     selector: 'mibi-sample-view',
     templateUrl: './sample-view.component.html'
@@ -10,10 +10,10 @@ import { Core } from '../../../core/core.state';
 export class SampleViewComponent implements OnInit {
 
     constructor(
-        private store: Store<Core>) { }
+        private store: Store<CoreMainSlice>) { }
 
     ngOnInit(): void {
-        this.store.dispatch(new coreActions.EnableActionItems(
+        this.store.dispatch(new UpdateActionItemsSOA(
             [
                 UserActionType.SEND,
                 UserActionType.VALIDATE,
@@ -23,5 +23,4 @@ export class SampleViewComponent implements OnInit {
                 UserActionType.DOWNLOAD_TEMPLATE
             ]));
     }
-
 }

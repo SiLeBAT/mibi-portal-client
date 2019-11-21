@@ -1,23 +1,17 @@
-import { CommandAction, ResponseAction, CommandActionType } from './command/command.actions';
-import { ActionReducerMap, MetaReducer } from '@ngrx/store';
-import { CommandStates, commandSourcesReducer, responseMetaReducer } from './command/command.state';
-import { DialogStates, dialogConfigurationReducer } from './dialog/state/dialog.state';
+import { NRLMainAction } from './nrl/state/nrl.actions';
+import { NRLState, NRLReducer } from './nrl/state/nrl.reducer';
+import { ActionReducerMap } from '@ngrx/store';
+import { DialogState, dialogReducer } from './dialog/state/dialog.reducer';
 import { DialogAction } from './dialog/state/dialog.actions';
-import { CommentDialogStates, commentDialogReducer } from './comment-dialog/state/comment-dialog.state';
-import { CommentDialogAction } from './comment-dialog/state/comment-dialog.actions';
-import { DialogEffects } from './dialog/effects/dialog.effects';
-import { CommentDialogEffects } from './comment-dialog/effects/comment-dialog.effects';
+import { DialogEffects } from './dialog/dialog.effects';
 
-type SharedStates = CommandStates & DialogStates & CommentDialogStates;
-type SharedReducerAction = CommandActionType | DialogAction | CommentDialogAction;
+type SharedState = DialogState & NRLState;
+type SharedReducerAction = DialogAction | NRLMainAction;
 
-export const sharedReducerMap: ActionReducerMap<SharedStates, SharedReducerAction> = {
-    commandSources: commandSourcesReducer,
-    dialogConfiguration: dialogConfigurationReducer,
-    commentDialog: commentDialogReducer
+export const sharedReducerMap: ActionReducerMap<SharedState, SharedReducerAction> = {
+    dialogData: dialogReducer,
+    nrls: NRLReducer
 };
 export const sharedEffects = [
-    DialogEffects, CommentDialogEffects
+    DialogEffects
 ];
-
-export const sharedMetaReducers: MetaReducer<CommandStates, CommandActionType>[] = [responseMetaReducer];

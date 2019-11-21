@@ -1,0 +1,13 @@
+<mibi-dialog-view [config]="config" (confirm)="onConfirm()" (cancel)="onCancel()">
+    <mibi-layout-box>
+      <mat-form-field class="mibi-comment">
+          <mat-label>
+            Kommentar für das NRL
+          </mat-label>
+        <textarea #commentInput matInput [formControl]="commentControl" rows="5" cdkFocusInitial type="text" maxlength="2000" placeholder=""></textarea>
+        <mat-hint align="start" [class.mibi-comment-hint--maxCharsReached]="(commentInput.value?.length || 0) === 2000">          
+          {{commentInput.value?.length || 0}}/2000
+        </mat-hint>
+      </mat-form-field>
+    </mibi-layout-box>
+  </mibi-dialog-view>

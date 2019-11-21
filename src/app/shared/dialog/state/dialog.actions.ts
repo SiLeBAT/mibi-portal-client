@@ -1,25 +1,27 @@
-import { CommandAction, ResponseAction } from '../../../shared/command/command.actions';
-import { DialogConfiguration } from '../model/dialog-config.model';
+import { MultiTargetAction } from '../../ngrx/multi-target-action';
+import { DialogConfiguration } from '../dialog.model';
 
 export enum DialogActionTypes {
-    DialogOpen = '[Shared/Dialog] Open Dialog',
-    DialogConfirm = '[Shared/Dialog] Confirm button clicked',
-    DialogCancel = '[Shared/Dialog] Cancel button clicked'
+    DialogOpenMTA = '[Shared/Dialog] Open Dialog',
+    DialogConfirmMTA = '[Shared/Dialog] Inform of dialog confirmed',
+    DialogCancelMTA = '[Shared/Dialog] Inform of dialog cancelled'
 }
-export class DialogOpen implements CommandAction {
-    readonly type = DialogActionTypes.DialogOpen;
+export class DialogOpenMTA implements MultiTargetAction {
+    readonly type = DialogActionTypes.DialogOpenMTA;
 
-    constructor(public source: string, public payload: { configuration: DialogConfiguration }) { }
-}
-
-export class DialogConfirm implements ResponseAction {
-    readonly type = DialogActionTypes.DialogConfirm;
-    readonly command = DialogActionTypes.DialogOpen;
+    constructor(public target: string, public payload: { configuration: DialogConfiguration }) { }
 }
 
-export class DialogCancel implements ResponseAction {
-    readonly type = DialogActionTypes.DialogCancel;
-    readonly command = DialogActionTypes.DialogOpen;
+export class DialogConfirmMTA implements MultiTargetAction {
+    readonly type = DialogActionTypes.DialogConfirmMTA;
+
+    constructor(public target: string) { }
 }
 
-export type DialogAction = DialogOpen | DialogConfirm | DialogCancel;
+export class DialogCancelMTA implements MultiTargetAction {
+    readonly type = DialogActionTypes.DialogCancelMTA;
+
+    constructor(public target: string) { }
+}
+
+export type DialogAction = DialogOpenMTA | DialogConfirmMTA | DialogCancelMTA;

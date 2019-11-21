@@ -1,0 +1,12 @@
+{
+  "root": "/",
+  "upload": "/upload",
+  "samples": "/samples",
+  "login": "/users/login",
+  "recovery": "/users/recovery",
+  "register": "/users/register",
+  "profile": "/users/profile",
+  "datenschutzerklaerung": "/content/datenschutzerklaerung",
+  "datenschutzhinweise": "/users/datenschutzhinweise",
+  "faq": "/content/faq"
+}

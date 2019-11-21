@@ -1,57 +1,68 @@
 import { Action } from '@ngrx/store';
-import { ChangedDataGridField, SampleSet, ExcelFile } from '../model/sample-management.model';
+import { ChangedDataGridField, SampleSet, ExcelFile, Sample, MetaDataCollection } from '../model/sample-management.model';
 
 export enum SamplesMainActionTypes {
-    ClearSamples = '[Samples] Clear Samples',
-    ImportExcelFile = '[Samples] Import Excel file',
-    ImportExcelFileSuccess = '[Samples] Successfully imported Excel file',
-    ExportExcelFile = '[Samples] Export Excel file',
-    ExportExcelFileSuccess = '[Samples] Successfully exported Excel file',
-    ChangeFieldValue = '[Samples] Change field value'
+    UpdateSampleSetSOA = '[Samples] Set sample set',
+    UpdateSampleMetaDataSOA = '[Samples] Set sample metadata',
+    DestroySampleSetSOA = '[Samples] Clear store of all samples related data',
+    UpdateSamplesSOA = '[Samples] Set samples',
+    UpdateSampleDataEntrySOA = '[Samples] Change single sample data field value',
+    ShowSamplesSSA = '[Samples] Navigate to samples view and validate samples',
+    ImportExcelFileMSA = '[Samples] Import Excel file',
+    ExportExcelFileSSA = '[Samples] Export Excel file'
 }
 
-// ClearSamples
+// Samples
 
-export class ClearSamples implements Action {
-    readonly type = SamplesMainActionTypes.ClearSamples;
+export class UpdateSampleSetSOA implements Action {
+    readonly type = SamplesMainActionTypes.UpdateSampleSetSOA;
+
+    constructor(public payload: SampleSet) { }
 }
 
-export class ImportExcelFile implements Action {
-    readonly type = SamplesMainActionTypes.ImportExcelFile;
-
-    constructor(public payload: ExcelFile) {
-
-    }
+export class DestroySampleSetSOA implements Action {
+    readonly type = SamplesMainActionTypes.DestroySampleSetSOA;
 }
 
-export class ImportExcelFileSuccess implements Action {
-    readonly type = SamplesMainActionTypes.ImportExcelFileSuccess;
+export class UpdateSamplesSOA implements Action {
+    readonly type = SamplesMainActionTypes.UpdateSamplesSOA;
 
-    constructor(public payload: SampleSet) {
-
-    }
+    constructor(public payload: Sample[]) { }
 }
 
-// ExportExcelFile
+export class UpdateSampleMetaDataSOA implements Action {
+    readonly type = SamplesMainActionTypes.UpdateSampleMetaDataSOA;
 
-export class ExportExcelFile implements Action {
-    readonly type = SamplesMainActionTypes.ExportExcelFile;
+    constructor(public payload: MetaDataCollection) { }
 }
-
-export class ExportExcelFileSuccess implements Action {
-    readonly type = SamplesMainActionTypes.ExportExcelFileSuccess;
-}
-
-export class ChangeFieldValue implements Action {
-    readonly type = SamplesMainActionTypes.ChangeFieldValue;
+export class UpdateSampleDataEntrySOA implements Action {
+    readonly type = SamplesMainActionTypes.UpdateSampleDataEntrySOA;
 
     constructor(public payload: ChangedDataGridField) { }
 }
 
+export class ShowSamplesSSA implements Action {
+    readonly type = SamplesMainActionTypes.ShowSamplesSSA;
+}
+
+// Excel file
+
+export class ImportExcelFileMSA implements Action {
+    readonly type = SamplesMainActionTypes.ImportExcelFileMSA;
+
+    constructor(public payload: ExcelFile) { }
+}
+
+export class ExportExcelFileSSA implements Action {
+    readonly type = SamplesMainActionTypes.ExportExcelFileSSA;
+}
+
 export type SamplesMainAction =
-    ClearSamples
-    | ImportExcelFile
-    | ImportExcelFileSuccess
-    | ExportExcelFile
-    | ExportExcelFileSuccess
-    | ChangeFieldValue;
+    UpdateSampleSetSOA
+    | DestroySampleSetSOA
+    | UpdateSamplesSOA
+    | UpdateSampleDataEntrySOA
+    | ShowSamplesSSA
+    | ImportExcelFileMSA
+    | ExportExcelFileSSA
+    | UpdateSampleMetaDataSOA;

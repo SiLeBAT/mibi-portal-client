@@ -28,7 +28,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDividerModule } from '@angular/material/divider';
-import { CoreMainEffects } from './state/core.effects';
+import { CoreMainEffects } from './core.effects';
 import { EffectsModule } from '@ngrx/effects';
 import { AvatarComponent } from './presentation/avatar/avatar.component';
 import { AvatarContainerComponent } from './container/avatar-container/avatar-container.component';

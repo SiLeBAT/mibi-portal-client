@@ -7,8 +7,8 @@ import { Observable } from 'rxjs';
 import { takeWhile, startWith, tap, delay } from 'rxjs/operators';
 import { UserActionService } from '../../services/user-action.service';
 import { Store, select } from '@ngrx/store';
-import { Samples } from '../../../samples/samples.store';
-import { selectImportedFileName } from '../../../samples/state/samples.reducer';
+import { SamplesMainSlice } from '../../../samples/samples.state';
+import { selectImportedFileName } from '../../../samples/state/samples.selectors';
 
 @Component({
     selector: 'mibi-action-item-list',
@@ -29,7 +29,7 @@ export class ActionItemListComponent implements OnInit, OnDestroy {
 
     constructor(
         private userActionService: UserActionService,
-        private store$: Store<Samples>
+        private store$: Store<SamplesMainSlice>
         ) { }
 
     ngOnInit(): void {

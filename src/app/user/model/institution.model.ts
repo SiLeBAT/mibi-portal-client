@@ -58,7 +58,7 @@ export class DefaultInstitution implements Institution {
     getFullName(): string {
         let fullName = this.name;
         if (this.addendum) {
-            fullName = fullName + ', ' + this.addendum;
+            fullName = fullName + ', ' + this.addendum.trim();
         }
         return fullName;
     }

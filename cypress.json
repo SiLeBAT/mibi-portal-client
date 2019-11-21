@@ -1,4 +1,11 @@
 {
   "baseUrl": "http://localhost:4200",
-  "video": false
+  "video": false,
+  "env": {
+    "NODE_OPTIONS": "--max_old_space_size=\"2000000\""
+  },
+  "reporter": "cypress-multi-reporters",
+  "reporterOptions": {
+    "configFile": "cypress/reporter-config.json"
+  }
 }

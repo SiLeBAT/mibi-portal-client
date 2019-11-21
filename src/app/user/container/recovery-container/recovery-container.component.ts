@@ -8,8 +8,9 @@ import { UserActionType } from '../../../shared/model/user-action.model';
 import { UserPasswordResetRequest } from '../../model/user.model';
 import { takeWhile } from 'rxjs/operators';
 import { ClientError } from '../../../core/model/client-error';
-import { DisplayBanner } from '../../../core/state/core.actions';
-import { selectSupportContact, ContentMainStates } from '../../../content/state/content.reducer';
+import { DisplayBannerSOA, UpdateIsBusySOA } from '../../../core/state/core.actions';
+import { ContentMainState } from '../../../content/state/content.reducer';
+import { selectSupportContact } from '../../../content/state/content.selectors';
 import { ContentSlice } from '../../../content/content.state';
 
 @Component({
@@ -20,7 +21,7 @@ export class RecoveryContainerComponent implements OnInit, OnDestroy {
     private supportContact: string = '';
     private componentActive: boolean = true;
 
-    constructor(private store$: Store<ContentSlice<ContentMainStates>>,
+    constructor(private store$: Store<ContentSlice<ContentMainState>>,
         private dataService: DataService, private router: Router, private userActionService: UserActionService) { }
 
     ngOnInit() {
@@ -37,12 +38,14 @@ export class RecoveryContainerComponent implements OnInit, OnDestroy {
     }
 
     recovery(email: string) {
+        this.store$.dispatch(new UpdateIsBusySOA({ isBusy: true }));
         this.dataService.resetPasswordRequest(
             email).toPromise().then(
                 (response: UserPasswordResetRequest) => {
+                    this.store$.dispatch(new UpdateIsBusySOA({ isBusy: false }));
                     this.router.navigate(['users/login']).then(
                         () => {
-                            this.store$.dispatch(new DisplayBanner({
+                            this.store$.dispatch(new DisplayBannerSOA({
                                 predefined: '',
                                 custom: {
                                     // tslint:disable-next-line: max-line-length
@@ -57,8 +60,9 @@ export class RecoveryContainerComponent implements OnInit, OnDestroy {
                     });
                 }
             ).catch(
-                (response) => {
-                    this.store$.dispatch(new DisplayBanner({
+                () => {
+                    this.store$.dispatch(new UpdateIsBusySOA({ isBusy: false }));
+                    this.store$.dispatch(new DisplayBannerSOA({
                         predefined: '',
                         custom: {
                             // tslint:disable-next-line: max-line-length

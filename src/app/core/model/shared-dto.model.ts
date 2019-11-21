@@ -1,4 +1,5 @@
 import { SampleProperty } from '../../samples/model/sample-management.model';
+import { NRL } from '../../samples/model/sample.enums';
 
 export type SamplePropertyValuesDTO = Record<SampleProperty, string>;
 export type AnnotatedSampleDataDTO = Record<SampleProperty, AnnotatedSampleDataEntryDTO>;
@@ -17,23 +18,23 @@ interface AddressDTO {
 }
 
 interface AnalysisDTO {
-    readonly species: boolean;
-    readonly serological: boolean;
-    readonly phageTyping: boolean;
-    readonly resistance: boolean;
-    readonly vaccination: boolean;
-    readonly molecularTyping: boolean;
-    readonly toxin: boolean;
-    readonly zoonosenIsolate: boolean;
-    readonly esblAmpCCarbapenemasen: boolean;
-    readonly other: string;
-    readonly compareHuman: boolean;
+    readonly species?: boolean;
+    readonly serological?: boolean;
+    readonly resistance?: boolean;
+    readonly vaccination?: boolean;
+    readonly molecularTyping?: boolean;
+    readonly toxin?: boolean;
+    readonly esblAmpCCarbapenemasen?: boolean;
+    readonly sample?: boolean;
+    readonly other?: string;
+    readonly compareHuman?: {
+        value: string;
+        active: boolean;
+    };
 }
+
 export interface SampleSetMetaDTO {
-    readonly nrl: string;
     readonly sender: AddressDTO;
-    readonly analysis: AnalysisDTO;
-    readonly urgency: UrgencyDTO;
     readonly fileName?: string;
 }
 
@@ -43,11 +44,20 @@ interface SampleValidationErrorDTO {
     readonly message: string;
 }
 
-export interface AnnotatedSampleDTO {
+export interface SampleMetaDTO {
+    nrl: NRL;
+    analysis: AnalysisDTO;
+    urgency: UrgencyDTO;
+}
+
+interface SampleBaseDTO {
+    sampleMeta: SampleMetaDTO;
+}
+export interface AnnotatedSampleDTO extends SampleBaseDTO {
     sampleData: AnnotatedSampleDataDTO;
 }
 
-interface SampleDTO {
+export interface SampleDTO extends SampleBaseDTO {
     sampleData: SampleDataDTO;
 }
 

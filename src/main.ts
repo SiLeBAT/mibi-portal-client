@@ -1,6 +1,5 @@
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import 'hammerjs';
 
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
@@ -10,5 +9,5 @@ if (environment.production) {
 }
 
 platformBrowserDynamic().bootstrapModule(AppModule).catch(() => {
-    throw new Error('Unable to bootstryp application.');
+    throw new Error('Unable to bootstrap application.');
 });

@@ -1,4 +1,4 @@
-import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { createFeatureSelector } from '@ngrx/store';
 
 export const SHARED_SLICE_NAME = 'shared';
 
