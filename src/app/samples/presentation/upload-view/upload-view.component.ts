@@ -18,7 +18,7 @@ export class UploadViewComponent implements OnInit {
         this.store.dispatch(new coreActions.UpdateActionItemsSOA(
             [
                 UserActionType.VALIDATE,
-                UserActionType.SEND,
+                // UserActionType.SEND,
                 UserActionType.EXPORT,
                 UserActionType.UPLOAD,
                 UserActionType.DOWNLOAD_TEMPLATE

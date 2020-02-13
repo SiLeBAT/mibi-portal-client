@@ -15,7 +15,7 @@ export class SampleViewComponent implements OnInit {
     ngOnInit(): void {
         this.store.dispatch(new UpdateActionItemsSOA(
             [
-                UserActionType.SEND,
+                // UserActionType.SEND,
                 UserActionType.VALIDATE,
                 UserActionType.EXPORT,
                 UserActionType.CLOSE,
