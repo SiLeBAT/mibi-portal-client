@@ -143,6 +143,7 @@ export class DataGridContainerComponent implements OnInit {
         const rows = formSamples.map(
             (row: Sample, index) => {
                 const result: IFormRowViewModel = {};
+                let errorCodes = '';
 
                 _.forEach(row.sampleData, (samplePropertyEntry, sampleProperty) => {
                     result[sampleProperty] = {
@@ -165,9 +166,23 @@ export class DataGridContainerComponent implements OnInit {
                             autoCorrectMessage: samplePropertyEntry.errors.filter(error => error.level === ToolTipType.INFO)
                                 .map(error => error.message)
                         };
+                        samplePropertyEntry.errors.forEach(error => {
+                            if (errorCodes) {
+                                errorCodes += ', ' + error.code.toString();
+                            } else {
+                                errorCodes = error.code.toString();
+                            }
+                        });
                     }
 
                 });
+
+                result['comment'] = {
+                    id: 'comment',
+                    value: errorCodes,
+                    correctionOffer: [],
+                    editMessage: []
+                };
 
                 result.nrl = {
                     id: 'nrl',
