@@ -1,0 +1,69 @@
+<!-- data-grid handles overflow itself to capture scrollbar click events -->
+<mibi-layout-box x-overflow-handling y-overflow-handling>
+
+    <!-- <div style="background-color: antiquewhite;height:100%">
+    {{clipboard}}
+</div> -->
+<!-- <div>{{editorData}}</div> -->
+
+    <div class="mibi-grid-container" (mousedown)="handleGridMouseDown($event)">
+        <div #grid
+            class="mibi-grid"
+            [ngStyle]="{'grid-template-columns':'repeat('+n+',auto)'}"
+            (mousedown)="handleGridMouseDown($event)"
+            (mouseup)="logText('up grid')"
+            (click)="logText('click grid')"
+            (focus)="logText('focus table')"
+            (blur)="logText('blur table')"
+            (copy)="doCopy($event, rowIndex, colIndex);logText('copy')"
+            (paste)="logPaste($event)"
+        >
+            <ng-container *ngFor="let dataRow of testData; let row=index">
+                <div *ngFor="let dataEntry of dataRow; let col=index"
+                    class="mibi-grid__cell"
+                    [ngClass]="{
+                        'mibi-grid__cell--header': isHeader(row, col),
+                        'mibi-grid__cell--row-header': isRowHeader(row),
+                        'mibi-grid__cell--col-header': isColHeader(col),
+                        'mibi-grid__cell--grid-header': isRowHeader(row) && isColHeader(col)
+                    }"
+                >
+                    <div #cell class="mibi-cell">
+                        <div tabindex="-1" 
+                            class="mibi-cell__overlay" 
+                            [ngClass]="{
+                                'mibi-cell__overlay--selected': isSelected(row, col),
+                                'mibi-cell__overlay--selection-anchor': hasSelectionAnchor(row, col),
+                                'mibi-cell__overlay--cursor': hasCursor(row, col),
+                                'mibi-cell__overlay--editor': hasEditor(row, col)
+                            }"
+                            (mouseover)="handleOverlayMouseOver($event, row, col)"
+                            (mousedown)="handleOverlayMouseDown($event, row, col)"
+                            (click)="handleOverlayClick($event, row, col)"
+                            (focus)="logText('focus overlay ' + row + ' ' + col)"
+                            (blur)="logText('blur overlay ' + row + ' ' + col)"
+                        >
+                            <!-- <div *ngIf="editor.isActiveCell(row, col)"
+                                style=""
+                                [ngStyle]="{
+                                    'width': calcEditorWidth(grid.getBoundingClientRect(), cell.getBoundingClientRect()) + 'px',
+                                    'height': calcEditorHeight(grid.getBoundingClientRect(), cell.getBoundingClientRect()) + 'px'
+                                }"
+                            > -->
+                                <mibi-test-comp *ngIf="editor.isActiveCell(row, col)"
+                                    [(data)]="editorData"
+                                    [maxWidth]="calcEditorWidth(grid.getBoundingClientRect(), cell.getBoundingClientRect())"
+                                    [maxHeight]="calcEditorHeight(grid.getBoundingClientRect(), cell.getBoundingClientRect())"
+                                    (onFocus)="logText('focus editor ' + row + ' ' + col)"
+                                    (onBlur)="logText('blur editor ' + row + ' ' + col)"
+                                ></mibi-test-comp>
+                            <!-- </div> -->
+                        </div>
+                        <div style="white-space:normal; padding:5px; line-height: normal;" (mousedown)="logText('mousedown content')"
+                        >{{dataEntry}}</div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</mibi-layout-box>

@@ -1,0 +1,93 @@
+@import "abstracts";
+
+$mibi-grid-ui-color: map-get($primary-palette, A400);
+$mibi-grid-surface-color: $surface-color;
+$mibi-grid-hover-opacity: 0.05;
+$mibi-grid-selection-opacity: 0.2;
+
+.mibi-grid-container {
+  height: 100%;
+  display: grid;
+  overflow: auto;
+  user-select: none;
+}
+
+.mibi-grid {
+  display: grid;
+  border: 0.5px solid $mibi-grid-surface-color;
+  user-select: none;
+}
+
+.mibi-grid__cell {
+  background-color: $background-color;
+  border: 0.5px solid $mibi-grid-surface-color;
+  user-select: none;
+}
+
+.mibi-grid__cell--header {
+  position: sticky;
+  z-index: 10;
+  background-color: lighten($mibi-grid-surface-color, 10%);
+}
+
+.mibi-grid__cell--row-header {
+  top: 0;
+}
+
+.mibi-grid__cell--col-header {
+  left: 0;
+}
+
+.mibi-grid__cell--grid-header {
+  z-index: 100;
+}
+
+.mibi-cell {
+  position: relative;
+  height: 100%;
+  user-select: none;
+}
+
+.mibi-cell__overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  outline: none;
+}
+
+.mibi-cell__overlay:hover {
+  background-color: rgba($mibi-grid-ui-color, $mibi-grid-hover-opacity);
+}
+
+.mibi-cell__overlay--selected {
+  background-color: rgba($mibi-grid-ui-color, $mibi-grid-selection-opacity);
+}
+
+.mibi-cell__overlay--selected:hover {
+  background-color: rgba($mibi-grid-ui-color, $mibi-grid-selection-opacity + $mibi-grid-hover-opacity);
+}
+
+.mibi-cell__overlay--selection-anchor {
+  outline: $mibi-grid-ui-color solid 2px;
+  outline-offset: -1.5px;
+}
+
+.mibi-cell__overlay--cursor {
+  outline: $mibi-grid-ui-color solid 3px;
+  outline-offset: 0;
+  border: none;
+  background-color: transparent;
+}
+
+.mibi-cell__overlay--cursor:hover {
+  background-color: rgba($mibi-grid-ui-color, $mibi-grid-hover-opacity);
+}
+
+.mibi-cell__overlay--editor {
+  z-index: 2;
+}
+
+.mibi-cell__overlay--editor:hover {
+  background-color: transparent;
+}

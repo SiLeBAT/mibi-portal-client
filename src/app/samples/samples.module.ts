@@ -24,10 +24,13 @@ import { NoSampleGuard } from './services/no-sample-guard.service';
 import { SendDialogComponent } from './send-samples/components/send-dialog.component';
 import { SendDialogViewComponent } from './send-samples/components/send-dialog-view.component';
 import { AnalysisStepperComponent } from './analysis-stepper/components/analysis-stepper.component';
+import { DataGridViewComponent } from './data-grid/components/data-grid-view/data-grid-view.component';
+import { CdkTableModule } from '@angular/cdk/table';
+import { TestComponent } from './data-grid/testcomp';
 
 const SAMPLES_ROUTES = [
     { path: 'upload', component: UploadViewComponent },
-    { path: 'samples', component: SampleViewComponent, canActivate: [NoSampleGuard] }
+    { path: 'samples', component: DataGridViewComponent }
 ];
 
 @NgModule({
@@ -42,6 +45,7 @@ const SAMPLES_ROUTES = [
         MatRadioModule,
         MatCheckboxModule,
         MatFormFieldModule,
+        CdkTableModule,
         RouterModule.forChild(SAMPLES_ROUTES),
         StoreModule.forFeature(SAMPLES_SLICE_NAME, samplesReducerMap),
         EffectsModule.forFeature(samplesEffects),
@@ -55,7 +59,9 @@ const SAMPLES_ROUTES = [
         UploadViewComponent,
         SendDialogViewComponent,
         SendDialogComponent,
-        AnalysisStepperComponent
+        AnalysisStepperComponent,
+        DataGridViewComponent,
+        TestComponent
     ],
     entryComponents: [SendDialogComponent, AnalysisStepperComponent],
     exports: [],

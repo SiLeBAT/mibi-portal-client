@@ -24,6 +24,11 @@
               "node_modules/tooltipster/dist/css/tooltipster.bundle.min.css",
               "src/styles.scss"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/assets/sass"
+              ]
+            },
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/tooltipster/dist/js/tooltipster.bundle.min.js"
@@ -96,7 +101,12 @@
             "assets": [
               "src/assets",
               "src/favicon.png"
-            ]
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/assets/sass"
+              ]
+            }
           }
         },
         "lint": {

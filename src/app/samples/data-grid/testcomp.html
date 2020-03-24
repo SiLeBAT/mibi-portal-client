@@ -1,0 +1,29 @@
+<div style="grid-template: minmax(min-content, auto) / minmax(min-content, auto); width:100%;height:100%;display: grid; background-color: #f000"
+>
+    <div style="position: relative; background-color: #0f00;"
+
+    >
+        <textarea #editor rows="1" cols="1"
+            class="mibi-editor"
+            [ngModel]="data"
+            (ngModelChange)="handleDataChange($event)"
+            (mousedown)="logText('mousedown editor')"
+            (click)="logText('click editor')"
+            (focus)="handleFocus($event)"
+            (blur)="handleBlur($event)"
+        ></textarea>
+        <div style="color:transparent; white-space: pre-wrap;  padding:5px; line-height: normal;"
+
+        >{{immediateData}}</div>
+    </div>
+</div>
+
+<!-- <div style="width:100%; height:100%; background-color: red;"></div> -->
+
+
+<!-- [ngStyle]="{
+    'max-width':maxWidth + 'px',
+    'max-height':maxHeight + 'px'
+}" -->
+
+    <!-- [ngStyle]="{'grid-template': 'minmax(100%, ' + 'max-content) / minmax(100%, ' + 'max-content)'}" -->

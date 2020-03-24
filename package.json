@@ -25,7 +25,7 @@
     "posttest:e2e": "npm run reports:create",
     "lint": "npm run lint:code && npm run lint:styles",
     "lint:code": "tslint --project tsconfig.json --fix -c tslint.json 'src/**/*.ts'",
-    "lint:styles": "stylelint \"src/**/*.scss\"",
+    "lint:styles": "stylelint --fix \"src/**/*.scss\"",
     "clean": "npx rimraf public/*",
     "cypress:open": "node_modules\\.bin\\cypress open"
   },
