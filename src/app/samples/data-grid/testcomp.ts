@@ -12,6 +12,7 @@ export class TestComponent implements OnInit, AfterViewInit {
 
     @Input() maxWidth: number;
     @Input() maxHeight: number;
+    // foo
 
     @Input() data: string;
     @Output() dataChange = new EventEmitter<string>();
