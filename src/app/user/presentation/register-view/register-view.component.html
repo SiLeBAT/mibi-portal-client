@@ -1,12 +1,17 @@
-<mibi-single-center-card-layout title="Registrierung">
+<mibi-single-center-card-layout cardtitle="Registrierung">
     <mibi-view-card-body>
         <mibi-layout-box>
-        <mibi-register-container></mibi-register-container>
-        <div class="mibi-register-footer mat-small">
-            Bitte beachten Sie unsere <a [routerLink]="['/users/datenschutzhinweise']">Datenschutzhinweise</a>
-            für die Registrierung sowie unsere allgemeine <a
-                [routerLink]="['/content/datenschutzerklaerung']">Datenschutzerklärung</a>
-        </div>
-    </mibi-layout-box>
+            <mibi-register-container></mibi-register-container>
+            <div class="mibi-register-footer mat-small">
+                Bitte beachten Sie unsere
+                <a [routerLink]="['/users/datenschutzhinweise']"
+                    >Datenschutzhinweise</a
+                >
+                für die Registrierung sowie unsere allgemeine
+                <a [routerLink]="['/content/datenschutzerklaerung']"
+                    >Datenschutzerklärung</a
+                >
+            </div>
+        </mibi-layout-box>
     </mibi-view-card-body>
 </mibi-single-center-card-layout>

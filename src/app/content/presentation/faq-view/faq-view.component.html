@@ -1,10 +1,13 @@
-<mibi-wall-of-text-layout title="MiBi-Portal FAQ">
+<mibi-wall-of-text-layout cardtitle="MiBi-Portal FAQ">
     <wot-preamble>
         <mibi-faq-toc [faqCollection]="faqCollection"></mibi-faq-toc>
     </wot-preamble>
     <wot-content>
         <section>
-            <mibi-faq-section *ngFor="let faqGroup of faqCollection" [faqGroup]="faqGroup"></mibi-faq-section>
+            <mibi-faq-section
+                *ngFor="let faqGroup of faqCollection"
+                [faqGroup]="faqGroup"
+            ></mibi-faq-section>
         </section>
     </wot-content>
 </mibi-wall-of-text-layout>

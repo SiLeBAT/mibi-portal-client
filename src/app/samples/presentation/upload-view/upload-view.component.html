@@ -1,20 +1,27 @@
-<mibi-wall-of-text-layout title="Probeneinsendebogen hochladen">
-  <wot-preamble>
-    <mibi-upload-container (onFileUpload)="fileUpload($event)">
-      <mibi-upload #uploadChild>
-        <mibi-layout-box x-overflow-handling>
-          <div class="mibi-upload">
-            <div class="mibi-upload-icon">
-              <mat-icon [inline]="true">save_alt</mat-icon>
-            </div>
-            <div class="mibi-upload-text">
-              Per Drag&Drop in dieses Feld ziehen
-            </div>
-            <div class="mibi-upload-text">oder</div>
-            <button class="mibi-upload-button" type="button" mat-flat-button color="primary">Datei wählen</button>
-          </div>
-        </mibi-layout-box>
-      </mibi-upload>
-    </mibi-upload-container>
-  </wot-preamble>
+<mibi-wall-of-text-layout cardtitle="Probeneinsendebogen hochladen">
+    <wot-preamble>
+        <mibi-upload-container (onFileUpload)="fileUpload($event)">
+            <mibi-upload #uploadChild>
+                <mibi-layout-box x-overflow-handling>
+                    <div class="mibi-upload">
+                        <div class="mibi-upload-icon">
+                            <mat-icon [inline]="true">save_alt</mat-icon>
+                        </div>
+                        <div class="mibi-upload-text">
+                            Per Drag&Drop in dieses Feld ziehen
+                        </div>
+                        <div class="mibi-upload-text">oder</div>
+                        <button
+                            class="mibi-upload-button"
+                            type="button"
+                            mat-flat-button
+                            color="primary"
+                        >
+                            Datei wählen
+                        </button>
+                    </div>
+                </mibi-layout-box>
+            </mibi-upload>
+        </mibi-upload-container>
+    </wot-preamble>
 </mibi-wall-of-text-layout>
