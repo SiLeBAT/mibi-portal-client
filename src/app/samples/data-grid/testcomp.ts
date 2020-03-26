@@ -6,6 +6,9 @@ import { Component, Output, EventEmitter, ViewChild, ElementRef, OnInit, Input, 
     styleUrls: ['./testcomp.scss']
 })
 export class TestComponent implements OnInit, AfterViewInit {
+    get scrollWidth(): number {
+        return this.editor.nativeElement.scrollWidth;
+    }
 
     @Input() maxWidth: number;
     @Input() maxHeight: number;
@@ -21,11 +24,10 @@ export class TestComponent implements OnInit, AfterViewInit {
 
     rows: number;
     cols: number;
-    get scrollWidth(): number {
-        return this.editor.nativeElement.scrollWidth;
-    }
 
     immediateData: string;
+
+    private foo: string;
 
     ngOnInit(): void {
         this.immediateData = this.data + ' ';
@@ -58,8 +60,8 @@ export class TestComponent implements OnInit, AfterViewInit {
         this.rows = 2;
         this.cols = data.length;
     }
-
     private log(text: string): void {
         // console.log(text);
+        this.foo = text;
     }
 }
