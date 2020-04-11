@@ -1,0 +1,7 @@
+<div class="mibi-text-cell"
+    [ngClass]="{
+        'mibi-text-cell--readonly': cellData.isReadOnly,
+        'mibi-text-cell--col-header': cellData.isColHeader,
+        'mibi-text-cell--row-header': cellData.isRowHeader
+    }"
+>{{cellData.value}}</div>

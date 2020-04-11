@@ -1,0 +1,39 @@
+@import "abstracts";
+@import "../../data-grid.styles";
+
+@mixin mibi-text-style {
+  padding: $mibi-data-grid-text-padding;
+  padding-bottom: 0.5rem;
+  padding-right: 0.5rem;
+  font-size: $mibi-data-grid-font-size;
+  line-height: normal;
+  white-space: pre-wrap;
+}
+
+.mibi-editor-container {
+  position: relative;
+  height: 100%;
+}
+
+.mibi-editor-container__overlay {
+  position: absolute;
+  min-width: 100%;
+  min-height: 100%;
+}
+
+.mibi-editor {
+  @include mat-elevation(3);
+  @include mibi-text-style();
+
+  overflow: hidden;
+  outline: darken($mibi-data-grid-ui-color, 25%)  solid 3px;
+  outline-offset: -3px;
+  border: none;
+  background-color: $background-color;
+}
+
+.mibi-ghost-editor {
+  @include mibi-text-style();
+
+  color: transparent;
+}

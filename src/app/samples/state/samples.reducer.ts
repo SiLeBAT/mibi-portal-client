@@ -4,10 +4,12 @@ import {
     SamplePropertyValues,
     Sample,
     SampleSetMetaData,
-    SampleSet
+    SampleSet,
+    MetaDataCollection,
+    ChangedDataGridField,
+    AnnotatedSampleDataEntry
 } from '../model/sample-management.model';
 import { ValidateSamplesAction } from '../validate-samples/validate-samples.actions';
-import { Urgency, NRL } from '../model/sample.enums';
 import { getDataValuesFromAnnotatedData } from './samples.selectors';
 
 // STATE
@@ -51,99 +53,105 @@ export function samplesMainReducer(
 ): SamplesMainData {
     switch (action.type) {
         case SamplesMainActionTypes.UpdateSampleMetaDataSOA:
-            const metaData = action.payload;
             return {
-                ...state, ...{
-                    formData: [...state.formData.map(s => {
-                        if (metaData[s.sampleMeta.nrl]) {
-                            s.sampleMeta = { ...s.sampleMeta, ...metaData[s.sampleMeta.nrl] };
-                        }
-                        return s;
-                    })]
-                }
+                ...state,
+                formData: updateFormDataFromMetaData(state.formData, action.payload)
             };
         case SamplesMainActionTypes.DestroySampleSetSOA:
-            return { ...initialMainData };
+            return initialMainData;
         case SamplesMainActionTypes.UpdateSampleSetSOA:
-            const unmarshalledData: SampleSet = action.payload;
-            return {
-                ...state, ...{
-                    formData: [...unmarshalledData.samples],
-                    importedFile: {
-                        fileName: unmarshalledData.meta.fileName || '',
-                        data: unmarshalledData.samples.map(
-                            sample => {
-                                return getDataValuesFromAnnotatedData(sample.sampleData);
-                            }
-                        )
-                    },
-                    meta: unmarshalledData.meta
-                }
-            };
+            return updateMainDataFromSampleSet(action.payload);
         case SamplesMainActionTypes.UpdateSamplesSOA:
-            const mergedEntries: Sample[] = action.payload.map(
-                (sample, i) => {
-                    const entry: Sample = state.formData[i];
-                    const result: Sample = { ...sample };
-                    Object.keys(result.sampleData).forEach(prop => {
-                        if (entry.sampleData[prop].oldValue && !result.sampleData[prop].oldValue) {
-                            result.sampleData[prop].oldValue = entry.sampleData[prop].oldValue;
-                        }
-                    });
-                    return result;
-
-                }
-            );
             return {
-                ...state, ...{
-                    formData: mergedEntries
-                }
+                ...state,
+                formData: updateFormDataFromSamples(state.formData, action.payload)
             };
         case SamplesMainActionTypes.UpdateSampleDataEntrySOA:
-            const {
-                rowIndex,
-                columnId,
-                originalValue,
-                newValue
-            } = action.payload;
+            const { newValue, originalValue, rowIndex, columnId } = action.payload;
+            if (originalValue === newValue) {
+                return state;
+            }
 
-            if (originalValue !== newValue) {
+            const newEntry = updateSampleDataEntryFromChangedData(
+                state.formData[rowIndex].sampleData[columnId],
+                state.importedFile,
+                action.payload
+            );
 
-                const newEntries = state.formData.map((sampleEntry: Sample, i: number) => {
-
-                    const newData: Sample = { ...sampleEntry };
-
+            return {
+                ...state,
+                formData: state.formData.map((sample, i) => {
                     if (i === rowIndex) {
-
-                        newData.sampleData[columnId] = {
-                            ...sampleEntry.sampleData[columnId], ...{
-                                value: newValue
+                        return {
+                            ...sample,
+                            sampleData: {
+                                ...sample.sampleData,
+                                [columnId]: newEntry
                             }
                         };
-                        if (state.importedFile) {
-                            if (newValue === state.importedFile.data[i][columnId]) {
-                                delete newData.sampleData[columnId].oldValue;
-                            } else {
-                                newData.sampleData[columnId].oldValue = state.importedFile.data[i][columnId];
-                            }
-                        }
-
-                        newData.sampleData[columnId].errors = [];
-                        newData.sampleData[columnId].correctionOffer = [];
                     }
-
-                    return newData;
-                });
-
-                return {
-                    ...state,
-                    ...{
-                        formData: newEntries
-                    }
-                };
-            }
-            return state;
+                    return sample;
+                })
+            };
         default:
             return state;
     }
+}
+
+function updateFormDataFromMetaData(samples: Sample[], metaData: MetaDataCollection): Sample[] {
+    return samples.map(sample => {
+        if (metaData[sample.sampleMeta.nrl]) {
+            return {
+                ...sample,
+                sampleMeta: { ...sample.sampleMeta, ...metaData[sample.sampleMeta.nrl] }
+            };
+        }
+        return sample;
+    });
+}
+
+function updateMainDataFromSampleSet(sampleSet: SampleSet): SamplesMainData {
+    return {
+        formData: sampleSet.samples,
+        importedFile: {
+            fileName: sampleSet.meta.fileName || '',
+            data: sampleSet.samples.map(
+                sample => getDataValuesFromAnnotatedData(sample.sampleData)
+            )
+        },
+        meta: sampleSet.meta
+    };
+}
+
+function updateFormDataFromSamples(oldSamples: Sample[], newSamples: Sample[]): Sample[] {
+    return newSamples.map((newSample, i) => {
+        const oldSample = oldSamples[i];
+        newSample = _.cloneDeep(newSample);
+        Object.keys(newSample.sampleData).forEach(prop => {
+            if (oldSample.sampleData[prop].oldValue && !newSample.sampleData[prop].oldValue) {
+                newSample.sampleData[prop].oldValue = oldSample.sampleData[prop].oldValue;
+            }
+        });
+        return newSample;
+    });
+}
+
+function updateSampleDataEntryFromChangedData(
+    entry: AnnotatedSampleDataEntry,
+    importedFile: ImportedFile | null,
+    changedData: ChangedDataGridField
+): AnnotatedSampleDataEntry {
+    let oldValue = entry.oldValue;
+    if (importedFile) {
+        const importedValue = importedFile.data[changedData.rowIndex][changedData.columnId];
+        oldValue = changedData.newValue === importedValue ? undefined : importedValue;
+    }
+
+    return {
+        ...entry,
+        value: changedData.newValue,
+        errors: [],
+        correctionOffer: [],
+        oldValue: oldValue
+    };
 }

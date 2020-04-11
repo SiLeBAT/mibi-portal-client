@@ -18,6 +18,11 @@
   border: 1px solid red;
 }
 
+.mibi-box__content {
+  z-index: 0;
+  position: relative;
+}
+
 .mibi-box__content--test {
   border: 1px solid blue;
 }

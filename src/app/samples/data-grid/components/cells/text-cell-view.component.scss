@@ -1,0 +1,25 @@
+@import "abstracts";
+@import "../../data-grid.styles";
+
+.mibi-text-cell {
+  height: 100%;
+  padding: $mibi-data-grid-text-padding;
+  font-size: $mibi-data-grid-font-size;
+  line-height: normal;
+  background-color: $background-color;
+}
+
+.mibi-text-cell--readonly {
+  background-color: lighten($surface-color, 15%);
+}
+
+.mibi-text-cell--col-header {
+  min-height: 50px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.mibi-text-cell--row-header {
+  min-width: 50px;
+  line-height: 1.5;
+}

@@ -5,7 +5,7 @@ import { Component, OnInit, Input } from '@angular/core';
     templateUrl: './layout-box.component.html',
     styleUrls: ['./layout-box.component.scss']
 })
-export class LayoutBoxComponent implements OnInit {
+export class LayoutBoxComponent {
 
 // tslint:disable-next-line: no-input-rename
     @Input('x-overflow-handling')
@@ -17,11 +17,4 @@ export class LayoutBoxComponent implements OnInit {
 
     @Input()
     test: string;
-
-    constructor() {
-    }
-
-    ngOnInit() {
-    }
-
 }

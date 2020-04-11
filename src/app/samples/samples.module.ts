@@ -24,10 +24,14 @@ import { NoSampleGuard } from './services/no-sample-guard.service';
 import { SendDialogComponent } from './send-samples/components/send-dialog.component';
 import { SendDialogViewComponent } from './send-samples/components/send-dialog-view.component';
 import { AnalysisStepperComponent } from './analysis-stepper/components/analysis-stepper.component';
+import { DataGridViewComponent } from './data-grid/components/data-grid-view.component';
+import { DataGridTextEditorViewComponent } from './data-grid/components/cells/text-editor-view.component';
+import { SamplesGridComponent } from './samples-grid/samples-grid.component';
+import { DataGridTextCellViewComponent } from './data-grid/components/cells/text-cell-view.component';
 
 const SAMPLES_ROUTES = [
     { path: 'upload', component: UploadViewComponent },
-    { path: 'samples', component: SampleViewComponent, canActivate: [NoSampleGuard] }
+    { path: 'samples', component: SamplesGridComponent, canActivate: [NoSampleGuard] }
 ];
 
 @NgModule({
@@ -55,7 +59,11 @@ const SAMPLES_ROUTES = [
         UploadViewComponent,
         SendDialogViewComponent,
         SendDialogComponent,
-        AnalysisStepperComponent
+        AnalysisStepperComponent,
+        DataGridTextCellViewComponent,
+        DataGridTextEditorViewComponent,
+        DataGridViewComponent,
+        SamplesGridComponent
     ],
     entryComponents: [SendDialogComponent, AnalysisStepperComponent],
     exports: [],
