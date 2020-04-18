@@ -1,10 +1,10 @@
 @import "abstracts";
-@import "../../data-grid.styles";
+@import "../../samples-grid.styles";
 
 .mibi-text-cell {
   height: 100%;
-  padding: $mibi-data-grid-text-padding;
-  font-size: $mibi-data-grid-font-size;
+  padding: $mibi-samples-grid-cell-padding;
+  font-size: $mibi-samples-grid-font-size;
   line-height: normal;
   background-color: $background-color;
 }

@@ -1,0 +1,30 @@
+@import "abstracts";
+@import "../../samples-grid.styles";
+
+.mibi-data-cell {
+  height: 100%;
+  padding: $mibi-samples-grid-cell-padding;
+  font-size: $mibi-samples-grid-font-size;
+  line-height: normal;
+  background-color: $background-color;
+}
+
+.mibi-data-cell--auto-correction {
+  background-color: mat-color($primary-palette, 50);
+  font-weight: bold;
+}
+
+.mibi-data-cell--warning {
+  background-color: mat-color($secondary-palette, 50);
+  font-weight: bold;
+}
+
+.mibi-data-cell--error {
+  background-color: mat-color($error-palette, 50);
+  font-weight: bold;
+}
+
+.mibi-data-cell--edited {
+  outline: $mibi-sampels-grid-edit-color solid 1.5px;
+  outline-offset: -1.5px;
+}

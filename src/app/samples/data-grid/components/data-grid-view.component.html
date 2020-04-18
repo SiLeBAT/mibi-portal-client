@@ -15,8 +15,8 @@
                 }"
                 (mousedown)="onGridMouseDown($event)"
             >
-                <ng-container *ngFor="let rowData of rows; let row=index; trackBy: getRowId">
-                    <div *ngFor="let cellData of rowData.cols; let col=index; trackBy: getColId"
+                <ng-container *ngFor="let rowModel of rows; let row=index; trackBy: getId">
+                    <div *ngFor="let cellModel of rowModel.cells; let col=index; trackBy: getId"
                         class="mibi-grid-cell"
                         [ngClass]="{
                             'mibi-grid__sticky': isHeader(row, col),
@@ -38,12 +38,14 @@
                             class="mibi-grid-cell__overlay mibi-grid-cell__overlay--row-header"
                         ></div>
                         <div class="mibi-cell">
-                            <div class="mibi-cell__overlay"
+                            <div *ngIf="isHeader(row, col)"
+                                class="mibi-cell__overlay"
                                 [ngClass]="{
                                     'mibi-selection-hint': isSelectionHinted(row, col)
                                 }"
                             ></div>
-                            <div class="mibi-cell__overlay"
+                            <div *ngIf="isHeader(row, col)"
+                                class="mibi-cell__overlay"
                                 [ngClass]="{
                                     'mibi-hover-hint': isHoverHinted(row, col)
                                 }"
@@ -62,16 +64,18 @@
                                 (click)="onCellClick($event, row, col)"
                                 (mouseup)="onCellMouseUp($event, row, col)"
                                 (mouseout)="onCellMouseOut($event, row, col)"
+                                (keydown.enter)="onCellEnter($event, row, col)"
                             >
-                                <mibi-data-grid-text-editor-view *ngIf="hasEditor(row, col)"
-                                    [(data)]="editorData"
-                                    (keydown.enter)="onEditorEnter($event, row, col)"
-                                ></mibi-data-grid-text-editor-view>
+                                <ng-container *ngIf="hasEditor(row, col)">
+                                    <ng-container
+                                        *ngTemplateOutlet="editorTemplate;context: getCellContext(rowModel, cellModel)"
+                                    ></ng-container>
+                                </ng-container>
                             </div>
                             <div class="mibi-cell__content">
-                                <mibi-data-grid-text-cell-view
-                                    [cellData]="cellData"
-                                ></mibi-data-grid-text-cell-view>
+                                <ng-container 
+                                    *ngTemplateOutlet="cellTemplate;context: getCellContext(rowModel, cellModel)"
+                                ></ng-container>
                             </div>
                         </div>
                     </div>

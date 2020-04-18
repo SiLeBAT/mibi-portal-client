@@ -1,0 +1,37 @@
+<mibi-data-grid-view 
+    [model]="$dataGridModel | async"
+    [cellTemplate]="cellTemplate"
+    [editorTemplate]="editorTemplate"
+    (editorOpen)="onEditorOpen($event)"
+    (editorConfirm)="onEditorConfirm($event)"
+></mibi-data-grid-view>
+
+<ng-template #cellTemplate
+    let-cellModel="cellModel"
+    let-rowId="rowModel.uId"
+    let-colId="cellModel.uId"
+>
+    <mibi-samples-grid-text-cell-view *ngIf="isHeader(rowId)"
+        [model]="cellModel"
+        [text]="getHeaderText(colId)"
+    ></mibi-samples-grid-text-cell-view>
+    <ng-container *ngIf="!isHeader(rowId)" [ngSwitch]="getCellType(colId)">
+        <mibi-samples-grid-text-cell-view *ngSwitchCase="idType"
+            [model]="cellModel"
+            [text]="getId(rowId, colId)"
+        ></mibi-samples-grid-text-cell-view>
+        <mibi-samples-grid-text-cell-view *ngSwitchCase="nrlType"
+            [model]="cellModel"
+            [text]="getNrl(rowId, colId)"
+        ></mibi-samples-grid-text-cell-view>
+        <mibi-samples-grid-data-cell-view  *ngSwitchCase="dataType"
+            [data]="getData(rowId, colId)"
+        ></mibi-samples-grid-data-cell-view>
+    </ng-container>
+</ng-template>
+
+<ng-template #editorTemplate>
+    <mibi-samples-grid-text-editor-view
+        [(data)]="editorData"
+    ></mibi-samples-grid-text-editor-view>
+</ng-template>

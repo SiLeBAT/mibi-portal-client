@@ -1,18 +1,16 @@
-interface UID {
+export interface DataGridUIdViewModel {
     uId: number;
 }
 
-export interface DataGridCellViewModel extends UID {
-    value: string;
-
+export interface DataGridCellViewModel extends DataGridUIdViewModel {
     isColHeader: boolean;
     isRowHeader: boolean;
 
     isReadOnly: boolean;
 }
 
-export interface DataGridRowViewModel extends UID {
-    cols: DataGridCellViewModel[];
+export interface DataGridRowViewModel extends DataGridUIdViewModel {
+    cells: DataGridCellViewModel[];
 }
 
 export interface DataGridViewModel {
@@ -21,12 +19,12 @@ export interface DataGridViewModel {
     colCount: number;
 }
 
-export interface DataGridCellDataEvent {
-    readonly row: number;
-    readonly col: number;
-    readonly rowId: number;
-    readonly colId: number;
+export interface DataGridCellContext {
+    rowModel: DataGridRowViewModel;
+    cellModel: DataGridCellViewModel;
+}
 
-    readonly value: string;
-    readonly oldValue: string;
+export interface DataGridEditorEvent {
+    readonly rowId: number;
+    readonly cellId: number;
 }

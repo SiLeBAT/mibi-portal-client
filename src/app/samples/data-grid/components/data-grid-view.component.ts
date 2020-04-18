@@ -1,8 +1,15 @@
-import { Component, HostListener, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, HostListener, Input, Output, EventEmitter, ChangeDetectionStrategy, TemplateRef } from '@angular/core';
 import { DataGridCellTool } from '../domain/cell-tool.entity';
 import { DataGridSelectionManager } from '../domain/selection-manager.entity';
 import { DataGridClearingManager } from '../domain/clearing-manager.entity';
-import { DataGridViewModel, DataGridRowViewModel, DataGridCellDataEvent, DataGridCellViewModel } from '../view-model.model';
+import {
+    DataGridViewModel,
+    DataGridRowViewModel,
+    DataGridEditorEvent,
+    DataGridCellViewModel,
+    DataGridCellContext,
+    DataGridUIdViewModel
+} from '../view-model.model';
 
 enum MouseButton {
     PRIMARY = 0
@@ -20,24 +27,25 @@ enum MouseButtons {
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DataGridViewComponent {
+    @Input() model: DataGridViewModel;
+    @Input() cellTemplate: TemplateRef<DataGridCellContext>;
+    @Input() editorTemplate: TemplateRef<DataGridCellContext>;
 
-    @Input() gridData: DataGridViewModel;
-    @Output() cellDataChange = new EventEmitter<DataGridCellDataEvent>();
+    @Output() editorOpen = new EventEmitter<DataGridEditorEvent>();
+    @Output() editorConfirm = new EventEmitter<DataGridEditorEvent>();
 
     // TEMPLATE PROPERTIES
 
     get rows(): DataGridRowViewModel[] {
-        return this.gridData.rows;
+        return this.model.rows;
     }
 
     get rowCount(): number {
-        return this.gridData.rowCount;
+        return this.model.rowCount;
     }
     get colCount(): number {
-        return this.gridData.colCount;
+        return this.model.colCount;
     }
-
-    editorData: string;
 
     // PRIVATE PROPERTIES
 
@@ -85,10 +93,7 @@ export class DataGridViewComponent {
             return;
         }
 
-        if (this.editor.isActive()) {
-            this.emitAndClearEditorData();
-        }
-        this.editor.clear();
+        this.closeEditor();
 
         if (!this.cursor.isOnCell(row, col)) {
             this.cursor.clear();
@@ -111,10 +116,7 @@ export class DataGridViewComponent {
         }
 
         if (this.cursor.isOnCell(row, col)) {
-            this.cursor.clear();
-            this.selection.clear();
-            this.editor.set(row, col);
-            this.editorData = this.rows[row].cols[col].value;
+            this.openEditor(row, col);
             return;
         }
 
@@ -131,9 +133,11 @@ export class DataGridViewComponent {
 
     // KEYBOARD UI EVENT HANDLERS
 
-    onEditorEnter(e: KeyboardEvent, row: number, col: number) {
-        this.emitAndClearEditorData();
-        this.editor.clear();
+    onCellEnter(e: KeyboardEvent, row: number, col: number) {
+        if (!this.editor.isOnCell(row, col)) {
+            return;
+        }
+        this.closeEditor();
         this.startSelection(this.selection, row, col);
         this.cursor.set(row, col);
     }
@@ -171,10 +175,7 @@ export class DataGridViewComponent {
         }
 
         if (this.clearing.doClearUI()) {
-            if (this.editor.isActive()) {
-                this.emitAndClearEditorData();
-            }
-            this.editor.clear();
+            this.closeEditor();
             this.cursor.clear();
             this.selection.clear();
         }
@@ -190,12 +191,15 @@ export class DataGridViewComponent {
 
     // TEMPLATE METHODS
 
-    getRowId(index: number, row: DataGridRowViewModel): number {
-        return row.uId;
+    getId(index: number, uIdModel: DataGridUIdViewModel): number {
+        return uIdModel.uId;
     }
 
-    getColId(index: number, col: DataGridCellViewModel): number {
-        return col.uId;
+    getCellContext(rowModel: DataGridRowViewModel, cellModel: DataGridCellViewModel): DataGridCellContext {
+        return {
+            rowModel: rowModel,
+            cellModel: cellModel
+        };
     }
 
     isHeader(row: number, col: number): boolean {
@@ -203,11 +207,11 @@ export class DataGridViewComponent {
     }
 
     isColHeader(row: number, col: number): boolean {
-        return this.rows[row].cols[col].isColHeader;
+        return this.rows[row].cells[col].isColHeader;
     }
 
     isRowHeader(row: number, col: number): boolean {
-        return this.rows[row].cols[col].isRowHeader;
+        return this.rows[row].cells[col].isRowHeader;
     }
 
     isGridHeader(row: number, col: number): boolean {
@@ -215,7 +219,7 @@ export class DataGridViewComponent {
     }
 
     isReadOnly(row: number, col: number): boolean {
-        return this.rows[row].cols[col].isReadOnly;
+        return this.rows[row].cells[col].isReadOnly;
     }
 
     hasHoverAnchor(row: number, col: number) {
@@ -331,19 +335,28 @@ export class DataGridViewComponent {
         selection.startSelection(row, col, this.isColHeader(row, col), this.isRowHeader(row, col), this.rowCount, this.colCount);
     }
 
-    private emitAndClearEditorData(): void {
-        const rowData = this.gridData.rows[this.editor.row];
-        const colData = rowData.cols[this.editor.col];
+    private openEditor(row: number, col: number): void {
+        this.cursor.clear();
+        this.selection.clear();
+        this.editor.set(row, col);
+        this.editorOpen.emit(this.createEditorEvent());
+    }
 
-        this.cellDataChange.emit({
-            row: this.editor.row,
-            col: this.editor.col,
-            rowId: rowData.uId,
-            colId: colData.uId,
-            value: this.editorData,
-            oldValue: colData.value
-        });
+    private closeEditor(): void {
+        if (!this.editor.isActive()) {
+            return;
+        }
+        this.editorConfirm.emit(this.createEditorEvent());
+        this.editor.clear();
+    }
 
-        this.editorData = '';
+    private createEditorEvent(): DataGridEditorEvent {
+        const rowModel = this.model.rows[this.editor.row];
+        const cellModel = rowModel.cells[this.editor.col];
+
+        return {
+            rowId: rowModel.uId,
+            cellId: cellModel.uId
+        };
     }
 }

@@ -65,8 +65,6 @@ export class DataGridComponent implements OnInit, AfterViewChecked {
     vm: IFormViewModel;
     private ToolTips: { [key: number]: ToolTip } = {};
 
-    constructor() { }
-
     ngOnInit(): void {
         this.ToolTips[ToolTipType.WARNING]
             = createToolTip(ToolTipTheme.WARNING, 'bottom');
@@ -117,7 +115,6 @@ export class DataGridComponent implements OnInit, AfterViewChecked {
                         changed: {
                             rowIndex,
                             columnId,
-                            originalValue,
                             newValue
                         }
                     };

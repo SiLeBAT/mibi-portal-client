@@ -25,9 +25,10 @@ import { SendDialogComponent } from './send-samples/components/send-dialog.compo
 import { SendDialogViewComponent } from './send-samples/components/send-dialog-view.component';
 import { AnalysisStepperComponent } from './analysis-stepper/components/analysis-stepper.component';
 import { DataGridViewComponent } from './data-grid/components/data-grid-view.component';
-import { DataGridTextEditorViewComponent } from './data-grid/components/cells/text-editor-view.component';
-import { SamplesGridComponent } from './samples-grid/samples-grid.component';
-import { DataGridTextCellViewComponent } from './data-grid/components/cells/text-cell-view.component';
+import { SamplesGridTextEditorViewComponent } from './samples-grid/components/cells/text-editor-view.component';
+import { SamplesGridComponent } from './samples-grid/components/samples-grid.component';
+import { SamplesGridTextCellViewComponent } from './samples-grid/components/cells/text-cell-view.component';
+import { SamplesGridDataCellViewComponent } from './samples-grid/components/cells/data-cell-view.component';
 
 const SAMPLES_ROUTES = [
     { path: 'upload', component: UploadViewComponent },
@@ -60,8 +61,9 @@ const SAMPLES_ROUTES = [
         SendDialogViewComponent,
         SendDialogComponent,
         AnalysisStepperComponent,
-        DataGridTextCellViewComponent,
-        DataGridTextEditorViewComponent,
+        SamplesGridTextCellViewComponent,
+        SamplesGridDataCellViewComponent,
+        SamplesGridTextEditorViewComponent,
         DataGridViewComponent,
         SamplesGridComponent
     ],

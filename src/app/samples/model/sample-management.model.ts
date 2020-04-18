@@ -48,6 +48,12 @@ export interface SampleSet {
     meta: SampleSetMetaData;
 }
 
+export enum SampleValidationErrorCodes {
+    ERROR = 2,
+    WARNING = 1,
+    AUTOCORRECTED = 4
+}
+
 export interface SampleValidationError {
     code: number;
     level: number;
@@ -106,7 +112,6 @@ export interface TableDataOutput {
 export interface ChangedDataGridField {
     rowIndex: number;
     columnId: string;
-    originalValue: string;
     newValue: string;
 }
 

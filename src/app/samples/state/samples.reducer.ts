@@ -67,13 +67,14 @@ export function samplesMainReducer(
                 formData: updateFormDataFromSamples(state.formData, action.payload)
             };
         case SamplesMainActionTypes.UpdateSampleDataEntrySOA:
-            const { newValue, originalValue, rowIndex, columnId } = action.payload;
-            if (originalValue === newValue) {
+            const { newValue, rowIndex, columnId } = action.payload;
+            const oldEntry = state.formData[rowIndex].sampleData[columnId];
+            if (oldEntry.value === newValue) {
                 return state;
             }
 
             const newEntry = updateSampleDataEntryFromChangedData(
-                state.formData[rowIndex].sampleData[columnId],
+                oldEntry,
                 state.importedFile,
                 action.payload
             );

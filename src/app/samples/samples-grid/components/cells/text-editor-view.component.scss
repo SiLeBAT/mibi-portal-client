@@ -1,11 +1,11 @@
 @import "abstracts";
-@import "../../data-grid.styles";
+@import "../../samples-grid.styles";
 
 @mixin mibi-text-style {
-  padding: $mibi-data-grid-text-padding;
+  padding: $mibi-samples-grid-cell-padding;
   padding-bottom: 0.5rem;
   padding-right: 0.5rem;
-  font-size: $mibi-data-grid-font-size;
+  font-size: $mibi-samples-grid-font-size;
   line-height: normal;
   white-space: pre-wrap;
 }
@@ -26,7 +26,7 @@
   @include mibi-text-style();
 
   overflow: hidden;
-  outline: darken($mibi-data-grid-ui-color, 25%)  solid 3px;
+  outline: $mibi-sampels-grid-edit-color solid 3px;
   outline-offset: -3px;
   border: none;
   background-color: $background-color;

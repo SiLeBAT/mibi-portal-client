@@ -1,6 +1,6 @@
 @import "abstracts";
-@import "../data-grid.styles";
 
+$mibi-ui-color: map-get($mibi-primary, A400);
 $mibi-border-color: $surface-color;
 $mibi-grid-border: 0.5px solid $surface-color;
 $mibi-hover-opacity: 0.075;
@@ -116,23 +116,23 @@ $mibi-selection-opacity: 0.2;
 }
 
 .mibi-selection--hover {
-  background-color: rgba($mibi-data-grid-ui-color, $mibi-hover-opacity);
+  background-color: rgba($mibi-ui-color, $mibi-hover-opacity);
 }
 
 .mibi-selection--selected {
-  background-color: rgba($mibi-data-grid-ui-color, $mibi-selection-opacity);
+  background-color: rgba($mibi-ui-color, $mibi-selection-opacity);
 }
 
 .mibi-selection--selected-hover {
-  background-color: rgba($mibi-data-grid-ui-color, $mibi-selection-opacity + $mibi-hover-opacity);
+  background-color: rgba($mibi-ui-color, $mibi-selection-opacity + $mibi-hover-opacity);
 }
 
 .mibi-selection-anchor {
-  outline: $mibi-data-grid-ui-color solid 2px;
+  outline: $mibi-ui-color solid 2px;
   outline-offset: -2px;
 }
 
 .mibi-cursor {
-  outline: $mibi-data-grid-ui-color solid 3px;
+  outline: $mibi-ui-color solid 3px;
   outline-offset: -3px;
 }
