@@ -2,14 +2,13 @@ import { Component, Output, EventEmitter, OnInit, OnDestroy, ContentChild, After
 import { Store, select } from '@ngrx/store';
 import { takeWhile, tap } from 'rxjs/operators';
 import { UserActionType, ColorType } from '../../model/user-action.model';
-import { GenericActionItemComponent } from '../../../core/presentation/generic-action-item/generic-action-item.component';
 import { Observable, Subject } from 'rxjs';
 import { UploadAbstractComponent } from '../../presentation/upload/upload.abstract';
 import { UploadErrorType } from '../../model/upload.model';
 import { ClientError } from '../../../core/model/client-error';
 import { SamplesMainSlice } from '../../../samples/samples.state';
 import { selectHasEntries } from '../../../samples/state/samples.selectors';
-import { DisplayBannerSOA, DisplayDialogMSA, HideBannerSOA } from '../../../core/state/core.actions';
+import { ShowBannerSOA, ShowDialogMSA, HideBannerSOA } from '../../../core/state/core.actions';
 
 @Component({
     selector: 'mibi-upload-container',
@@ -70,16 +69,16 @@ export class UploadContainerComponent implements OnInit, OnDestroy, AfterContent
     onError(error: UploadErrorType) {
         switch (error) {
             case UploadErrorType.SIZE:
-                this.store.dispatch(new DisplayBannerSOA({ predefined: 'wrongUploadFilesize' }));
+                this.store.dispatch(new ShowBannerSOA({ predefined: 'wrongUploadFilesize' }));
                 break;
             case UploadErrorType.TYPE:
-                this.store.dispatch(new DisplayBannerSOA({ predefined: 'wrongUploadDatatype' }));
+                this.store.dispatch(new ShowBannerSOA({ predefined: 'wrongUploadDatatype' }));
                 break;
             case UploadErrorType.CLEAR:
                 this.store.dispatch(new HideBannerSOA());
                 break;
             default:
-                this.store.dispatch(new DisplayBannerSOA({ predefined: 'uploadFailure' }));
+                this.store.dispatch(new ShowBannerSOA({ predefined: 'uploadFailure' }));
         }
     }
 
@@ -102,7 +101,7 @@ export class UploadContainerComponent implements OnInit, OnDestroy, AfterContent
             return;
         }
         if (this.hasEntries) {
-            this.store.dispatch(new DisplayDialogMSA({
+            this.store.dispatch(new ShowDialogMSA({
                 message: `Wenn Sie die Tabelle schließen, gehen Ihre Änderungen verloren. Wollen Sie das?`,
                 title: 'Schließen',
                 mainAction: {
@@ -112,7 +111,6 @@ export class UploadContainerComponent implements OnInit, OnDestroy, AfterContent
                         this.isGuardActive = false;
                         this.myTrigger.next(!this.isGuardActive);
                     },
-                    component: GenericActionItemComponent,
                     icon: '',
                     color: ColorType.PRIMARY,
                     focused: true
@@ -122,7 +120,6 @@ export class UploadContainerComponent implements OnInit, OnDestroy, AfterContent
                     label: 'Abbrechen',
                     onExecute: () => {
                     },
-                    component: GenericActionItemComponent,
                     icon: '',
                     color: ColorType.PRIMARY
                 }

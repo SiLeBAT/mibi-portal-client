@@ -7,7 +7,7 @@
     "start": "ng serve --proxy-config proxy.config.json",
     "serve": "ng serve --proxy-config proxy.config.json --watch",
     "debug": "ng serve -o --proxy-config proxy.config.json --watch",
-    "serve:local": "ng serve",
+    "serve:production": "ng serve --proxy-config proxy.config.json --prod=true",
     "dependency-check:production": "npx npm-auditor-ci --threshold low --ignoreDev",
     "dependency-check:qa": "npx npm-auditor-ci --threshold low",
     "build:qa": "ng build --configuration=qa --output-path \"public\"",

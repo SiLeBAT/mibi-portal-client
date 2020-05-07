@@ -12,7 +12,7 @@ import { SamplesSlice, SamplesMainSlice } from '../samples.state';
 import { Store } from '@ngrx/store';
 import { withLatestFrom, map, concatAll, catchError, tap } from 'rxjs/operators';
 import { SamplesMainAction, UpdateSamplesSOA } from '../state/samples.actions';
-import { DisplayBannerSOA, UpdateIsBusySOA, DestroyBannerSOA } from '../../core/state/core.actions';
+import { ShowBannerSOA, UpdateIsBusySOA, DestroyBannerSOA } from '../../core/state/core.actions';
 import { Observable, of, from } from 'rxjs';
 import { SendSamplesState } from './state/send-samples.reducer';
 import * as _ from 'lodash';
@@ -68,7 +68,7 @@ export class SendSamplesEffects {
 
     @Effect()
     sendSamples$: Observable<
-        DisplayBannerSOA
+        ShowBannerSOA
         | UpdateSamplesSOA
         | SendSamplesAddSentFileSOA
         | LogoutUserMSA
@@ -94,7 +94,7 @@ export class SendSamplesEffects {
                 map(() => of(
                     new UpdateIsBusySOA({ isBusy: false }),
                     new SendSamplesAddSentFileSOA({ sentFile: fileName }),
-                    new DisplayBannerSOA({ predefined: 'sendSuccess' })
+                    new ShowBannerSOA({ predefined: 'sendSuccess' })
                 )),
                 concatAll(),
                 catchError((error) => {
@@ -104,25 +104,25 @@ export class SendSamplesEffects {
                             new UpdateIsBusySOA({ isBusy: false }),
                             new UpdateSamplesSOA(error.samples),
                             new DestroyBannerSOA(),
-                            new DisplayBannerSOA({ predefined: 'validationErrors' })
+                            new ShowBannerSOA({ predefined: 'validationErrors' })
                         );
                     } else if (error instanceof InputChangedError) {
                         return of(
                             new UpdateIsBusySOA({ isBusy: false }),
                             new UpdateSamplesSOA(error.samples),
                             new DestroyBannerSOA(),
-                            new DisplayBannerSOA({ predefined: 'autocorrections' })
+                            new ShowBannerSOA({ predefined: 'autocorrections' })
                         );
                     } else if (error instanceof AuthorizationError) {
                         return of(
                             new UpdateIsBusySOA({ isBusy: false }),
                             new LogoutUserMSA(),
-                            new DisplayBannerSOA({ predefined: 'noAuthorizationOrActivation' })
+                            new ShowBannerSOA({ predefined: 'noAuthorizationOrActivation' })
                         );
                     }
                     return of(
                         new UpdateIsBusySOA({ isBusy: false }),
-                        new DisplayBannerSOA({ predefined: 'sendFailure' })
+                        new ShowBannerSOA({ predefined: 'sendFailure' })
                     );
                 })
             );

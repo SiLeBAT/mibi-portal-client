@@ -3,25 +3,7 @@ export class DataGridClearingManager {
     private containerClicked = false;
     private scrollContainerClicked = false;
 
-    clickGrid(): void {
-        this.gridClicked = true;
-    }
-
-    clickContainer(): void {
-        this.containerClicked = true;
-    }
-
-    clickScrollContainer(): void {
-        this.scrollContainerClicked = true;
-    }
-
-    clear(): void {
-        this.gridClicked = false;
-        this.containerClicked = false;
-        this.scrollContainerClicked = false;
-    }
-
-    doClearUI(): boolean {
+    get isDirty(): boolean {
         // the grid handles any clearing itself through cell events
         if (this.gridClicked) {
             return false;
@@ -39,5 +21,23 @@ export class DataGridClearingManager {
 
         // clicked outside the component
         return true;
+    }
+
+    clickGrid(): void {
+        this.gridClicked = true;
+    }
+
+    clickContainer(): void {
+        this.containerClicked = true;
+    }
+
+    clickScrollContainer(): void {
+        this.scrollContainerClicked = true;
+    }
+
+    clear(): void {
+        this.gridClicked = false;
+        this.containerClicked = false;
+        this.scrollContainerClicked = false;
     }
 }

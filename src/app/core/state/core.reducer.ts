@@ -8,9 +8,15 @@ import * as _ from 'lodash';
 // STATE
 
 export interface CoreMainState {
+    actionBarConfig: CoreActionBarConfig;
     isBusy: boolean;
-    enabledActionItems: UserActionType[];
     banner: BannerData | null;
+}
+
+export interface CoreActionBarConfig {
+    isEnabled: boolean;
+    enabledActions: UserActionType[];
+    title: string;
 }
 
 export interface BannerData {
@@ -19,6 +25,12 @@ export interface BannerData {
     custom?: Banner;
     id?: string;
 }
+
+const initialActionBarConfig: CoreActionBarConfig = {
+    isEnabled: false,
+    enabledActions: [],
+    title: ''
+};
 
 // REDUCER
 
@@ -31,12 +43,24 @@ export function coreIsBusyReducer(state: boolean = false, action: CoreMainAction
     }
 }
 
-export function coreActionItemsReducer(state: UserActionType[] = [], action: CoreMainAction | RouterNavigationAction): UserActionType[] {
+export function coreActionBarConfigReducer(
+    state: CoreActionBarConfig = initialActionBarConfig,
+    action: CoreMainAction | RouterNavigationAction
+): CoreActionBarConfig {
     switch (action.type) {
-        case CoreMainActionTypes.UpdateActionItemsSOA:
-            return _.cloneDeep(action.payload);
+        case CoreMainActionTypes.ShowActionBarSOA:
+            return {
+                isEnabled: true,
+                title: action.payload.title,
+                enabledActions: action.payload.enabledActions
+            };
+        case CoreMainActionTypes.UpdateActionBarTitleSOA:
+            return {
+                ...state,
+                title: action.payload.title
+            };
         case ROUTER_NAVIGATION:
-            return [];
+            return initialActionBarConfig;
         default:
             return state;
     }
@@ -55,7 +79,7 @@ export function coreBannerReducer(state: BannerData | null = null, action: CoreM
             return state;
         case ROUTER_NAVIGATION:
             return null;
-        case CoreMainActionTypes.DisplayBannerSOA:
+        case CoreMainActionTypes.ShowBannerSOA:
             return _.cloneDeep(action.payload);
         default:
             return state;

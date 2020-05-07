@@ -1,0 +1,25 @@
+<ng-template #cellTemplate
+    let-model="model"
+    let-data="data"
+    let-isHeader="model.isColHeader"
+    let-colId="colId"
+>
+    <mibi-samples-grid-text-cell-view *ngIf="isHeader"
+        [model]="model"
+        [data]="data"
+    ></mibi-samples-grid-text-cell-view>
+    <ng-container *ngIf="!isHeader" [ngSwitch]="getCellType(colId)">
+        <mibi-samples-grid-text-cell-view *ngSwitchCase="idType"
+            [model]="model"
+            [data]="data"
+        ></mibi-samples-grid-text-cell-view>
+        <mibi-samples-grid-text-cell-view *ngSwitchCase="nrlType"
+            [model]="model"
+            [data]="data"
+        ></mibi-samples-grid-text-cell-view>
+        <mibi-samples-grid-data-cell-view  *ngSwitchCase="dataType"
+            [data]="data"
+        ></mibi-samples-grid-data-cell-view>
+    </ng-container>
+    {{foo}}
+</ng-template>

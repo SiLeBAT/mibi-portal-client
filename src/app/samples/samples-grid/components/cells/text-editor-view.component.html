@@ -4,9 +4,10 @@
         <textarea #focusElement 
             rows="1" cols="1"
             class="mibi-editor-container__overlay mibi-editor"
-            [ngModel]="data"
+            [ngModel]="data.value"
             (ngModelChange)="onModelChange($event)"
             (keydown.enter)="onEnter($event)"
+            (keydown.esc)="onEsc($event)"
         ></textarea>
         <!-- ghost editor defines minimal size for the real editor-->
         <div class="mibi-ghost-editor">{{ghostData}}</div>

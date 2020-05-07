@@ -1,4 +1,5 @@
 import { Component, Output, EventEmitter, OnInit, Input, ViewChild, ElementRef, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
+import { AnnotatedSampleDataEntry } from '../../../model/sample-management.model';
 
 @Component({
     selector: 'mibi-samples-grid-text-editor-view',
@@ -7,16 +8,19 @@ import { Component, Output, EventEmitter, OnInit, Input, ViewChild, ElementRef, 
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SamplesGridTextEditorViewComponent implements OnInit, AfterViewInit {
-    @Input() data: string;
+    @Input() data: AnnotatedSampleDataEntry;
     @Output() dataChange = new EventEmitter<string>();
+
+    @Output() confirm = new EventEmitter<void>();
+    @Output() cancel = new EventEmitter<void>();
+
+    ghostData: string;
 
     @ViewChild('focusElement', { static: true })
     private focusElement: ElementRef;
 
-    ghostData: string;
-
     ngOnInit(): void {
-        this.ghostData = this.data + '\n';
+        this.ghostData = this.data.value + '\n';
     }
 
     ngAfterViewInit(): void {
@@ -30,5 +34,10 @@ export class SamplesGridTextEditorViewComponent implements OnInit, AfterViewInit
 
     onEnter(e: KeyboardEvent): void {
         e.preventDefault();
+        this.confirm.emit();
+    }
+
+    onEsc(e: KeyboardEvent): void {
+        this.cancel.emit();
     }
 }

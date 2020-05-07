@@ -1,5 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
-import { DataGridCellViewModel } from '../../../data-grid/view-model.model';
+import { DataGridCellViewModel } from '../../../data-grid/data-grid.model';
 
 @Component({
     selector: 'mibi-samples-grid-text-cell-view',
@@ -9,5 +9,5 @@ import { DataGridCellViewModel } from '../../../data-grid/view-model.model';
 })
 export class SamplesGridTextCellViewComponent {
     @Input() model: DataGridCellViewModel;
-    @Input() text: string;
+    @Input() data: string;
 }

@@ -21,14 +21,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { AppBarTopComponent } from './presentation/app-bar-top/app-bar-top.component';
 import { AppBarTopContainerComponent } from './container/app-bar-top-container/app-bar-top-container.component';
 import { ActionItemListComponent } from './presentation/action-item-list/action-item-list.component';
-import { GenericActionItemComponent } from './presentation/generic-action-item/generic-action-item.component';
 import { BannerComponent } from './presentation/banner/banner.component';
 import { BannerContainerComponent } from './container/banner-container/banner-container.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDividerModule } from '@angular/material/divider';
-import { CoreMainEffects } from './core.effects';
 import { EffectsModule } from '@ngrx/effects';
 import { AvatarComponent } from './presentation/avatar/avatar.component';
 import { AvatarContainerComponent } from './container/avatar-container/avatar-container.component';
@@ -62,7 +60,6 @@ import { CORE_SLICE_NAME } from './core.state';
         FooterNavContainerComponent,
         AvatarComponent,
         AvatarContainerComponent,
-        GenericActionItemComponent,
         AppBarTopContainerComponent,
         ActionItemListComponent,
         AppBarTopComponent,
@@ -88,6 +85,6 @@ import { CORE_SLICE_NAME } from './core.state';
         BannerContainerComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    entryComponents: [GenericActionItemComponent]
+    entryComponents: []
 })
 export class CoreModule { }

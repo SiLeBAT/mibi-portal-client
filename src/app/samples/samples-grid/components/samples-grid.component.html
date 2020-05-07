@@ -1,37 +1,20 @@
 <mibi-data-grid-view 
-    [model]="$dataGridModel | async"
-    [cellTemplate]="cellTemplate"
+    [model]="dataGridModel$ | async"
+    [cellTemplates]="cellTemplates"
     [editorTemplate]="editorTemplate"
-    (editorOpen)="onEditorOpen($event)"
-    (editorConfirm)="onEditorConfirm($event)"
+    (dataEvent)="onDataEvent($event)"
 ></mibi-data-grid-view>
+{{foo}}
 
-<ng-template #cellTemplate
-    let-cellModel="cellModel"
-    let-rowId="rowModel.uId"
-    let-colId="cellModel.uId"
->
-    <mibi-samples-grid-text-cell-view *ngIf="isHeader(rowId)"
-        [model]="cellModel"
-        [text]="getHeaderText(colId)"
-    ></mibi-samples-grid-text-cell-view>
-    <ng-container *ngIf="!isHeader(rowId)" [ngSwitch]="getCellType(colId)">
-        <mibi-samples-grid-text-cell-view *ngSwitchCase="idType"
-            [model]="cellModel"
-            [text]="getId(rowId, colId)"
-        ></mibi-samples-grid-text-cell-view>
-        <mibi-samples-grid-text-cell-view *ngSwitchCase="nrlType"
-            [model]="cellModel"
-            [text]="getNrl(rowId, colId)"
-        ></mibi-samples-grid-text-cell-view>
-        <mibi-samples-grid-data-cell-view  *ngSwitchCase="dataType"
-            [data]="getData(rowId, colId)"
-        ></mibi-samples-grid-data-cell-view>
-    </ng-container>
-</ng-template>
+<mibi-samples-grid-templates #templates
+    [colMap]="colMap"
+></mibi-samples-grid-templates>
 
-<ng-template #editorTemplate>
+<ng-template #editorTemplate let-data="data" let-dataChange="dataChange" let-confirm="confirm" let-cancel="cancel">
     <mibi-samples-grid-text-editor-view
-        [(data)]="editorData"
+        [data]="data"
+        (dataChange)="dataChange($event)"
+        (confirm)="confirm()"
+        (cancel)="cancel()"
     ></mibi-samples-grid-text-editor-view>
 </ng-template>

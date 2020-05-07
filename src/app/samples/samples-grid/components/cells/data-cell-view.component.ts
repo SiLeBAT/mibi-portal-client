@@ -8,6 +8,12 @@ import { AnnotatedSampleDataEntry, SampleValidationErrorCodes } from '../../../m
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SamplesGridDataCellViewComponent {
+
+    get foo() {
+        // console.log('datacell');
+        return '';
+    }
+
     @Input() data: AnnotatedSampleDataEntry;
 
     hasError(): boolean {
@@ -23,7 +29,7 @@ export class SamplesGridDataCellViewComponent {
     }
 
     isEdited(): boolean {
-        return !!this.data.oldValue;
+        return this.data.oldValue !== undefined;
     }
 
     private hasErrorCode(code: SampleValidationErrorCodes): boolean {

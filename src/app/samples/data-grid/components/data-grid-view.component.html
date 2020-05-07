@@ -15,72 +15,31 @@
                 }"
                 (mousedown)="onGridMouseDown($event)"
             >
-                <ng-container *ngFor="let rowModel of rows; let row=index; trackBy: getId">
-                    <div *ngFor="let cellModel of rowModel.cells; let col=index; trackBy: getId"
-                        class="mibi-grid-cell"
+                <ng-container *ngFor="let rowId of rows; let row=index">
+                    <mibi-data-grid-cell-view *ngFor="let colId of cols; let col=index"
                         [ngClass]="{
+                            'mibi-grid__cell': !isHeader(row, col),
                             'mibi-grid__sticky': isHeader(row, col),
                             'mibi-grid__sticky--top': isColHeader(row, col),
-                            'mibi-grid__sticky--left': isRowHeader(row, col),
-                            'mibi-grid-cell--grid-top': isColHeader(row, col),
-                            'mibi-grid-cell--grid-left': isRowHeader(row, col),
-                            'mibi-grid-cell--grid-bottom': row === rowCount - 1,
-                            'mibi-grid-cell--grid-right': col === colCount - 1
+                            'mibi-grid__sticky--left': isRowHeader(row, col)
                         }"
                         [ngStyle]="{
-                            'z-index':calcCellElevation(row, col)
+                            'z-index':getElevation(row, col)
                         }"
-                    >
-                        <div *ngIf="isColHeader(row, col)" 
-                            class="mibi-grid-cell__overlay mibi-grid-cell__overlay--col-header"
-                        ></div>
-                        <div *ngIf="isRowHeader(row, col)" 
-                            class="mibi-grid-cell__overlay mibi-grid-cell__overlay--row-header"
-                        ></div>
-                        <div class="mibi-cell">
-                            <div *ngIf="isHeader(row, col)"
-                                class="mibi-cell__overlay"
-                                [ngClass]="{
-                                    'mibi-selection-hint': isSelectionHinted(row, col)
-                                }"
-                            ></div>
-                            <div *ngIf="isHeader(row, col)"
-                                class="mibi-cell__overlay"
-                                [ngClass]="{
-                                    'mibi-hover-hint': isHoverHinted(row, col)
-                                }"
-                            ></div>
-                            <div class="mibi-cell__overlay"
-                                tabindex="-1"
-                                [ngClass]="{
-                                    'mibi-selection--hover': isHovered(row, col),
-                                    'mibi-selection--selected': !hasCursor(row, col) && isSelected(row, col),
-                                    'mibi-selection--selected-hover': !hasCursor(row, col) && isSelected(row, col) && isHovered(row, col),
-                                    'mibi-selection-anchor': !hasCursor(row, col) && hasSelectionAnchor(row, col),
-                                    'mibi-cursor': hasCursor(row, col)
-                                }"
-                                (mouseover)="onCellMouseOver($event, row, col)"
-                                (mousedown)="onCellMouseDown($event, row, col)"
-                                (click)="onCellClick($event, row, col)"
-                                (mouseup)="onCellMouseUp($event, row, col)"
-                                (mouseout)="onCellMouseOut($event, row, col)"
-                                (keydown.enter)="onCellEnter($event, row, col)"
-                            >
-                                <ng-container *ngIf="hasEditor(row, col)">
-                                    <ng-container
-                                        *ngTemplateOutlet="editorTemplate;context: getCellContext(rowModel, cellModel)"
-                                    ></ng-container>
-                                </ng-container>
-                            </div>
-                            <div class="mibi-cell__content">
-                                <ng-container 
-                                    *ngTemplateOutlet="cellTemplate;context: getCellContext(rowModel, cellModel)"
-                                ></ng-container>
-                            </div>
-                        </div>
-                    </div>
+                        [controller]="cellController"
+                        [changeId$]="getChangeId$(rowId, colId)"
+                        [cellTemplate]="cellTemplates[row][col]"
+                        [editorTemplate]="editorTemplate"
+                        [row]="row"
+                        [col]="col"
+                        (mouseEvent)="onCellMouseEvent($event, row, col)"
+                        (editorDataChange)="onEditorDataChange($event)"
+                        (editorConfirm)="onEditorConfirm()"
+                        (editorCancel)="onEditorCancel()"
+                    ></mibi-data-grid-cell-view>
                 </ng-container>
             </div>
         </div>
     </div>
+    {{foo}}
 </mibi-layout-box>

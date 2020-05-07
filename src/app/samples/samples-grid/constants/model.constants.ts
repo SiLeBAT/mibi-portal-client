@@ -2,35 +2,34 @@ import { samplesGridIdHeader, samplesGridNrlHeader, samplesGridSampleDataHeaders
 import {
     SamplesGridColumnModel,
     SamplesGridColumnType,
-    SamplesGridNrlModel,
-    SamplesGridIdModel,
-    SamplesGridDataModel,
+    SamplesGridDataColumnModel,
     SamplesGridModel
 } from '../samples-grid.model';
+import { DataGridColId } from '../../data-grid/data-grid.model';
 
-function createIdModel(colId: number): SamplesGridIdModel {
+function createIdModel(colId: DataGridColId): SamplesGridColumnModel {
     return {
         colId: colId,
         type: SamplesGridColumnType.ID,
         isRowHeader: true,
         isReadOnly: true,
         headerText: samplesGridIdHeader,
-        getId: (rowId) => rowId.toString()
+        getData: (sample, sampleIndex) => (sampleIndex + 1).toString()
     };
 }
 
-function createNrlModel(colId: number): SamplesGridNrlModel {
+function createNrlModel(colId: DataGridColId): SamplesGridColumnModel {
     return {
         colId: colId,
         type: SamplesGridColumnType.NRL,
         isRowHeader: false,
         isReadOnly: true,
         headerText: samplesGridNrlHeader,
-        getNrl: (sample) => sample.sampleMeta.nrl
+        getData: (sample) => sample.sampleMeta.nrl
     };
 }
 
-function createDataModel(colId: number, selector: keyof typeof samplesGridSampleDataHeaders): SamplesGridDataModel {
+function createDataModel(colId: DataGridColId, selector: keyof typeof samplesGridSampleDataHeaders): SamplesGridDataColumnModel {
     return {
         colId: colId,
         type: SamplesGridColumnType.DATA,

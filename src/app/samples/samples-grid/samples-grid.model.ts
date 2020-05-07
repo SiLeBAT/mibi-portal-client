@@ -1,33 +1,26 @@
-import { Sample, AnnotatedSampleDataEntry } from '../model/sample-management.model';
+import { Sample } from '../model/sample-management.model';
+import { DataGridRowId, DataGridColId, DataGridCellData } from '../data-grid/data-grid.model';
 
 export enum SamplesGridColumnType {
     ID, NRL, DATA
 }
 
 export interface SamplesGridColumnModel {
-    colId: number;
+    colId: DataGridColId;
     type: SamplesGridColumnType;
     isRowHeader: boolean;
     isReadOnly: boolean;
     headerText: string;
+    getData(sample: Sample, sampleIndex: number): DataGridCellData;
 }
 
-export interface SamplesGridIdModel extends SamplesGridColumnModel {
-    getId(rowId: number): string;
-}
-
-export interface SamplesGridNrlModel extends SamplesGridColumnModel {
-    getNrl(sample: Sample): string;
-}
-
-export interface SamplesGridDataModel extends SamplesGridColumnModel {
+export interface SamplesGridDataColumnModel extends SamplesGridColumnModel {
     selector: string;
-    getData(sample: Sample): AnnotatedSampleDataEntry;
 }
 
 export interface SamplesGridModel {
     columns: SamplesGridColumnModel[];
-    headerRowId: number;
-    getSampleRowId(index: number): number;
-    getSampleIndex(rowId: number): number;
+    headerRowId: DataGridRowId;
+    getSampleRowId(index: number): DataGridRowId;
+    getSampleIndex(rowId: DataGridRowId): number;
 }

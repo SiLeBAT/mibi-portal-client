@@ -14,8 +14,11 @@
             <mibi-avatar-container class="mibi-app-bar-top__right"></mibi-avatar-container>
         </div>
     </div>
-    <mibi-action-item-list class="mibi-app-bar__bottom" *ngIf="hasConfig" [configuration$]="config$">
-    </mibi-action-item-list>
+    <mibi-action-item-list *ngIf="actionBarEnabled"
+        class="mibi-app-bar__bottom"
+        [actionBarTitle]="actionBarTitle"
+        [actionConfigs]="actionConfigs"
+    ></mibi-action-item-list>
 </div>
 
 </mibi-layout-box>

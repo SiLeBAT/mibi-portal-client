@@ -1,11 +1,5 @@
 @import "abstracts";
 
-$mibi-ui-color: map-get($mibi-primary, A400);
-$mibi-border-color: $surface-color;
-$mibi-grid-border: 0.5px solid $surface-color;
-$mibi-hover-opacity: 0.075;
-$mibi-selection-opacity: 0.2;
-
 .mibi-panel {
   position: relative;
   height: 100%;
@@ -36,11 +30,13 @@ $mibi-selection-opacity: 0.2;
 
   display: grid;
   // mask precision gaps between grid lines visible in firefox
-  background-color: $mibi-border-color;
+  background-color: $surface-color;
   user-select: none;
+  // chrome renders faster if this is set (normally grid sets that implicitly)
+  z-index: 0;
 }
 
-.mibi-grid-cell {
+.mibi-grid__cell {
   position: relative;
 }
 
@@ -54,85 +50,4 @@ $mibi-selection-opacity: 0.2;
 
 .mibi-grid__sticky--left {
   left: 0;
-}
-
-.mibi-grid-cell--grid-top {
-  border-top: $mibi-grid-border;
-}
-
-.mibi-grid-cell--grid-left {
-  border-left: $mibi-grid-border;
-}
-
-.mibi-grid-cell--grid-bottom {
-  border-bottom: $mibi-grid-border;
-}
-
-.mibi-grid-cell--grid-right {
-  border-right: $mibi-grid-border;
-}
-
-.mibi-grid-cell__overlay {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-}
-
-.mibi-grid-cell__overlay--col-header {
-  bottom: 0;
-  height: 1px;
-  box-shadow: 0 0.5px 2px 0 black;
-}
-
-.mibi-grid-cell__overlay--row-header {
-  right: 0;
-  width: 1px;
-  box-shadow: 0.5px 0 2px 0 black;
-}
-
-.mibi-cell {
-  position: relative;
-  height: 100%;
-}
-
-.mibi-cell__overlay {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-}
-
-.mibi-cell__content {
-  height: 100%;
-  outline: $mibi-border-color solid 0.5px;
-  outline-offset: -0.5px;
-}
-
-.mibi-hover-hint {
-  background-color: rgba(black, $mibi-hover-opacity);
-}
-
-.mibi-selection-hint {
-  background-color: rgba(black, $mibi-selection-opacity);
-}
-
-.mibi-selection--hover {
-  background-color: rgba($mibi-ui-color, $mibi-hover-opacity);
-}
-
-.mibi-selection--selected {
-  background-color: rgba($mibi-ui-color, $mibi-selection-opacity);
-}
-
-.mibi-selection--selected-hover {
-  background-color: rgba($mibi-ui-color, $mibi-selection-opacity + $mibi-hover-opacity);
-}
-
-.mibi-selection-anchor {
-  outline: $mibi-ui-color solid 2px;
-  outline-offset: -2px;
-}
-
-.mibi-cursor {
-  outline: $mibi-ui-color solid 3px;
-  outline-offset: -3px;
 }

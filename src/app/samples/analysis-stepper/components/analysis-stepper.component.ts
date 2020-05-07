@@ -1,4 +1,3 @@
-import { ClientError } from './../../../core/model/client-error';
 import { Urgency } from './../../model/sample.enums';
 import * as _ from 'lodash';
 import { map } from 'rxjs/internal/operators/map';
@@ -21,7 +20,7 @@ import { UpdateSampleMetaDataSOA } from '../../state/samples.actions';
 import { selectNRLs } from '../../../shared/nrl/state/nrl.selectors';
 import { NRLState } from '../../../shared/nrl/state/nrl.reducer';
 import { SharedSlice } from '../../../shared/shared.state';
-import { DisplayBannerSOA } from '../../../core/state/core.actions';
+import { ShowBannerSOA } from '../../../core/state/core.actions';
 import { tap } from 'rxjs/internal/operators/tap';
 
 interface AnalysisStepViewModel {
@@ -91,7 +90,7 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
     }
 
     onCancel() {
-        this.store$.dispatch(new DisplayBannerSOA({ predefined: 'sendCancel' }));
+        this.store$.dispatch(new ShowBannerSOA({ predefined: 'sendCancel' }));
         this.close();
     }
 

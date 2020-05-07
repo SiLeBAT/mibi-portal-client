@@ -6,7 +6,7 @@ import { of, Observable } from 'rxjs';
 import { DataService } from '../core/services/data.service';
 import { Router } from '@angular/router';
 import { TokenizedUser } from './model/user.model';
-import { DisplayBannerSOA, UpdateIsBusySOA, DestroyBannerSOA } from '../core/state/core.actions';
+import { ShowBannerSOA, UpdateIsBusySOA, DestroyBannerSOA } from '../core/state/core.actions';
 import { DelayLoginError, AuthorizationError } from '../core/model/client-error';
 import { LogService } from '../core/services/log.service';
 import { AlertType } from '../core/model/alert.model';
@@ -29,7 +29,7 @@ export class UserMainEffects {
     }
 
     @Effect()
-    loginUser$: Observable<DestroyBannerSOA | DisplayBannerSOA | UpdateCurrentUserSOA | UpdateIsBusySOA> = this.actions$.pipe(
+    loginUser$: Observable<DestroyBannerSOA | ShowBannerSOA | UpdateCurrentUserSOA | UpdateIsBusySOA> = this.actions$.pipe(
         ofType<LoginUserSSA>(UserMainActionTypes.LoginUserSSA),
         tap(() => {
             this.store$.dispatch(new UpdateIsBusySOA({ isBusy: true }));
@@ -51,7 +51,7 @@ export class UserMainEffects {
                     const waitTime = this.timeConversion(error.timeToWait);
                     return of(
                         new UpdateIsBusySOA({ isBusy: false }),
-                        new DisplayBannerSOA({
+                        new ShowBannerSOA({
                             predefined: '',
                             custom: {
                                 message: `Zu viele fehlgeschlagene Logins, bitte warten Sie ${
@@ -65,13 +65,13 @@ export class UserMainEffects {
                 } if (error instanceof AuthorizationError) {
                     return of(
                         new UpdateIsBusySOA({ isBusy: false }),
-                        new DisplayBannerSOA({ predefined: 'loginFailure' })
+                        new ShowBannerSOA({ predefined: 'loginFailure' })
                     );
                 }
 
                 return of(
                     new UpdateIsBusySOA({ isBusy: false }),
-                    new DisplayBannerSOA({ predefined: 'loginFailure' })
+                    new ShowBannerSOA({ predefined: 'loginFailure' })
                 );
             })
         ))

@@ -2,10 +2,23 @@
 @import "../../../../assets/sass/layout";
 
 .mibi-page-body {
+  position: relative;
   height: 100%;
   display: flex;
   flex-direction: column;
   overflow: auto;
+}
+
+.mibi-page-body__spinner {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.mibi-page-body__spinner--active {
+  background-color: rgba(white, 0.75);
+  z-index: 2;
 }
 
 .mibi-page-body__banner {
@@ -27,6 +40,11 @@
 
   min-height: 0;
   overflow: auto;
+  z-index: 0;
+}
+
+.mibi-spinner {
+  margin: $mibi-octuple-space auto;
 }
 
 .mibi-banner {
@@ -38,13 +56,4 @@
 
 .mibi-banner__content {
   flex: 1 1 auto;
-}
-
-.mibi-spinner {
-  height: 100%;
-  overflow: hidden;
-}
-
-.mibi-spinner__content {
-  margin: $mibi-octuple-space auto;
 }

@@ -1,31 +1,31 @@
-import { Component, OnInit } from '@angular/core';
-import * as samplesActions from '../../state/samples.actions';
-import * as coreActions from '../../../core/state/core.actions';
+import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { UserActionType } from '../../../shared/model/user-action.model';
 import { SamplesMainSlice } from '../../samples.state';
+import { ShowActionBarSOA } from '../../../core/state/core.actions';
+import { ImportExcelFileMSA } from '../../state/samples.actions';
 
 @Component({
     selector: 'mibi-upload-view',
     templateUrl: './upload-view.component.html',
     styleUrls: ['./upload-view.component.scss']
 })
-export class UploadViewComponent implements OnInit {
-    constructor(
-        private store: Store<SamplesMainSlice>) { }
+export class UploadViewComponent {
 
-    ngOnInit(): void {
-        this.store.dispatch(new coreActions.UpdateActionItemsSOA(
-            [
+    constructor(private store$: Store<SamplesMainSlice>) {
+        this.store$.dispatch(new ShowActionBarSOA({
+            title: '',
+            enabledActions: [
                 UserActionType.VALIDATE,
                 UserActionType.SEND,
                 UserActionType.EXPORT,
                 UserActionType.UPLOAD,
                 UserActionType.DOWNLOAD_TEMPLATE
-            ]));
+            ]
+        }));
     }
-    // Container not really necessary here, or is it?
+
     fileUpload(file: File) {
-        this.store.dispatch(new samplesActions.ImportExcelFileMSA({ file }));
+        this.store$.dispatch(new ImportExcelFileMSA({ file }));
     }
 }

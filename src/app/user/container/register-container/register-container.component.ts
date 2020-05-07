@@ -12,7 +12,7 @@ import { takeWhile, map, filter } from 'rxjs/operators';
 import { ClientError } from '../../../core/model/client-error';
 import { selectInstitutions } from '../../state/user.selectors';
 import { selectSupportContact } from '../../../content/state/content.selectors';
-import { DisplayBannerSOA, UpdateIsBusySOA } from '../../../core/state/core.actions';
+import { ShowBannerSOA, UpdateIsBusySOA } from '../../../core/state/core.actions';
 import { ContentMainSlice } from '../../../content/content.state';
 import { UserMainSlice } from '../../user.state';
 
@@ -64,7 +64,7 @@ export class RegisterContainerComponent implements OnInit, OnDestroy {
                 this.store.dispatch(new UpdateIsBusySOA({ isBusy: false }));
                 this.router.navigate(['users/login']).then(
                     () => {
-                        this.store.dispatch(new DisplayBannerSOA({
+                        this.store.dispatch(new ShowBannerSOA({
                             predefined: '',
                             custom: {
                                 // tslint:disable-next-line:max-line-length
@@ -82,7 +82,7 @@ export class RegisterContainerComponent implements OnInit, OnDestroy {
         ).catch(
             () => {
                 this.store.dispatch(new UpdateIsBusySOA({ isBusy: false }));
-                this.store.dispatch(new DisplayBannerSOA({
+                this.store.dispatch(new ShowBannerSOA({
                     predefined: '',
                     custom: {
                         // tslint:disable-next-line: max-line-length

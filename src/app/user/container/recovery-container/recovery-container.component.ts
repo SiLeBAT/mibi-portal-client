@@ -8,7 +8,7 @@ import { UserActionType } from '../../../shared/model/user-action.model';
 import { UserPasswordResetRequest } from '../../model/user.model';
 import { takeWhile } from 'rxjs/operators';
 import { ClientError } from '../../../core/model/client-error';
-import { DisplayBannerSOA, UpdateIsBusySOA } from '../../../core/state/core.actions';
+import { ShowBannerSOA, UpdateIsBusySOA } from '../../../core/state/core.actions';
 import { ContentMainState } from '../../../content/state/content.reducer';
 import { selectSupportContact } from '../../../content/state/content.selectors';
 import { ContentSlice } from '../../../content/content.state';
@@ -45,7 +45,7 @@ export class RecoveryContainerComponent implements OnInit, OnDestroy {
                     this.store$.dispatch(new UpdateIsBusySOA({ isBusy: false }));
                     this.router.navigate(['users/login']).then(
                         () => {
-                            this.store$.dispatch(new DisplayBannerSOA({
+                            this.store$.dispatch(new ShowBannerSOA({
                                 predefined: '',
                                 custom: {
                                     // tslint:disable-next-line: max-line-length
@@ -62,7 +62,7 @@ export class RecoveryContainerComponent implements OnInit, OnDestroy {
             ).catch(
                 () => {
                     this.store$.dispatch(new UpdateIsBusySOA({ isBusy: false }));
-                    this.store$.dispatch(new DisplayBannerSOA({
+                    this.store$.dispatch(new ShowBannerSOA({
                         predefined: '',
                         custom: {
                             // tslint:disable-next-line: max-line-length

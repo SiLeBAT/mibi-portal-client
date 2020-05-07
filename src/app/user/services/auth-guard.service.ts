@@ -26,7 +26,7 @@ export class AuthGuard implements CanActivate {
 
                     if (isExpired) {
                         this.store.dispatch(new userActions.LogoutUserMSA());
-                        this.store.dispatch(new coreActions.DisplayBannerSOA({ predefined: 'loginUnauthorized' }));
+                        this.store.dispatch(new coreActions.ShowBannerSOA({ predefined: 'loginUnauthorized' }));
                     }
                     return !isExpired;
                 }

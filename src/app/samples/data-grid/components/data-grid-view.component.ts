@@ -1,15 +1,34 @@
-import { Component, HostListener, Input, Output, EventEmitter, ChangeDetectionStrategy, TemplateRef } from '@angular/core';
+import {
+    Component,
+    HostListener,
+    Input,
+    Output,
+    EventEmitter,
+    ChangeDetectionStrategy,
+    TemplateRef,
+    ChangeDetectorRef,
+    AfterViewInit,
+    OnChanges,
+    SimpleChanges
+} from '@angular/core';
 import { DataGridCellTool } from '../domain/cell-tool.entity';
 import { DataGridSelectionManager } from '../domain/selection-manager.entity';
 import { DataGridClearingManager } from '../domain/clearing-manager.entity';
 import {
-    DataGridViewModel,
-    DataGridRowViewModel,
-    DataGridEditorEvent,
     DataGridCellViewModel,
     DataGridCellContext,
-    DataGridUIdViewModel
-} from '../view-model.model';
+    DataGridViewModel,
+    DataGridRowId,
+    DataGridColId,
+    DataGridCellData,
+    DataGridDataEvent,
+    DataGridEditorData,
+    DataGridMap
+} from '../data-grid.model';
+import { DataGridCellController, DataGridChangeId } from '../domain/cell-controller.model';
+import { DataGridChangeDetector } from '../domain/change-detector.entity';
+import { Observable } from 'rxjs';
+import { DataGridChangeId$Map } from '../domain/change-id-map.entity';
 
 enum MouseButton {
     PRIMARY = 0
@@ -26,42 +45,247 @@ enum MouseButtons {
     styleUrls: ['./data-grid-view.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DataGridViewComponent {
+export class DataGridViewComponent implements AfterViewInit, OnChanges {
+
+    get foo() {
+        // console.log('DataGrid');
+        return '';
+    }
+
     @Input() model: DataGridViewModel;
-    @Input() cellTemplate: TemplateRef<DataGridCellContext>;
+    @Input() cellTemplates: TemplateRef<DataGridCellContext>[][];
     @Input() editorTemplate: TemplateRef<DataGridCellContext>;
 
-    @Output() editorOpen = new EventEmitter<DataGridEditorEvent>();
-    @Output() editorConfirm = new EventEmitter<DataGridEditorEvent>();
+    @Output() dataEvent = new EventEmitter<DataGridDataEvent>();
 
     // TEMPLATE PROPERTIES
 
-    get rows(): DataGridRowViewModel[] {
+    readonly cellController: DataGridCellController;
+
+    get rows(): DataGridRowId[] {
         return this.model.rows;
+    }
+    get cols(): DataGridColId[] {
+        return this.model.cols;
     }
 
     get rowCount(): number {
-        return this.model.rowCount;
+        return this.model.rows.length;
     }
     get colCount(): number {
-        return this.model.colCount;
+        return this.model.cols.length;
     }
 
     // PRIVATE PROPERTIES
 
-    private readonly cursor = new DataGridCellTool();
-    private readonly editor = new DataGridCellTool();
+    private get cellModels(): DataGridMap<DataGridCellViewModel> { return this.model.cellModels; }
+    private get cellData(): DataGridMap<DataGridCellData> { return this.model.cellData; }
 
-    private readonly selection = new DataGridSelectionManager();
-    private readonly hover = new DataGridSelectionManager();
+    private readonly changeIds = new DataGridChangeId$Map();
+    private readonly cellChangeDetector = new DataGridChangeDetector(this.changeIds);
+
+    private readonly cursor = new DataGridCellTool(this.cellChangeDetector);
+    private readonly editor = new DataGridCellTool(this.cellChangeDetector);
+
+    private readonly selection = new DataGridSelectionManager(this.cellChangeDetector);
+    private readonly hover = new DataGridSelectionManager(this.cellChangeDetector);
     private readonly clearing = new DataGridClearingManager();
+
+    private editorData: DataGridEditorData = undefined;
 
     // edge workaround for detecting mouseover event with button pressed
     private isEdgeMouseDownLeft = false;
 
-    // MOUSE UI EVENT HANDLERS
+    // LIFE CYCLE
 
-    onCellMouseOver(e: MouseEvent, row: number, col: number): void {
+    constructor(private readonly gridChangeDetector: ChangeDetectorRef) {
+        this.cellController = {
+            cursor: this.cursor,
+            editor: this.editor,
+            selection: this.selection,
+            hover: this.hover,
+            getCellModel: (row, col) => this.getCellModel(row, col),
+            getCellData: (row, col) => this.getCellData(row, col),
+            getRowId: (row) => this.rows[row],
+            getColId: (col) => this.cols[col]
+        };
+    }
+
+    ngAfterViewInit(): void {
+        this.gridChangeDetector.detach();
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        // console.log('', changes);
+        const modelChange = changes.model;
+        if (modelChange) {
+            const oldModel = modelChange.previousValue as DataGridViewModel;
+            const newModel = modelChange.currentValue as DataGridViewModel;
+
+            if (modelChange.firstChange) {
+                this.changeIds.init(newModel.rows, newModel.cols);
+            } else {
+                const rowsChanged = oldModel.rows !== newModel.rows;
+                const colsChanged = oldModel.cols !== newModel.cols;
+                const cellModelsChanged = oldModel.cellModels !== newModel.cellModels;
+                const cellDataChanged = oldModel.cellData !== newModel.cellData;
+
+                if (rowsChanged || colsChanged) {
+                    this.changeIds.update(newModel.rows, newModel.cols, colsChanged);
+                }
+
+                if (cellModelsChanged) {
+                    this.cellChangeDetector.markDirtyMap(oldModel.cellModels, newModel.cellModels, this.rows, this.cols);
+                }
+
+                if (cellDataChanged) {
+                    this.cellChangeDetector.markDirtyMap(oldModel.cellData, newModel.cellData, this.rows, this.cols);
+                }
+
+                if (rowsChanged || colsChanged || cellModelsChanged) {
+                    this.cursor.clear();
+                    this.selection.clear();
+                    this.hover.clear();
+                    if (this.editor.isActive) {
+                        this.cancelEditor();
+                    }
+
+                    this.gridChangeDetector.detectChanges();
+                }
+
+                this.detectCellChanges();
+            }
+        }
+    }
+
+    // CELL EVENT HANDLERS
+
+    onCellMouseEvent(e: MouseEvent, row: number, col: number) {
+        switch (e.type) {
+            case 'mouseover':
+                this.onCellMouseOver(e, row, col);
+                break;
+            case 'mousedown':
+                this.onCellMouseDown(e, row, col);
+                break;
+            case 'click':
+                this.onCellClick(e, row, col);
+                break;
+            case 'mouseup':
+                this.onCellMouseUp(e, row, col);
+                break;
+            case 'mouseout':
+                this.onCellMouseOut(e, row, col);
+                break;
+        }
+        this.detectCellChanges();
+    }
+
+    // EDITOR EVENT HANDLERS
+
+    onEditorDataChange(e: DataGridEditorData): void {
+        this.editorData = e;
+    }
+
+    onEditorConfirm(): void {
+        this.startSelection(this.selection, this.editor.row, this.editor.col);
+        this.cursor.set(this.editor.row, this.editor.col);
+        this.confirmEditor();
+        this.detectCellChanges();
+    }
+
+    onEditorCancel(): void {
+        this.startSelection(this.selection, this.editor.row, this.editor.col);
+        this.cursor.set(this.editor.row, this.editor.col);
+        this.cancelEditor();
+        this.detectCellChanges();
+    }
+
+    // CLEARING EVENT HANDLERS
+
+    onGridMouseDown(e: MouseEvent): void {
+        if (e.button !== MouseButton.PRIMARY) {
+            return;
+        }
+        this.clearing.clickGrid();
+    }
+
+    onContainerMouseDown(e: MouseEvent): void {
+        if (e.button !== MouseButton.PRIMARY) {
+            return;
+        }
+        this.clearing.clickContainer();
+    }
+
+    onScrollContainerMouseDown(e: MouseEvent): void {
+        if (e.button !== MouseButton.PRIMARY) {
+            return;
+        }
+        this.clearing.clickScrollContainer();
+    }
+
+    @HostListener('window:mousedown', ['$event'])
+    onWindowMouseDown(e: MouseEvent): void {
+        if (e.button !== MouseButton.PRIMARY) {
+            return;
+        }
+
+        if (this.clearing.isDirty) {
+            if (this.editor.isActive) {
+                this.confirmEditor();
+            }
+            this.cursor.clear();
+            this.selection.clear();
+        }
+        this.clearing.clear();
+        this.detectCellChanges();
+    }
+
+    @HostListener('window:mouseup', ['$event'])
+    onWindowMouseUp(e: MouseEvent): void {
+        this.isEdgeMouseDownLeft = false;
+    }
+
+    // TEMPLATE METHODS
+
+    getChangeId$(rowId: DataGridRowId, colId: DataGridColId): Observable<DataGridChangeId> {
+        return this.changeIds.getChangeId$(rowId, colId);
+    }
+
+    isRowHeader(row: number, col: number): boolean {
+        return this.getCellModel(row, col).isRowHeader;
+    }
+    isColHeader(row: number, col: number): boolean {
+        return this.getCellModel(row, col).isColHeader;
+    }
+    isHeader(row: number, col: number): boolean {
+        return this.isRowHeader(row, col) || this.isColHeader(row, col);
+    }
+    isGridHeader(row: number, col: number): boolean {
+        return this.isRowHeader(row, col) && this.isColHeader(row, col);
+    }
+
+    getElevation(row: number, col: number): number {
+        const headerOffset = 10;
+        const editorOffset = 5;
+        let elevation = 0;
+
+        if (this.isHeader(row, col)) {
+            elevation += headerOffset;
+        }
+        if (this.isGridHeader(row, col)) {
+            elevation += headerOffset;
+        }
+        if (this.editor.isOnCell(row, col)) {
+            elevation += editorOffset;
+        }
+
+        return elevation;
+    }
+
+    // PRIVATE UI EVENT HANDLERS
+
+    private onCellMouseOver(e: MouseEvent, row: number, col: number): void {
         if (e.buttons === MouseButtons.NONE && !this.isEdgeMouseDownLeft) {
             this.startSelection(this.hover, row, col);
         }
@@ -70,13 +294,13 @@ export class DataGridViewComponent {
             return;
         }
 
-        if (this.selection.isSelecting()) {
+        if (this.selection.hasSelection) {
             this.cursor.clear();
             this.selection.select(row, col);
         }
     }
 
-    onCellMouseDown(e: MouseEvent, row: number, col: number): void {
+    private onCellMouseDown(e: MouseEvent, row: number, col: number): void {
         if (e.button !== MouseButton.PRIMARY) {
             return;
         }
@@ -93,7 +317,9 @@ export class DataGridViewComponent {
             return;
         }
 
-        this.closeEditor();
+        if (this.editor.isActive) {
+            this.confirmEditor();
+        }
 
         if (!this.cursor.isOnCell(row, col)) {
             this.cursor.clear();
@@ -102,12 +328,12 @@ export class DataGridViewComponent {
         this.startSelection(this.selection, row, col);
     }
 
-    onCellClick(e: MouseEvent, row: number, col: number): void {
+    private onCellClick(e: MouseEvent, row: number, col: number): void {
         if (e.button !== MouseButton.PRIMARY) {
             return;
         }
 
-        if (this.isReadOnly(row, col)) {
+        if (this.getCellModel(row, col).isReadOnly) {
             return;
         }
 
@@ -116,6 +342,8 @@ export class DataGridViewComponent {
         }
 
         if (this.cursor.isOnCell(row, col)) {
+            this.cursor.clear();
+            this.selection.clear();
             this.openEditor(row, col);
             return;
         }
@@ -123,240 +351,53 @@ export class DataGridViewComponent {
         this.cursor.set(row, col);
     }
 
-    onCellMouseUp(e: MouseEvent, row: number, col: number): void {
+    private onCellMouseUp(e: MouseEvent, row: number, col: number): void {
         this.startSelection(this.hover, row, col);
     }
 
-    onCellMouseOut(e: MouseEvent, row: number, col: number): void {
+    private onCellMouseOut(e: MouseEvent, row: number, col: number): void {
         this.hover.clear();
     }
 
-    // KEYBOARD UI EVENT HANDLERS
-
-    onCellEnter(e: KeyboardEvent, row: number, col: number) {
-        if (!this.editor.isOnCell(row, col)) {
-            return;
-        }
-        this.closeEditor();
-        this.startSelection(this.selection, row, col);
-        this.cursor.set(row, col);
-    }
-
-    // CLEARING EVENT HANDLERS
-
-    onGridMouseDown(e: MouseEvent): void {
-        if (e.button !== MouseButton.PRIMARY) {
-            return;
-        }
-
-        this.clearing.clickGrid();
-    }
-
-    onContainerMouseDown(e: MouseEvent): void {
-        if (e.button !== MouseButton.PRIMARY) {
-            return;
-        }
-
-        this.clearing.clickContainer();
-    }
-
-    onScrollContainerMouseDown(e: MouseEvent): void {
-        if (e.button !== MouseButton.PRIMARY) {
-            return;
-        }
-
-        this.clearing.clickScrollContainer();
-    }
-
-    @HostListener('window:mousedown', ['$event'])
-    onWindowMouseDown(e: MouseEvent): void {
-        if (e.button !== MouseButton.PRIMARY) {
-            return;
-        }
-
-        if (this.clearing.doClearUI()) {
-            this.closeEditor();
-            this.cursor.clear();
-            this.selection.clear();
-        }
-        this.clearing.clear();
-    }
-
-    // WINDOW EVENT HANDLERS
-
-    @HostListener('window:mouseup', ['$event'])
-    onWindowMouseUp(e: MouseEvent): void {
-        this.isEdgeMouseDownLeft = false;
-    }
-
-    // TEMPLATE METHODS
-
-    getId(index: number, uIdModel: DataGridUIdViewModel): number {
-        return uIdModel.uId;
-    }
-
-    getCellContext(rowModel: DataGridRowViewModel, cellModel: DataGridCellViewModel): DataGridCellContext {
-        return {
-            rowModel: rowModel,
-            cellModel: cellModel
-        };
-    }
-
-    isHeader(row: number, col: number): boolean {
-        return this.isRowHeader(row, col) || this.isColHeader(row, col);
-    }
-
-    isColHeader(row: number, col: number): boolean {
-        return this.rows[row].cells[col].isColHeader;
-    }
-
-    isRowHeader(row: number, col: number): boolean {
-        return this.rows[row].cells[col].isRowHeader;
-    }
-
-    isGridHeader(row: number, col: number): boolean {
-        return this.isRowHeader(row, col) && this.isColHeader(row, col);
-    }
-
-    isReadOnly(row: number, col: number): boolean {
-        return this.rows[row].cells[col].isReadOnly;
-    }
-
-    hasHoverAnchor(row: number, col: number) {
-        return this.hover.anchor.isOnCell(row, col);
-    }
-
-    hasSelectionAnchor(row: number, col: number): boolean {
-        return this.selection.anchor.isOnCell(row, col);
-    }
-
-    hasSelectionSelector(row: number, col: number): boolean {
-        return this.selection.selector.isOnCell(row, col);
-    }
-
-    hasCursor(row: number, col: number): boolean {
-        return this.cursor.isOnCell(row, col);
-    }
-
-    hasEditor(row: number, col: number): boolean {
-        return this.editor.isOnCell(row, col);
-    }
-
-    isHovered(row: number, col: number): boolean {
-        if (!this.hover.isSelecting()) {
-            return false;
-        }
-
-        const anchor = this.hover.anchor;
-        const anchorOnHeaderEditor = this.isHeader(anchor.row, anchor.col) && this.hasEditor(anchor.row, anchor.col);
-
-        // disbale hovering if editor is on a header
-        if (anchorOnHeaderEditor && !this.hasHoverAnchor(row, col)) {
-            return false;
-        }
-
-        return this.hover.isSelected(row, col);
-    }
-
-    isHoverHinted(row: number, col: number): boolean {
-        if (!this.hover.isSelecting()) {
-            return false;
-        }
-
-        if (!this.isHeader(row, col)) {
-            return false;
-        }
-
-        if (this.hasHoverAnchor(row, col)) {
-            return false;
-        }
-
-        const anchor = this.hover.anchor;
-
-        if (this.isGridHeader(row, col)) {
-            return anchor.isInCol(col) || anchor.isInRow(row);
-        } else if (this.isColHeader(row, col)) {
-            return anchor.isInCol(col);
-        } else {
-            return anchor.isInRow(row);
-        }
-    }
-
-    isSelected(row: number, col: number): boolean {
-        return this.selection.isSelected(row, col);
-    }
-
-    isSelectionHinted(row: number, col: number): boolean {
-        if (!this.selection.isSelecting()) {
-            return false;
-        }
-
-        if (!this.isHeader(row, col)) {
-            return false;
-        }
-
-        if (this.isSelected(row, col) || this.hasEditor(row, col)) {
-            return false;
-        }
-
-        const hasSelectionInRow = this.selection.hasSelectionInRow(row) || this.editor.isInRow(row);
-        const hasSelectionInCol = this.selection.hasSelectionInCol(col) || this.editor.isInCol(col);
-
-        if (this.isGridHeader(row, col)) {
-            return hasSelectionInRow || hasSelectionInCol;
-        } else if (this.isColHeader(row, col)) {
-            return hasSelectionInCol;
-        } else {
-            return hasSelectionInRow;
-        }
-    }
-
-    calcCellElevation(row: number, col: number): number {
-        const headerOffset = 10;
-        const editorOffset = 5;
-
-        let elevation = 1;
-        if (this.isHeader(row, col)) {
-            elevation += headerOffset;
-        }
-        if (this.isGridHeader(row, col)) {
-            elevation += headerOffset;
-        }
-        if (this.hasEditor(row, col)) {
-            elevation += editorOffset;
-        }
-
-        return elevation;
-    }
-
-    // PRIVATE METHODS
+    // PRIVATE UI METHODS
 
     private startSelection(selection: DataGridSelectionManager, row: number, col: number): void {
-        selection.startSelection(row, col, this.isColHeader(row, col), this.isRowHeader(row, col), this.rowCount, this.colCount);
+        const isColHeader = this.isColHeader(row, col);
+        const isRowHeader = this.isRowHeader(row, col);
+        selection.startSelection(row, col, isColHeader, isRowHeader, this.rowCount, this.colCount);
     }
 
     private openEditor(row: number, col: number): void {
-        this.cursor.clear();
-        this.selection.clear();
         this.editor.set(row, col);
-        this.editorOpen.emit(this.createEditorEvent());
+        this.gridChangeDetector.detectChanges(); // recalc elevation
     }
 
-    private closeEditor(): void {
-        if (!this.editor.isActive()) {
-            return;
+    private confirmEditor(): void {
+        if (this.editorData !== undefined) {
+            this.dataEvent.emit({
+                data: this.editorData,
+                rowId: this.rows[this.editor.row],
+                colId: this.cols[this.editor.col]
+            });
         }
-        this.editorConfirm.emit(this.createEditorEvent());
-        this.editor.clear();
+        this.cancelEditor();
     }
 
-    private createEditorEvent(): DataGridEditorEvent {
-        const rowModel = this.model.rows[this.editor.row];
-        const cellModel = rowModel.cells[this.editor.col];
+    private cancelEditor(): void {
+        this.editor.clear();
+        this.editorData = undefined;
+    }
 
-        return {
-            rowId: rowModel.uId,
-            cellId: cellModel.uId
-        };
+    // PRIVATE UTILITY METHODS
+
+    private getCellModel(row: number, col: number): DataGridCellViewModel {
+        return this.cellModels[this.rows[row]][this.cols[col]];
+    }
+    private getCellData(row: number, col: number): DataGridCellData {
+        return this.cellData[this.rows[row]][this.cols[col]];
+    }
+
+    private detectCellChanges(): void {
+        this.cellChangeDetector.detectChanges(this.rows, this.cols);
     }
 }
