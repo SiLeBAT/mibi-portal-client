@@ -1,11 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
-    selector: 'mibi-layout-box',
-    templateUrl: './layout-box.component.html',
-    styleUrls: ['./layout-box.component.scss']
+    selector: 'mibi-box-layout',
+    templateUrl: './box-layout.component.html',
+    styleUrls: ['./box-layout.component.scss']
 })
-export class LayoutBoxComponent {
+export class BoxLayoutComponent {
 
 // tslint:disable-next-line: no-input-rename
     @Input('x-overflow-handling')

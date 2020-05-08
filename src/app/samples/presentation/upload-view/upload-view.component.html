@@ -2,7 +2,7 @@
     <wot-preamble>
         <mibi-upload-container (onFileUpload)="fileUpload($event)">
             <mibi-upload #uploadChild>
-                <mibi-layout-box x-overflow-handling>
+                <mibi-box-layout x-overflow-handling>
                     <div class="mibi-upload">
                         <div class="mibi-upload-icon">
                             <mat-icon [inline]="true">save_alt</mat-icon>
@@ -20,7 +20,7 @@
                             Datei wählen
                         </button>
                     </div>
-                </mibi-layout-box>
+                </mibi-box-layout>
             </mibi-upload>
         </mibi-upload-container>
     </wot-preamble>
