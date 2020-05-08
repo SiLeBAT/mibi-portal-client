@@ -62,9 +62,40 @@ export class DataGridSelectionManager {
     }
 
     select(row: number, col: number): void {
-        this.markDirty();
+        const oldFirstRow = this.firstRow;
+        const oldLastRow = this.lastRow;
+        const oldFirstCol = this.firstCol;
+        const oldLastCol = this.lastCol;
+
         this.selector.set(row, col);
-        this.markDirty();
+
+        const markDirtyRows = (minRow: number, maxRow: number) => this.markDirtyRange(
+            minRow,
+            maxRow,
+            Math.min(this.firstCol, oldFirstCol),
+            Math.max(this.lastCol, oldLastCol)
+        );
+
+        const markDirtyCols = (minCol: number, maxCol: number) => this.markDirtyRange(
+            Math.min(this.firstRow, oldFirstRow),
+            Math.max(this.lastRow, oldLastRow),
+            minCol,
+            maxCol
+        );
+
+        const markDirtyPart = (
+            first1: number,
+            first2: number,
+            last1: number,
+            last2: number,
+            dirtyFunc: (min: number, max: number) => void
+        ) => {
+            dirtyFunc(Math.min(first1, first2), Math.max(first1, first2) - 1);
+            dirtyFunc(Math.min(last1, last2) + 1, Math.max(last1, last2));
+        };
+
+        markDirtyPart(this.firstRow, oldFirstRow, this.lastRow, oldLastRow, markDirtyRows);
+        markDirtyPart(this.firstCol, oldFirstCol, this.lastCol, oldLastCol, markDirtyCols);
     }
 
     clear(): void {
@@ -92,13 +123,17 @@ export class DataGridSelectionManager {
     }
 
     private markDirty(): void {
-        for (let row = this.firstRow; row <= this.lastRow; row++) {
+        this.markDirtyRange(this.firstRow, this.lastRow, this.firstCol, this.lastCol);
+    }
+
+    private markDirtyRange(minRow: number, maxRow: number, minCol: number, maxCol: number): void {
+        for (let row = minRow; row <= maxRow; row++) {
             this.changeManager.markDirty(row, 0);
-            for (let col = this.firstCol; col <= this.lastCol; col++) {
+            for (let col = minCol; col <= maxCol; col++) {
                 this.changeManager.markDirty(row, col);
             }
         }
-        for (let col = this.firstCol; col <= this.lastCol; col++) {
+        for (let col = minCol; col <= maxCol; col++) {
             this.changeManager.markDirty(0, col);
         }
     }
