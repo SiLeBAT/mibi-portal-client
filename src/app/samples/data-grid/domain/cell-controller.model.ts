@@ -1,8 +1,9 @@
 import { DataGridCellTool } from './cell-tool.entity';
 import { DataGridSelectionManager } from './selection-manager.entity';
 import { DataGridCellData, DataGridRowId, DataGridColId, DataGridCellViewModel } from '../data-grid.model';
+import { Observable } from 'rxjs';
 
-export type DataGridChangeId = object;
+export type DataGridDirtyEmitter = Observable<void>;
 
 export interface DataGridCellController {
     readonly cursor: DataGridCellTool;

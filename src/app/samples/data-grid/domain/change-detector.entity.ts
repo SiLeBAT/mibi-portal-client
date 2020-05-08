@@ -1,10 +1,10 @@
 import { DataGridRowId, DataGridColId, DataGridMap } from '../data-grid.model';
-import { DataGridChangeId$Map } from './change-id-map.entity';
+import { DataGridDirtyEmitterMap } from './dirty-emitter-map.entity';
 
 export class DataGridChangeDetector {
     private dirtyMarks: true[][] = [];
 
-    constructor(private readonly changeIds: DataGridChangeId$Map) {}
+    constructor(private readonly dirtyEmitterMap: DataGridDirtyEmitterMap) {}
 
     markDirty(row: number, col: number): void {
         if (!this.dirtyMarks[row]) {
@@ -31,7 +31,7 @@ export class DataGridChangeDetector {
             rowDirtyMarks.forEach((cellDirtyMark, col) => {
                 const rowId = rows[row];
                 const colId = cols[col];
-                this.changeIds.emitChangeId(rowId, colId, {});
+                this.dirtyEmitterMap.emit(rowId, colId);
             });
         });
         this.dirtyMarks = [];

@@ -25,10 +25,9 @@ import {
     DataGridEditorData,
     DataGridMap
 } from '../data-grid.model';
-import { DataGridCellController, DataGridChangeId } from '../domain/cell-controller.model';
+import { DataGridCellController, DataGridDirtyEmitter } from '../domain/cell-controller.model';
 import { DataGridChangeDetector } from '../domain/change-detector.entity';
-import { Observable } from 'rxjs';
-import { DataGridChangeId$Map } from '../domain/change-id-map.entity';
+import { DataGridDirtyEmitterMap } from '../domain/dirty-emitter-map.entity';
 
 enum MouseButton {
     PRIMARY = 0
@@ -81,8 +80,8 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
     private get cellModels(): DataGridMap<DataGridCellViewModel> { return this.model.cellModels; }
     private get cellData(): DataGridMap<DataGridCellData> { return this.model.cellData; }
 
-    private readonly changeIds = new DataGridChangeId$Map();
-    private readonly cellChangeDetector = new DataGridChangeDetector(this.changeIds);
+    private readonly dirtyEmitterMap = new DataGridDirtyEmitterMap();
+    private readonly cellChangeDetector = new DataGridChangeDetector(this.dirtyEmitterMap);
 
     private readonly cursor = new DataGridCellTool(this.cellChangeDetector);
     private readonly editor = new DataGridCellTool(this.cellChangeDetector);
@@ -123,7 +122,7 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
             const newModel = modelChange.currentValue as DataGridViewModel;
 
             if (modelChange.firstChange) {
-                this.changeIds.init(newModel.rows, newModel.cols);
+                this.dirtyEmitterMap.init(newModel.rows, newModel.cols);
             } else {
                 const rowsChanged = oldModel.rows !== newModel.rows;
                 const colsChanged = oldModel.cols !== newModel.cols;
@@ -131,7 +130,7 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
                 const cellDataChanged = oldModel.cellData !== newModel.cellData;
 
                 if (rowsChanged || colsChanged) {
-                    this.changeIds.update(newModel.rows, newModel.cols, colsChanged);
+                    this.dirtyEmitterMap.update(newModel.rows, newModel.cols, colsChanged);
                 }
 
                 if (cellModelsChanged) {
@@ -248,8 +247,8 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
 
     // TEMPLATE METHODS
 
-    getChangeId$(rowId: DataGridRowId, colId: DataGridColId): Observable<DataGridChangeId> {
-        return this.changeIds.getChangeId$(rowId, colId);
+    getDirtyEmitter(rowId: DataGridRowId, colId: DataGridColId): DataGridDirtyEmitter {
+        return this.dirtyEmitterMap.getDirtyEmitter(rowId, colId);
     }
 
     isRowHeader(row: number, col: number): boolean {

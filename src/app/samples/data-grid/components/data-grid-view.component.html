@@ -27,7 +27,7 @@
                             'z-index':getElevation(row, col)
                         }"
                         [controller]="cellController"
-                        [changeId$]="getChangeId$(rowId, colId)"
+                        [dirtyEmitter]="getDirtyEmitter(rowId, colId)"
                         [cellTemplate]="cellTemplates[row][col]"
                         [editorTemplate]="editorTemplate"
                         [row]="row"

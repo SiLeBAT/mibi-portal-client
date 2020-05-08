@@ -1,11 +1,11 @@
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { DataGridRowId, DataGridColId, DataGridMap } from '../data-grid.model';
-import { DataGridChangeId } from './cell-controller.model';
+import { DataGridDirtyEmitter } from './cell-controller.model';
 
-type ChangeId$Map = DataGridMap<Subject<DataGridChangeId>>;
+type DirtyEmitterMap = DataGridMap<Subject<void>>;
 
-export class DataGridChangeId$Map {
-    private map: ChangeId$Map = {};
+export class DataGridDirtyEmitterMap {
+    private map: DirtyEmitterMap = {};
 
     init(rows: DataGridRowId[], cols: DataGridColId[]): void {
         this.map = {};
@@ -31,21 +31,21 @@ export class DataGridChangeId$Map {
         });
     }
 
-    getChangeId$(rowId: DataGridRowId, colId: DataGridColId): Observable<DataGridChangeId> {
+    getDirtyEmitter(rowId: DataGridRowId, colId: DataGridColId): DataGridDirtyEmitter {
         return this.map[rowId][colId];
     }
 
-    emitChangeId(rowId: DataGridRowId, colId: DataGridColId, changeId: DataGridChangeId): void {
-        this.map[rowId][colId].next(changeId);
+    emit(rowId: DataGridRowId, colId: DataGridColId): void {
+        this.map[rowId][colId].next();
     }
 
-    private updateRow(rowId: DataGridRowId, cols: DataGridColId[], oldMap: ChangeId$Map): void {
+    private updateRow(rowId: DataGridRowId, cols: DataGridColId[], oldMap: DirtyEmitterMap): void {
         this.map[rowId] = {};
         cols.forEach(colId => {
             if (oldMap[rowId][colId]) {
                 this.map[rowId][colId] = oldMap[rowId][colId];
             } else {
-                this.map[rowId][colId] = new Subject<DataGridChangeId>();
+                this.map[rowId][colId] = new Subject<void>();
             }
         });
     }
@@ -53,7 +53,7 @@ export class DataGridChangeId$Map {
     private createRow(rowId: DataGridRowId, cols: DataGridColId[]): void {
         this.map[rowId] = {};
         cols.forEach(colId => {
-            this.map[rowId][colId] = new Subject<DataGridChangeId>();
+            this.map[rowId][colId] = new Subject<void>();
         });
     }
 }

@@ -16,10 +16,10 @@ import {
     DataGridEditorContext,
     DataGridEditorData
 } from '../data-grid.model';
-import { DataGridCellController, DataGridChangeId } from '../domain/cell-controller.model';
+import { DataGridCellController, DataGridDirtyEmitter } from '../domain/cell-controller.model';
 import { DataGridCellTool } from '../domain/cell-tool.entity';
 import { DataGridSelectionManager } from '../domain/selection-manager.entity';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 @Component({
@@ -36,7 +36,7 @@ export class DataGridCellViewComponent implements OnInit, OnDestroy {
     }
 
     @Input() controller: DataGridCellController;
-    @Input() changeId$: Observable<DataGridChangeId>;
+    @Input() dirtyEmitter: DataGridDirtyEmitter;
 
     @Input() cellTemplate: TemplateRef<DataGridCellContext>;
     @Input() editorTemplate: TemplateRef<DataGridCellContext>;
@@ -183,20 +183,20 @@ export class DataGridCellViewComponent implements OnInit, OnDestroy {
     private get model(): DataGridCellViewModel { return this.controller.getCellModel(this.row, this.col); }
     private get data(): DataGridCellData { return this.controller.getCellData(this.row, this.col); }
 
-    private changeIdSubscription: Subscription;
+    private dirtyEmitterSubscription: Subscription;
 
     // LIFE CYCLE
 
     constructor(private readonly changeDetectorRef: ChangeDetectorRef) { }
 
     ngOnInit(): void {
-        this.changeIdSubscription = this.changeId$.pipe(tap(() => {
+        this.dirtyEmitterSubscription = this.dirtyEmitter.pipe(tap(() => {
             this.changeDetectorRef.detectChanges();
         })).subscribe();
     }
 
     ngOnDestroy(): void {
-        this.changeIdSubscription.unsubscribe();
+        this.dirtyEmitterSubscription.unsubscribe();
     }
 
     // EVENT HANDLERS
