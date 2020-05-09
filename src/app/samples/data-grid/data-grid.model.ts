@@ -39,7 +39,7 @@ export interface DataGridEditorContext extends DataGridCellContext {
 
 export type DataGridTemplateMap<T> = Record<DataGridTemplateId, TemplateRef<T>>;
 
-export interface DataGridDataEvent {
+export interface DataGridEditorEvent {
     rowId: DataGridRowId;
     colId: DataGridColId;
     data: DataGridEditorData;

@@ -21,7 +21,7 @@ import {
     DataGridRowId,
     DataGridColId,
     DataGridCellData,
-    DataGridDataEvent,
+    DataGridEditorEvent,
     DataGridEditorData,
     DataGridMap,
     DataGridTemplateMap,
@@ -57,7 +57,7 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
     @Input() cellTemplates: DataGridTemplateMap<DataGridCellContext>;
     @Input() editorTemplates: DataGridTemplateMap<DataGridEditorContext>;
 
-    @Output() dataEvent = new EventEmitter<DataGridDataEvent>();
+    @Output() editorConfirm = new EventEmitter<DataGridEditorEvent>();
 
     // TEMPLATE PROPERTIES
 
@@ -402,7 +402,7 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
 
     private confirmEditor(): void {
         if (this.editorData !== undefined) {
-            this.dataEvent.emit({
+            this.editorConfirm.emit({
                 data: this.editorData,
                 rowId: this.rows[this.editor.row],
                 colId: this.cols[this.editor.col]

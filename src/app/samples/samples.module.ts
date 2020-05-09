@@ -26,15 +26,16 @@ import { SendDialogViewComponent } from './send-samples/components/send-dialog-v
 import { AnalysisStepperComponent } from './analysis-stepper/components/analysis-stepper.component';
 import { DataGridViewComponent } from './data-grid/components/data-grid-view.component';
 import { SamplesGridDataEditorTemplateComponent } from './samples-grid/components/cells/data-editor-template.component';
-import { SamplesGridComponent } from './samples-grid/components/samples-grid.component';
+import { SamplesGridViewComponent } from './samples-grid/components/samples-grid-view.component';
 import { SamplesGridTextCellTemplateComponent } from './samples-grid/components/cells/text-cell-template.component';
 import { SamplesGridDataCellTemplateComponent } from './samples-grid/components/cells/data-cell-template.component';
 import { DataGridCellViewComponent } from './data-grid/components/data-grid-cell-view.component';
 import { SamplesGridAutoFocusDirective } from './samples-grid/components/cells/auto-focus.directive';
+import { SamplesComponent } from './samples.component';
 
 const SAMPLES_ROUTES = [
     { path: 'upload', component: UploadViewComponent },
-    { path: 'samples', component: SamplesGridComponent, canActivate: [NoSampleGuard] }
+    { path: 'samples', component: SamplesComponent, canActivate: [NoSampleGuard] }
 ];
 
 @NgModule({
@@ -69,7 +70,8 @@ const SAMPLES_ROUTES = [
         SamplesGridTextCellTemplateComponent,
         SamplesGridDataCellTemplateComponent,
         SamplesGridDataEditorTemplateComponent,
-        SamplesGridComponent
+        SamplesGridViewComponent,
+        SamplesComponent
     ],
     entryComponents: [SendDialogComponent, AnalysisStepperComponent],
     exports: [],

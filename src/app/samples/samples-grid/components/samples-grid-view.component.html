@@ -1,8 +1,8 @@
 <mibi-data-grid-view 
-    [model]="dataGridModel$ | async"
+    [model]="dataGridModel"
     [cellTemplates]="cellTemplates"
     [editorTemplates]="editorTemplates"
-    (dataEvent)="onDataEvent($event)"
+    (editorConfirm)="onEditorConfirm($event)"
 ></mibi-data-grid-view>
 {{foo}}
 

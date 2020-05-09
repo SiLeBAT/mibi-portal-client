@@ -40,6 +40,10 @@ export class SamplesGridViewModelCacheBySampleCount {
     }
 
     update(samples: Sample[]): DataGridViewModel {
+        if (samples === this.oldSamples) {
+            return this.viewModel;
+        }
+
         if (this.viewModel.rows.length !== samples.length + this.headerCount) {
             this.viewModel = this.updateModel(samples);
         }
