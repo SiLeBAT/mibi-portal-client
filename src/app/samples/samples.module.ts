@@ -25,10 +25,10 @@ import { SendDialogComponent } from './send-samples/components/send-dialog.compo
 import { SendDialogViewComponent } from './send-samples/components/send-dialog-view.component';
 import { AnalysisStepperComponent } from './analysis-stepper/components/analysis-stepper.component';
 import { DataGridViewComponent } from './data-grid/components/data-grid-view.component';
-import { SamplesGridTextEditorViewComponent } from './samples-grid/components/cells/text-editor-view.component';
+import { SamplesGridDataEditorTemplateComponent } from './samples-grid/components/cells/data-editor-template.component';
 import { SamplesGridComponent } from './samples-grid/components/samples-grid.component';
-import { SamplesGridTextCellViewComponent } from './samples-grid/components/cells/text-cell-view.component';
-import { SamplesGridDataCellViewComponent } from './samples-grid/components/cells/data-cell-view.component';
+import { SamplesGridTextCellTemplateComponent } from './samples-grid/components/cells/text-cell-template.component';
+import { SamplesGridDataCellTemplateComponent } from './samples-grid/components/cells/data-cell-template.component';
 import { DataGridCellViewComponent } from './data-grid/components/data-grid-cell-view.component';
 import { SamplesGridAutoFocusDirective } from './samples-grid/components/cells/auto-focus.directive';
 
@@ -66,9 +66,9 @@ const SAMPLES_ROUTES = [
         DataGridCellViewComponent,
         DataGridViewComponent,
         SamplesGridAutoFocusDirective,
-        SamplesGridTextCellViewComponent,
-        SamplesGridDataCellViewComponent,
-        SamplesGridTextEditorViewComponent,
+        SamplesGridTextCellTemplateComponent,
+        SamplesGridDataCellTemplateComponent,
+        SamplesGridDataEditorTemplateComponent,
         SamplesGridComponent
     ],
     entryComponents: [SendDialogComponent, AnalysisStepperComponent],

@@ -12,7 +12,7 @@ import { UserActionType } from '../../../shared/model/user-action.model';
 import { map, tap } from 'rxjs/operators';
 import { SamplesGridViewModelCacheBySampleCount } from '../view-model-cache.entity';
 import { UpdateSampleDataEntrySOA } from '../../state/samples.actions';
-import { SamplesGridTemplateContainer } from './cells/template-container';
+import { SamplesGridTemplateContainer } from './template-container';
 
 @Component({
     templateUrl: './samples-grid.component.html',
@@ -39,8 +39,8 @@ export class SamplesGridComponent implements OnDestroy, OnInit {
     @ViewChild('dataCellTemplate', { static: true })
     private dataCellTemplate: SamplesGridTemplateContainer<DataGridCellContext>;
 
-    @ViewChild('textEditorTemplate', { static: true })
-    private textEditorTemplate: SamplesGridTemplateContainer<DataGridEditorContext>;
+    @ViewChild('dataEditorTemplate', { static: true })
+    private dataEditorTemplate: SamplesGridTemplateContainer<DataGridEditorContext>;
 
     private readonly model = samplesGridModel;
     private readonly viewModelCache = new SamplesGridViewModelCacheBySampleCount(this.model);
@@ -75,7 +75,7 @@ export class SamplesGridComponent implements OnDestroy, OnInit {
     ngOnInit(): void {
         this.cellTemplates[SamplesGridCellType.TEXT] = this.textCellTemplate.template;
         this.cellTemplates[SamplesGridCellType.DATA] = this.dataCellTemplate.template;
-        this.editorTemplates[SamplesGridEditorType.DATA] = this.textEditorTemplate.template;
+        this.editorTemplates[SamplesGridEditorType.DATA] = this.dataEditorTemplate.template;
     }
 
     ngOnDestroy(): void {

@@ -1,15 +1,15 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { AnnotatedSampleDataEntry, SampleValidationErrorCodes } from '../../../model/sample-management.model';
 import { DataGridCellContext } from '../../../data-grid/data-grid.model';
-import { SamplesGridTemplateContainer } from './template-container';
+import { SamplesGridTemplateContainer } from '../template-container';
 
 @Component({
-    selector: 'mibi-samples-grid-data-cell-view',
-    templateUrl: './data-cell-view.component.html',
-    styleUrls: ['./data-cell-view.component.scss'],
+    selector: 'mibi-samples-grid-data-cell-template',
+    templateUrl: './data-cell-template.component.html',
+    styleUrls: ['./data-cell-template.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SamplesGridDataCellViewComponent extends SamplesGridTemplateContainer<DataGridCellContext> {
+export class SamplesGridDataCellTemplateComponent extends SamplesGridTemplateContainer<DataGridCellContext> {
 
     get foo() {
         // console.log('datacell');
