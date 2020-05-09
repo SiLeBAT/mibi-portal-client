@@ -27,7 +27,7 @@ export class SamplesGridComponent implements OnDestroy, OnInit {
 
     readonly dataGridModel$: Observable<DataGridViewModel> = this.store$.pipe(
         select(selectFormData),
-        map(samples => this.viewModelCache.getViewModel(samples))
+        map(samples => this.viewModelCache.update(samples))
     );
 
     readonly cellTemplates: DataGridTemplateMap<DataGridCellContext> = {};
@@ -45,13 +45,13 @@ export class SamplesGridComponent implements OnDestroy, OnInit {
     private readonly model = samplesGridModel;
     private readonly viewModelCache = new SamplesGridViewModelCacheBySampleCount(this.model);
 
-    private readonly colMap: Record<DataGridColId, SamplesGridColumnModel> = {};
+    private readonly columnModelMap: Record<DataGridColId, SamplesGridColumnModel> = {};
 
     private fileNameSubscription: Subscription;
 
     constructor(private readonly store$: Store<SamplesMainSlice>) {
-        this.model.columns.forEach(col => {
-            this.colMap[col.colId] = col;
+        this.model.columns.forEach(colModel => {
+            this.columnModelMap[colModel.colId] = colModel;
         });
 
         this.store$.dispatch(new ShowActionBarSOA({
@@ -83,7 +83,7 @@ export class SamplesGridComponent implements OnDestroy, OnInit {
     }
 
     onDataEvent(e: DataGridDataEvent): void {
-        const dataModel = this.colMap[e.colId] as SamplesGridDataColumnModel;
+        const dataModel = this.columnModelMap[e.colId] as SamplesGridDataColumnModel;
 
         const payload: ChangedDataGridField = {
             rowIndex: this.model.getSampleIndex(e.rowId),
