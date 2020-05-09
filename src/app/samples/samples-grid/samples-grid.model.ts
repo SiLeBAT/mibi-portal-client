@@ -1,13 +1,19 @@
 import { Sample } from '../model/sample-management.model';
 import { DataGridRowId, DataGridColId, DataGridCellData } from '../data-grid/data-grid.model';
 
-export enum SamplesGridColumnType {
-    ID, NRL, DATA
+export enum SamplesGridCellType {
+    TEXT,
+    DATA
+}
+
+export enum SamplesGridEditorType {
+    DATA
 }
 
 export interface SamplesGridColumnModel {
     colId: DataGridColId;
-    type: SamplesGridColumnType;
+    cellType: SamplesGridCellType;
+    editorType?: SamplesGridEditorType;
     isRowHeader: boolean;
     isReadOnly: boolean;
     headerText: string;
@@ -21,6 +27,7 @@ export interface SamplesGridDataColumnModel extends SamplesGridColumnModel {
 export interface SamplesGridModel {
     columns: SamplesGridColumnModel[];
     headerRowId: DataGridRowId;
+    headerCellType: SamplesGridCellType;
     getSampleRowId(index: number): DataGridRowId;
     getSampleIndex(rowId: DataGridRowId): number;
 }

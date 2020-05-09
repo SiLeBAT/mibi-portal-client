@@ -1,16 +1,17 @@
 import { samplesGridIdHeader, samplesGridNrlHeader, samplesGridSampleDataHeaders } from './column-headers.constants';
 import {
     SamplesGridColumnModel,
-    SamplesGridColumnType,
     SamplesGridDataColumnModel,
-    SamplesGridModel
+    SamplesGridModel,
+    SamplesGridCellType,
+    SamplesGridEditorType
 } from '../samples-grid.model';
 import { DataGridColId } from '../../data-grid/data-grid.model';
 
 function createIdModel(colId: DataGridColId): SamplesGridColumnModel {
     return {
         colId: colId,
-        type: SamplesGridColumnType.ID,
+        cellType: SamplesGridCellType.TEXT,
         isRowHeader: true,
         isReadOnly: true,
         headerText: samplesGridIdHeader,
@@ -21,7 +22,7 @@ function createIdModel(colId: DataGridColId): SamplesGridColumnModel {
 function createNrlModel(colId: DataGridColId): SamplesGridColumnModel {
     return {
         colId: colId,
-        type: SamplesGridColumnType.NRL,
+        cellType: SamplesGridCellType.TEXT,
         isRowHeader: false,
         isReadOnly: true,
         headerText: samplesGridNrlHeader,
@@ -32,7 +33,8 @@ function createNrlModel(colId: DataGridColId): SamplesGridColumnModel {
 function createDataModel(colId: DataGridColId, selector: keyof typeof samplesGridSampleDataHeaders): SamplesGridDataColumnModel {
     return {
         colId: colId,
-        type: SamplesGridColumnType.DATA,
+        cellType: SamplesGridCellType.DATA,
+        editorType: SamplesGridEditorType.DATA,
         isRowHeader: false,
         isReadOnly: false,
         headerText: samplesGridSampleDataHeaders[selector],
@@ -68,6 +70,7 @@ const columnModels: SamplesGridColumnModel[] = [
 export const samplesGridModel: SamplesGridModel = {
     columns: columnModels,
     headerRowId: 0,
+    headerCellType: SamplesGridCellType.TEXT,
     getSampleRowId: (index) => index + 1,
     getSampleIndex: (rowId) => rowId - 1
 };

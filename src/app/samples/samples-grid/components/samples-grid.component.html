@@ -1,20 +1,11 @@
 <mibi-data-grid-view 
     [model]="dataGridModel$ | async"
     [cellTemplates]="cellTemplates"
-    [editorTemplate]="editorTemplate"
+    [editorTemplates]="editorTemplates"
     (dataEvent)="onDataEvent($event)"
 ></mibi-data-grid-view>
 {{foo}}
 
-<mibi-samples-grid-templates #templates
-    [colMap]="colMap"
-></mibi-samples-grid-templates>
-
-<ng-template #editorTemplate let-data="data" let-dataChange="dataChange" let-confirm="confirm" let-cancel="cancel">
-    <mibi-samples-grid-text-editor-view
-        [data]="data"
-        (dataChange)="dataChange($event)"
-        (confirm)="confirm()"
-        (cancel)="cancel()"
-    ></mibi-samples-grid-text-editor-view>
-</ng-template>
+<mibi-samples-grid-text-cell-view #textCellTemplate></mibi-samples-grid-text-cell-view>
+<mibi-samples-grid-data-cell-view #dataCellTemplate></mibi-samples-grid-data-cell-view>
+<mibi-samples-grid-text-editor-view #textEditorTemplate></mibi-samples-grid-text-editor-view>

@@ -39,7 +39,7 @@ export class DataGridCellViewComponent implements OnInit, OnDestroy {
     @Input() dirtyEmitter: DataGridDirtyEmitter;
 
     @Input() cellTemplate: TemplateRef<DataGridCellContext>;
-    @Input() editorTemplate: TemplateRef<DataGridCellContext>;
+    @Input() editorTemplate?: TemplateRef<DataGridCellContext>;
 
     @Input() row: number;
     @Input() col: number;
@@ -155,9 +155,7 @@ export class DataGridCellViewComponent implements OnInit, OnDestroy {
     get cellContext(): DataGridCellContext {
         return {
             model: this.model,
-            data: this.data,
-            rowId: this.controller.getRowId(this.row),
-            colId: this.controller.getColId(this.col)
+            data: this.data
         };
     }
 
@@ -167,9 +165,7 @@ export class DataGridCellViewComponent implements OnInit, OnDestroy {
             data: this.data,
             dataChange: (data) => this.editorDataChange.emit(data),
             confirm: () => this.editorConfirm.emit(),
-            cancel: () => this.editorCancel.emit(),
-            rowId: this.controller.getRowId(this.row),
-            colId: this.controller.getColId(this.col)
+            cancel: () => this.editorCancel.emit()
         };
     }
 

@@ -1,8 +1,8 @@
-import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, OnDestroy } from '@angular/core';
-import { DataGridCellContext, DataGridColId, DataGridViewModel, DataGridDataEvent } from '../../data-grid/data-grid.model';
-import { Sample, ChangedDataGridField } from '../../model/sample-management.model';
+import { Component, ChangeDetectionStrategy, ViewChild, OnDestroy, OnInit } from '@angular/core';
+import { DataGridCellContext, DataGridColId, DataGridViewModel, DataGridDataEvent, DataGridTemplateMap, DataGridEditorContext } from '../../data-grid/data-grid.model';
+import { ChangedDataGridField } from '../../model/sample-management.model';
 import { samplesGridModel } from '../constants/model.constants';
-import { SamplesGridColumnModel, SamplesGridDataColumnModel } from '../samples-grid.model';
+import { SamplesGridColumnModel, SamplesGridDataColumnModel, SamplesGridCellType, SamplesGridEditorType } from '../samples-grid.model';
 import { Observable, Subscription } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 import { selectFormData, selectImportedFileName } from '../../state/samples.selectors';
@@ -12,42 +12,40 @@ import { UserActionType } from '../../../shared/model/user-action.model';
 import { map, tap } from 'rxjs/operators';
 import { SamplesGridViewModelCacheBySampleCount } from '../view-model-cache.entity';
 import { UpdateSampleDataEntrySOA } from '../../state/samples.actions';
-import { SamplesGridTemplatesComponent } from './samples-grid.templates';
+import { SamplesGridTemplateContainer } from './cells/template-container';
 
 @Component({
     templateUrl: './samples-grid.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SamplesGridComponent implements OnDestroy {
+export class SamplesGridComponent implements OnDestroy, OnInit {
 
     get foo() {
         // console.log('samples');
         return '';
     }
 
-    readonly colMap: Record<DataGridColId, SamplesGridColumnModel> = {};
-
     readonly dataGridModel$: Observable<DataGridViewModel> = this.store$.pipe(
         select(selectFormData),
-        tap(samples => {
-            this.samples = samples;
-        }),
         map(samples => this.viewModelCache.getViewModel(samples))
     );
 
-    get cellTemplates(): TemplateRef<DataGridCellContext>[][] {
-        const row = new Array<TemplateRef<DataGridCellContext>>(this.model.columns.length)
-            .fill(this.templates.cellTemplate);
-        return new Array<TemplateRef<DataGridCellContext>[]>(this.samples.length + 1).fill(row);
-    }
+    readonly cellTemplates: DataGridTemplateMap<DataGridCellContext> = {};
+    readonly editorTemplates: DataGridTemplateMap<DataGridEditorContext> = {};
 
-    @ViewChild('templates', { static: true })
-    private templates: SamplesGridTemplatesComponent;
+    @ViewChild('textCellTemplate', { static: true })
+    private textCellTemplate: SamplesGridTemplateContainer<DataGridCellContext>;
 
-    private samples: Sample[];
+    @ViewChild('dataCellTemplate', { static: true })
+    private dataCellTemplate: SamplesGridTemplateContainer<DataGridCellContext>;
+
+    @ViewChild('textEditorTemplate', { static: true })
+    private textEditorTemplate: SamplesGridTemplateContainer<DataGridEditorContext>;
 
     private readonly model = samplesGridModel;
     private readonly viewModelCache = new SamplesGridViewModelCacheBySampleCount(this.model);
+
+    private readonly colMap: Record<DataGridColId, SamplesGridColumnModel> = {};
 
     private fileNameSubscription: Subscription;
 
@@ -72,6 +70,12 @@ export class SamplesGridComponent implements OnDestroy {
             select(selectImportedFileName),
             tap(fileName => this.store$.dispatch(new UpdateActionBarTitleSOA({ title: fileName })))
         ).subscribe();
+    }
+
+    ngOnInit(): void {
+        this.cellTemplates[SamplesGridCellType.TEXT] = this.textCellTemplate.template;
+        this.cellTemplates[SamplesGridCellType.DATA] = this.dataCellTemplate.template;
+        this.editorTemplates[SamplesGridEditorType.DATA] = this.textEditorTemplate.template;
     }
 
     ngOnDestroy(): void {

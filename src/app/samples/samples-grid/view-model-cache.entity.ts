@@ -1,4 +1,12 @@
-import { DataGridCellViewModel, DataGridColId, DataGridViewModel, DataGridCellData, DataGridRowId, DataGridMap, DataGridRowMap } from '../data-grid/data-grid.model';
+import {
+    DataGridCellViewModel,
+    DataGridColId,
+    DataGridViewModel,
+    DataGridCellData,
+    DataGridRowId,
+    DataGridMap,
+    DataGridRowMap
+} from '../data-grid/data-grid.model';
 import { Sample } from '../model/sample-management.model';
 import { SamplesGridModel } from './samples-grid.model';
 
@@ -72,7 +80,8 @@ export class SamplesGridViewModelCacheBySampleCount {
             modelMap[colModel.colId] = {
                 isRowHeader: colModel.isRowHeader,
                 isColHeader: true,
-                isReadOnly: true
+                isReadOnly: true,
+                cellTemplateId: this.model.headerCellType
             };
         });
         return modelMap;
@@ -92,7 +101,9 @@ export class SamplesGridViewModelCacheBySampleCount {
             modelMap[colModel.colId] = {
                 isRowHeader: colModel.isRowHeader,
                 isColHeader: false,
-                isReadOnly: colModel.isReadOnly
+                isReadOnly: colModel.isReadOnly,
+                cellTemplateId: colModel.cellType,
+                editorTemplateId: colModel.editorType
             };
         });
         return modelMap;

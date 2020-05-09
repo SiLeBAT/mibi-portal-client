@@ -1,6 +1,6 @@
 import { DataGridCellTool } from './cell-tool.entity';
 import { DataGridSelectionManager } from './selection-manager.entity';
-import { DataGridCellData, DataGridRowId, DataGridColId, DataGridCellViewModel } from '../data-grid.model';
+import { DataGridCellData, DataGridCellViewModel } from '../data-grid.model';
 import { Observable } from 'rxjs';
 
 export type DataGridDirtyEmitter = Observable<void>;
@@ -13,8 +13,4 @@ export interface DataGridCellController {
 
     getCellModel(row: number, col: number): DataGridCellViewModel;
     getCellData(row: number, col: number): DataGridCellData;
-
-    // REMOVE
-    getRowId(row: number): DataGridRowId;
-    getColId(col: number): DataGridColId;
 }

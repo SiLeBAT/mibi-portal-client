@@ -1,9 +1,14 @@
-<div class="mibi-data-cell"
-    [ngClass]="{
-        'mibi-data-cell--auto-correction': hasAutoCorrection(),
-        'mibi-data-cell--warning': hasWarning(),
-        'mibi-data-cell--error': hasError(),
-        'mibi-data-cell--edited': isEdited()
-    }"
->{{data.value}}</div>
+<ng-template #template
+    let-data="data"
+>
+    <div class="mibi-data-cell"
+        [ngClass]="{
+            'mibi-data-cell--auto-correction': hasAutoCorrection(data),
+            'mibi-data-cell--warning': hasWarning(data),
+            'mibi-data-cell--error': hasError(data),
+            'mibi-data-cell--edited': isEdited(data)
+        }"
+    >{{data.value}}</div>
+    {{bar}}
+</ng-template>
 {{foo}}

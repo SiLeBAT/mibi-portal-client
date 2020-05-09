@@ -1,5 +1,7 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { AnnotatedSampleDataEntry, SampleValidationErrorCodes } from '../../../model/sample-management.model';
+import { DataGridCellContext } from '../../../data-grid/data-grid.model';
+import { SamplesGridTemplateContainer } from './template-container';
 
 @Component({
     selector: 'mibi-samples-grid-data-cell-view',
@@ -7,33 +9,35 @@ import { AnnotatedSampleDataEntry, SampleValidationErrorCodes } from '../../../m
     styleUrls: ['./data-cell-view.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SamplesGridDataCellViewComponent {
+export class SamplesGridDataCellViewComponent extends SamplesGridTemplateContainer<DataGridCellContext> {
 
     get foo() {
         // console.log('datacell');
         return '';
     }
 
-    @Input() data: AnnotatedSampleDataEntry;
-
-    hasError(): boolean {
-        return this.hasErrorCode(SampleValidationErrorCodes.ERROR);
+    get bar() {
+        // console.log('datatemplate');
+        return '';
     }
 
-    hasWarning(): boolean {
-        return this.hasErrorCode(SampleValidationErrorCodes.WARNING);
+    hasError(data: AnnotatedSampleDataEntry): boolean {
+        return this.hasErrorCode(data, SampleValidationErrorCodes.ERROR);
     }
 
-    hasAutoCorrection(): boolean {
-        return this.hasErrorCode(SampleValidationErrorCodes.AUTOCORRECTED);
+    hasWarning(data: AnnotatedSampleDataEntry): boolean {
+        return this.hasErrorCode(data, SampleValidationErrorCodes.WARNING);
     }
 
-    isEdited(): boolean {
-        return this.data.oldValue !== undefined;
+    hasAutoCorrection(data: AnnotatedSampleDataEntry): boolean {
+        return this.hasErrorCode(data, SampleValidationErrorCodes.AUTOCORRECTED);
     }
 
-    private hasErrorCode(code: SampleValidationErrorCodes): boolean {
-        return !!this.data.errors.find((error) => error.level === code);
+    isEdited(data: AnnotatedSampleDataEntry): boolean {
+        return data.oldValue !== undefined;
     }
 
+    private hasErrorCode(data: AnnotatedSampleDataEntry, code: SampleValidationErrorCodes): boolean {
+        return !!data.errors.find((error) => error.level === code);
+    }
 }

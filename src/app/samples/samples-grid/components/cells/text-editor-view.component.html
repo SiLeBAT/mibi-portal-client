@@ -1,15 +1,24 @@
-<mibi-box-layout>
-    <div class="mibi-editor-container">
-        <!-- ngModel is splitted into attribute and event to capture all input events instead of change event only -->
-        <textarea #focusElement 
-            rows="1" cols="1"
-            class="mibi-editor-container__overlay mibi-editor"
-            [ngModel]="data.value"
-            (ngModelChange)="onModelChange($event)"
-            (keydown.enter)="onEnter($event)"
-            (keydown.esc)="onEsc($event)"
-        ></textarea>
-        <!-- ghost editor defines minimal size for the real editor-->
-        <div class="mibi-ghost-editor">{{ghostData}}</div>
-    </div>
-</mibi-box-layout>
+<ng-template #template
+    let-data="data"
+    let-dataChange="dataChange"
+    let-confirm="confirm"
+    let-cancel="cancel"
+>
+    <mibi-box-layout>
+        <div class="mibi-editor-container">
+            <!-- ngModel is splitted into attribute and event to capture all input events instead of change event only -->
+            <textarea #input
+                mibiSamplesGridAutoFocus
+                rows="1" cols="1"
+                class="mibi-editor-container__overlay mibi-editor"
+                [ngModel]="data.value"
+                (ngModelChange)="dataChange($event)"
+                (keydown.enter)="onEnter($event); confirm()"
+                (keydown.esc)="cancel()"
+            ></textarea>
+            <!-- ghost editor defines minimal size for the real editor-->
+            <div class="mibi-ghost-editor">{{input.value + '\n'}}</div>
+        </div>
+    </mibi-box-layout>
+    {{foo}}
+</ng-template>

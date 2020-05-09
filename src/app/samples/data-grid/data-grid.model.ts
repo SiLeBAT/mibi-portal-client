@@ -1,7 +1,13 @@
+import { TemplateRef } from '@angular/core';
+
+export type DataGridTemplateId = number;
+
 export interface DataGridCellViewModel {
     readonly isReadOnly: boolean;
     readonly isColHeader: boolean;
     readonly isRowHeader: boolean;
+    readonly cellTemplateId: DataGridTemplateId;
+    readonly editorTemplateId?: DataGridTemplateId;
 }
 
 export type DataGridRowId = number;
@@ -23,10 +29,6 @@ export interface DataGridViewModel {
 export interface DataGridCellContext {
     readonly model: DataGridCellViewModel;
     readonly data: DataGridCellData;
-
-    // REMOVE
-    readonly rowId: DataGridRowId;
-    readonly colId: DataGridColId;
 }
 
 export interface DataGridEditorContext extends DataGridCellContext {
@@ -34,6 +36,8 @@ export interface DataGridEditorContext extends DataGridCellContext {
     confirm(): void;
     cancel(): void;
 }
+
+export type DataGridTemplateMap<T> = Record<DataGridTemplateId, TemplateRef<T>>;
 
 export interface DataGridDataEvent {
     rowId: DataGridRowId;

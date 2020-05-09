@@ -1,5 +1,6 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
-import { DataGridCellViewModel } from '../../../data-grid/data-grid.model';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { DataGridCellContext } from '../../../data-grid/data-grid.model';
+import { SamplesGridTemplateContainer } from './template-container';
 
 @Component({
     selector: 'mibi-samples-grid-text-cell-view',
@@ -7,7 +8,5 @@ import { DataGridCellViewModel } from '../../../data-grid/data-grid.model';
     styleUrls: ['./text-cell-view.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SamplesGridTextCellViewComponent {
-    @Input() model: DataGridCellViewModel;
-    @Input() data: string;
+export class SamplesGridTextCellViewComponent extends SamplesGridTemplateContainer<DataGridCellContext> {
 }

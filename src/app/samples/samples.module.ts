@@ -30,7 +30,7 @@ import { SamplesGridComponent } from './samples-grid/components/samples-grid.com
 import { SamplesGridTextCellViewComponent } from './samples-grid/components/cells/text-cell-view.component';
 import { SamplesGridDataCellViewComponent } from './samples-grid/components/cells/data-cell-view.component';
 import { DataGridCellViewComponent } from './data-grid/components/data-grid-cell-view.component';
-import { SamplesGridTemplatesComponent } from './samples-grid/components/samples-grid.templates';
+import { SamplesGridAutoFocusDirective } from './samples-grid/components/cells/auto-focus.directive';
 
 const SAMPLES_ROUTES = [
     { path: 'upload', component: UploadViewComponent },
@@ -65,10 +65,10 @@ const SAMPLES_ROUTES = [
         AnalysisStepperComponent,
         DataGridCellViewComponent,
         DataGridViewComponent,
+        SamplesGridAutoFocusDirective,
         SamplesGridTextCellViewComponent,
         SamplesGridDataCellViewComponent,
         SamplesGridTextEditorViewComponent,
-        SamplesGridTemplatesComponent,
         SamplesGridComponent
     ],
     entryComponents: [SendDialogComponent, AnalysisStepperComponent],

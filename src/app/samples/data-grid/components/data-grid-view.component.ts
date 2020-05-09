@@ -23,7 +23,9 @@ import {
     DataGridCellData,
     DataGridDataEvent,
     DataGridEditorData,
-    DataGridMap
+    DataGridMap,
+    DataGridTemplateMap,
+    DataGridEditorContext
 } from '../data-grid.model';
 import { DataGridCellController, DataGridDirtyEmitter } from '../domain/cell-controller.model';
 import { DataGridChangeDetector } from '../domain/change-detector.entity';
@@ -52,8 +54,8 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
     }
 
     @Input() model: DataGridViewModel;
-    @Input() cellTemplates: TemplateRef<DataGridCellContext>[][];
-    @Input() editorTemplate: TemplateRef<DataGridCellContext>;
+    @Input() cellTemplates: DataGridTemplateMap<DataGridCellContext>;
+    @Input() editorTemplates: DataGridTemplateMap<DataGridEditorContext>;
 
     @Output() dataEvent = new EventEmitter<DataGridDataEvent>();
 
@@ -104,9 +106,7 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
             selection: this.selection,
             hover: this.hover,
             getCellModel: (row, col) => this.getCellModel(row, col),
-            getCellData: (row, col) => this.getCellData(row, col),
-            getRowId: (row) => this.rows[row],
-            getColId: (col) => this.cols[col]
+            getCellData: (row, col) => this.getCellData(row, col)
         };
     }
 
@@ -116,6 +116,7 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
         // console.log('', changes);
+        let isGridDirty = false;
         const modelChange = changes.model;
         if (modelChange) {
             const oldModel = modelChange.previousValue as DataGridViewModel;
@@ -148,12 +149,23 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
                     if (this.editor.isActive) {
                         this.cancelEditor();
                     }
-
-                    this.gridChangeDetector.detectChanges();
+                    isGridDirty = true;
                 }
 
                 this.detectCellChanges();
             }
+        }
+
+        if (changes.cellTemplates && !changes.cellTemplates.firstChange) {
+            isGridDirty = true;
+        }
+
+        if (changes.editorTemplates && !changes.editorTemplates.firstChange) {
+            isGridDirty = true;
+        }
+
+        if (isGridDirty) {
+            this.gridChangeDetector.detectChanges();
         }
     }
 
@@ -184,6 +196,9 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
 
     onEditorDataChange(e: DataGridEditorData): void {
         this.editorData = e;
+        // run change detection, so editor can adapt to its changed data
+        this.cellChangeDetector.markDirty(this.editor.row, this.editor.col);
+        this.detectCellChanges();
     }
 
     onEditorConfirm(): void {
@@ -249,6 +264,20 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
 
     getDirtyEmitter(rowId: DataGridRowId, colId: DataGridColId): DataGridDirtyEmitter {
         return this.dirtyEmitterMap.getDirtyEmitter(rowId, colId);
+    }
+
+    getCellTemplate(rowId: DataGridRowId, colId: DataGridColId): TemplateRef<DataGridCellContext> {
+        const templateId = this.cellModels[rowId][colId].cellTemplateId;
+        return this.cellTemplates[templateId];
+    }
+
+    getEditorTemplate(rowId: DataGridRowId, colId: DataGridColId): TemplateRef<DataGridEditorContext> | undefined {
+        const templateId = this.cellModels[rowId][colId].editorTemplateId;
+        if (templateId !== undefined) {
+            return this.editorTemplates[templateId];
+        } else {
+            return undefined;
+        }
     }
 
     isRowHeader(row: number, col: number): boolean {
