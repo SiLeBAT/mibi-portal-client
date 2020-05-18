@@ -2,6 +2,7 @@
 
 .mibi-panel {
   position: relative;
+  z-index: 0;
   height: 100%;
   overflow: auto;
 }
@@ -16,13 +17,6 @@
 .mibi-panel__content {
   position: absolute;
   top: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.mibi-grid-container {
-  display: grid;
-  grid-template: min-content / auto;
 }
 
 .mibi-grid {
@@ -32,8 +26,6 @@
   // mask precision gaps between grid lines visible in firefox
   background-color: $surface-color;
   user-select: none;
-  // chrome renders faster if this is set (normally grid sets that implicitly)
-  z-index: 0;
 }
 
 .mibi-grid__cell {
@@ -42,6 +34,7 @@
 
 .mibi-grid__sticky {
   position: sticky;
+  z-index: 2;
 }
 
 .mibi-grid__sticky--top {
@@ -50,4 +43,12 @@
 
 .mibi-grid__sticky--left {
   left: 0;
+}
+
+.mibi-grid__sticky--top-left {
+  z-index: 3;
+}
+
+.mibi-editor {
+  z-index: 1;
 }

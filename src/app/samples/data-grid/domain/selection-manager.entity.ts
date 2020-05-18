@@ -43,9 +43,9 @@ export class DataGridSelectionManager {
         }
     }
 
-    constructor(private readonly changeManager: DataGridChangeDetector) {
-        this.anchor = new DataGridCellTool(changeManager);
-        this.selector = new DataGridCellTool(changeManager);
+    constructor(private readonly changeDetector: DataGridChangeDetector) {
+        this.anchor = new DataGridCellTool(changeDetector);
+        this.selector = new DataGridCellTool(changeDetector);
     }
 
     startSelection(row: number, col: number, isColHeader: boolean, isRowHeader: boolean, rowCount: number, colCount: number): void {
@@ -128,13 +128,13 @@ export class DataGridSelectionManager {
 
     private markDirtyRange(minRow: number, maxRow: number, minCol: number, maxCol: number): void {
         for (let row = minRow; row <= maxRow; row++) {
-            this.changeManager.markDirty(row, 0);
+            this.changeDetector.markDirty(row, 0);
             for (let col = minCol; col <= maxCol; col++) {
-                this.changeManager.markDirty(row, col);
+                this.changeDetector.markDirty(row, col);
             }
         }
         for (let col = minCol; col <= maxCol; col++) {
-            this.changeManager.markDirty(0, col);
+            this.changeDetector.markDirty(0, col);
         }
     }
 }

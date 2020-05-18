@@ -6,7 +6,7 @@ import { DataGridEditorContext } from '../../../data-grid/data-grid.model';
     selector: 'mibi-samples-grid-data-editor-template',
     templateUrl: './data-editor-template.component.html',
     styleUrls: ['./data-editor-template.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.Default
 })
 export class SamplesGridDataEditorTemplateComponent extends SamplesGridTemplateContainer<DataGridEditorContext> {
 

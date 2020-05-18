@@ -55,6 +55,10 @@ export class SamplesGridViewComponent implements OnInit {
     }
 
     onEditorConfirm(e: DataGridEditorEvent): void {
+        if (e.data === undefined) {
+            return;
+        }
+
         const dataModel = this.columnModelMap[e.colId] as SamplesGridDataColumnModel;
 
         const sampleIndex = this.model.getSampleIndex(e.rowId);
