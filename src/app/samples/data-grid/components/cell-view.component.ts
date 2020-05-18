@@ -18,8 +18,8 @@ import { DataGridSelectionManager } from '../domain/selection-manager.entity';
 
 @Component({
     selector: 'mibi-data-grid-cell-view',
-    templateUrl: './data-grid-cell-view.component.html',
-    styleUrls: ['./data-grid-cell-view.component.scss'],
+    templateUrl: './cell-view.component.html',
+    styleUrls: ['./cell-view.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DataGridCellViewComponent {

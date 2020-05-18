@@ -18,8 +18,8 @@ import { DataGridCellTool } from '../domain/cell-tool.entity';
 
 @Component({
     selector: 'mibi-data-grid-editor-view',
-    templateUrl: './data-grid-editor-view.component.html',
-    styleUrls: ['./data-grid-editor-view.component.scss'],
+    templateUrl: './editor-view.component.html',
+    styleUrls: ['./editor-view.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DataGridEditorViewComponent {
