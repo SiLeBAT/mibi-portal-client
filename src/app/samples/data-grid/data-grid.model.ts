@@ -42,5 +42,5 @@ export type DataGridTemplateMap<T> = Record<DataGridTemplateId, TemplateRef<T>>;
 export interface DataGridEditorEvent {
     rowId: DataGridRowId;
     colId: DataGridColId;
-    data: DataGridEditorData;
+    data: DataGridEditorData | undefined;
 }

@@ -1,45 +1,45 @@
-<mibi-box-layout x-overflow-handling y-overflow-handling>
-    <div class="mibi-panel"
-        (mousedown)="onScrollContainerMouseDown($event)"
-    >
-        <div class="mibi-panel__overflow"
-            (mousedown)="onContainerMouseDown($event)"
-        ></div>
-        <div class="mibi-panel__content mibi-grid-container"
-            (mousedown)="onContainerMouseDown($event)"
+<div class="mibi-panel"
+    (mousedown)="onScrollContainerMouseDown($event)"
+>
+    <div class="mibi-panel__overflow"
+        (mousedown)="onContainerMouseDown($event)"
+    ></div>
+    <!-- this additional container for the grid improves the overall performance, do NOT remove -->
+    <div class="mibi-panel__content">
+        <div #grid class="mibi-grid"
+            [ngStyle]="{
+                'grid-template-rows': 'repeat(' + rowCount + ',min-content)',
+                'grid-template-columns': 'repeat(' + colCount + ',auto)'
+            }"
+            (mousedown)="onGridMouseDown($event)"
         >
-            <div class="mibi-grid"
-                [ngStyle]="{
-                    'grid-template-rows': 'repeat(' + rowCount + ',min-content)',
-                    'grid-template-columns': 'repeat(' + colCount + ',auto)'
-                }"
-                (mousedown)="onGridMouseDown($event)"
-            >
-                <ng-container *ngFor="let rowId of rows; let row=index">
-                    <mibi-data-grid-cell-view *ngFor="let colId of cols; let col=index"
-                        [ngClass]="{
-                            'mibi-grid__cell': !isHeader(row, col),
-                            'mibi-grid__sticky': isHeader(row, col),
-                            'mibi-grid__sticky--top': isColHeader(row, col),
-                            'mibi-grid__sticky--left': isRowHeader(row, col)
-                        }"
-                        [ngStyle]="{
-                            'z-index':getElevation(row, col)
-                        }"
-                        [controller]="cellController"
-                        [dirtyEmitter]="getDirtyEmitter(rowId, colId)"
-                        [cellTemplate]="getCellTemplate(rowId, colId)"
-                        [editorTemplate]="getEditorTemplate(rowId, colId)"
-                        [row]="row"
-                        [col]="col"
-                        (mouseEvent)="onCellMouseEvent($event, row, col)"
-                        (editorDataChange)="onEditorDataChange($event)"
-                        (editorConfirm)="onEditorConfirm()"
-                        (editorCancel)="onEditorCancel()"
-                    ></mibi-data-grid-cell-view>
-                </ng-container>
-            </div>
+            <ng-container *ngFor="let rowId of rows; let row=index">
+                <mibi-data-grid-cell-view *ngFor="let colId of cols; let col=index"
+                    [ngClass]="{
+                        'mibi-grid__cell': !isHeader(row, col),
+                        'mibi-grid__sticky': isHeader(row, col),
+                        'mibi-grid__sticky--top': isColHeader(row, col),
+                        'mibi-grid__sticky--left': isRowHeader(row, col),
+                        'mibi-grid__sticky--top-left': isGridHeader(row, col)
+                    }"
+                    [mibiDataGridDirtyEmitter]="getCellDirtyEmitter(rowId, colId)"
+                    [controller]="cellController"
+                    [templateMap]="cellTemplates"
+                    [row]="row"
+                    [col]="col"
+                    (mouseEvent)="onCellMouseEvent($event, row, col)"
+                ></mibi-data-grid-cell-view>
+            </ng-container>
         </div>
     </div>
-    {{foo}}
-</mibi-box-layout>
+    <mibi-data-grid-editor-view class="mibi-editor"
+        [mibiDataGridDirtyEmitter]="getEditorDirtyEmitter()"
+        [controller]="cellController"
+        [templateMap]="editorTemplates"
+        (mouseEvent)="onEditorMouseEvent($event)"
+        (dataChange)="onEditorDataChange($event)"
+        (confirm)="onEditorConfirm()"
+        (cancel)="onEditorCancel()"
+    ></mibi-data-grid-editor-view>
+</div>
+{{foo}}

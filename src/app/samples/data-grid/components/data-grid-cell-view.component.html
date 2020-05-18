@@ -26,13 +26,7 @@
     (click)="onMouseEvent($event)"
     (mouseup)="onMouseEvent($event)"
     (mouseout)="onMouseEvent($event)"
->
-    <ng-container *ngIf="hasEditor">
-        <ng-container
-            *ngTemplateOutlet="editorTemplate; context: editorContext"
-        ></ng-container>
-    </ng-container>
-</div>
+></div>
 <ng-container
     *ngTemplateOutlet="cellTemplate; context: cellContext"
 ></ng-container>

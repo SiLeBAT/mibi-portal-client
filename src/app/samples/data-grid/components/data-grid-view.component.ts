@@ -5,11 +5,12 @@ import {
     Output,
     EventEmitter,
     ChangeDetectionStrategy,
-    TemplateRef,
     ChangeDetectorRef,
     AfterViewInit,
     OnChanges,
-    SimpleChanges
+    SimpleChanges,
+    ElementRef,
+    ViewChild
 } from '@angular/core';
 import { DataGridCellTool } from '../domain/cell-tool.entity';
 import { DataGridSelectionManager } from '../domain/selection-manager.entity';
@@ -28,8 +29,9 @@ import {
     DataGridEditorContext
 } from '../data-grid.model';
 import { DataGridCellController, DataGridDirtyEmitter } from '../domain/cell-controller.model';
-import { DataGridChangeDetector } from '../domain/change-detector.entity';
+import { DataGridCellChangeDetector } from '../domain/cell-change-detector.entity';
 import { DataGridDirtyEmitterMap } from '../domain/dirty-emitter-map.entity';
+import { Subject } from 'rxjs';
 
 enum MouseButton {
     PRIMARY = 0
@@ -79,11 +81,15 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
 
     // PRIVATE PROPERTIES
 
+    @ViewChild('grid', { static: true })
+    private gridRef: ElementRef;
+
     private get cellModels(): DataGridMap<DataGridCellViewModel> { return this.model.cellModels; }
     private get cellData(): DataGridMap<DataGridCellData> { return this.model.cellData; }
 
-    private readonly dirtyEmitterMap = new DataGridDirtyEmitterMap();
-    private readonly cellChangeDetector = new DataGridChangeDetector(this.dirtyEmitterMap);
+    private readonly cellDirtyEmitterMap = new DataGridDirtyEmitterMap();
+    private readonly cellChangeDetector = new DataGridCellChangeDetector(this.cellDirtyEmitterMap);
+    private readonly editorDirtyEmitter = new Subject<void>();
 
     private readonly cursor = new DataGridCellTool(this.cellChangeDetector);
     private readonly editor = new DataGridCellTool(this.cellChangeDetector);
@@ -106,7 +112,8 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
             selection: this.selection,
             hover: this.hover,
             getCellModel: (row, col) => this.getCellModel(row, col),
-            getCellData: (row, col) => this.getCellData(row, col)
+            getCellData: (row, col) => this.getCellData(row, col),
+            getClientRect: (row, col) => this.getClientRect(row, col)
         };
     }
 
@@ -123,7 +130,7 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
             const newModel = modelChange.currentValue as DataGridViewModel;
 
             if (modelChange.firstChange) {
-                this.dirtyEmitterMap.init(newModel.rows, newModel.cols);
+                this.cellDirtyEmitterMap.init(newModel.rows, newModel.cols);
             } else {
                 const rowsChanged = oldModel.rows !== newModel.rows;
                 const colsChanged = oldModel.cols !== newModel.cols;
@@ -131,7 +138,7 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
                 const cellDataChanged = oldModel.cellData !== newModel.cellData;
 
                 if (rowsChanged || colsChanged) {
-                    this.dirtyEmitterMap.update(newModel.rows, newModel.cols, colsChanged);
+                    this.cellDirtyEmitterMap.update(newModel.rows, newModel.cols, colsChanged);
                 }
 
                 if (cellModelsChanged) {
@@ -152,7 +159,7 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
                     isGridDirty = true;
                 }
 
-                this.detectCellChanges();
+                this.detectChildChanges();
             }
         }
 
@@ -171,7 +178,7 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
 
     // CELL EVENT HANDLERS
 
-    onCellMouseEvent(e: MouseEvent, row: number, col: number) {
+    onCellMouseEvent(e: MouseEvent, row: number, col: number): void {
         switch (e.type) {
             case 'mouseover':
                 this.onCellMouseOver(e, row, col);
@@ -189,30 +196,42 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
                 this.onCellMouseOut(e, row, col);
                 break;
         }
-        this.detectCellChanges();
+        this.detectChildChanges();
     }
 
     // EDITOR EVENT HANDLERS
 
+    onEditorMouseEvent(e: MouseEvent): void {
+        if (!this.editor.isActive) {
+            return;
+        }
+        this.onCellMouseEvent(e, this.editor.row, this.editor.col);
+    }
+
     onEditorDataChange(e: DataGridEditorData): void {
         this.editorData = e;
-        // run change detection, so editor can adapt to its changed data
-        this.cellChangeDetector.markDirty(this.editor.row, this.editor.col);
-        this.detectCellChanges();
     }
 
     onEditorConfirm(): void {
         this.startSelection(this.selection, this.editor.row, this.editor.col);
         this.cursor.set(this.editor.row, this.editor.col);
         this.confirmEditor();
-        this.detectCellChanges();
+        this.detectChildChanges();
     }
 
     onEditorCancel(): void {
         this.startSelection(this.selection, this.editor.row, this.editor.col);
         this.cursor.set(this.editor.row, this.editor.col);
         this.cancelEditor();
-        this.detectCellChanges();
+        this.detectChildChanges();
+    }
+
+    @HostListener('window:resize', ['$event'])
+    onWindowResize(e: UIEvent): void {
+        if (!this.editor.isActive) {
+            return;
+        }
+        this.detectChildChanges();
     }
 
     // CLEARING EVENT HANDLERS
@@ -252,7 +271,7 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
             this.selection.clear();
         }
         this.clearing.clear();
-        this.detectCellChanges();
+        this.detectChildChanges();
     }
 
     @HostListener('window:mouseup', ['$event'])
@@ -262,22 +281,12 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
 
     // TEMPLATE METHODS
 
-    getDirtyEmitter(rowId: DataGridRowId, colId: DataGridColId): DataGridDirtyEmitter {
-        return this.dirtyEmitterMap.getDirtyEmitter(rowId, colId);
+    getCellDirtyEmitter(rowId: DataGridRowId, colId: DataGridColId): DataGridDirtyEmitter {
+        return this.cellDirtyEmitterMap.getDirtyEmitter(rowId, colId);
     }
 
-    getCellTemplate(rowId: DataGridRowId, colId: DataGridColId): TemplateRef<DataGridCellContext> {
-        const templateId = this.cellModels[rowId][colId].cellTemplateId;
-        return this.cellTemplates[templateId];
-    }
-
-    getEditorTemplate(rowId: DataGridRowId, colId: DataGridColId): TemplateRef<DataGridEditorContext> | undefined {
-        const templateId = this.cellModels[rowId][colId].editorTemplateId;
-        if (templateId !== undefined) {
-            return this.editorTemplates[templateId];
-        } else {
-            return undefined;
-        }
+    getEditorDirtyEmitter(): DataGridDirtyEmitter {
+        return this.editorDirtyEmitter;
     }
 
     isRowHeader(row: number, col: number): boolean {
@@ -291,24 +300,6 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
     }
     isGridHeader(row: number, col: number): boolean {
         return this.isRowHeader(row, col) && this.isColHeader(row, col);
-    }
-
-    getElevation(row: number, col: number): number {
-        const headerOffset = 10;
-        const editorOffset = 5;
-        let elevation = 0;
-
-        if (this.isHeader(row, col)) {
-            elevation += headerOffset;
-        }
-        if (this.isGridHeader(row, col)) {
-            elevation += headerOffset;
-        }
-        if (this.editor.isOnCell(row, col)) {
-            elevation += editorOffset;
-        }
-
-        return elevation;
     }
 
     // PRIVATE UI EVENT HANDLERS
@@ -397,17 +388,14 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
 
     private openEditor(row: number, col: number): void {
         this.editor.set(row, col);
-        this.gridChangeDetector.detectChanges(); // recalc elevation
     }
 
     private confirmEditor(): void {
-        if (this.editorData !== undefined) {
-            this.editorConfirm.emit({
-                data: this.editorData,
-                rowId: this.rows[this.editor.row],
-                colId: this.cols[this.editor.col]
-            });
-        }
+        this.editorConfirm.emit({
+            data: this.editorData,
+            rowId: this.rows[this.editor.row],
+            colId: this.cols[this.editor.col]
+        });
         this.cancelEditor();
     }
 
@@ -425,7 +413,22 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
         return this.cellData[this.rows[row]][this.cols[col]];
     }
 
-    private detectCellChanges(): void {
+    private detectChildChanges(): void {
         this.cellChangeDetector.detectChanges(this.rows, this.cols);
+        this.editorDirtyEmitter.next();
+    }
+
+    private getClientRect(row: number, col: number): ClientRect {
+        // use boundingClientRect to get floating point precision values
+        const gridRect: ClientRect = this.gridRef.nativeElement.getBoundingClientRect();
+        const cellRect: ClientRect = this.gridRef.nativeElement.children[row * this.colCount + col].getBoundingClientRect();
+        return {
+            top: cellRect.top - gridRect.top,
+            bottom: cellRect.bottom - gridRect.top,
+            left: cellRect.left - gridRect.left,
+            right: cellRect.right - gridRect.left,
+            width: cellRect.width,
+            height: cellRect.height
+        };
     }
 }

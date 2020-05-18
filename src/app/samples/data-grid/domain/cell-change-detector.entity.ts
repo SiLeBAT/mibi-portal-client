@@ -1,7 +1,7 @@
 import { DataGridRowId, DataGridColId, DataGridMap } from '../data-grid.model';
 import { DataGridDirtyEmitterMap } from './dirty-emitter-map.entity';
 
-export class DataGridChangeDetector {
+export class DataGridCellChangeDetector {
     private dirtyMarks: true[][] = [];
 
     constructor(private readonly dirtyEmitterMap: DataGridDirtyEmitterMap) {}

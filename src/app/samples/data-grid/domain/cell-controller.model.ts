@@ -13,4 +13,5 @@ export interface DataGridCellController {
 
     getCellModel(row: number, col: number): DataGridCellViewModel;
     getCellData(row: number, col: number): DataGridCellData;
+    getClientRect(row: number, col: number): ClientRect;
 }

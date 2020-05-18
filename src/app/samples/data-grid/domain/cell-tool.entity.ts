@@ -1,4 +1,4 @@
-import { DataGridChangeDetector } from './change-detector.entity';
+import { DataGridCellChangeDetector } from './cell-change-detector.entity';
 
 export class DataGridCellTool {
     private _row: number = -1;
@@ -16,7 +16,7 @@ export class DataGridCellTool {
         return !this.isOnCell(-1, -1);
     }
 
-    constructor(private readonly changeManager: DataGridChangeDetector) { }
+    constructor(private readonly changeDetector: DataGridCellChangeDetector) { }
 
     set(row: number, col: number): void {
         if (this.isActive) {
@@ -48,6 +48,6 @@ export class DataGridCellTool {
     }
 
     private markDirty(): void {
-        this.changeManager.markDirty(this._row, this._col);
+        this.changeDetector.markDirty(this._row, this._col);
     }
 }

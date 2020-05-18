@@ -4,23 +4,17 @@ import {
     Input,
     TemplateRef,
     Output,
-    EventEmitter,
-    OnInit,
-    ChangeDetectorRef,
-    OnDestroy
+    EventEmitter
 } from '@angular/core';
 import {
     DataGridCellViewModel,
     DataGridCellContext,
     DataGridCellData,
-    DataGridEditorContext,
-    DataGridEditorData
+    DataGridTemplateMap
 } from '../data-grid.model';
-import { DataGridCellController, DataGridDirtyEmitter } from '../domain/cell-controller.model';
+import { DataGridCellController } from '../domain/cell-controller.model';
 import { DataGridCellTool } from '../domain/cell-tool.entity';
 import { DataGridSelectionManager } from '../domain/selection-manager.entity';
-import { Subscription } from 'rxjs';
-import { tap } from 'rxjs/operators';
 
 @Component({
     selector: 'mibi-data-grid-cell-view',
@@ -28,7 +22,7 @@ import { tap } from 'rxjs/operators';
     styleUrls: ['./data-grid-cell-view.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DataGridCellViewComponent implements OnInit, OnDestroy {
+export class DataGridCellViewComponent {
 
     get foo() {
         // console.log('gridcell');
@@ -36,19 +30,12 @@ export class DataGridCellViewComponent implements OnInit, OnDestroy {
     }
 
     @Input() controller: DataGridCellController;
-    @Input() dirtyEmitter: DataGridDirtyEmitter;
-
-    @Input() cellTemplate: TemplateRef<DataGridCellContext>;
-    @Input() editorTemplate?: TemplateRef<DataGridCellContext>;
+    @Input() templateMap: DataGridTemplateMap<DataGridCellContext>;
 
     @Input() row: number;
     @Input() col: number;
 
     @Output() mouseEvent = new EventEmitter<MouseEvent>();
-
-    @Output() editorDataChange = new EventEmitter<DataGridEditorData>();
-    @Output() editorConfirm = new EventEmitter<void>();
-    @Output() editorCancel = new EventEmitter<void>();
 
     // TEMPLATE PROPERTIES
 
@@ -150,22 +137,16 @@ export class DataGridCellViewComponent implements OnInit, OnDestroy {
         }
     }
 
-    // TEMPLATE CONTEXT PROPERTIES
+    // TEMPLATE OUTLET PROPERTIES
+
+    get cellTemplate(): TemplateRef<DataGridCellContext> {
+        return this.templateMap[this.model.cellTemplateId];
+    }
 
     get cellContext(): DataGridCellContext {
         return {
             model: this.model,
             data: this.data
-        };
-    }
-
-    get editorContext(): DataGridEditorContext {
-        return {
-            model: this.model,
-            data: this.data,
-            dataChange: (data) => this.editorDataChange.emit(data),
-            confirm: () => this.editorConfirm.emit(),
-            cancel: () => this.editorCancel.emit()
         };
     }
 
@@ -178,22 +159,6 @@ export class DataGridCellViewComponent implements OnInit, OnDestroy {
 
     private get model(): DataGridCellViewModel { return this.controller.getCellModel(this.row, this.col); }
     private get data(): DataGridCellData { return this.controller.getCellData(this.row, this.col); }
-
-    private dirtyEmitterSubscription: Subscription;
-
-    // LIFE CYCLE
-
-    constructor(private readonly changeDetectorRef: ChangeDetectorRef) { }
-
-    ngOnInit(): void {
-        this.dirtyEmitterSubscription = this.dirtyEmitter.pipe(tap(() => {
-            this.changeDetectorRef.detectChanges();
-        })).subscribe();
-    }
-
-    ngOnDestroy(): void {
-        this.dirtyEmitterSubscription.unsubscribe();
-    }
 
     // EVENT HANDLERS
 
