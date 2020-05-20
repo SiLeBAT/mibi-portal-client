@@ -113,7 +113,9 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
             hover: this.hover,
             getCellModel: (row, col) => this.getCellModel(row, col),
             getCellData: (row, col) => this.getCellData(row, col),
-            getClientRect: (row, col) => this.getClientRect(row, col)
+            getClientRect: (row, col) => this.getClientRect(row, col),
+            getCellTemplate: (templateId) => this.cellTemplates[templateId],
+            getEditorTemplate: (templateId) => this.editorTemplates[templateId]
         };
     }
 
@@ -122,7 +124,6 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        // console.log('', changes);
         let isGridDirty = false;
         const modelChange = changes.model;
         if (modelChange) {
@@ -150,30 +151,27 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
                 }
 
                 if (rowsChanged || colsChanged || cellModelsChanged) {
-                    this.cursor.clear();
-                    this.selection.clear();
-                    this.hover.clear();
-                    if (this.editor.isActive) {
-                        this.cancelEditor();
-                    }
                     isGridDirty = true;
                 }
-
-                this.detectChildChanges();
             }
         }
 
         if (changes.cellTemplates && !changes.cellTemplates.firstChange) {
-            isGridDirty = true;
-        }
-
-        if (changes.editorTemplates && !changes.editorTemplates.firstChange) {
-            isGridDirty = true;
+            this.cellChangeDetector.markDirtyRange(this.rows, this.cols);
         }
 
         if (isGridDirty) {
             this.gridChangeDetector.detectChanges();
         }
+
+        this.cursor.clear();
+        this.selection.clear();
+        this.hover.clear();
+        if (this.editor.isActive) {
+            this.cancelEditor();
+        }
+
+        this.detectChildChanges();
     }
 
     // CELL EVENT HANDLERS

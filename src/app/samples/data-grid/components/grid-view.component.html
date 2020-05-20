@@ -23,8 +23,7 @@
                         'mibi-grid__sticky--top-left': isGridHeader(row, col)
                     }"
                     [mibiDataGridDirtyEmitter]="getCellDirtyEmitter(rowId, colId)"
-                    [controller]="cellController"
-                    [templateMap]="cellTemplates"
+                    [controller]="cellController" 
                     [row]="row"
                     [col]="col"
                     (mouseEvent)="onCellMouseEvent($event, row, col)"
@@ -35,7 +34,6 @@
     <mibi-data-grid-editor-view class="mibi-editor"
         [mibiDataGridDirtyEmitter]="getEditorDirtyEmitter()"
         [controller]="cellController"
-        [templateMap]="editorTemplates"
         (mouseEvent)="onEditorMouseEvent($event)"
         (dataChange)="onEditorDataChange($event)"
         (confirm)="onEditorConfirm()"

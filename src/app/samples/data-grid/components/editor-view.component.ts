@@ -10,8 +10,7 @@ import {
     DataGridCellViewModel,
     DataGridCellData,
     DataGridEditorContext,
-    DataGridEditorData,
-    DataGridTemplateMap
+    DataGridEditorData
 } from '../data-grid.model';
 import { DataGridCellController } from '../domain/cell-controller.model';
 import { DataGridCellTool } from '../domain/cell-tool.entity';
@@ -30,7 +29,6 @@ export class DataGridEditorViewComponent {
     }
 
     @Input() controller: DataGridCellController;
-    @Input() templateMap: DataGridTemplateMap<DataGridEditorContext>;
 
     @Output() mouseEvent = new EventEmitter<MouseEvent>();
 
@@ -51,10 +49,11 @@ export class DataGridEditorViewComponent {
     // TEMPLATE OUTLET PROPERTIES
 
     get editorTemplate(): TemplateRef<DataGridEditorContext> | undefined {
-        if (this.model.editorTemplateId === undefined) {
+        const templateId = this.model.editorTemplateId;
+        if (templateId === undefined) {
             return undefined;
         }
-        return this.templateMap[this.model.editorTemplateId];
+        return this.controller.getEditorTemplate(templateId);
     }
 
     get editorContext(): DataGridEditorContext {

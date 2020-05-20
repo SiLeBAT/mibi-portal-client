@@ -13,6 +13,14 @@ export class DataGridChangeDetector {
         this.dirtyMarks[row][col] = true;
     }
 
+    markDirtyRange(rows: DataGridRowId[], cols: DataGridColId[]): void {
+        rows.forEach((rowId, row) => {
+            cols.forEach((colId, col) => {
+                this.markDirty(row, col);
+            });
+        });
+    }
+
     markDirtyMap(
         oldMap: DataGridMap<any>,
         newMap: DataGridMap<any>,

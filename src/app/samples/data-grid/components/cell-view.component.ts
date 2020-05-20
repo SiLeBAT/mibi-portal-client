@@ -9,8 +9,7 @@ import {
 import {
     DataGridCellViewModel,
     DataGridCellContext,
-    DataGridCellData,
-    DataGridTemplateMap
+    DataGridCellData
 } from '../data-grid.model';
 import { DataGridCellController } from '../domain/cell-controller.model';
 import { DataGridCellTool } from '../domain/cell-tool.entity';
@@ -30,7 +29,6 @@ export class DataGridCellViewComponent {
     }
 
     @Input() controller: DataGridCellController;
-    @Input() templateMap: DataGridTemplateMap<DataGridCellContext>;
 
     @Input() row: number;
     @Input() col: number;
@@ -140,7 +138,7 @@ export class DataGridCellViewComponent {
     // TEMPLATE OUTLET PROPERTIES
 
     get cellTemplate(): TemplateRef<DataGridCellContext> {
-        return this.templateMap[this.model.cellTemplateId];
+        return this.controller.getCellTemplate(this.model.cellTemplateId);
     }
 
     get cellContext(): DataGridCellContext {
