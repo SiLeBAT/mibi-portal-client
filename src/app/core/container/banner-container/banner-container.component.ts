@@ -1,22 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Banner, AlertType } from '../../model/alert.model';
-import { takeWhile, debounceTime } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { UserActionService } from '../../services/user-action.service';
 import { UserActionType } from '../../../shared/model/user-action.model';
-import { ClientError } from '../../model/client-error';
 import { CoreMainSlice } from '../../core.state';
 import { selectBannerData } from '../../state/core.selectors';
 import { HideBannerSOA } from '../../state/core.actions';
+import { BannerData } from '../../state/core.reducer';
+import { Observable } from 'rxjs';
+import { LogService } from '../../services/log.service';
 
 @Component({
     selector: 'mibi-banner-container',
-    template: `<mibi-banner
-    *ngIf="banner" [banner]="banner" (mainAction)="onMainAction($event)" (auxilliaryAction)="onAuxAction($event)"></mibi-banner>`
+    template: `
+        <mibi-banner *ngIf="(banner$ | async) as banner"
+            [banner]="banner"
+            (mainAction)="onMainAction(banner)"
+            (auxilliaryAction)="onAuxAction(banner)"
+        ></mibi-banner>`
 })
-export class BannerContainerComponent implements OnInit {
+export class BannerContainerComponent {
 
-    private banners: Record<string, Banner> = {
+    readonly banner$: Observable<Banner | null>;
+
+    private readonly banners: Record<string, Banner> = {
         defaultError: {
             message: 'Ein Fehler ist aufgetreten.',
 
@@ -152,54 +160,54 @@ export class BannerContainerComponent implements OnInit {
         }
     };
 
-    banner: Banner | null;
-    private componentActive = true;
-    constructor(private store$: Store<CoreMainSlice>, private userActionService: UserActionService) { }
-
-    ngOnInit() {
-        this.store$.pipe(select(selectBannerData),
-            debounceTime(600),
-            takeWhile(() => this.componentActive)
-        ).subscribe(bannerState => {
-            if (bannerState) {
-                this.banner = this.banners[bannerState.predefined] || bannerState.custom;
-                if (this.banner) {
-                    if (!this.banner.icon) {
-                        switch (this.banner.type) {
-                            case AlertType.ERROR:
-                                this.banner.icon = 'error';
-                                break;
-                            case AlertType.SUCCESS:
-                                this.banner.icon = 'done';
-                                break;
-                            case AlertType.WARNING:
-                            default:
-                                this.banner.icon = 'warning';
-                        }
-                    }
-                }
-            }
-        },
-        (error) => {
-            throw new ClientError(`Can't determine Banner state. error=${error}`);
-        });
+    constructor(
+        private store$: Store<CoreMainSlice>,
+        private userActionService: UserActionService,
+        private logger: LogService
+    ) {
+        this.banner$ = this.store$.pipe(
+            select(selectBannerData),
+            map(bannerState => this.getBanner(bannerState))
+        );
     }
 
-    onMainAction() {
-        if (this.banner) {
-            if (this.banner.mainAction) {
-                this.banner.mainAction.onExecute();
-            }
-            this.store$.dispatch(new HideBannerSOA());
+    onMainAction(banner: Banner) {
+        if (banner.mainAction) {
+            banner.mainAction.onExecute();
         }
+        this.store$.dispatch(new HideBannerSOA());
     }
 
-    onAuxAction() {
-        if (this.banner) {
-            if (this.banner.auxilliaryAction) {
-                this.banner.auxilliaryAction.onExecute();
-            }
-            this.store$.dispatch(new HideBannerSOA());
+    onAuxAction(banner: Banner) {
+        if (banner.auxilliaryAction) {
+            banner.auxilliaryAction.onExecute();
         }
+        this.store$.dispatch(new HideBannerSOA());
+    }
+
+    private getBanner(bannerState: BannerData | null): Banner | null {
+        if (!bannerState) {
+            return null;
+        }
+
+        const banner = this.banners[bannerState.predefined] || bannerState.custom;
+
+        if (!banner) {
+            this.logger.error(`Can't determine Banner.`);
+            return null;
+        }
+
+        if (!banner.icon) {
+            switch (banner.type) {
+                case AlertType.ERROR:
+                    return { ...banner, icon: 'error' };
+                case AlertType.SUCCESS:
+                    return { ...banner, icon: 'done' };
+                case AlertType.WARNING:
+                default:
+                    return { ...banner, icon: 'warning' };
+            }
+        }
+        return banner;
     }
 }
