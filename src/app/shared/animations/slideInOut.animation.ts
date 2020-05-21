@@ -1,45 +1,25 @@
 import {
-    trigger, state, style, transition,
-    animate, group
+    trigger, state, style, transition, animate
 } from '@angular/animations';
 
 export const SlideInOutAnimation = [
     trigger('slideInOut', [
-        state('in', style({
-        })),
         state('out', style({
-            // only display: none doesnt work with safari
-            // 'display' : 'none',
-            'visibility' : 'hidden',
-            'overflow': 'hidden',
-            'max-height': '0'
+            'display' : 'none',
+            'transform': 'translate(-50%, -110%)'
         })),
-        transition('in => out', [group([
+        transition('in => out', [
+            animate('400ms ease-in-out', style({
+                'transform': 'translate(-50%, -110%)'
+            }))
+        ]),
+        transition('out => in', [
             style({
-                'overflow': 'hidden',
-                'max-height': '100vh'
+                'display': 'block'
             }),
             animate('400ms ease-in-out', style({
-                'max-height': '0',
-                'overflow': 'hidden',
-                'opacity': '0'
+                'transform': 'translate(-50%, 0)'
             }))
-        ]
-        )]),
-        transition('* => in', [group([
-            style({
-                'visibility' : 'visible',
-                'overflow': 'hidden',
-                'max-height': '0',
-                'opacity': '0'
-            }),
-            animate('400ms ease-in-out', style({
-                'visibility' : 'visible',
-                'max-height': '100vh',
-                'overflow': 'hidden',
-                'opacity': '1'
-            }))
-        ]
-        )])
+        ])
     ])
 ];

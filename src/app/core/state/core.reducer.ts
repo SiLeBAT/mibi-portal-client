@@ -1,6 +1,6 @@
 
 import { CoreMainAction, CoreMainActionTypes } from './core.actions';
-import { Banner } from '../model/alert.model';
+import { Banner, BannerType } from '../model/alert.model';
 import { ROUTER_NAVIGATION, RouterNavigationAction } from '@ngrx/router-store';
 import { UserActionType } from '../../shared/model/user-action.model';
 import * as _ from 'lodash';
@@ -10,7 +10,7 @@ import * as _ from 'lodash';
 export interface CoreMainState {
     actionBarConfig: CoreActionBarConfig;
     isBusy: boolean;
-    banner: BannerData | null;
+    banner: BannerData;
 }
 
 export interface CoreActionBarConfig {
@@ -20,16 +20,19 @@ export interface CoreActionBarConfig {
 }
 
 export interface BannerData {
-    show?: boolean;
-    predefined: string;
+    show: boolean;
+    predefined?: BannerType;
     custom?: Banner;
-    id?: string;
 }
 
 const initialActionBarConfig: CoreActionBarConfig = {
     isEnabled: false,
     enabledActions: [],
     title: ''
+};
+
+const initialBanner: BannerData = {
+    show: false
 };
 
 // REDUCER
@@ -66,21 +69,23 @@ export function coreActionBarConfigReducer(
     }
 }
 
-export function coreBannerReducer(state: BannerData | null = null, action: CoreMainAction | RouterNavigationAction): BannerData | null {
+export function coreBannerReducer(state: BannerData = initialBanner, action: CoreMainAction | RouterNavigationAction): BannerData {
     switch (action.type) {
-        case CoreMainActionTypes.DestroyBannerSOA:
-            return null;
-        case CoreMainActionTypes.HideBannerSOA:
-            if (state) {
-                const newState = _.cloneDeep(state);
-                newState.show = false;
-                return newState;
-            }
-            return state;
-        case ROUTER_NAVIGATION:
-            return null;
         case CoreMainActionTypes.ShowBannerSOA:
-            return _.cloneDeep(action.payload);
+            return {
+                show: true,
+                predefined: action.payload.predefined
+            };
+        case CoreMainActionTypes.ShowCustomBannerSOA:
+            return {
+                show: true,
+                custom: action.payload.banner
+            };
+        case CoreMainActionTypes.HideBannerSOA:
+        case ROUTER_NAVIGATION:
+            return { ...state, show: false };
+        case CoreMainActionTypes.DestroyBannerSOA:
+            return initialBanner;
         default:
             return state;
     }

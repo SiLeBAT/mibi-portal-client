@@ -16,3 +16,25 @@ export interface Banner extends Alert {
     mainAction: UserActionViewModelConfiguration;
     auxilliaryAction?: UserActionViewModelConfiguration;
 }
+
+export type BannerType =
+    'defaultError'
+    | 'defaultSuccess'
+    | 'noAuthorizationOrActivation'
+    | 'sendCancel'
+    | 'validationFailure'
+    | 'uploadFailure'
+    | 'sendFailure'
+    | 'sendSuccess'
+    | 'validationErrors'
+    | 'autocorrections'
+    | 'wrongUploadDatatype'
+    | 'wrongUploadFilesize'
+    | 'accountActivationSuccess'
+    | 'accountActivationFailure'
+    | 'passwordChangeSuccess'
+    | 'passwordChangeFailure'
+    | 'loginFailure'
+    | 'registrationFailure'
+    | 'loginUnauthorized'
+    | 'exportFailure';

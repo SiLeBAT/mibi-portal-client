@@ -1,11 +1,11 @@
-import { UUID } from 'angular2-uuid';
 import { Action } from '@ngrx/store';
 import { DialogContent } from '../model/dialog.model';
-import { BannerData } from './core.reducer';
 import { UserActionType } from '../../shared/model/user-action.model';
+import { Banner, BannerType } from '../model/alert.model';
 
 export enum CoreMainActionTypes {
     ShowBannerSOA = '[Core] Create and show Banner',
+    ShowCustomBannerSOA = '[Core] Create and show Custom Banner',
     HideBannerSOA = '[Core] Hide Banner',
     DestroyBannerSOA = '[Core] Destroy Banner',
     ShowActionBarSOA = '[Core] Show Action Bar',
@@ -17,9 +17,13 @@ export enum CoreMainActionTypes {
 export class ShowBannerSOA implements Action {
     readonly type = CoreMainActionTypes.ShowBannerSOA;
 
-    constructor(public payload: BannerData) {
-        this.payload = { ...this.payload, ...{ show: true, id: UUID.UUID() } };
-    }
+    constructor(public payload: { predefined: BannerType }) { }
+}
+
+export class ShowCustomBannerSOA implements Action {
+    readonly type = CoreMainActionTypes.ShowCustomBannerSOA;
+
+    constructor(public payload: { banner: Banner }) { }
 }
 
 export class HideBannerSOA implements Action {
@@ -56,6 +60,7 @@ export class UpdateIsBusySOA implements Action {
 
 export type CoreMainAction =
     | ShowBannerSOA
+    | ShowCustomBannerSOA
     | HideBannerSOA
     | DestroyBannerSOA
     | ShowActionBarSOA

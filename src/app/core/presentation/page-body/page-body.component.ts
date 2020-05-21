@@ -1,4 +1,5 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
+import { AnimationEvent } from '@angular/animations';
 import { SlideInOutAnimation } from '../../../shared/animations/slideInOut.animation';
 import { fadeAnimation, transitionAnimation } from '../../../shared/animations/routerTransitionFade.animation';
 
@@ -17,7 +18,7 @@ export class PageBodyComponent {
         return this.isBanner ? 'in' : 'out';
     }
 
-    animationDone(event: any) {
+    animationDone(event: AnimationEvent) {
         if (event.fromState === 'in') {
             this.onAnimationDone.emit();
         }

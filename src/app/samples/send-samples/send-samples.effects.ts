@@ -12,7 +12,7 @@ import { SamplesSlice, SamplesMainSlice } from '../samples.state';
 import { Store } from '@ngrx/store';
 import { withLatestFrom, map, concatAll, catchError, tap } from 'rxjs/operators';
 import { SamplesMainAction, UpdateSamplesSOA } from '../state/samples.actions';
-import { ShowBannerSOA, UpdateIsBusySOA, DestroyBannerSOA } from '../../core/state/core.actions';
+import { ShowBannerSOA, UpdateIsBusySOA, HideBannerSOA } from '../../core/state/core.actions';
 import { Observable, of, from } from 'rxjs';
 import { SendSamplesState } from './state/send-samples.reducer';
 import * as _ from 'lodash';
@@ -38,16 +38,17 @@ export class SendSamplesEffects {
         private dialogService: DialogService
     ) { }
 
-    @Effect({ dispatch: false })
-    openSendDialog$: Observable<void> = this.actions$.pipe(
+    @Effect()
+    openSendDialog$: Observable<HideBannerSOA> = this.actions$.pipe(
         ofType<SendSamplesOpenSendDialogSSA>(SendSamplesActionTypes.OpenSendDialogSSA),
         map(() => {
             this.dialogService.openDialog(SendDialogComponent);
+            return new HideBannerSOA();
         })
     );
 
-    @Effect({ dispatch: false })
-    openAnalysisStepperDialog$: Observable<void> = this.actions$.pipe(
+    @Effect()
+    openAnalysisStepperDialog$: Observable<HideBannerSOA> = this.actions$.pipe(
         ofType<SendSamplesOpenAnalysisDialogSSA>(AnalysisStepperActionTypes.OpenAnalysisStepperSSA),
         withLatestFrom(this.store$),
         map(([, state]) => {
@@ -63,6 +64,7 @@ export class SendSamplesEffects {
                 width: width,
                 panelClass: 'mibi-stepper-dialog-container'
             });
+            return new HideBannerSOA();
         })
     );
 
@@ -72,13 +74,13 @@ export class SendSamplesEffects {
         | UpdateSamplesSOA
         | SendSamplesAddSentFileSOA
         | LogoutUserMSA
-        | DestroyBannerSOA
         | UpdateIsBusySOA
     > = this.actions$.pipe(
         ofType<SendSamplesSSA>(SendSamplesActionTypes.SendSamplesSSA),
         withLatestFrom(this.store$),
         tap(() => {
             this.store$.dispatch(new UpdateIsBusySOA({ isBusy: true }));
+            this.store$.dispatch(new HideBannerSOA());
         }),
         map(([action, state]) => {
             const fileName = selectImportedFileName(state);
@@ -103,14 +105,12 @@ export class SendSamplesEffects {
                         return of(
                             new UpdateIsBusySOA({ isBusy: false }),
                             new UpdateSamplesSOA(error.samples),
-                            new DestroyBannerSOA(),
                             new ShowBannerSOA({ predefined: 'validationErrors' })
                         );
                     } else if (error instanceof InputChangedError) {
                         return of(
                             new UpdateIsBusySOA({ isBusy: false }),
                             new UpdateSamplesSOA(error.samples),
-                            new DestroyBannerSOA(),
                             new ShowBannerSOA({ predefined: 'autocorrections' })
                         );
                     } else if (error instanceof AuthorizationError) {

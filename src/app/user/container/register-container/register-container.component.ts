@@ -12,7 +12,7 @@ import { takeWhile, map, filter } from 'rxjs/operators';
 import { ClientError } from '../../../core/model/client-error';
 import { selectInstitutions } from '../../state/user.selectors';
 import { selectSupportContact } from '../../../content/state/content.selectors';
-import { ShowBannerSOA, UpdateIsBusySOA } from '../../../core/state/core.actions';
+import { UpdateIsBusySOA, ShowCustomBannerSOA } from '../../../core/state/core.actions';
 import { ContentMainSlice } from '../../../content/content.state';
 import { UserMainSlice } from '../../user.state';
 
@@ -64,10 +64,8 @@ export class RegisterContainerComponent implements OnInit, OnDestroy {
                 this.store.dispatch(new UpdateIsBusySOA({ isBusy: false }));
                 this.router.navigate(['users/login']).then(
                     () => {
-                        this.store.dispatch(new ShowBannerSOA({
-                            predefined: '',
-                            custom: {
-                                // tslint:disable-next-line:max-line-length
+                        this.store.dispatch(new ShowCustomBannerSOA({
+                            banner: {
                                 message: `Bitte aktivieren Sie Ihren Account: Eine E-mail mit weiteren Anweisungen wurde an ${response.email} gesendet`,
                                 type: AlertType.SUCCESS,
                                 mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
@@ -82,10 +80,8 @@ export class RegisterContainerComponent implements OnInit, OnDestroy {
         ).catch(
             () => {
                 this.store.dispatch(new UpdateIsBusySOA({ isBusy: false }));
-                this.store.dispatch(new ShowBannerSOA({
-                    predefined: '',
-                    custom: {
-                        // tslint:disable-next-line: max-line-length
+                this.store.dispatch(new ShowCustomBannerSOA({
+                    banner: {
                         message: `Fehler beim Registrieren. Eine E-mail mit weiteren Informationen wurde an ${details.email} gesendet. Wenn Sie keine E-mail erhalten, wenden Sie sich bitte direkt per E-mail an uns: ${this.supportContact}.`,
                         type: AlertType.ERROR,
                         mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }

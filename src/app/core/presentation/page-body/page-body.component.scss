@@ -4,13 +4,11 @@
 .mibi-page-body {
   position: relative;
   height: 100%;
-  display: flex;
-  flex-direction: column;
   overflow: auto;
 }
 
 .mibi-page-body__spinner {
-  position: fixed;
+  position: absolute;
   width: 100%;
   height: 100%;
   z-index: -1;
@@ -22,24 +20,17 @@
 }
 
 .mibi-page-body__banner {
-  flex: 0 0 auto;
-
-  @include mibi-layout-safari-fix();
-  // min-height: 0;
-
-  position: sticky;
-  top: 0;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  max-height: 100%;
+  overflow: auto;
   z-index: 1;
-  overflow: visible;
 }
 
 .mibi-page-body__main {
-  flex: 1 1 auto;
-
-  @include mibi-layout-safari-fix();
-
-  min-height: 0;
-  overflow: auto;
+  position: relative;
+  height: 100%;
   z-index: 0;
 }
 
@@ -48,12 +39,7 @@
 }
 
 .mibi-banner {
-  display: flex;
-  overflow: auto;
-
   @include mat-elevation(3);
-}
 
-.mibi-banner__content {
-  flex: 1 1 auto;
+  border-radius: 0 0 0.5rem 0.5rem;
 }

@@ -8,7 +8,7 @@ import { UserActionType } from '../../../shared/model/user-action.model';
 import { UserPasswordResetRequest } from '../../model/user.model';
 import { takeWhile } from 'rxjs/operators';
 import { ClientError } from '../../../core/model/client-error';
-import { ShowBannerSOA, UpdateIsBusySOA } from '../../../core/state/core.actions';
+import { UpdateIsBusySOA, ShowCustomBannerSOA } from '../../../core/state/core.actions';
 import { ContentMainState } from '../../../content/state/content.reducer';
 import { selectSupportContact } from '../../../content/state/content.selectors';
 import { ContentSlice } from '../../../content/content.state';
@@ -45,10 +45,8 @@ export class RecoveryContainerComponent implements OnInit, OnDestroy {
                     this.store$.dispatch(new UpdateIsBusySOA({ isBusy: false }));
                     this.router.navigate(['users/login']).then(
                         () => {
-                            this.store$.dispatch(new ShowBannerSOA({
-                                predefined: '',
-                                custom: {
-                                    // tslint:disable-next-line: max-line-length
+                            this.store$.dispatch(new ShowCustomBannerSOA({
+                                banner: {
                                     message: `Eine E-mail mit weiteren Anweisungen wurde an ${response.email} gesendet. Wenn Sie keine E-mail erhalten, könnte das bedeuten, daß Sie sich mit einer anderen E-mail-Adresse angemeldet haben.`,
                                     type: AlertType.SUCCESS,
                                     mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
@@ -62,10 +60,8 @@ export class RecoveryContainerComponent implements OnInit, OnDestroy {
             ).catch(
                 () => {
                     this.store$.dispatch(new UpdateIsBusySOA({ isBusy: false }));
-                    this.store$.dispatch(new ShowBannerSOA({
-                        predefined: '',
-                        custom: {
-                            // tslint:disable-next-line: max-line-length
+                    this.store$.dispatch(new ShowCustomBannerSOA({
+                        banner: {
                             message: `Fehler beim Passwort-Zurücksetzen. Eine E-mail mit weiteren Informationen wurde an ${email} gesendet. Wenn Sie keine E-mail erhalten, wenden Sie sich bitte direkt per E-mail an uns: ${this.supportContact}.`,
                             type: AlertType.ERROR,
                             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }

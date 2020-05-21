@@ -1,16 +1,15 @@
-<mibi-box-layout  x-overflow-handling  y-overflow-handling>
+<mibi-box-layout x-overflow-handling y-overflow-handling>
 
   <div class="mibi-page-body">
     <div class="mibi-page-body__spinner" [ngClass]="{'mibi-page-body__spinner--active':isBusy}">
       <mat-spinner *ngIf="isBusy" class="mibi-spinner" [color]="primary" _forceAnimations="true">
       </mat-spinner>
     </div>
-    <div class="mibi-page-body__banner">
-      <div class="mibi-banner">
-        <mibi-banner-container class="mibi-banner__content" [@slideInOut]="animationState"
-          (@slideInOut.done)="animationDone($event)">
-        </mibi-banner-container>
-      </div>
+    <div class="mibi-page-body__banner mibi-banner"
+      [@slideInOut]="animationState"
+      (@slideInOut.done)="animationDone($event)"
+    >
+      <mibi-banner-container></mibi-banner-container>
     </div>
     <div class="mibi-page-body__main"
       [@fadeAnimation]="o.isActivated ? (o.activatedRoute.url | async) : 'noRoute'"
@@ -19,5 +18,5 @@
       <router-outlet #o="outlet"></router-outlet>
     </div>
   </div>
-  
+
 </mibi-box-layout>
