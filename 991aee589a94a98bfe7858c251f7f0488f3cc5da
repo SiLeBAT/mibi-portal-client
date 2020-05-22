@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fb368d0e_8607a229",
+        "filename": "src/app/samples/analysis-stepper/components/analysis-stepper.component.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1015828
+      },
+      "writtenOn": "2020-05-22T12:29:12Z",
+      "side": 0,
+      "message": "this is the message for the institutes",
+      "range": {
+        "startLine": 70,
+        "startChar": 68,
+        "endLine": 70,
+        "endChar": 86
+      },
+      "revId": "991aee589a94a98bfe7858c251f7f0488f3cc5da",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}

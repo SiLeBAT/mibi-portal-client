@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "65d91971_8ba1720f",
+        "filename": "src/app/samples/analysis-stepper/components/analysis-stepper.component.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1015828
+      },
+      "writtenOn": "2020-05-22T12:29:12Z",
+      "side": 1,
+      "message": "quick fix: below some code changes nrl state directly (by sorting the nrls i think)",
+      "range": {
+        "startLine": 86,
+        "startChar": 69,
+        "endLine": 86,
+        "endChar": 80
+      },
+      "revId": "ce5228bdfdf9561d2ef9af091ea0c0aa55cbce7e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8e4dbb4a_33ab0eb2",
+        "filename": "src/app/samples/analysis-stepper/components/analysis-stepper.component.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1015828
+      },
+      "writtenOn": "2020-05-22T12:29:12Z",
+      "side": 1,
+      "message": "without this, the urgency is written also to the analysis data state.",
+      "range": {
+        "startLine": 129,
+        "startChar": 57,
+        "endLine": 129,
+        "endChar": 72
+      },
+      "revId": "ce5228bdfdf9561d2ef9af091ea0c0aa55cbce7e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
