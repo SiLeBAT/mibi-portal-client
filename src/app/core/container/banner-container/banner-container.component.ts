@@ -9,7 +9,6 @@ import { selectBannerData } from '../../state/core.selectors';
 import { HideBannerSOA } from '../../state/core.actions';
 import { BannerData } from '../../state/core.reducer';
 import { Observable } from 'rxjs';
-import { LogService } from '../../services/log.service';
 
 @Component({
     selector: 'mibi-banner-container',
@@ -162,8 +161,7 @@ export class BannerContainerComponent {
 
     constructor(
         private store$: Store<CoreMainSlice>,
-        private userActionService: UserActionService,
-        private logger: LogService
+        private userActionService: UserActionService
     ) {
         this.banner$ = this.store$.pipe(
             select(selectBannerData),
