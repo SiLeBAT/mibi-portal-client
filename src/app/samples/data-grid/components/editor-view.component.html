@@ -1,4 +1,5 @@
 <div *ngIf="isActive" class="mibi-editor"
+    [ngClass]="{ 'mibi-editor--header': isHeader }"
     [ngStyle]="{
         'top': clientRect.top + 'px',
         'left': clientRect.left + 'px',

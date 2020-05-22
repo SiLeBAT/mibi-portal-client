@@ -34,7 +34,7 @@
 
 .mibi-grid__sticky {
   position: sticky;
-  z-index: 2;
+  z-index: 1;
 }
 
 .mibi-grid__sticky--top {
@@ -46,9 +46,5 @@
 }
 
 .mibi-grid__sticky--top-left {
-  z-index: 3;
-}
-
-.mibi-editor {
-  z-index: 1;
+  z-index: 2;
 }
