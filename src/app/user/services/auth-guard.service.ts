@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import * as coreActions from '../../core/state/core.actions';
 import * as userActions from '../state/user.actions';
 import { Store, select } from '@ngrx/store';
@@ -15,7 +15,9 @@ import { UserMainSlice } from '../user.state';
 export class AuthGuard implements CanActivate {
 
     constructor(
-        private store: Store<UserMainSlice>) { }
+        private store: Store<UserMainSlice>,
+        private router: Router
+    ) { }
 
     canActivate(activated: ActivatedRouteSnapshot, snap: RouterStateSnapshot) {
         return this.store.pipe(select(selectCurrentUser)).pipe(
@@ -30,6 +32,9 @@ export class AuthGuard implements CanActivate {
                     }
                     return !isExpired;
                 }
+                this.router.navigate(['/users/login']).catch(() => {
+                    throw new Error('Unable to navigate.');
+                });
                 return false;
             })
         );
