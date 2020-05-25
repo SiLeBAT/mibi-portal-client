@@ -50,7 +50,7 @@ export class DataGridSelectionManager {
 
     startSelection(row: number, col: number, isColHeader: boolean, isRowHeader: boolean, rowCount: number, colCount: number): void {
         if (this.hasSelection) {
-            this.markDirty();
+            this.markDirtyAll();
         }
         this.anchor.set(row, col);
         this.selector.set(row, col);
@@ -58,7 +58,7 @@ export class DataGridSelectionManager {
         this.isAnchorOnRowHeader = isRowHeader;
         this.rowCount = rowCount;
         this.colCount = colCount;
-        this.markDirty();
+        this.markDirtyAll();
     }
 
     select(row: number, col: number): void {
@@ -69,19 +69,25 @@ export class DataGridSelectionManager {
 
         this.selector.set(row, col);
 
-        const markDirtyRows = (minRow: number, maxRow: number) => this.markDirtyRange(
-            minRow,
-            maxRow,
-            Math.min(this.firstCol, oldFirstCol),
-            Math.max(this.lastCol, oldLastCol)
-        );
+        const markDirtyRows = (minRow: number, maxRow: number) => {
+            this.markDirtyRange(
+                minRow,
+                maxRow,
+                Math.min(this.firstCol, oldFirstCol),
+                Math.max(this.lastCol, oldLastCol)
+            );
+            this.markDirtyRowHints(minRow, maxRow);
+        };
 
-        const markDirtyCols = (minCol: number, maxCol: number) => this.markDirtyRange(
-            Math.min(this.firstRow, oldFirstRow),
-            Math.max(this.lastRow, oldLastRow),
-            minCol,
-            maxCol
-        );
+        const markDirtyCols = (minCol: number, maxCol: number) => {
+            this.markDirtyRange(
+                Math.min(this.firstRow, oldFirstRow),
+                Math.max(this.lastRow, oldLastRow),
+                minCol,
+                maxCol
+            );
+            this.markDirtyColHints(minCol, maxCol);
+        };
 
         const markDirtyPart = (
             first1: number,
@@ -100,7 +106,7 @@ export class DataGridSelectionManager {
 
     clear(): void {
         if (this.hasSelection) {
-            this.markDirty();
+            this.markDirtyAll();
         }
         this.anchor.clear();
         this.selector.clear();
@@ -122,17 +128,27 @@ export class DataGridSelectionManager {
         return col >= this.firstCol && col <= this.lastCol;
     }
 
-    private markDirty(): void {
+    private markDirtyAll(): void {
         this.markDirtyRange(this.firstRow, this.lastRow, this.firstCol, this.lastCol);
+        this.markDirtyRowHints(this.firstRow, this.lastRow);
+        this.markDirtyColHints(this.firstCol, this.lastCol);
     }
 
     private markDirtyRange(minRow: number, maxRow: number, minCol: number, maxCol: number): void {
         for (let row = minRow; row <= maxRow; row++) {
-            this.changeDetector.markDirty(row, 0);
             for (let col = minCol; col <= maxCol; col++) {
                 this.changeDetector.markDirty(row, col);
             }
         }
+    }
+
+    private markDirtyRowHints(minRow: number, maxRow: number): void {
+        for (let row = minRow; row <= maxRow; row++) {
+            this.changeDetector.markDirty(row, 0);
+        }
+    }
+
+    private markDirtyColHints(minCol: number, maxCol: number): void {
         for (let col = minCol; col <= maxCol; col++) {
             this.changeDetector.markDirty(0, col);
         }
