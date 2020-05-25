@@ -11,16 +11,6 @@ import { SamplesGridTemplateContainer } from '../template-container';
 })
 export class SamplesGridDataCellTemplateComponent extends SamplesGridTemplateContainer<DataGridCellContext> {
 
-    get foo() {
-        // console.log('datacell');
-        return '';
-    }
-
-    get bar() {
-        // console.log('datatemplate');
-        return '';
-    }
-
     hasError(data: AnnotatedSampleDataEntry): boolean {
         return this.hasErrorCode(data, SampleValidationErrorCodes.ERROR);
     }

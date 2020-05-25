@@ -23,11 +23,6 @@ import { DataGridSelectionManager } from '../domain/selection-manager.entity';
 })
 export class DataGridCellViewComponent {
 
-    get foo() {
-        // console.log('gridcell');
-        return '';
-    }
-
     @Input() controller: DataGridCellController;
 
     @Input() row: number;

@@ -23,11 +23,6 @@ import { DataGridCellTool } from '../domain/cell-tool.entity';
 })
 export class DataGridEditorViewComponent {
 
-    get foo() {
-        // console.log('grid-editor');
-        return '';
-    }
-
     @Input() controller: DataGridCellController;
 
     @Output() mouseEvent = new EventEmitter<MouseEvent>();

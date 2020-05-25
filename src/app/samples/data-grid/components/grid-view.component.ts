@@ -50,11 +50,6 @@ enum MouseButtons {
 })
 export class DataGridViewComponent implements AfterViewInit, OnChanges {
 
-    get foo() {
-        // console.log('DataGrid');
-        return '';
-    }
-
     @Input() model: DataGridViewModel;
     @Input() cellTemplates: DataGridTemplateMap<DataGridCellContext>;
     @Input() editorTemplates: DataGridTemplateMap<DataGridEditorContext>;

@@ -10,11 +10,6 @@ import { DataGridEditorContext } from '../../../data-grid/data-grid.model';
 })
 export class SamplesGridDataEditorTemplateComponent extends SamplesGridTemplateContainer<DataGridEditorContext> {
 
-    get foo() {
-        // console.log('editor');
-        return '';
-    }
-
     onEnter(e: KeyboardEvent): void {
         e.preventDefault();
     }

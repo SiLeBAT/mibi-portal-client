@@ -13,11 +13,6 @@ import { SamplesGridTemplateContainer } from './template-container';
 })
 export class SamplesGridViewComponent implements OnInit {
 
-    get foo() {
-        // console.log('samples');
-        return '';
-    }
-
     @Input() samples: Sample[];
     @Output() dataChange = new EventEmitter<ChangedDataGridField>();
 
