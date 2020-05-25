@@ -1,14 +1,13 @@
-import { Injectable, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
+import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
-import { UserActionViewModelConfiguration, UserActionType, ColorType, UserActionComponent } from '../../shared/model/user-action.model';
-import { GenericActionItemComponent } from '../presentation/generic-action-item/generic-action-item.component';
+import { UserActionViewModelConfiguration, UserActionType, ColorType } from '../../shared/model/user-action.model';
 import { Store } from '@ngrx/store';
 import { ClientError } from '../model/client-error';
 import { Router } from '@angular/router';
 import { ValidateSamplesMSA } from '../../samples/validate-samples/validate-samples.actions';
 import { CoreMainSlice } from '../core.state';
 import { ExportExcelFileSSA, ImportExcelFileMSA, DestroySampleSetSOA } from '../../samples/state/samples.actions';
-import { DisplayDialogMSA } from '../state/core.actions';
+import { ShowDialogMSA } from '../state/core.actions';
 import { SendSamplesOpenAnalysisDialogSSA } from '../../samples/analysis-stepper/state/analysis-stepper.actions';
 
 @Injectable({
@@ -20,7 +19,6 @@ export class UserActionService {
         label: 'Validieren',
         type: UserActionType.VALIDATE,
         onExecute: this.validate.bind(this),
-        component: GenericActionItemComponent,
         icon: 'spellcheck',
         color: ColorType.ACCENT
     },
@@ -28,7 +26,6 @@ export class UserActionService {
         label: 'Hochladen',
         type: UserActionType.UPLOAD,
         onExecute: this.import.bind(this),
-        component: GenericActionItemComponent,
         icon: 'publish',
         color: ColorType.ACCENT
     },
@@ -36,7 +33,6 @@ export class UserActionService {
         label: 'Exportieren',
         type: UserActionType.EXPORT,
         onExecute: this.export.bind(this),
-        component: GenericActionItemComponent,
         icon: 'file_copy',
         color: ColorType.ACCENT
     },
@@ -44,7 +40,6 @@ export class UserActionService {
         label: 'Senden',
         type: UserActionType.SEND,
         onExecute: this.send.bind(this),
-        component: GenericActionItemComponent,
         icon: 'send',
         color: ColorType.ACCENT
     },
@@ -52,7 +47,6 @@ export class UserActionService {
         label: 'Schließen',
         type: UserActionType.DISMISS_BANNER,
         onExecute: () => null,
-        component: GenericActionItemComponent,
         icon: '',
         color: ColorType.ACCENT
     },
@@ -60,7 +54,6 @@ export class UserActionService {
         label: 'Schließen',
         type: UserActionType.CLOSE,
         onExecute: this.close.bind(this),
-        component: GenericActionItemComponent,
         icon: 'clear',
         color: ColorType.ACCENT
     },
@@ -70,14 +63,12 @@ export class UserActionService {
         onExecute: () => {
             window.open('https://www.bfr.bund.de/cm/343/Einsendebogen-v14-1.xlsx', '_blank');
         },
-        component: GenericActionItemComponent,
         icon: 'assignment_returned',
         color: ColorType.ACCENT
     }];
 
     constructor(
-        private store: Store<CoreMainSlice>, private router: Router, private componentFactoryResolver: ComponentFactoryResolver) {
-    }
+        private store: Store<CoreMainSlice>, private router: Router) { }
 
     getConfigOfType(type: UserActionType): UserActionViewModelConfiguration {
         const config = _.find(this.userActionConfiguration, (c: UserActionViewModelConfiguration) => c.type === type);
@@ -85,7 +76,6 @@ export class UserActionService {
             label: '',
             type: UserActionType.CUSTOM,
             onExecute: () => null,
-            component: GenericActionItemComponent,
             icon: '',
             color: ColorType.ACCENT
         };
@@ -96,17 +86,9 @@ export class UserActionService {
             label: 'Navigieren',
             type: UserActionType.NAVIGATE,
             onExecute: this.navigate.bind(this, url),
-            component: GenericActionItemComponent,
             icon: '',
             color: ColorType.ACCENT
         };
-    }
-
-    createComponent(ref: ViewContainerRef, configuration: UserActionViewModelConfiguration) {
-        const componentFactory = this.componentFactoryResolver.resolveComponentFactory(configuration.component);
-        const componentRef = ref.createComponent(componentFactory);
-        (componentRef.instance as UserActionComponent).configuration = configuration;
-        return componentRef;
     }
 
     private navigate(url: string) {
@@ -132,7 +114,7 @@ export class UserActionService {
     }
 
     private close() {
-        this.store.dispatch(new DisplayDialogMSA({
+        this.store.dispatch(new ShowDialogMSA({
             message: `Wenn Sie die Tabelle schließen, gehen Ihre Änderungen verloren. Wollen Sie das?`,
             title: 'Schließen',
             mainAction: {
@@ -142,7 +124,6 @@ export class UserActionService {
                     this.store.dispatch(new DestroySampleSetSOA());
                     this.navigate('/upload');
                 },
-                component: GenericActionItemComponent,
                 icon: '',
                 color: ColorType.PRIMARY,
                 focused: true
@@ -152,7 +133,6 @@ export class UserActionService {
                 label: 'Abbrechen',
                 onExecute: () => {
                 },
-                component: GenericActionItemComponent,
                 icon: '',
                 color: ColorType.PRIMARY
             }

@@ -2,11 +2,9 @@
 @import "../../samples-grid.styles";
 
 .mibi-text-cell {
+  @include mibi-samples-grid-default-cell-style();
+
   height: 100%;
-  padding: $mibi-samples-grid-cell-padding;
-  font-size: $mibi-samples-grid-font-size;
-  line-height: normal;
-  background-color: $background-color;
 }
 
 .mibi-text-cell--readonly {

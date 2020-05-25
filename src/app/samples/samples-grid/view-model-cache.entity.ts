@@ -1,64 +1,171 @@
-import { DataGridCellViewModel, DataGridViewModel, DataGridRowViewModel } from '../data-grid/view-model.model';
+import {
+    DataGridCellViewModel,
+    DataGridColId,
+    DataGridViewModel,
+    DataGridCellData,
+    DataGridRowId,
+    DataGridMap,
+    DataGridRowMap
+} from '../data-grid/data-grid.model';
 import { Sample } from '../model/sample-management.model';
 import { SamplesGridModel } from './samples-grid.model';
 
 export class SamplesGridViewModelCacheBySampleCount {
-    private readonly model: SamplesGridModel;
     private readonly headerCount = 1;
 
-    private readonly headerCellViewModels: DataGridCellViewModel[];
-    private readonly dataCellViewModels: DataGridCellViewModel[];
+    private readonly cols: DataGridColId[];
+    private readonly headerModelRowMap: DataGridRowMap<DataGridCellViewModel>;
+    private readonly headerDataRowMap: DataGridRowMap<DataGridCellData>;
+    private readonly modelRowMap: DataGridRowMap<DataGridCellViewModel>;
 
+    private oldSamples: Sample[] = [];
     private viewModel: DataGridViewModel;
 
-    constructor(model: SamplesGridModel) {
-        this.model = model;
-        this.headerCellViewModels = this.createHeaderCellViewModels();
-        this.dataCellViewModels = this.createDataCellViewModels();
-        this.createViewModel([]);
+    constructor(private model: SamplesGridModel) {
+        this.cols = this.model.columns.map(colModel => colModel.colId);
+        this.headerModelRowMap = this.createHeaderModelRowMap();
+        this.headerDataRowMap = this.createHeaderDataRowMap();
+        this.modelRowMap = this.createModelRowMap();
+
+        this.viewModel = {
+            rows: [this.model.headerRowId],
+            cols: this.cols,
+            cellModels: {
+                [this.model.headerRowId]: this.headerModelRowMap
+            },
+            cellData: {
+                [this.model.headerRowId]: this.headerDataRowMap
+            }
+        };
     }
 
-    getViewModel(samples: Sample[]): DataGridViewModel {
-        if (this.viewModel.rowCount !== samples.length + this.headerCount) {
-            this.createViewModel(samples);
+    update(samples: Sample[]): DataGridViewModel {
+        if (samples === this.oldSamples) {
+            return this.viewModel;
         }
+
+        if (this.viewModel.rows.length !== samples.length + this.headerCount) {
+            this.viewModel = this.updateModel(samples);
+        }
+
+        this.viewModel = this.updateData(this.oldSamples, samples);
+        this.oldSamples = samples;
 
         return this.viewModel;
     }
 
-    private createHeaderCellViewModels(): DataGridCellViewModel[] {
-        return this.model.columns.map(model => {
-            return {
-                uId: model.colId,
-                isRowHeader: model.isRowHeader,
+    // Create ViewModel
+
+    private createHeaderModelRowMap(): DataGridRowMap<DataGridCellViewModel> {
+        const modelMap: DataGridRowMap<DataGridCellViewModel> = {};
+        this.model.columns.forEach(colModel => {
+            modelMap[colModel.colId] = {
+                isRowHeader: colModel.isRowHeader,
                 isColHeader: true,
-                isReadOnly: true
+                isReadOnly: true,
+                cellTemplateId: this.model.headerCellType
             };
         });
+        return modelMap;
     }
 
-    private createDataCellViewModels(): DataGridCellViewModel[] {
-        return this.model.columns.map(model => {
-            return {
-                uId: model.colId,
-                isRowHeader: model.isRowHeader,
+    private createHeaderDataRowMap(): DataGridRowMap<DataGridCellData> {
+        const dataMap: DataGridRowMap<DataGridCellData> = {};
+        this.model.columns.forEach(colModel => {
+            dataMap[colModel.colId] = colModel.headerText;
+        });
+        return dataMap;
+    }
+
+    private createModelRowMap(): DataGridRowMap<DataGridCellViewModel> {
+        const modelMap: DataGridRowMap<DataGridCellViewModel> = {};
+        this.model.columns.forEach(colModel => {
+            modelMap[colModel.colId] = {
+                isRowHeader: colModel.isRowHeader,
                 isColHeader: false,
-                isReadOnly: model.isReadOnly
+                isReadOnly: colModel.isReadOnly,
+                cellTemplateId: colModel.cellType,
+                editorTemplateId: colModel.editorType
             };
         });
+        return modelMap;
     }
 
-    private createViewModel(samples: Sample[]): void {
-        const rows: DataGridRowViewModel[] = [];
-        rows.push({ cells: this.headerCellViewModels, uId: this.model.headerRowId });
+    private createDataRowMap(sample: Sample, sampleIndex: number): DataGridRowMap<DataGridCellData> {
+        const dataMap: DataGridRowMap<DataGridCellData> = {};
+        this.model.columns.forEach(colModel => {
+            dataMap[colModel.colId] = colModel.getData(sample, sampleIndex);
+        });
+        return dataMap;
+    }
+
+    // Update Model
+
+    private updateModel(samples: Sample[]): DataGridViewModel {
+        const rows: DataGridRowId[] = [this.model.headerRowId];
+        const modelMap: DataGridMap<DataGridCellViewModel> = {
+            [this.model.headerRowId]: this.headerModelRowMap
+        };
+
         samples.forEach((sample, index) => {
-            rows.push({ cells: this.dataCellViewModels, uId: this.model.getSampleRowId(index) });
+            const rowId = this.model.getSampleRowId(index);
+            rows.push(rowId);
+            modelMap[rowId] = this.modelRowMap;
         });
 
-        this.viewModel = {
+        return {
+            ...this.viewModel,
             rows: rows,
-            colCount: this.model.columns.length,
-            rowCount: rows.length
+            cellModels: modelMap
         };
+    }
+
+    // Update Data
+
+    private updateData(oldSamples: Sample[], samples: Sample[]): DataGridViewModel {
+        const oldDataMap = this.viewModel.cellData;
+        const dataMap: DataGridMap<DataGridCellData> = {};
+
+        dataMap[this.model.headerRowId] = this.headerDataRowMap;
+
+        samples.forEach((sample, index) => {
+            const rowId = this.model.getSampleRowId(index);
+            if (!oldSamples[index]) {
+                dataMap[rowId] = this.createDataRowMap(sample, index);
+            } else {
+                dataMap[rowId] = this.updateDataRowMap(oldSamples[index], sample, index, oldDataMap[rowId]);
+            }
+        });
+
+        return {
+            ...this.viewModel,
+            cellData: dataMap
+        };
+    }
+
+    private updateDataRowMap(
+        oldSample: Sample,
+        newSample: Sample,
+        sampleIndex: number,
+        oldDataMap: DataGridRowMap<DataGridCellData>
+    ): DataGridRowMap<DataGridCellData> {
+        if (newSample === oldSample) {
+            return oldDataMap;
+        }
+
+        const dataMap: DataGridRowMap<DataGridCellData> = {};
+
+        this.model.columns.forEach(colModel => {
+            const oldData = colModel.getData(oldSample, sampleIndex);
+            const newData = colModel.getData(newSample, sampleIndex);
+
+            if (newData !== oldData) {
+                dataMap[colModel.colId] = newData;
+            } else {
+                dataMap[colModel.colId] = oldDataMap[colModel.colId];
+            }
+        });
+
+        return dataMap;
     }
 }

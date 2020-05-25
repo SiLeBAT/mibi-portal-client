@@ -15,7 +15,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { DialogComponent } from './presentation/dialog/dialog.component';
 import { CompileDirective } from './directive/compile.directive';
 import { UploadActionItemComponent } from './presentation/upload-action-item/upload-action-item.component';
-import { LayoutBoxComponent } from './presentation/layout-box/layout-box.component';
+import { BoxLayoutComponent } from './box-layout/box-layout.component';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { SHARED_SLICE_NAME } from './shared.state';
@@ -56,7 +56,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
         UploadActionItemComponent,
         SingleCenterCardLayoutComponent,
         WallOfTextLayoutComponent,
-        LayoutBoxComponent,
+        BoxLayoutComponent,
         DialogViewComponent,
         NewDialogComponent
     ],
@@ -68,7 +68,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
         UploadContainerComponent,
         SingleCenterCardLayoutComponent,
         WallOfTextLayoutComponent,
-        LayoutBoxComponent,
+        BoxLayoutComponent,
         DialogViewComponent,
         NewDialogComponent
     ],

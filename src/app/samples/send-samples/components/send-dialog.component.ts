@@ -10,7 +10,6 @@ import { selectSendSamplesIsFileAlreadySent } from '../state/send-samples.select
 import { sendSamplesSendDialogStrings, sendSamplesSendDialogConfiguration } from '../send-samples.constants';
 import * as _ from 'lodash';
 import { SendSamplesSSA } from '../state/send-samples.actions';
-import { DisplayBannerSOA } from '../../../core/state/core.actions';
 import { selectImportedFileName } from '../../state/samples.selectors';
 import { SendSamplesOpenAnalysisDialogSSA } from '../../analysis-stepper/state/analysis-stepper.actions';
 

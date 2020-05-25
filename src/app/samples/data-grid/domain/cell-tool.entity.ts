@@ -1,6 +1,8 @@
+import { DataGridChangeDetector } from './change-detector.entity';
+
 export class DataGridCellTool {
-    private _row: number;
-    private _col: number;
+    private _row: number = -1;
+    private _col: number = -1;
 
     get row(): number {
         return this._row;
@@ -10,16 +12,25 @@ export class DataGridCellTool {
         return this._col;
     }
 
-    constructor(row: number = -1, col: number = -1) {
-        this.set(row, col);
+    get isActive(): boolean {
+        return !this.isOnCell(-1, -1);
     }
 
+    constructor(private readonly changeDetector: DataGridChangeDetector) { }
+
     set(row: number, col: number): void {
+        if (this.isActive) {
+            this.markDirty();
+        }
         this._row = row;
         this._col = col;
+        this.markDirty();
     }
 
     clear(): void {
+        if (this.isActive) {
+            this.markDirty();
+        }
         this._row = -1;
         this._col = -1;
     }
@@ -36,7 +47,7 @@ export class DataGridCellTool {
         return this._col === col;
     }
 
-    isActive(): boolean {
-        return !this.isOnCell(-1, -1);
+    private markDirty(): void {
+        this.changeDetector.markDirty(this._row, this._col);
     }
 }

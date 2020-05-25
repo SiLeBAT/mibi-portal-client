@@ -1,39 +1,40 @@
 import { samplesGridIdHeader, samplesGridNrlHeader, samplesGridSampleDataHeaders } from './column-headers.constants';
 import {
     SamplesGridColumnModel,
-    SamplesGridColumnType,
-    SamplesGridNrlModel,
-    SamplesGridIdModel,
-    SamplesGridDataModel,
-    SamplesGridModel
+    SamplesGridDataColumnModel,
+    SamplesGridModel,
+    SamplesGridCellType,
+    SamplesGridEditorType
 } from '../samples-grid.model';
+import { DataGridColId } from '../../data-grid/data-grid.model';
 
-function createIdModel(colId: number): SamplesGridIdModel {
+function createIdModel(colId: DataGridColId): SamplesGridColumnModel {
     return {
         colId: colId,
-        type: SamplesGridColumnType.ID,
+        cellType: SamplesGridCellType.TEXT,
         isRowHeader: true,
         isReadOnly: true,
         headerText: samplesGridIdHeader,
-        getId: (rowId) => rowId.toString()
+        getData: (sample, sampleIndex) => (sampleIndex + 1).toString()
     };
 }
 
-function createNrlModel(colId: number): SamplesGridNrlModel {
+function createNrlModel(colId: DataGridColId): SamplesGridColumnModel {
     return {
         colId: colId,
-        type: SamplesGridColumnType.NRL,
+        cellType: SamplesGridCellType.TEXT,
         isRowHeader: false,
         isReadOnly: true,
         headerText: samplesGridNrlHeader,
-        getNrl: (sample) => sample.sampleMeta.nrl
+        getData: (sample) => sample.sampleMeta.nrl
     };
 }
 
-function createDataModel(colId: number, selector: keyof typeof samplesGridSampleDataHeaders): SamplesGridDataModel {
+function createDataModel(colId: DataGridColId, selector: keyof typeof samplesGridSampleDataHeaders): SamplesGridDataColumnModel {
     return {
         colId: colId,
-        type: SamplesGridColumnType.DATA,
+        cellType: SamplesGridCellType.DATA,
+        editorType: SamplesGridEditorType.DATA,
         isRowHeader: false,
         isReadOnly: false,
         headerText: samplesGridSampleDataHeaders[selector],
@@ -69,6 +70,7 @@ const columnModels: SamplesGridColumnModel[] = [
 export const samplesGridModel: SamplesGridModel = {
     columns: columnModels,
     headerRowId: 0,
+    headerCellType: SamplesGridCellType.TEXT,
     getSampleRowId: (index) => index + 1,
     getSampleIndex: (rowId) => rowId - 1
 };

@@ -1,0 +1,28 @@
+@import "abstracts";
+@import "../../samples-grid.styles";
+
+.mibi-data-cell {
+  @include mibi-samples-grid-default-cell-style();
+
+  height: 100%;
+}
+
+.mibi-data-cell--auto-correction {
+  background-color: mat-color($primary-palette, 100);
+  font-weight: bold;
+}
+
+.mibi-data-cell--warning {
+  background-color: mat-color($secondary-palette, 100);
+  font-weight: bold;
+}
+
+.mibi-data-cell--error {
+  background-color: mat-color($error-palette, 100);
+  font-weight: bold;
+}
+
+.mibi-data-cell--edited {
+  outline: $mibi-sampels-grid-edit-color solid 1px;
+  outline-offset: -1.5px;
+}

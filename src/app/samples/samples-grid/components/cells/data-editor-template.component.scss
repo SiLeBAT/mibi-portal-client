@@ -1,12 +1,11 @@
 @import "abstracts";
 @import "../../samples-grid.styles";
 
-@mixin mibi-text-style {
-  padding: $mibi-samples-grid-cell-padding;
+@mixin mibi-editor-style {
+  @include mibi-samples-grid-default-cell-style();
+
   padding-bottom: 0.5rem;
   padding-right: 0.5rem;
-  font-size: $mibi-samples-grid-font-size;
-  line-height: normal;
   white-space: pre-wrap;
 }
 
@@ -22,18 +21,17 @@
 }
 
 .mibi-editor {
+  @include mibi-editor-style();
   @include mat-elevation(3);
-  @include mibi-text-style();
 
   overflow: hidden;
   outline: $mibi-sampels-grid-edit-color solid 3px;
   outline-offset: -3px;
-  border: none;
   background-color: $background-color;
 }
 
 .mibi-ghost-editor {
-  @include mibi-text-style();
+  @include mibi-editor-style();
 
   color: transparent;
 }

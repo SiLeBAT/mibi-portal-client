@@ -1,0 +1,42 @@
+<div class="mibi-panel"
+    (mousedown)="onScrollContainerMouseDown($event)"
+>
+    <div class="mibi-panel__overflow"
+        (mousedown)="onContainerMouseDown($event)"
+    ></div>
+    <!-- this additional container for the grid improves the overall performance, do NOT remove -->
+    <div class="mibi-panel__content">
+        <div #grid class="mibi-grid"
+            [ngStyle]="{
+                'grid-template-columns': 'repeat(' + colCount + ', auto)',
+                'grid-auto-rows': 'min-content'
+            }"
+            (mousedown)="onGridMouseDown($event)"
+        >
+            <ng-container *ngFor="let rowId of rows; let row=index">
+                <mibi-data-grid-cell-view *ngFor="let colId of cols; let col=index"
+                    [ngClass]="{
+                        'mibi-grid__cell': !isHeader(row, col),
+                        'mibi-grid__sticky': isHeader(row, col),
+                        'mibi-grid__sticky--top': isColHeader(row, col),
+                        'mibi-grid__sticky--left': isRowHeader(row, col),
+                        'mibi-grid__sticky--top-left': isGridHeader(row, col)
+                    }"
+                    [mibiDataGridDirtyEmitter]="getCellDirtyEmitter(rowId, colId)"
+                    [controller]="cellController" 
+                    [row]="row"
+                    [col]="col"
+                    (mouseEvent)="onCellMouseEvent($event, row, col)"
+                ></mibi-data-grid-cell-view>
+            </ng-container>
+        </div>
+    </div>
+    <mibi-data-grid-editor-view
+        [mibiDataGridDirtyEmitter]="getEditorDirtyEmitter()"
+        [controller]="cellController"
+        (mouseEvent)="onEditorMouseEvent($event)"
+        (dataChange)="onEditorDataChange($event)"
+        (confirm)="onEditorConfirm()"
+        (cancel)="onEditorCancel()"
+    ></mibi-data-grid-editor-view>
+</div>
