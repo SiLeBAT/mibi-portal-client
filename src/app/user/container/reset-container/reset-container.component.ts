@@ -27,7 +27,7 @@ export class ResetContainerComponent {
                     this.store.dispatch(new coreActions.UpdateIsBusySOA({ isBusy: false }));
                     this.router.navigate(['users/login']).then(
                         () => {
-                            this.store.dispatch(new coreActions.DisplayBannerSOA({ predefined: 'passwordChangeSuccess' }));
+                            this.store.dispatch(new coreActions.ShowBannerSOA({ predefined: 'passwordChangeSuccess' }));
                         }
                     ).catch(() => {
                         throw new Error('Unable to navigate.');
@@ -36,7 +36,7 @@ export class ResetContainerComponent {
             ).catch(
                 () => {
                     this.store.dispatch(new coreActions.UpdateIsBusySOA({ isBusy: false }));
-                    this.store.dispatch(new coreActions.DisplayBannerSOA({ predefined: 'passwordChangeFailure' }));
+                    this.store.dispatch(new coreActions.ShowBannerSOA({ predefined: 'passwordChangeFailure' }));
                 }
 
             );

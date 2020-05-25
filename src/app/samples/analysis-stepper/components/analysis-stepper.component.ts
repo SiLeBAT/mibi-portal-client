@@ -1,4 +1,3 @@
-import { ClientError } from './../../../core/model/client-error';
 import { Urgency } from './../../model/sample.enums';
 import * as _ from 'lodash';
 import { map } from 'rxjs/internal/operators/map';
@@ -9,7 +8,7 @@ import { SendSamplesState } from './../../send-samples/state/send-samples.reduce
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store, select, createSelector } from '@ngrx/store';
-import { selectFormData } from '../../state/samples.selectors';
+import { selectFormData, selectImportedFileName } from '../../state/samples.selectors';
 import { Sample, Analysis, SampleMeta } from '../../model/sample-management.model';
 import { SamplesMainSlice, SamplesSlice } from '../../samples.state';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -21,7 +20,7 @@ import { UpdateSampleMetaDataSOA } from '../../state/samples.actions';
 import { selectNRLs } from '../../../shared/nrl/state/nrl.selectors';
 import { NRLState } from '../../../shared/nrl/state/nrl.reducer';
 import { SharedSlice } from '../../../shared/shared.state';
-import { DisplayBannerSOA } from '../../../core/state/core.actions';
+import { ShowBannerSOA } from '../../../core/state/core.actions';
 import { tap } from 'rxjs/internal/operators/tap';
 
 interface AnalysisStepViewModel {
@@ -64,11 +63,14 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-
         this.stepperViewModel$ = this.store$.pipe(
             tap(state => {
                 if (selectSendSamplesIsFileAlreadySent(state)) {
-                    this.warnings.push(sendSamplesSendDialogStrings.commentAlreadySent);
+                    this.warnings.push(
+                        sendSamplesSendDialogStrings.warningAlreadySendPre
+                        + selectImportedFileName(state)
+                        + sendSamplesSendDialogStrings.warningAlreadySendPost
+                    );
                 }
             }),
             select(createSelector<SamplesMainSlice | SharedSlice<NRLState> | SamplesSlice<SendSamplesState>,
@@ -81,7 +83,7 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
                     nrls: NRLDTO[]) => ({ samples, nrls })
             )),
             take(1),
-            map(({ samples, nrls }) => this.createViewModel(samples, nrls))
+            map(({ samples, nrls }) => this.createViewModel(samples, _.cloneDeep(nrls)))
         );
     }
 
@@ -91,7 +93,7 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
     }
 
     onCancel() {
-        this.store$.dispatch(new DisplayBannerSOA({ predefined: 'sendCancel' }));
+        this.store$.dispatch(new ShowBannerSOA({ predefined: 'sendCancel' }));
         this.close();
     }
 
@@ -124,7 +126,7 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
         return Object.keys(values).reduce((acc: { analysis: Partial<Analysis>, urgency: Urgency}, v) => {
 
             const prop: keyof Analysis = this.getPropertyForAnalysisKey(v);
-            if (v !== 'compareHuman' && v !== 'other') {
+            if (v !== 'compareHuman' && v !== 'other' && v !== 'urgency') {
                 acc.analysis[prop] = values[v];
             }
 
@@ -192,8 +194,7 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
 
             this.showOther[vm.abbreviation] = exampleSample ? !!exampleSample.sampleMeta.analysis.other : false;
 
-            const currentAnalysisValues: Partial<Analysis> = exampleSample ? exampleSample.sampleMeta.analysis : {
-            };
+            const currentAnalysisValues: Partial<Analysis> = exampleSample ? exampleSample.sampleMeta.analysis : {};
 
             const currentUrgency: string = exampleSample ? exampleSample.sampleMeta.urgency.toString() : 'NORMAL';
 
@@ -219,11 +220,12 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
                 },
                 error => { throw error; }
             );
-            this.store$.dispatch(new UpdateSampleMetaDataSOA(
-                {
+            // put on event queue to prevent data change during change detection cycle
+            setTimeout(() => {
+                this.store$.dispatch(new UpdateSampleMetaDataSOA({
                     [vm.abbreviation]: this.mapFormValues(vm.abbreviation, accumulator[vm.abbreviation].value)
-                }
-            ));
+                }));
+            });
             return accumulator;
         }, {});
     }

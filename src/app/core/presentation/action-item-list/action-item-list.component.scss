@@ -14,7 +14,8 @@
 
 .mibi-app-bar-bottom__left {
   flex: 1 1 auto;
-  padding: 0 $mibi-single-space;
+  min-height: calc(1rem + (2 * #{$mibi-half-space}));
+  padding: $mibi-half-space $mibi-single-space;
   font-size: 1rem;
   line-height: 1rem;
 }
@@ -31,15 +32,13 @@
   @include list-style-none();
 }
 
+.mibi-action-list__item {
+  flex: 0 1 auto;
+}
+
 .mibi-action-list__gap {
   flex: 1 0 auto;
 }
-
-//.mibi-action-list__item {
-// see: generic-action-item-component
-// it is not possible to style the flex behaviour here because the item is wrapped by the generic-action-item-component
-//flex:0 1 auto;
-//}
 
 .mibi-action-link {
   @include app-bar-link();

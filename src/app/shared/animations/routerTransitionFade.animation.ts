@@ -1,31 +1,41 @@
-import {
-    trigger,
-    animate,
-    transition,
-    style,
-    query
-} from '@angular/animations';
+import { trigger, animate, transition, style, query, state, keyframes, sequence, group } from '@angular/animations';
 
 export const fadeAnimation = trigger('fadeAnimation', [
+    transition('noRoute => *', []),
+    transition('* => samples', [
+        animate('0.3s', style({ 'opacity': '0' })),
+        animate('0.1s', style({ 'opacity': '0' }))
+    ]),
+    transition('samples => *', [
+        style({ 'opacity': '0' }),
+        animate('0.3s', style({ 'opacity': '1' }))
+    ]),
     transition('* => *', [
-        style({ 'position': 'relative' }),
+        animate('0.3s', style({ 'opacity': '0' })),
+        animate('0.3s', style({ 'opacity': '1' }))
+    ])
+]);
 
-        query(':enter, :leave', [
-            style({ 'position': 'absolute', 'left': '0', 'right': '0', 'top': '0', 'bottom': '0' })
+export const transitionAnimation = trigger('transitionAnimation', [
+    transition('noRoute => *', []),
+    transition('samples => *', []),
+    transition('* => *', [
+        query(':leave, :enter', [
+            style({ 'display': 'none' })
         ], { optional: true }),
 
-        query(':enter', [
-            style({ 'opacity': '0', 'overflow': 'hidden' })
-        ], { optional: true }),
+        group([
+            query(':leave', [
+                style({ 'display': 'block' }),
+                animate('0.3s'),
+                style({ 'display': 'none' })
+            ], { optional: true }),
 
-        query(':leave', [
-            animate('0.3s', style({ 'opacity': '0' })),
-            style({ 'overflow': 'hidden' })
-        ], { optional: true }),
+            query(':enter', [
+                animate('0.3s'),
+                style({ 'display': 'block' })
+            ], { optional: true })
+        ])
 
-        query(':enter', [
-            style({ 'overflow': 'auto' }),
-            animate('0.3s', style({ 'opacity': '1' }))
-        ], { optional: true })
     ])
 ]);

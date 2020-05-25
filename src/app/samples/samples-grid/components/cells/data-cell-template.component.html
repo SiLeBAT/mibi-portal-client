@@ -1,0 +1,12 @@
+<ng-template #template
+    let-data="data"
+>
+    <div class="mibi-data-cell"
+        [ngClass]="{
+            'mibi-data-cell--auto-correction': hasAutoCorrection(data),
+            'mibi-data-cell--warning': hasWarning(data),
+            'mibi-data-cell--error': hasError(data),
+            'mibi-data-cell--edited': isEdited(data)
+        }"
+    >{{data.value}}</div>
+</ng-template>

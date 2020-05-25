@@ -1,0 +1,32 @@
+<div *ngIf="isColHeader" 
+    class="mibi-shadow-chrome mibi-shadow-chrome--bottom"
+></div>
+<div *ngIf="isRowHeader"
+    class="mibi-shadow-chrome mibi-shadow-chrome--right"
+></div>
+<div *ngIf="isHeader"
+    class="mibi-overlay"
+    [ngClass]="{
+        'mibi-selection-hint': !isHoverHinted && isSelectionHinted,
+        'mibi-hover-hint': isHoverHinted && !isSelectionHinted,
+        'mibi-selection-hover-hint': isHoverHinted && isSelectionHinted
+    }"
+></div>
+<div class="mibi-overlay"
+    tabindex="-1"
+    [ngClass]="{
+        'mibi-selection--hover': isHovered,
+        'mibi-selection--selected': !hasCursor && isSelected,
+        'mibi-selection--selected-hover': !hasCursor && isSelected && isHovered,
+        'mibi-selection-anchor': !hasCursor && hasSelectionAnchor,
+        'mibi-cursor': hasCursor
+    }"
+    (mouseover)="onMouseEvent($event)"
+    (mousedown)="onMouseEvent($event)"
+    (click)="onMouseEvent($event)"
+    (mouseup)="onMouseEvent($event)"
+    (mouseout)="onMouseEvent($event)"
+></div>
+<ng-container
+    *ngTemplateOutlet="cellTemplate; context: cellContext"
+></ng-container>

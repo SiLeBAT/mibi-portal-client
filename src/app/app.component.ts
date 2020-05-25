@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
 import { environment } from '../environments/environment';
 import { GuardedUnloadComponent } from './shared/container/guarded-unload.component';
 import { Store, select } from '@ngrx/store';
@@ -9,19 +9,23 @@ import * as nrlActions from './shared/nrl/state/nrl.actions';
 import { TokenizedUser } from './user/model/user.model';
 import { SamplesMainSlice } from './samples/samples.state';
 import { selectHasEntries } from './samples/state/samples.selectors';
-import { UpdateIsBusySOA, DestroyBannerSOA, DisplayBannerSOA } from './core/state/core.actions';
+import { UpdateIsBusySOA, ShowBannerSOA } from './core/state/core.actions';
 
 @Component({
     selector: 'mibi-root',
     templateUrl: './app.component.html'
 })
 export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDestroy {
+    @HostBinding('@.disabled')
+    animationsDisabled: boolean;
 
     supportContact: string = environment.supportContact;
+    private readonly isIEOrEdge = /msie\s|trident\/|edge\//i.test(window.navigator.userAgent);
     private componentActive = true;
     private canUnload: boolean = true;
     constructor(private store$: Store<SamplesMainSlice>, private dataService: DataService) {
         super();
+        this.animationsDisabled = this.isIEOrEdge;
     }
 
     ngOnInit(): void {
@@ -55,7 +59,7 @@ export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDe
         ).catch(
             () => {
                 this.store$.dispatch(new UpdateIsBusySOA({ isBusy: false }));
-                this.store$.dispatch(new DisplayBannerSOA({ predefined: 'defaultError' }));
+                this.store$.dispatch(new ShowBannerSOA({ predefined: 'defaultError' }));
                 throw new Error();
             }
         );
@@ -86,7 +90,6 @@ export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDe
                     user.token = refreshResponse.token;
                     this.dataService.setCurrentUser(user);
                     this.store$.dispatch(new userActions.UpdateCurrentUserSOA(user));
-                    this.store$.dispatch(new DestroyBannerSOA());
                 } else {
                     this.store$.dispatch(new userActions.LogoutUserMSA());
                 }

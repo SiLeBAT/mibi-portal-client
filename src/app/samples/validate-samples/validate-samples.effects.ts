@@ -10,7 +10,7 @@ import { withLatestFrom, concatMap, map, catchError, concatAll, tap } from 'rxjs
 import { DataService } from '../../core/services/data.service';
 import { Sample } from '../model/sample-management.model';
 import { of, Observable } from 'rxjs';
-import { DisplayBannerSOA, UpdateIsBusySOA, DestroyBannerSOA } from '../../core/state/core.actions';
+import { ShowBannerSOA, UpdateIsBusySOA, HideBannerSOA } from '../../core/state/core.actions';
 import { LogService } from '../../core/services/log.service';
 import { SamplesMainSlice } from '../samples.state';
 import * as _ from 'lodash';
@@ -28,11 +28,12 @@ export class ValidateSamplesEffects {
     ) { }
 
     @Effect()
-    validateSamples$: Observable<UpdateSamplesSOA | DisplayBannerSOA | DestroyBannerSOA | UpdateIsBusySOA> = this.actions$.pipe(
+    validateSamples$: Observable<UpdateSamplesSOA | ShowBannerSOA | UpdateIsBusySOA> = this.actions$.pipe(
         ofType<ValidateSamplesMSA>(ValidateSamplesActionTypes.ValidateSamplesMSA),
         withLatestFrom(this.store$),
         tap(() => {
             this.store$.dispatch(new UpdateIsBusySOA({ isBusy: true }));
+            this.store$.dispatch(new HideBannerSOA());
         }),
         concatMap(([, state]) => {
             const sampleData = selectSamplesMainData(state);
@@ -40,7 +41,6 @@ export class ValidateSamplesEffects {
                 map((annotatedSamples: Sample[]) => {
                     return of(
                         new UpdateIsBusySOA({ isBusy: false }),
-                        new DestroyBannerSOA(),
                         new UpdateSamplesSOA(annotatedSamples)
                     );
                 }),
@@ -49,7 +49,7 @@ export class ValidateSamplesEffects {
                     this.logger.error('Failed to validate samples', error);
                     return of(
                         new UpdateIsBusySOA({ isBusy: false }),
-                        new DisplayBannerSOA({ predefined: 'validationFailure' })
+                        new ShowBannerSOA({ predefined: 'validationFailure' })
                     );
                 })
             );

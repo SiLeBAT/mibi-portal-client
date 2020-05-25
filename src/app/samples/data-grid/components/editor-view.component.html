@@ -1,0 +1,18 @@
+<div *ngIf="isActive" class="mibi-editor"
+    [ngClass]="{ 'mibi-editor--header': isHeader }"
+    [ngStyle]="{
+        'top': clientRect.top + 'px',
+        'left': clientRect.left + 'px',
+        'width': clientRect.width + 'px',
+        'height': clientRect.height + 'px'
+    }"
+    (mouseover)="onMouseEvent($event)"
+    (mousedown)="onMouseEvent($event)"
+    (click)="onMouseEvent($event)"
+    (mouseup)="onMouseEvent($event)"
+    (mouseout)="onMouseEvent($event)"
+>
+    <ng-container
+        *ngTemplateOutlet="editorTemplate; context: editorContext">
+    </ng-container>
+</div>

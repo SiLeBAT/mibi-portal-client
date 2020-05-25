@@ -1,5 +1,5 @@
 <mibi-dialog-view [config]="config" (confirm)="onConfirm()" (cancel)="onCancel()">
-    <mibi-layout-box>
+    <mibi-box-layout>
       <mat-form-field class="mibi-comment">
           <mat-label>
             Kommentar für das NRL
@@ -9,5 +9,5 @@
           {{commentInput.value?.length || 0}}/2000
         </mat-hint>
       </mat-form-field>
-    </mibi-layout-box>
+    </mibi-box-layout>
   </mibi-dialog-view>
