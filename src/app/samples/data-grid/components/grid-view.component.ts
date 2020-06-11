@@ -157,11 +157,12 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
 
         if (isGridDirty) {
             this.gridChangeDetector.detectChanges();
+            this.cursor.clear();
+            this.selection.clear();
         }
 
-        this.cursor.clear();
-        this.selection.clear();
         this.hover.clear();
+
         if (this.editor.isActive) {
             this.cancelEditor();
         }

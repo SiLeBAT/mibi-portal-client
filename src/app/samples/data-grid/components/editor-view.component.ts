@@ -42,10 +42,6 @@ export class DataGridEditorViewComponent {
         return this.controller.getClientRect(this.editor.row, this.editor.col);
     }
 
-    get isHeader(): boolean {
-        return this.model.isRowHeader || this.model.isColHeader;
-    }
-
     // TEMPLATE OUTLET PROPERTIES
 
     get editorTemplate(): TemplateRef<DataGridEditorContext> | undefined {
