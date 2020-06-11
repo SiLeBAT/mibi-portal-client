@@ -22,7 +22,17 @@
   font-weight: bold;
 }
 
+.mibi-data-cell--correction-offer {
+  padding-right: 1rem;
+}
+
 .mibi-data-cell--edited {
   outline: $mibi-sampels-grid-edit-color solid 1px;
   outline-offset: -1.5px;
+}
+
+.mibi-correction-offer-hint {
+  font-size: 1rem;
+  line-height: 1;
+  float: right;
 }

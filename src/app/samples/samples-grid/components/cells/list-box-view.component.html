@@ -1,0 +1,29 @@
+<div class="mibi-list-box-container">
+    <ul #listbox class="mibi-list-box">
+        <li *ngFor="let filteredValue of filteredValues; index as index; trackBy: trackByIndex"
+            class="mibi-list-item"
+            [ngClass]="{
+                'mibi-list-item--hover': hoveredItem === index,
+                'mibi-list-item--selected': selectedItem === index,
+                'mibi-list-item--selected-hover': hoveredItem === index && selectedItem === index
+            }"
+        >
+            <div class="mibi-filtered-text">
+                <span>{{filteredValue.pre}}</span>
+                <span class="mibi-filtered-text--bold">{{filteredValue.filter}}</span>
+                <span>{{filteredValue.post}}</span>
+            </div>
+            <!-- ghost text defines width of list-box and user interaction area  -->
+            <div class="mibi-ghost-text mibi-focus-item"
+                tabindex="-1"
+                (keydown.arrowdown)="onArrowDown($event)"
+                (keydown.arrowup)="onArrowUp($event)"
+                (keydown.enter)="onEnter($event)"
+                (keydown.esc)="onEsc($event)"
+                (mouseover)="onMouseOver($event, index)"
+                (mouseout)="onMouseOut($event, index)"
+                (click)="onClick($event, index)"
+            >{{values[index]}}</div>
+        </li>
+    </ul>
+</div>

@@ -4,13 +4,21 @@ import { DataGridEditorContext } from '../../../data-grid/data-grid.model';
 
 @Component({
     selector: 'mibi-samples-grid-data-editor-template',
-    templateUrl: './data-editor-template.component.html',
-    styleUrls: ['./data-editor-template.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Default
+    template: `
+        <ng-template #template
+            let-data="data"
+            let-dataChange="dataChange"
+            let-confirm="confirm"
+            let-cancel="cancel"
+        >
+            <mibi-samples-grid-data-editor-view
+                [data]="data"
+                (dataValueChange)="dataChange($event)"
+                (confirm)="confirm()"
+                (cancel)="cancel()"
+            ></mibi-samples-grid-data-editor-view>
+        </ng-template>
+    `,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SamplesGridDataEditorTemplateComponent extends SamplesGridTemplateContainer<DataGridEditorContext> {
-
-    onEnter(e: KeyboardEvent): void {
-        e.preventDefault();
-    }
-}
+export class SamplesGridDataEditorTemplateComponent extends SamplesGridTemplateContainer<DataGridEditorContext> {}
