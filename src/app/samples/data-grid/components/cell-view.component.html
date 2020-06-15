@@ -1,3 +1,6 @@
+<ng-container
+    *ngTemplateOutlet="cellTemplate; context: cellContext"
+></ng-container>
 <div *ngIf="isColHeader" 
     class="mibi-shadow-chrome mibi-shadow-chrome--bottom"
 ></div>
@@ -27,6 +30,3 @@
     (mouseup)="onMouseEvent($event)"
     (mouseout)="onMouseEvent($event)"
 ></div>
-<ng-container
-    *ngTemplateOutlet="cellTemplate; context: cellContext"
-></ng-container>

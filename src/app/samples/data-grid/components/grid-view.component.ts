@@ -157,11 +157,12 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
 
         if (isGridDirty) {
             this.gridChangeDetector.detectChanges();
+            this.cursor.clear();
+            this.selection.clear();
         }
 
-        this.cursor.clear();
-        this.selection.clear();
         this.hover.clear();
+
         if (this.editor.isActive) {
             this.cancelEditor();
         }
@@ -203,6 +204,7 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
 
     onEditorDataChange(e: DataGridEditorData): void {
         this.editorData = e;
+        this.detectChildChanges();
     }
 
     onEditorConfirm(): void {
@@ -368,7 +370,9 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
     }
 
     private onCellMouseOut(e: MouseEvent, row: number, col: number): void {
-        this.hover.clear();
+        if (!this.editor.isActive) {
+            this.hover.clear();
+        }
     }
 
     // PRIVATE UI METHODS

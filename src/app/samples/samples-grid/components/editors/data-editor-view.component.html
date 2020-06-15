@@ -1,0 +1,28 @@
+<div class="mibi-editor">
+    <div class="mibi-editor__item">
+    <!-- ngModel is splitted into attribute and event to capture all input events instead of change event only -->
+        <textarea #editor mibiSamplesGridAutoFocus rows="1" cols="1"
+            class="mibi-text-editor"
+            [ngModel]="editorValue"
+            (ngModelChange)="onEditorModelChange($event)"
+            (keydown.enter)="onEditorEnter($event)"
+            (keydown.esc)="onEditorEsc($event)"
+            (keydown.arrowdown)="onEditorArrowDown($event)"
+            (keydown.arrowup)="onEditorArrowUp($event)"
+        ></textarea>
+        <!-- ghost editor defines minimal size for the real editor-->
+        <div class="mibi-ghost-editor">{{editorValue + '\n'}}</div>
+    </div>
+    <div class="mibi-editor__item mibi-list">
+        <mibi-samples-grid-list-box-view *ngIf="isListActive"
+            [values]="listValues"
+            [filter]="listFilter"
+            [selection]="listSelection"
+            (selectionChange)="onListSelectionChange($event)"
+            (hoverChange)="onListHoverChange($event)"
+            (confirm)="onListConfirm($event)"
+            (focusAcquire)="onListFocusAcquire()"
+            (focusRelease)="onListFocusRelease()"
+        ></mibi-samples-grid-list-box-view>
+    </div>
+</div>

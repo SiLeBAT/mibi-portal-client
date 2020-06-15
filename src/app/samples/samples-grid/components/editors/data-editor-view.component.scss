@@ -9,21 +9,23 @@
   white-space: pre-wrap;
 }
 
-.mibi-editor-container {
-  position: relative;
-  height: 100%;
-}
-
-.mibi-editor-container__overlay {
-  position: absolute;
-  min-width: 100%;
-  min-height: 100%;
-}
-
 .mibi-editor {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: minmax(min-content, 100%);
+  grid-template-rows: minmax(min-content, 100%) 0;
+}
+
+.mibi-text-editor {
   @include mibi-editor-style();
   @include mat-elevation(3);
 
+  position: absolute;
+  resize: none;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   outline: $mibi-sampels-grid-edit-color solid 3px;
   outline-offset: -3px;
@@ -33,5 +35,14 @@
 .mibi-ghost-editor {
   @include mibi-editor-style();
 
+  height: 100%;
   color: transparent;
+}
+
+.mibi-editor__item {
+  position: relative;
+}
+
+.mibi-list {
+  display: grid;
 }

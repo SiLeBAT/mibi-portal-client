@@ -23,6 +23,10 @@ export class SamplesGridDataCellTemplateComponent extends SamplesGridTemplateCon
         return this.hasErrorCode(data, SampleValidationErrorCodes.AUTOCORRECTED);
     }
 
+    hasCorrectionOffers(data: AnnotatedSampleDataEntry): boolean {
+        return data.correctionOffer.length > 0;
+    }
+
     isEdited(data: AnnotatedSampleDataEntry): boolean {
         return data.oldValue !== undefined;
     }

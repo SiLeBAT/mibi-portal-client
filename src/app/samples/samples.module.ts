@@ -25,15 +25,17 @@ import { SendDialogComponent } from './send-samples/components/send-dialog.compo
 import { SendDialogViewComponent } from './send-samples/components/send-dialog-view.component';
 import { AnalysisStepperComponent } from './analysis-stepper/components/analysis-stepper.component';
 import { DataGridViewComponent } from './data-grid/components/grid-view.component';
-import { SamplesGridDataEditorTemplateComponent } from './samples-grid/components/cells/data-editor-template.component';
+import { SamplesGridDataEditorTemplateComponent } from './samples-grid/components/editors/data-editor-template.component';
 import { SamplesGridViewComponent } from './samples-grid/components/samples-grid-view.component';
 import { SamplesGridTextCellTemplateComponent } from './samples-grid/components/cells/text-cell-template.component';
 import { SamplesGridDataCellTemplateComponent } from './samples-grid/components/cells/data-cell-template.component';
 import { DataGridCellViewComponent } from './data-grid/components/cell-view.component';
-import { SamplesGridAutoFocusDirective } from './samples-grid/components/cells/auto-focus.directive';
+import { SamplesGridAutoFocusDirective } from './samples-grid/components/editors/auto-focus.directive';
 import { SamplesComponent } from './samples.component';
 import { DataGridEditorViewComponent } from './data-grid/components/editor-view.component';
 import { DataGridDirtyEmitterDirective } from './data-grid/components/dirty-emitter.directive';
+import { SamplesGridListBoxViewComponent } from './samples-grid/components/editors/list-box-view.component';
+import { SamplesGridDataEditorViewComponent } from './samples-grid/components/editors/data-editor-view.component';
 
 const SAMPLES_ROUTES = [
     { path: 'upload', component: UploadViewComponent },
@@ -74,6 +76,8 @@ const SAMPLES_ROUTES = [
         SamplesGridTextCellTemplateComponent,
         SamplesGridDataCellTemplateComponent,
         SamplesGridDataEditorTemplateComponent,
+        SamplesGridListBoxViewComponent,
+        SamplesGridDataEditorViewComponent,
         SamplesGridViewComponent,
         SamplesComponent
     ],

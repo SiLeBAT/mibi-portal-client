@@ -22,23 +22,27 @@ $mibi-selection-opacity: 0.2;
 
 .mibi-shadow--bottom {
   bottom: 0;
+  left: 0;
   height: 1px;
   box-shadow: 0 0.5px 2px 0 black;
 }
 
 .mibi-shadow-chrome--bottom {
   bottom: -2.5px;
+  left: 0;
   height: 2.5px;
   background-image: linear-gradient(to bottom, rgba(black, 0.4), rgba(white, 0));
 }
 
 .mibi-shadow--right {
+  top: 0;
   right: 0;
   width: 1px;
   box-shadow: 0.5px 0 2px 0 black;
 }
 
 .mibi-shadow-chrome--right {
+  top: 0;
   right: -2.5px;
   width: 2.5px;
   background-image: linear-gradient(to right, rgba(black, 0.4), rgba(white, 0));
@@ -46,8 +50,11 @@ $mibi-selection-opacity: 0.2;
 
 .mibi-overlay {
   position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
+  outline: none;
 }
 
 .mibi-hover-hint {

@@ -4,7 +4,8 @@ import {
     Input,
     TemplateRef,
     Output,
-    EventEmitter
+    EventEmitter,
+    ChangeDetectorRef
 } from '@angular/core';
 import {
     DataGridCellViewModel,
@@ -139,7 +140,8 @@ export class DataGridCellViewComponent {
     get cellContext(): DataGridCellContext {
         return {
             model: this.model,
-            data: this.data
+            data: this.data,
+            requestChangeDetection: () => this.changeDetectorRef.detectChanges()
         };
     }
 
@@ -152,6 +154,10 @@ export class DataGridCellViewComponent {
 
     private get model(): DataGridCellViewModel { return this.controller.getCellModel(this.row, this.col); }
     private get data(): DataGridCellData { return this.controller.getCellData(this.row, this.col); }
+
+    // LIFE CYCLE
+
+    constructor(private changeDetectorRef: ChangeDetectorRef) {}
 
     // EVENT HANDLERS
 

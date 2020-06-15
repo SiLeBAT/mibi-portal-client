@@ -2,10 +2,18 @@
 
 $mibi-sampels-grid-edit-color: darken(map-get($mibi-primary, A400), 25%);
 
-@mixin mibi-samples-grid-default-cell-style {
-  border: 0.5px solid $surface-color;
-  padding: calc(0.15rem - 0.5px) calc(0.3rem - 0.5px);
+$mibi-sampels-grid-cell-border: 0.5px solid $surface-color;
+$mibi-sampels-grid-cell-padding: calc(0.15rem - 0.5px) calc(0.3rem - 0.5px);
+
+@mixin mibi-samples-grid-default-text-style {
   font-size: 0.75rem;
   line-height: normal;
+}
+
+@mixin mibi-samples-grid-default-cell-style {
+  @include mibi-samples-grid-default-text-style();
+
+  border: $mibi-sampels-grid-cell-border;
+  padding: $mibi-sampels-grid-cell-padding;
   background-color: $background-color;
 }

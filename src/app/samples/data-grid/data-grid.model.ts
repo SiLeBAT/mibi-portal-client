@@ -29,6 +29,7 @@ export interface DataGridViewModel {
 export interface DataGridCellContext {
     readonly model: DataGridCellViewModel;
     readonly data: DataGridCellData;
+    requestChangeDetection(): void;
 }
 
 export interface DataGridEditorContext extends DataGridCellContext {
