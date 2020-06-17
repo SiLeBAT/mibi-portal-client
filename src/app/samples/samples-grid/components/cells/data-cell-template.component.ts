@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { AnnotatedSampleDataEntry, SampleValidationErrorCodes } from '../../../model/sample-management.model';
+import { AnnotatedSampleDataEntry, SampleValidationErrorLevel } from '../../../model/sample-management.model';
 import { DataGridCellContext } from '../../../data-grid/data-grid.model';
 import { SamplesGridTemplateContainer } from '../template-container';
 
@@ -12,15 +12,15 @@ import { SamplesGridTemplateContainer } from '../template-container';
 export class SamplesGridDataCellTemplateComponent extends SamplesGridTemplateContainer<DataGridCellContext> {
 
     hasError(data: AnnotatedSampleDataEntry): boolean {
-        return this.hasErrorCode(data, SampleValidationErrorCodes.ERROR);
+        return this.hasErrorLevel(data, SampleValidationErrorLevel.ERROR);
     }
 
     hasWarning(data: AnnotatedSampleDataEntry): boolean {
-        return this.hasErrorCode(data, SampleValidationErrorCodes.WARNING);
+        return this.hasErrorLevel(data, SampleValidationErrorLevel.WARNING);
     }
 
     hasAutoCorrection(data: AnnotatedSampleDataEntry): boolean {
-        return this.hasErrorCode(data, SampleValidationErrorCodes.AUTOCORRECTED);
+        return this.hasErrorLevel(data, SampleValidationErrorLevel.AUTOCORRECTED);
     }
 
     hasCorrectionOffers(data: AnnotatedSampleDataEntry): boolean {
@@ -31,7 +31,7 @@ export class SamplesGridDataCellTemplateComponent extends SamplesGridTemplateCon
         return data.oldValue !== undefined;
     }
 
-    private hasErrorCode(data: AnnotatedSampleDataEntry, code: SampleValidationErrorCodes): boolean {
-        return !!data.errors.find((error) => error.level === code);
+    private hasErrorLevel(data: AnnotatedSampleDataEntry, level: SampleValidationErrorLevel): boolean {
+        return !!data.errors.find((error) => error.level === level);
     }
 }

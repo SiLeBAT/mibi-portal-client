@@ -1,7 +1,7 @@
 <mibi-box-layout>
 
     <div class="mibi-last-change">
-        <div class="mibi-last-change__content mat-small" [ngClass]="tooltipClassName" #entry>Letzte Änderung:
+        <div #entry class="mibi-last-change__content mat-small">Letzte Änderung:
             {{lastChange$ | async | amDateFormat:'DD.MM.YYYY' }}</div>
     </div>
 

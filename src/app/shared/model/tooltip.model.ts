@@ -1,4 +1,4 @@
-export const TOOLTIP_CLASS_HOOK = 'tooltipster-text';
+import 'tooltipster';
 
 export enum ToolTipType {
     WARNING = 1,
@@ -16,18 +16,8 @@ export enum ToolTipTheme {
 
 export type ToolTipAlignment = 'bottom' | 'top' | 'left' | 'right';
 
-export interface ToolTipOptions {
-    repositionOnScroll: boolean;
-    animation: any;
-    delay: number;
-    theme: string;
-    touchDevices: boolean;
-    trigger: string;
-    contentAsHTML: boolean;
-    content: string;
-    side: any;
-    multiple: boolean;
-}
+export type ToolTipOptions = JQueryTooltipster.ITooltipsterOptions;
+
 export interface ToolTip {
     theme: string;
     alignmemt: ToolTipAlignment;
@@ -51,10 +41,10 @@ class DefaultToolTip implements ToolTip {
         return tooltipText;
     }
 
-    getOptions(commentList: string[]) {
+    getOptions(commentList: string[]): ToolTipOptions {
         return {
             repositionOnScroll: true,
-            animation: 'grow', // fade
+            animation: 'grow',
             delay: 0,
             theme: this.theme,
             touchDevices: false,
@@ -68,6 +58,6 @@ class DefaultToolTip implements ToolTip {
 }
 
 export function createToolTip(theme: ToolTipTheme,
-    alignmemt: ToolTipAlignment) {
+    alignmemt: ToolTipAlignment): ToolTip {
     return new DefaultToolTip(theme, alignmemt);
 }
