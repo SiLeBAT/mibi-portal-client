@@ -5,11 +5,6 @@
         'width': clientRect.width + 'px',
         'height': clientRect.height + 'px'
     }"
-    (mouseover)="onMouseEvent($event)"
-    (mousedown)="onMouseEvent($event)"
-    (click)="onMouseEvent($event)"
-    (mouseup)="onMouseEvent($event)"
-    (mouseout)="onMouseEvent($event)"
 >
     <ng-container
         *ngTemplateOutlet="editorTemplate; context: editorContext">

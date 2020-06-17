@@ -26,7 +26,11 @@
                     [controller]="cellController" 
                     [row]="row"
                     [col]="col"
-                    (mouseEvent)="onCellMouseEvent($event, row, col)"
+                    (mouseover)="onCellMouseEvent($event, row, col)"
+                    (mousedown)="onCellMouseEvent($event, row, col)"
+                    (click)="onCellMouseEvent($event, row, col)"
+                    (mouseup)="onCellMouseEvent($event, row, col)"
+                    (mouseout)="onCellMouseEvent($event, row, col)"
                 ></mibi-data-grid-cell-view>
             </ng-container>
         </div>
@@ -34,9 +38,13 @@
     <mibi-data-grid-editor-view
         [mibiDataGridDirtyEmitter]="getEditorDirtyEmitter()"
         [controller]="cellController"
-        (mouseEvent)="onEditorMouseEvent($event)"
         (dataChange)="onEditorDataChange($event)"
         (confirm)="onEditorConfirm()"
         (cancel)="onEditorCancel()"
+        (mouseover)="onEditorMouseEvent($event)"
+        (mousedown)="onEditorMouseEvent($event)"
+        (click)="onEditorMouseEvent($event)"
+        (mouseup)="onEditorMouseEvent($event)"
+        (mouseout)="onEditorMouseEvent($event)"
     ></mibi-data-grid-editor-view>
 </div>

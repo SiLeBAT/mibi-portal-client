@@ -16,7 +16,6 @@
     }"
 ></div>
 <div class="mibi-overlay"
-    tabindex="-1"
     [ngClass]="{
         'mibi-selection--hover': isHovered,
         'mibi-selection--selected': !hasCursor && isSelected,
@@ -24,9 +23,4 @@
         'mibi-selection-anchor': !hasCursor && hasSelectionAnchor,
         'mibi-cursor': hasCursor
     }"
-    (mouseover)="onMouseEvent($event)"
-    (mousedown)="onMouseEvent($event)"
-    (click)="onMouseEvent($event)"
-    (mouseup)="onMouseEvent($event)"
-    (mouseout)="onMouseEvent($event)"
 ></div>
