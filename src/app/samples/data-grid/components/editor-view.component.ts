@@ -26,8 +26,6 @@ export class DataGridEditorViewComponent {
 
     @Input() controller: DataGridCellController;
 
-    @Output() mouseEvent = new EventEmitter<MouseEvent>();
-
     @Output() dataChange = new EventEmitter<DataGridEditorData>();
     @Output() confirm = new EventEmitter<void>();
     @Output() cancel = new EventEmitter<void>();
@@ -73,10 +71,4 @@ export class DataGridEditorViewComponent {
     // LIFE CYCLE
 
     constructor(private changeDetectorRef: ChangeDetectorRef) {}
-
-    // EVENT HANDLERS
-
-    onMouseEvent(e: MouseEvent): void {
-        this.mouseEvent.emit(e);
-    }
 }

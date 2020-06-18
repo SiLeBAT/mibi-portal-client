@@ -36,6 +36,7 @@ import { DataGridEditorViewComponent } from './data-grid/components/editor-view.
 import { DataGridDirtyEmitterDirective } from './data-grid/components/dirty-emitter.directive';
 import { SamplesGridListBoxViewComponent } from './samples-grid/components/editors/list-box-view.component';
 import { SamplesGridDataEditorViewComponent } from './samples-grid/components/editors/data-editor-view.component';
+import { SamplesGridToolTipDirective } from './samples-grid/components/cells/tool-tip.directive';
 
 const SAMPLES_ROUTES = [
     { path: 'upload', component: UploadViewComponent },
@@ -73,6 +74,7 @@ const SAMPLES_ROUTES = [
         DataGridEditorViewComponent,
         DataGridViewComponent,
         SamplesGridAutoFocusDirective,
+        SamplesGridToolTipDirective,
         SamplesGridTextCellTemplateComponent,
         SamplesGridDataCellTemplateComponent,
         SamplesGridDataEditorTemplateComponent,

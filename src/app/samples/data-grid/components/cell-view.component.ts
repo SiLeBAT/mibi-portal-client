@@ -29,8 +29,6 @@ export class DataGridCellViewComponent {
     @Input() row: number;
     @Input() col: number;
 
-    @Output() mouseEvent = new EventEmitter<MouseEvent>();
-
     // TEMPLATE PROPERTIES
 
     get isRowHeader(): boolean {
@@ -158,10 +156,4 @@ export class DataGridCellViewComponent {
     // LIFE CYCLE
 
     constructor(private changeDetectorRef: ChangeDetectorRef) {}
-
-    // EVENT HANDLERS
-
-    onMouseEvent(e: MouseEvent): void {
-        this.mouseEvent.emit(e);
-    }
 }

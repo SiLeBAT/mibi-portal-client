@@ -5,6 +5,7 @@
         <mat-icon [inline]="true">arrow_drop_down</mat-icon>
     </div>
     <div class="mibi-data-cell"
+        [mibiSamplesGridToolTip]="data"
         [ngClass]="{
             'mibi-data-cell--auto-correction': hasAutoCorrection(data),
             'mibi-data-cell--warning': hasWarning(data),

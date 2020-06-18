@@ -48,7 +48,7 @@ export interface SampleSet {
     meta: SampleSetMetaData;
 }
 
-export enum SampleValidationErrorCodes {
+export enum SampleValidationErrorLevel {
     ERROR = 2,
     WARNING = 1,
     AUTOCORRECTED = 4

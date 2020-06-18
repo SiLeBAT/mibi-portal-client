@@ -11,6 +11,7 @@ $mibi-selection-opacity: 0.2;
   position: absolute;
   width: 100%;
   height: 100%;
+  pointer-events: none;
 }
 
 // elements with z-index -1 are buggy when scrolling in chrome
@@ -18,6 +19,7 @@ $mibi-selection-opacity: 0.2;
   position: absolute;
   width: 100%;
   height: 100%;
+  pointer-events: none;
 }
 
 .mibi-shadow--bottom {
@@ -54,7 +56,7 @@ $mibi-selection-opacity: 0.2;
   left: 0;
   width: 100%;
   height: 100%;
-  outline: none;
+  pointer-events: none;
 }
 
 .mibi-hover-hint {
