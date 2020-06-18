@@ -111,7 +111,9 @@ export class EntityFactoryService {
     private toSampleSetMetaData(dto: SampleSetMetaDTO): SampleSetMetaData {
         return {
             sender: dto.sender,
-            fileName: dto.fileName ? dto.fileName : ''
+            fileName: dto.fileName ? dto.fileName : '',
+            customerRefNumber: dto.customerRefNumber ? dto.customerRefNumber : '',
+            signatureDate: dto.signatureDate ? dto.signatureDate : ''
         };
     }
 

@@ -42,8 +42,11 @@ const initialMainData: SamplesMainData = {
             telephone: '',
             email: ''
         },
-        fileName: ''
+        fileName: '',
+        customerRefNumber: '',
+        signatureDate: ''
     }
+
 };
 
 // REDUCER

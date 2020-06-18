@@ -41,6 +41,8 @@ export interface Analysis {
 export interface SampleSetMetaData {
     sender: Address;
     fileName: string;
+    customerRefNumber: string;
+    signatureDate: string;
 }
 
 export interface SampleSet {

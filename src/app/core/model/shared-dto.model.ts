@@ -36,6 +36,8 @@ interface AnalysisDTO {
 export interface SampleSetMetaDTO {
     readonly sender: AddressDTO;
     readonly fileName?: string;
+    readonly customerRefNumber?: string;
+    readonly signatureDate?: string;
 }
 
 interface SampleValidationErrorDTO {

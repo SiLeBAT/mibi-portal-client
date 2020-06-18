@@ -80,7 +80,9 @@ export class DTOFactoryService {
     private fromSampleSetMeta(meta: SampleSetMetaData): SampleSetMetaDTO {
         return {
             sender: meta.sender,
-            fileName: meta.fileName
+            fileName: meta.fileName,
+            customerRefNumber: meta.customerRefNumber,
+            signatureDate: meta.signatureDate
         };
     }
 
