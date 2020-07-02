@@ -8,8 +8,6 @@
     "serve": "ng serve --proxy-config proxy.config.json --watch",
     "debug": "ng serve -o --proxy-config proxy.config.json --watch",
     "serve:production": "ng serve --proxy-config proxy.config.json --prod=true",
-    "dependency-check:production": "npx npm-auditor-ci --threshold low --ignoreDev",
-    "dependency-check:qa": "npx npm-auditor-ci --threshold low",
     "build:qa": "ng build --configuration=qa --output-path \"public\"",
     "prebuild:qa": "npm run clean",
     "build:production": "ng build --configuration=production --output-path \"public\"",
