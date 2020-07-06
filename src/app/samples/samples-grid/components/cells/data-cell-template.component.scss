@@ -27,8 +27,8 @@
 }
 
 .mibi-data-cell--edited {
-  outline: $mibi-sampels-grid-edit-color solid 1px;
-  outline-offset: -1.5px;
+  // box-shadow is aware of borders, so use it instead of outline
+  box-shadow: inset 0 0 0 1px $mibi-sampels-grid-edit-color;
 }
 
 .mibi-correction-offer-hint {
