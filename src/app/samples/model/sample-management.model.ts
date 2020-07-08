@@ -101,15 +101,6 @@ export interface SampleData {
     comment: AnnotatedSampleDataEntry;
     [key: string]: AnnotatedSampleDataEntry;
 }
-export interface ColConfig {
-    id: string;
-    title: string;
-    readOnly?: boolean;
-}
-
-export interface TableDataOutput {
-    changed: ChangedDataGridField;
-}
 
 export interface ChangedDataGridField {
     rowIndex: number;

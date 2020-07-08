@@ -2,10 +2,6 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { StoreModule } from '@ngrx/store';
-import { HotTableModule } from '@handsontable/angular';
-import { DataGridComponent } from './presentation/data-grid/data-grid.component';
-import { DataGridContainerComponent } from './container/data-grid-container/data-grid-container.component';
-import { SampleViewComponent } from './presentation/sample-view/sample-view.component';
 import { SharedModule } from '../shared/shared.module';
 import { UploadViewComponent } from './presentation/upload-view/upload-view.component';
 import { EffectsModule } from '@ngrx/effects';
@@ -46,7 +42,6 @@ const SAMPLES_ROUTES = [
 @NgModule({
     imports: [
         CommonModule,
-        HotTableModule.forRoot(),
         MatIconModule,
         MatButtonModule,
         MatDialogModule,
@@ -62,9 +57,6 @@ const SAMPLES_ROUTES = [
         CoreModule
     ],
     declarations: [
-        DataGridComponent,
-        DataGridContainerComponent,
-        SampleViewComponent,
         UploadViewComponent,
         SendDialogViewComponent,
         SendDialogComponent,
