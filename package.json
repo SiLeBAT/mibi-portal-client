@@ -55,7 +55,7 @@
     "@angular/platform-browser": "^8.2.14",
     "@angular/platform-browser-dynamic": "^8.2.14",
     "@angular/router": "^8.2.14",
-    "@auth0/angular-jwt": "~2.1.2",
+    "@auth0/angular-jwt": "~3.0.1",
     "@ngrx/effects": "~8.6.0",
     "@ngrx/router-store": "~8.6.0",
     "@ngrx/store": "~8.6.0",
