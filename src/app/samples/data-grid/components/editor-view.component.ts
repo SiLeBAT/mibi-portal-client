@@ -54,10 +54,10 @@ export class DataGridEditorViewComponent {
         return {
             model: this.model,
             data: this.data,
-            requestChangeDetection: () => this.changeDetectorRef.detectChanges(),
-            dataChange: (data) => this.dataChange.emit(data),
-            confirm: () => this.confirm.emit(),
-            cancel: () => this.cancel.emit()
+            requestChangeDetection: () => { this.changeDetectorRef.detectChanges(); },
+            dataChange: (data) => { this.dataChange.emit(data); },
+            confirm: () => { this.confirm.emit(); },
+            cancel: () => { this.cancel.emit(); }
         };
     }
 

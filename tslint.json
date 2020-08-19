@@ -187,7 +187,12 @@
     "unnecessary-bind": true,
     "number-literal-format": true,
     "promise-function-async": true,
+    "no-duplicate-imports": true,
+    "no-tautology-expression": true,
+    "static-this": true,
+    "no-void-expression": true,
 
-    "no-any": false
+    "no-any": false,
+    "no-unbound-method": false
   }
 }
