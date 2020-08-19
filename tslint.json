@@ -191,6 +191,7 @@
     "no-tautology-expression": true,
     "static-this": true,
     "no-void-expression": true,
+    "restrict-plus-operands": true,
 
     "no-any": false,
     "no-unbound-method": false

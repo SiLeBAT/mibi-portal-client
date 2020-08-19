@@ -23,7 +23,7 @@ export class LogEntry {
     buildLogString(): string {
         let ret: string = '';
         if (this.logWithDate) {
-            ret = new Date() + ' - ';
+            ret = new Date().toString() + ' - ';
         }
 
         ret += 'Type: ' + LogLevel[this.level];

@@ -92,8 +92,8 @@ export class UserMainEffects {
         moment.locale('de');
 
         const diffDuration = moment.duration(diffToDelay, 'seconds');
-        const minutes = ('0' + diffDuration.minutes()).slice(-2);
-        const seconds = ('0' + diffDuration.seconds()).slice(-2);
+        const minutes = ('0' + diffDuration.minutes().toString()).slice(-2);
+        const seconds = ('0' + diffDuration.seconds().toString()).slice(-2);
 
         return `${minutes}:${seconds} Min`;
     }
