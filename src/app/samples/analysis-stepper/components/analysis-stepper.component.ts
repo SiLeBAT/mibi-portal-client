@@ -140,7 +140,7 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
                 }
             },
             urgency: urgencyEnum
-        } as { analysis: Partial<Analysis>, urgency: Urgency });
+        });
     }
 
     private close(): void {

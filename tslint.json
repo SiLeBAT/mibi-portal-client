@@ -192,6 +192,7 @@
     "static-this": true,
     "no-void-expression": true,
     "restrict-plus-operands": true,
+    "no-object-literal-type-assertion": true,
 
     "no-any": false,
     "no-unbound-method": false
