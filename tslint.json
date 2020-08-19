@@ -184,6 +184,9 @@
     "function-constructor": true,
     "no-default-import": true,
     "unnecessary-constructor": [true, {"check-super-calls": true}],
+    "unnecessary-bind": true,
+    "number-literal-format": true,
+    "promise-function-async": true,
 
     "no-any": false
   }
