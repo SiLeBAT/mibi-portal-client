@@ -28,9 +28,6 @@ import { Urgency, NRL } from '../../samples/model/sample.enums';
 })
 export class EntityFactoryService {
 
-    constructor() {
-    }
-
     toSample(dto: SampleDTO): Sample {
         return {
             sampleData: this.toSampleData(dto.sampleData),

@@ -11,8 +11,6 @@ export class LoginComponent implements OnInit {
 
     @Output() login = new EventEmitter();
 
-    constructor() { }
-
     ngOnInit() {
 
         this.loginForm = new FormGroup({

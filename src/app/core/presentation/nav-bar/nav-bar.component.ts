@@ -14,8 +14,6 @@ export class NavBarComponent {
 
     @Output() onLogout = new EventEmitter();
 
-    constructor() { }
-
     logout() {
         this.onLogout.emit();
     }

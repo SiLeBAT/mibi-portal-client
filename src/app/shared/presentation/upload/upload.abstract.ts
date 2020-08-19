@@ -18,8 +18,6 @@ export class UploadAbstractComponent implements OnInit, OnDestroy, AfterContentI
     private componentActive = true;
     @ViewChild('selector', { read: ElementRef, static: false }) selector: ElementRef;
 
-    constructor() { }
-
     ngOnInit(): void {
     }
 

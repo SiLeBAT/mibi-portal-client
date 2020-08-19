@@ -8,6 +8,4 @@ export class ActivateComponent {
     @Input() tokenValid: boolean;
     @Input() appName: string;
 
-    constructor() { }
-
 }

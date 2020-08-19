@@ -181,6 +181,9 @@
     "component-class-suffix": true,
     "directive-class-suffix": true,
     "file-name-casing": [true, "kebab-case"],
+    "function-constructor": true,
+    "no-default-import": true,
+    "unnecessary-constructor": [true, {"check-super-calls": true}],
 
     "no-any": false
   }

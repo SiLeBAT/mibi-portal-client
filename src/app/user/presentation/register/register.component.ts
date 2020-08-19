@@ -30,8 +30,6 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 
     @ViewChild(PasswordComponent, { static: false }) private passwordComponent: PasswordComponent;
 
-    constructor() { }
-
     ngOnInit() {
         this.registerForm = new FormGroup({
             institution: new FormControl(null, [Validators.required, instituteValidator]),

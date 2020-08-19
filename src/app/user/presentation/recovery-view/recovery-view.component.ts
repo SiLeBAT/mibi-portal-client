@@ -5,5 +5,4 @@ import { Component } from '@angular/core';
     templateUrl: './recovery-view.component.html'
 })
 export class RecoveryViewComponent {
-    constructor() { }
 }
