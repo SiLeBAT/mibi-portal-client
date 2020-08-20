@@ -18,6 +18,7 @@
     "removeComments": true,
     "forceConsistentCasingInFileNames": true,
 
+    "alwaysStrict": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
     "strictNullChecks": true,
