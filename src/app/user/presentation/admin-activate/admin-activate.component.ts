@@ -11,6 +11,4 @@ export class AdminActivateComponent {
     @Input() name: string;
     @Input() appName: string = environment.appName;
 
-    constructor() { }
-
 }

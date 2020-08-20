@@ -9,8 +9,4 @@ export class UploadComponent extends UploadAbstractComponent {
 
     dropDisabled = false;
 
-    constructor() {
-        super();
-    }
-
 }

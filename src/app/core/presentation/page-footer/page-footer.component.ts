@@ -7,8 +7,6 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PageFooterComponent implements OnInit {
 
-    constructor() { }
-
     ngOnInit() {
     }
 

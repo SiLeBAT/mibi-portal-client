@@ -133,7 +133,7 @@ export class BannerContainerComponent {
         },
         loginFailure: {
             // tslint:disable-next-line:max-line-length
-            message: 'Es gab einen Fehler beim Einloggen.  Bitte registrieren Sie sich oder, wenn Sie sich schon registriert haben, kontaktieren Sie das MiBi-Portal-Team.',
+            message: 'Es gab einen Fehler beim Einloggen. Bitte registrieren Sie sich oder, wenn Sie sich schon registriert haben, kontaktieren Sie das MiBi-Portal-Team.',
             type: AlertType.ERROR,
             auxilliaryAction: { ...this.userActionService.getNavigationConfig('/users/register'), ...{ label: 'Zur Registrierung' } },
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }

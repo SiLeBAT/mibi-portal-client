@@ -140,7 +140,7 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
                 }
             },
             urgency: urgencyEnum
-        } as { analysis: Partial<Analysis>, urgency: Urgency });
+        });
     }
 
     private close(): void {
@@ -176,7 +176,7 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
                 standardProcedures: nrl ? nrl.standardProcedures.sort(comparFN).map(p => p.value) : [],
                 optionalProcedures: nrl ? nrl.optionalProcedures.sort(comparFN).map(p => ({
                     value: p.value,
-                    controlName: '' + p.key
+                    controlName: p.key.toString()
                 })) : []
             };
         });

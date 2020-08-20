@@ -1,6 +1,6 @@
 @import "abstracts";
 
-$mibi-sampels-grid-edit-color: darken(map-get($mibi-primary, A400), 25%);
+$mibi-sampels-grid-edit-color: darken(map-get($mibi-primary, "A400"), 25%);
 
 $mibi-sampels-grid-cell-border: 1px solid $surface-color;
 $mibi-sampels-grid-cell-padding: 0.15rem 0.3rem;

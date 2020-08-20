@@ -26,9 +26,6 @@ import { SamplesMainData } from '../../samples/state/samples.reducer';
 })
 export class DTOFactoryService {
 
-    constructor() {
-    }
-
     fromSampleSet(sampleSet: SampleSet): SampleSetDTO {
         const dto: SampleSetDTO = {
             meta: this.fromSampleSetMeta(sampleSet.meta),

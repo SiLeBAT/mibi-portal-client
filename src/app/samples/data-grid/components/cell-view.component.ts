@@ -139,7 +139,7 @@ export class DataGridCellViewComponent {
         return {
             model: this.model,
             data: this.data,
-            requestChangeDetection: () => this.changeDetectorRef.detectChanges()
+            requestChangeDetection: () => { this.changeDetectorRef.detectChanges(); }
         };
     }
 

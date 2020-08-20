@@ -22,7 +22,7 @@ export class SamplesGridToolTipDirective implements OnChanges {
     }
 
     private destroyToolTips(): void {
-        $.tooltipster.instances(this.hostElement.nativeElement).forEach(el => el.destroy());
+        $.tooltipster.instances(this.hostElement.nativeElement).forEach(el => { el.destroy(); });
     }
 
     private createToolTips(): void {

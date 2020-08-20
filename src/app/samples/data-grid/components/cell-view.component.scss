@@ -1,6 +1,6 @@
 @import "abstracts";
 
-$mibi-ui-color: map-get($mibi-primary, A400);
+$mibi-ui-color: map-get($mibi-primary, "A400");
 $mibi-border-color: $surface-color;
 $mibi-grid-border: 0.5px solid $surface-color;
 $mibi-hover-opacity: 0.075;

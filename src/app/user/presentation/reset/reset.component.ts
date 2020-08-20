@@ -14,8 +14,6 @@ export class ResetComponent implements OnInit, AfterViewInit {
 
     @ViewChild(PasswordComponent, { static: false }) private passwordComponent: PasswordComponent;
 
-    constructor() { }
-
     ngOnInit() {
         this.resetForm = new FormGroup({ });
     }

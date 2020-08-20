@@ -11,6 +11,4 @@ export class HomeComponent {
     appName: string = environment.appName;
     supportContact: string = environment.supportContact;
 
-    constructor() { }
-
 }

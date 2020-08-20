@@ -10,8 +10,6 @@ export class FooterNavContainerComponent implements OnInit {
 
     supportMailConfig: MailConfiguration;
 
-    constructor() { }
-
     ngOnInit() {
         this.supportMailConfig = supportMailConfiguration;
     }

@@ -11,8 +11,6 @@ export class ProfileComponent {
     @Input() currentUser: User;
     @Input() institution: string;
 
-    constructor() { }
-
     onLogout() {
         this.logout.emit();
     }

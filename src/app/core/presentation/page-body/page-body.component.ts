@@ -1,13 +1,13 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { AnimationEvent } from '@angular/animations';
-import { SlideInOutAnimation } from '../../../shared/animations/slideInOut.animation';
-import { fadeAnimation, transitionAnimation } from '../../../shared/animations/routerTransitionFade.animation';
+import { slideInOutAnimation } from '../../../shared/animations/slide-in-out.animation';
+import { fadeAnimation, transitionAnimation } from '../../../shared/animations/router-transition-fade.animation';
 
 @Component({
     selector: 'mibi-page-body',
     templateUrl: './page-body.component.html',
     styleUrls: ['./page-body.component.scss'],
-    animations: [SlideInOutAnimation, fadeAnimation, transitionAnimation]
+    animations: [slideInOutAnimation, fadeAnimation, transitionAnimation]
 })
 export class PageBodyComponent {
     @Input() isBusy: boolean;

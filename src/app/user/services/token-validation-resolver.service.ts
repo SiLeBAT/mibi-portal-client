@@ -10,7 +10,7 @@ export class TokenValidationResolver implements Resolve<boolean> {
     constructor(
         private dataService: DataService) { }
 
-    resolve(activatedRoute: ActivatedRouteSnapshot, sanp: RouterStateSnapshot): Promise<boolean> {
+    async resolve(activatedRoute: ActivatedRouteSnapshot, sanp: RouterStateSnapshot): Promise<boolean> {
         const token = activatedRoute.params['id'];
         return this.dataService.verifyEmail(token).toPromise().then(
             (t: boolean) => t,

@@ -179,6 +179,31 @@
     "use-lifecycle-interface": true,
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,
-    "directive-class-suffix": true
+    "directive-class-suffix": true,
+    "file-name-casing": [true, "kebab-case"],
+    "function-constructor": true,
+    "no-default-import": true,
+    "unnecessary-constructor": [true, {"check-super-calls": true}],
+    "unnecessary-bind": true,
+    "number-literal-format": true,
+    "promise-function-async": true,
+    "no-duplicate-imports": true,
+    "no-tautology-expression": true,
+    "static-this": true,
+    "no-void-expression": true,
+    "restrict-plus-operands": true,
+    "no-object-literal-type-assertion": true,
+    "no-async-without-await": true,
+    "strict-comparisons": [true, {"allow-object-equal-comparison": true}],
+    "strict-string-expressions": true,
+    "no-promise-as-boolean": true,
+    "invalid-void": [true, {"allow-generics": ["Promise", "EventEmitter", "Subject", "Observable"]}],
+    "return-undefined": true,
+    "no-for-in": true,
+
+    "no-any": false,
+    "no-unbound-method": false,
+    "strict-boolean-expressions": false,
+    "no-magic-numbers": false
   }
 }

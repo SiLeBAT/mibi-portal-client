@@ -14,8 +14,6 @@ export class AvatarComponent {
     @Output() onLogout = new EventEmitter();
     @Output() onProfile = new EventEmitter();
 
-    constructor() { }
-
     logout() {
         this.onLogout.emit();
     }

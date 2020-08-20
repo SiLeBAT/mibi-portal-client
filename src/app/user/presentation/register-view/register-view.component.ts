@@ -6,5 +6,4 @@ import { Component } from '@angular/core';
     styleUrls: ['./register-view.component.scss']
 })
 export class RegisterViewComponent {
-    constructor() { }
 }

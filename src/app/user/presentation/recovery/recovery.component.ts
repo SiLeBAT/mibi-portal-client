@@ -10,7 +10,6 @@ export class RecoveryComponent implements OnInit {
     recoveryForm: FormGroup;
 
     @Output() recovery = new EventEmitter();
-    constructor() { }
 
     ngOnInit() {
         this.recoveryForm = new FormGroup({

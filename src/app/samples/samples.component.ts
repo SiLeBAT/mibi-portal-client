@@ -39,7 +39,9 @@ export class SamplesComponent implements OnDestroy {
 
         this.fileNameSubscription = this.store$.pipe(
             select(selectImportedFileName),
-            tap(fileName => this.store$.dispatch(new UpdateActionBarTitleSOA({ title: fileName })))
+            tap(fileName => {
+                this.store$.dispatch(new UpdateActionBarTitleSOA({ title: fileName }));
+            })
         ).subscribe();
     }
 

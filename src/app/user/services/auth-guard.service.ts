@@ -24,7 +24,8 @@ export class AuthGuard implements CanActivate {
             map((currentUser: TokenizedUser) => {
                 if (currentUser) {
                     const helper = new JwtHelperService();
-                    const isExpired = !!helper.isTokenExpired(currentUser.token);
+                    // isTokenExpired returns false if no expirationDate is set
+                    const isExpired = helper.isTokenExpired(currentUser.token) || helper.getTokenExpirationDate(currentUser.token) === null;
 
                     if (isExpired) {
                         this.store.dispatch(new userActions.LogoutUserMSA());

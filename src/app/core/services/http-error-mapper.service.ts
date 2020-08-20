@@ -7,8 +7,6 @@ import { ClientError, DelayLoginError, AuthorizationError, EndpointError } from 
 @Injectable()
 export class HttpErrorMapperService implements HttpInterceptor {
 
-    constructor() { }
-
     intercept(req: HttpRequest<any>,
         next: HttpHandler): Observable<HttpEvent<any>> {
 
