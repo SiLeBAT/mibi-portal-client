@@ -36,11 +36,11 @@
         },
         {
             "q": "Mein Einsendeformular wird nicht akzeptiert. Dabei hatte ich es damals von der BfR- Website heruntergeladen.",
-            "a": "Das MiBi-Portal akzeptiert ausschließlich Dateien mit der Endung *.xlsx. Das seit Oktober 2017 aktuelle <a href=\"https://www.bfr.bund.de/de/einsendeformular_fuer_isolate_und_proben-9257.html\" target=\"_blank\" rel=\"noopener\">Einsendeformular v14</a> hat diese Dateiendung. Sollten Sie eine ältere Version des Einsendeformulars verwenden, bitten wir Sie, sich von der oben angegebenen Website die aktuelle Version herunterzuladen und diese zu verwenden."
+            "a": "Das MiBi-Portal akzeptiert ausschließlich Dateien mit der Endung *.xlsx. Das aktuelle <a href=\"https://www.bfr.bund.de/de/einsendeformular_fuer_isolate_und_proben-9257.html\" target=\"_blank\" rel=\"noopener\">Einsendeformular</a> hat diese Dateiendung. Sollten Sie eine ältere Version des Einsendeformulars verwenden, bitten wir Sie, sich von der oben angegebenen Website die aktuelle Version herunterzuladen und diese zu verwenden."
         },
         {
             "q": "Ich habe eine Excel-Datei mit der Endung *.xls, aber diese wird vom MiBi-Portal nicht akzeptiert. Was nun?",
-            "a": "Das MiBi-Portal akzeptiert ausschließlich Exceldateien mit der Endung *.xlsx. Bitte laden Sie das aktuelle <a href=\"https://www.bfr.bund.de/de/einsendeformular_fuer_isolate_und_proben-9257.html\" target=\"_blank\" rel=\"noopener\">Einsendeformular v14</a> und kopieren Sie Ihre Daten in diese Excel-Datei."
+            "a": "Das MiBi-Portal akzeptiert ausschließlich Exceldateien mit der Endung *.xlsx. Bitte laden Sie das aktuelle <a href=\"https://www.bfr.bund.de/de/einsendeformular_fuer_isolate_und_proben-9257.html\" target=\"_blank\" rel=\"noopener\">Einsendeformular</a> und kopieren Sie Ihre Daten in diese Excel-Datei."
         },
         {
             "q": "Muss ich angemeldet sein, um ein Einsendeformular hochzuladen?",
