@@ -9,6 +9,7 @@ import { CoreMainSlice } from '../core.state';
 import { ExportExcelFileSSA, ImportExcelFileMSA, DestroySampleSetSOA } from '../../samples/state/samples.actions';
 import { ShowDialogMSA } from '../state/core.actions';
 import { SendSamplesOpenAnalysisDialogSSA } from '../../samples/analysis-stepper/state/analysis-stepper.actions';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
@@ -61,7 +62,7 @@ export class UserActionService {
         label: 'Excel-Vorlage',
         type: UserActionType.DOWNLOAD_TEMPLATE,
         onExecute: () => {
-            window.open('https://www.bfr.bund.de/cm/343/Einsendebogen-v14-1.xlsx', '_blank');
+            window.open(environment.sampleSheetURL, '_blank');
         },
         icon: 'assignment_returned',
         color: ColorType.ACCENT
