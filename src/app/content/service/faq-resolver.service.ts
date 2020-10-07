@@ -12,7 +12,7 @@ export class FAQResolver implements Resolve<IFAQGroup[]> {
     constructor(
         private dataService: DataService) { }
 
-    resolve(activatedRoute: ActivatedRouteSnapshot, sanp: RouterStateSnapshot): Promise<IFAQGroup[]> {
+    async resolve(activatedRoute: ActivatedRouteSnapshot, sanp: RouterStateSnapshot): Promise<IFAQGroup[]> {
         return this.dataService.getFAQs().toPromise().then(
             data => {
                 // tslint:disable-next-line

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DialogConfiguration } from '../../../shared/dialog/dialog.model';
@@ -10,7 +10,6 @@ import { selectSendSamplesIsFileAlreadySent } from '../state/send-samples.select
 import { sendSamplesSendDialogStrings, sendSamplesSendDialogConfiguration } from '../send-samples.constants';
 import * as _ from 'lodash';
 import { SendSamplesSSA } from '../state/send-samples.actions';
-import { DisplayBannerSOA } from '../../../core/state/core.actions';
 import { selectImportedFileName } from '../../state/samples.selectors';
 import { SendSamplesOpenAnalysisDialogSSA } from '../../analysis-stepper/state/analysis-stepper.actions';
 

@@ -62,10 +62,14 @@ import { userReducerMap, userEffects } from './user.store';
                 { path: 'recovery', component: RecoveryViewComponent, canActivate: [AnonymousGuard] },
                 { path: 'reset/:id', component: ResetViewComponent, canActivate: [AnonymousGuard] },
                 { path: 'activate/:id', component: ActivateViewComponent, resolve: { tokenValid: TokenValidationResolver } },
-                // tslint:disable-next-line:max-line-length
-                { path: 'adminactivate/:id', component: AdminActivateViewComponent, resolve: { adminTokenValid: AdminTokenValidationResolver } },
+                {
+                    path: 'adminactivate/:id',
+                    component: AdminActivateViewComponent,
+                    resolve: { adminTokenValid: AdminTokenValidationResolver }
+                },
                 { path: 'profile', component: ProfileContainerComponent, canActivate: [AuthGuard] },
-                { path: 'datenschutzhinweise', component: DatenSchutzHinweiseViewComponent }
+                { path: 'datenschutzhinweise', component: DatenSchutzHinweiseViewComponent },
+                { path: '**', redirectTo: 'login' }
             ]
         }]),
         StoreModule.forFeature(USER_SLICE_NAME, userReducerMap),

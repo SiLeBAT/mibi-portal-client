@@ -1,7 +1,0 @@
-<ng-template #defaultTemplate>
-    <button [attr.cdkFocusInitial]="configuration.focused ? '' : null" class="mibi-user-action" type="button" mat-button [color]="configuration.color" (click)="configuration.onExecute($event)">{{configuration.label}}</button>
-</ng-template>
-
-<ng-container *ngTemplateOutlet="configuration.template ? configuration.template : defaultTemplate;context:configuration">
-
-</ng-container>

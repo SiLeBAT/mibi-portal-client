@@ -1,0 +1,23 @@
+@import "abstracts";
+@import "../../samples-grid.styles";
+
+.mibi-text-cell {
+  @include mibi-samples-grid-default-cell-style();
+
+  height: 100%;
+}
+
+.mibi-text-cell--readonly {
+  background-color: lighten($surface-color, 15%);
+}
+
+.mibi-text-cell--col-header {
+  min-height: 50px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.mibi-text-cell--row-header {
+  min-width: 50px;
+  line-height: 1.5;
+}

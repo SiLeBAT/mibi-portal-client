@@ -1,0 +1,50 @@
+@import "abstracts";
+
+.mibi-panel {
+  position: relative;
+  z-index: 0;
+  height: 100%;
+  overflow: auto;
+}
+
+.mibi-panel__overflow {
+  position: sticky;
+  top: 0;
+  left: 0;
+  height: 100%;
+}
+
+.mibi-panel__content {
+  position: absolute;
+  top: 0;
+}
+
+.mibi-grid {
+  @include mat-elevation(2);
+
+  display: grid;
+  // mask precision gaps between grid lines visible in firefox
+  background-color: $surface-color;
+  user-select: none;
+}
+
+.mibi-grid__cell {
+  position: relative;
+}
+
+.mibi-grid__sticky {
+  position: sticky;
+  z-index: 1;
+}
+
+.mibi-grid__sticky--top {
+  top: 0;
+}
+
+.mibi-grid__sticky--left {
+  left: 0;
+}
+
+.mibi-grid__sticky--top-left {
+  z-index: 2;
+}

@@ -6,8 +6,6 @@ import { Component, Input } from '@angular/core';
     styleUrls: ['./wall-of-text-layout.component.scss']
 })
 export class WallOfTextLayoutComponent {
-    @Input() title: string;
-
-    constructor() { }
+    @Input() cardtitle: string;
 
 }

@@ -28,9 +28,6 @@ import { Urgency, NRL } from '../../samples/model/sample.enums';
 })
 export class EntityFactoryService {
 
-    constructor() {
-    }
-
     toSample(dto: SampleDTO): Sample {
         return {
             sampleData: this.toSampleData(dto.sampleData),
@@ -111,7 +108,9 @@ export class EntityFactoryService {
     private toSampleSetMetaData(dto: SampleSetMetaDTO): SampleSetMetaData {
         return {
             sender: dto.sender,
-            fileName: dto.fileName ? dto.fileName : ''
+            fileName: dto.fileName ? dto.fileName : '',
+            customerRefNumber: dto.customerRefNumber ? dto.customerRefNumber : '',
+            signatureDate: dto.signatureDate ? dto.signatureDate : ''
         };
     }
 

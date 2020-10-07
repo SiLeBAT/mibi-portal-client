@@ -1,0 +1,28 @@
+.mibi-box {
+  height: 100%;
+  display: grid;
+  grid-template: minmax(min-content, auto) / minmax(min-content, auto);
+}
+
+.mibi-box--width-limited {
+  grid-template-columns: 100%;
+}
+
+.mibi-box--height-limited {
+  grid-template-rows: 100%;
+}
+
+.mibi-box--test {
+  resize: both;
+  overflow: auto;
+  border: 1px solid red;
+}
+
+.mibi-box__content {
+  z-index: 0;
+  position: relative;
+}
+
+.mibi-box__content--test {
+  border: 1px solid blue;
+}

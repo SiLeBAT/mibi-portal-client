@@ -1,4 +1,4 @@
-<mibi-layout-box>
+<mibi-box-layout>
 
   <nav class="mibi-avatar" *ngIf="(currentUser$ | async) else anonymous ; let user">
     <div class="mibi-avatar__content">
@@ -7,7 +7,7 @@
       </button>
     </div>
     <mat-menu #menu="matMenu">
-      <mibi-layout-box>
+      <mibi-box-layout>
         <div class="mibi-user-info">
           <mat-icon class="mibi-user-info__icon">face</mat-icon>
           <div class="mat-body-strong"> {{ user.firstName }} {{ user.lastName }}</div>
@@ -25,11 +25,11 @@
           <mat-icon>exit_to_app</mat-icon>
           <span>Abmelden</span>
         </button>
-      </mibi-layout-box>
+      </mibi-box-layout>
     </mat-menu>
   </nav>
 
-</mibi-layout-box>
+</mibi-box-layout>
 
 <ng-template #anonymous>
   <nav class="mibi-register">

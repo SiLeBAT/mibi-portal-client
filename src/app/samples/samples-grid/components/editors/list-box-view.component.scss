@@ -1,0 +1,71 @@
+@import "abstracts";
+@import "layout";
+@import "../../samples-grid.styles";
+
+$mibi-selection-opacity: 0.2;
+$mibi-hover-opacity: 0.075;
+
+@mixin mibi-text-style {
+  @include mibi-samples-grid-default-text-style();
+
+  padding: $mibi-sampels-grid-cell-padding;
+  padding-right: 0.5rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  white-space: nowrap;
+}
+
+.mibi-list-box-container {
+  @include mat-elevation(3);
+
+  height: 100%;
+  display: grid;
+  overflow: auto;
+  background-color: $background-color;
+  border-radius: 0 0 0.25rem 0.25rem;
+  user-select: none;
+}
+
+.mibi-list-box {
+  @include list-style-none();
+}
+
+.mibi-list-item {
+  position: relative;
+}
+
+.mibi-list-item--hover {
+  background-color: rgba($mibi-sampels-grid-edit-color, $mibi-hover-opacity);
+}
+
+.mibi-list-item--selected {
+  background-color: rgba($mibi-sampels-grid-edit-color, $mibi-selection-opacity);
+}
+
+.mibi-list-item--selected-hover {
+  background-color: rgba($mibi-sampels-grid-edit-color, $mibi-selection-opacity + $mibi-hover-opacity);
+}
+
+.mibi-filtered-text {
+  @include mibi-text-style;
+
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.mibi-filtered-text--bold {
+  font-weight: bold;
+}
+
+.mibi-ghost-text {
+  @include mibi-text-style;
+
+  position: relative;
+  color: transparent;
+  font-weight: bold;
+}
+
+.mibi-focus-item {
+  outline: none;
+}

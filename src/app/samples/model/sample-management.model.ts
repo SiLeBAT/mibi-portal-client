@@ -41,11 +41,19 @@ export interface Analysis {
 export interface SampleSetMetaData {
     sender: Address;
     fileName: string;
+    customerRefNumber: string;
+    signatureDate: string;
 }
 
 export interface SampleSet {
     samples: Sample[];
     meta: SampleSetMetaData;
+}
+
+export enum SampleValidationErrorLevel {
+    ERROR = 2,
+    WARNING = 1,
+    AUTOCORRECTED = 4
 }
 
 export interface SampleValidationError {
@@ -93,20 +101,10 @@ export interface SampleData {
     comment: AnnotatedSampleDataEntry;
     [key: string]: AnnotatedSampleDataEntry;
 }
-export interface ColConfig {
-    id: string;
-    title: string;
-    readOnly?: boolean;
-}
-
-export interface TableDataOutput {
-    changed: ChangedDataGridField;
-}
 
 export interface ChangedDataGridField {
     rowIndex: number;
     columnId: string;
-    originalValue: string;
     newValue: string;
 }
 

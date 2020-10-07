@@ -42,8 +42,6 @@ export class PasswordComponent implements OnInit {
     passwordForm: FormGroup;
     passwordControl: FormControl;
 
-    constructor() { }
-
     ngOnInit() {
         this.passwordControl = new FormControl(null, [Validators.required, Validators.minLength(8), PasswordStrengthValidator]);
 

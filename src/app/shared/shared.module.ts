@@ -15,7 +15,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { DialogComponent } from './presentation/dialog/dialog.component';
 import { CompileDirective } from './directive/compile.directive';
 import { UploadActionItemComponent } from './presentation/upload-action-item/upload-action-item.component';
-import { LayoutBoxComponent } from './presentation/layout-box/layout-box.component';
+import { BoxLayoutComponent } from './box-layout/box-layout.component';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { SHARED_SLICE_NAME } from './shared.state';
@@ -23,7 +23,10 @@ import { sharedReducerMap, sharedEffects } from './shared.store';
 import { NewDialogComponent } from './dialog/components/dialog.component';
 import { DialogViewComponent } from './dialog/components/dialog-view.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatProgressSpinnerModule, MatMenuModule, MatIconModule, MatToolbarModule } from '@angular/material';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @NgModule({
     imports: [
@@ -53,7 +56,7 @@ import { MatProgressSpinnerModule, MatMenuModule, MatIconModule, MatToolbarModul
         UploadActionItemComponent,
         SingleCenterCardLayoutComponent,
         WallOfTextLayoutComponent,
-        LayoutBoxComponent,
+        BoxLayoutComponent,
         DialogViewComponent,
         NewDialogComponent
     ],
@@ -65,7 +68,7 @@ import { MatProgressSpinnerModule, MatMenuModule, MatIconModule, MatToolbarModul
         UploadContainerComponent,
         SingleCenterCardLayoutComponent,
         WallOfTextLayoutComponent,
-        LayoutBoxComponent,
+        BoxLayoutComponent,
         DialogViewComponent,
         NewDialogComponent
     ],

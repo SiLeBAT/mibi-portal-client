@@ -5,5 +5,4 @@ import { Component } from '@angular/core';
     templateUrl: './reset-view.component.html'
 })
 export class ResetViewComponent {
-    constructor() { }
 }

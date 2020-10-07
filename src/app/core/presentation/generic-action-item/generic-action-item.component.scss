@@ -1,7 +1,0 @@
-@import "../../../../assets/sass/abstracts";
-
-:host {
-  // see: action-item-list.component
-  // it is not possible to style the flex behaviour there because the item is wrapped by this component
-  flex: 0 1 auto;
-}

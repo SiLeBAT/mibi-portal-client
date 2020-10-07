@@ -1,0 +1,12 @@
+<div *ngIf="isActive" class="mibi-editor"
+    [ngStyle]="{
+        'top': clientRect.top + 'px',
+        'left': clientRect.left + 'px',
+        'width': clientRect.width + 'px',
+        'height': clientRect.height + 'px'
+    }"
+>
+    <ng-container
+        *ngTemplateOutlet="editorTemplate; context: editorContext">
+    </ng-container>
+</div>

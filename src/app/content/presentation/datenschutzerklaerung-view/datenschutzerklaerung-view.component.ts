@@ -5,5 +5,4 @@ import { Component } from '@angular/core';
     templateUrl: './datenschutzerklaerung-view.component.html'
 })
 export class DatenschutzerklaerungViewComponent {
-    constructor() { }
 }

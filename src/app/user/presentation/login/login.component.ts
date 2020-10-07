@@ -11,8 +11,6 @@ export class LoginComponent implements OnInit {
 
     @Output() login = new EventEmitter();
 
-    constructor() { }
-
     ngOnInit() {
 
         this.loginForm = new FormGroup({
@@ -29,7 +27,5 @@ export class LoginComponent implements OnInit {
             email: this.loginForm.value.email,
             password: this.loginForm.value.password
         });
-        this.loginForm.reset();
     }
-
 }

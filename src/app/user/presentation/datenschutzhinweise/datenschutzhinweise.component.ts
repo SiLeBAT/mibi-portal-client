@@ -6,6 +6,4 @@ import { Component } from '@angular/core';
     styleUrls: ['./datenschutzhinweise.component.scss']
 })
 export class DatenschutzHinweiseComponent {
-
-    constructor() { }
 }

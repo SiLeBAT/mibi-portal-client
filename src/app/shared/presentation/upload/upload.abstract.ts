@@ -16,9 +16,7 @@ export class UploadAbstractComponent implements OnInit, OnDestroy, AfterContentI
     @Input() trigger$: Observable<boolean>;
     private canUpload: boolean = false;
     private componentActive = true;
-    @ViewChild('selector', { read: ElementRef }) selector: ElementRef;
-
-    constructor() { }
+    @ViewChild('selector', { read: ElementRef, static: false }) selector: ElementRef;
 
     ngOnInit(): void {
     }

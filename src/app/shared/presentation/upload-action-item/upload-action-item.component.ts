@@ -7,8 +7,4 @@ import { UploadAbstractComponent } from '../upload/upload.abstract';
 })
 export class UploadActionItemComponent extends UploadAbstractComponent {
 
-    constructor() {
-        super();
-    }
-
 }

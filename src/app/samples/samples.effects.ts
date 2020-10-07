@@ -23,7 +23,7 @@ import {
 import { ValidateSamplesMSA } from './validate-samples/validate-samples.actions';
 import { SamplesMainData } from './state/samples.reducer';
 import { selectSamplesMainData } from './state/samples.selectors';
-import { UpdateIsBusySOA, DisplayBannerSOA } from '../core/state/core.actions';
+import { UpdateIsBusySOA, ShowBannerSOA, HideBannerSOA } from '../core/state/core.actions';
 
 @Injectable()
 export class SamplesMainEffects {
@@ -39,10 +39,11 @@ export class SamplesMainEffects {
     // ImportExcelFile
 
     @Effect()
-    importExcelFile$: Observable<UpdateSampleSetSOA | ShowSamplesSSA | DisplayBannerSOA | UpdateIsBusySOA> = this.actions$.pipe(
+    importExcelFile$: Observable<UpdateSampleSetSOA | ShowSamplesSSA | ShowBannerSOA | UpdateIsBusySOA> = this.actions$.pipe(
         ofType<ImportExcelFileMSA>(SamplesMainActionTypes.ImportExcelFileMSA),
         tap(() => {
             this.store$.dispatch(new UpdateIsBusySOA({ isBusy: true }));
+            this.store$.dispatch(new HideBannerSOA());
         }),
         exhaustMap((action) => {
             return from(this.dataService.unmarshalExcel(action.payload)).pipe(
@@ -58,7 +59,7 @@ export class SamplesMainEffects {
                     this.logger.error(`Failed to import Excel File. error=${error}`);
                     return of(
                         new UpdateIsBusySOA({ isBusy: false }),
-                        new DisplayBannerSOA({ predefined: 'uploadFailure' })
+                        new ShowBannerSOA({ predefined: 'uploadFailure' })
                     );
                 })
             );
@@ -79,11 +80,12 @@ export class SamplesMainEffects {
     // ExportExcelFile
 
     @Effect()
-    exportExcelFile$: Observable<DisplayBannerSOA | UpdateIsBusySOA> = this.actions$.pipe(
+    exportExcelFile$: Observable<ShowBannerSOA | UpdateIsBusySOA> = this.actions$.pipe(
         ofType<ExportExcelFileSSA>(SamplesMainActionTypes.ExportExcelFileSSA),
         withLatestFrom(this.store$),
         tap(() => {
             this.store$.dispatch(new UpdateIsBusySOA({ isBusy: true }));
+            this.store$.dispatch(new HideBannerSOA());
         }),
         mergeMap(([, state]) => {
             const marshalData: SamplesMainData = selectSamplesMainData(state);
@@ -96,7 +98,7 @@ export class SamplesMainEffects {
                     this.logger.error('Failed to export Excel File', error);
                     return of(
                         new UpdateIsBusySOA({ isBusy: false }),
-                        new DisplayBannerSOA({ predefined: 'exportFailure' })
+                        new ShowBannerSOA({ predefined: 'exportFailure' })
                         );
                 })
             );

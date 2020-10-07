@@ -18,8 +18,6 @@ export class FAQTocComponent implements OnInit {
 
     faqTocEntries: IFAQTocEntry[] = [];
 
-    constructor() { }
-
     ngOnInit(): void {
         this.faqTocEntries = this.faqCollection.filter((faqGroup: IFAQGroup) => !!faqGroup.title).map((faqGroup: IFAQGroup) => {
             return {

@@ -14,6 +14,5 @@ export interface IFAQGroup {
 export class FAQSectionComponent {
 
     @Input() faqGroup: IFAQGroup;
-    constructor() { }
 
 }

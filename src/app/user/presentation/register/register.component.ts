@@ -28,9 +28,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 
     @Output() register = new EventEmitter();
 
-    @ViewChild(PasswordComponent) private passwordComponent: PasswordComponent;
-
-    constructor() { }
+    @ViewChild(PasswordComponent, { static: false }) private passwordComponent: PasswordComponent;
 
     ngOnInit() {
         this.registerForm = new FormGroup({

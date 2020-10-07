@@ -12,9 +12,7 @@ export class ResetComponent implements OnInit, AfterViewInit {
 
     @Output() reset = new EventEmitter();
 
-    @ViewChild(PasswordComponent) private passwordComponent: PasswordComponent;
-
-    constructor() { }
+    @ViewChild(PasswordComponent, { static: false }) private passwordComponent: PasswordComponent;
 
     ngOnInit() {
         this.resetForm = new FormGroup({ });
