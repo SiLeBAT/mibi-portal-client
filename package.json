@@ -16,7 +16,7 @@
     "test:watch": "jest --watch",
     "test:ci": "jest --runInBand",
     "test:coverage": "jest --coverage",
-    "test:e2e": "node_modules\\.bin\\cypress run",
+    "test:e2e": "node_modules\\.bin\\cypress run --spec 'cypress/integration/**/*.spec.ts'",
     "reports:delete": "npx rimraf  cypress/reports/* || true",
     "reports:create": "npx mochawesome-merge cypress/reports/mocha/mochawesome*.json > cypress/reports/mocha/merged-report.json && npx mochawesome-report-generator ./cypress/reports/mocha/merged-report.json -o ./cypress/reports/mocha -t \"mibi-portal e2e\" -p \"mibi-portal e2e\" --charts --timestamp \"isoDateTime\" --showSkipped",
     "pretest:e2e": "npm run reports:delete",
