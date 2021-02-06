@@ -20,6 +20,7 @@ export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDe
     animationsDisabled: boolean;
 
     supportContact: string = environment.supportContact;
+
     private readonly isIEOrEdge = /msie\s|trident\/|edge\//i.test(window.navigator.userAgent);
     private componentActive = true;
     private canUnload: boolean = true;
