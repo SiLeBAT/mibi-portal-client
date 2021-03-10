@@ -8,7 +8,7 @@ import { SamplesMainSlice } from '../../../samples/samples.state';
 import { selectHasEntries } from '../../../samples/state/samples.selectors';
 import { selectCurrentUser } from '../../state/user.selectors';
 import { UserMainSlice } from '../../user.state';
-import { LoginUserSSA } from '../../state/user.actions';
+import { LoginUserMSA } from '../../state/user.actions';
 
 @Component({
     selector: 'mibi-login-container',
@@ -50,6 +50,6 @@ export class LoginContainerComponent implements OnInit, OnDestroy {
     }
 
     login(credentials: Credentials) {
-        this.store.dispatch(new LoginUserSSA(credentials));
+        // this.store.dispatch(new LoginUserSSA(credentials));
     }
 }

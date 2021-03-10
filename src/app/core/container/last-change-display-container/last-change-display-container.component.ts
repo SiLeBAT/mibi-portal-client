@@ -31,6 +31,7 @@ export class LastChangeDisplayContainerComponent implements OnInit {
     constructor(private store$: Store<CoreMainState>, private dataService: DataService) { }
 
     ngOnInit(): void {
+        // TODO: move initialization to app component
         moment.locale('en');
         this.clientLastChange = moment(environment.lastChange, this.dateParseString);
         this.lastChange$ = new BehaviorSubject(this.clientLastChange);

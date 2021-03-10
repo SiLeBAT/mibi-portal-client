@@ -9,7 +9,8 @@ import * as nrlActions from './shared/nrl/state/nrl.actions';
 import { TokenizedUser } from './user/model/user.model';
 import { SamplesMainSlice } from './samples/samples.state';
 import { selectHasEntries } from './samples/state/samples.selectors';
-import { UpdateIsBusySOA, ShowBannerSOA } from './core/state/core.actions';
+import { UserMainSlice } from './user/user.state';
+import { Location } from '@angular/common';
 
 @Component({
     selector: 'mibi-root',
@@ -25,23 +26,58 @@ export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDe
 
     private componentActive = true;
     private canUnload: boolean = true;
+    ready: boolean = false;
 
-    constructor(private store$: Store<SamplesMainSlice>, private dataService: DataService) {
+    constructor(
+        private store$: Store<SamplesMainSlice>,
+        private dataService: DataService
+    ) {
         super();
         this.animationsDisabled = this.isIEOrEdge;
     }
 
-    ngOnInit(): void {
+    private async blockingTimeout(): Promise<void> {
+        return new Promise(resolve => {
+            setTimeout(() => {
+                resolve();
+            }, 10000);
+        })
+    }
+
+    private async retry(func: () => Promise<void>): Promise<void> {
+        return new Promise(async resolve => {
+            while (true) {
+                try {
+                    await func();
+                    break;
+                } catch (error) {
+                    await this.blockingTimeout();
+                }
+            };
+            resolve();
+        });
+    }
+
+    ngOnInit() {
         this.store$.pipe(select(selectHasEntries),
             tap(
-                entries => this.canUnload = !entries
+                entries => {
+                    this.canUnload = !entries;
+                    console.log('unload: ', this.canUnload)
+                }
             ),
             takeWhile(() => this.componentActive)
         ).subscribe();
 
-        this.loadInstitutions();
-        this.loadNRLs();
-        this.loadUser();
+        this.retry(async () => {
+            await Promise.all([this.loadInstitutions(), this.loadNRLs()])
+        }).then(() => {
+            this.ready = true;
+        });
+        
+        this.dataService.openBackChannel();
+
+        // await this.loadUser();
     }
 
     ngOnDestroy() {
@@ -49,59 +85,63 @@ export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDe
     }
 
     unloadGuard(): boolean {
-        return this.canUnload;
+        // return this.canUnload;
+        return true;
     }
 
-    private loadInstitutions() {
-        this.store$.dispatch(new UpdateIsBusySOA({ isBusy: true }));
-        this.dataService.getAllInstitutions().toPromise().then(
-            data => {
-                this.store$.dispatch(new UpdateIsBusySOA({ isBusy: false }));
-                this.store$.dispatch(new userActions.UpdateInstitutionsSOA(data));
-            }
-        ).catch(
-            () => {
-                this.store$.dispatch(new UpdateIsBusySOA({ isBusy: false }));
-                this.store$.dispatch(new ShowBannerSOA({ predefined: 'defaultError' }));
-                throw new Error();
-            }
-        );
+    private async loadInstitutions() {
+        // this.store$.dispatch(new UpdateIsBusySOA({ isBusy: true }));
+        const data = await this.dataService.getAllInstitutions().toPromise();
+        // this.dataService.getAllInstitutions().toPromise().then(
+        // data => {
+        // this.store$.dispatch(new UpdateIsBusySOA({ isBusy: false }));
+        this.store$.dispatch(new userActions.UpdateInstitutionsSOA(data));
+        // }
+        // ).catch(
+        // () => {
+        // this.store$.dispatch(new UpdateIsBusySOA({ isBusy: false }));
+        // this.store$.dispatch(new ShowBannerSOA({ predefined: 'defaultError' }));
+        // throw new Error();
+        // }
+        // );
     }
 
-    private loadNRLs() {
-        this.dataService.getAllNRLs().toPromise().then(
-            data => {
-                this.store$.dispatch(new nrlActions.UpdateNRLsSOA(data));
-            }
-        ).catch(
-            () => { throw new Error(); }
-        );
+    private async loadNRLs() {
+        const data = await this.dataService.getAllNRLs().toPromise();
+        // this.dataService.getAllNRLs().toPromise().then(
+        // data => {
+        this.store$.dispatch(new nrlActions.UpdateNRLsSOA(data));
+        // }
+        // ).catch(
+        // () => { throw new Error(); }
+        // );
     }
 
-    private loadUser() {
-        const userJson: string | null = localStorage.getItem('currentUser');
-        if (!userJson) {
-            return;
-        }
-        const user: TokenizedUser = JSON.parse(userJson);
+    // private loadUser() {
 
-        this.store$.dispatch(new UpdateIsBusySOA({ isBusy: true }));
-        this.dataService.refreshToken().toPromise().then(
-            refreshResponse => {
-                this.store$.dispatch(new UpdateIsBusySOA({ isBusy: false }));
-                if (refreshResponse.refresh) {
-                    user.token = refreshResponse.token;
-                    this.dataService.setCurrentUser(user);
-                    this.store$.dispatch(new userActions.UpdateCurrentUserSOA(user));
-                } else {
-                    this.store$.dispatch(new userActions.LogoutUserMSA());
-                }
-            }
-        ).catch(
-            () => {
-                this.store$.dispatch(new UpdateIsBusySOA({ isBusy: false }));
-                this.store$.dispatch(new userActions.LogoutUserMSA());
-            }
-        );
-    }
+    //     const userJson: string | null = localStorage.getItem('currentUser');
+    //     if (!userJson) {
+    //         return;
+    //     }
+    //     const user: TokenizedUser = JSON.parse(userJson);
+
+    //     this.store$.dispatch(new UpdateIsBusySOA({ isBusy: true }));
+    //     this.dataService.refreshToken().toPromise().then(
+    //         refreshResponse => {
+    //             this.store$.dispatch(new UpdateIsBusySOA({ isBusy: false }));
+    //             if (refreshResponse.refresh) {
+    //                 user.token = refreshResponse.token;
+    //                 this.dataService.setCurrentUser(user);
+    //                 this.store$.dispatch(new userActions.UpdateCurrentUserSOA(user));
+    //             } else {
+    //                 this.store$.dispatch(new userActions.LogoutUserMSA());
+    //             }
+    //         }
+    //     ).catch(
+    //         () => {
+    //             this.store$.dispatch(new UpdateIsBusySOA({ isBusy: false }));
+    //             this.store$.dispatch(new userActions.LogoutUserMSA());
+    //         }
+    //     );
+    // }
 }

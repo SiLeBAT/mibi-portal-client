@@ -1,6 +1,26 @@
 <mibi-single-center-card-layout cardtitle="">
     <mibi-view-card-body>
         <mibi-box-layout>
+            <!-- <button (click)="onTest(5000)">Test5</button>
+            <button (click)="onTest(10000)">Test10</button> -->
+            <div *ngIf="user$ | async as user">
+                <p>
+                    {{user.email}}
+                </p>
+            </div>
+
+            <div>
+                <p>
+                    {{apiData}}
+                </p>
+                <div>
+                    <textarea #testToken></textarea>
+                </div>
+                <button (click)="onToken(testToken.value, user.id)">send token</button>
+                <button (click)="onApiToken(testToken.value)">send api token</button>
+                <button (click)="onUserInfo()">get user info</button>
+            </div>
+
             <h1 class="mibi-home-title">{{ appName }}</h1>
             <p>
                 Sie befinden sich auf dem neuen Datenaustausch-Portal der
@@ -34,11 +54,7 @@
             </p>
             <p>
                 <a href="https://www.bfr.bund.de" target="_blank">
-                    <img
-                        class="mibi-home-logo"
-                        src="../../assets/bfr_logo.gif"
-                        alt="BfR Logo"
-                    />
+                    <img class="mibi-home-logo" src="../../assets/bfr_logo.gif" alt="BfR Logo" />
                 </a>
             </p>
         </mibi-box-layout>

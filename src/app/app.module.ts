@@ -16,6 +16,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreRouterConnectingModule, routerReducer } from '@ngrx/router-store';
 import { ContentModule } from './content/content.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { storageMetaReducer } from './storage.metareducer';
+import { MatProgressSpinnerModule } from '@angular/material';
 
 @NgModule({
     declarations: [
@@ -30,7 +32,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
             runtimeChecks: {
                 strictStateImmutability: false,
                 strictActionImmutability: false
-            }
+            },
+            metaReducers: [storageMetaReducer]
         }),
         StoreDevtoolsModule.instrument({
             name: 'MiBi Portal Devtools',
@@ -38,6 +41,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
             logOnly: environment.production
         }),
         EffectsModule.forRoot([]),
+        MatProgressSpinnerModule,
         CoreModule,
         SharedModule,
         SamplesModule,
@@ -48,11 +52,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         AppRoutingModule
     ],
     providers: [
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: TokenInterceptor,
-            multi: true
-        },
+        // {
+        //     provide: HTTP_INTERCEPTORS,
+        //     useClass: TokenInterceptor,
+        //     multi: true
+        // },
         {
             provide: HTTP_INTERCEPTORS,
             useClass: HttpErrorMapperService,

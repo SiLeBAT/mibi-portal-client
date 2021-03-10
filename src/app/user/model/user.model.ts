@@ -1,5 +1,7 @@
 export interface User {
+    id: string;
     email: string;
+    userName: string;
     firstName?: string;
     lastName?: string;
     instituteId: string;
@@ -7,6 +9,13 @@ export interface User {
 export interface TokenizedUser extends User {
     token: string;
 }
+
+export enum UserState {
+    'UNINITIALIZED',
+    'LOGGED_ON',
+    'LOGGED_OFF'
+}
+
 export interface Credentials {
     readonly email: string;
     readonly password: string;

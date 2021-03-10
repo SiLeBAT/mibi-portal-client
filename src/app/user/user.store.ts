@@ -1,5 +1,5 @@
 import { ActionReducerMap } from '@ngrx/store';
-import { UserMainState, userCurrentUserReducer, userInstitutesReducer } from './state/user.reducer';
+import { UserMainState, userCurrentUserReducer, userInstitutesReducer, userStateReducer } from './state/user.reducer';
 import { UserMainAction } from './state/user.actions';
 import { UserMainEffects } from './user.effects';
 
@@ -8,6 +8,7 @@ type UserReducerAction = UserMainAction;
 
 export const userReducerMap: ActionReducerMap<UserState, UserReducerAction> = {
     currentUser: userCurrentUserReducer,
+    state: userStateReducer,
     institutes: userInstitutesReducer
 };
 

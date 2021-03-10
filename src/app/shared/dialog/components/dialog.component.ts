@@ -12,8 +12,8 @@ import { tap } from 'rxjs/operators';
     selector: 'mibi-new-dialog',
     template: `<mibi-dialog-view
     [config]="(data$ | async).configuration"
-    (onConfirm) = "onConfirm()"
-    (onCancel) = "onCancel()">
+    (confirm) = "onConfirm()"
+    (cancel) = "onCancel()">
     </mibi-dialog-view>`
 })
 export class NewDialogComponent {

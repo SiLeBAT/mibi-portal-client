@@ -108,7 +108,7 @@
 		},
         {
             "q": "API",
-            "a": "Das Application Programming Interface (API) ist eine Schnittstelle, die die Kommunikation der Computer untereinander ermöglicht. Im optimalen Fall markieren Sie in Ihrem LIMS die ans BfR zu sendenden Probendaten und müssen dann zum Versenden nur noch einen Button im LIMS anklicken. Das Exportieren der Daten aus Ihrem LIMS, das Einfügen ins Excel-Einsendeformular und das Hochladen im MiBi-Portal würden somit entfallen. Zeigen Sie bitte Ihrem LIMS-Support die <a href=\"https://mibi-portal.bfr.bund.de/api-docs/v2\" target=\"_blank\">API-Dokumentation</a> und bitten Sie um die Erweiterung der Funktionalitäten Ihres LIMS. Der <a href=\"mailto:mibi-portal@bfr.bund.de\" target=\"_blank\">MiBi-Portal-Support</a> kann Sie bei Tests und bei der Einrichtung unterstützen."
+            "a": "Das Application Programming Interface (API) ist eine Schnittstelle, die die Kommunikation der Computer untereinander ermöglicht. Im optimalen Fall markieren Sie in Ihrem LIMS die ans BfR zu sendenden Probendaten und müssen dann zum Versenden nur noch einen Button im LIMS anklicken. Das Exportieren der Daten aus Ihrem LIMS, das Einfügen ins Excel-Einsendeformular und das Hochladen im MiBi-Portal würden somit entfallen. Zeigen Sie bitte Ihrem LIMS-Support die <a href=\"https://mibi-portal.bfr.bund.de/api/v2/docs\" target=\"_blank\">API-Dokumentation</a> und bitten Sie um die Erweiterung der Funktionalitäten Ihres LIMS. Der <a href=\"mailto:mibi-portal@bfr.bund.de\" target=\"_blank\">MiBi-Portal-Support</a> kann Sie bei Tests und bei der Einrichtung unterstützen."
         }
     ]
 }

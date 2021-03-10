@@ -34,7 +34,7 @@
 <ng-template #anonymous>
   <nav class="mibi-register">
     <div class="mibi-register__content">
-    <a class="mibi-register-link" [routerLink]="['/users/login']">
+    <a mat-button class="mibi-register-link" (click)="login()">
       <div class="mibi-register-link__text">Anmelden</div>
     </a>
   </div>

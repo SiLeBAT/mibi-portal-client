@@ -14,6 +14,8 @@ export class HttpErrorMapperService implements HttpInterceptor {
             catchError((errorResponse: Error) => {
                 if (errorResponse instanceof HttpErrorResponse) {
                     switch (errorResponse.status) {
+                        case 403:
+                            throw new AuthorizationError('Authorization error.');
                         case 401:
                             this.handle401(errorResponse);
                             break;

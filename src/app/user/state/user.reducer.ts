@@ -1,5 +1,5 @@
 import { UserMainAction, UserMainActionTypes } from './user.actions';
-import { TokenizedUser } from '../model/user.model';
+import { TokenizedUser, UserState } from '../model/user.model';
 import { InstitutionDTO } from '../model/institution.model';
 import * as _ from 'lodash';
 
@@ -7,6 +7,7 @@ import * as _ from 'lodash';
 
 export interface UserMainState {
     currentUser: TokenizedUser | null;
+    state: UserState;
     institutes: InstitutionDTO[];
 }
 
@@ -18,6 +19,15 @@ export function userCurrentUserReducer(state: TokenizedUser | null = null, actio
             return _.cloneDeep(action.payload);
         case UserMainActionTypes.DestroyCurrentUserSOA:
             return null;
+        default:
+            return state;
+    }
+}
+
+export function userStateReducer(state: UserState = UserState.UNINITIALIZED, action: UserMainAction): UserState {
+    switch(action.type) {
+        case UserMainActionTypes.UpdateUserStateSOA:
+            return action.payload.state;
         default:
             return state;
     }

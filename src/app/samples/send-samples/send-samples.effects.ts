@@ -20,19 +20,22 @@ import { selectImportedFileName, selectFormData, selectMetaData } from '../state
 import { LogService } from '../../core/services/log.service';
 import { DataService } from '../../core/services/data.service';
 import { AuthorizationError } from '../../core/model/client-error';
-import { LogoutUserMSA } from '../../user/state/user.actions';
+import { CheckAuthMSA, LogoutUserMSA } from '../../user/state/user.actions';
 import { InvalidInputError, InputChangedError } from '../../core/model/data-service-error';
 import { DialogService } from '../../shared/dialog/dialog.service';
 import { SendDialogComponent } from './components/send-dialog.component';
 import { AnalysisStepperComponent } from '../analysis-stepper/components/analysis-stepper.component';
 import { SendSamplesOpenAnalysisDialogSSA, AnalysisStepperActionTypes } from '../analysis-stepper/state/analysis-stepper.actions';
+import { selectCurrentUser } from '../../user/state/user.selectors';
+import { UserSlice } from '../../user/user.state';
+import { UserMainState } from '../../user/state/user.reducer';
 
 @Injectable()
 export class SendSamplesEffects {
 
     constructor(
         private actions$: Actions<SendSamplesAction | SamplesMainAction>,
-        private store$: Store<SamplesMainSlice & SamplesSlice<SendSamplesState>>,
+        private store$: Store<SamplesMainSlice & SamplesSlice<SendSamplesState> & UserSlice<UserMainState>>,
         private dataService: DataService,
         private logger: LogService,
         private dialogService: DialogService
@@ -73,7 +76,8 @@ export class SendSamplesEffects {
         ShowBannerSOA
         | UpdateSamplesSOA
         | SendSamplesAddSentFileSOA
-        | LogoutUserMSA
+        // | LogoutUserMSA
+        | CheckAuthMSA
         | UpdateIsBusySOA
     > = this.actions$.pipe(
         ofType<SendSamplesSSA>(SendSamplesActionTypes.SendSamplesSSA),
@@ -92,7 +96,7 @@ export class SendSamplesEffects {
                 order: annotatedSampleSet,
                 comment: action.payload.comment,
                 receiveAs: ReceiveAs.PDF
-            })).pipe(
+            }, selectCurrentUser(state)!.id)).pipe(
                 map(() => of(
                     new UpdateIsBusySOA({ isBusy: false }),
                     new SendSamplesAddSentFileSOA({ sentFile: fileName }),
@@ -116,7 +120,8 @@ export class SendSamplesEffects {
                     } else if (error instanceof AuthorizationError) {
                         return of(
                             new UpdateIsBusySOA({ isBusy: false }),
-                            new LogoutUserMSA(),
+                            // new LogoutUserMSA(),
+                            new CheckAuthMSA(),
                             new ShowBannerSOA({ predefined: 'noAuthorizationOrActivation' })
                         );
                     }

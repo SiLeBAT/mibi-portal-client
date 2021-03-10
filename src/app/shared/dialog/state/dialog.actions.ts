@@ -9,7 +9,7 @@ export enum DialogActionTypes {
 export class DialogOpenMTA implements MultiTargetAction {
     readonly type = DialogActionTypes.DialogOpenMTA;
 
-    constructor(public target: string, public payload: { configuration: DialogConfiguration }) { }
+    constructor(public target: string, public payload: { configuration: DialogConfiguration, closable?: boolean }) { }
 }
 
 export class DialogConfirmMTA implements MultiTargetAction {

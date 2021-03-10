@@ -23,17 +23,19 @@ export class AuthGuard implements CanActivate {
         return this.store.pipe(select(selectCurrentUser)).pipe(
             map((currentUser: TokenizedUser) => {
                 if (currentUser) {
-                    const helper = new JwtHelperService();
+                    // const helper = new JwtHelperService();
                     // isTokenExpired returns false if no expirationDate is set
-                    const isExpired = helper.isTokenExpired(currentUser.token) || helper.getTokenExpirationDate(currentUser.token) === null;
+                    // const isExpired = helper.isTokenExpired(currentUser.token)
+                    //  || helper.getTokenExpirationDate(currentUser.token) === null;
 
-                    if (isExpired) {
-                        this.store.dispatch(new userActions.LogoutUserMSA());
-                        this.store.dispatch(new coreActions.ShowBannerSOA({ predefined: 'loginUnauthorized' }));
-                    }
-                    return !isExpired;
+                    // if (isExpired) {
+                        // this.store.dispatch(new userActions.LogoutUserMSA());
+                        // this.store.dispatch(new coreActions.ShowBannerSOA({ predefined: 'loginUnauthorized' }));
+                    // }
+                    // return !isExpired;
+                    return true;
                 }
-                this.router.navigate(['/users/login']).catch(() => {
+                this.router.navigate(['/']).catch(() => {
                     throw new Error('Unable to navigate.');
                 });
                 return false;

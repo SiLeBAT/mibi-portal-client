@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { NewDialogComponent } from './components/dialog.component';
 import { map } from 'rxjs/operators';
 import { DialogService } from './dialog.service';
+import { dialogMatConfiguration } from './dialog.constants';
 
 @Injectable()
 export class DialogEffects {
@@ -16,8 +17,10 @@ export class DialogEffects {
     @Effect({ dispatch: false })
     dialogOpen$: Observable<void> = this.actions$.pipe(
         ofType(DialogActionTypes.DialogOpenMTA),
-        map(() => {
-            this.dialogService.openDialog(NewDialogComponent);
+        map((action) => {
+            const matConfig = dialogMatConfiguration;
+            matConfig.disableClose = action.payload.closable ? false : true
+            this.dialogService.openDialog(NewDialogComponent, matConfig);
         })
     );
 }

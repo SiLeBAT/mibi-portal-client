@@ -31,6 +31,16 @@ export interface TokenizedUserDTO {
     readonly token: string;
 }
 
+export interface UserInfoDTO {
+    user: {
+        id: string,
+        firstName: string,
+        lastName: string,
+        userName: string,
+        email: string
+    } | null
+}
+
 export interface SystemInformationResponseDTO {
     readonly version: string;
     readonly lastChange: string;

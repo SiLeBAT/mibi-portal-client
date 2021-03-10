@@ -61,7 +61,7 @@
       "no-public"
     ],
     "no-console": [
-      true
+      false
     ],
     "arrow-return-shorthand": true,
     "callable-types": true,

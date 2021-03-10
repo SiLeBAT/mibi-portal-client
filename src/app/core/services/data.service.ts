@@ -2,8 +2,8 @@ import { EntityFactoryService } from './entity-factory.service';
 import { DTOFactoryService } from './dto-factory.service';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { map, catchError, delay } from 'rxjs/operators';
 import * as _ from 'lodash';
 import {
     Sample,
@@ -26,7 +26,8 @@ import {
     PutSamplesJSONResponseDTO,
     PostSubmittedResponseDTO,
     PutValidatedResponseDTO,
-    NRLDTO
+    NRLDTO,
+    UserInfoDTO
 } from '../model/response.model';
 import { TokenizedUser, Credentials, RegistrationDetails } from '../../user/model/user.model';
 import {
@@ -50,7 +51,7 @@ import { InvalidInputError, InputChangedError } from '../model/data-service-erro
 })
 export class DataService {
 
-    private API_VERSION = 'v2';
+    private API_VERSION = 'client/api';
     private USER = 'users';
     private SAMPLE = 'samples';
     private TOKEN = 'tokens';
@@ -80,6 +81,121 @@ export class DataService {
         private entityFactoryService: EntityFactoryService) {
     }
 
+    //blocking
+    // getEvent(callBack: () => void, onClose: () => void): Promise<void> {
+    //     return new Promise((resolve, reject) => {
+    //         const source = new EventSource('/client/backchannel', { withCredentials: false });
+    //         // callBack();
+    //         source.addEventListener('backchannel', (event: MessageEvent) => {
+    //             // i think this is not necessary
+    //             if (event.origin !== window.location.origin) {
+    //                 throw new Error('Origin error');
+    //             }
+    //             if (event.data === 'logout') {
+    //                 console.log('test event: ', event);
+    //                 callBack();
+    //             }
+    //         });
+    //         source.onopen = () => {
+    //             console.log('OPEN: ', source.readyState);
+    //             source.onerror = () => {
+    //                 console.log('ERROR: ', source.readyState);
+    //                 if (source.readyState !== EventSource.CONNECTING) {
+    //                     source.close(); // might be obsolete
+    //                     onClose();
+    //                 }
+    //             }
+    //             resolve();
+    //         }
+    //         source.onerror = () => {
+    //             console.log('ERROR: ', source.readyState);
+    //             if (source.readyState !== EventSource.CONNECTING) {
+    //                 source.close();
+    //                 reject();
+    //                 // onClose();
+    //             }
+    //         };
+    //     });
+    // }
+
+    private connection$: Subject<'opened' | 'closed'> = new Subject<'opened' | 'closed'>();
+    private authEvent: Subject<'logout'> = new Subject<'logout'>();
+
+    get backChannelConnection$(): Observable<'opened' | 'closed'> {
+        return this.connection$;
+    }
+    get backChannelAuthEvent$(): Observable<'logout'> {
+        return this.authEvent;
+    }
+
+    openBackChannel() {
+        const source = new EventSource('/client/backchannel', { withCredentials: false });
+        source.addEventListener('auth', (event: MessageEvent) => {
+            // i think this is not necessary
+            if (event.origin !== window.location.origin) {
+                throw new Error('Origin error');
+            }
+            if (event.data === 'logout') {
+                console.log('test event: ', event);
+                this.authEvent.next('logout');
+            }
+        });
+        source.onopen = () => {
+            console.log('OPEN: ', source.readyState);
+            this.connection$.next('opened');
+        }
+        source.onerror = () => {
+            console.log('ERROR: ', source.readyState);
+            if (source.readyState !== EventSource.CONNECTING) {
+                source.close(); // unneccessary?
+                this.connection$.next('closed');
+                setTimeout(() => {
+                    this.openBackChannel();
+                }, 10000);
+            }
+        };
+    }
+
+    getTestApiToken(token: string, userId: string) {
+        const url = 'client/api/test';
+        return this.httpClient.get<string>(url, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+            withCredentials: false,
+            params: {
+                sub: userId
+            }
+        });
+    }
+
+    getApiTestApiToken(token: string) {
+        const url = 'api/v2/test';
+        return this.httpClient.get<string>(url, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        });
+    }
+
+    getUserInfo(): Observable<TokenizedUser | null> {
+        const url = 'client/userinfo';
+        return this.httpClient.get<UserInfoDTO>(url).pipe(
+            // delay(5000),
+            map(userInfo => {
+                return userInfo.user === null ? null : {
+                    id: userInfo.user.id,
+                    token: '',
+                    email: userInfo.user.email,
+                    instituteId: '',
+                    userName: userInfo.user.userName,
+                    firstName: userInfo.user.firstName,
+                    lastName: userInfo.user.lastName
+                };
+            })
+        )
+    }
+
     setCurrentUser(user: TokenizedUser) {
         localStorage.setItem('currentUser', JSON.stringify(user));
     }
@@ -92,25 +208,25 @@ export class DataService {
         return this.httpClient.get<SystemInformationResponseDTO>(this.URL.systemInfo);
     }
 
-    logout() {
-        localStorage.removeItem('currentUser');
-    }
+    // logout() {
+    //     localStorage.removeItem('currentUser');
+    // }
 
-    login(credentials: Credentials): Observable<TokenizedUser> {
-        return this.httpClient.post<TokenizedUserDTO>(this.URL.login, credentials).pipe(
-            map((dto: TokenizedUserDTO) => {
-                return dto;
-            })
-        );
-    }
+    // login(credentials: Credentials): Observable<TokenizedUser> {
+    //     return this.httpClient.post<TokenizedUserDTO>(this.URL.login, credentials).pipe(
+    //         map((dto: TokenizedUserDTO) => {
+    //             return dto;
+    //         })
+    //     );
+    // }
 
-    sendSampleSheet(sendableFormData: SampleSubmission) {
+    sendSampleSheet(sendableFormData: SampleSubmission, userId: string) {
         const requestDTO: PostSubmittedRequestDTO = {
             order: { sampleSet: this.dtoService.fromSampleSet(sendableFormData.order) },
             comment: sendableFormData.comment,
             receiveAs: sendableFormData.receiveAs.toString()
         };
-        return this.httpClient.post<PostSubmittedResponseDTO>(this.URL.submit, requestDTO).pipe(
+        return this.httpClient.post<PostSubmittedResponseDTO>(this.URL.submit, requestDTO, { params: { sub: userId } }).pipe(
             map((dto: PostSubmittedResponseDTO) =>
                 dto.order.sampleSet.samples.map(sample => this.entityFactoryService.toSample(sample))),
             catchError(err => {
@@ -135,9 +251,10 @@ export class DataService {
         );
     }
 
-    validateSampleData(requestData: SamplesMainData): Observable<Sample[]> {
+    validateSampleData(requestData: SamplesMainData, userId: string | null): Observable<Sample[]> {
         const requestDTO: PutValidatedRequestDTO = { order: this.dtoService.fromSamplesMainDataToOrderDTO(requestData) };
-        return this.httpClient.put<PutValidatedResponseDTO>(this.URL.validate, requestDTO).pipe(
+        const params = userId !== null ? { sub: userId } : undefined;
+        return this.httpClient.put<PutValidatedResponseDTO>(this.URL.validate, requestDTO, { params: params }).pipe(
             map((dto: PutValidatedResponseDTO) =>
                 dto.order.sampleSet.samples.map(sample =>
                     this.entityFactoryService.toSample(sample)

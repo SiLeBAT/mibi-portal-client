@@ -12,10 +12,15 @@ export class AvatarComponent {
     @Input() currentUser$: Observable<User | null>;
 
     @Output() onLogout = new EventEmitter();
+    @Output() onLogin = new EventEmitter();
     @Output() onProfile = new EventEmitter();
 
     logout() {
         this.onLogout.emit();
+    }
+
+    login() {
+        this.onLogin.emit();
     }
 
     goToProfile() {

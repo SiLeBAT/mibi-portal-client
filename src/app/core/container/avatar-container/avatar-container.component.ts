@@ -12,6 +12,7 @@ import { UserMainSlice } from '../../../user/user.state';
     template: `<mibi-avatar
     [currentUser$]="currentUser$"
     (onProfile)="onProfile()"
+    (onLogin)="onLogin()"
     (onLogout)="onLogout()">
     </mibi-avatar>`
 })
@@ -27,6 +28,10 @@ export class AvatarContainerComponent implements OnInit {
             select(selectCurrentUser)
         );
 
+    }
+
+    onLogin() {
+        this.store$.dispatch(new userActions.LoginUserMSA());
     }
 
     onLogout() {

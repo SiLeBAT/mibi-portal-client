@@ -9,12 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class NavBarComponent {
 
-    @Input() currentUser$: Observable<User | null>;
     @Input() hasEntries$: Observable<boolean>;
 
     @Output() onLogout = new EventEmitter();
-
-    logout() {
-        this.onLogout.emit();
-    }
 }
