@@ -16,7 +16,9 @@
                 <div>
                     <textarea #testToken></textarea>
                 </div>
-                <button (click)="onToken(testToken.value, user.id)">send token</button>
+                <span *ngIf="user$ | async user">
+                    <button (click)="onToken(testToken.value, user.id)">send token</button>
+                </span>
                 <button (click)="onApiToken(testToken.value)">send api token</button>
                 <button (click)="onUserInfo()">get user info</button>
             </div>
