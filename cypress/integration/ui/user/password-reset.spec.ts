@@ -18,7 +18,7 @@ describe('Testing the Password Reset page', function () {
     describe('Testing the Password Reset page links', function () {
         it('should navigate back to the Login page', function () {
             cy.contains('Zurück').click();
-            cy.url().should('include', this.paths.login);
+            cy.url().should('equal', Cypress.config().baseUrl + this.paths.login);
         });
     });
 
@@ -79,7 +79,7 @@ describe('Testing the Password Reset page', function () {
             cy.get('[name="email"]').type('NonexistentUser@none.com');
             cy.get('[type="submit"]').click();
             cy.contains(this.banner.passwordResetError);
-            cy.url().should('include', this.paths.recovery);
+            cy.url().should('equal', Cypress.config().baseUrl + this.paths.recovery);
         });
 
         it('should display banner for 400', function () {
@@ -94,7 +94,7 @@ describe('Testing the Password Reset page', function () {
             cy.get('[name="email"]').type(this.users[0].email);
             cy.get('[type="submit"]').click();
             cy.contains(this.banner.passwordResetError);
-            cy.url().should('include', this.paths.recovery);
+            cy.url().should('equal', Cypress.config().baseUrl + this.paths.recovery);
         });
 
     });

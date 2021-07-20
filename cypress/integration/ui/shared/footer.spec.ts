@@ -36,7 +36,7 @@ describe('Testing the Footer', function () {
         it('should navigate to the FAQ page', function () {
             cy.get('footer').within(() => {
                 cy.contains('FAQ').click();
-                cy.url().should('include', this.paths.faq);
+                cy.url().should('equal', Cypress.config().baseUrl + this.paths.faq);
             });
         });
 
@@ -51,7 +51,7 @@ describe('Testing the Footer', function () {
         it('should navigate to the Datenschutzerklärung page', function () {
             cy.get('footer').within(() => {
                 cy.contains('Datenschutzerklärung').click();
-                cy.url().should('include', this.paths.datenschutzerklaerung);
+                cy.url().should('equal', Cypress.config().baseUrl + this.paths.datenschutzerklaerung);
             });
         });
 

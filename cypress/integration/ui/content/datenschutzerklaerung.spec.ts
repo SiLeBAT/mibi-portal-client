@@ -29,7 +29,7 @@ describe('Testing the Datenschutzerklärung Page', function () {
 
         it('should navigate to the Datenschutzhinweise page', function () {
             cy.contains('Datenschutzhinweise').click();
-            cy.url().should('include', this.paths.datenschutzhinweise);
+            cy.url().should('equal', Cypress.config().baseUrl + this.paths.datenschutzhinweise);
         });
 
         it('should open a new tab for the MiBi-Portal page', function () {

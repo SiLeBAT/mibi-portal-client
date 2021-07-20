@@ -23,12 +23,12 @@ describe('Testing the Login Page', function () {
     describe('Testing the Login page links', function () {
         it('should navigate to the Registration page', function () {
             cy.contains('Registrierung').click();
-            cy.url().should('include', this.paths.register);
+            cy.url().should('equal', Cypress.config().baseUrl + this.paths.register);
         });
 
         it('should navigate to the Passwort vergessen page', function () {
             cy.contains('Passwort vergessen?').click();
-            cy.url().should('include', this.paths.recovery);
+            cy.url().should('equal', Cypress.config().baseUrl + this.paths.recovery);
         });
     });
 
@@ -75,7 +75,7 @@ describe('Testing the Login Page', function () {
             cy.get('[name="password"]').type('NonexistentPassword');
             cy.get('[type="submit"]').click();
             cy.contains(this.banner.loginError);
-            cy.url().should('include', this.paths.login);
+            cy.url().should('equal', Cypress.config().baseUrl + this.paths.login);
         });
 
         it('should disable login for multiple failed attempts', function () {
@@ -91,7 +91,7 @@ describe('Testing the Login Page', function () {
             cy.get('[name="password"]').type('wrongPassword');
             cy.get('[type="submit"]').click();
             cy.contains(this.banner.repeatedLoginError);
-            cy.url().should('include', this.paths.login);
+            cy.url().should('equal', Cypress.config().baseUrl + this.paths.login);
         });
 
         it('should display banner for single failed attempts', function () {
@@ -107,7 +107,7 @@ describe('Testing the Login Page', function () {
             cy.get('[name="password"]').type('wrongPassword');
             cy.get('[type="submit"]').click();
             cy.contains(this.banner.loginError);
-            cy.url().should('include', this.paths.login);
+            cy.url().should('equal', Cypress.config().baseUrl + this.paths.login);
         });
 
     });
