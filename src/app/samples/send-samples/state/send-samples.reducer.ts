@@ -11,7 +11,7 @@ export interface SendSamplesState {
 
 export function sendSamplesLastSentFilesReducer(state: string[] = [], action: SendSamplesAction): string[] {
     switch (action.type) {
-        case SendSamplesActionTypes.AddSentFilesSOA:
+        case SendSamplesActionTypes.SendSamplesAddSentFileSOA:
             return _.union(state, [action.payload.sentFile]);
         default:
             return state;

@@ -13,7 +13,6 @@ import { UploadContainerComponent } from './container/upload-container/upload-co
 import { MatDividerModule } from '@angular/material/divider';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DialogComponent } from './presentation/dialog/dialog.component';
-import { CompileDirective } from './directive/compile.directive';
 import { UploadActionItemComponent } from './presentation/upload-action-item/upload-action-item.component';
 import { BoxLayoutComponent } from './box-layout/box-layout.component';
 import { StoreModule } from '@ngrx/store';
@@ -49,7 +48,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
         EffectsModule.forFeature(sharedEffects)
     ],
     declarations: [
-        CompileDirective,
         DialogComponent,
         UploadComponent,
         UploadContainerComponent,
@@ -61,7 +59,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
         NewDialogComponent
     ],
     exports: [
-        CompileDirective,
         DialogComponent,
         UploadActionItemComponent,
         UploadComponent,

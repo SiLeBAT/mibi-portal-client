@@ -1,26 +1,25 @@
-import { Urgency } from './../../model/sample.enums';
+import { Urgency } from '../../model/sample.enums';
 import * as _ from 'lodash';
 import { map } from 'rxjs/internal/operators/map';
 import { takeWhile } from 'rxjs/internal/operators/takeWhile';
 import { take } from 'rxjs/internal/operators/take';
 import { Observable } from 'rxjs';
-import { SendSamplesState } from './../../send-samples/state/send-samples.reducer';
+import { SendSamplesState } from '../state/send-samples.reducer';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store, select, createSelector } from '@ngrx/store';
-import { selectFormData, selectImportedFileName } from '../../state/samples.selectors';
+import { selectSampleData, selectImportedFileName } from '../../state/samples.selectors';
 import { Sample, Analysis, SampleMeta } from '../../model/sample-management.model';
 import { SamplesMainSlice, SamplesSlice } from '../../samples.state';
 import { MatDialogRef } from '@angular/material/dialog';
 import { NRLDTO, AnalysisProcedureDTO } from '../../../core/model/response.model';
-import { sendSamplesSendDialogStrings } from '../../send-samples/send-samples.constants';
-import { SendSamplesOpenSendDialogSSA } from '../../send-samples/state/send-samples.actions';
-import { selectSendSamplesIsFileAlreadySent } from '../../send-samples/state/send-samples.selectors';
+import { sendSamplesSendDialogStrings } from '../send-samples.constants';
+import { SendSamplesConfirmAnalysisSSA, SendSamplesCancelAnalysisSSA } from '../state/send-samples.actions';
+import { selectSendSamplesIsFileAlreadySent } from '../state/send-samples.selectors';
 import { UpdateSampleMetaDataSOA } from '../../state/samples.actions';
 import { selectNRLs } from '../../../shared/nrl/state/nrl.selectors';
 import { NRLState } from '../../../shared/nrl/state/nrl.reducer';
 import { SharedSlice } from '../../../shared/shared.state';
-import { ShowBannerSOA } from '../../../core/state/core.actions';
 import { tap } from 'rxjs/internal/operators/tap';
 
 interface AnalysisStepViewModel {
@@ -43,10 +42,10 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
     private componentActive = true;
 
     warnings: string[] = [];
-    showOther: { [key: string]: boolean } = {};
-    showCompareHuman: { [key: string]: boolean } = {};
-    analysisForm: { [key: string]: FormGroup };
-    analysis: { [nrl: string]: Analysis };
+    showOther: Record<string, boolean> = {};
+    showCompareHuman: Record<string, boolean> = {};
+    analysisForm: Record<string, FormGroup>;
+    analysis: Record<string, Analysis>;
 
     isLinear = false;
 
@@ -76,7 +75,7 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
             select(createSelector<SamplesMainSlice | SharedSlice<NRLState> | SamplesSlice<SendSamplesState>,
                 Sample[], NRLDTO[],
                 { samples: Sample[], nrls: NRLDTO[]}>(
-                selectFormData,
+                selectSampleData,
                 selectNRLs,
                 (
                     samples: Sample[],
@@ -89,12 +88,12 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
 
     onSend() {
         this.close();
-        this.store$.dispatch(new SendSamplesOpenSendDialogSSA());
+        this.store$.dispatch(new SendSamplesConfirmAnalysisSSA());
     }
 
     onCancel() {
-        this.store$.dispatch(new ShowBannerSOA({ predefined: 'sendCancel' }));
         this.close();
+        this.store$.dispatch(new SendSamplesCancelAnalysisSSA());
     }
 
     onChangeShowOther(nrl: string) {
@@ -184,7 +183,7 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
 
     private createFormControls(analysisStepVM: AnalysisStepViewModel[], samples: Sample[]) {
 
-        return analysisStepVM.reduce((accumulator: { [key: string]: FormGroup }, vm) => {
+        return analysisStepVM.reduce((accumulator: Record<string, FormGroup>, vm) => {
             const exampleSample = _.find(samples, s => s.sampleMeta.nrl === vm.abbreviation);
 
             this.showCompareHuman[vm.abbreviation] = exampleSample ?
@@ -198,7 +197,7 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
 
             const currentUrgency: string = exampleSample ? exampleSample.sampleMeta.urgency.toString() : 'NORMAL';
 
-            const controlsConfig: { [key: string]: any } = {
+            const controlsConfig: Record<string, any> = {
                 other: currentAnalysisValues.other ? currentAnalysisValues.other : '',
                 compareHuman: currentAnalysisValues.compareHuman ? currentAnalysisValues.compareHuman.value : '',
                 urgency: currentUrgency

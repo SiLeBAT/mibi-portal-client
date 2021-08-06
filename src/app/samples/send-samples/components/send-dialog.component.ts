@@ -9,18 +9,17 @@ import { SendSamplesState } from '../state/send-samples.reducer';
 import { selectSendSamplesIsFileAlreadySent } from '../state/send-samples.selectors';
 import { sendSamplesSendDialogStrings, sendSamplesSendDialogConfiguration } from '../send-samples.constants';
 import * as _ from 'lodash';
-import { SendSamplesSSA } from '../state/send-samples.actions';
+import { SendSamplesCancelSendSSA, SendSamplesConfirmSendSSA } from '../state/send-samples.actions';
 import { selectImportedFileName } from '../../state/samples.selectors';
-import { SendSamplesOpenAnalysisDialogSSA } from '../../analysis-stepper/state/analysis-stepper.actions';
 
 @Component({
     selector: 'mibi-send-dialog',
     template:
         `<mibi-send-dialog-view
-                [config]="dialogConfig$ | async"
-                (confirm)="onConfirm($event)"
-                (cancel)="onCancel()"
-    ></mibi-send-dialog-view>`
+            [config]="dialogConfig$ | async"
+            (confirm)="onConfirm($event)"
+            (cancel)="onCancel()"
+        ></mibi-send-dialog-view>`
 })
 export class SendDialogComponent {
     private commentWarnings: string[] = [];
@@ -29,7 +28,7 @@ export class SendDialogComponent {
         map(state => {
             const dialogConfig = _.cloneDeep(sendSamplesSendDialogConfiguration);
             if (selectSendSamplesIsFileAlreadySent(state)) {
-                this.addFileAlreadSentWarning(dialogConfig, selectImportedFileName(state));
+                this.addFileAlreadySentWarning(dialogConfig, selectImportedFileName(state));
                 this.commentWarnings.push(sendSamplesSendDialogStrings.commentAlreadySent);
             }
             return dialogConfig;
@@ -48,20 +47,20 @@ export class SendDialogComponent {
         }
         amendedComment += comment;
 
-        this.store$.dispatch(new SendSamplesSSA({ comment: amendedComment }));
         this.close();
+        this.store$.dispatch(new SendSamplesConfirmSendSSA({ comment: amendedComment }));
     }
 
     onCancel() {
-        this.store$.dispatch(new SendSamplesOpenAnalysisDialogSSA());
         this.close();
+        this.store$.dispatch(new SendSamplesCancelSendSSA());
     }
 
     private close(): void {
         this.dialogRef.close();
     }
 
-    private addFileAlreadSentWarning(config: DialogConfiguration, fileName: string) {
+    private addFileAlreadySentWarning(config: DialogConfiguration, fileName: string) {
         const strings = sendSamplesSendDialogStrings;
         config.warnings.push(strings.warningAlreadySendPre + fileName + strings.warningAlreadySendPost);
         config.confirmButtonConfig.label = strings.confirmWithWarningsLabel;

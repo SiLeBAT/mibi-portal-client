@@ -1,15 +1,12 @@
 import { Action } from '@ngrx/store';
-import { ChangedDataGridField, SampleSet, ExcelFile, Sample, MetaDataCollection } from '../model/sample-management.model';
+import { ChangedDataGridField, SampleSet, Sample, MetaDataCollection } from '../model/sample-management.model';
 
 export enum SamplesMainActionTypes {
     UpdateSampleSetSOA = '[Samples] Set sample set',
-    UpdateSampleMetaDataSOA = '[Samples] Set sample metadata',
     DestroySampleSetSOA = '[Samples] Clear store of all samples related data',
     UpdateSamplesSOA = '[Samples] Set samples',
-    UpdateSampleDataEntrySOA = '[Samples] Change single sample data field value',
-    ShowSamplesSSA = '[Samples] Navigate to samples view and validate samples',
-    ImportExcelFileMSA = '[Samples] Import Excel file',
-    ExportExcelFileSSA = '[Samples] Export Excel file'
+    UpdateSampleMetaDataSOA = '[Samples] Set sample metadata',
+    UpdateSampleDataEntrySOA = '[Samples] Change single sample data field value'
 }
 
 // Samples
@@ -41,28 +38,9 @@ export class UpdateSampleDataEntrySOA implements Action {
     constructor(public payload: ChangedDataGridField) { }
 }
 
-export class ShowSamplesSSA implements Action {
-    readonly type = SamplesMainActionTypes.ShowSamplesSSA;
-}
-
-// Excel file
-
-export class ImportExcelFileMSA implements Action {
-    readonly type = SamplesMainActionTypes.ImportExcelFileMSA;
-
-    constructor(public payload: ExcelFile) { }
-}
-
-export class ExportExcelFileSSA implements Action {
-    readonly type = SamplesMainActionTypes.ExportExcelFileSSA;
-}
-
 export type SamplesMainAction =
     UpdateSampleSetSOA
     | DestroySampleSetSOA
     | UpdateSamplesSOA
     | UpdateSampleDataEntrySOA
-    | ShowSamplesSSA
-    | ImportExcelFileMSA
-    | ExportExcelFileSSA
     | UpdateSampleMetaDataSOA;

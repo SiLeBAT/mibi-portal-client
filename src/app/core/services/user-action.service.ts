@@ -4,12 +4,13 @@ import { UserActionViewModelConfiguration, UserActionType, ColorType } from '../
 import { Store } from '@ngrx/store';
 import { ClientError } from '../model/client-error';
 import { Router } from '@angular/router';
-import { ValidateSamplesMSA } from '../../samples/validate-samples/validate-samples.actions';
+import { ValidateSamplesSSA } from '../../samples/validate-samples/validate-samples.actions';
 import { CoreMainSlice } from '../core.state';
-import { ExportExcelFileSSA, ImportExcelFileMSA, DestroySampleSetSOA } from '../../samples/state/samples.actions';
-import { ShowDialogMSA } from '../state/core.actions';
-import { SendSamplesOpenAnalysisDialogSSA } from '../../samples/analysis-stepper/state/analysis-stepper.actions';
 import { environment } from '../../../environments/environment';
+import { CloseSamplesSSA } from '../../samples/close-samples/close-samples.actions';
+import { UploadSamplesMSA } from '../../samples/upload-samples.ts/upload-samples.actions';
+import { DownloadSamplesSSA } from '../../samples/download-samples/download-samples.actions';
+import { SendSamplesSSA } from '../../samples/send-samples/state/send-samples.actions';
 
 @Injectable({
     providedIn: 'root'
@@ -69,7 +70,7 @@ export class UserActionService {
     }];
 
     constructor(
-        private store: Store<CoreMainSlice>, private router: Router) { }
+        private store$: Store<CoreMainSlice>, private router: Router) { }
 
     getConfigOfType(type: UserActionType): UserActionViewModelConfiguration {
         const config = _.find(this.userActionConfiguration, (c: UserActionViewModelConfiguration) => c.type === type);
@@ -99,45 +100,22 @@ export class UserActionService {
     }
 
     private validate() {
-        this.store.dispatch(new ValidateSamplesMSA());
+        this.store$.dispatch(new ValidateSamplesSSA());
     }
 
     private export() {
-        this.store.dispatch(new ExportExcelFileSSA());
+        this.store$.dispatch(new DownloadSamplesSSA());
     }
 
     private import(file: File) {
-        this.store.dispatch(new ImportExcelFileMSA({ file }));
+        this.store$.dispatch(new UploadSamplesMSA({ excelFile: { file } }));
     }
 
     private send() {
-        this.store.dispatch(new SendSamplesOpenAnalysisDialogSSA());
+        this.store$.dispatch(new SendSamplesSSA());
     }
 
     private close() {
-        this.store.dispatch(new ShowDialogMSA({
-            message: `Wenn Sie die Tabelle schließen, gehen Ihre Änderungen verloren. Wollen Sie das?`,
-            title: 'Schließen',
-            mainAction: {
-                type: UserActionType.CUSTOM,
-                label: 'Ok',
-                onExecute: () => {
-                    this.store.dispatch(new DestroySampleSetSOA());
-                    this.navigate('/upload');
-                },
-                icon: '',
-                color: ColorType.PRIMARY,
-                focused: true
-            },
-            auxilliaryAction: {
-                type: UserActionType.CUSTOM,
-                label: 'Abbrechen',
-                onExecute: () => {
-                },
-                icon: '',
-                color: ColorType.PRIMARY
-            }
-        }));
-
+        this.store$.dispatch(new CloseSamplesSSA());
     }
 }

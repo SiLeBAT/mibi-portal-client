@@ -3,19 +3,13 @@ import { DialogConfiguration } from '../dialog.model';
 
 export enum DialogActionTypes {
     DialogOpenMTA = '[Shared/Dialog] Open Dialog',
-    DialogConfirmMTA = '[Shared/Dialog] Inform of dialog confirmed',
-    DialogCancelMTA = '[Shared/Dialog] Inform of dialog cancelled'
+    DialogCancelMTA = '[Shared/Dialog] Cancel dialog',
+    DialogConfirmMTA = '[Shared/Dialog] Confirm dialog'
 }
 export class DialogOpenMTA implements MultiTargetAction {
     readonly type = DialogActionTypes.DialogOpenMTA;
 
     constructor(public target: string, public payload: { configuration: DialogConfiguration }) { }
-}
-
-export class DialogConfirmMTA implements MultiTargetAction {
-    readonly type = DialogActionTypes.DialogConfirmMTA;
-
-    constructor(public target: string) { }
 }
 
 export class DialogCancelMTA implements MultiTargetAction {
@@ -24,4 +18,10 @@ export class DialogCancelMTA implements MultiTargetAction {
     constructor(public target: string) { }
 }
 
-export type DialogAction = DialogOpenMTA | DialogConfirmMTA | DialogCancelMTA;
+export class DialogConfirmMTA implements MultiTargetAction {
+    readonly type = DialogActionTypes.DialogConfirmMTA;
+
+    constructor(public target: string) { }
+}
+
+export type DialogAction = DialogOpenMTA | DialogCancelMTA | DialogConfirmMTA;

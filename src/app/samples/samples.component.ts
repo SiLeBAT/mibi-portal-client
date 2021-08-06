@@ -3,7 +3,7 @@ import { Observable, Subscription } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 import { tap } from 'rxjs/operators';
 import { Sample, ChangedDataGridField } from './model/sample-management.model';
-import { selectFormData, selectImportedFileName } from './state/samples.selectors';
+import { selectSampleData, selectImportedFileName } from './state/samples.selectors';
 import { SamplesMainSlice } from './samples.state';
 import { ShowActionBarSOA, UpdateActionBarTitleSOA } from '../core/state/core.actions';
 import { UserActionType } from '../shared/model/user-action.model';
@@ -20,7 +20,7 @@ import { UpdateSampleDataEntrySOA } from './state/samples.actions';
 })
 export class SamplesComponent implements OnDestroy {
 
-    readonly samples$: Observable<Sample[]> = this.store$.pipe(select(selectFormData));
+    readonly samples$: Observable<Sample[]> = this.store$.pipe(select(selectSampleData));
 
     private fileNameSubscription: Subscription;
 

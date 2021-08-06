@@ -10,11 +10,13 @@ import { tap } from 'rxjs/operators';
 
 @Component({
     selector: 'mibi-new-dialog',
-    template: `<mibi-dialog-view
-    [config]="(data$ | async).configuration"
-    (onConfirm) = "onConfirm()"
-    (onCancel) = "onCancel()">
-    </mibi-dialog-view>`
+    template: `
+        <mibi-dialog-view
+            [config]="(data$ | async).configuration"
+            (confirm) = "onConfirm()"
+            (cancel) = "onCancel()"
+        >
+        </mibi-dialog-view>`
 })
 export class NewDialogComponent {
     data$: Observable<DialogData> = this.store$.pipe(

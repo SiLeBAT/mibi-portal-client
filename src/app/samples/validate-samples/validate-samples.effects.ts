@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import {
     ValidateSamplesAction,
-    ValidateSamplesMSA,
-    ValidateSamplesActionTypes
+    ValidateSamplesSSA,
+    ValidateSamplesActionTypes,
+    ValidateSamplesValidateSSA
 } from './validate-samples.actions';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { withLatestFrom, concatMap, map, catchError, concatAll, tap } from 'rxjs/operators';
+import { withLatestFrom, concatMap, catchError, exhaustMap } from 'rxjs/operators';
 import { DataService } from '../../core/services/data.service';
-import { Sample } from '../model/sample-management.model';
 import { of, Observable } from 'rxjs';
 import { ShowBannerSOA, UpdateIsBusySOA, HideBannerSOA } from '../../core/state/core.actions';
 import { LogService } from '../../core/services/log.service';
@@ -28,31 +28,31 @@ export class ValidateSamplesEffects {
     ) { }
 
     @Effect()
-    validateSamples$: Observable<UpdateSamplesSOA | ShowBannerSOA | UpdateIsBusySOA> = this.actions$.pipe(
-        ofType<ValidateSamplesMSA>(ValidateSamplesActionTypes.ValidateSamplesMSA),
-        withLatestFrom(this.store$),
-        tap(() => {
-            this.store$.dispatch(new UpdateIsBusySOA({ isBusy: true }));
-            this.store$.dispatch(new HideBannerSOA());
-        }),
-        concatMap(([, state]) => {
-            const sampleData = selectSamplesMainData(state);
-            return this.dataService.validateSampleData(sampleData).pipe(
-                map((annotatedSamples: Sample[]) => {
-                    return of(
-                        new UpdateIsBusySOA({ isBusy: false }),
-                        new UpdateSamplesSOA(annotatedSamples)
-                    );
-                }),
-                concatAll(),
-                catchError((error) => {
-                    this.logger.error('Failed to validate samples', error);
-                    return of(
-                        new UpdateIsBusySOA({ isBusy: false }),
-                        new ShowBannerSOA({ predefined: 'validationFailure' })
-                    );
-                })
-            );
-        })
+    validateSamples$: Observable<UpdateIsBusySOA | HideBannerSOA | ValidateSamplesValidateSSA> = this.actions$.pipe(
+        ofType<ValidateSamplesSSA>(ValidateSamplesActionTypes.ValidateSamplesSSA),
+        concatMap(() => of(
+            new UpdateIsBusySOA({ isBusy: true }),
+            new HideBannerSOA(),
+            new ValidateSamplesValidateSSA()
+        ))
+    );
+
+    @Effect()
+    validateSamplesValidate$: Observable<UpdateSamplesSOA | UpdateIsBusySOA | ShowBannerSOA> = this.actions$.pipe(
+        ofType<ValidateSamplesValidateSSA>(ValidateSamplesActionTypes.ValidateSamplesValidateSSA),
+        withLatestFrom(this.store$.select(selectSamplesMainData)),
+        exhaustMap(([, samplesMainData]) => this.dataService.validateSampleData(samplesMainData).pipe(
+            concatMap(samples => of(
+                new UpdateSamplesSOA(samples),
+                new UpdateIsBusySOA({ isBusy: false })
+            )),
+            catchError((error: Error) => {
+                this.logger.error('Failed to validate samples.', error.stack);
+                return of(
+                    new UpdateIsBusySOA({ isBusy: false }),
+                    new ShowBannerSOA({ predefined: 'validationFailure' })
+                );
+            })
+        ))
     );
 }

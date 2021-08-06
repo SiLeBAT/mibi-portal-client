@@ -1,11 +1,16 @@
 import { Action } from '@ngrx/store';
 
 export enum ValidateSamplesActionTypes {
-    ValidateSamplesMSA = '[Samples/ValidateSamples] Validate samples'
+    ValidateSamplesSSA = '[Samples/ValidateSamples] Validate samples',
+    ValidateSamplesValidateSSA = '[Samples/ValidateSamples] Validate samples by server'
 }
 
-export class ValidateSamplesMSA implements Action {
-    readonly type = ValidateSamplesActionTypes.ValidateSamplesMSA;
+export class ValidateSamplesSSA implements Action {
+    readonly type = ValidateSamplesActionTypes.ValidateSamplesSSA;
 }
 
-export type ValidateSamplesAction = ValidateSamplesMSA;
+export class ValidateSamplesValidateSSA implements Action {
+    readonly type = ValidateSamplesActionTypes.ValidateSamplesValidateSSA;
+}
+
+export type ValidateSamplesAction = ValidateSamplesSSA | ValidateSamplesValidateSSA;

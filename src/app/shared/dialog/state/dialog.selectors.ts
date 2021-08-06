@@ -11,10 +11,10 @@ export const selectDialogData = createSelector(
 
 export const selectDialogConfiguration = createSelector(
     selectDialogData,
-    state => state.configuration
+    dialogData => dialogData.configuration
 );
 
 export const selectDialogCaller = createSelector(
     selectDialogData,
-    state => state.caller
+    dialogData => dialogData.caller
 );

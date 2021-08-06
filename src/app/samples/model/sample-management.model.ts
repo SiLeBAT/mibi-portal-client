@@ -2,7 +2,6 @@
 import { Urgency, NRL } from './sample.enums';
 
 export type SampleProperty = keyof SampleData;
-export type SampleMetaProperty = keyof SampleMeta;
 export type SamplePropertyValues = Record<SampleProperty, string>;
 export type SampleAutoCorrection = Record<SampleProperty, string>;
 export type SampleEdits = Record<SampleProperty, string>;
@@ -99,12 +98,11 @@ export interface SampleData {
     operations_mode_text: AnnotatedSampleDataEntry;
     vvvo: AnnotatedSampleDataEntry;
     comment: AnnotatedSampleDataEntry;
-    [key: string]: AnnotatedSampleDataEntry;
 }
 
 export interface ChangedDataGridField {
     rowIndex: number;
-    columnId: string;
+    columnId: keyof SampleData;
     newValue: string;
 }
 
