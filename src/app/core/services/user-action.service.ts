@@ -2,15 +2,15 @@ import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import { UserActionViewModelConfiguration, UserActionType, ColorType } from '../../shared/model/user-action.model';
 import { Store } from '@ngrx/store';
-import { ClientError } from '../model/client-error';
 import { Router } from '@angular/router';
 import { ValidateSamplesSSA } from '../../samples/validate-samples/validate-samples.actions';
 import { CoreMainSlice } from '../core.state';
 import { environment } from '../../../environments/environment';
 import { CloseSamplesSSA } from '../../samples/close-samples/close-samples.actions';
-import { UploadSamplesMSA } from '../../samples/upload-samples.ts/upload-samples.actions';
-import { DownloadSamplesSSA } from '../../samples/download-samples/download-samples.actions';
+import { ImportSamplesMSA } from '../../samples/import-samples.ts/import-samples.actions';
+import { ExportSamplesSSA } from '../../samples/export-samples/export-samples.actions';
 import { SendSamplesSSA } from '../../samples/send-samples/state/send-samples.actions';
+import { NavigateMSA } from '../../shared/navigate/navigate.actions';
 
 @Injectable({
     providedIn: 'root'
@@ -94,9 +94,7 @@ export class UserActionService {
     }
 
     private navigate(url: string) {
-        this.router.navigate([url]).catch(() => {
-            throw new ClientError('Unable to navigate.');
-        });
+        this.store$.dispatch(new NavigateMSA({ url: url }));
     }
 
     private validate() {
@@ -104,11 +102,11 @@ export class UserActionService {
     }
 
     private export() {
-        this.store$.dispatch(new DownloadSamplesSSA());
+        this.store$.dispatch(new ExportSamplesSSA());
     }
 
     private import(file: File) {
-        this.store$.dispatch(new UploadSamplesMSA({ excelFile: { file } }));
+        this.store$.dispatch(new ImportSamplesMSA({ excelFile: { file } }));
     }
 
     private send() {

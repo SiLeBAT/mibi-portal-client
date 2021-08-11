@@ -23,11 +23,10 @@ export class UploadContainerComponent implements OnInit, OnDestroy, AfterContent
     private componentActive = true;
     private hasEntries = false;
     private isGuardActive = true;
-    constructor(
-        private store: Store<SamplesMainSlice>) { }
+    constructor(private store$: Store<SamplesMainSlice>) { }
 
     ngOnInit() {
-        this.store.pipe(select(selectHasEntries),
+        this.store$.pipe(select(selectHasEntries),
             takeWhile(() => this.componentActive),
             tap(
                 entries => this.hasEntries = entries
@@ -69,16 +68,16 @@ export class UploadContainerComponent implements OnInit, OnDestroy, AfterContent
     onError(error: UploadErrorType) {
         switch (error) {
             case UploadErrorType.SIZE:
-                this.store.dispatch(new ShowBannerSOA({ predefined: 'wrongUploadFilesize' }));
+                this.store$.dispatch(new ShowBannerSOA({ predefined: 'wrongUploadFilesize' }));
                 break;
             case UploadErrorType.TYPE:
-                this.store.dispatch(new ShowBannerSOA({ predefined: 'wrongUploadDatatype' }));
+                this.store$.dispatch(new ShowBannerSOA({ predefined: 'wrongUploadDatatype' }));
                 break;
             case UploadErrorType.CLEAR:
-                this.store.dispatch(new HideBannerSOA());
+                this.store$.dispatch(new HideBannerSOA());
                 break;
             default:
-                this.store.dispatch(new ShowBannerSOA({ predefined: 'uploadFailure' }));
+                this.store$.dispatch(new ShowBannerSOA({ predefined: 'uploadFailure' }));
         }
     }
 
@@ -101,7 +100,7 @@ export class UploadContainerComponent implements OnInit, OnDestroy, AfterContent
             return;
         }
         if (this.hasEntries) {
-            this.store.dispatch(new ShowDialogMSA({
+            this.store$.dispatch(new ShowDialogMSA({
                 message: `Wenn Sie die Tabelle schließen, gehen Ihre Änderungen verloren. Wollen Sie das?`,
                 title: 'Schließen',
                 mainAction: {

@@ -7,8 +7,8 @@ import { ValidateSamplesEffects } from './validate-samples/validate-samples.effe
 import { SendSamplesState, sendSamplesLastSentFilesReducer } from './send-samples/state/send-samples.reducer';
 import { SendSamplesEffects } from './send-samples/send-samples.effects';
 import { CloseSamplesEffects } from './close-samples/close-samples.effects';
-import { UploadSamplesEffects } from './upload-samples.ts/upload-samples.effects';
-import { DownloadSamplesEffects } from './download-samples/download-samples.effects';
+import { ImportSamplesEffects } from './import-samples.ts/import-samples.effects';
+import { ExportSamplesEffects } from './export-samples/export-samples.effects';
 
 type SamplesState = SamplesMainState & SendSamplesState;
 type SamplesReducerAction =
@@ -24,6 +24,6 @@ export const samplesEffects = [
     SendSamplesEffects,
     ValidateSamplesEffects,
     CloseSamplesEffects,
-    UploadSamplesEffects,
-    DownloadSamplesEffects
+    ImportSamplesEffects,
+    ExportSamplesEffects
 ];

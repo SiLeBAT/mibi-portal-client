@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { DataService } from '../../../core/services/data.service';
 import { AlertType } from '../../../core/model/alert.model';
-import { Router } from '@angular/router';
 import { UserActionService } from '../../../core/services/user-action.service';
 import { UserActionType } from '../../../shared/model/user-action.model';
 import { UserPasswordResetRequest } from '../../model/user.model';
@@ -12,6 +11,7 @@ import { UpdateIsBusySOA, ShowCustomBannerSOA } from '../../../core/state/core.a
 import { ContentMainState } from '../../../content/state/content.reducer';
 import { selectSupportContact } from '../../../content/state/content.selectors';
 import { ContentSlice } from '../../../content/content.state';
+import { NavigateMSA } from '../../../shared/navigate/navigate.actions';
 
 @Component({
     selector: 'mibi-recovery-container',
@@ -21,8 +21,11 @@ export class RecoveryContainerComponent implements OnInit, OnDestroy {
     private supportContact: string = '';
     private componentActive: boolean = true;
 
-    constructor(private store$: Store<ContentSlice<ContentMainState>>,
-        private dataService: DataService, private router: Router, private userActionService: UserActionService) { }
+    constructor(
+        private store$: Store<ContentSlice<ContentMainState>>,
+        private dataService: DataService,
+        private userActionService: UserActionService
+    ) { }
 
     ngOnInit() {
         this.store$.pipe(select(selectSupportContact),
@@ -43,19 +46,14 @@ export class RecoveryContainerComponent implements OnInit, OnDestroy {
             email).toPromise().then(
                 (response: UserPasswordResetRequest) => {
                     this.store$.dispatch(new UpdateIsBusySOA({ isBusy: false }));
-                    this.router.navigate(['users/login']).then(
-                        () => {
-                            this.store$.dispatch(new ShowCustomBannerSOA({
-                                banner: {
-                                    message: `Eine E-mail mit weiteren Anweisungen wurde an ${response.email} gesendet. Wenn Sie keine E-mail erhalten, könnte das bedeuten, daß Sie sich mit einer anderen E-mail-Adresse angemeldet haben.`,
-                                    type: AlertType.SUCCESS,
-                                    mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
-                                }
-                            }));
+                    this.store$.dispatch(new NavigateMSA({ url: 'users/login' }));
+                    this.store$.dispatch(new ShowCustomBannerSOA({
+                        banner: {
+                            message: `Eine E-mail mit weiteren Anweisungen wurde an ${response.email} gesendet. Wenn Sie keine E-mail erhalten, könnte das bedeuten, daß Sie sich mit einer anderen E-mail-Adresse angemeldet haben.`,
+                            type: AlertType.SUCCESS,
+                            mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
                         }
-                    ).catch(() => {
-                        throw new Error('Unable to navigate.');
-                    });
+                    }));
                 }
             ).catch(
                 () => {
@@ -70,5 +68,4 @@ export class RecoveryContainerComponent implements OnInit, OnDestroy {
                 }
             );
     }
-
 }

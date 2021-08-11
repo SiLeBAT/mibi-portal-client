@@ -3,9 +3,9 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { User } from '../../../user/model/user.model';
 import * as userActions from '../../../user/state/user.actions';
-import { Router } from '@angular/router';
 import { selectCurrentUser } from '../../../user/state/user.selectors';
 import { UserMainSlice } from '../../../user/user.state';
+import { NavigateMSA } from '../../../shared/navigate/navigate.actions';
 
 @Component({
     selector: 'mibi-avatar-container',
@@ -19,8 +19,7 @@ export class AvatarContainerComponent implements OnInit {
 
     currentUser$: Observable<User | null>;
 
-    constructor(private router: Router,
-        private store$: Store<UserMainSlice>) { }
+    constructor(private store$: Store<UserMainSlice>) { }
 
     ngOnInit() {
         this.currentUser$ = this.store$.pipe(
@@ -34,8 +33,6 @@ export class AvatarContainerComponent implements OnInit {
     }
 
     onProfile() {
-        this.router.navigate(['/users/profile']).catch(() => {
-            throw new Error('Unable to navigate.');
-        });
+        this.store$.dispatch(new NavigateMSA({ url: '/users/profile' }));
     }
 }

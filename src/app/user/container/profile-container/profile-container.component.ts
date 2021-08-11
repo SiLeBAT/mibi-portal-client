@@ -10,7 +10,7 @@ import { UserMainSlice } from '../../user.state';
 
 @Component({
     selector: 'mibi-profile-container',
-    template: `<mibi-profile
+    template: `<mibi-profile *ngIf="currentUser"
     [institution]="getInstitutionName()"
     [currentUser]="currentUser"
     (logout)="logout()"></mibi-profile>`
@@ -19,12 +19,11 @@ export class ProfileContainerComponent implements OnInit, OnDestroy {
     currentUser: User | null;
     private institution: Institution;
     private componentActive = true;
-    constructor(
-        private store: Store<UserMainSlice>) { }
+    constructor(private store$: Store<UserMainSlice>) { }
 
     ngOnInit() {
-        this.store.pipe(select(selectCurrentUser),
-            withLatestFrom(this.store),
+        this.store$.pipe(select(selectCurrentUser),
+            withLatestFrom(this.store$),
             tap(
                 (userData: [TokenizedUser | null, UserMainSlice]) => {
                     this.currentUser = userData[0];
@@ -47,7 +46,7 @@ export class ProfileContainerComponent implements OnInit, OnDestroy {
     }
 
     logout() {
-        this.store.dispatch(new userActions.LogoutUserMSA());
+        this.store$.dispatch(new userActions.LogoutUserMSA());
     }
 
     getInstitutionName() {

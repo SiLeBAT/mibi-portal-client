@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { UserActionType } from '../../../shared/model/user-action.model';
 import { SamplesMainSlice } from '../../samples.state';
 import { ShowActionBarSOA } from '../../../core/state/core.actions';
-import { UploadSamplesMSA } from '../../upload-samples.ts/upload-samples.actions';
+import { ImportSamplesMSA } from '../../import-samples.ts/import-samples.actions';
 
 @Component({
     selector: 'mibi-upload-view',
@@ -26,6 +26,6 @@ export class UploadViewComponent {
     }
 
     fileUpload(file: File) {
-        this.store$.dispatch(new UploadSamplesMSA({ excelFile: { file } }));
+        this.store$.dispatch(new ImportSamplesMSA({ excelFile: { file } }));
     }
 }

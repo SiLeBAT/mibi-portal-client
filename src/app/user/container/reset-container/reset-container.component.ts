@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { DataService } from '../../../core/services/data.service';
 import * as coreActions from '../../../core/state/core.actions';
+import { NavigateMSA } from '../../../shared/navigate/navigate.actions';
 import { UserMainState } from '../../state/user.reducer';
 
 @Component({
@@ -14,33 +15,26 @@ export class ResetContainerComponent {
 
     constructor(
         private activatedRoute: ActivatedRoute,
-        private store: Store<UserMainState>, private dataService: DataService, private router: Router) {
-    }
+        private store$: Store<UserMainState>,
+        private dataService: DataService
+    ) { }
 
     reset(password: string) {
         const token = this.activatedRoute.snapshot.params['id'];
 
-        this.store.dispatch(new coreActions.UpdateIsBusySOA({ isBusy: true }));
+        this.store$.dispatch(new coreActions.UpdateIsBusySOA({ isBusy: true }));
         this.dataService.resetPassword(
             password, token).toPromise().then(
                 () => {
-                    this.store.dispatch(new coreActions.UpdateIsBusySOA({ isBusy: false }));
-                    this.router.navigate(['users/login']).then(
-                        () => {
-                            this.store.dispatch(new coreActions.ShowBannerSOA({ predefined: 'passwordChangeSuccess' }));
-                        }
-                    ).catch(() => {
-                        throw new Error('Unable to navigate.');
-                    });
+                    this.store$.dispatch(new coreActions.UpdateIsBusySOA({ isBusy: false }));
+                    this.store$.dispatch(new NavigateMSA({ url: 'users/login' }));
+                    this.store$.dispatch(new coreActions.ShowBannerSOA({ predefined: 'passwordChangeSuccess' }));
                 }
             ).catch(
                 () => {
-                    this.store.dispatch(new coreActions.UpdateIsBusySOA({ isBusy: false }));
-                    this.store.dispatch(new coreActions.ShowBannerSOA({ predefined: 'passwordChangeFailure' }));
+                    this.store$.dispatch(new coreActions.UpdateIsBusySOA({ isBusy: false }));
+                    this.store$.dispatch(new coreActions.ShowBannerSOA({ predefined: 'passwordChangeFailure' }));
                 }
-
             );
-
     }
-
 }

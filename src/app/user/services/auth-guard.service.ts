@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import * as coreActions from '../../core/state/core.actions';
 import * as userActions from '../state/user.actions';
 import { Store, select } from '@ngrx/store';
@@ -8,19 +8,17 @@ import { TokenizedUser } from '../model/user.model';
 import { map } from 'rxjs/operators';
 import { selectCurrentUser } from '../state/user.selectors';
 import { UserMainSlice } from '../user.state';
+import { NavigateMSA } from '../../shared/navigate/navigate.actions';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
 
-    constructor(
-        private store: Store<UserMainSlice>,
-        private router: Router
-    ) { }
+    constructor(private store$: Store<UserMainSlice>) { }
 
     canActivate(activated: ActivatedRouteSnapshot, snap: RouterStateSnapshot) {
-        return this.store.pipe(select(selectCurrentUser)).pipe(
+        return this.store$.pipe(select(selectCurrentUser)).pipe(
             map((currentUser: TokenizedUser) => {
                 if (currentUser) {
                     const helper = new JwtHelperService();
@@ -28,14 +26,12 @@ export class AuthGuard implements CanActivate {
                     const isExpired = helper.isTokenExpired(currentUser.token) || helper.getTokenExpirationDate(currentUser.token) === null;
 
                     if (isExpired) {
-                        this.store.dispatch(new userActions.LogoutUserMSA());
-                        this.store.dispatch(new coreActions.ShowBannerSOA({ predefined: 'loginUnauthorized' }));
+                        this.store$.dispatch(new userActions.LogoutUserMSA());
+                        this.store$.dispatch(new coreActions.ShowBannerSOA({ predefined: 'loginUnauthorized' }));
                     }
                     return !isExpired;
                 }
-                this.router.navigate(['/users/login']).catch(() => {
-                    throw new Error('Unable to navigate.');
-                });
+                this.store$.dispatch(new NavigateMSA({ url: '/users/login' }));
                 return false;
             })
         );

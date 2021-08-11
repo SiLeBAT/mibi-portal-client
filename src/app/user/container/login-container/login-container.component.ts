@@ -2,13 +2,13 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Credentials } from '../../../user/model/user.model';
 import { Store, select } from '@ngrx/store';
 import { tap, takeWhile } from 'rxjs/operators';
-import { Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
 import { SamplesMainSlice } from '../../../samples/samples.state';
 import { selectHasEntries } from '../../../samples/state/samples.selectors';
 import { selectCurrentUser } from '../../state/user.selectors';
 import { UserMainSlice } from '../../user.state';
 import { LoginUserSSA } from '../../state/user.actions';
+import { NavigateMSA } from '../../../shared/navigate/navigate.actions';
 
 @Component({
     selector: 'mibi-login-container',
@@ -19,26 +19,21 @@ import { LoginUserSSA } from '../../state/user.actions';
 export class LoginContainerComponent implements OnInit, OnDestroy {
 
     private componentActive = true;
-    constructor(private router: Router,
-        private store: Store<UserMainSlice & SamplesMainSlice>) { }
+    constructor(private store$: Store<UserMainSlice & SamplesMainSlice>) { }
 
     ngOnInit(): void {
 
         combineLatest([
-            this.store.pipe(select(selectCurrentUser)),
-            this.store.pipe(select(selectHasEntries))
+            this.store$.pipe(select(selectCurrentUser)),
+            this.store$.pipe(select(selectHasEntries))
         ]).pipe(
             takeWhile(() => this.componentActive),
             tap(([currentUser, hasEntries]) => {
                 if (currentUser) {
                     if (hasEntries) {
-                        this.router.navigate(['/samples']).catch(() => {
-                            throw new Error('Unable to navigate.');
-                        });
+                        this.store$.dispatch(new NavigateMSA({ url: '/samples' }));
                     } else {
-                        this.router.navigate(['/users/profile']).catch(() => {
-                            throw new Error('Unable to navigate.');
-                        });
+                        this.store$.dispatch(new NavigateMSA({ url: '/users/profile' }));
                     }
                 }
             })
@@ -50,6 +45,6 @@ export class LoginContainerComponent implements OnInit, OnDestroy {
     }
 
     login(credentials: Credentials) {
-        this.store.dispatch(new LoginUserSSA(credentials));
+        this.store$.dispatch(new LoginUserSSA(credentials));
     }
 }

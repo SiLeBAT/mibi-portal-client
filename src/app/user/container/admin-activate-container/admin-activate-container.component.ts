@@ -18,18 +18,20 @@ export class AdminActivateContainerComponent implements OnInit {
     adminTokenValid: UserActivation;
     name: string;
     appName: string = environment.appName;
-    constructor(private activatedRoute: ActivatedRoute,
-        private store: Store<UserMainState>) { }
+    constructor(
+        private activatedRoute: ActivatedRoute,
+        private store$: Store<UserMainState>
+    ) { }
 
     ngOnInit() {
         this.adminTokenValid = this.activatedRoute.snapshot.data['adminTokenValid'];
 
         if (this.adminTokenValid.activation) {
             this.name = this.adminTokenValid.username;
-            this.store.dispatch(new ShowBannerSOA({ predefined: 'accountActivationSuccess' }));
+            this.store$.dispatch(new ShowBannerSOA({ predefined: 'accountActivationSuccess' }));
         } else {
             this.name = '';
-            this.store.dispatch(new ShowBannerSOA({ predefined: 'accountActivationFailure' }));
+            this.store$.dispatch(new ShowBannerSOA({ predefined: 'accountActivationFailure' }));
         }
     }
 }

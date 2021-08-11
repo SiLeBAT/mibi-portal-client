@@ -3,7 +3,6 @@ import { fromDTOToInstitution, Institution, InstitutionDTO } from '../../../user
 import { Store, select } from '@ngrx/store';
 import { DataService } from '../../../core/services/data.service';
 import { AlertType } from '../../../core/model/alert.model';
-import { Router } from '@angular/router';
 import { UserActionService } from '../../../core/services/user-action.service';
 import { UserActionType } from '../../../shared/model/user-action.model';
 import { RegistrationDetails, UserRegistrationRequest } from '../../model/user.model';
@@ -15,6 +14,7 @@ import { selectSupportContact } from '../../../content/state/content.selectors';
 import { UpdateIsBusySOA, ShowCustomBannerSOA } from '../../../core/state/core.actions';
 import { ContentMainSlice } from '../../../content/content.state';
 import { UserMainSlice } from '../../user.state';
+import { NavigateMSA } from '../../../shared/navigate/navigate.actions';
 
 @Component({
     selector: 'mibi-register-container',
@@ -30,14 +30,14 @@ export class RegisterContainerComponent implements OnInit, OnDestroy {
     private supportContact: string = '';
     private componentActive: boolean = true;
     constructor(
-        private router: Router,
-        private store: Store<ContentMainSlice & UserMainSlice>,
-        private dataService: DataService, private userActionService: UserActionService) {
-    }
+        private store$: Store<ContentMainSlice & UserMainSlice>,
+        private dataService: DataService,
+        private userActionService: UserActionService
+    ) { }
 
     ngOnInit() {
         this.loadInstitutions();
-        this.store.pipe(select(selectSupportContact),
+        this.store$.pipe(select(selectSupportContact),
             takeWhile(() => this.componentActive)
         ).subscribe(contact => this.supportContact = contact,
             (error) => {
@@ -50,7 +50,7 @@ export class RegisterContainerComponent implements OnInit, OnDestroy {
     }
 
     register(details: RegistrationDetails) {
-        this.store.dispatch(new UpdateIsBusySOA({ isBusy: true }));
+        this.store$.dispatch(new UpdateIsBusySOA({ isBusy: true }));
         this.dataService.registrationRequest(
             {
                 email: details.email,
@@ -61,26 +61,20 @@ export class RegisterContainerComponent implements OnInit, OnDestroy {
             }
         ).toPromise().then(
             (response: UserRegistrationRequest) => {
-                this.store.dispatch(new UpdateIsBusySOA({ isBusy: false }));
-                this.router.navigate(['users/login']).then(
-                    () => {
-                        this.store.dispatch(new ShowCustomBannerSOA({
-                            banner: {
-                                message: `Bitte aktivieren Sie Ihren Account: Eine E-mail mit weiteren Anweisungen wurde an ${response.email} gesendet`,
-                                type: AlertType.SUCCESS,
-                                mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
-                            }
-                        }));
+                this.store$.dispatch(new UpdateIsBusySOA({ isBusy: false }));
+                this.store$.dispatch(new NavigateMSA({ url: 'users/login' }));
+                this.store$.dispatch(new ShowCustomBannerSOA({
+                    banner: {
+                        message: `Bitte aktivieren Sie Ihren Account: Eine E-mail mit weiteren Anweisungen wurde an ${response.email} gesendet`,
+                        type: AlertType.SUCCESS,
+                        mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
                     }
-                ).catch(() => {
-                    throw new Error('Unable to navigate.');
-                });
-
+                }));
             }
         ).catch(
             () => {
-                this.store.dispatch(new UpdateIsBusySOA({ isBusy: false }));
-                this.store.dispatch(new ShowCustomBannerSOA({
+                this.store$.dispatch(new UpdateIsBusySOA({ isBusy: false }));
+                this.store$.dispatch(new ShowCustomBannerSOA({
                     banner: {
                         message: `Fehler beim Registrieren. Eine E-mail mit weiteren Informationen wurde an ${details.email} gesendet. Wenn Sie keine E-mail erhalten, wenden Sie sich bitte direkt per E-mail an uns: ${this.supportContact}.`,
                         type: AlertType.ERROR,
@@ -92,7 +86,7 @@ export class RegisterContainerComponent implements OnInit, OnDestroy {
     }
 
     private loadInstitutions() {
-        this.institutions$ = this.store.pipe(
+        this.institutions$ = this.store$.pipe(
             select(selectInstitutions),
             filter((value) => value.length > 0),
             map((data: InstitutionDTO[]) => {

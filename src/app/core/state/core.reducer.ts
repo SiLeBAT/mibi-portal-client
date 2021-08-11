@@ -1,7 +1,7 @@
 
 import { CoreMainAction, CoreMainActionTypes } from './core.actions';
 import { Banner, BannerType } from '../model/alert.model';
-import { ROUTER_NAVIGATION, RouterNavigationAction } from '@ngrx/router-store';
+import { ROUTER_NAVIGATION, RouterNavigationAction, ROUTER_REQUEST, RouterRequestAction } from '@ngrx/router-store';
 import { UserActionType } from '../../shared/model/user-action.model';
 import * as _ from 'lodash';
 
@@ -69,7 +69,7 @@ export function coreActionBarConfigReducer(
     }
 }
 
-export function coreBannerReducer(state: BannerData = initialBanner, action: CoreMainAction | RouterNavigationAction): BannerData {
+export function coreBannerReducer(state: BannerData = initialBanner, action: CoreMainAction | RouterRequestAction): BannerData {
     switch (action.type) {
         case CoreMainActionTypes.ShowBannerSOA:
             return {
@@ -82,7 +82,7 @@ export function coreBannerReducer(state: BannerData = initialBanner, action: Cor
                 custom: action.payload.banner
             };
         case CoreMainActionTypes.HideBannerSOA:
-        case ROUTER_NAVIGATION:
+        case ROUTER_REQUEST:
             return { ...state, show: false };
         case CoreMainActionTypes.DestroyBannerSOA:
             return initialBanner;

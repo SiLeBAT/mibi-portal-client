@@ -4,6 +4,7 @@ import { ActionReducerMap } from '@ngrx/store';
 import { DialogState, dialogReducer } from './dialog/state/dialog.reducer';
 import { DialogAction } from './dialog/state/dialog.actions';
 import { DialogEffects } from './dialog/dialog.effects';
+import { NavigateEffects } from './navigate/navigate.effects';
 
 type SharedState = DialogState & NRLState;
 type SharedReducerAction = DialogAction | NRLMainAction;
@@ -13,5 +14,5 @@ export const sharedReducerMap: ActionReducerMap<SharedState, SharedReducerAction
     nrls: NRLReducer
 };
 export const sharedEffects = [
-    DialogEffects
+    DialogEffects, NavigateEffects
 ];

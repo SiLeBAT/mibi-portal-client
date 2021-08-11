@@ -1,59 +1,58 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { Observable, of } from 'rxjs';
-import { catchError, concatMap, exhaustMap, map, withLatestFrom } from 'rxjs/operators';
+import { EMPTY, Observable, of } from 'rxjs';
+import { catchError, concatMap, endWith, startWith, withLatestFrom } from 'rxjs/operators';
 import { DataService } from '../../core/services/data.service';
 import { LogService } from '../../core/services/log.service';
-import { HideBannerSOA, ShowBannerSOA, UpdateIsBusySOA } from '../../core/state/core.actions';
+import { CoreMainAction, HideBannerSOA, ShowBannerSOA, UpdateIsBusySOA } from '../../core/state/core.actions';
 import { SamplesMainSlice } from '../samples.state';
 import { selectSamplesMainData } from '../state/samples.selectors';
 import {
-    DownloadSamplesAction,
-    DownloadSamplesActionTypes,
-    DownloadSamplesExportSSA,
-    DownloadSamplesSSA
-} from './download-samples.actions';
+    ExportSamplesAction,
+    ExportSamplesActionTypes,
+    ExportSamplesSSA
+} from './export-samples.actions';
 import { saveAs } from 'file-saver';
+import { SamplesMainData } from '../state/samples.reducer';
 
 @Injectable()
-export class DownloadSamplesEffects {
+export class ExportSamplesEffects {
 
     constructor(
-        private actions$: Actions<DownloadSamplesAction>,
+        private actions$: Actions<ExportSamplesAction>,
         private store$: Store<SamplesMainSlice>,
         private dataService: DataService,
         private logger: LogService
     ) { }
 
     @Effect()
-    downloadSamples$: Observable<UpdateIsBusySOA | HideBannerSOA | DownloadSamplesExportSSA> = this.actions$.pipe(
-        ofType<DownloadSamplesSSA>(DownloadSamplesActionTypes.DownloadSamplesSSA),
-        concatMap(() => of(
-            new UpdateIsBusySOA({ isBusy: true }),
-            new HideBannerSOA(),
-            new DownloadSamplesExportSSA()
+    exportSamples$: Observable<CoreMainAction> = this.actions$.pipe(
+        ofType<ExportSamplesSSA>(ExportSamplesActionTypes.ExportSamplesSSA),
+        withLatestFrom(this.store$.select(selectSamplesMainData)),
+        concatMap(([, samplesMainData]) => this.exportSamples(samplesMainData).pipe(
+            startWith(
+                new UpdateIsBusySOA({ isBusy: true }),
+                new HideBannerSOA()
+            ),
+            endWith(
+                new UpdateIsBusySOA({ isBusy: false })
+            )
         ))
     );
 
-    @Effect()
-    downloadSamplesExport$: Observable<UpdateIsBusySOA | ShowBannerSOA> = this.actions$.pipe(
-        ofType<DownloadSamplesExportSSA>(DownloadSamplesActionTypes.DownloadSamplesExportSSA),
-        withLatestFrom(this.store$.select(selectSamplesMainData)),
-        exhaustMap(([, samplesMainData]) => this.dataService.marshalJSON(samplesMainData).pipe(
-            map(marshalledData => {
+    private exportSamples(samplesMainData: SamplesMainData): Observable<CoreMainAction> {
+        return this.dataService.marshalJSON(samplesMainData).pipe(
+            concatMap(marshalledData => {
                 saveAs(this.b64toBlob(marshalledData.binaryData, marshalledData.mimeType), marshalledData.fileName);
-                return new UpdateIsBusySOA({ isBusy: false });
+                return EMPTY;
             }),
             catchError((error: Error) => {
                 this.logger.error('Failed to export Excel File', error.stack);
-                return of(
-                    new UpdateIsBusySOA({ isBusy: false }),
-                    new ShowBannerSOA({ predefined: 'exportFailure' })
-                );
+                return of(new ShowBannerSOA({ predefined: 'exportFailure' }));
             })
-        ))
-    );
+        );
+    }
 
     private b64toBlob(b64Data: string, contentType: string = '', sliceSize: number = 512) {
         const byteCharacters = atob(b64Data);
