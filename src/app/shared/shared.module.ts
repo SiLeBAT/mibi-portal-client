@@ -26,6 +26,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { DialogWarningsViewComponent } from './dialog/components/dialog-warnings-view.component';
 
 @NgModule({
     imports: [
@@ -55,6 +56,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
         SingleCenterCardLayoutComponent,
         WallOfTextLayoutComponent,
         BoxLayoutComponent,
+        DialogWarningsViewComponent,
         DialogViewComponent,
         NewDialogComponent
     ],
@@ -66,6 +68,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
         SingleCenterCardLayoutComponent,
         WallOfTextLayoutComponent,
         BoxLayoutComponent,
+        DialogWarningsViewComponent,
         DialogViewComponent,
         NewDialogComponent
     ],

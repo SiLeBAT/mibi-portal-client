@@ -8,19 +8,18 @@ import { SendSamplesState } from '../state/send-samples.reducer';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store, select, createSelector } from '@ngrx/store';
-import { selectSampleData, selectImportedFileName } from '../../state/samples.selectors';
+import { selectSampleData } from '../../state/samples.selectors';
 import { Sample, Analysis, SampleMeta } from '../../model/sample-management.model';
 import { SamplesMainSlice, SamplesSlice } from '../../samples.state';
 import { MatDialogRef } from '@angular/material/dialog';
 import { NRLDTO, AnalysisProcedureDTO } from '../../../core/model/response.model';
-import { sendSamplesSendDialogStrings } from '../send-samples.constants';
 import { SendSamplesConfirmAnalysisSSA, SendSamplesCancelAnalysisSSA } from '../state/send-samples.actions';
-import { selectSendSamplesIsFileAlreadySent } from '../state/send-samples.selectors';
+import { selectSendSamplesDialogWarnings } from '../state/send-samples.selectors';
 import { UpdateSampleMetaDataSOA } from '../../state/samples.actions';
 import { selectNRLs } from '../../../shared/nrl/state/nrl.selectors';
 import { NRLState } from '../../../shared/nrl/state/nrl.reducer';
 import { SharedSlice } from '../../../shared/shared.state';
-import { tap } from 'rxjs/internal/operators/tap';
+import { DialogWarning } from '../../../shared/dialog/dialog.model';
 
 interface AnalysisStepViewModel {
     abbreviation: string;
@@ -41,7 +40,7 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
 
     private componentActive = true;
 
-    warnings: string[] = [];
+    warnings$: Observable<DialogWarning[]> = this.store$.select(selectSendSamplesDialogWarnings);
     showOther: Record<string, boolean> = {};
     showCompareHuman: Record<string, boolean> = {};
     analysisForm: Record<string, FormGroup>;
@@ -63,15 +62,6 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.stepperViewModel$ = this.store$.pipe(
-            tap(state => {
-                if (selectSendSamplesIsFileAlreadySent(state)) {
-                    this.warnings.push(
-                        sendSamplesSendDialogStrings.warningAlreadySendPre
-                        + selectImportedFileName(state)
-                        + sendSamplesSendDialogStrings.warningAlreadySendPost
-                    );
-                }
-            }),
             select(createSelector<SamplesMainSlice | SharedSlice<NRLState> | SamplesSlice<SendSamplesState>,
                 Sample[], NRLDTO[],
                 { samples: Sample[], nrls: NRLDTO[]}>(

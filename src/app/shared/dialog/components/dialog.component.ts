@@ -15,14 +15,14 @@ import { tap } from 'rxjs/operators';
             [config]="(data$ | async).configuration"
             (confirm) = "onConfirm()"
             (cancel) = "onCancel()"
-        >
-        </mibi-dialog-view>`
+        ></mibi-dialog-view>`
 })
 export class NewDialogComponent {
     data$: Observable<DialogData> = this.store$.pipe(
         select(selectDialogData),
         tap((data) => { this.caller = data.caller; })
-        );
+    );
+
     private caller: string;
 
     constructor(

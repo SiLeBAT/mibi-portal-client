@@ -1,5 +1,4 @@
-@import "../../../../assets/sass/abstracts";
-@import "../../../../assets/sass/layout";
+@import "abstracts";
 
 .mibi-button-group {
   display: flex;
@@ -40,15 +39,7 @@
   text-align: center;
 }
 
-.mibi-dialog-warnings {
-  @include list-style-none();
-
-  box-shadow: 0 1px $bfr-darkgrey;
+.mibi-warnings {
+  display: block;
   margin: $mibi-single-space;
-}
-
-.mibi-dialog-warnings__item {
-  background-color: $bfr-lightocre;
-  margin-bottom: $mibi-single-space;
-  padding: $mibi-single-space;
 }

@@ -10,6 +10,11 @@ export const selectSendSamplesLastSentFiles = createSelector(
     state => state.lastSentFiles
 );
 
+export const selectSendSamplesDialogWarnings = createSelector(
+    selectSendSamplesState,
+    state => state.dialogWarnings
+);
+
 export const selectSendSamplesIsFileAlreadySent = createSelector<
 SamplesMainSlice & SamplesSlice<SendSamplesState>, string, string[], boolean>(
     selectImportedFileName,

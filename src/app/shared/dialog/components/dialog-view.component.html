@@ -5,11 +5,7 @@
         <div class="mibi-dialog">
             <h1 mat-dialog-title>{{config.title}}</h1>
             <div mat-dialog-content class="mibi-mat-dialog-content">
-                <ul class="mibi-dialog-warnings">
-                    <li class="mibi-dialog-warnings__item" *ngFor="let warning of config.warnings">
-                        {{warning}}
-                    </li>
-                </ul>
+                <mibi-dialog-warnings-view [warnings]="config.warnings"></mibi-dialog-warnings-view>
                 <div class="mibi-dialog-message"> {{config.message}} </div>
                 <ng-content></ng-content>
             </div>

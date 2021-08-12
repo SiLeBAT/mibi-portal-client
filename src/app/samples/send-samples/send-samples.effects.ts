@@ -9,17 +9,26 @@ import {
     SendSamplesConfirmSendSSA,
     SendSamplesCancelAnalysisSSA,
     SendSamplesCancelSendSSA,
-    SendSamplesSSA
+    SendSamplesSSA,
+    SendSamplesUpdateDialogWarnings
 } from './state/send-samples.actions';
 import { SamplesSlice, SamplesMainSlice } from '../samples.state';
 import { Store } from '@ngrx/store';
-import { withLatestFrom, map, catchError, concatMap, startWith, endWith, first } from 'rxjs/operators';
+import { withLatestFrom, map, catchError, concatMap, startWith, endWith, first, finalize } from 'rxjs/operators';
 import { SamplesMainAction, UpdateSamplesSOA } from '../state/samples.actions';
 import { ShowBannerSOA, UpdateIsBusySOA, HideBannerSOA, CoreMainAction } from '../../core/state/core.actions';
 import { Observable, of, EMPTY, concat } from 'rxjs';
 import { SendSamplesState } from './state/send-samples.reducer';
 import * as _ from 'lodash';
-import { selectImportedFileName, selectSampleData, selectMetaData, selectSamplesMainData, selectHasErrors, selectHasAutoCorrections } from '../state/samples.selectors';
+import {
+    selectImportedFileName,
+    selectSampleData,
+    selectMetaData,
+    selectSamplesMainData,
+    selectHasErrors,
+    selectHasAutoCorrections,
+    selectHasWarnings
+} from '../state/samples.selectors';
 import { LogService } from '../../core/services/log.service';
 import { DataService } from '../../core/services/data.service';
 import { AuthorizationError } from '../../core/model/client-error';
@@ -29,6 +38,9 @@ import { DialogService } from '../../shared/dialog/dialog.service';
 import { SendDialogComponent } from './components/send-dialog.component';
 import { AnalysisStepperComponent } from './components/analysis-stepper.component';
 import { SamplesMainData } from '../state/samples.reducer';
+import { DialogWarning } from '../../shared/dialog/dialog.model';
+import { sendSamplesCommentWarningsStrings, sendSamplesDialogWarningsStrings } from './send-samples.constants';
+import { selectSendSamplesIsFileAlreadySent } from './state/send-samples.selectors';
 
 @Injectable()
 export class SendSamplesEffects {
@@ -42,7 +54,7 @@ export class SendSamplesEffects {
     ) { }
 
     @Effect()
-    sendSamples$: Observable<SamplesMainAction | CoreMainAction> = this.actions$.pipe(
+    sendSamples$: Observable<SendSamplesAction | SamplesMainAction | CoreMainAction> = this.actions$.pipe(
         ofType<SendSamplesSSA>(SendSamplesActionTypes.SendSamplesSSA),
         withLatestFrom(this.store$.select(selectSamplesMainData)),
         concatMap(([, samplesMainData]) => this.sendSamples(samplesMainData).pipe(
@@ -96,7 +108,10 @@ export class SendSamplesEffects {
                     samples: selectSampleData(state),
                     meta: selectMetaData(state)
                 },
-                comment: action.payload.comment,
+                comment: this.createComment(
+                    action.payload.comment,
+                    selectSendSamplesIsFileAlreadySent(state)
+                ),
                 receiveAs: ReceiveAs.PDF
             }
         ).pipe(
@@ -107,7 +122,7 @@ export class SendSamplesEffects {
 
     // Pipes
 
-    private sendSamples(samplesMainData: SamplesMainData): Observable<SamplesMainAction | CoreMainAction> {
+    private sendSamples(samplesMainData: SamplesMainData): Observable<SendSamplesAction | SamplesMainAction | CoreMainAction> {
         return this.dataService.validateSampleData(samplesMainData).pipe(
             concatMap(samples => concat(
                 of(new UpdateSamplesSOA(samples)),
@@ -120,7 +135,7 @@ export class SendSamplesEffects {
         );
     }
 
-    private sendSamplesOpenAnalysis(): Observable<CoreMainAction> {
+    private sendSamplesOpenAnalysis(): Observable<SendSamplesAction | CoreMainAction> {
         return this.store$.pipe(
             first(),
             concatMap(state => {
@@ -129,8 +144,18 @@ export class SendSamplesEffects {
                 } else if (selectHasAutoCorrections(state)) {
                     return of(new ShowBannerSOA({ predefined: 'autocorrections' }));
                 }
-                this.openAnalysisDialog(selectSampleData(state));
-                return EMPTY;
+                const warnings: DialogWarning[] = [];
+                if (selectSendSamplesIsFileAlreadySent(state)) {
+                    warnings.push(this.createAlreadySentWarning(selectImportedFileName(state)));
+                }
+                if (selectHasWarnings(state)) {
+                    warnings.push(this.createValidationWarningsWarning());
+                }
+                return of(new SendSamplesUpdateDialogWarnings({ warnings: warnings })).pipe(
+                    finalize(() => {
+                        this.openAnalysisDialog(selectSampleData(state));
+                    })
+                );
             })
         );
     }
@@ -170,6 +195,24 @@ export class SendSamplesEffects {
 
     // Utility
 
+    private createAlreadySentWarning(fileName: string): DialogWarning {
+        const strings = sendSamplesDialogWarningsStrings;
+        return [
+            { text: strings.alreadySentPre },
+            { text: fileName },
+            { text: strings.alreadySentPost }
+        ];
+    }
+
+    private createValidationWarningsWarning(): DialogWarning {
+        const strings = sendSamplesDialogWarningsStrings;
+        return [
+            { text: strings.validationWarningsPre },
+            { text: strings.validationWarningsEmphasized, emphasized: true },
+            { text: strings.validationWarningsPost }
+        ];
+    }
+
     private openAnalysisDialog(samples: Sample[]): void {
         const numberOfNRLs = _.uniq(samples.map(sample => sample.sampleMeta.nrl)).length;
         let width = '50%';
@@ -183,5 +226,13 @@ export class SendSamplesEffects {
             width: width,
             panelClass: 'mibi-stepper-dialog-container'
         });
+    }
+
+    private createComment(comment: string, alreadySent: boolean): string {
+        if (alreadySent) {
+            const strings = sendSamplesCommentWarningsStrings;
+            return strings.preamble + ' ' + strings.alreadySent + ' ' + comment;
+        }
+        return comment;
     }
 }

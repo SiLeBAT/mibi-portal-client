@@ -2,11 +2,7 @@
     <header class="mibi-header mat-title">
         Zusätzlich gewünschte Untersuchungen
     </header>
-    <ul class="mibi-dialog-warnings">
-        <li class="mibi-dialog-warnings__item" *ngFor="let warning of warnings">
-            {{ warning }}
-        </li>
-    </ul>
+    <mibi-dialog-warnings-view class="mibi-warnings" [warnings]="warnings$ | async"></mibi-dialog-warnings-view>
     <mat-horizontal-stepper
         [linear]="isLinear"
         #stepper

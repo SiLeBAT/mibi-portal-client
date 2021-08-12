@@ -1,4 +1,5 @@
 import { Action } from '@ngrx/store';
+import { DialogWarning } from '../../../shared/dialog/dialog.model';
 
 export enum SendSamplesActionTypes {
     SendSamplesSSA = '[Samples/SendSamples] Send samples',
@@ -6,7 +7,8 @@ export enum SendSamplesActionTypes {
     SendSamplesConfirmAnalysisSSA = '[Samples/SendSamples] Confirm analysis dialog',
     SendSamplesCancelSendSSA = '[Samples/SendSamples] Cancel send dialog',
     SendSamplesConfirmSendSSA = '[Samples/SendSamples] Confirm send dialog',
-    SendSamplesAddSentFileSOA = '[Samples/SendSamples] Add name of sent file to sent files'
+    SendSamplesAddSentFileSOA = '[Samples/SendSamples] Add name of sent file to sent files',
+    SendSamplesUpdateDialogWarningsSOA = '[Samples/SendSamples] Update warnings displayed in dialogs'
 }
 
 export class SendSamplesSSA implements Action {
@@ -35,12 +37,18 @@ export class SendSamplesConfirmSendSSA implements Action {
     constructor(public payload: {comment: string}) {}
 }
 
-// Store
+// State
 
 export class SendSamplesAddSentFileSOA implements Action {
     readonly type = SendSamplesActionTypes.SendSamplesAddSentFileSOA;
 
     constructor(public payload: {sentFile: string}) {}
+}
+
+export class SendSamplesUpdateDialogWarnings implements Action {
+    readonly type = SendSamplesActionTypes.SendSamplesUpdateDialogWarningsSOA;
+
+    constructor(public payload: {warnings: DialogWarning[]}) { }
 }
 
 export type SendSamplesAction =
@@ -49,4 +57,5 @@ export type SendSamplesAction =
     | SendSamplesConfirmAnalysisSSA
     | SendSamplesCancelSendSSA
     | SendSamplesConfirmSendSSA
-    | SendSamplesAddSentFileSOA;
+    | SendSamplesAddSentFileSOA
+    | SendSamplesUpdateDialogWarnings;
