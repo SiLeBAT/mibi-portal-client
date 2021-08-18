@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import * as moment from 'moment';
-import { map, catchError, concatMap, startWith, endWith } from 'rxjs/operators';
-import { of, Observable } from 'rxjs';
+import { map, catchError, concatMap, startWith, endWith, withLatestFrom } from 'rxjs/operators';
+import { of, Observable, iif } from 'rxjs';
 import { DataService } from '../core/services/data.service';
 import { Credentials } from './model/user.model';
 import { ShowBannerSOA, UpdateIsBusySOA, HideBannerSOA, ShowCustomBannerSOA, CoreMainAction } from '../core/state/core.actions';
@@ -13,24 +13,40 @@ import { UserActionType } from '../shared/model/user-action.model';
 import { UserActionService } from '../core/services/user-action.service';
 import { DestroySampleSetSOA, SamplesMainAction } from '../samples/state/samples.actions';
 import { Store } from '@ngrx/store';
-import { UserMainSlice } from './user.state';
-import { UserMainActionTypes, LoginUserSSA, UpdateCurrentUserSOA, DestroyCurrentUserSOA, LogoutUserMSA, UserMainAction } from './state/user.actions';
+import {
+    UserMainActionTypes,
+    UserLoginSSA,
+    UserUpdateCurrentUserSOA,
+    UserDestroyCurrentUserSOA,
+    UserLogoutMSA,
+    UserMainAction,
+    UserForceLogoutMSA
+} from './state/user.actions';
+import { DialogConfiguration } from '../shared/dialog/dialog.model';
+import { userLogoutConfirmDialogStrings } from './user.constants';
+import { SamplesMainSlice } from '../samples/samples.state';
+import { selectHasEntries } from '../samples/state/samples.selectors';
+import { DialogAction, DialogActionTypes, DialogConfirmMTA, DialogOpenMTA } from '../shared/dialog/state/dialog.actions';
 import { NavigateAction, NavigateMSA } from '../shared/navigate/navigate.actions';
+import { ofTarget } from '../shared/ngrx/multi-target-action';
 
 @Injectable()
 export class UserMainEffects {
 
+    private readonly LOGOUT_CONFIRM_DIALOG_TARGET = 'User/LogoutConfirm';
+
     constructor(
         private actions$: Actions<UserMainAction>,
+        private store$: Store<SamplesMainSlice>,
         private dataService: DataService,
         private userActionService: UserActionService,
         private logger: LogService
     ) { }
 
     @Effect()
-    loginUser$: Observable<UserMainAction | CoreMainAction> = this.actions$.pipe(
-        ofType<LoginUserSSA>(UserMainActionTypes.LoginUserSSA),
-        concatMap(action => this.loginUser(action.payload).pipe(
+    login$: Observable<UserMainAction | CoreMainAction> = this.actions$.pipe(
+        ofType<UserLoginSSA>(UserMainActionTypes.UserLoginSSA),
+        concatMap(action => this.login(action.payload).pipe(
             startWith(
                 new UpdateIsBusySOA({ isBusy: true }),
                 new HideBannerSOA()
@@ -42,23 +58,33 @@ export class UserMainEffects {
     );
 
     @Effect()
-    logoutUser$: Observable<UserMainAction | SamplesMainAction | NavigateAction> = this.actions$.pipe(
-        ofType<LogoutUserMSA>(UserMainActionTypes.LogoutUserMSA),
-        concatMap(() => {
-            this.dataService.logout();
-            return of(
-                new NavigateMSA({ url: 'users/login' }),
-                new DestroyCurrentUserSOA(),
-                new DestroySampleSetSOA()
-            );
-        })
+    logout$: Observable<UserMainAction | SamplesMainAction | NavigateAction | DialogAction> = this.actions$.pipe(
+        ofType<UserLogoutMSA>(UserMainActionTypes.UserLogoutMSA),
+        withLatestFrom(this.store$.select(selectHasEntries)),
+        concatMap(([, hasEntries]) => iif(() => hasEntries,
+            of(new DialogOpenMTA(this.LOGOUT_CONFIRM_DIALOG_TARGET, { configuration: this.createLogoutConfirmDialogConfiguration() })),
+            this.logout()
+        ))
     );
 
-    private loginUser(credentials: Credentials): Observable<UserMainAction | CoreMainAction> {
+    @Effect()
+    logoutConfirm$: Observable<UserMainAction | SamplesMainAction | NavigateAction> = this.actions$.pipe(
+        ofType<DialogConfirmMTA>(DialogActionTypes.DialogConfirmMTA),
+        ofTarget(this.LOGOUT_CONFIRM_DIALOG_TARGET),
+        concatMap(() => this.logout())
+    );
+
+    @Effect()
+    userForceLogout$: Observable<UserMainAction | SamplesMainAction | NavigateAction> = this.actions$.pipe(
+        ofType<UserForceLogoutMSA>(UserMainActionTypes.UserForceLogoutMSA),
+        concatMap(() => this.logout())
+    );
+
+    private login(credentials: Credentials): Observable<UserMainAction | CoreMainAction> {
         return this.dataService.login(credentials).pipe(
             map(user => {
                 this.dataService.setCurrentUser(user);
-                return new UpdateCurrentUserSOA(user);
+                return new UserUpdateCurrentUserSOA(user);
             }),
             catchError((error: Error) => {
                 this.logger.error('User authentication failed.', error.stack);
@@ -76,6 +102,32 @@ export class UserMainEffects {
                 return of(new ShowBannerSOA({ predefined: 'loginFailure' }));
             })
         );
+    }
+
+    private logout(): Observable<UserMainAction | SamplesMainAction | NavigateAction> {
+        this.dataService.logout();
+        return of(
+            new NavigateMSA({ url: 'users/login' }),
+            new UserDestroyCurrentUserSOA(),
+            new DestroySampleSetSOA()
+        );
+    }
+
+    // Utility
+
+    private createLogoutConfirmDialogConfiguration(): DialogConfiguration {
+        const strings = userLogoutConfirmDialogStrings;
+        return {
+            title: strings.title,
+            message: strings.message,
+            confirmButtonConfig: {
+                label: strings.confirmButtonLabel
+            },
+            cancelButtonConfig: {
+                label: strings.cancelButtonLabel
+            },
+            warnings: []
+        };
     }
 
     private timeConversion(diffToDelay: number): string {

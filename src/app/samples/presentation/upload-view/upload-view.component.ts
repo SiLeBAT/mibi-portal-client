@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { UserActionType } from '../../../shared/model/user-action.model';
 import { SamplesMainSlice } from '../../samples.state';
 import { ShowActionBarSOA } from '../../../core/state/core.actions';
-import { ImportSamplesMSA } from '../../import-samples.ts/import-samples.actions';
+import { ImportSamplesMSA } from '../../import-samples/import-samples.actions';
 
 @Component({
     selector: 'mibi-upload-view',

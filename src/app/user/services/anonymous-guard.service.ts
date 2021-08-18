@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import * as userActions from '../state/user.actions';
 import { Store, select } from '@ngrx/store';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { combineLatest } from 'rxjs';
@@ -8,8 +7,9 @@ import { map } from 'rxjs/operators';
 import { SamplesMainSlice } from '../../samples/samples.state';
 import { UserMainState } from '../state/user.reducer';
 import { selectHasEntries } from '../../samples/state/samples.selectors';
-import { selectCurrentUser } from '../state/user.selectors';
+import { selectUserCurrentUser } from '../state/user.selectors';
 import { UserMainSlice } from '../user.state';
+import { UserForceLogoutMSA } from '../state/user.actions';
 import { NavigateMSA } from '../../shared/navigate/navigate.actions';
 
 @Injectable({
@@ -21,7 +21,7 @@ export class AnonymousGuard implements CanActivate {
 
     canActivate(activated: ActivatedRouteSnapshot, snap: RouterStateSnapshot) {
         return combineLatest([
-            this.store$.pipe(select(selectCurrentUser)),
+            this.store$.pipe(select(selectUserCurrentUser)),
             this.store$.pipe(select(selectHasEntries))
         ]).pipe(
             map(([currentUser, hasEntries]) => {
@@ -30,7 +30,7 @@ export class AnonymousGuard implements CanActivate {
                     // isTokenExpired returns false if no expirationDate is set
                     const isExpired = helper.isTokenExpired(currentUser.token) || helper.getTokenExpirationDate(currentUser.token) === null;
                     if (isExpired) {
-                        this.store$.dispatch(new userActions.LogoutUserMSA());
+                        this.store$.dispatch(new UserForceLogoutMSA());
                         return isExpired;
                     }
                     if (hasEntries) {

@@ -5,9 +5,9 @@ import { tap, takeWhile } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 import { SamplesMainSlice } from '../../../samples/samples.state';
 import { selectHasEntries } from '../../../samples/state/samples.selectors';
-import { selectCurrentUser } from '../../state/user.selectors';
+import { selectUserCurrentUser } from '../../state/user.selectors';
 import { UserMainSlice } from '../../user.state';
-import { LoginUserSSA } from '../../state/user.actions';
+import { UserLoginSSA } from '../../state/user.actions';
 import { NavigateMSA } from '../../../shared/navigate/navigate.actions';
 
 @Component({
@@ -24,7 +24,7 @@ export class LoginContainerComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
 
         combineLatest([
-            this.store$.pipe(select(selectCurrentUser)),
+            this.store$.pipe(select(selectUserCurrentUser)),
             this.store$.pipe(select(selectHasEntries))
         ]).pipe(
             takeWhile(() => this.componentActive),
@@ -45,6 +45,6 @@ export class LoginContainerComponent implements OnInit, OnDestroy {
     }
 
     login(credentials: Credentials) {
-        this.store$.dispatch(new LoginUserSSA(credentials));
+        this.store$.dispatch(new UserLoginSSA(credentials));
     }
 }

@@ -9,7 +9,7 @@ import { RegistrationDetails, UserRegistrationRequest } from '../../model/user.m
 import { Observable } from 'rxjs/internal/Observable';
 import { takeWhile, map, filter } from 'rxjs/operators';
 import { ClientError } from '../../../core/model/client-error';
-import { selectInstitutions } from '../../state/user.selectors';
+import { selectUserInstitutions } from '../../state/user.selectors';
 import { selectSupportContact } from '../../../content/state/content.selectors';
 import { UpdateIsBusySOA, ShowCustomBannerSOA } from '../../../core/state/core.actions';
 import { ContentMainSlice } from '../../../content/content.state';
@@ -87,7 +87,7 @@ export class RegisterContainerComponent implements OnInit, OnDestroy {
 
     private loadInstitutions() {
         this.institutions$ = this.store$.pipe(
-            select(selectInstitutions),
+            select(selectUserInstitutions),
             filter((value) => value.length > 0),
             map((data: InstitutionDTO[]) => {
                 return data.map(institution => {

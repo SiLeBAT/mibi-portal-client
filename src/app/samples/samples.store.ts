@@ -7,14 +7,15 @@ import { ValidateSamplesEffects } from './validate-samples/validate-samples.effe
 import { SendSamplesState, sendSamplesLastSentFilesReducer, sendSamplesDialogWarningsReducer } from './send-samples/state/send-samples.reducer';
 import { SendSamplesEffects } from './send-samples/send-samples.effects';
 import { CloseSamplesEffects } from './close-samples/close-samples.effects';
-import { ImportSamplesEffects } from './import-samples.ts/import-samples.effects';
+import { ImportSamplesEffects } from './import-samples/import-samples.effects';
 import { ExportSamplesEffects } from './export-samples/export-samples.effects';
 
 type SamplesState = SamplesMainState & SendSamplesState;
+
 type SamplesReducerAction =
     SamplesMainAction
-    | SendSamplesAction
-    | ValidateSamplesAction;
+    | ValidateSamplesAction
+    | SendSamplesAction;
 
 export const samplesReducerMap: ActionReducerMap<SamplesState, SamplesReducerAction> = {
     mainData: samplesMainReducer,

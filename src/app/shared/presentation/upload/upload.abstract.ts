@@ -1,11 +1,11 @@
 import {
-    Output, EventEmitter, Input, OnInit, ViewChild, ElementRef, OnDestroy, AfterContentInit, AfterViewInit
+    Output, EventEmitter, Input, ViewChild, ElementRef, OnDestroy, AfterViewInit
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap, takeWhile } from 'rxjs/operators';
 import { UploadErrorType } from '../../model/upload.model';
 
-export class UploadAbstractComponent implements OnInit, OnDestroy, AfterContentInit, AfterViewInit {
+export class UploadAbstractComponent implements OnDestroy, AfterViewInit {
 
     private _lastInvalids: any[] = [];
     maxFileSize = 2097152;
@@ -17,9 +17,6 @@ export class UploadAbstractComponent implements OnInit, OnDestroy, AfterContentI
     private canUpload: boolean = false;
     private componentActive = true;
     @ViewChild('selector', { read: ElementRef, static: false }) selector: ElementRef;
-
-    ngOnInit(): void {
-    }
 
     ngAfterViewInit(): void {
         this.trigger$.pipe(
@@ -33,10 +30,6 @@ export class UploadAbstractComponent implements OnInit, OnDestroy, AfterContentI
                 }
             })
         ).subscribe();
-    }
-
-    ngAfterContentInit(): void {
-
     }
 
     ngOnDestroy() {

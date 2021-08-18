@@ -14,9 +14,9 @@ export interface UserMainState {
 
 export function userCurrentUserReducer(state: TokenizedUser | null = null, action: UserMainAction): TokenizedUser | null {
     switch (action.type) {
-        case UserMainActionTypes.UpdateCurrentUserSOA:
+        case UserMainActionTypes.UserUpdateCurrentUserSOA:
             return _.cloneDeep(action.payload);
-        case UserMainActionTypes.DestroyCurrentUserSOA:
+        case UserMainActionTypes.UserDestroyCurrentUserSOA:
             return null;
         default:
             return state;
@@ -25,7 +25,7 @@ export function userCurrentUserReducer(state: TokenizedUser | null = null, actio
 
 export function userInstitutesReducer(state: InstitutionDTO[] = [], action: UserMainAction): InstitutionDTO[] {
     switch (action.type) {
-        case UserMainActionTypes.UpdateInstitutionsSOA:
+        case UserMainActionTypes.UserUpdateInstitutionsSOA:
             return _.cloneDeep(action.payload);
         default:
             return state;

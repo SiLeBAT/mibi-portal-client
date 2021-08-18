@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { User } from '../../../user/model/user.model';
-import * as userActions from '../../../user/state/user.actions';
-import { selectCurrentUser } from '../../../user/state/user.selectors';
+import { selectUserCurrentUser } from '../../../user/state/user.selectors';
 import { UserMainSlice } from '../../../user/user.state';
 import { NavigateMSA } from '../../../shared/navigate/navigate.actions';
+import { UserLogoutMSA } from '../../../user/state/user.actions';
 
 @Component({
     selector: 'mibi-avatar-container',
@@ -23,13 +23,13 @@ export class AvatarContainerComponent implements OnInit {
 
     ngOnInit() {
         this.currentUser$ = this.store$.pipe(
-            select(selectCurrentUser)
+            select(selectUserCurrentUser)
         );
 
     }
 
     onLogout() {
-        this.store$.dispatch(new userActions.LogoutUserMSA());
+        this.store$.dispatch(new UserLogoutMSA());
     }
 
     onProfile() {

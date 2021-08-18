@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Observable, of } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
+import { DialogConfiguration } from '../../shared/dialog/dialog.model';
 import { DialogAction, DialogActionTypes, DialogConfirmMTA, DialogOpenMTA } from '../../shared/dialog/state/dialog.actions';
 import { NavigateAction, NavigateMSA } from '../../shared/navigate/navigate.actions';
 import { ofTarget } from '../../shared/ngrx/multi-target-action';
 import { DestroySampleSetSOA, SamplesMainAction } from '../state/samples.actions';
 import { CloseSamplesAction, CloseSamplesActionTypes, CloseSamplesSSA } from './close-samples.actions';
-import { closeSamplesConfirmDialogConfiguration } from './close-samples.constants';
+import { closeSamplesConfirmDialogStrings } from './close-samples.constants';
 
 @Injectable()
 export class CloseSamplesEffects {
@@ -22,7 +23,7 @@ export class CloseSamplesEffects {
     closeSamples$: Observable<DialogAction> = this.actions$.pipe(
         ofType<CloseSamplesSSA>(CloseSamplesActionTypes.CloseSamplesSSA),
         map(() =>
-            new DialogOpenMTA(this.CONFIRM_DIALOG_TARGET, { configuration: closeSamplesConfirmDialogConfiguration })
+            new DialogOpenMTA(this.CONFIRM_DIALOG_TARGET, { configuration: this.createConfirmDialogConfiguration() })
         )
     );
 
@@ -35,4 +36,19 @@ export class CloseSamplesEffects {
             new DestroySampleSetSOA()
         ))
     );
+
+    private createConfirmDialogConfiguration(): DialogConfiguration {
+        const strings = closeSamplesConfirmDialogStrings;
+        return {
+            title: strings.title,
+            message: strings.message,
+            confirmButtonConfig: {
+                label: strings.confirmButtonLabel
+            },
+            cancelButtonConfig: {
+                label: strings.cancelButtonLabel
+            },
+            warnings: []
+        };
+    }
 }

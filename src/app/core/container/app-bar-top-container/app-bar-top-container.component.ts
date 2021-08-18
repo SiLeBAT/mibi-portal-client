@@ -11,7 +11,7 @@ import { CoreMainSlice } from '../../core.state';
 import { UserMainSlice } from '../../../user/user.state';
 import { selectActionBarEnabled, selectActionBarTitle, selectActionBarEnabledActions, selectIsBusy } from '../../state/core.selectors';
 import { selectHasEntries } from '../../../samples/state/samples.selectors';
-import { selectCurrentUser } from '../../../user/state/user.selectors';
+import { selectUserCurrentUser } from '../../../user/state/user.selectors';
 
 @Component({
     selector: 'mibi-app-bar-top-container',
@@ -37,7 +37,7 @@ export class AppBarTopContainerComponent {
         this.actionConfigs$ = combineLatest([
             this.store$.pipe(select(selectActionBarEnabledActions)),
             this.store$.pipe(select(selectHasEntries)),
-            this.store$.pipe(select(selectCurrentUser)),
+            this.store$.pipe(select(selectUserCurrentUser)),
             this.store$.pipe(select(selectIsBusy))
         ]).pipe(
             map(([enabledActions, hasEntries, currentUser, isBusy]) => {

@@ -4,12 +4,12 @@ import { GuardedUnloadComponent } from './shared/container/guarded-unload.compon
 import { Store, select } from '@ngrx/store';
 import { takeWhile, tap } from 'rxjs/operators';
 import { DataService } from './core/services/data.service';
-import * as userActions from './user/state/user.actions';
-import * as nrlActions from './shared/nrl/state/nrl.actions';
 import { TokenizedUser } from './user/model/user.model';
 import { SamplesMainSlice } from './samples/samples.state';
 import { selectHasEntries } from './samples/state/samples.selectors';
 import { UpdateIsBusySOA, ShowBannerSOA } from './core/state/core.actions';
+import { UserForceLogoutMSA, UserUpdateCurrentUserSOA, UserUpdateInstitutionsSOA } from './user/state/user.actions';
+import { UpdateNRLsSOA } from './shared/nrl/state/nrl.actions';
 
 @Component({
     selector: 'mibi-root',
@@ -57,7 +57,7 @@ export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDe
         this.dataService.getAllInstitutions().toPromise().then(
             data => {
                 this.store$.dispatch(new UpdateIsBusySOA({ isBusy: false }));
-                this.store$.dispatch(new userActions.UpdateInstitutionsSOA(data));
+                this.store$.dispatch(new UserUpdateInstitutionsSOA(data));
             }
         ).catch(
             () => {
@@ -71,7 +71,7 @@ export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDe
     private loadNRLs() {
         this.dataService.getAllNRLs().toPromise().then(
             data => {
-                this.store$.dispatch(new nrlActions.UpdateNRLsSOA(data));
+                this.store$.dispatch(new UpdateNRLsSOA(data));
             }
         ).catch(
             () => { throw new Error(); }
@@ -92,15 +92,15 @@ export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDe
                 if (refreshResponse.refresh) {
                     user.token = refreshResponse.token;
                     this.dataService.setCurrentUser(user);
-                    this.store$.dispatch(new userActions.UpdateCurrentUserSOA(user));
+                    this.store$.dispatch(new UserUpdateCurrentUserSOA(user));
                 } else {
-                    this.store$.dispatch(new userActions.LogoutUserMSA());
+                    this.store$.dispatch(new UserForceLogoutMSA());
                 }
             }
         ).catch(
             () => {
                 this.store$.dispatch(new UpdateIsBusySOA({ isBusy: false }));
-                this.store$.dispatch(new userActions.LogoutUserMSA());
+                this.store$.dispatch(new UserForceLogoutMSA());
             }
         );
     }

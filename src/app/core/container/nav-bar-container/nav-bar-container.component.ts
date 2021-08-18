@@ -3,7 +3,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { User } from '../../../user/model/user.model';
 import { SamplesMainSlice } from '../../../samples/samples.state';
-import { selectCurrentUser } from '../../../user/state/user.selectors';
+import { selectUserCurrentUser } from '../../../user/state/user.selectors';
 import { selectHasEntries } from '../../../samples/state/samples.selectors';
 import { UserMainSlice } from '../../../user/user.state';
 
@@ -29,7 +29,7 @@ export class NavBarContainerComponent implements OnInit {
         this.hasEntries$ = this.store$.pipe(select(selectHasEntries));
 
         this.currentUser$ = this.store$.pipe(
-            select(selectCurrentUser)
+            select(selectUserCurrentUser)
         );
 
     }

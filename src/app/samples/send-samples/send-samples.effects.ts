@@ -32,7 +32,7 @@ import {
 import { LogService } from '../../core/services/log.service';
 import { DataService } from '../../core/services/data.service';
 import { AuthorizationError } from '../../core/model/client-error';
-import { LogoutUserMSA, UserMainAction } from '../../user/state/user.actions';
+import { UserForceLogoutMSA, UserMainAction } from '../../user/state/user.actions';
 import { InvalidInputError, InputChangedError } from '../../core/model/data-service-error';
 import { DialogService } from '../../shared/dialog/dialog.service';
 import { SendDialogComponent } from './components/send-dialog.component';
@@ -183,7 +183,7 @@ export class SendSamplesEffects {
                     );
                 } else if (error instanceof AuthorizationError) {
                     return of(
-                        new LogoutUserMSA(),
+                        new UserForceLogoutMSA(),
                         // bug => this banner is not shown due to page navigation during logout
                         new ShowBannerSOA({ predefined: 'noAuthorizationOrActivation' })
                     );

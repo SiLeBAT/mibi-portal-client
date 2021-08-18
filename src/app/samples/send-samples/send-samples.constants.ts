@@ -1,9 +1,9 @@
 export const sendSamplesDialogWarningsStrings = {
     alreadySentPre: 'Sie haben den Einsendebogen: "',
     alreadySentPost: '" bereits gesendet. Wollen Sie die Daten wirklich nochmal senden?',
-    validationWarningsPre: 'Ihre Daten enthalten keine Fehler mehr, aber noch ',
+    validationWarningsPre: 'Ihre Daten enthalten noch ',
     validationWarningsEmphasized: 'Warnungen',
-    validationWarningsPost: '. Möchten Sie zurück zu den Daten und sie vor dem Senden an das BfR noch ergänzen bzw. korrigieren?'
+    validationWarningsPost: '. Möchten Sie zurück zu den Daten und sie korrigieren?'
 };
 
 export const sendSamplesSendDialogStrings = {

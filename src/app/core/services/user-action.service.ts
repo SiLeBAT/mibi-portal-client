@@ -7,7 +7,7 @@ import { ValidateSamplesSSA } from '../../samples/validate-samples/validate-samp
 import { CoreMainSlice } from '../core.state';
 import { environment } from '../../../environments/environment';
 import { CloseSamplesSSA } from '../../samples/close-samples/close-samples.actions';
-import { ImportSamplesMSA } from '../../samples/import-samples.ts/import-samples.actions';
+import { ImportSamplesMSA } from '../../samples/import-samples/import-samples.actions';
 import { ExportSamplesSSA } from '../../samples/export-samples/export-samples.actions';
 import { SendSamplesSSA } from '../../samples/send-samples/state/send-samples.actions';
 import { NavigateMSA } from '../../shared/navigate/navigate.actions';
