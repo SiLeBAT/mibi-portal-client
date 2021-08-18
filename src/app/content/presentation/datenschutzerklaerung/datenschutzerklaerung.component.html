@@ -23,17 +23,19 @@
             </table>
             <br>
             <p>
-                Bei Fragen zur Verarbeitung Ihrer Daten und zum Datenschutz wenden Sie sich bitte an unseren
-                behördlichen Datenschutzbeauftragten:
+                Bei Fragen zur Verarbeitung Ihrer Daten und zum Datenschutz wenden Sie sich bitte an 
+                <span *ngIf="dataProtectionOfficerIdCard.gender === 'male'">
+                    unseren behördlichen Datenschutzbeauftragten:
+                </span>
+                <span *ngIf="dataProtectionOfficerIdCard.gender === 'female'">
+                    unsere behördliche Datenschutzbeauftragte:
+                </span>
             </p>
             <table>
                 <tbody>
-                    <tr>
-                        Rechtsanwalt Carsten Bethke
-                    </tr>
-                    <tr>Calandrellistr. 24</tr>
-                    <tr>12247 Berlin</tr>
-                    <tr>E-Mail: <a href="mailto:dsb@bfr.bund.de">dsb@bfr.bund.de</a></tr>
+                    <tr>{{dataProtectionOfficerIdCard.prefix}} {{dataProtectionOfficerIdCard.name}}</tr>
+                    <tr *ngFor="let info of dataProtectionOfficerIdCard.infos">{{info}}</tr>
+                    <tr>E-Mail: <a [href]="'mailto:' + dataProtectionOfficerIdCard.email">{{dataProtectionOfficerIdCard.email}}</a></tr>
                 </tbody>
             </table>
         </div>
@@ -44,7 +46,7 @@
         <div class="mibi-datenschutzerklaerung-item">
             <p>Die Verarbeitung personenbezogener Daten im BfR erfolgt in Übereinstimmung
                 mit der <a
-                    href="https://eur-lex.europa.eu/legal-content/DE/TXT/PDF/?uri=CELEX:32016R0679&qid=1527147390147&from=EN"
+                    [href]="dsGvoLink"
                     target="_blank" rel="noopener">Europäischen
                     Datenschutz-Grundverordnung (DS-GVO)</a>, dem Telemediengesetz (TMG) und dem
                 <a href="https://www.gesetze-im-internet.de/bdsg_2018/" target="_blank"

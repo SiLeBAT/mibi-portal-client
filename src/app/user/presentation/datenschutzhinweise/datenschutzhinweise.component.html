@@ -25,22 +25,20 @@
                 </tbody>
             </table>
             <br>
-            <p>
+            <p *ngIf="dataProtectionOfficerIdCard.gender === 'male'">
                 Unser Datenschutzbeauftragter ist:
+            </p>
+            <p *ngIf="dataProtectionOfficerIdCard.gender === 'female'">
+                Unsere Datenschutzbeauftragte ist:
             </p>
             <table>
                 <tbody>
-                    <tr>
-                        Rechtsanwalt Carsten Bethke
-                    </tr>
-                    <tr>Calandrellistr. 24</tr>
-                    <tr>12247 Berlin</tr>
-                    <tr>E-Mail: <a href="mailto:dsb@bfr.bund.de">dsb@bfr.bund.de</a></tr>
+                    <tr>{{dataProtectionOfficerIdCard.prefix}} {{dataProtectionOfficerIdCard.name}}</tr>
+                    <tr *ngFor="let info of dataProtectionOfficerIdCard.infos">{{info}}</tr>
+                    <tr>E-Mail: <a [href]="'mailto:' + dataProtectionOfficerIdCard.email">{{dataProtectionOfficerIdCard.email}}</a></tr>
                 </tbody>
             </table>
-
         </div>
-
         <h3 class="mibi-datenschutzhinweise-item-header">
             Welche Quellen und Daten nutzen wir?
         </h3>
