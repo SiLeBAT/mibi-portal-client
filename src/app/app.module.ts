@@ -13,7 +13,7 @@ import { SamplesModule } from './samples/samples.module';
 import { UserModule } from './user/user.module';
 import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
-import { StoreRouterConnectingModule, routerReducer } from '@ngrx/router-store';
+import { StoreRouterConnectingModule, routerReducer, DefaultRouterStateSerializer } from '@ngrx/router-store';
 import { ContentModule } from './content/content.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -43,7 +43,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         SamplesModule,
         UserModule,
         ContentModule,
-        StoreRouterConnectingModule.forRoot(),
+        StoreRouterConnectingModule.forRoot({ serializer: DefaultRouterStateSerializer }),
         // AppRoutingModule needs to be at the end
         AppRoutingModule
     ],

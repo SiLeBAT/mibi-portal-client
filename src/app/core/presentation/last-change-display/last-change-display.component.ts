@@ -13,7 +13,7 @@ export class LastChangeDisplayComponent implements AfterViewInit {
     @Input() lastChange$: Observable<moment.Moment>;
     @Input() serverVersion: string;
     @Input() clientVersion: string;
-    @ViewChild('entry', { read: ElementRef, static: false }) entry: ElementRef;
+    @ViewChild('entry', { read: ElementRef }) entry: ElementRef;
     private toolTip: ToolTip;
 
     constructor() {

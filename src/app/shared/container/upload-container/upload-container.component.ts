@@ -17,7 +17,7 @@ import { ShowBannerSOA, ShowDialogMSA, HideBannerSOA } from '../../../core/state
 export class UploadContainerComponent implements OnInit, OnDestroy, AfterContentInit {
 
     @Output() onFileUpload = new EventEmitter();
-    @ContentChild('uploadChild', { static: false }) uploadChild: UploadAbstractComponent;
+    @ContentChild('uploadChild') uploadChild: UploadAbstractComponent;
     private myTrigger: Subject<boolean> = new Subject();
     trigger$: Observable<boolean> = this.myTrigger.asObservable();
     private componentActive = true;

@@ -6,21 +6,25 @@ import { selectDialogData } from './../state/dialog.selectors';
 import { Observable } from 'rxjs';
 import { DialogConfirmMTA, DialogCancelMTA } from './../state/dialog.actions';
 import { SharedSlice } from '../../shared.state';
-import { tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
+import { DialogConfiguration } from '../dialog.model';
 
 @Component({
     selector: 'mibi-new-dialog',
     template: `
         <mibi-dialog-view
-            [config]="(data$ | async).configuration"
+            [config]="config$ | async"
             (confirm) = "onConfirm()"
             (cancel) = "onCancel()"
         ></mibi-dialog-view>`
 })
 export class NewDialogComponent {
-    data$: Observable<DialogData> = this.store$.pipe(
+    config$: Observable<DialogConfiguration> = this.store$.pipe(
         select(selectDialogData),
-        tap((data) => { this.caller = data.caller; })
+        map(data => {
+            this.caller = data.caller;
+            return data.configuration;
+        })
     );
 
     private caller: string;

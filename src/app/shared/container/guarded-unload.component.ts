@@ -1,5 +1,7 @@
-import { HostListener } from '@angular/core';
+import { HostListener, Directive } from '@angular/core';
 
+/* tslint:disable:directive-class-suffix */
+@Directive()
 export abstract class GuardedUnloadComponent {
 
     abstract unloadGuard(): boolean;

@@ -27,7 +27,7 @@ import { NavigateMSA } from '../../../shared/navigate/navigate.actions';
 export class RegisterContainerComponent implements OnInit, OnDestroy {
 
     institutions$: Observable<Institution[]>;
-    private supportContact: string = '';
+    supportContact: string = '';
     private componentActive: boolean = true;
     constructor(
         private store$: Store<ContentMainSlice & UserMainSlice>,

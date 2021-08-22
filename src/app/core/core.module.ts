@@ -84,7 +84,6 @@ import { CORE_SLICE_NAME } from './core.state';
         DefaultPageLayoutComponent,
         BannerContainerComponent
     ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    entryComponents: []
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class CoreModule { }

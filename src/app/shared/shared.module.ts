@@ -71,7 +71,6 @@ import { DialogWarningsViewComponent } from './dialog/components/dialog-warnings
         DialogWarningsViewComponent,
         DialogViewComponent,
         NewDialogComponent
-    ],
-    entryComponents: [DialogComponent, NewDialogComponent]
+    ]
 })
 export class SharedModule { }

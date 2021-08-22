@@ -2,7 +2,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./src",
-    "module": "ES2015",
+    "module": "esnext",
     "moduleResolution": "Node",
     "outDir": "./dist/out-tsc",
     "target": "ES2015",
@@ -30,6 +30,7 @@
     "noImplicitReturns": true,
     // "noUnusedLocals": true,
     // "noUnusedParameters": true,
+    // "useDefineForClassFields": true,
 
     "newLine": "lf"
   },
@@ -44,5 +45,10 @@
         ],
       }
     }
+  },
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true,
+    // "strictTemplates": true,
+    "strictInjectionParameters": true
   }
 }

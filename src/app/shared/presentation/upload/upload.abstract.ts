@@ -1,10 +1,10 @@
-import {
-    Output, EventEmitter, Input, ViewChild, ElementRef, OnDestroy, AfterViewInit
-} from '@angular/core';
+import { Output, EventEmitter, Input, ViewChild, ElementRef, OnDestroy, AfterViewInit, Directive } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap, takeWhile } from 'rxjs/operators';
 import { UploadErrorType } from '../../model/upload.model';
 
+/* tslint:disable:directive-class-suffix */
+@Directive()
 export class UploadAbstractComponent implements OnDestroy, AfterViewInit {
 
     private _lastInvalids: any[] = [];
@@ -16,7 +16,7 @@ export class UploadAbstractComponent implements OnDestroy, AfterViewInit {
     @Input() trigger$: Observable<boolean>;
     private canUpload: boolean = false;
     private componentActive = true;
-    @ViewChild('selector', { read: ElementRef, static: false }) selector: ElementRef;
+    @ViewChild('selector', { read: ElementRef }) selector: ElementRef;
 
     ngAfterViewInit(): void {
         this.trigger$.pipe(

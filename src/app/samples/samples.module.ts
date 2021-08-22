@@ -75,7 +75,6 @@ const SAMPLES_ROUTES = [
         SamplesGridViewComponent,
         SamplesComponent
     ],
-    entryComponents: [SendDialogComponent, AnalysisStepperComponent],
     exports: [],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
