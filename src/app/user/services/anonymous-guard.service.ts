@@ -9,8 +9,8 @@ import { UserMainState } from '../state/user.reducer';
 import { selectHasEntries } from '../../samples/state/samples.selectors';
 import { selectUserCurrentUser } from '../state/user.selectors';
 import { UserMainSlice } from '../user.state';
-import { UserForceLogoutMSA } from '../state/user.actions';
-import { NavigateMSA } from '../../shared/navigate/navigate.actions';
+import { userForceLogoutMSA } from '../state/user.actions';
+import { navigateMSA } from '../../shared/navigate/navigate.actions';
 
 @Injectable({
     providedIn: 'root'
@@ -30,13 +30,13 @@ export class AnonymousGuard implements CanActivate {
                     // isTokenExpired returns false if no expirationDate is set
                     const isExpired = helper.isTokenExpired(currentUser.token) || helper.getTokenExpirationDate(currentUser.token) === null;
                     if (isExpired) {
-                        this.store$.dispatch(new UserForceLogoutMSA());
+                        this.store$.dispatch(userForceLogoutMSA());
                         return isExpired;
                     }
                     if (hasEntries) {
-                        this.store$.dispatch(new NavigateMSA({ url: '/samples' }));
+                        this.store$.dispatch(navigateMSA({ url: '/samples' }));
                     } else {
-                        this.store$.dispatch(new NavigateMSA({ url: '/users/profile' }));
+                        this.store$.dispatch(navigateMSA({ url: '/users/profile' }));
                     }
                     return true;
                 } else {

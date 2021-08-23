@@ -8,7 +8,7 @@ import { UploadErrorType } from '../../model/upload.model';
 import { ClientError } from '../../../core/model/client-error';
 import { SamplesMainSlice } from '../../../samples/samples.state';
 import { selectHasEntries } from '../../../samples/state/samples.selectors';
-import { ShowBannerSOA, ShowDialogMSA, HideBannerSOA } from '../../../core/state/core.actions';
+import { showBannerSOA, showDialogMSA, hideBannerSOA } from '../../../core/state/core.actions';
 
 @Component({
     selector: 'mibi-upload-container',
@@ -68,16 +68,16 @@ export class UploadContainerComponent implements OnInit, OnDestroy, AfterContent
     onError(error: UploadErrorType) {
         switch (error) {
             case UploadErrorType.SIZE:
-                this.store$.dispatch(new ShowBannerSOA({ predefined: 'wrongUploadFilesize' }));
+                this.store$.dispatch(showBannerSOA({ predefined: 'wrongUploadFilesize' }));
                 break;
             case UploadErrorType.TYPE:
-                this.store$.dispatch(new ShowBannerSOA({ predefined: 'wrongUploadDatatype' }));
+                this.store$.dispatch(showBannerSOA({ predefined: 'wrongUploadDatatype' }));
                 break;
             case UploadErrorType.CLEAR:
-                this.store$.dispatch(new HideBannerSOA());
+                this.store$.dispatch(hideBannerSOA());
                 break;
             default:
-                this.store$.dispatch(new ShowBannerSOA({ predefined: 'uploadFailure' }));
+                this.store$.dispatch(showBannerSOA({ predefined: 'uploadFailure' }));
         }
     }
 
@@ -100,7 +100,7 @@ export class UploadContainerComponent implements OnInit, OnDestroy, AfterContent
             return;
         }
         if (this.hasEntries) {
-            this.store$.dispatch(new ShowDialogMSA({
+            this.store$.dispatch(showDialogMSA({content: {
                 message: `Wenn Sie die Tabelle schließen, gehen Ihre Änderungen verloren. Wollen Sie das?`,
                 title: 'Schließen',
                 mainAction: {
@@ -122,7 +122,7 @@ export class UploadContainerComponent implements OnInit, OnDestroy, AfterContent
                     icon: '',
                     color: ColorType.PRIMARY
                 }
-            }));
+            }}));
         }
 
     }

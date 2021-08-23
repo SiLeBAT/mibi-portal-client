@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Observable, of } from 'rxjs';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { of } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
 import { DialogConfiguration } from '../../shared/dialog/dialog.model';
-import { DialogAction, DialogActionTypes, DialogConfirmMTA, DialogOpenMTA } from '../../shared/dialog/state/dialog.actions';
-import { NavigateAction, NavigateMSA } from '../../shared/navigate/navigate.actions';
+import { dialogConfirmMTA, dialogOpenMTA } from '../../shared/dialog/state/dialog.actions';
+import { navigateMSA } from '../../shared/navigate/navigate.actions';
 import { ofTarget } from '../../shared/ngrx/multi-target-action';
-import { DestroySampleSetSOA, SamplesMainAction } from '../state/samples.actions';
-import { CloseSamplesAction, CloseSamplesActionTypes, CloseSamplesSSA } from './close-samples.actions';
+import { samplesDestroyMainDataSOA } from '../state/samples.actions';
+import { closeSamplesSSA } from './close-samples.actions';
 import { closeSamplesConfirmDialogStrings } from './close-samples.constants';
 
 @Injectable()
@@ -16,26 +16,25 @@ export class CloseSamplesEffects {
     private readonly CONFIRM_DIALOG_TARGET = 'Samples/CloseSamples/Confirm';
 
     constructor(
-        private actions$: Actions<CloseSamplesAction>
+        private actions$: Actions
     ) { }
 
-    @Effect()
-    closeSamples$: Observable<DialogAction> = this.actions$.pipe(
-        ofType<CloseSamplesSSA>(CloseSamplesActionTypes.CloseSamplesSSA),
-        map(() =>
-            new DialogOpenMTA(this.CONFIRM_DIALOG_TARGET, { configuration: this.createConfirmDialogConfiguration() })
-        )
-    );
+    closeSamples$ = createEffect(() => this.actions$.pipe(
+        ofType(closeSamplesSSA),
+        map(() => dialogOpenMTA({
+            target: this.CONFIRM_DIALOG_TARGET,
+            configuration: this.createConfirmDialogConfiguration()
+        }))
+    ));
 
-    @Effect()
-    closeSamplesConfirm$: Observable<NavigateAction | SamplesMainAction> = this.actions$.pipe(
-        ofType<DialogConfirmMTA>(DialogActionTypes.DialogConfirmMTA),
+    closeSamplesConfirm$ = createEffect(() => this.actions$.pipe(
+        ofType(dialogConfirmMTA),
         ofTarget(this.CONFIRM_DIALOG_TARGET),
         concatMap(() => of(
-            new NavigateMSA({ url: '/upload' }),
-            new DestroySampleSetSOA()
+            navigateMSA({ url: '/upload' }),
+            samplesDestroyMainDataSOA()
         ))
-    );
+    ));
 
     private createConfirmDialogConfiguration(): DialogConfiguration {
         const strings = closeSamplesConfirmDialogStrings;

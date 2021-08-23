@@ -1,70 +1,67 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Action, Store } from '@ngrx/store';
 import { concat, Observable, of } from 'rxjs';
 import { catchError, concatMap, endWith, first, map, startWith } from 'rxjs/operators';
 import { DataService } from '../../core/services/data.service';
 import { LogService } from '../../core/services/log.service';
-import { CoreMainAction, HideBannerSOA, ShowBannerSOA, UpdateIsBusySOA } from '../../core/state/core.actions';
-import { NavigateAction, NavigateMSA } from '../../shared/navigate/navigate.actions';
+import { hideBannerSOA, showBannerSOA, updateIsBusySOA } from '../../core/state/core.actions';
+import { navigateMSA } from '../../shared/navigate/navigate.actions';
 import { ExcelFile } from '../model/sample-management.model';
 import { SamplesMainSlice } from '../samples.state';
-import { SamplesMainAction, UpdateSampleSetSOA, UpdateSamplesSOA } from '../state/samples.actions';
+import { samplesUpdateMainDataSOA, samplesUpdateSamplesSOA } from '../state/samples.actions';
 import { selectSamplesMainData } from '../state/samples.selectors';
 import {
-    ImportSamplesAction,
-    ImportSamplesActionTypes,
-    ImportSamplesMSA
+    importSamplesMSA
 } from './import-samples.actions';
 
 @Injectable()
 export class ImportSamplesEffects {
 
     constructor(
-        private actions$: Actions<ImportSamplesAction>,
+        private actions$: Actions,
         private store$: Store<SamplesMainSlice>,
         private dataService: DataService,
         private logger: LogService
     ) { }
 
-    @Effect()
-    importSamples$: Observable<SamplesMainAction | NavigateAction | CoreMainAction> = this.actions$.pipe(
-        ofType<ImportSamplesMSA>(ImportSamplesActionTypes.ImportSamplesMSA),
-        concatMap(action => this.importSamples(action.payload.excelFile).pipe(
+    importSamples$ = createEffect(() => this.actions$.pipe(
+        ofType(importSamplesMSA),
+        concatMap(action => this.importSamples(action.excelFile).pipe(
             startWith(
-                new UpdateIsBusySOA({ isBusy: true }),
-                new HideBannerSOA()
+                updateIsBusySOA({ isBusy: true }),
+                hideBannerSOA()
             ),
             endWith(
-                new UpdateIsBusySOA({ isBusy: false })
+                updateIsBusySOA({ isBusy: false })
             )
         ))
-    );
+    ));
 
-    private importSamples(excelFile: ExcelFile): Observable<SamplesMainAction | NavigateAction | CoreMainAction> {
+    private importSamples(excelFile: ExcelFile): Observable<Action> {
         return this.dataService.unmarshalExcel(excelFile).pipe(
             concatMap(sampleSet => concat(
                 of(
-                    new UpdateSampleSetSOA(sampleSet),
-                    new NavigateMSA({ url: '/samples' })
+                    samplesUpdateMainDataSOA({ sampleSet: sampleSet }),
+                    navigateMSA({ url: '/samples' })
                 ),
                 this.importSamplesValidate()
             )),
             catchError((error: Error) => {
                 this.logger.error('Failed to import Excel File.', error.stack);
-                return of(new ShowBannerSOA({ predefined: 'uploadFailure' }));
+                return of(showBannerSOA({ predefined: 'uploadFailure' }));
             })
         );
     }
 
-    private importSamplesValidate(): Observable<SamplesMainAction | CoreMainAction> {
+    private importSamplesValidate(): Observable<Action> {
         return this.store$.select(selectSamplesMainData).pipe(
             first(),
             concatMap(samplesMainData => this.dataService.validateSampleData(samplesMainData).pipe(
-                map(samples => new UpdateSamplesSOA(samples)),
+                map(samples => samplesUpdateSamplesSOA({ samples: samples })),
                 catchError((error: Error) => {
                     this.logger.error('Failed to validate samples.', error.stack);
-                    return of(new ShowBannerSOA({ predefined: 'validationFailure' }));
+                    return of(showBannerSOA({ predefined: 'validationFailure' }));
                 })
             ))
         );

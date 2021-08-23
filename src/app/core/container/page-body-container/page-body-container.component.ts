@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { environment } from '../../../../environments/environment';
 import { CoreMainSlice } from '../../core.state';
-import { DestroyBannerSOA } from '../../state/core.actions';
+import { destroyBannerSOA } from '../../state/core.actions';
 import { selectIsBusy, selectIsBannerShown } from '../../state/core.selectors';
 import { tap } from 'rxjs/operators';
 
@@ -28,7 +28,7 @@ export class PageBodyContainerComponent implements OnInit {
 
     onAnimationDone() {
         if (!this.isBanner) {
-            this.store$.dispatch(new DestroyBannerSOA());
+            this.store$.dispatch(destroyBannerSOA());
         }
     }
 }

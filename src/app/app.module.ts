@@ -13,7 +13,7 @@ import { SamplesModule } from './samples/samples.module';
 import { UserModule } from './user/user.module';
 import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
-import { StoreRouterConnectingModule, routerReducer, DefaultRouterStateSerializer } from '@ngrx/router-store';
+import { StoreRouterConnectingModule, routerReducer } from '@ngrx/router-store';
 import { ContentModule } from './content/content.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -28,8 +28,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
             router: routerReducer
         }, {
             runtimeChecks: {
-                strictStateImmutability: false,
-                strictActionImmutability: false
+                // needs refactoring of banner feature (custom banner uses functions as state)
+                strictStateSerializability: false,
+                // needs refactoring of upload feature (import action uses file as payload)
+                strictActionSerializability: false,
+                strictActionWithinNgZone: true,
+                strictActionTypeUniqueness: true
             }
         }),
         StoreDevtoolsModule.instrument({
@@ -43,7 +47,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         SamplesModule,
         UserModule,
         ContentModule,
-        StoreRouterConnectingModule.forRoot({ serializer: DefaultRouterStateSerializer }),
+        StoreRouterConnectingModule.forRoot(),
         // AppRoutingModule needs to be at the end
         AppRoutingModule
     ],

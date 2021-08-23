@@ -11,10 +11,10 @@ import { takeWhile, map, filter } from 'rxjs/operators';
 import { ClientError } from '../../../core/model/client-error';
 import { selectUserInstitutions } from '../../state/user.selectors';
 import { selectSupportContact } from '../../../content/state/content.selectors';
-import { UpdateIsBusySOA, ShowCustomBannerSOA } from '../../../core/state/core.actions';
+import { updateIsBusySOA, showCustomBannerSOA } from '../../../core/state/core.actions';
 import { ContentMainSlice } from '../../../content/content.state';
 import { UserMainSlice } from '../../user.state';
-import { NavigateMSA } from '../../../shared/navigate/navigate.actions';
+import { navigateMSA } from '../../../shared/navigate/navigate.actions';
 
 @Component({
     selector: 'mibi-register-container',
@@ -50,7 +50,7 @@ export class RegisterContainerComponent implements OnInit, OnDestroy {
     }
 
     register(details: RegistrationDetails) {
-        this.store$.dispatch(new UpdateIsBusySOA({ isBusy: true }));
+        this.store$.dispatch(updateIsBusySOA({ isBusy: true }));
         this.dataService.registrationRequest(
             {
                 email: details.email,
@@ -61,9 +61,9 @@ export class RegisterContainerComponent implements OnInit, OnDestroy {
             }
         ).toPromise().then(
             (response: UserRegistrationRequest) => {
-                this.store$.dispatch(new UpdateIsBusySOA({ isBusy: false }));
-                this.store$.dispatch(new NavigateMSA({ url: 'users/login' }));
-                this.store$.dispatch(new ShowCustomBannerSOA({
+                this.store$.dispatch(updateIsBusySOA({ isBusy: false }));
+                this.store$.dispatch(navigateMSA({ url: 'users/login' }));
+                this.store$.dispatch(showCustomBannerSOA({
                     banner: {
                         message: `Bitte aktivieren Sie Ihren Account: Eine E-mail mit weiteren Anweisungen wurde an ${response.email} gesendet`,
                         type: AlertType.SUCCESS,
@@ -73,8 +73,8 @@ export class RegisterContainerComponent implements OnInit, OnDestroy {
             }
         ).catch(
             () => {
-                this.store$.dispatch(new UpdateIsBusySOA({ isBusy: false }));
-                this.store$.dispatch(new ShowCustomBannerSOA({
+                this.store$.dispatch(updateIsBusySOA({ isBusy: false }));
+                this.store$.dispatch(showCustomBannerSOA({
                     banner: {
                         message: `Fehler beim Registrieren. Eine E-mail mit weiteren Informationen wurde an ${details.email} gesendet. Wenn Sie keine E-mail erhalten, wenden Sie sich bitte direkt per E-mail an uns: ${this.supportContact}.`,
                         type: AlertType.ERROR,

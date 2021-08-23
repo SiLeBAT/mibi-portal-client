@@ -1,17 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Action, Store } from '@ngrx/store';
 import { EMPTY, Observable, of } from 'rxjs';
 import { catchError, concatMap, endWith, startWith, withLatestFrom } from 'rxjs/operators';
 import { DataService } from '../../core/services/data.service';
 import { LogService } from '../../core/services/log.service';
-import { CoreMainAction, HideBannerSOA, ShowBannerSOA, UpdateIsBusySOA } from '../../core/state/core.actions';
+import { hideBannerSOA, showBannerSOA, updateIsBusySOA } from '../../core/state/core.actions';
 import { SamplesMainSlice } from '../samples.state';
 import { selectSamplesMainData } from '../state/samples.selectors';
 import {
-    ExportSamplesAction,
-    ExportSamplesActionTypes,
-    ExportSamplesSSA
+    exportSamplesSSA
 } from './export-samples.actions';
 import { saveAs } from 'file-saver';
 import { SamplesMainData } from '../state/samples.reducer';
@@ -20,28 +18,27 @@ import { SamplesMainData } from '../state/samples.reducer';
 export class ExportSamplesEffects {
 
     constructor(
-        private actions$: Actions<ExportSamplesAction>,
+        private actions$: Actions,
         private store$: Store<SamplesMainSlice>,
         private dataService: DataService,
         private logger: LogService
     ) { }
 
-    @Effect()
-    exportSamples$: Observable<CoreMainAction> = this.actions$.pipe(
-        ofType<ExportSamplesSSA>(ExportSamplesActionTypes.ExportSamplesSSA),
+    exportSamples$ = createEffect(() => this.actions$.pipe(
+        ofType(exportSamplesSSA),
         withLatestFrom(this.store$.select(selectSamplesMainData)),
         concatMap(([, samplesMainData]) => this.exportSamples(samplesMainData).pipe(
             startWith(
-                new UpdateIsBusySOA({ isBusy: true }),
-                new HideBannerSOA()
+                updateIsBusySOA({ isBusy: true }),
+                hideBannerSOA()
             ),
             endWith(
-                new UpdateIsBusySOA({ isBusy: false })
+                updateIsBusySOA({ isBusy: false })
             )
         ))
-    );
+    ));
 
-    private exportSamples(samplesMainData: SamplesMainData): Observable<CoreMainAction> {
+    private exportSamples(samplesMainData: SamplesMainData): Observable<Action> {
         return this.dataService.marshalJSON(samplesMainData).pipe(
             concatMap(marshalledData => {
                 saveAs(this.b64toBlob(marshalledData.binaryData, marshalledData.mimeType), marshalledData.fileName);
@@ -49,7 +46,7 @@ export class ExportSamplesEffects {
             }),
             catchError((error: Error) => {
                 this.logger.error('Failed to export Excel File', error.stack);
-                return of(new ShowBannerSOA({ predefined: 'exportFailure' }));
+                return of(showBannerSOA({ predefined: 'exportFailure' }));
             })
         );
     }

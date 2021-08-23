@@ -1,50 +1,30 @@
 import { Credentials, TokenizedUser } from '../model/user.model';
-import { Action } from '@ngrx/store';
+import { createAction, props } from '@ngrx/store';
 import { InstitutionDTO } from '../model/institution.model';
 
-export enum UserMainActionTypes {
-    UserLoginSSA = '[User] Login user',
-    UserLogoutMSA = '[User] Logout user',
-    UserForceLogoutMSA = '[User] Force logout user',
-    UserUpdateCurrentUserSOA = '[User] Store tokenized user',
-    UserDestroyCurrentUserSOA = '[User] Delete current user',
-    UserUpdateInstitutionsSOA = '[User] Populate institutions'
-}
+export const userLoginSSA = createAction(
+    '[User] Login user',
+    props<{ credentials: Credentials }>()
+);
 
-export class UserLoginSSA implements Action {
-    readonly type = UserMainActionTypes.UserLoginSSA;
+export const userLogoutMSA = createAction(
+    '[User] Logout user'
+);
 
-    constructor(public payload: Credentials) { }
-}
+export const userForceLogoutMSA = createAction(
+    '[User] Force logout user'
+);
 
-export class UserLogoutMSA implements Action {
-    readonly type = UserMainActionTypes.UserLogoutMSA;
-}
+export const userUpdateCurrentUserSOA = createAction(
+    '[User] Store tokenized user',
+    props<{ user: TokenizedUser }>()
+);
 
-export class UserForceLogoutMSA implements Action {
-    readonly type = UserMainActionTypes.UserForceLogoutMSA;
-}
+export const userDestroyCurrentUserSOA = createAction(
+    '[User] Delete current user'
+);
 
-export class UserUpdateCurrentUserSOA implements Action {
-    readonly type = UserMainActionTypes.UserUpdateCurrentUserSOA;
-
-    constructor(public payload: TokenizedUser) { }
-}
-
-export class UserDestroyCurrentUserSOA implements Action {
-    readonly type = UserMainActionTypes.UserDestroyCurrentUserSOA;
-}
-
-export class UserUpdateInstitutionsSOA implements Action {
-    readonly type = UserMainActionTypes.UserUpdateInstitutionsSOA;
-
-    constructor(public payload: InstitutionDTO[]) { }
-}
-
-export type UserMainAction =
-    UserLoginSSA
-    | UserLogoutMSA
-    | UserForceLogoutMSA
-    | UserUpdateCurrentUserSOA
-    | UserDestroyCurrentUserSOA
-    | UserUpdateInstitutionsSOA;
+export const userUpdateInstitutionsSOA = createAction(
+    '[User] Populate institutions',
+    props<{ institutions: InstitutionDTO[] }>()
+);

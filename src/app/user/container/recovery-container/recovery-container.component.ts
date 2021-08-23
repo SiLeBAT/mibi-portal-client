@@ -7,11 +7,11 @@ import { UserActionType } from '../../../shared/model/user-action.model';
 import { UserPasswordResetRequest } from '../../model/user.model';
 import { takeWhile } from 'rxjs/operators';
 import { ClientError } from '../../../core/model/client-error';
-import { UpdateIsBusySOA, ShowCustomBannerSOA } from '../../../core/state/core.actions';
+import { updateIsBusySOA, showCustomBannerSOA } from '../../../core/state/core.actions';
 import { ContentMainState } from '../../../content/state/content.reducer';
 import { selectSupportContact } from '../../../content/state/content.selectors';
 import { ContentSlice } from '../../../content/content.state';
-import { NavigateMSA } from '../../../shared/navigate/navigate.actions';
+import { navigateMSA } from '../../../shared/navigate/navigate.actions';
 
 @Component({
     selector: 'mibi-recovery-container',
@@ -41,13 +41,13 @@ export class RecoveryContainerComponent implements OnInit, OnDestroy {
     }
 
     recovery(email: string) {
-        this.store$.dispatch(new UpdateIsBusySOA({ isBusy: true }));
+        this.store$.dispatch(updateIsBusySOA({ isBusy: true }));
         this.dataService.resetPasswordRequest(
             email).toPromise().then(
                 (response: UserPasswordResetRequest) => {
-                    this.store$.dispatch(new UpdateIsBusySOA({ isBusy: false }));
-                    this.store$.dispatch(new NavigateMSA({ url: 'users/login' }));
-                    this.store$.dispatch(new ShowCustomBannerSOA({
+                    this.store$.dispatch(updateIsBusySOA({ isBusy: false }));
+                    this.store$.dispatch(navigateMSA({ url: 'users/login' }));
+                    this.store$.dispatch(showCustomBannerSOA({
                         banner: {
                             message: `Eine E-mail mit weiteren Anweisungen wurde an ${response.email} gesendet. Wenn Sie keine E-mail erhalten, könnte das bedeuten, daß Sie sich mit einer anderen E-mail-Adresse angemeldet haben.`,
                             type: AlertType.SUCCESS,
@@ -57,8 +57,8 @@ export class RecoveryContainerComponent implements OnInit, OnDestroy {
                 }
             ).catch(
                 () => {
-                    this.store$.dispatch(new UpdateIsBusySOA({ isBusy: false }));
-                    this.store$.dispatch(new ShowCustomBannerSOA({
+                    this.store$.dispatch(updateIsBusySOA({ isBusy: false }));
+                    this.store$.dispatch(showCustomBannerSOA({
                         banner: {
                             message: `Fehler beim Passwort-Zurücksetzen. Eine E-mail mit weiteren Informationen wurde an ${email} gesendet. Wenn Sie keine E-mail erhalten, wenden Sie sich bitte direkt per E-mail an uns: ${this.supportContact}.`,
                             type: AlertType.ERROR,

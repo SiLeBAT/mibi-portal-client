@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { Store } from '@ngrx/store';
 import { UserMainState } from '../../state/user.reducer';
-import { ShowBannerSOA } from '../../../core/state/core.actions';
+import { showBannerSOA } from '../../../core/state/core.actions';
 
 @Component({
     selector: 'mibi-activate-container',
@@ -22,9 +22,9 @@ export class ActivateContainerComponent implements OnInit {
         this.tokenValid = this.activatedRoute.snapshot.data['tokenValid'];
 
         if (this.tokenValid) {
-            this.store$.dispatch(new ShowBannerSOA({ predefined: 'accountActivationSuccess' }));
+            this.store$.dispatch(showBannerSOA({ predefined: 'accountActivationSuccess' }));
         } else {
-            this.store$.dispatch(new ShowBannerSOA({ predefined: 'accountActivationFailure' }));
+            this.store$.dispatch(showBannerSOA({ predefined: 'accountActivationFailure' }));
         }
     }
 }

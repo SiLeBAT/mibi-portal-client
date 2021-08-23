@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { UserActionType } from '../../../shared/model/user-action.model';
 import { SamplesMainSlice } from '../../samples.state';
-import { ShowActionBarSOA } from '../../../core/state/core.actions';
-import { ImportSamplesMSA } from '../../import-samples/import-samples.actions';
+import { showActionBarSOA } from '../../../core/state/core.actions';
+import { importSamplesMSA } from '../../import-samples/import-samples.actions';
 
 @Component({
     selector: 'mibi-upload-view',
@@ -13,7 +13,7 @@ import { ImportSamplesMSA } from '../../import-samples/import-samples.actions';
 export class UploadViewComponent {
 
     constructor(private store$: Store<SamplesMainSlice>) {
-        this.store$.dispatch(new ShowActionBarSOA({
+        this.store$.dispatch(showActionBarSOA({
             title: '',
             enabledActions: [
                 UserActionType.VALIDATE,
@@ -26,6 +26,6 @@ export class UploadViewComponent {
     }
 
     fileUpload(file: File) {
-        this.store$.dispatch(new ImportSamplesMSA({ excelFile: { file } }));
+        this.store$.dispatch(importSamplesMSA({ excelFile: { file } }));
     }
 }

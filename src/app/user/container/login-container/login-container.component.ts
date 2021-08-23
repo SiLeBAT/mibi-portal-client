@@ -7,8 +7,8 @@ import { SamplesMainSlice } from '../../../samples/samples.state';
 import { selectHasEntries } from '../../../samples/state/samples.selectors';
 import { selectUserCurrentUser } from '../../state/user.selectors';
 import { UserMainSlice } from '../../user.state';
-import { UserLoginSSA } from '../../state/user.actions';
-import { NavigateMSA } from '../../../shared/navigate/navigate.actions';
+import { userLoginSSA } from '../../state/user.actions';
+import { navigateMSA } from '../../../shared/navigate/navigate.actions';
 
 @Component({
     selector: 'mibi-login-container',
@@ -31,9 +31,9 @@ export class LoginContainerComponent implements OnInit, OnDestroy {
             tap(([currentUser, hasEntries]) => {
                 if (currentUser) {
                     if (hasEntries) {
-                        this.store$.dispatch(new NavigateMSA({ url: '/samples' }));
+                        this.store$.dispatch(navigateMSA({ url: '/samples' }));
                     } else {
-                        this.store$.dispatch(new NavigateMSA({ url: '/users/profile' }));
+                        this.store$.dispatch(navigateMSA({ url: '/users/profile' }));
                     }
                 }
             })
@@ -45,6 +45,6 @@ export class LoginContainerComponent implements OnInit, OnDestroy {
     }
 
     login(credentials: Credentials) {
-        this.store$.dispatch(new UserLoginSSA(credentials));
+        this.store$.dispatch(userLoginSSA({ credentials: credentials }));
     }
 }

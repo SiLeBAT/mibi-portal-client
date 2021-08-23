@@ -13,11 +13,11 @@ import { Sample, Analysis, SampleMeta } from '../../model/sample-management.mode
 import { SamplesMainSlice, SamplesSlice } from '../../samples.state';
 import { MatDialogRef } from '@angular/material/dialog';
 import { NRLDTO, AnalysisProcedureDTO } from '../../../core/model/response.model';
-import { SendSamplesConfirmAnalysisSSA, SendSamplesCancelAnalysisSSA } from '../state/send-samples.actions';
+import { sendSamplesConfirmAnalysisSSA, sendSamplesCancelAnalysisSSA } from '../state/send-samples.actions';
 import { selectSendSamplesDialogWarnings } from '../state/send-samples.selectors';
-import { UpdateSampleMetaDataSOA } from '../../state/samples.actions';
-import { selectNRLs } from '../../../shared/nrl/state/nrl.selectors';
-import { NRLState } from '../../../shared/nrl/state/nrl.reducer';
+import { samplesUpdateSampleMetaDataSOA } from '../../state/samples.actions';
+import { selectNrls } from '../../../shared/nrl/state/nrl.selectors';
+import { NrlState } from '../../../shared/nrl/state/nrl.reducer';
 import { SharedSlice } from '../../../shared/shared.state';
 import { DialogWarning } from '../../../shared/dialog/dialog.model';
 
@@ -62,11 +62,11 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.stepperViewModel$ = this.store$.pipe(
-            select(createSelector<SamplesMainSlice | SharedSlice<NRLState> | SamplesSlice<SendSamplesState>,
+            select(createSelector<SamplesMainSlice | SharedSlice<NrlState> | SamplesSlice<SendSamplesState>,
                 Sample[], NRLDTO[],
                 { samples: Sample[], nrls: NRLDTO[]}>(
                 selectSampleData,
-                selectNRLs,
+                selectNrls,
                 (
                     samples: Sample[],
                     nrls: NRLDTO[]) => ({ samples, nrls })
@@ -78,12 +78,12 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
 
     onSend() {
         this.close();
-        this.store$.dispatch(new SendSamplesConfirmAnalysisSSA());
+        this.store$.dispatch(sendSamplesConfirmAnalysisSSA());
     }
 
     onCancel() {
         this.close();
-        this.store$.dispatch(new SendSamplesCancelAnalysisSSA());
+        this.store$.dispatch(sendSamplesCancelAnalysisSSA());
     }
 
     onChangeShowOther(nrl: string) {
@@ -201,19 +201,20 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
                 takeWhile(() => this.componentActive)).subscribe(
                 val => {
                     this.store$.dispatch(
-                        new UpdateSampleMetaDataSOA(
-                            {
-                                [vm.abbreviation]: this.mapFormValues(vm.abbreviation, val)
-                            })
+                        samplesUpdateSampleMetaDataSOA({ metaData: {
+                            [vm.abbreviation]: this.mapFormValues(vm.abbreviation, val)
+                        }})
                     );
                 },
                 error => { throw error; }
             );
             // put on event queue to prevent data change during change detection cycle
             setTimeout(() => {
-                this.store$.dispatch(new UpdateSampleMetaDataSOA({
-                    [vm.abbreviation]: this.mapFormValues(vm.abbreviation, accumulator[vm.abbreviation].value)
-                }));
+                this.store$.dispatch(
+                    samplesUpdateSampleMetaDataSOA({ metaData: {
+                        [vm.abbreviation]: this.mapFormValues(vm.abbreviation, accumulator[vm.abbreviation].value)
+                    }})
+                );
             });
             return accumulator;
         }, {});

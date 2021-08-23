@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 import { User } from '../../../user/model/user.model';
 import { selectUserCurrentUser } from '../../../user/state/user.selectors';
 import { UserMainSlice } from '../../../user/user.state';
-import { NavigateMSA } from '../../../shared/navigate/navigate.actions';
-import { UserLogoutMSA } from '../../../user/state/user.actions';
+import { navigateMSA } from '../../../shared/navigate/navigate.actions';
+import { userLogoutMSA } from '../../../user/state/user.actions';
 
 @Component({
     selector: 'mibi-avatar-container',
@@ -29,10 +29,10 @@ export class AvatarContainerComponent implements OnInit {
     }
 
     onLogout() {
-        this.store$.dispatch(new UserLogoutMSA());
+        this.store$.dispatch(userLogoutMSA());
     }
 
     onProfile() {
-        this.store$.dispatch(new NavigateMSA({ url: '/users/profile' }));
+        this.store$.dispatch(navigateMSA({ url: '/users/profile' }));
     }
 }

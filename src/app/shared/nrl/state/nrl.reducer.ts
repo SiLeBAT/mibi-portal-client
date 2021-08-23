@@ -1,19 +1,16 @@
 import { NRLDTO } from '../../../core/model/response.model';
 import * as _ from 'lodash';
-import { NRLMainActionTypes, NRLMainAction } from './nrl.actions';
+import { nrlUpdateNrlsSOA } from './nrl.actions';
+import { createReducer, on } from '@ngrx/store';
 
 // STATE
 
-export interface NRLState {
+export interface NrlState {
     nrls: NRLDTO[];
 }
 
 // REDUCER
-export function NRLReducer(state: NRLDTO[] = [], action: NRLMainAction): NRLDTO[] {
-    switch (action.type) {
-        case NRLMainActionTypes.UpdateNRLsSOA:
-            return _.cloneDeep(action.payload);
-        default:
-            return state;
-    }
-}
+export const nrlReducer = createReducer(
+    [],
+    on(nrlUpdateNrlsSOA, (state, action) => action.nrlDTO)
+);

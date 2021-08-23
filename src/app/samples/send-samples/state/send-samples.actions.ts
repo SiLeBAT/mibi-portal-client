@@ -1,61 +1,39 @@
-import { Action } from '@ngrx/store';
+import { createAction, props } from '@ngrx/store';
 import { DialogWarning } from '../../../shared/dialog/dialog.model';
 
-export enum SendSamplesActionTypes {
-    SendSamplesSSA = '[Samples/SendSamples] Send samples',
-    SendSamplesCancelAnalysisSSA = '[Samples/SendSamples] Cancel analysis dialog',
-    SendSamplesConfirmAnalysisSSA = '[Samples/SendSamples] Confirm analysis dialog',
-    SendSamplesCancelSendSSA = '[Samples/SendSamples] Cancel send dialog',
-    SendSamplesConfirmSendSSA = '[Samples/SendSamples] Confirm send dialog',
-    SendSamplesAddSentFileSOA = '[Samples/SendSamples] Add name of sent file to sent files',
-    SendSamplesUpdateDialogWarningsSOA = '[Samples/SendSamples] Update warnings displayed in dialogs'
-}
-
-export class SendSamplesSSA implements Action {
-    readonly type = SendSamplesActionTypes.SendSamplesSSA;
-}
+export const sendSamplesSSA = createAction(
+    '[Samples/SendSamples] Send samples'
+);
 
 // Analysis dialog
 
-export class SendSamplesCancelAnalysisSSA implements Action {
-    readonly type = SendSamplesActionTypes.SendSamplesCancelAnalysisSSA;
-}
+export const sendSamplesCancelAnalysisSSA = createAction(
+    '[Samples/SendSamples] Cancel analysis dialog'
+);
 
-export class SendSamplesConfirmAnalysisSSA implements Action {
-    readonly type = SendSamplesActionTypes.SendSamplesConfirmAnalysisSSA;
-}
+export const sendSamplesConfirmAnalysisSSA = createAction(
+    '[Samples/SendSamples] Confirm analysis dialog'
+);
 
 // Send dialog
 
-export class SendSamplesCancelSendSSA implements Action {
-    readonly type = SendSamplesActionTypes.SendSamplesCancelSendSSA;
-}
+export const sendSamplesCancelSendSSA = createAction(
+    '[Samples/SendSamples] Cancel send dialog'
+);
 
-export class SendSamplesConfirmSendSSA implements Action {
-    readonly type = SendSamplesActionTypes.SendSamplesConfirmSendSSA;
-
-    constructor(public payload: {comment: string}) {}
-}
+export const sendSamplesConfirmSendSSA = createAction(
+    '[Samples/SendSamples] Confirm send dialog',
+    props<{ comment: string }>()
+);
 
 // State
 
-export class SendSamplesAddSentFileSOA implements Action {
-    readonly type = SendSamplesActionTypes.SendSamplesAddSentFileSOA;
+export const sendSamplesAddSentFileSOA = createAction(
+    '[Samples/SendSamples] Add name of sent file to sent files',
+    props<{ sentFile: string }>()
+);
 
-    constructor(public payload: {sentFile: string}) {}
-}
-
-export class SendSamplesUpdateDialogWarnings implements Action {
-    readonly type = SendSamplesActionTypes.SendSamplesUpdateDialogWarningsSOA;
-
-    constructor(public payload: {warnings: DialogWarning[]}) { }
-}
-
-export type SendSamplesAction =
-    SendSamplesSSA
-    | SendSamplesCancelAnalysisSSA
-    | SendSamplesConfirmAnalysisSSA
-    | SendSamplesCancelSendSSA
-    | SendSamplesConfirmSendSSA
-    | SendSamplesAddSentFileSOA
-    | SendSamplesUpdateDialogWarnings;
+export const sendSamplesUpdateDialogWarningsSOA = createAction(
+    '[Samples/SendSamples] Update warnings displayed in dialogs',
+    props<{ warnings: DialogWarning[] }>()
+);

@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { DialogState, DialogData } from './../state/dialog.reducer';
 import { selectDialogData } from './../state/dialog.selectors';
 import { Observable } from 'rxjs';
-import { DialogConfirmMTA, DialogCancelMTA } from './../state/dialog.actions';
+import { dialogConfirmMTA, dialogCancelMTA } from './../state/dialog.actions';
 import { SharedSlice } from '../../shared.state';
 import { map } from 'rxjs/operators';
 import { DialogConfiguration } from '../dialog.model';
@@ -34,12 +34,12 @@ export class NewDialogComponent {
         private store$: Store<SharedSlice<DialogState>>) { }
 
     onConfirm() {
-        this.store$.dispatch(new DialogConfirmMTA(this.caller));
+        this.store$.dispatch(dialogConfirmMTA({ target: this.caller }));
         this.close();
     }
 
     onCancel() {
-        this.store$.dispatch(new DialogCancelMTA(this.caller));
+        this.store$.dispatch(dialogCancelMTA({ target: this.caller }));
         this.close();
     }
 

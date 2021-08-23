@@ -6,7 +6,7 @@ import { UserActionService } from '../../services/user-action.service';
 import { UserActionType } from '../../../shared/model/user-action.model';
 import { CoreMainSlice } from '../../core.state';
 import { selectBannerData } from '../../state/core.selectors';
-import { HideBannerSOA } from '../../state/core.actions';
+import { hideBannerSOA } from '../../state/core.actions';
 import { BannerData } from '../../state/core.reducer';
 import { Observable } from 'rxjs';
 
@@ -173,14 +173,14 @@ export class BannerContainerComponent {
         if (banner.mainAction) {
             banner.mainAction.onExecute();
         }
-        this.store$.dispatch(new HideBannerSOA());
+        this.store$.dispatch(hideBannerSOA());
     }
 
     onAuxAction(banner: Banner) {
         if (banner.auxilliaryAction) {
             banner.auxilliaryAction.onExecute();
         }
-        this.store$.dispatch(new HideBannerSOA());
+        this.store$.dispatch(hideBannerSOA());
     }
 
     private getBanner(bannerState: BannerData): Banner | null {

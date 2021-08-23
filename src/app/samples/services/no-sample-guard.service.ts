@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { take } from 'rxjs/operators';
-import { NavigateMSA } from '../../shared/navigate/navigate.actions';
+import { navigateMSA } from '../../shared/navigate/navigate.actions';
 import { SamplesMainSlice } from '../samples.state';
 import { selectHasEntries } from '../state/samples.selectors';
 
@@ -31,7 +31,7 @@ export class NoSampleGuard implements CanActivate {
     }
 
     private onDissallow() {
-        this.store$.dispatch(new NavigateMSA({ url: '/upload' }));
+        this.store$.dispatch(navigateMSA({ url: '/upload' }));
         return false;
     }
 }

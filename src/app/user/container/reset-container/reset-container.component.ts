@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { DataService } from '../../../core/services/data.service';
-import { ShowBannerSOA, UpdateIsBusySOA } from '../../../core/state/core.actions';
-import { NavigateMSA } from '../../../shared/navigate/navigate.actions';
+import { showBannerSOA, updateIsBusySOA } from '../../../core/state/core.actions';
+import { navigateMSA } from '../../../shared/navigate/navigate.actions';
 import { UserMainState } from '../../state/user.reducer';
 
 @Component({
@@ -22,18 +22,18 @@ export class ResetContainerComponent {
     reset(password: string) {
         const token = this.activatedRoute.snapshot.params['id'];
 
-        this.store$.dispatch(new UpdateIsBusySOA({ isBusy: true }));
+        this.store$.dispatch(updateIsBusySOA({ isBusy: true }));
         this.dataService.resetPassword(
             password, token).toPromise().then(
                 () => {
-                    this.store$.dispatch(new UpdateIsBusySOA({ isBusy: false }));
-                    this.store$.dispatch(new NavigateMSA({ url: 'users/login' }));
-                    this.store$.dispatch(new ShowBannerSOA({ predefined: 'passwordChangeSuccess' }));
+                    this.store$.dispatch(updateIsBusySOA({ isBusy: false }));
+                    this.store$.dispatch(navigateMSA({ url: 'users/login' }));
+                    this.store$.dispatch(showBannerSOA({ predefined: 'passwordChangeSuccess' }));
                 }
             ).catch(
                 () => {
-                    this.store$.dispatch(new UpdateIsBusySOA({ isBusy: false }));
-                    this.store$.dispatch(new ShowBannerSOA({ predefined: 'passwordChangeFailure' }));
+                    this.store$.dispatch(updateIsBusySOA({ isBusy: false }));
+                    this.store$.dispatch(showBannerSOA({ predefined: 'passwordChangeFailure' }));
                 }
             );
     }

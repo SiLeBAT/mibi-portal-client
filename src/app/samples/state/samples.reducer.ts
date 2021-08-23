@@ -1,5 +1,11 @@
 import * as _ from 'lodash';
-import { SamplesMainAction, SamplesMainActionTypes } from './samples.actions';
+import {
+    samplesDestroyMainDataSOA,
+    samplesUpdateSampleDataEntrySOA,
+    samplesUpdateSampleMetaDataSOA,
+    samplesUpdateMainDataSOA,
+    samplesUpdateSamplesSOA
+} from './samples.actions';
 import {
     SamplePropertyValues,
     Sample,
@@ -10,8 +16,8 @@ import {
     AnnotatedSampleDataEntry,
     SampleData
 } from '../model/sample-management.model';
-import { ValidateSamplesAction } from '../validate-samples/validate-samples.actions';
 import { getDataValuesFromAnnotatedData } from './samples.selectors';
+import { createReducer, on } from '@ngrx/store';
 
 // STATE
 
@@ -52,56 +58,48 @@ const initialMainData: SamplesMainData = {
 
 // REDUCER
 
-export function samplesMainReducer(
-    state: SamplesMainData = initialMainData, action: SamplesMainAction | ValidateSamplesAction
-): SamplesMainData {
-    switch (action.type) {
-        case SamplesMainActionTypes.UpdateSampleMetaDataSOA:
-            return {
-                ...state,
-                sampleData: updateSampleDataFromMetaData(state.sampleData, action.payload)
-            };
-        case SamplesMainActionTypes.DestroySampleSetSOA:
-            return initialMainData;
-        case SamplesMainActionTypes.UpdateSampleSetSOA:
-            return updateMainDataFromSampleSet(action.payload);
-        case SamplesMainActionTypes.UpdateSamplesSOA:
-            return {
-                ...state,
-                sampleData: updateSampleDataFromSamples(state.sampleData, action.payload)
-            };
-        case SamplesMainActionTypes.UpdateSampleDataEntrySOA:
-            const { newValue, rowIndex, columnId } = action.payload;
-            const oldEntry = state.sampleData[rowIndex].sampleData[columnId];
-            if (oldEntry.value === newValue) {
-                return state;
-            }
-
-            const newEntry = updateSampleDataEntryFromChangedData(
-                oldEntry,
-                state.importedFile,
-                action.payload
-            );
-
-            return {
-                ...state,
-                sampleData: state.sampleData.map((sample, i) => {
-                    if (i === rowIndex) {
-                        return {
-                            ...sample,
-                            sampleData: {
-                                ...sample.sampleData,
-                                [columnId]: newEntry
-                            }
-                        };
-                    }
-                    return sample;
-                })
-            };
-        default:
+export const samplesMainReducer = createReducer(
+    initialMainData,
+    on(samplesUpdateSampleMetaDataSOA, (state, action) => ({
+        ...state,
+        sampleData: updateSampleDataFromMetaData(state.sampleData, action.metaData)
+    })),
+    on(samplesDestroyMainDataSOA, state => initialMainData),
+    on(samplesUpdateMainDataSOA, (state, action) => updateMainDataFromSampleSet(action.sampleSet)),
+    on(samplesUpdateSamplesSOA, (state, action) => ({
+        ...state,
+        sampleData: updateSampleDataFromSamples(state.sampleData, action.samples)
+    })),
+    on(samplesUpdateSampleDataEntrySOA, (state, action) => {
+        const { newValue, rowIndex, columnId } = action.changedField;
+        const oldEntry = state.sampleData[rowIndex].sampleData[columnId];
+        if (oldEntry.value === newValue) {
             return state;
-    }
-}
+        }
+
+        const newEntry = updateSampleDataEntryFromChangedData(
+            oldEntry,
+            state.importedFile,
+            action.changedField
+        );
+
+        return {
+            ...state,
+            sampleData: state.sampleData.map((sample, i) => {
+                if (i === rowIndex) {
+                    return {
+                        ...sample,
+                        sampleData: {
+                            ...sample.sampleData,
+                            [columnId]: newEntry
+                        }
+                    };
+                }
+                return sample;
+            })
+        };
+    })
+);
 
 function updateSampleDataFromMetaData(samples: Sample[], metaData: MetaDataCollection): Sample[] {
     return samples.map(sample => {

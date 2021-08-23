@@ -6,7 +6,7 @@ import { Institution, fromDTOToInstitution } from '../../model/institution.model
 import * as _ from 'lodash';
 import { selectUserCurrentUser } from '../../state/user.selectors';
 import { UserMainSlice } from '../../user.state';
-import { UserLogoutMSA } from '../../state/user.actions';
+import { userLogoutMSA } from '../../state/user.actions';
 
 @Component({
     selector: 'mibi-profile-container',
@@ -46,7 +46,7 @@ export class ProfileContainerComponent implements OnInit, OnDestroy {
     }
 
     logout() {
-        this.store$.dispatch(new UserLogoutMSA());
+        this.store$.dispatch(userLogoutMSA());
     }
 
     getInstitutionName() {

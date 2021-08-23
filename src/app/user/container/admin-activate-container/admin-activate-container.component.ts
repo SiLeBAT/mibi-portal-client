@@ -4,7 +4,7 @@ import { environment } from '../../../../environments/environment';
 import { Store } from '@ngrx/store';
 import { UserActivation } from '../../model/user.model';
 import { UserMainState } from '../../state/user.reducer';
-import { ShowBannerSOA } from '../../../core/state/core.actions';
+import { showBannerSOA } from '../../../core/state/core.actions';
 
 @Component({
     selector: 'mibi-admin-activate-container',
@@ -28,10 +28,10 @@ export class AdminActivateContainerComponent implements OnInit {
 
         if (this.adminTokenValid.activation) {
             this.name = this.adminTokenValid.username;
-            this.store$.dispatch(new ShowBannerSOA({ predefined: 'accountActivationSuccess' }));
+            this.store$.dispatch(showBannerSOA({ predefined: 'accountActivationSuccess' }));
         } else {
             this.name = '';
-            this.store$.dispatch(new ShowBannerSOA({ predefined: 'accountActivationFailure' }));
+            this.store$.dispatch(showBannerSOA({ predefined: 'accountActivationFailure' }));
         }
     }
 }

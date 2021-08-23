@@ -6,9 +6,9 @@ import { TokenizedUser } from '../model/user.model';
 import { map } from 'rxjs/operators';
 import { selectUserCurrentUser } from '../state/user.selectors';
 import { UserMainSlice } from '../user.state';
-import { UserForceLogoutMSA } from '../state/user.actions';
-import { ShowBannerSOA } from '../../core/state/core.actions';
-import { NavigateMSA } from '../../shared/navigate/navigate.actions';
+import { userForceLogoutMSA } from '../state/user.actions';
+import { showBannerSOA } from '../../core/state/core.actions';
+import { navigateMSA } from '../../shared/navigate/navigate.actions';
 
 @Injectable({
     providedIn: 'root'
@@ -26,12 +26,12 @@ export class AuthGuard implements CanActivate {
                     const isExpired = helper.isTokenExpired(currentUser.token) || helper.getTokenExpirationDate(currentUser.token) === null;
 
                     if (isExpired) {
-                        this.store$.dispatch(new UserForceLogoutMSA());
-                        this.store$.dispatch(new ShowBannerSOA({ predefined: 'loginUnauthorized' }));
+                        this.store$.dispatch(userForceLogoutMSA());
+                        this.store$.dispatch(showBannerSOA({ predefined: 'loginUnauthorized' }));
                     }
                     return !isExpired;
                 }
-                this.store$.dispatch(new NavigateMSA({ url: '/users/login' }));
+                this.store$.dispatch(navigateMSA({ url: '/users/login' }));
                 return false;
             })
         );

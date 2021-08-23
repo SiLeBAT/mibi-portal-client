@@ -8,7 +8,7 @@ import { SamplesSlice, SamplesMainSlice } from '../../samples.state';
 import { SendSamplesState } from '../state/send-samples.reducer';
 import { selectSendSamplesDialogWarnings } from '../state/send-samples.selectors';
 import { sendSamplesSendDialogStrings } from '../send-samples.constants';
-import { SendSamplesCancelSendSSA, SendSamplesConfirmSendSSA } from '../state/send-samples.actions';
+import { sendSamplesCancelSendSSA, sendSamplesConfirmSendSSA } from '../state/send-samples.actions';
 
 @Component({
     selector: 'mibi-send-dialog',
@@ -30,12 +30,12 @@ export class SendDialogComponent {
 
     onConfirm(comment: string) {
         this.close();
-        this.store$.dispatch(new SendSamplesConfirmSendSSA({ comment: comment }));
+        this.store$.dispatch(sendSamplesConfirmSendSSA({ comment: comment }));
     }
 
     onCancel() {
         this.close();
-        this.store$.dispatch(new SendSamplesCancelSendSSA());
+        this.store$.dispatch(sendSamplesCancelSendSSA());
     }
 
     private close(): void {
