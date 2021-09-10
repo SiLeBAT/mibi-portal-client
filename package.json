@@ -25,13 +25,8 @@
     "lint:code": "tslint --project tsconfig.json --fix -c tslint.json -e \"cypress/**/*.ts\" \"src/**/*.ts\"",
     "lint:styles": "stylelint --fix \"src/**/*.scss\"",
     "clean": "npx rimraf public/*",
-    "cypress:open": "node_modules\\.bin\\cypress open"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "commit-msg": "./hooks/commit-msg ./.git/COMMIT_EDITMSG"
-    }
+    "cypress:open": "node_modules\\.bin\\cypress open",
+    "prepare": "husky install"
   },
   "lint-staged": {
     "*.ts": [
@@ -80,16 +75,17 @@
     "@bahmutov/add-typescript-to-cypress": "~2.1.2",
     "@ngrx/schematics": "~9.2.1",
     "@types/file-saver": "2.0.3",
+    "@types/jest": "27.0.1",
     "@types/lodash": "4.14.171",
     "@types/tooltipster": "0.0.31",
     "@types/zxcvbn": "4.4.1",
     "codelyzer": "^5.2.2",
     "cypress": "~4.12.1",
     "cypress-multi-reporters": "^1.5.0",
-    "husky": "~4.2.5",
-    "jest": "~26.4.2",
-    "jest-preset-angular": "~8.2.1",
-    "lint-staged": "~10.2.13",
+    "husky": "~7.0.2",
+    "jest": "~27.1.1",
+    "jest-preset-angular": "~9.0.7",
+    "lint-staged": "~11.1.2",
     "mocha": "~8.1.3",
     "mocha-junit-reporters": "~1.23.6",
     "mochawesome": "~6.1.1",

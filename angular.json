@@ -95,33 +95,6 @@
             "browserTarget": "mibi-portal-client:build"
           }
         },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "src/test.ts",
-            "karmaConfig": "./karma.conf.js",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.spec.json",
-            "scripts": [
-              "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/tooltipster/dist/js/tooltipster.bundle.min.js"
-            ],
-            "styles": [
-    
-              "node_modules/tooltipster/dist/css/tooltipster.bundle.min.css",
-              "src/styles.css"
-            ],
-            "assets": [
-              "src/assets",
-              "src/favicon.png"
-            ],
-            "stylePreprocessorOptions": {
-              "includePaths": [
-                "src/assets/sass"
-              ]
-            }
-          }
-        },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
