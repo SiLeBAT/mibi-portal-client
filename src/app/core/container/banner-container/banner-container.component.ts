@@ -73,7 +73,7 @@ export class BannerContainerComponent {
             type: AlertType.SUCCESS,
             message: `Der Auftrag wurde an das BfR gesendet.
             Bitte drucken Sie das PDF-Dokument in Ihrem Mailanhang
-            aus und legen sie es Ihren Isolaten bei.`,
+            aus und legen Sie es Ihren Isolaten bei.`,
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
 
         },
