@@ -2,7 +2,7 @@ import { SampleData, Sample, SampleValidationErrorLevel, AnnotatedSampleDataEntr
 import { createSelector } from '@ngrx/store';
 import { selectSamplesSlice } from '../samples.state';
 import { SamplesMainState } from './samples.reducer';
-import * as _ from 'lodash';
+import _ from 'lodash-es';
 
 export function getDataValuesFromAnnotatedData(sampleData: SampleData): SamplePropertyValues {
     const result: Partial<SamplePropertyValues> = {};

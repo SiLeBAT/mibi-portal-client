@@ -14,8 +14,8 @@ describe('Testing the Login Page', function () {
             cy.contains('mat-card-title', 'Login');
             cy.get('form').within(() => {
                 cy.contains('button', 'Anmelden');
-                cy.get('[placeholder="E-Mail"]');
-                cy.get('[placeholder="Passwort"]');
+                cy.get('[data-placeholder="E-Mail"]');
+                cy.get('[data-placeholder="Passwort"]');
             });
         });
     });

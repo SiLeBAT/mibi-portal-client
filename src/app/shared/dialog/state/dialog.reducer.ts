@@ -1,6 +1,6 @@
 import { DialogConfiguration } from '../dialog.model';
 import { dialogOpenMTA } from './dialog.actions';
-import * as _ from 'lodash';
+import _ from 'lodash-es';
 import { createReducer, on } from '@ngrx/store';
 
 // STATE

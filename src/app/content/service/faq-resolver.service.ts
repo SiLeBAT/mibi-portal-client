@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterStateSnapshot, Resolve } from '@angular/router';
 import { DataService } from '../../core/services/data.service';
-import * as _ from 'lodash';
+import _ from 'lodash-es';
 import { IFAQGroup } from '../presentation/faq-section/faq-section.component';
 
 @Injectable({

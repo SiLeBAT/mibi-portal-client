@@ -1,5 +1,5 @@
 import { Component, Input, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
-import * as moment from 'moment';
+import moment from 'moment';
 import { Observable } from 'rxjs';
 import { ToolTip, createToolTip, ToolTipTheme } from '../../../shared/model/tooltip.model';
 import 'tooltipster';

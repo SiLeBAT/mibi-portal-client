@@ -1,5 +1,5 @@
 import { NRLDTO } from '../../../core/model/response.model';
-import * as _ from 'lodash';
+import _ from 'lodash-es';
 import { nrlUpdateNrlsSOA } from './nrl.actions';
 import { createReducer, on } from '@ngrx/store';
 

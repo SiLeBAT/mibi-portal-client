@@ -1,7 +1,7 @@
 
 import { SampleData, Sample, SampleMeta } from './../../samples/model/sample-management.model';
 import { Injectable } from '@angular/core';
-import * as _ from 'lodash';
+import _ from 'lodash-es';
 import {
     SampleSet,
     MarshalledData,

@@ -6,10 +6,9 @@
 #   npx browserslist
 
 Firefox ESR
-Firefox >= 52
-Chrome >= 64
-Edge >= 41
-Safari >= 11
-Opera >= 54
+Firefox >= 70
+Chrome >= 80
+Edge >= 79
+Safari >= 13
 not dead
 maintained node versions

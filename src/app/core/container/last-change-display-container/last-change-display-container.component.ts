@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { DataService } from '../../../core/services/data.service';
-import * as moment from 'moment';
+import moment from 'moment';
 import 'moment/locale/de';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';

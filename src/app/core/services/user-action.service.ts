@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import * as _ from 'lodash';
+import _ from 'lodash-es';
 import { UserActionViewModelConfiguration, UserActionType, ColorType } from '../../shared/model/user-action.model';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';

@@ -1,8 +1,5 @@
 import { Urgency } from '../../model/sample.enums';
-import * as _ from 'lodash';
-import { map } from 'rxjs/internal/operators/map';
-import { takeWhile } from 'rxjs/internal/operators/takeWhile';
-import { take } from 'rxjs/internal/operators/take';
+import _ from 'lodash-es';
 import { Observable } from 'rxjs';
 import { SendSamplesState } from '../state/send-samples.reducer';
 import { FormGroup, FormBuilder } from '@angular/forms';
@@ -20,6 +17,7 @@ import { selectNrls } from '../../../shared/nrl/state/nrl.selectors';
 import { NrlState } from '../../../shared/nrl/state/nrl.reducer';
 import { SharedSlice } from '../../../shared/shared.state';
 import { DialogWarning } from '../../../shared/dialog/dialog.model';
+import { map, take, takeWhile } from 'rxjs/operators';
 
 interface AnalysisStepViewModel {
     abbreviation: string;

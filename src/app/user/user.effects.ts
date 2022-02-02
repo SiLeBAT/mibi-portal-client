@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import * as moment from 'moment';
+import moment from 'moment';
 import { map, catchError, concatMap, startWith, endWith, withLatestFrom } from 'rxjs/operators';
 import { of, Observable, iif } from 'rxjs';
 import { DataService } from '../core/services/data.service';

@@ -1,5 +1,5 @@
 import { sendSamplesAddSentFileSOA, sendSamplesUpdateDialogWarningsSOA } from './send-samples.actions';
-import * as _ from 'lodash';
+import _ from 'lodash-es';
 import { DialogWarning } from '../../../shared/dialog/dialog.model';
 import { createReducer, on } from '@ngrx/store';
 

@@ -1,7 +1,7 @@
 import { userDestroyCurrentUserSOA, userUpdateCurrentUserSOA, userUpdateInstitutionsSOA } from './user.actions';
 import { TokenizedUser } from '../model/user.model';
 import { InstitutionDTO } from '../model/institution.model';
-import * as _ from 'lodash';
+import _ from 'lodash-es';
 import { createReducer, on } from '@ngrx/store';
 
 // STATE

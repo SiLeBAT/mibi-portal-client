@@ -8,7 +8,7 @@ import { of, Observable } from 'rxjs';
 import { showBannerSOA, updateIsBusySOA, hideBannerSOA } from '../../core/state/core.actions';
 import { LogService } from '../../core/services/log.service';
 import { SamplesMainSlice } from '../samples.state';
-import * as _ from 'lodash';
+import _ from 'lodash-es';
 import { selectSamplesMainData } from '../state/samples.selectors';
 import { samplesUpdateSamplesSOA } from '../state/samples.actions';
 import { SamplesMainData } from '../state/samples.reducer';
