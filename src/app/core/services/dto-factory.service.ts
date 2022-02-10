@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import _ from 'lodash-es';
+import _ from 'lodash';
 import {
     Sample,
     SampleSet,

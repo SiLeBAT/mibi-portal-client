@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import _ from 'lodash-es';
+import _ from 'lodash';
 import { IFAQGroup } from '../faq-section/faq-section.component';
 
 interface IFAQTocEntry {

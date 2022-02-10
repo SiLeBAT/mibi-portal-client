@@ -3,7 +3,7 @@ import { User, TokenizedUser } from '../../../user/model/user.model';
 import { Store, select } from '@ngrx/store';
 import { takeWhile, tap, withLatestFrom } from 'rxjs/operators';
 import { Institution, fromDTOToInstitution } from '../../model/institution.model';
-import _ from 'lodash-es';
+import _ from 'lodash';
 import { selectUserCurrentUser } from '../../state/user.selectors';
 import { UserMainSlice } from '../../user.state';
 import { userLogoutMSA } from '../../state/user.actions';

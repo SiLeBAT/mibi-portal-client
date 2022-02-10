@@ -34,7 +34,7 @@
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/tooltipster/dist/js/tooltipster.bundle.min.js"
             ],
-            "allowedCommonJsDependencies": ["moment", "tooltipster", "zxcvbn", "file-saver"]
+            "allowedCommonJsDependencies": ["lodash", "moment", "tooltipster", "zxcvbn", "file-saver"]
           },
           "configurations": {
             "production": {
@@ -47,12 +47,11 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": false,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": false,
+              "buildOptimizer": true,
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",

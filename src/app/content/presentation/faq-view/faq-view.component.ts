@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewChecked, OnDestroy } from '@angular/core';
-import _ from 'lodash-es';
+import _ from 'lodash';
 import { IFAQGroup } from '../faq-section/faq-section.component';
 import { ActivatedRoute } from '@angular/router';
 import { takeWhile } from 'rxjs/operators';
@@ -21,7 +21,7 @@ export class FAQViewComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.activatedRoute.fragment.pipe(
             takeWhile(() => this.componentActive)
         ).subscribe(fragment => { this.fragment = fragment; }, (error) => {
-            throw new ClientError(`Can't retieve view fragment. error=${error}`);
+            throw new ClientError(`Can't retrieve view fragment. error=${error}`);
         });
     }
 

@@ -1,5 +1,5 @@
 import { sendSamplesAddSentFileSOA, sendSamplesUpdateDialogWarningsSOA } from './send-samples.actions';
-import _ from 'lodash-es';
+import _ from 'lodash';
 import { DialogWarning } from '../../../shared/dialog/dialog.model';
 import { createReducer, on } from '@ngrx/store';
 
@@ -12,12 +12,12 @@ export interface SendSamplesState {
 
 // REDUCER
 
-export const sendSamplesLastSentFilesReducer = createReducer(
+export const sendSamplesLastSentFilesReducer = createReducer<string[]>(
     [],
     on(sendSamplesAddSentFileSOA, (state, action) => _.union(state, [action.sentFile]))
 );
 
-export const sendSamplesDialogWarningsReducer = createReducer(
+export const sendSamplesDialogWarningsReducer = createReducer<DialogWarning[]>(
     [],
     on(sendSamplesUpdateDialogWarningsSOA, (state, action) => action.warnings)
 );

@@ -17,7 +17,7 @@ import { samplesUpdateSamplesSOA } from '../state/samples.actions';
 import { showBannerSOA, updateIsBusySOA, hideBannerSOA } from '../../core/state/core.actions';
 import { Observable, of, EMPTY, concat } from 'rxjs';
 import { SendSamplesState } from './state/send-samples.reducer';
-import _ from 'lodash-es';
+import _ from 'lodash';
 import {
     selectImportedFileName,
     selectSampleData,

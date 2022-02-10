@@ -1,5 +1,5 @@
-import { Component, OnInit, ChangeDetectorRef, Output, EventEmitter, ViewChild, AfterViewInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Component, OnInit, Output, EventEmitter, ViewChild, AfterViewInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { PasswordComponent } from '../../password/password.component';
 
 @Component({

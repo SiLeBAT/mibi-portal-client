@@ -1,5 +1,5 @@
 import { NRLDTO } from '../../../core/model/response.model';
-import _ from 'lodash-es';
+import _ from 'lodash';
 import { nrlUpdateNrlsSOA } from './nrl.actions';
 import { createReducer, on } from '@ngrx/store';
 
@@ -10,7 +10,7 @@ export interface NrlState {
 }
 
 // REDUCER
-export const nrlReducer = createReducer(
+export const nrlReducer = createReducer<NRLDTO[]>(
     [],
     on(nrlUpdateNrlsSOA, (state, action) => action.nrlDTO)
 );

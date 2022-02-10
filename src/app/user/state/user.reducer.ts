@@ -1,7 +1,7 @@
 import { userDestroyCurrentUserSOA, userUpdateCurrentUserSOA, userUpdateInstitutionsSOA } from './user.actions';
 import { TokenizedUser } from '../model/user.model';
 import { InstitutionDTO } from '../model/institution.model';
-import _ from 'lodash-es';
+import _ from 'lodash';
 import { createReducer, on } from '@ngrx/store';
 
 // STATE
@@ -13,13 +13,13 @@ export interface UserMainState {
 
 // REDUCER
 
-export const userCurrentUserReducer = createReducer(
+export const userCurrentUserReducer = createReducer<TokenizedUser | null>(
     null,
     on(userUpdateCurrentUserSOA, (state, action) => action.user),
     on(userDestroyCurrentUserSOA, state => null)
 );
 
-export const userInstitutesReducer = createReducer(
+export const userInstitutesReducer = createReducer<InstitutionDTO[]>(
     [],
     on(userUpdateInstitutionsSOA, (state, action) => action.institutions)
 );

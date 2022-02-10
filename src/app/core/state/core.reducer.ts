@@ -10,7 +10,7 @@ import {
 import { Banner, BannerType } from '../model/alert.model';
 import { routerNavigationAction, routerRequestAction } from '@ngrx/router-store';
 import { UserActionType } from '../../shared/model/user-action.model';
-import _ from 'lodash-es';
+import _ from 'lodash';
 import { createReducer, on } from '@ngrx/store';
 
 // STATE

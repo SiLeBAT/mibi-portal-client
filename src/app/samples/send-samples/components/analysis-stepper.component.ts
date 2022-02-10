@@ -1,5 +1,5 @@
 import { Urgency } from '../../model/sample.enums';
-import _ from 'lodash-es';
+import _ from 'lodash';
 import { Observable } from 'rxjs';
 import { SendSamplesState } from '../state/send-samples.reducer';
 import { FormGroup, FormBuilder } from '@angular/forms';

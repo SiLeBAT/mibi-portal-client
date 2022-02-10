@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import _ from 'lodash-es';
+import _ from 'lodash';
 import { Store, select } from '@ngrx/store';
 import { map } from 'rxjs/operators';
 import { Observable, combineLatest } from 'rxjs';
