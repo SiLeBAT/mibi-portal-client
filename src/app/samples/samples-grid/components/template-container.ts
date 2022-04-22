@@ -1,6 +1,6 @@
 import { ViewChild, TemplateRef, Directive } from '@angular/core';
 
-/* tslint:disable:directive-class-suffix */
+/* eslint-disable @angular-eslint/directive-class-suffix */
 @Directive()
 export abstract class SamplesGridTemplateContainer<T> {
     @ViewChild('template', { static: true })

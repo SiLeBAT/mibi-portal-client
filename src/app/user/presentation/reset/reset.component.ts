@@ -10,7 +10,7 @@ import { PasswordComponent } from '../../password/password.component';
 export class ResetComponent implements OnInit, AfterViewInit {
     resetForm: FormGroup;
 
-    @Output() reset = new EventEmitter();
+    @Output() resetPassword = new EventEmitter();
 
     @ViewChild(PasswordComponent) private passwordComponent: PasswordComponent;
 
@@ -22,8 +22,8 @@ export class ResetComponent implements OnInit, AfterViewInit {
         this.resetForm.addControl('password', this.passwordComponent.passwordForm);
     }
 
-    onReset() {
+    onResetPassword() {
         const password = this.passwordComponent.passwordControl.value;
-        this.reset.emit(password);
+        this.resetPassword.emit(password);
     }
 }

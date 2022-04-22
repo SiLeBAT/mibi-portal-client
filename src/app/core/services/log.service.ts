@@ -30,7 +30,7 @@ export class LogEntry {
 
         ret += ' - Message: ' + this.message;
 
-        if (this.extraInfo.length) {
+        if (this.extraInfo.length > 0) {
             ret += ' - Extra Info: ' + this.formatParams(this.extraInfo);
         }
 
@@ -110,7 +110,7 @@ export class LogService {
             entry.logWithDate = this.logWithDate;
 
             for (const logger of this.publishers) {
-                logger.log(entry).subscribe(response => ({}), (error) => {
+                logger.log(entry).subscribe(_response => ({}), (error) => {
                     throw new ClientError(`Unable to log. error=${error}`);
                 });
             }

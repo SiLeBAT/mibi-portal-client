@@ -6,7 +6,7 @@
 </ng-template>
 
 <ng-template #uploadActionItem let-icon="icon" let-onClick="onExecute" let-label="label">
-    <mibi-upload-container (onFileUpload)="onClick($event)">
+    <mibi-upload-container (uploadFile)="onClick($event)">
         <mibi-upload-action-item #uploadChild>
             <a class="mibi-action-link">
                 <mat-icon [inline]="true" class="mibi-action-link__icon">{{icon}}</mat-icon>

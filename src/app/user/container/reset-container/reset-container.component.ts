@@ -9,7 +9,7 @@ import { UserMainState } from '../../state/user.reducer';
 @Component({
     selector: 'mibi-reset-container',
     template: `<mibi-reset
-    (reset)="reset($event)"></mibi-reset>`
+    (resetPassword)="onResetPassword($event)"></mibi-reset>`
 })
 export class ResetContainerComponent {
 
@@ -19,22 +19,19 @@ export class ResetContainerComponent {
         private dataService: DataService
     ) { }
 
-    reset(password: string) {
+    onResetPassword(password: string) {
         const token = this.activatedRoute.snapshot.params['id'];
 
         this.store$.dispatch(updateIsBusySOA({ isBusy: true }));
-        this.dataService.resetPassword(
-            password, token).toPromise().then(
-                () => {
-                    this.store$.dispatch(updateIsBusySOA({ isBusy: false }));
-                    this.store$.dispatch(navigateMSA({ url: 'users/login' }));
-                    this.store$.dispatch(showBannerSOA({ predefined: 'passwordChangeSuccess' }));
-                }
-            ).catch(
-                () => {
-                    this.store$.dispatch(updateIsBusySOA({ isBusy: false }));
-                    this.store$.dispatch(showBannerSOA({ predefined: 'passwordChangeFailure' }));
-                }
-            );
+        this.dataService.resetPassword(password, token).toPromise()
+            .then(() => {
+                this.store$.dispatch(updateIsBusySOA({ isBusy: false }));
+                this.store$.dispatch(navigateMSA({ url: 'users/login' }));
+                this.store$.dispatch(showBannerSOA({ predefined: 'passwordChangeSuccess' }));
+            })
+            .catch(() => {
+                this.store$.dispatch(updateIsBusySOA({ isBusy: false }));
+                this.store$.dispatch(showBannerSOA({ predefined: 'passwordChangeFailure' }));
+            });
     }
 }

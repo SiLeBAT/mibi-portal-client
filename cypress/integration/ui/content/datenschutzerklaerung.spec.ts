@@ -22,7 +22,6 @@ describe('Testing the Datenschutzerklärung Page', function () {
         });
 
         it('should contain link to the Europäischen Datenschutz-Grundverordnung (DS-GVO) page', function () {
-            // tslint:disable-next-line: max-line-length
             cy.contains('Europäischen Datenschutz-Grundverordnung (DS-GVO)').should('have.attr', 'href', 'https://eur-lex.europa.eu/legal-content/DE/TXT/HTML/?uri=CELEX:32016R0679')
                 .should('have.attr', 'target', '_blank');
         });

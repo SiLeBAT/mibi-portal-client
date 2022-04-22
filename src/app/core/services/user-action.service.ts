@@ -106,7 +106,7 @@ export class UserActionService {
     }
 
     private import(file: File) {
-        this.store$.dispatch(importSamplesMSA({ excelFile: { file } }));
+        this.store$.dispatch(importSamplesMSA({ excelFile: { file: file } }));
     }
 
     private send() {

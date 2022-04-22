@@ -1,6 +1,5 @@
 import { DialogConfiguration } from '../dialog.model';
 import { dialogOpenMTA } from './dialog.actions';
-import _ from 'lodash';
 import { createReducer, on } from '@ngrx/store';
 
 // STATE
@@ -32,7 +31,7 @@ const initialData: DialogData = {
 
 export const dialogReducer = createReducer(
     initialData,
-    on(dialogOpenMTA, (state, action) => ({
+    on(dialogOpenMTA, (_state, action) => ({
         caller: action.target,
         configuration: action.configuration
     }))

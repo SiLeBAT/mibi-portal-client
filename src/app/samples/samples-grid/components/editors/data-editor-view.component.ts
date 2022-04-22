@@ -58,7 +58,7 @@ export class SamplesGridDataEditorViewComponent implements OnInit {
         this.confirm.emit();
     }
 
-    onEditorEsc(e: KeyboardEvent): void {
+    onEditorEsc(_e: KeyboardEvent): void {
         if (this.listSelection === -1) {
             this.refocusEditor();
             this.cancel.emit();
@@ -103,7 +103,7 @@ export class SamplesGridDataEditorViewComponent implements OnInit {
         }
     }
 
-    onListConfirm(e: number): void {
+    onListConfirm(_e: number): void {
         this.refocusEditor();
         this.confirm.emit();
     }

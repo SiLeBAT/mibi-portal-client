@@ -3,7 +3,7 @@ import { DialogConfiguration } from '../dialog.model';
 
 export const dialogOpenMTA = createAction(
     '[Shared/Dialog] Open Dialog',
-    props<{target: string, configuration: DialogConfiguration }>()
+    props<{target: string; configuration: DialogConfiguration }>()
 );
 
 export const dialogCancelMTA = createAction(

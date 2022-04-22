@@ -62,13 +62,13 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
         this.stepperViewModel$ = this.store$.pipe(
             select(createSelector<SamplesMainSlice | SharedSlice<NrlState> | SamplesSlice<SendSamplesState>,
                 Sample[], NRLDTO[],
-                { samples: Sample[], nrls: NRLDTO[]}>(
-                selectSampleData,
-                selectNrls,
-                (
-                    samples: Sample[],
-                    nrls: NRLDTO[]) => ({ samples, nrls })
-            )),
+                { samples: Sample[]; nrls: NRLDTO[] }>(
+                    selectSampleData,
+                    selectNrls,
+                    (
+                        samples: Sample[],
+                        nrls: NRLDTO[]) => ({ samples: samples, nrls: nrls })
+                )),
             take(1),
             map(({ samples, nrls }) => this.createViewModel(samples, _.cloneDeep(nrls)))
         );
@@ -110,7 +110,8 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
                 urgencyEnum = Urgency.NORMAL;
         }
 
-        return Object.keys(values).reduce((acc: { analysis: Partial<Analysis>, urgency: Urgency}, v) => {
+        // eslint-disable-next-line unicorn/no-array-reduce
+        return Object.keys(values).reduce((acc: { analysis: Partial<Analysis>; urgency: Urgency }, v) => {
 
             const prop: keyof Analysis = this.getPropertyForAnalysisKey(v);
             if (v !== 'compareHuman' && v !== 'other' && v !== 'urgency') {
@@ -157,20 +158,18 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
     private determineAnalysisProcedures(assignedNRLs: NRLDTO[]) {
         const comparFN = (a: AnalysisProcedureDTO, b: AnalysisProcedureDTO) => a.key - b.key;
 
-        return assignedNRLs.map(nrl => {
-            return {
-                abbreviation: nrl.id,
-                standardProcedures: nrl ? nrl.standardProcedures.sort(comparFN).map(p => p.value) : [],
-                optionalProcedures: nrl ? nrl.optionalProcedures.sort(comparFN).map(p => ({
-                    value: p.value,
-                    controlName: p.key.toString()
-                })) : []
-            };
-        });
+        return assignedNRLs.map(nrl => ({
+            abbreviation: nrl.id,
+            standardProcedures: nrl ? nrl.standardProcedures.sort(comparFN).map(p => p.value) : [],
+            optionalProcedures: nrl ? nrl.optionalProcedures.sort(comparFN).map(p => ({
+                value: p.value,
+                controlName: p.key.toString()
+            })) : []
+        }));
     }
 
     private createFormControls(analysisStepVM: AnalysisStepViewModel[], samples: Sample[]) {
-
+        // eslint-disable-next-line unicorn/no-array-reduce, unicorn/prefer-object-from-entries
         return analysisStepVM.reduce((accumulator: Record<string, FormGroup>, vm) => {
             const exampleSample = _.find(samples, s => s.sampleMeta.nrl === vm.abbreviation);
 
@@ -195,23 +194,25 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
                 controlsConfig[p.controlName] = currentAnalysisValues[this.getPropertyForAnalysisKey(p.controlName)];
             });
             accumulator[vm.abbreviation] = this.fb.group(controlsConfig);
-            accumulator[vm.abbreviation].valueChanges.pipe(
-                takeWhile(() => this.componentActive)).subscribe(
-                val => {
+            accumulator[vm.abbreviation].valueChanges
+                .pipe(takeWhile(() => this.componentActive))
+                .subscribe(val => {
                     this.store$.dispatch(
-                        samplesUpdateSampleMetaDataSOA({ metaData: {
-                            [vm.abbreviation]: this.mapFormValues(vm.abbreviation, val)
-                        }})
+                        samplesUpdateSampleMetaDataSOA({
+                            metaData: {
+                                [vm.abbreviation]: this.mapFormValues(vm.abbreviation, val)
+                            }
+                        })
                     );
-                },
-                error => { throw error; }
-            );
+                }, (error) => { throw error; });
             // put on event queue to prevent data change during change detection cycle
             setTimeout(() => {
                 this.store$.dispatch(
-                    samplesUpdateSampleMetaDataSOA({ metaData: {
-                        [vm.abbreviation]: this.mapFormValues(vm.abbreviation, accumulator[vm.abbreviation].value)
-                    }})
+                    samplesUpdateSampleMetaDataSOA({
+                        metaData: {
+                            [vm.abbreviation]: this.mapFormValues(vm.abbreviation, accumulator[vm.abbreviation].value)
+                        }
+                    })
                 );
             });
             return accumulator;

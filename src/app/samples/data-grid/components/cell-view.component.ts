@@ -3,8 +3,6 @@ import {
     ChangeDetectionStrategy,
     Input,
     TemplateRef,
-    Output,
-    EventEmitter,
     ChangeDetectorRef
 } from '@angular/core';
 import {

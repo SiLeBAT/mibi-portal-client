@@ -12,13 +12,13 @@ export abstract class LogPublisher {
 export class LogConsolePublisher extends LogPublisher {
 
     log(record: LogEntry) {
-        // tslint:disable-next-line
+        // eslint-disable-next-line no-console
         console.log(record.buildLogString());
         return of(true);
     }
 
     clear() {
-        // tslint:disable-next-line
+        // eslint-disable-next-line no-console
         console.clear();
         return of(true);
     }

@@ -11,14 +11,14 @@ export class AvatarComponent {
 
     @Input() currentUser$: Observable<User | null>;
 
-    @Output() onLogout = new EventEmitter();
-    @Output() onProfile = new EventEmitter();
+    @Output() logout = new EventEmitter();
+    @Output() profile = new EventEmitter();
 
-    logout() {
-        this.onLogout.emit();
+    onLogout() {
+        this.logout.emit();
     }
 
-    goToProfile() {
-        this.onProfile.emit();
+    onProfile() {
+        this.profile.emit();
     }
 }

@@ -19,7 +19,7 @@ export class AnonymousGuard implements CanActivate {
 
     constructor(private store$: Store<UserMainState & SamplesMainSlice & UserMainSlice>) { }
 
-    canActivate(activated: ActivatedRouteSnapshot, snap: RouterStateSnapshot) {
+    canActivate(_activated: ActivatedRouteSnapshot, _snap: RouterStateSnapshot) {
         return combineLatest([
             this.store$.pipe(select(selectUserCurrentUser)),
             this.store$.pipe(select(selectHasEntries))

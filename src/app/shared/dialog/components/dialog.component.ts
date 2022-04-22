@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Store, select } from '@ngrx/store';
-import { DialogState, DialogData } from './../state/dialog.reducer';
+import { DialogState } from './../state/dialog.reducer';
 import { selectDialogData } from './../state/dialog.selectors';
 import { Observable } from 'rxjs';
 import { dialogConfirmMTA, dialogCancelMTA } from './../state/dialog.actions';

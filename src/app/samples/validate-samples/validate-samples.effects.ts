@@ -8,7 +8,6 @@ import { of, Observable } from 'rxjs';
 import { showBannerSOA, updateIsBusySOA, hideBannerSOA } from '../../core/state/core.actions';
 import { LogService } from '../../core/services/log.service';
 import { SamplesMainSlice } from '../samples.state';
-import _ from 'lodash';
 import { selectSamplesMainData } from '../state/samples.selectors';
 import { samplesUpdateSamplesSOA } from '../state/samples.actions';
 import { SamplesMainData } from '../state/samples.reducer';
@@ -40,7 +39,7 @@ export class ValidateSamplesEffects {
     private validateSamples(samplesMainData: SamplesMainData): Observable<Action> {
         return this.dataService.validateSampleData(samplesMainData).pipe(
             map(samples => samplesUpdateSamplesSOA({ samples: samples })),
-            catchError((error: Error) => {
+            catchError((error) => {
                 this.logger.error('Failed to validate samples.', error.stack);
                 return of(
                     showBannerSOA({ predefined: 'validationFailure' })

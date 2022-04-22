@@ -8,9 +8,7 @@ import { PasswordComponent } from '../../password/password.component';
 
 // InstituteValidator
 
-const instituteValidator = (control: AbstractControl): ValidationErrors | null => {
-    return control.value && control.value.id ? null : { 'institutionError': true };
-};
+const instituteValidator = (control: AbstractControl): ValidationErrors | null => control.value && control.value.id ? null : { 'institutionError': true };
 
 // Component
 
@@ -42,18 +40,18 @@ export class RegisterComponent implements OnInit, AfterViewInit {
         });
 
         this.filteredOptions$ = this.registerForm.controls.institution.valueChanges
-                .pipe(
-                    startWith(''),
-                    map(value => {
-                        if (!value) {
-                            return this.institutions;
-                        }
-                        return this._filter(value);
-                    })
-                );
+            .pipe(
+                startWith(''),
+                map(value => {
+                    if (!value) {
+                        return this.institutions;
+                    }
+                    return this.filter(value);
+                })
+            );
     }
 
-    private _filter(value: string): Institution[] {
+    private filter(value: string): Institution[] {
         try {
             const filterValue = value.toLowerCase();
 
@@ -61,7 +59,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
                 const completeName = inst.toString();
                 return completeName.toLowerCase().includes(filterValue);
             });
-        } catch (err) {
+        } catch {
             return [];
         }
     }

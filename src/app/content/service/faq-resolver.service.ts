@@ -12,23 +12,18 @@ export class FAQResolver implements Resolve<IFAQGroup[]> {
     constructor(
         private dataService: DataService) { }
 
-    async resolve(activatedRoute: ActivatedRouteSnapshot, sanp: RouterStateSnapshot): Promise<IFAQGroup[]> {
+    async resolve(_activatedRoute: ActivatedRouteSnapshot, _snap: RouterStateSnapshot): Promise<IFAQGroup[]> {
         return this.dataService.getFAQs().toPromise().then(
-            data => {
-                // tslint:disable-next-line
-                return _.values((_.mapValues(data, (value, key) => {
-                    const title = key === 'top' ? '' : key;
-                    return {
-                        faqs: value,
-                        id: title.replace(/\s/g, ''),
-                        title: title
-                    };
-                }))) as IFAQGroup[];
-            }
+            data => _.values((_.mapValues(data, (value, key) => {
+                const title = key === 'top' ? '' : key;
+                return {
+                    faqs: value,
+                    id: title.replace(/\s/g, ''),
+                    title: title
+                };
+            }))) as IFAQGroup[]
         ).catch(
-            () => {
-                return [] as IFAQGroup[];
-            }
+            () => [] as IFAQGroup[]
         );
     }
 }

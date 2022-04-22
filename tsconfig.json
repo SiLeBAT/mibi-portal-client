@@ -5,6 +5,7 @@
     "module": "es2020",
     "moduleResolution": "Node",
     "esModuleInterop": true,
+    "resolveJsonModule": true,
     "outDir": "./dist/out-tsc",
     "target": "ES2015",
     "typeRoots": ["./node_modules/@types"],
@@ -16,7 +17,6 @@
     "importHelpers": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "resolveJsonModule": true,
     "removeComments": true,
     "forceConsistentCasingInFileNames": true,
 

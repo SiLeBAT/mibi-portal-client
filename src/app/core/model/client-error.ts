@@ -1,5 +1,4 @@
 export class ClientError extends Error {
-    // tslint:disable-next-line
     constructor(...args: any[]) {
 
         // Calling parent constructor of base Error class.
@@ -16,7 +15,6 @@ export class ClientError extends Error {
 }
 
 export class AuthorizationError extends ClientError {
-    // tslint:disable-next-line
     constructor(...args: any[]) {
         super(...args);
         Object.setPrototypeOf(this, AuthorizationError.prototype);
@@ -25,7 +23,6 @@ export class AuthorizationError extends ClientError {
 }
 
 export class EndpointError extends ClientError {
-    // tslint:disable-next-line
     constructor(public errorDTO: any, ...args: any[]) {
         super(...args);
         Object.setPrototypeOf(this, EndpointError.prototype);
@@ -34,7 +31,6 @@ export class EndpointError extends ClientError {
 }
 
 export class DelayLoginError extends AuthorizationError {
-    // tslint:disable-next-line
     constructor(public timeToWait: number, ...args: any[]) {
         super(...args);
         Object.setPrototypeOf(this, DelayLoginError.prototype);

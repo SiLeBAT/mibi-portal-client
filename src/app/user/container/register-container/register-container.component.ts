@@ -6,7 +6,6 @@ import { AlertType } from '../../../core/model/alert.model';
 import { UserActionService } from '../../../core/services/user-action.service';
 import { UserActionType } from '../../../shared/model/user-action.model';
 import { RegistrationDetails, UserRegistrationRequest } from '../../model/user.model';
-import { Observable } from 'rxjs/internal/Observable';
 import { takeWhile, map, filter } from 'rxjs/operators';
 import { ClientError } from '../../../core/model/client-error';
 import { selectUserInstitutions } from '../../state/user.selectors';
@@ -15,6 +14,7 @@ import { updateIsBusySOA, showCustomBannerSOA } from '../../../core/state/core.a
 import { ContentMainSlice } from '../../../content/content.state';
 import { UserMainSlice } from '../../user.state';
 import { navigateMSA } from '../../../shared/navigate/navigate.actions';
+import { Observable } from 'rxjs';
 
 @Component({
     selector: 'mibi-register-container',
@@ -89,12 +89,7 @@ export class RegisterContainerComponent implements OnInit, OnDestroy {
         this.institutions$ = this.store$.pipe(
             select(selectUserInstitutions),
             filter((value) => value.length > 0),
-            map((data: InstitutionDTO[]) => {
-                return data.map(institution => {
-                    return fromDTOToInstitution(institution);
-                }).sort((a: Institution, b: Institution) => {
-                    return a.getFullName().localeCompare(b.getFullName());
-                });
-            }));
+            map((data: InstitutionDTO[]) => data.map(institution => fromDTOToInstitution(institution))
+                .sort((a: Institution, b: Institution) => a.getFullName().localeCompare(b.getFullName()))));
     }
 }

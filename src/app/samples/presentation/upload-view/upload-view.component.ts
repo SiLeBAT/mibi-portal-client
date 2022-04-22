@@ -26,6 +26,6 @@ export class UploadViewComponent {
     }
 
     fileUpload(file: File) {
-        this.store$.dispatch(importSamplesMSA({ excelFile: { file } }));
+        this.store$.dispatch(importSamplesMSA({ excelFile: { file: file } }));
     }
 }

@@ -23,7 +23,7 @@ export const destroyBannerSOA = createAction(
 
 export const showActionBarSOA = createAction(
     '[Core] Show Action Bar',
-    props<{ title: string, enabledActions: UserActionType[] }>()
+    props<{ title: string; enabledActions: UserActionType[] }>()
 );
 
 export const updateActionBarTitleSOA = createAction(

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-function getWindow(): any {
+function getWindow(): Window & typeof globalThis {
     return window;
 }
 
@@ -9,7 +9,7 @@ function getWindow(): any {
 })
 export class WindowRefService {
 
-    get nativeWindow(): any {
+    get nativeWindow(): Window & typeof globalThis {
         return getWindow();
     }
 

@@ -47,7 +47,7 @@ export class ImportSamplesEffects {
                 ),
                 this.importSamplesValidate()
             )),
-            catchError((error: Error) => {
+            catchError((error) => {
                 this.logger.error('Failed to import Excel File.', error.stack);
                 return of(showBannerSOA({ predefined: 'uploadFailure' }));
             })
@@ -59,7 +59,7 @@ export class ImportSamplesEffects {
             first(),
             concatMap(samplesMainData => this.dataService.validateSampleData(samplesMainData).pipe(
                 map(samples => samplesUpdateSamplesSOA({ samples: samples })),
-                catchError((error: Error) => {
+                catchError((error) => {
                     this.logger.error('Failed to validate samples.', error.stack);
                     return of(showBannerSOA({ predefined: 'validationFailure' }));
                 })

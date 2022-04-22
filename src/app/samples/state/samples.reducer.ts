@@ -64,8 +64,8 @@ export const samplesMainReducer = createReducer(
         ...state,
         sampleData: updateSampleDataFromMetaData(state.sampleData, action.metaData)
     })),
-    on(samplesDestroyMainDataSOA, state => initialMainData),
-    on(samplesUpdateMainDataSOA, (state, action) => updateMainDataFromSampleSet(action.sampleSet)),
+    on(samplesDestroyMainDataSOA, _state => initialMainData),
+    on(samplesUpdateMainDataSOA, (_state, action) => updateMainDataFromSampleSet(action.sampleSet)),
     on(samplesUpdateSamplesSOA, (state, action) => ({
         ...state,
         sampleData: updateSampleDataFromSamples(state.sampleData, action.samples)

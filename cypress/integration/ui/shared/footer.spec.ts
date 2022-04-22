@@ -58,7 +58,6 @@ describe('Testing the Footer', function () {
         it('should open a mail client for Probleme melden', function () {
             cy.get('footer').within(() => {
                 cy.contains('Problem melden')
-                    // tslint:disable-next-line
                     .should('have.attr', 'href', 'mailto:mibi-portal@bfr.bund.de?subject=MiBi-Portal-Problem:&body=Bitte schildern Sie uns Ihr Problem. Falls es Probleme mit einem hochgeladenen Probeneinsendebogen gab, hängen Sie diesen bitte an. Handelt es sich um ein Problem mit der Darstellung im MiBi-Portal, kann auch ein Screenshot hilfreich sein.')
                     .should('have.attr', 'target', '_top');
             });

@@ -9,7 +9,7 @@ import { tap } from 'rxjs/operators';
 
 @Component({
     selector: 'mibi-page-body-container',
-    template: `<mibi-page-body [isBusy]="isBusy$ | async" [isBanner]="isBanner$ | async" (onAnimationDone)="onAnimationDone()"></mibi-page-body>`
+    template: `<mibi-page-body [isBusy]="isBusy$ | async" [isBanner]="isBanner$ | async" (animationDone)="onAnimationDone()"></mibi-page-body>`
 })
 export class PageBodyContainerComponent implements OnInit {
 

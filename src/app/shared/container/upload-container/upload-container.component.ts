@@ -16,7 +16,7 @@ import { showBannerSOA, showDialogMSA, hideBannerSOA } from '../../../core/state
 })
 export class UploadContainerComponent implements OnInit, OnDestroy, AfterContentInit {
 
-    @Output() onFileUpload = new EventEmitter();
+    @Output() uploadFile = new EventEmitter<File>();
     @ContentChild('uploadChild') uploadChild: UploadAbstractComponent;
     private myTrigger: Subject<boolean> = new Subject();
     trigger$: Observable<boolean> = this.myTrigger.asObservable();
@@ -86,10 +86,10 @@ export class UploadContainerComponent implements OnInit, OnDestroy, AfterContent
     }
 
     invokeValidation(file: File) {
-        this.onFileUpload.emit(file);
+        this.uploadFile.emit(file);
     }
 
-    guard(event: any) {
+    guard(_event: unknown) {
         if (!this.isGuardActive) {
             this.isGuardActive = true;
             return;
@@ -117,8 +117,8 @@ export class UploadContainerComponent implements OnInit, OnDestroy, AfterContent
                 auxilliaryAction: {
                     type: UserActionType.CUSTOM,
                     label: 'Abbrechen',
-                    onExecute: () => {
-                    },
+                    // eslint-disable-next-line @typescript-eslint/no-empty-function
+                    onExecute: () => {},
                     icon: '',
                     color: ColorType.PRIMARY
                 }
@@ -126,5 +126,4 @@ export class UploadContainerComponent implements OnInit, OnDestroy, AfterContent
         }
 
     }
-
 }

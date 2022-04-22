@@ -1,4 +1,4 @@
-import { trigger, animate, transition, style, query, state, keyframes, sequence, group } from '@angular/animations';
+import { trigger, animate, transition, style, query, group } from '@angular/animations';
 
 export const fadeAnimation = trigger('fadeAnimation', [
     transition('noRoute => *', []),

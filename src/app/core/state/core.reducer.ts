@@ -10,7 +10,6 @@ import {
 import { Banner, BannerType } from '../model/alert.model';
 import { routerNavigationAction, routerRequestAction } from '@ngrx/router-store';
 import { UserActionType } from '../../shared/model/user-action.model';
-import _ from 'lodash';
 import { createReducer, on } from '@ngrx/store';
 
 // STATE
@@ -47,12 +46,12 @@ const initialBanner: BannerData = {
 
 export const coreIsBusyReducer = createReducer(
     false,
-    on(updateIsBusySOA, (state, action) => action.isBusy)
+    on(updateIsBusySOA, (_state, action) => action.isBusy)
 );
 
 export const coreActionBarConfigReducer = createReducer(
     initialActionBarConfig,
-    on(showActionBarSOA, (state, action) => ({
+    on(showActionBarSOA, (_state, action) => ({
         isEnabled: true,
         title: action.title,
         enabledActions: action.enabledActions
@@ -61,16 +60,16 @@ export const coreActionBarConfigReducer = createReducer(
         ...state,
         title: action.title
     })),
-    on(routerNavigationAction, state => initialActionBarConfig)
+    on(routerNavigationAction, _state => initialActionBarConfig)
 );
 
 export const coreBannerReducer = createReducer(
     initialBanner,
-    on(showBannerSOA, (state, action) => ({
+    on(showBannerSOA, (_state, action) => ({
         show: true,
         predefined: action.predefined
     })),
-    on(showCustomBannerSOA, (state, action) => ({
+    on(showCustomBannerSOA, (_state, action) => ({
         show: true,
         custom: action.banner
     })),
@@ -78,5 +77,5 @@ export const coreBannerReducer = createReducer(
         ...state,
         show: false
     })),
-    on(destroyBannerSOA, state => initialBanner)
+    on(destroyBannerSOA, _state => initialBanner)
 );

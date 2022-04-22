@@ -26,7 +26,6 @@ describe('Use-cases Login Page', function () {
                         'currentUser'
                     );
                     expect(userJSON).to.not.equal(null);
-                    // tslint:disable-next-line: no-non-null-assertion
                     const user: User = JSON.parse(userJSON!);
                     expect(user.firstName).to.equal('User1');
                 }

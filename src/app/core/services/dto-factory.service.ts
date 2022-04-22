@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import _ from 'lodash';
 import {
     Sample,
     SampleSet,
@@ -36,7 +35,7 @@ export class DTOFactoryService {
 
     fromSamplesMainDataToAnnotatedOrderDTO({ meta, sampleData }: SamplesMainData): AnnotatedOrderDTO {
         const dto: AnnotatedSampleSetDTO = this.fromSampleSetToAnnotatedDTO({
-            meta,
+            meta: meta,
             samples: sampleData
         });
         return { sampleSet: dto };
@@ -44,7 +43,7 @@ export class DTOFactoryService {
 
     fromSamplesMainDataToOrderDTO({ meta, sampleData }: SamplesMainData): OrderDTO {
         const dto: SampleSetDTO = this.fromSampleSet({
-            meta,
+            meta: meta,
             samples: sampleData
         });
         return { sampleSet: dto };

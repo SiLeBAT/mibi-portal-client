@@ -63,7 +63,7 @@ export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDe
             () => {
                 this.store$.dispatch(updateIsBusySOA({ isBusy: false }));
                 this.store$.dispatch(showBannerSOA({ predefined: 'defaultError' }));
-                throw new Error();
+                throw new Error('Unable to fetch institutions');
             }
         );
     }
@@ -74,7 +74,7 @@ export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDe
                 this.store$.dispatch(nrlUpdateNrlsSOA({ nrlDTO: data }));
             }
         ).catch(
-            () => { throw new Error(); }
+            () => { throw new Error('Unable to fetch nrls'); }
         );
     }
 

@@ -42,9 +42,7 @@ export class EntityFactoryService {
     toSampleSet(dto: SampleSetDTO): SampleSet {
         const annotatedSampleSet: SampleSet = {
             meta: this.toSampleSetMetaData(dto.meta),
-            samples: dto.samples.map(sample => {
-                return this.toSample(sample);
-            })
+            samples: dto.samples.map(sample => this.toSample(sample))
         };
         return annotatedSampleSet;
     }

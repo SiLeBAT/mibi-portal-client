@@ -80,7 +80,7 @@ export class BannerContainerComponent {
         validationErrors: {
             message: 'Es gibt noch rot gekennzeichnete Fehler. Bitte vor dem Senden korrigieren.',
             type: AlertType.ERROR,
-            auxilliaryAction: { ...this.userActionService.getConfigOfType(UserActionType.SEND), ...{ label: 'Nochmals Senden' } },
+            auxilliaryAction: { ...this.userActionService.getConfigOfType(UserActionType.SEND),  label: 'Nochmals Senden'  },
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
 
         },
@@ -88,7 +88,7 @@ export class BannerContainerComponent {
         autocorrections: {
             message: 'Es wurden Felder autokorregiert. Bitte prüfen und nochmals senden.',
             type: AlertType.ERROR,
-            auxilliaryAction: { ...this.userActionService.getConfigOfType(UserActionType.SEND), ...{ label: 'Nochmals Senden' } },
+            auxilliaryAction: { ...this.userActionService.getConfigOfType(UserActionType.SEND),  label: 'Nochmals Senden'  },
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
 
         },
@@ -119,28 +119,25 @@ export class BannerContainerComponent {
         passwordChangeSuccess: {
             message: 'Bitte melden Sie sich mit Ihrem neuen Passwort an',
             type: AlertType.SUCCESS,
-            auxilliaryAction: { ...this.userActionService.getNavigationConfig('/users/login'), ...{ label: 'Zum Login' } },
+            auxilliaryAction: { ...this.userActionService.getNavigationConfig('/users/login'),  label: 'Zum Login'  },
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
 
         },
         passwordChangeFailure: {
-            // tslint:disable-next-line:max-line-length
             message: `Fehler beim Zurücksetzen des Passworts. Bitte klicken Sie im Bereich "Anmelden" auf "Passwort vergessen?" und lassen Sie sich einen neuen Link zum Zurücksetzen des Passworts zuschicken.`,
             type: AlertType.ERROR,
-            auxilliaryAction: { ...this.userActionService.getNavigationConfig('/users/recovery'), ...{ label: 'Zum Passwort-Reset' } },
+            auxilliaryAction: { ...this.userActionService.getNavigationConfig('/users/recovery'),  label: 'Zum Passwort-Reset'  },
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
 
         },
         loginFailure: {
-            // tslint:disable-next-line:max-line-length
             message: 'Es gab einen Fehler beim Einloggen. Bitte registrieren Sie sich oder, wenn Sie sich schon registriert haben, kontaktieren Sie das MiBi-Portal-Team.',
             type: AlertType.ERROR,
-            auxilliaryAction: { ...this.userActionService.getNavigationConfig('/users/register'), ...{ label: 'Zur Registrierung' } },
+            auxilliaryAction: { ...this.userActionService.getNavigationConfig('/users/register'),  label: 'Zur Registrierung'  },
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
 
         },
         registrationFailure: {
-            // tslint:disable-next-line:max-line-length
             message: 'Es gab einen Fehler beim Registrieren.  Bitte kontaktieren Sie das MiBi-Portal-Team.',
             type: AlertType.ERROR,
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
@@ -149,7 +146,7 @@ export class BannerContainerComponent {
         loginUnauthorized: {
             message: 'Nicht authorisiert, bitte einloggen.',
             type: AlertType.ERROR,
-            auxilliaryAction: { ...this.userActionService.getNavigationConfig('/users/login'), ...{ label: 'Zum Login' } },
+            auxilliaryAction: { ...this.userActionService.getNavigationConfig('/users/login'),  label: 'Zum Login'  },
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
         },
         exportFailure: {

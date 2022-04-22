@@ -17,7 +17,7 @@ export class AuthGuard implements CanActivate {
 
     constructor(private store$: Store<UserMainSlice>) { }
 
-    canActivate(activated: ActivatedRouteSnapshot, snap: RouterStateSnapshot) {
+    canActivate(_activated: ActivatedRouteSnapshot, _snap: RouterStateSnapshot) {
         return this.store$.pipe(select(selectUserCurrentUser)).pipe(
             map((currentUser: TokenizedUser) => {
                 if (currentUser) {

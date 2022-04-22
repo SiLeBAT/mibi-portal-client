@@ -1,6 +1,6 @@
 // Array of text parts to be concatenated to a warning message
 export type DialogWarning = {
-    text: string,
+    text: string;
     emphasized?: boolean;
 }[];
 

@@ -1,5 +1,4 @@
 import { Component, OnInit, AfterViewChecked, OnDestroy } from '@angular/core';
-import _ from 'lodash';
 import { IFAQGroup } from '../faq-section/faq-section.component';
 import { ActivatedRoute } from '@angular/router';
 import { takeWhile } from 'rxjs/operators';
@@ -34,7 +33,8 @@ export class FAQViewComponent implements OnInit, AfterViewChecked, OnDestroy {
                     this.fragment = '';
                 }
             }
-        } catch (e) {
+        // eslint-disable-next-line no-empty
+        } catch {
         }
     }
 

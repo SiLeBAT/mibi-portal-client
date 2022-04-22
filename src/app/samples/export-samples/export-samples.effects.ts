@@ -44,7 +44,7 @@ export class ExportSamplesEffects {
                 saveAs(this.b64toBlob(marshalledData.binaryData, marshalledData.mimeType), marshalledData.fileName);
                 return EMPTY;
             }),
-            catchError((error: Error) => {
+            catchError((error) => {
                 this.logger.error('Failed to export Excel File', error.stack);
                 return of(showBannerSOA({ predefined: 'exportFailure' }));
             })
@@ -60,6 +60,7 @@ export class ExportSamplesEffects {
 
             const byteNumbers = new Array(slice.length);
             for (let i = 0; i < slice.length; i++) {
+                // eslint-disable-next-line unicorn/prefer-code-point
                 byteNumbers[i] = slice.charCodeAt(i);
             }
 

@@ -11,8 +11,8 @@ import { userLogoutMSA } from '../../../user/state/user.actions';
     selector: 'mibi-avatar-container',
     template: `<mibi-avatar
     [currentUser$]="currentUser$"
-    (onProfile)="onProfile()"
-    (onLogout)="onLogout()">
+    (profile)="onProfile()"
+    (logout)="onLogout()">
     </mibi-avatar>`
 })
 export class AvatarContainerComponent implements OnInit {

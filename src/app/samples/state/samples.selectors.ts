@@ -12,19 +12,19 @@ export function getDataValuesFromAnnotatedData(sampleData: SampleData): SamplePr
 
 export function getSampleDataEntryHasValidationErrors(
     sampleDataEntry: AnnotatedSampleDataEntry, errorLevel: SampleValidationErrorLevel): boolean {
-    return sampleDataEntry.errors.find(error =>
+    return sampleDataEntry.errors.some(error =>
         error.level === errorLevel
-    ) !== undefined;
+    );
 }
 
 export function getSampleHasValidationErrors(sample: Sample, errorLevel: SampleValidationErrorLevel): boolean {
-    return _.find(sample.sampleData, sampleDataEntry =>
+    return _.some(sample.sampleData, sampleDataEntry =>
         getSampleDataEntryHasValidationErrors(sampleDataEntry, errorLevel)
-    ) !== undefined;
+    );
 }
 
 export function getSamplesHasValidationErrors(samples: Sample[], errorLevel: SampleValidationErrorLevel): boolean {
-    return samples.find(sample => getSampleHasValidationErrors(sample, errorLevel)) !== undefined;
+    return samples.some(sample => getSampleHasValidationErrors(sample, errorLevel));
 }
 
 export const selectSamplesMainState = selectSamplesSlice<SamplesMainState>();
@@ -53,7 +53,7 @@ export const selectMarshalData = createSelector(selectSamplesMainData, mainData 
     meta: mainData.meta
 }));
 
-export const selectHasEntries = createSelector(selectSampleData, samples => samples.length !== 0);
+export const selectHasEntries = createSelector(selectSampleData, samples => samples.length > 0);
 
 export const selectHasErrors = createSelector(selectSampleData, samples =>
     getSamplesHasValidationErrors(samples, SampleValidationErrorLevel.ERROR)

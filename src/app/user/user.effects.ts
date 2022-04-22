@@ -83,14 +83,13 @@ export class UserMainEffects {
                 this.dataService.setCurrentUser(user);
                 return userUpdateCurrentUserSOA({ user: user });
             }),
-            catchError((error: Error) => {
+            catchError((error) => {
                 this.logger.error('User authentication failed.', error.stack);
                 if (error instanceof DelayLoginError) {
                     const waitTime = this.timeConversion(error.timeToWait);
                     return of(showCustomBannerSOA({
                         banner: {
-                            message: `Zu viele fehlgeschlagene Logins, bitte warten Sie ${waitTime
-                                }.`,
+                            message: `Zu viele fehlgeschlagene Logins, bitte warten Sie ${waitTime}.`,
                             type: AlertType.ERROR,
                             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
                         }

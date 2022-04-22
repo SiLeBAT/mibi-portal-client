@@ -11,7 +11,7 @@ export class HttpErrorMapperService implements HttpInterceptor {
         next: HttpHandler): Observable<HttpEvent<any>> {
 
         return next.handle(req).pipe(
-            catchError((errorResponse: Error) => {
+            catchError((errorResponse: unknown) => {
                 if (errorResponse instanceof HttpErrorResponse) {
                     switch (errorResponse.status) {
                         case 401:

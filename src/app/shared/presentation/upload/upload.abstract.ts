@@ -3,15 +3,15 @@ import { Observable } from 'rxjs';
 import { tap, takeWhile } from 'rxjs/operators';
 import { UploadErrorType } from '../../model/upload.model';
 
-/* tslint:disable:directive-class-suffix */
+/* eslint-disable @angular-eslint/directive-class-suffix */
 @Directive()
 export class UploadAbstractComponent implements OnDestroy, AfterViewInit {
 
-    private _lastInvalids: any[] = [];
-    maxFileSize = 2097152;
+    private _lastInvalids: { file: File; type: string }[] = [];
+    maxFileSize = 2_097_152;
 
-    @Output() invokeValidation = new EventEmitter();
-    @Output() errorHandler = new EventEmitter();
+    @Output() invokeValidation = new EventEmitter<File>();
+    @Output() errorHandler = new EventEmitter<string>();
     @Output() guard = new EventEmitter();
     @Input() trigger$: Observable<boolean>;
     private canUpload: boolean = false;
@@ -36,11 +36,11 @@ export class UploadAbstractComponent implements OnDestroy, AfterViewInit {
         this.componentActive = false;
     }
 
-    get lastInvalids(): any[] {
+    get lastInvalids(): { file: File; type: string }[] {
         return this._lastInvalids;
     }
 
-    set lastInvalids(val: any[]) {
+    set lastInvalids(val: { file: File; type: string }[]) {
         this._lastInvalids = val;
         if (val && val[0]) {
             this.errorHandler.emit(val[0].type);

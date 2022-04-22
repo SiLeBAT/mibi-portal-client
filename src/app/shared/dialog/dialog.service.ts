@@ -9,7 +9,7 @@ import { dialogMatConfiguration } from './dialog.constants';
 export class DialogService {
     constructor(private dialog: MatDialog) { }
 
-    openDialog(component: ComponentType<any>, matConfiguration = dialogMatConfiguration) {
+    openDialog(component: ComponentType<unknown>, matConfiguration = dialogMatConfiguration) {
         this.dialog.open(component, matConfiguration);
     }
 }

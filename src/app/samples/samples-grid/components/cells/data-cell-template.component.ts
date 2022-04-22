@@ -32,6 +32,6 @@ export class SamplesGridDataCellTemplateComponent extends SamplesGridTemplateCon
     }
 
     private hasErrorLevel(data: AnnotatedSampleDataEntry, level: SampleValidationErrorLevel): boolean {
-        return !!data.errors.find((error) => error.level === level);
+        return data.errors.some((error) => error.level === level);
     }
 }

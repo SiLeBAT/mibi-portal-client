@@ -222,7 +222,7 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
     }
 
     @HostListener('window:resize', ['$event'])
-    onWindowResize(e: UIEvent): void {
+    onWindowResize(_e: UIEvent): void {
         if (!this.editor.isActive) {
             return;
         }
@@ -270,7 +270,7 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
     }
 
     @HostListener('window:mouseup', ['$event'])
-    onWindowMouseUp(e: MouseEvent): void {
+    onWindowMouseUp(_e: MouseEvent): void {
         this.isEdgeMouseDownLeft = false;
     }
 
@@ -365,11 +365,11 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
         this.cursor.set(row, col);
     }
 
-    private onCellMouseUp(e: MouseEvent, row: number, col: number): void {
+    private onCellMouseUp(_e: MouseEvent, row: number, col: number): void {
         this.startSelection(this.hover, row, col);
     }
 
-    private onCellMouseOut(e: MouseEvent, row: number, col: number): void {
+    private onCellMouseOut(_e: MouseEvent, _row: number, _col: number): void {
         if (!this.editor.isActive) {
             this.hover.clear();
         }

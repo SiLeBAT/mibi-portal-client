@@ -121,7 +121,7 @@ export class SendSamplesEffects {
                 of(samplesUpdateSamplesSOA({ samples: samples })),
                 this.sendSamplesOpenAnalysis()
             )),
-            catchError((error: Error) => {
+            catchError((error) => {
                 this.logger.error('Failed to validate samples.', error.stack);
                 return of(showBannerSOA({ predefined: 'validationFailure' }));
             })
@@ -159,7 +159,7 @@ export class SendSamplesEffects {
                 sendSamplesAddSentFileSOA({ sentFile: fileName }),
                 showBannerSOA({ predefined: 'sendSuccess' })
             )),
-            catchError((error: Error) => {
+            catchError((error) => {
                 this.logger.error('Failed to send samples from store', error.stack);
                 if (error instanceof InvalidInputError) {
                     this.logger.warn('Send samples returned with validation errors.');

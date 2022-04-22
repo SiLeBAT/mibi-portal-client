@@ -42,30 +42,27 @@ export class RecoveryContainerComponent implements OnInit, OnDestroy {
 
     recovery(email: string) {
         this.store$.dispatch(updateIsBusySOA({ isBusy: true }));
-        this.dataService.resetPasswordRequest(
-            email).toPromise().then(
-                (response: UserPasswordResetRequest) => {
-                    this.store$.dispatch(updateIsBusySOA({ isBusy: false }));
-                    this.store$.dispatch(navigateMSA({ url: 'users/login' }));
-                    this.store$.dispatch(showCustomBannerSOA({
-                        banner: {
-                            message: `Eine E-mail mit weiteren Anweisungen wurde an ${response.email} gesendet. Wenn Sie keine E-mail erhalten, könnte das bedeuten, daß Sie sich mit einer anderen E-mail-Adresse angemeldet haben.`,
-                            type: AlertType.SUCCESS,
-                            mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
-                        }
-                    }));
-                }
-            ).catch(
-                () => {
-                    this.store$.dispatch(updateIsBusySOA({ isBusy: false }));
-                    this.store$.dispatch(showCustomBannerSOA({
-                        banner: {
-                            message: `Fehler beim Passwort-Zurücksetzen. Eine E-mail mit weiteren Informationen wurde an ${email} gesendet. Wenn Sie keine E-mail erhalten, wenden Sie sich bitte direkt per E-mail an uns: ${this.supportContact}.`,
-                            type: AlertType.ERROR,
-                            mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
-                        }
-                    }));
-                }
-            );
+        this.dataService.resetPasswordRequest(email).toPromise()
+            .then((response: UserPasswordResetRequest) => {
+                this.store$.dispatch(updateIsBusySOA({ isBusy: false }));
+                this.store$.dispatch(navigateMSA({ url: 'users/login' }));
+                this.store$.dispatch(showCustomBannerSOA({
+                    banner: {
+                        message: `Eine E-mail mit weiteren Anweisungen wurde an ${response.email} gesendet. Wenn Sie keine E-mail erhalten, könnte das bedeuten, daß Sie sich mit einer anderen E-mail-Adresse angemeldet haben.`,
+                        type: AlertType.SUCCESS,
+                        mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
+                    }
+                }));
+            })
+            .catch(() => {
+                this.store$.dispatch(updateIsBusySOA({ isBusy: false }));
+                this.store$.dispatch(showCustomBannerSOA({
+                    banner: {
+                        message: `Fehler beim Passwort-Zurücksetzen. Eine E-mail mit weiteren Informationen wurde an ${email} gesendet. Wenn Sie keine E-mail erhalten, wenden Sie sich bitte direkt per E-mail an uns: ${this.supportContact}.`,
+                        type: AlertType.ERROR,
+                        mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
+                    }
+                }));
+            });
     }
 }

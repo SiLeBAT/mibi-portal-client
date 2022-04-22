@@ -3,7 +3,6 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatMap } from 'rxjs/operators';
 import { EMPTY } from 'rxjs';
 import { LogService } from '../../core/services/log.service';
-import _ from 'lodash';
 import { navigateMSA } from './navigate.actions';
 import { Router } from '@angular/router';
 
