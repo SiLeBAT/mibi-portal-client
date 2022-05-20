@@ -1,38 +1,34 @@
-/*
-If you have different themes for your app (dark mode, admin, and so on) put them in this folder.
-*/
+@use "@angular/material" as mat;
 
-$mibi-font-family: "Arial, sans-serif";
+// BfR colors
 
-/*
-BfR Colours
-*/
+$bfr-blue: rgb(3 78 162); // #034ea2
+$bfr-white: rgb(255 255 255); // #ffffff
+$bfr-lightgrey: rgb(204 204 204); // #cccccc
+$bfr-black: rgb(0 0 0); // #000000
+$bfr-lightblue: rgb(140 190 218); // #8cbeda
+$bfr-lightcyan: rgb(209 237 244); // #d1edf4
+$bfr-ocre: rgb(241 199 83); // #f1c753
+$bfr-lightocre: rgb(246 231 187); // #f6e7bb
+$bfr-darkgrey: rgb(102 102 102); // #666666
+$bfr-mintgreen: rgb(52 172 159); // #34ac9f
+$bfr-red: rgb(254 0 0); // #fe0000
 
-$bfr-blue: rgb(3, 78, 162); // #034ea2
-$bfr-white: rgb(255, 255, 255); // #ffffff
-$bfr-lightgrey: rgb(204, 204, 204); // #cccccc
-$bfr-black: rgb(0, 0, 0); // #000000
-$bfr-lightblue: rgb(140, 190, 218); // #8cbeda
-$bfr-lightcyan: rgb(209, 237, 244); // #d1edf4
-$bfr-ocre: rgb(241, 199, 83); // #f1c753
-$bfr-lightocre: rgb(246, 231, 187); // #f6e7bb
-$bfr-darkgrey: rgb(102, 102, 102); // #666666
-$bfr-mintgreen: rgb(52, 172, 159); // #34ac9f
-$bfr-red: rgb(254, 0, 0); // #fe0000
+// Colors
 
 $primary-color: $bfr-blue;
 $secondary-color: $bfr-ocre;
-
 $background-color: $bfr-white;
 $surface-color: $bfr-lightgrey;
 $error-color: $bfr-red;
 
 $on-primary-color: $bfr-white;
 $on-secondary-color: $bfr-black;
-
 $on-background-color: $bfr-black;
 $on-surface-color: $bfr-black;
 $on-error-color: $bfr-white;
+
+// BfR palettes
 
 /*
 * Theme generated using this tool: http://mcg.mbitson.com
@@ -138,14 +134,10 @@ $bfr-error-palette: (
   )
 );
 
-// Define the palettes for your theme using the Material Design palettes available in palette.scss
-// (imported above). For each palette, you can optionally specify a default, lighter, and darker
-// hue. Available color palettes: https://material.io/design/color/
-$mibi-primary: mat-palette($bfr-primary-palette);
-$mibi-accent: mat-palette($bfr-secondary-palette);
+// Palettes
+$primary-palette: mat.define-palette($bfr-primary-palette);
+$accent-palette: mat.define-palette($bfr-secondary-palette);
+$warn-palette: mat.define-palette($bfr-error-palette);
 
-// The warn palette is optional (defaults to red).
-$mibi-warn: mat-palette($bfr-error-palette);
-
-// Create the theme object (a Sass map containing all of the palettes).
-$mibi-theme: mat-light-theme($mibi-primary, $mibi-accent, $mibi-warn);
+// Theme
+$light-theme: mat.define-light-theme($primary-palette, $accent-palette, $warn-palette);

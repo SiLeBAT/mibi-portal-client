@@ -1,14 +1,16 @@
-@import "abstracts";
-@import "components";
+@use "sass:math";
+@use "colors";
+@use "layout";
+@use "../actions";
 
-$nav-bar-color: $primary-color;
+$nav-bar-color: colors.$primary-color;
 
 .mibi-avatar {
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  padding: $mibi-half-space/2 $mibi-single-space;
+  padding: math.div(layout.$half-space, 2) layout.$single-space;
 }
 
 .mibi-avatar__content {
@@ -16,7 +18,7 @@ $nav-bar-color: $primary-color;
 }
 
 .mibi-avatar-button {
-  @include app-bar-link();
+  @include actions.app-bar-link;
 
   display: flex;
   justify-content: center;
@@ -30,14 +32,14 @@ $nav-bar-color: $primary-color;
 }
 
 .mibi-user-info {
-  padding: $mibi-single-space $mibi-double-space;
+  padding: layout.$single-space layout.$double-space;
   display: grid;
   grid-template: auto auto / auto auto;
-  grid-gap: $mibi-single-space;
+  grid-gap: layout.$single-space;
 }
 
 .mibi-user-info__icon {
-  color: $secondary-color;
+  color: colors.$secondary-color;
 }
 
 .mibi-user-info__auxilliary {
@@ -45,7 +47,7 @@ $nav-bar-color: $primary-color;
 }
 
 .mibi-user-info__divider {
-  margin: $mibi-single-space;
+  margin: layout.$single-space;
 }
 
 .mibi-register {
@@ -59,12 +61,12 @@ $nav-bar-color: $primary-color;
 }
 
 .mibi-register-link {
-  @include app-bar-link();
+  @include actions.app-bar-link;
 
   height: 100%;
   display: flex;
   align-items: center;
-  padding: $mibi-single-space;
+  padding: layout.$single-space;
 }
 
 .mibi-register-link__text {

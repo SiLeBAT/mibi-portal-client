@@ -1,6 +1,6 @@
-@import "abstracts";
+@use "layout";
 
 .mibi-register-footer {
-  padding: $mibi-quadruple-space;
+  padding: layout.$quadruple-space;
   padding-bottom: 0;
 }

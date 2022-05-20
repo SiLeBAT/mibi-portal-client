@@ -1,16 +1,16 @@
-@import "abstracts";
-@import "layout";
+@use "colors";
+@use "layout";
 
 .mibi-warnings {
-  @include list-style-none();
+  @include layout.list-style-none;
 
-  box-shadow: 0 1px $bfr-darkgrey;
+  box-shadow: 0 1px colors.$bfr-darkgrey;
 }
 
 .mibi-warnings__item {
-  background-color: $bfr-lightocre;
-  margin-bottom: $mibi-single-space;
-  padding: $mibi-single-space;
+  background-color: colors.$bfr-lightocre;
+  margin-bottom: layout.$single-space;
+  padding: layout.$single-space;
 }
 
 .mibi-warning-part--emphasized {

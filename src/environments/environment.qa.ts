@@ -1,6 +1,7 @@
-import { environment as defaultEnv } from './default.environment';
+import { defaultEnvironment, Environment } from './default.environment';
 
-export const environment = {
-    ...defaultEnv,
-    production: false
+export const environment: Environment = {
+    ...defaultEnvironment,
+    production: false,
+    appName: defaultEnvironment.appName + '-QA'
 };

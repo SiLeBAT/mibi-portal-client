@@ -1,4 +1,5 @@
-@import "abstracts";
+@use "colors";
+@use "layout";
 
 .mibi-last-change {
   height: 100%;
@@ -8,6 +9,6 @@
 }
 
 .mibi-last-change__content {
-  padding: $mibi-single-space 1rem;
-  color: $on-background-color;
+  padding: layout.$single-space 1rem;
+  color: colors.$on-background-color;
 }

@@ -1,6 +1,8 @@
-@import "abstracts";
-@import "components";
-@import "layout";
+@use "sass:math";
+@use "@angular/material" as mat;
+@use "colors";
+@use "layout";
+@use "../actions";
 
 .mibi-app-bar-bottom {
   height: 100%;
@@ -8,14 +10,14 @@
   flex-wrap: wrap;
   justify-content: flex-end;
   align-items: center;
-  background-color: $mibi-action-color;
-  color: mat-color($primary-palette, darker-contrast);
+  background-color: actions.$action-color;
+  color: mat.get-color-from-palette(colors.$primary-palette, darker-contrast);
 }
 
 .mibi-app-bar-bottom__left {
   flex: 1 1 auto;
-  min-height: calc(1rem + (2 * #{$mibi-half-space}));
-  padding: $mibi-half-space $mibi-single-space;
+  min-height: calc(1rem + (2 * #{layout.$half-space}));
+  padding: layout.$half-space layout.$single-space;
   font-size: 1rem;
   line-height: 1rem;
 }
@@ -29,7 +31,7 @@
   display: flex;
   flex-flow: row wrap;
 
-  @include list-style-none();
+  @include layout.list-style-none;
 }
 
 .mibi-action-list__item {
@@ -41,12 +43,12 @@
 }
 
 .mibi-action-link {
-  @include app-bar-link();
+  @include actions.app-bar-link;
 
   height: 100%;
   display: flex;
   align-items: center;
-  padding: $mibi-half-space $mibi-single-space;
+  padding: layout.$half-space layout.$single-space;
   cursor: pointer;
 }
 
@@ -56,5 +58,5 @@
 
 .mibi-action-link__icon {
   flex: 0 1 auto;
-  padding-right: $mibi-half-space / 2;
+  padding-right: math.div(layout.$half-space, 2);
 }

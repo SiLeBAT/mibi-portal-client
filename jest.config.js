@@ -3,7 +3,7 @@ module.exports = {
   globals: {
     'ts-jest': {
       ...jestNgPreset.globals['ts-jest'],
-      tsconfig: '<rootDir>/src/tsconfig.spec.json',
+      tsconfig: '<rootDir>/tsconfig.spec.json',
     },
   },
   preset: "jest-preset-angular",

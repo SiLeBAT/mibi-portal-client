@@ -1,12 +1,11 @@
-@import "abstracts";
-@import "layout";
+@use "layout";
 
 .mibi-reset-info {
-  margin-bottom: $mibi-double-space;
+  margin-bottom: layout.$double-space;
 }
 
 .mibi-reset-actions {
-  margin-top: $mibi-double-space;
+  margin-top: layout.$double-space;
   display: flex;
   justify-content: space-between;
 }

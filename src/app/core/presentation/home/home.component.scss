@@ -1,7 +1,7 @@
-@import "abstracts";
+@use "colors";
 
 .mibi-home-title {
-  color: $primary-color;
+  color: colors.$primary-color;
   text-align: center;
   font-size: 4em;
   line-height: normal;

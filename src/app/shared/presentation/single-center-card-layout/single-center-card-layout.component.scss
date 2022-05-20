@@ -1,12 +1,12 @@
-@import "abstracts";
+@use "layout";
 
 .mibi-card-layout {
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding-top: $mibi-octuple-space;
-  padding-bottom: $mibi-quadruple-space;
+  padding-top: layout.$octuple-space;
+  padding-bottom: layout.$quadruple-space;
 }
 
 .mibi-card-layout__content {

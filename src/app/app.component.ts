@@ -1,5 +1,4 @@
-import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
-import { environment } from '../environments/environment';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GuardedUnloadComponent } from './shared/container/guarded-unload.component';
 import { Store, select } from '@ngrx/store';
 import { takeWhile, tap } from 'rxjs/operators';
@@ -16,19 +15,12 @@ import { nrlUpdateNrlsSOA } from './shared/nrl/state/nrl.actions';
     templateUrl: './app.component.html'
 })
 export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDestroy {
-    @HostBinding('@.disabled')
-    animationsDisabled: boolean;
-
-    supportContact: string = environment.supportContact;
-
-    private readonly isIEOrEdge = /msie\s|trident\/|edge\//i.test(window.navigator.userAgent);
 
     private componentActive = true;
     private canUnload: boolean = true;
 
     constructor(private store$: Store<SamplesMainSlice>, private dataService: DataService) {
         super();
-        this.animationsDisabled = this.isIEOrEdge;
     }
 
     ngOnInit(): void {

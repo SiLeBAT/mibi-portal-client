@@ -1,4 +1,5 @@
-@import "abstracts";
+@use "@angular/material" as mat;
+@use "colors";
 
 .mibi-panel {
   position: relative;
@@ -20,12 +21,13 @@
 }
 
 .mibi-grid {
-  @include mat-elevation(2);
+  @include mat.elevation(2);
 
   display: grid;
-  // mask precision gaps between grid lines visible in firefox
-  background-color: $surface-color;
   user-select: none;
+
+  // mask precision gaps between grid lines visible in firefox
+  background-color: colors.$surface-color;
 }
 
 .mibi-grid__cell {

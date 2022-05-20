@@ -1,40 +1,27 @@
-@import "abstracts";
+/* stylelint-disable selector-class-pattern */
 
-/*
-The name is explicit here. This folder contains all the components used to build your pages like your buttons, forms, swipers, popups, and so on.
-(crossover component dependent styles and variables)
-*/
+@use "colors";
+@use "layout";
 
-// Analysis stepper
-.mibi-stepper-dialog-container > .mat-dialog-container {
-  padding: 0 0 $mibi-triple-space 0;
-}
-
-.mibi-analysis-stepper > .mat-horizontal-content-container {
-  padding: 0 $mibi-double-space;
-  margin: 0 0 $mibi-double-space 0;
-}
-
-// Tooltipster
 body {
   // this is necessary because a tooltip can overflow a scrollbar unintentionally activating the page scroll bars
   overflow: hidden;
 }
 
-$tooltip-tip-color: $surface-color;
-$tooltip-error-color: $error-color;
-$tooltip-warning-color: $secondary-color;
-$tooltip-info-color: $primary-color;
+$tooltip-tip-color: colors.$surface-color;
+$tooltip-error-color: colors.$error-color;
+$tooltip-warning-color: colors.$secondary-color;
+$tooltip-info-color: colors.$primary-color;
 
 *[id^="tooltipster-"] ul {
-  padding-left: $mibi-double-space;
+  padding-left: layout.$double-space;
 }
 
 .tooltipster-box {
   border-radius: 5px;
-  box-shadow: 0 0 14px rgba(0, 0, 0, 0.3);
-  border: 1px solid $on-background-color;
-  margin: $mibi-single-space;
+  box-shadow: 0 0 14px rgba(0 0 0 / 30%);
+  border: 1px solid colors.$on-background-color;
+  margin: layout.$single-space;
 }
 
 .tooltipster-content {
@@ -59,7 +46,7 @@ $tooltip-info-color: $primary-color;
     }
 
     .tooltipster-arrow-border {
-      border-bottom-color: $on-background-color;
+      border-bottom-color: colors.$on-background-color;
     }
 
     .tooltipster-arrow-background {
@@ -73,7 +60,7 @@ $tooltip-info-color: $primary-color;
     }
 
     .tooltipster-arrow-border {
-      border-right-color: $on-background-color;
+      border-right-color: colors.$on-background-color;
     }
 
     .tooltipster-arrow-background {
@@ -83,7 +70,7 @@ $tooltip-info-color: $primary-color;
 
   &.tooltipster-left {
     .tooltipster-arrow-border {
-      border-left-color: $on-background-color;
+      border-left-color: colors.$on-background-color;
     }
 
     .tooltipster-arrow-background {
@@ -93,7 +80,7 @@ $tooltip-info-color: $primary-color;
 
   &.tooltipster-top {
     .tooltipster-arrow-border {
-      border-top-color: $on-background-color;
+      border-top-color: colors.$on-background-color;
     }
 
     .tooltipster-arrow-background {
@@ -123,7 +110,7 @@ $tooltip-info-color: $primary-color;
     }
 
     .tooltipster-content {
-      color: $on-surface-color;
+      color: colors.$on-surface-color;
     }
   }
 
@@ -149,7 +136,7 @@ $tooltip-info-color: $primary-color;
     }
 
     .tooltipster-content {
-      color: $on-primary-color;
+      color: colors.$on-primary-color;
     }
   }
 
@@ -175,7 +162,7 @@ $tooltip-info-color: $primary-color;
     }
 
     .tooltipster-content {
-      color: $on-secondary-color;
+      color: colors.$on-secondary-color;
     }
   }
 
@@ -201,7 +188,7 @@ $tooltip-info-color: $primary-color;
     }
 
     .tooltipster-content {
-      color: $on-error-color;
+      color: colors.$on-error-color;
     }
   }
 
@@ -217,16 +204,16 @@ $tooltip-info-color: $primary-color;
 .tooltipster-sidetip.tooltipster-warning.tooltipster-left .tooltipster-arrow,
 .tooltipster-sidetip.tooltipster-warning.tooltipster-right .tooltipster-arrow {
   height: 14px;
-  margin-left: $mibi-half-space;
-  margin-top: -$mibi-double-space;
+  margin-left: layout.$half-space;
+  margin-top: -(layout.$double-space);
   width: 5px;
 }
 
 .tooltipster-sidetip.tooltipster-info.tooltipster-left .tooltipster-arrow,
 .tooltipster-sidetip.tooltipster-info.tooltipster-right .tooltipster-arrow {
   height: 17px;
-  margin-left: $mibi-half-space;
-  margin-top: -$mibi-double-space;
+  margin-left: layout.$half-space;
+  margin-top: -(layout.$double-space);
   width: 10px;
 }
 
@@ -234,21 +221,6 @@ $tooltip-info-color: $primary-color;
 .tooltipster-sidetip.tooltipster-tip.tooltipster-right .tooltipster-arrow {
   height: 18px;
   margin-left: 2px;
-  margin-top: -$mibi-double-space;
-  width: $mibi-single-space;
-}
-
-// Actions
-$mibi-action-color: mat-color($primary-palette, 300);
-
-@mixin app-bar-link() {
-  font-size: 1rem;
-  line-height: 1rem;
-  text-decoration: none;
-  color: $on-primary-color;
-
-  &:hover,
-  &:active {
-    color: $surface-color;
-  }
+  margin-top: -(layout.$double-space);
+  width: layout.$single-space;
 }

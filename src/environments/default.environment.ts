@@ -1,7 +1,16 @@
 import packageJson from '../../package.json';
 
-export const environment = {
-    production: false,
+export interface Environment {
+    production: boolean;
+    appName: string;
+    supportContact: string;
+    version: string;
+    lastChange: string;
+    sampleSheetURL: string;
+}
+
+export const defaultEnvironment: Environment = {
+    production: true,
     appName: 'MiBi-Portal',
     supportContact: 'mibi-portal@bfr.bund.de',
     version: packageJson.version,

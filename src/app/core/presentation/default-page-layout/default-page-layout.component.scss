@@ -1,5 +1,5 @@
-@import "abstracts";
-@import "layout";
+@use "@angular/material" as mat;
+@use "layout";
 
 .mibi-page {
   display: flex;
@@ -9,12 +9,12 @@
 }
 
 .mibi-page__header {
-  @include mat-elevation(4);
+  @include mat.elevation(4);
 
   z-index: 999;
   flex: 0 0 auto;
 
-  @include mibi-layout-safari-fix();
+  @include layout.safari-fix;
 
   overflow: auto;
 }
@@ -22,7 +22,7 @@
 .mibi-page__body {
   flex: 1 1 auto;
 
-  @include mibi-layout-safari-fix();
+  @include layout.safari-fix;
 
   overflow: auto;
 }
@@ -30,7 +30,7 @@
 .mibi-page__footer {
   flex: 0 0 auto;
 
-  @include mibi-layout-safari-fix();
+  @include layout.safari-fix;
 
   overflow: auto;
 }

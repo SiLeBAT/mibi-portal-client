@@ -1,4 +1,4 @@
-@import "abstracts";
+@use "colors";
 
 .mibi-datenschutzerklaerung {
   text-align: justify;
@@ -20,7 +20,7 @@
 }
 
 .mibi-datenschutzerklaerung-footer {
-  border-top: 1px solid $primary-color;
+  border-top: 1px solid colors.$primary-color;
 }
 
 .mibi-datenschutzerklaerung-list {

@@ -1,9 +1,9 @@
-@import "abstracts";
+@use "colors";
 
 .mibi-comment {
   display: block;
 }
 
-.mibi-comment-hint--maxCharsReached {
-  color: $error-color;
+.mibi-comment-hint--max-chars-reached {
+  color: colors.$error-color;
 }

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store, select } from '@ngrx/store';
-import { environment } from '../../../../environments/environment';
 import { CoreMainSlice } from '../../core.state';
 import { destroyBannerSOA } from '../../state/core.actions';
 import { selectIsBusy, selectIsBannerShown } from '../../state/core.selectors';
@@ -13,7 +12,6 @@ import { tap } from 'rxjs/operators';
 })
 export class PageBodyContainerComponent implements OnInit {
 
-    supportContact: string;
     isBusy$: Observable<boolean>;
     isBanner$: Observable<boolean>;
     isBanner: boolean;
@@ -23,7 +21,6 @@ export class PageBodyContainerComponent implements OnInit {
     ngOnInit() {
         this.isBusy$ = this.store$.pipe(select(selectIsBusy));
         this.isBanner$ = this.store$.pipe(select(selectIsBannerShown), tap(isBanner => { this.isBanner = isBanner; }));
-        this.supportContact = environment.supportContact;
     }
 
     onAnimationDone() {

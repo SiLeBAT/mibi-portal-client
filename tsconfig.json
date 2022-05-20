@@ -3,22 +3,21 @@
   "compilerOptions": {
     "baseUrl": "./src",
     "module": "es2020",
-    "moduleResolution": "Node",
+    "moduleResolution": "node",
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "outDir": "./dist/out-tsc",
-    "target": "ES2015",
-    "typeRoots": ["./node_modules/@types"],
-    "lib": ["ES2018", "DOM"],
+    "target": "ES2017",
+    "types": ["jest"],
+    "lib": ["es2018", "dom"],
     "sourceMap": true,
     "declaration": false,
-    "incremental": true,
     "downlevelIteration": true,
     "importHelpers": true,
-    "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "removeComments": true,
     "forceConsistentCasingInFileNames": true,
+    "newLine": "lf",
 
     "alwaysStrict": true,
     "noImplicitAny": true,
@@ -27,18 +26,26 @@
     "strictBindCallApply": true,
     // "strictFunctionTypes": true,
     // "strictPropertyInitialization": true,
+    // "useUnknownInCatchVariables": true,
     // "strict": true
 
     "noImplicitReturns": true,
     // "noUnusedLocals": true,
     // "noUnusedParameters": true,
     // "useDefineForClassFields": true,
-
-    "newLine": "lf"
+    // "noUncheckedIndexedAccess": true,
+    // "noPropertyAccessFromIndexSignature": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
     // "strictTemplates": true,
-    "strictInjectionParameters": true
-  }
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true
+  },
+  "include": [
+      "src/**/*.ts",
+      "src/**/*.d.ts"
+    ]
 }

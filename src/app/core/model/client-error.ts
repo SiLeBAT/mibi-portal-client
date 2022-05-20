@@ -8,8 +8,9 @@ export class ClientError extends Error {
         this.name = this.constructor.name;
 
         // Capturing stack trace, excluding constructor call from it.
-        if (Error.captureStackTrace) {
-            Error.captureStackTrace(this, this.constructor);
+        // non standard V8 feature
+        if ((Error as any).captureStackTrace) {
+            (Error as any).captureStackTrace(this, this.constructor);
         }
     }
 }

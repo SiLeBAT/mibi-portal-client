@@ -11,7 +11,7 @@ import { ClientError } from '../../../core/model/client-error';
 export class FAQViewComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     faqCollection: IFAQGroup[] = [];
-    private fragment: string;
+    private fragment: string | null;
     private componentActive = true;
 
     constructor(private activatedRoute: ActivatedRoute) { }
@@ -26,11 +26,11 @@ export class FAQViewComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     ngAfterViewChecked(): void {
         try {
-            if (this.fragment) {
+            if (this.fragment !== null) {
                 const element = document.querySelector('#' + this.fragment);
                 if (element) {
                     element.scrollIntoView();
-                    this.fragment = '';
+                    this.fragment = null;
                 }
             }
         // eslint-disable-next-line no-empty

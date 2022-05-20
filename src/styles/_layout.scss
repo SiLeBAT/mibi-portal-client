@@ -1,0 +1,24 @@
+@use "sass:math";
+
+// Spacing
+
+$single-space: 8px;
+$half-space: math.div($single-space, 2);
+$double-space: $single-space * 2;
+$triple-space: $single-space * 3;
+$quadruple-space: $single-space * 4;
+$octuple-space: $single-space * 8;
+
+@mixin list-style-none() {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+// fix for flex-column in safari, opera not setting the height to flexed height
+@mixin safari-fix {
+  height: max-content;
+
+  // fix for chrome 75 because of changed height calculation
+  // min-height: max-content;
+}

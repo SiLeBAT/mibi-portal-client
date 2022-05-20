@@ -1,8 +1,9 @@
-@import "abstracts";
-@import "../../samples-grid.styles";
+@use "@angular/material" as mat;
+@use "colors";
+@use "../../samples-grid";
 
 @mixin mibi-editor-style {
-  @include mibi-samples-grid-default-cell-style();
+  @include samples-grid.default-cell-style;
 
   padding-bottom: 0.5rem;
   padding-right: 0.5rem;
@@ -19,21 +20,21 @@
 }
 
 .mibi-text-editor {
-  @include mibi-editor-style();
-  @include mat-elevation(3);
+  @include mibi-editor-style;
+  @include mat.elevation(3);
 
   position: absolute;
   resize: none;
   width: 100%;
   height: 100%;
   overflow: hidden;
-  outline: $mibi-sampels-grid-edit-color solid 3px;
+  outline: samples-grid.$edit-color solid 3px;
   outline-offset: -3px;
-  background-color: $background-color;
+  background-color: colors.$background-color;
 }
 
 .mibi-ghost-editor {
-  @include mibi-editor-style();
+  @include mibi-editor-style;
 
   height: 100%;
   color: transparent;

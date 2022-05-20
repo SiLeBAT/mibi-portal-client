@@ -1,4 +1,4 @@
-@import "abstracts";
+@use "layout";
 
 .mibi-mat-dialog {
   margin: -24px;
@@ -17,7 +17,7 @@
 }
 
 .mibi-dialog-message {
-  margin-bottom: $mibi-single-space;
+  margin-bottom: layout.$single-space;
 }
 
 .mibi-mat-dialog-actions {

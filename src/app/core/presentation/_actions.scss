@@ -1,0 +1,16 @@
+@use "@angular/material" as mat;
+@use "colors";
+
+$action-color: mat.get-color-from-palette(colors.$primary-palette, 300);
+
+@mixin app-bar-link() {
+  font-size: 1rem;
+  line-height: 1rem;
+  text-decoration: none;
+  color: colors.$on-primary-color;
+
+  &:hover,
+  &:active {
+    color: colors.$surface-color;
+  }
+}

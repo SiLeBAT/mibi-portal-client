@@ -1,16 +1,24 @@
-@import "abstracts";
-@import "layout";
+@use "layout";
+@use "material";
+
+.mibi-form-field {
+  @include material.form-field;
+}
+
+.mibi-form-field__error {
+  @include material.form-field-error;
+}
 
 .mibi-register-mat-option {
   white-space: normal;
   height: auto;
   line-height: 1.5;
-  padding-top: $mibi-single-space;
-  padding-bottom: $mibi-single-space;
+  padding-top: layout.$single-space;
+  padding-bottom: layout.$single-space;
 }
 
 .mibi-register-actions {
-  margin-top: $mibi-double-space;
+  margin-top: layout.$double-space;
   display: flex;
   justify-content: space-between;
 }

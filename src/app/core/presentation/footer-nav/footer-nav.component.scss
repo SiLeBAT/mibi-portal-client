@@ -1,5 +1,4 @@
-@import "abstracts";
-@import "layout";
+@use "layout";
 
 .mibi-footer-nav {
   height: 100%;
@@ -11,7 +10,7 @@
   flex-flow: row wrap;
   justify-content: center;
 
-  @include list-style-none();
+  @include layout.list-style-none;
 }
 
 .mibi-footer-nav-list__item {
