@@ -1,9 +1,16 @@
-
-import { CoreMainAction, CoreMainActionTypes } from './core.actions';
+import {
+    destroyBannerSOA,
+    hideBannerSOA,
+    showActionBarSOA,
+    showBannerSOA,
+    showCustomBannerSOA,
+    updateActionBarTitleSOA,
+    updateIsBusySOA
+} from './core.actions';
 import { Banner, BannerType } from '../model/alert.model';
-import { ROUTER_NAVIGATION, RouterNavigationAction } from '@ngrx/router-store';
+import { routerNavigationAction, routerRequestAction } from '@ngrx/router-store';
 import { UserActionType } from '../../shared/model/user-action.model';
-import * as _ from 'lodash';
+import { createReducer, on } from '@ngrx/store';
 
 // STATE
 
@@ -37,56 +44,38 @@ const initialBanner: BannerData = {
 
 // REDUCER
 
-export function coreIsBusyReducer(state: boolean = false, action: CoreMainAction): boolean {
-    switch (action.type) {
-        case CoreMainActionTypes.UpdateIsBusySOA:
-            return action.payload.isBusy;
-        default:
-            return state;
-    }
-}
+export const coreIsBusyReducer = createReducer(
+    false,
+    on(updateIsBusySOA, (_state, action) => action.isBusy)
+);
 
-export function coreActionBarConfigReducer(
-    state: CoreActionBarConfig = initialActionBarConfig,
-    action: CoreMainAction | RouterNavigationAction
-): CoreActionBarConfig {
-    switch (action.type) {
-        case CoreMainActionTypes.ShowActionBarSOA:
-            return {
-                isEnabled: true,
-                title: action.payload.title,
-                enabledActions: action.payload.enabledActions
-            };
-        case CoreMainActionTypes.UpdateActionBarTitleSOA:
-            return {
-                ...state,
-                title: action.payload.title
-            };
-        case ROUTER_NAVIGATION:
-            return initialActionBarConfig;
-        default:
-            return state;
-    }
-}
+export const coreActionBarConfigReducer = createReducer(
+    initialActionBarConfig,
+    on(showActionBarSOA, (_state, action) => ({
+        isEnabled: true,
+        title: action.title,
+        enabledActions: action.enabledActions
+    })),
+    on(updateActionBarTitleSOA, (state, action) => ({
+        ...state,
+        title: action.title
+    })),
+    on(routerNavigationAction, _state => initialActionBarConfig)
+);
 
-export function coreBannerReducer(state: BannerData = initialBanner, action: CoreMainAction | RouterNavigationAction): BannerData {
-    switch (action.type) {
-        case CoreMainActionTypes.ShowBannerSOA:
-            return {
-                show: true,
-                predefined: action.payload.predefined
-            };
-        case CoreMainActionTypes.ShowCustomBannerSOA:
-            return {
-                show: true,
-                custom: action.payload.banner
-            };
-        case CoreMainActionTypes.HideBannerSOA:
-        case ROUTER_NAVIGATION:
-            return { ...state, show: false };
-        case CoreMainActionTypes.DestroyBannerSOA:
-            return initialBanner;
-        default:
-            return state;
-    }
-}
+export const coreBannerReducer = createReducer(
+    initialBanner,
+    on(showBannerSOA, (_state, action) => ({
+        show: true,
+        predefined: action.predefined
+    })),
+    on(showCustomBannerSOA, (_state, action) => ({
+        show: true,
+        custom: action.banner
+    })),
+    on(hideBannerSOA, routerRequestAction, state => ({
+        ...state,
+        show: false
+    })),
+    on(destroyBannerSOA, _state => initialBanner)
+);

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import * as userActions from '../state/user.actions';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { combineLatest } from 'rxjs';
@@ -8,21 +7,22 @@ import { map } from 'rxjs/operators';
 import { SamplesMainSlice } from '../../samples/samples.state';
 import { UserMainState } from '../state/user.reducer';
 import { selectHasEntries } from '../../samples/state/samples.selectors';
-import { selectCurrentUser } from '../state/user.selectors';
+import { selectUserCurrentUser } from '../state/user.selectors';
 import { UserMainSlice } from '../user.state';
+import { userForceLogoutMSA } from '../state/user.actions';
+import { navigateMSA } from '../../shared/navigate/navigate.actions';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AnonymousGuard implements CanActivate {
 
-    constructor(private router: Router,
-        private store: Store<UserMainState & SamplesMainSlice & UserMainSlice>) { }
+    constructor(private store$: Store<UserMainState & SamplesMainSlice & UserMainSlice>) { }
 
-    canActivate(activated: ActivatedRouteSnapshot, snap: RouterStateSnapshot) {
+    canActivate(_activated: ActivatedRouteSnapshot, _snap: RouterStateSnapshot) {
         return combineLatest([
-            this.store.pipe(select(selectCurrentUser)),
-            this.store.pipe(select(selectHasEntries))
+            this.store$.pipe(select(selectUserCurrentUser)),
+            this.store$.pipe(select(selectHasEntries))
         ]).pipe(
             map(([currentUser, hasEntries]) => {
                 if (currentUser) {
@@ -30,17 +30,13 @@ export class AnonymousGuard implements CanActivate {
                     // isTokenExpired returns false if no expirationDate is set
                     const isExpired = helper.isTokenExpired(currentUser.token) || helper.getTokenExpirationDate(currentUser.token) === null;
                     if (isExpired) {
-                        this.store.dispatch(new userActions.LogoutUserMSA());
+                        this.store$.dispatch(userForceLogoutMSA());
                         return isExpired;
                     }
                     if (hasEntries) {
-                        this.router.navigate(['/samples']).catch(() => {
-                            throw new Error('Unable to navigate.');
-                        });
+                        this.store$.dispatch(navigateMSA({ url: '/samples' }));
                     } else {
-                        this.router.navigate(['/users/profile']).catch(() => {
-                            throw new Error('Unable to navigate.');
-                        });
+                        this.store$.dispatch(navigateMSA({ url: '/users/profile' }));
                     }
                     return true;
                 } else {

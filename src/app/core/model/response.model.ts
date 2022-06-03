@@ -87,6 +87,5 @@ interface QA {
     readonly q: string;
     readonly a: string;
 }
-export interface FAQResponseDTO {
-    readonly [key: string]: QA[];
-}
+
+export type FAQResponseDTO = Readonly<Record<string, QA[]>>;

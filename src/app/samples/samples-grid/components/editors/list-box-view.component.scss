@@ -1,14 +1,15 @@
-@import "abstracts";
-@import "layout";
-@import "../../samples-grid.styles";
+@use "@angular/material" as mat;
+@use "colors";
+@use "layout";
+@use "../../samples-grid";
 
 $mibi-selection-opacity: 0.2;
 $mibi-hover-opacity: 0.075;
 
 @mixin mibi-text-style {
-  @include mibi-samples-grid-default-text-style();
+  @include samples-grid.default-text-style;
 
-  padding: $mibi-sampels-grid-cell-padding;
+  padding: samples-grid.$cell-padding;
   padding-right: 0.5rem;
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
@@ -16,18 +17,18 @@ $mibi-hover-opacity: 0.075;
 }
 
 .mibi-list-box-container {
-  @include mat-elevation(3);
+  @include mat.elevation(3);
 
   height: 100%;
   display: grid;
   overflow: auto;
-  background-color: $background-color;
+  background-color: colors.$background-color;
   border-radius: 0 0 0.25rem 0.25rem;
   user-select: none;
 }
 
 .mibi-list-box {
-  @include list-style-none();
+  @include layout.list-style-none;
 }
 
 .mibi-list-item {
@@ -35,15 +36,15 @@ $mibi-hover-opacity: 0.075;
 }
 
 .mibi-list-item--hover {
-  background-color: rgba($mibi-sampels-grid-edit-color, $mibi-hover-opacity);
+  background-color: rgba(samples-grid.$edit-color, $mibi-hover-opacity);
 }
 
 .mibi-list-item--selected {
-  background-color: rgba($mibi-sampels-grid-edit-color, $mibi-selection-opacity);
+  background-color: rgba(samples-grid.$edit-color, $mibi-selection-opacity);
 }
 
 .mibi-list-item--selected-hover {
-  background-color: rgba($mibi-sampels-grid-edit-color, $mibi-selection-opacity + $mibi-hover-opacity);
+  background-color: rgba(samples-grid.$edit-color, $mibi-selection-opacity + $mibi-hover-opacity);
 }
 
 .mibi-filtered-text {

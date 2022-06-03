@@ -1,5 +1,5 @@
-import { Component, OnInit, ChangeDetectorRef, Output, EventEmitter, ViewChild, AfterViewInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Component, OnInit, Output, EventEmitter, ViewChild, AfterViewInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { PasswordComponent } from '../../password/password.component';
 
 @Component({
@@ -10,9 +10,9 @@ import { PasswordComponent } from '../../password/password.component';
 export class ResetComponent implements OnInit, AfterViewInit {
     resetForm: FormGroup;
 
-    @Output() reset = new EventEmitter();
+    @Output() resetPassword = new EventEmitter();
 
-    @ViewChild(PasswordComponent, { static: false }) private passwordComponent: PasswordComponent;
+    @ViewChild(PasswordComponent) private passwordComponent: PasswordComponent;
 
     ngOnInit() {
         this.resetForm = new FormGroup({ });
@@ -22,8 +22,8 @@ export class ResetComponent implements OnInit, AfterViewInit {
         this.resetForm.addControl('password', this.passwordComponent.passwordForm);
     }
 
-    onReset() {
+    onResetPassword() {
         const password = this.passwordComponent.passwordControl.value;
-        this.reset.emit(password);
+        this.resetPassword.emit(password);
     }
 }

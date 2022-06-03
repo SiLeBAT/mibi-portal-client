@@ -2,7 +2,6 @@ import { ClientError } from './client-error';
 import { Sample } from '../../samples/model/sample-management.model';
 
 export class InvalidInputError extends ClientError {
-    // tslint:disable-next-line
     constructor(public samples: Sample[], ...args: any[]) {
         super(...args);
         Object.setPrototypeOf(this, InvalidInputError.prototype);
@@ -11,7 +10,6 @@ export class InvalidInputError extends ClientError {
 }
 
 export class InputChangedError extends ClientError {
-    // tslint:disable-next-line
     constructor(public samples: Sample[], ...args: any[]) {
         super(...args);
         Object.setPrototypeOf(this, InputChangedError.prototype);

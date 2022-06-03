@@ -1,5 +1,11 @@
-import * as _ from 'lodash';
-import { SamplesMainAction, SamplesMainActionTypes } from './samples.actions';
+import _ from 'lodash';
+import {
+    samplesDestroyMainDataSOA,
+    samplesUpdateSampleDataEntrySOA,
+    samplesUpdateSampleMetaDataSOA,
+    samplesUpdateMainDataSOA,
+    samplesUpdateSamplesSOA
+} from './samples.actions';
 import {
     SamplePropertyValues,
     Sample,
@@ -7,10 +13,11 @@ import {
     SampleSet,
     MetaDataCollection,
     ChangedDataGridField,
-    AnnotatedSampleDataEntry
+    AnnotatedSampleDataEntry,
+    SampleData
 } from '../model/sample-management.model';
-import { ValidateSamplesAction } from '../validate-samples/validate-samples.actions';
 import { getDataValuesFromAnnotatedData } from './samples.selectors';
+import { createReducer, on } from '@ngrx/store';
 
 // STATE
 
@@ -23,13 +30,13 @@ export interface ImportedFile {
     data: SamplePropertyValues[];
 }
 export interface SamplesMainData {
-    formData: Sample[];
+    sampleData: Sample[];
     importedFile: ImportedFile | null;
     meta: SampleSetMetaData;
 }
 
 const initialMainData: SamplesMainData = {
-    formData: [],
+    sampleData: [],
     importedFile: null,
     meta: {
         sender: {
@@ -51,58 +58,50 @@ const initialMainData: SamplesMainData = {
 
 // REDUCER
 
-export function samplesMainReducer(
-    state: SamplesMainData = initialMainData, action: SamplesMainAction | ValidateSamplesAction
-): SamplesMainData {
-    switch (action.type) {
-        case SamplesMainActionTypes.UpdateSampleMetaDataSOA:
-            return {
-                ...state,
-                formData: updateFormDataFromMetaData(state.formData, action.payload)
-            };
-        case SamplesMainActionTypes.DestroySampleSetSOA:
-            return initialMainData;
-        case SamplesMainActionTypes.UpdateSampleSetSOA:
-            return updateMainDataFromSampleSet(action.payload);
-        case SamplesMainActionTypes.UpdateSamplesSOA:
-            return {
-                ...state,
-                formData: updateFormDataFromSamples(state.formData, action.payload)
-            };
-        case SamplesMainActionTypes.UpdateSampleDataEntrySOA:
-            const { newValue, rowIndex, columnId } = action.payload;
-            const oldEntry = state.formData[rowIndex].sampleData[columnId];
-            if (oldEntry.value === newValue) {
-                return state;
-            }
-
-            const newEntry = updateSampleDataEntryFromChangedData(
-                oldEntry,
-                state.importedFile,
-                action.payload
-            );
-
-            return {
-                ...state,
-                formData: state.formData.map((sample, i) => {
-                    if (i === rowIndex) {
-                        return {
-                            ...sample,
-                            sampleData: {
-                                ...sample.sampleData,
-                                [columnId]: newEntry
-                            }
-                        };
-                    }
-                    return sample;
-                })
-            };
-        default:
+export const samplesMainReducer = createReducer(
+    initialMainData,
+    on(samplesUpdateSampleMetaDataSOA, (state, action) => ({
+        ...state,
+        sampleData: updateSampleDataFromMetaData(state.sampleData, action.metaData)
+    })),
+    on(samplesDestroyMainDataSOA, _state => initialMainData),
+    on(samplesUpdateMainDataSOA, (_state, action) => updateMainDataFromSampleSet(action.sampleSet)),
+    on(samplesUpdateSamplesSOA, (state, action) => ({
+        ...state,
+        sampleData: updateSampleDataFromSamples(state.sampleData, action.samples)
+    })),
+    on(samplesUpdateSampleDataEntrySOA, (state, action) => {
+        const { newValue, rowIndex, columnId } = action.changedField;
+        const oldEntry = state.sampleData[rowIndex].sampleData[columnId];
+        if (oldEntry.value === newValue) {
             return state;
-    }
-}
+        }
 
-function updateFormDataFromMetaData(samples: Sample[], metaData: MetaDataCollection): Sample[] {
+        const newEntry = updateSampleDataEntryFromChangedData(
+            oldEntry,
+            state.importedFile,
+            action.changedField
+        );
+
+        return {
+            ...state,
+            sampleData: state.sampleData.map((sample, i) => {
+                if (i === rowIndex) {
+                    return {
+                        ...sample,
+                        sampleData: {
+                            ...sample.sampleData,
+                            [columnId]: newEntry
+                        }
+                    };
+                }
+                return sample;
+            })
+        };
+    })
+);
+
+function updateSampleDataFromMetaData(samples: Sample[], metaData: MetaDataCollection): Sample[] {
     return samples.map(sample => {
         if (metaData[sample.sampleMeta.nrl]) {
             return {
@@ -116,7 +115,7 @@ function updateFormDataFromMetaData(samples: Sample[], metaData: MetaDataCollect
 
 function updateMainDataFromSampleSet(sampleSet: SampleSet): SamplesMainData {
     return {
-        formData: sampleSet.samples,
+        sampleData: sampleSet.samples,
         importedFile: {
             fileName: sampleSet.meta.fileName || '',
             data: sampleSet.samples.map(
@@ -127,11 +126,11 @@ function updateMainDataFromSampleSet(sampleSet: SampleSet): SamplesMainData {
     };
 }
 
-function updateFormDataFromSamples(oldSamples: Sample[], newSamples: Sample[]): Sample[] {
+function updateSampleDataFromSamples(oldSamples: Sample[], newSamples: Sample[]): Sample[] {
     return newSamples.map((newSample, i) => {
         const oldSample = oldSamples[i];
         newSample = _.cloneDeep(newSample);
-        Object.keys(newSample.sampleData).forEach(prop => {
+        Object.keys(newSample.sampleData).forEach((prop: keyof SampleData) => {
             if (oldSample.sampleData[prop].oldValue && !newSample.sampleData[prop].oldValue) {
                 newSample.sampleData[prop].oldValue = oldSample.sampleData[prop].oldValue;
             }

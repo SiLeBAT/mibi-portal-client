@@ -7,5 +7,5 @@ export interface MultiTargetAction extends Action {
 }
 
 export function ofTarget<T extends MultiTargetAction>(...allowedSources: string[]): OperatorFunction<T, T> {
-    return filter((action) => allowedSources.some(source => source === action.target));
+    return filter((action) => allowedSources.includes(action.target));
 }

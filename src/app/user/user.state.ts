@@ -7,7 +7,7 @@ export interface UserSlice<T> {
     [USER_SLICE_NAME]: T;
 }
 
-export interface UserMainSlice extends UserSlice<UserMainState> {}
+export type UserMainSlice = UserSlice<UserMainState>;
 
 export function selectUserSlice<T>() {
     return createFeatureSelector<UserSlice<T>, T>(USER_SLICE_NAME);

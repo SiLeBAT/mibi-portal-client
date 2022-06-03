@@ -14,8 +14,8 @@ export class DataGridChangeDetector {
     }
 
     markDirtyRange(rows: DataGridRowId[], cols: DataGridColId[]): void {
-        rows.forEach((rowId, row) => {
-            cols.forEach((colId, col) => {
+        rows.forEach((_rowId, row) => {
+            cols.forEach((_colId, col) => {
                 this.markDirty(row, col);
             });
         });
@@ -28,7 +28,7 @@ export class DataGridChangeDetector {
         cols: DataGridColId[]
     ): void {
         this.checkDirtyMap(oldMap, newMap, rows, (rowId, row) => {
-            this.checkDirtyMap(oldMap[rowId], newMap[rowId], cols, (colId, col) => {
+            this.checkDirtyMap(oldMap[rowId], newMap[rowId], cols, (_colId, col) => {
                 this.markDirty(row, col);
             });
         });
@@ -36,7 +36,7 @@ export class DataGridChangeDetector {
 
     detectChanges(rows: DataGridRowId[], cols: DataGridColId[]): void {
         this.dirtyMarks.forEach((rowDirtyMarks, row) => {
-            rowDirtyMarks.forEach((cellDirtyMark, col) => {
+            rowDirtyMarks.forEach((_cellDirtyMark, col) => {
                 const rowId = rows[row];
                 const colId = cols[col];
                 this.dirtyEmitterMap.emit(rowId, colId);

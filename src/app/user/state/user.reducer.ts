@@ -1,7 +1,7 @@
-import { UserMainAction, UserMainActionTypes } from './user.actions';
+import { userDestroyCurrentUserSOA, userUpdateCurrentUserSOA, userUpdateInstitutionsSOA } from './user.actions';
 import { TokenizedUser } from '../model/user.model';
 import { InstitutionDTO } from '../model/institution.model';
-import * as _ from 'lodash';
+import { createReducer, on } from '@ngrx/store';
 
 // STATE
 
@@ -12,22 +12,13 @@ export interface UserMainState {
 
 // REDUCER
 
-export function userCurrentUserReducer(state: TokenizedUser | null = null, action: UserMainAction): TokenizedUser | null {
-    switch (action.type) {
-        case UserMainActionTypes.UpdateCurrentUserSOA:
-            return _.cloneDeep(action.payload);
-        case UserMainActionTypes.DestroyCurrentUserSOA:
-            return null;
-        default:
-            return state;
-    }
-}
+export const userCurrentUserReducer = createReducer<TokenizedUser | null>(
+    null,
+    on(userUpdateCurrentUserSOA, (_state, action) => action.user),
+    on(userDestroyCurrentUserSOA, _state => null)
+);
 
-export function userInstitutesReducer(state: InstitutionDTO[] = [], action: UserMainAction): InstitutionDTO[] {
-    switch (action.type) {
-        case UserMainActionTypes.UpdateInstitutionsSOA:
-            return _.cloneDeep(action.payload);
-        default:
-            return state;
-    }
-}
+export const userInstitutesReducer = createReducer<InstitutionDTO[]>(
+    [],
+    on(userUpdateInstitutionsSOA, (_state, action) => action.institutions)
+);

@@ -2,21 +2,22 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./src",
-    "module": "ES2015",
-    "moduleResolution": "Node",
+    "module": "es2020",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
     "outDir": "./dist/out-tsc",
-    "target": "ES2015",
-    "typeRoots": ["./node_modules/@types"],
-    "lib": ["ES2018", "DOM"],
+    "target": "ES2017",
+    "types": ["jest"],
+    "lib": ["es2018", "dom"],
     "sourceMap": true,
     "declaration": false,
-    "incremental": true,
     "downlevelIteration": true,
-    "emitDecoratorMetadata": true,
+    "importHelpers": true,
     "experimentalDecorators": true,
-    "resolveJsonModule": true,
     "removeComments": true,
     "forceConsistentCasingInFileNames": true,
+    "newLine": "lf",
 
     "alwaysStrict": true,
     "noImplicitAny": true,
@@ -25,24 +26,26 @@
     "strictBindCallApply": true,
     // "strictFunctionTypes": true,
     // "strictPropertyInitialization": true,
+    // "useUnknownInCatchVariables": true,
     // "strict": true
 
     "noImplicitReturns": true,
     // "noUnusedLocals": true,
     // "noUnusedParameters": true,
-
-    "newLine": "lf"
+    // "useDefineForClassFields": true,
+    // "noUncheckedIndexedAccess": true,
+    // "noPropertyAccessFromIndexSignature": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true
   },
-  "jest": {
-    "globals": {
-      "ts-jest": {
-        "tsConfig": "src/tsconfig.spec.json",
-        "stringifyContentPathRegex": "\\.html$",
-        "astTransformers": [
-          "jest-preset-angular/build/InlineFilesTransformer",
-          "jest-preset-angular/build/StripStylesTransformer"
-        ],
-      }
-    }
-  }
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true,
+    // "strictTemplates": true,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true
+  },
+  "include": [
+      "src/**/*.ts",
+      "src/**/*.d.ts"
+    ]
 }

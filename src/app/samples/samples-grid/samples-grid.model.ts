@@ -1,4 +1,4 @@
-import { Sample } from '../model/sample-management.model';
+import { Sample, SampleData } from '../model/sample-management.model';
 import { DataGridRowId, DataGridColId, DataGridCellData } from '../data-grid/data-grid.model';
 
 export enum SamplesGridCellType {
@@ -21,7 +21,7 @@ export interface SamplesGridColumnModel {
 }
 
 export interface SamplesGridDataColumnModel extends SamplesGridColumnModel {
-    selector: string;
+    selector: keyof SampleData;
 }
 
 export interface SamplesGridModel {

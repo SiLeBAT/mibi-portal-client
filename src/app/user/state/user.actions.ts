@@ -1,44 +1,30 @@
 import { Credentials, TokenizedUser } from '../model/user.model';
-import { Action } from '@ngrx/store';
+import { createAction, props } from '@ngrx/store';
 import { InstitutionDTO } from '../model/institution.model';
 
-export enum UserMainActionTypes {
-    LoginUserSSA = '[User] Log in user',
-    LogoutUserMSA = '[User] Log out user',
-    DestroyCurrentUserSOA = '[User] Delete current user',
-    UpdateCurrentUserSOA = '[User] Store tokenized user',
-    UpdateInstitutionsSOA = '[User] Populate institutions'
-}
+export const userLoginSSA = createAction(
+    '[User] Login user',
+    props<{ credentials: Credentials }>()
+);
 
-export class LoginUserSSA implements Action {
-    readonly type = UserMainActionTypes.LoginUserSSA;
+export const userLogoutMSA = createAction(
+    '[User] Logout user'
+);
 
-    constructor(public payload: Credentials) { }
-}
+export const userForceLogoutMSA = createAction(
+    '[User] Force logout user'
+);
 
-export class LogoutUserMSA implements Action {
-    readonly type = UserMainActionTypes.LogoutUserMSA;
-}
+export const userUpdateCurrentUserSOA = createAction(
+    '[User] Store tokenized user',
+    props<{ user: TokenizedUser }>()
+);
 
-export class UpdateCurrentUserSOA implements Action {
-    readonly type = UserMainActionTypes.UpdateCurrentUserSOA;
+export const userDestroyCurrentUserSOA = createAction(
+    '[User] Delete current user'
+);
 
-    constructor(public payload: TokenizedUser) { }
-}
-
-export class DestroyCurrentUserSOA implements Action {
-    readonly type = UserMainActionTypes.DestroyCurrentUserSOA;
-}
-
-export class UpdateInstitutionsSOA implements Action {
-    readonly type = UserMainActionTypes.UpdateInstitutionsSOA;
-
-    constructor(public payload: InstitutionDTO[]) { }
-}
-
-export type UserMainAction =
-    LoginUserSSA
-    | LogoutUserMSA
-    | UpdateCurrentUserSOA
-    | DestroyCurrentUserSOA
-    | UpdateInstitutionsSOA;
+export const userUpdateInstitutionsSOA = createAction(
+    '[User] Populate institutions',
+    props<{ institutions: InstitutionDTO[] }>()
+);

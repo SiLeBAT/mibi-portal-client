@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { CanActivate } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { take } from 'rxjs/operators';
+import { navigateMSA } from '../../shared/navigate/navigate.actions';
 import { SamplesMainSlice } from '../samples.state';
 import { selectHasEntries } from '../state/samples.selectors';
 
@@ -10,12 +11,10 @@ import { selectHasEntries } from '../state/samples.selectors';
 })
 export class NoSampleGuard implements CanActivate {
 
-    constructor(
-        private store: Store<SamplesMainSlice>,
-        private router: Router) { }
+    constructor(private store$: Store<SamplesMainSlice>) { }
 
     async canActivate() {
-        return this.store.pipe(select(selectHasEntries),
+        return this.store$.pipe(select(selectHasEntries),
             take(1))
             .toPromise()
             .then(
@@ -32,9 +31,7 @@ export class NoSampleGuard implements CanActivate {
     }
 
     private onDissallow() {
-        this.router.navigate(['/upload']).catch(() => {
-            throw new Error('Unable to navigate.');
-        });
+        this.store$.dispatch(navigateMSA({ url: '/upload' }));
         return false;
     }
 }

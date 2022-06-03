@@ -4,7 +4,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import * as _ from 'lodash';
 import {
     Sample,
     SampleSet,
@@ -98,9 +97,7 @@ export class DataService {
 
     login(credentials: Credentials): Observable<TokenizedUser> {
         return this.httpClient.post<TokenizedUserDTO>(this.URL.login, credentials).pipe(
-            map((dto: TokenizedUserDTO) => {
-                return dto;
-            })
+            map((dto: TokenizedUserDTO) => dto)
         );
     }
 
@@ -113,7 +110,7 @@ export class DataService {
         return this.httpClient.post<PostSubmittedResponseDTO>(this.URL.submit, requestDTO).pipe(
             map((dto: PostSubmittedResponseDTO) =>
                 dto.order.sampleSet.samples.map(sample => this.entityFactoryService.toSample(sample))),
-            catchError(err => {
+            catchError((err) => {
                 if (err instanceof EndpointError) {
                     if (err.errorDTO.order) {
                         const order: AnnotatedOrderDTO = err.errorDTO.order;
@@ -174,16 +171,12 @@ export class DataService {
 
     getAllInstitutions(): Observable<InstitutionDTO[]> {
         return this.httpClient.get<InstituteCollectionDTO>(this.URL.institutions).pipe(
-            map((dto: InstituteCollectionDTO) => {
-                return dto.institutes;
-            }));
+            map((dto: InstituteCollectionDTO) => dto.institutes));
     }
 
     getAllNRLs(): Observable<NRLDTO[]> {
         return this.httpClient.get<NRLCollectionDTO>(this.URL.nrls).pipe(
-            map((dto: NRLCollectionDTO) => {
-                return dto.nrls;
-            }));
+            map((dto: NRLCollectionDTO) => dto.nrls));
     }
 
     registrationRequest(registrationDetails: RegistrationDetails): Observable<RegistrationRequestResponseDTO> {
@@ -192,12 +185,12 @@ export class DataService {
     }
 
     resetPasswordRequest(email: string): Observable<PasswordResetRequestResponseDTO> {
-        const resetRequest: ResetRequestDTO = { email };
+        const resetRequest: ResetRequestDTO = { email: email };
         return this.httpClient.put<PasswordResetRequestResponseDTO>(this.URL.resetPasswordRequest, resetRequest);
     }
 
     resetPassword(password: string, token: string) {
-        const newPassword: NewPasswordRequestDTO = { password };
+        const newPassword: NewPasswordRequestDTO = { password: password };
         return this.httpClient.patch([this.URL.resetPassword, token].join('/'), newPassword);
     }
 

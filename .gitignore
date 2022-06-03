@@ -9,6 +9,9 @@
 # dependencies
 /node_modules
 
+# profiling files
+chrome-profiler-events*.json
+
 # IDEs and editors
 /.idea
 .project
@@ -19,11 +22,12 @@
 *.sublime-workspace
 
 # IDE - VSCode
-.vscode
+.vscode/*
 !.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
+# !.vscode/tasks.json
+# !.vscode/launch.json
 !.vscode/extensions.json
+.history/*
 
 # misc
 /.sass-cache
@@ -31,7 +35,9 @@
 /coverage
 /libpeerconnection.log
 npm-debug.log
+yarn-error.log
 testem.log
+/typings
 
 # e2e
 /cypress/videos
@@ -41,8 +47,3 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
-
-# app
-/server/config/config.json
-/playground
-server-patch.patch

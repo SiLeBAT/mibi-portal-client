@@ -109,7 +109,7 @@ describe('Testing the Header', function () {
                 cy.get('a[role="menuitem"]').within(() => {
                     cy.contains('Profil');
                 }).click();
-                cy.url().should('include', this.paths.profile);
+                cy.url().should('equal', Cypress.config().baseUrl + this.paths.profile);
             });
 
             it('should log out the user', function () {
@@ -119,7 +119,7 @@ describe('Testing the Header', function () {
                 cy.get('button[role="menuitem"]').within(() => {
                     cy.contains('Abmelden');
                 }).click();
-                cy.url().should('include', this.paths.login);
+                cy.url().should('equal', Cypress.config().baseUrl + this.paths.login);
             });
         });
     });

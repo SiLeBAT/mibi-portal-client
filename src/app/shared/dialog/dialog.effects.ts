@@ -1,23 +1,24 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
-import { DialogAction, DialogActionTypes } from './state/dialog.actions';
-import { Observable } from 'rxjs';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { EMPTY } from 'rxjs';
 import { NewDialogComponent } from './components/dialog.component';
-import { map } from 'rxjs/operators';
+import { concatMap } from 'rxjs/operators';
 import { DialogService } from './dialog.service';
+import { dialogOpenMTA } from './state/dialog.actions';
 
 @Injectable()
 export class DialogEffects {
 
-    constructor(private actions$: Actions<DialogAction>,
-        private dialogService: DialogService) {
-    }
+    constructor(
+        private actions$: Actions,
+        private dialogService: DialogService
+    ) { }
 
-    @Effect({ dispatch: false })
-    dialogOpen$: Observable<void> = this.actions$.pipe(
-        ofType(DialogActionTypes.DialogOpenMTA),
-        map(() => {
+    dialogOpen$ = createEffect(() => this.actions$.pipe(
+        ofType(dialogOpenMTA),
+        concatMap(() => {
             this.dialogService.openDialog(NewDialogComponent);
+            return EMPTY;
         })
-    );
+    ), { dispatch: false });
 }

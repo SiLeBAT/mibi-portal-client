@@ -28,8 +28,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
             router: routerReducer
         }, {
             runtimeChecks: {
-                strictStateImmutability: false,
-                strictActionImmutability: false
+                // needs refactoring of banner feature (custom banner uses functions as state)
+                strictStateSerializability: false,
+                // needs refactoring of upload feature (import action uses file as payload)
+                strictActionSerializability: false,
+                strictActionWithinNgZone: true,
+                strictActionTypeUniqueness: true
             }
         }),
         StoreDevtoolsModule.instrument({

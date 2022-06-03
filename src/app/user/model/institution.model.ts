@@ -45,7 +45,7 @@ export class DefaultInstitution implements Institution {
         this.email = entry.email;
     }
 
-    toString = (): string => {
+    toString(): string {
         let completeName = this.name;
         if (this.addendum) {
             completeName = completeName + ', ' + this.addendum;

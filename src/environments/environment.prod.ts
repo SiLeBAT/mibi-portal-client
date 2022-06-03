@@ -1,8 +1,1 @@
-import { environment as defaultEnv } from './default.environment';
-
-export const environment = {
-    ...defaultEnv,
-    ...{
-        production: true
-    }
-};
+export { defaultEnvironment as environment} from './default.environment';

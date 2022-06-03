@@ -1,0 +1,9 @@
+@use "@angular/material" as mat;
+
+// Fonts
+$default-font-family: "Arial, sans-serif";
+
+// Typography
+$typography: mat.define-typography-config(
+  $font-family: $default-font-family
+);

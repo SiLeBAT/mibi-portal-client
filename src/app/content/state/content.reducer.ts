@@ -1,5 +1,5 @@
-
-import { ContentMainAction, ContentMainActionTypes } from './content.actions';
+import { createReducer, on } from '@ngrx/store';
+import { updateSupportDetailSOA } from './content.actions';
 
 // STATE
 
@@ -17,14 +17,10 @@ const initialMasterData: MasterData = {
 
 // REDUCER
 
-export function contentMasterDataReducer(
-    state: MasterData = initialMasterData,
-    action: ContentMainAction
-): MasterData {
-    switch (action.type) {
-        case ContentMainActionTypes.UpdateSupportDetailSOA:
-            return { ...state, supportContact: action.payload.supportContact };
-        default:
-            return state;
-    }
-}
+export const contentMasterDataReducer = createReducer(
+    initialMasterData,
+    on(updateSupportDetailSOA, (state, action) => ({
+        ...state,
+        supportContact: action.supportDetail.supportContact
+    }))
+);

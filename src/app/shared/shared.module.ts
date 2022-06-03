@@ -13,7 +13,6 @@ import { UploadContainerComponent } from './container/upload-container/upload-co
 import { MatDividerModule } from '@angular/material/divider';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DialogComponent } from './presentation/dialog/dialog.component';
-import { CompileDirective } from './directive/compile.directive';
 import { UploadActionItemComponent } from './presentation/upload-action-item/upload-action-item.component';
 import { BoxLayoutComponent } from './box-layout/box-layout.component';
 import { StoreModule } from '@ngrx/store';
@@ -27,6 +26,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { DialogWarningsViewComponent } from './dialog/components/dialog-warnings-view.component';
 
 @NgModule({
     imports: [
@@ -49,7 +49,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
         EffectsModule.forFeature(sharedEffects)
     ],
     declarations: [
-        CompileDirective,
         DialogComponent,
         UploadComponent,
         UploadContainerComponent,
@@ -57,11 +56,11 @@ import { MatToolbarModule } from '@angular/material/toolbar';
         SingleCenterCardLayoutComponent,
         WallOfTextLayoutComponent,
         BoxLayoutComponent,
+        DialogWarningsViewComponent,
         DialogViewComponent,
         NewDialogComponent
     ],
     exports: [
-        CompileDirective,
         DialogComponent,
         UploadActionItemComponent,
         UploadComponent,
@@ -69,9 +68,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
         SingleCenterCardLayoutComponent,
         WallOfTextLayoutComponent,
         BoxLayoutComponent,
+        DialogWarningsViewComponent,
         DialogViewComponent,
         NewDialogComponent
-    ],
-    entryComponents: [DialogComponent, NewDialogComponent]
+    ]
 })
 export class SharedModule { }

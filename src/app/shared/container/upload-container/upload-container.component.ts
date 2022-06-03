@@ -8,7 +8,7 @@ import { UploadErrorType } from '../../model/upload.model';
 import { ClientError } from '../../../core/model/client-error';
 import { SamplesMainSlice } from '../../../samples/samples.state';
 import { selectHasEntries } from '../../../samples/state/samples.selectors';
-import { ShowBannerSOA, ShowDialogMSA, HideBannerSOA } from '../../../core/state/core.actions';
+import { showBannerSOA, showDialogMSA, hideBannerSOA } from '../../../core/state/core.actions';
 
 @Component({
     selector: 'mibi-upload-container',
@@ -16,18 +16,17 @@ import { ShowBannerSOA, ShowDialogMSA, HideBannerSOA } from '../../../core/state
 })
 export class UploadContainerComponent implements OnInit, OnDestroy, AfterContentInit {
 
-    @Output() onFileUpload = new EventEmitter();
-    @ContentChild('uploadChild', { static: false }) uploadChild: UploadAbstractComponent;
+    @Output() uploadFile = new EventEmitter<File>();
+    @ContentChild('uploadChild') uploadChild: UploadAbstractComponent;
     private myTrigger: Subject<boolean> = new Subject();
     trigger$: Observable<boolean> = this.myTrigger.asObservable();
     private componentActive = true;
     private hasEntries = false;
     private isGuardActive = true;
-    constructor(
-        private store: Store<SamplesMainSlice>) { }
+    constructor(private store$: Store<SamplesMainSlice>) { }
 
     ngOnInit() {
-        this.store.pipe(select(selectHasEntries),
+        this.store$.pipe(select(selectHasEntries),
             takeWhile(() => this.componentActive),
             tap(
                 entries => this.hasEntries = entries
@@ -69,16 +68,16 @@ export class UploadContainerComponent implements OnInit, OnDestroy, AfterContent
     onError(error: UploadErrorType) {
         switch (error) {
             case UploadErrorType.SIZE:
-                this.store.dispatch(new ShowBannerSOA({ predefined: 'wrongUploadFilesize' }));
+                this.store$.dispatch(showBannerSOA({ predefined: 'wrongUploadFilesize' }));
                 break;
             case UploadErrorType.TYPE:
-                this.store.dispatch(new ShowBannerSOA({ predefined: 'wrongUploadDatatype' }));
+                this.store$.dispatch(showBannerSOA({ predefined: 'wrongUploadDatatype' }));
                 break;
             case UploadErrorType.CLEAR:
-                this.store.dispatch(new HideBannerSOA());
+                this.store$.dispatch(hideBannerSOA());
                 break;
             default:
-                this.store.dispatch(new ShowBannerSOA({ predefined: 'uploadFailure' }));
+                this.store$.dispatch(showBannerSOA({ predefined: 'uploadFailure' }));
         }
     }
 
@@ -87,10 +86,10 @@ export class UploadContainerComponent implements OnInit, OnDestroy, AfterContent
     }
 
     invokeValidation(file: File) {
-        this.onFileUpload.emit(file);
+        this.uploadFile.emit(file);
     }
 
-    guard(event: any) {
+    guard(_event: unknown) {
         if (!this.isGuardActive) {
             this.isGuardActive = true;
             return;
@@ -101,7 +100,7 @@ export class UploadContainerComponent implements OnInit, OnDestroy, AfterContent
             return;
         }
         if (this.hasEntries) {
-            this.store.dispatch(new ShowDialogMSA({
+            this.store$.dispatch(showDialogMSA({content: {
                 message: `Wenn Sie die Tabelle schließen, gehen Ihre Änderungen verloren. Wollen Sie das?`,
                 title: 'Schließen',
                 mainAction: {
@@ -118,14 +117,13 @@ export class UploadContainerComponent implements OnInit, OnDestroy, AfterContent
                 auxilliaryAction: {
                     type: UserActionType.CUSTOM,
                     label: 'Abbrechen',
-                    onExecute: () => {
-                    },
+                    // eslint-disable-next-line @typescript-eslint/no-empty-function
+                    onExecute: () => {},
                     icon: '',
                     color: ColorType.PRIMARY
                 }
-            }));
+            }}));
         }
 
     }
-
 }

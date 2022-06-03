@@ -1,6 +1,6 @@
 import { DialogConfiguration } from '../dialog.model';
-import { DialogAction, DialogActionTypes } from './dialog.actions';
-import * as _ from 'lodash';
+import { dialogOpenMTA } from './dialog.actions';
+import { createReducer, on } from '@ngrx/store';
 
 // STATE
 
@@ -29,12 +29,10 @@ const initialData: DialogData = {
 
 // REDUCER
 
-export function dialogReducer(
-    state: DialogData = initialData, action: DialogAction): DialogData {
-    switch (action.type) {
-        case DialogActionTypes.DialogOpenMTA:
-            return { caller: action.target, configuration: _.cloneDeep(action.payload.configuration) };
-        default:
-            return state;
-    }
-}
+export const dialogReducer = createReducer(
+    initialData,
+    on(dialogOpenMTA, (_state, action) => ({
+        caller: action.target,
+        configuration: action.configuration
+    }))
+);

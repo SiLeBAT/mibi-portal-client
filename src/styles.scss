@@ -1,18 +1,19 @@
-/* You can add global styles to this file, and also import other style files */
-@import "~normalize.css/normalize.css";
-@import "~@angular/material/theming";
-@import "assets/sass/base";
-@import "assets/sass/abstracts";
-@import "assets/sass/components";
-@import "assets/sass/layout";
-@import "assets/sass/themes";
+/* You can add global styles to this file, and also import other global style files */
 
-// Include the common styles for Angular Material. We include this here so that you only
-// have to load a single css file for Angular Material in your app.
-// Be sure that you only ever include this mixin once!
-@include mat-core($mibi-typography);
+@use "tooltipster";
+@use "material-init";
+@use "material-stepper";
 
-// Include theme styles for core and each component used in your app.
-// Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
-@include angular-material-theme($mibi-theme);
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+button {
+  text-transform: uppercase;
+}

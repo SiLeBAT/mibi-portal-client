@@ -1,13 +1,13 @@
-@import "../../../../assets/sass/abstracts";
-@import "~@angular/material/theming";
+@use "@angular/material" as mat;
+@use "colors";
 
 .mibi-footer {
-  @include mat-elevation(4);
+  @include mat.elevation(4);
 
   height: 100%;
   display: flex;
-  border-top: 2px solid $primary-color;
-  background-color: $surface-color;
+  border-top: 2px solid colors.$primary-color;
+  background-color: colors.$surface-color;
 }
 
 .mibi-footer__left {

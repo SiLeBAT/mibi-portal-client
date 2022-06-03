@@ -1,6 +1,6 @@
 <mibi-wall-of-text-layout cardtitle="Probeneinsendebogen hochladen">
     <wot-preamble>
-        <mibi-upload-container (onFileUpload)="fileUpload($event)">
+        <mibi-upload-container (uploadFile)="fileUpload($event)">
             <mibi-upload #uploadChild>
                 <mibi-box-layout x-overflow-handling>
                     <div class="mibi-upload">

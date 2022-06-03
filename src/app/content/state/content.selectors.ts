@@ -6,4 +6,4 @@ export const selectContentMainState = selectContentSlice<ContentMainState>();
 
 export const selectMasterData = createSelector(selectContentMainState, state => state.masterData);
 
-export const selectSupportContact = createSelector(selectMasterData, state => state.supportContact);
+export const selectSupportContact = createSelector(selectMasterData, masterData => masterData.supportContact);

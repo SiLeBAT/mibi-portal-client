@@ -17,7 +17,6 @@ describe('Testing the Datenschutzhinweise Page', function () {
 
     describe('Testing the Datenschutzerklärung page links', function () {
         it('should open a new tab for the allgemeinen Datenschutzbestimmungen page', function () {
-            // tslint:disable-next-line: max-line-length
             cy.contains('allgemeinen Datenschutzbestimmungen').should('have.attr', 'href', 'https://www.bfr.bund.de/de/datenschutzerklaerung-107546.html')
                 .should('have.attr', 'target', '_blank');
         });

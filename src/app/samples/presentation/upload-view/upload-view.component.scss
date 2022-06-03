@@ -1,21 +1,21 @@
-@import "../../../../assets/sass/abstracts";
-@import "~@angular/material/theming";
+@use "@angular/material" as mat;
+@use "colors";
 
 .mibi-upload {
-  @include mat-elevation(2);
+  @include mat.elevation(2);
 
   text-align: center;
-  background: $surface-color;
+  background: colors.$surface-color;
   border-radius: 7px;
-  border: 3px solid $surface-color;
+  border: 3px solid colors.$surface-color;
   transition: all 0.2s ease;
   user-select: none;
-  color: $primary-color;
+  color: colors.$primary-color;
   overflow: auto;
 }
 
 .mibi-upload:hover {
-  border-color: $primary-color;
+  border-color: colors.$primary-color;
 }
 
 .mibi-upload-icon {
@@ -28,6 +28,6 @@
 }
 
 .mibi-upload-button {
-  background: $primary-color;
+  background: colors.$primary-color;
   margin-bottom: 0.5rem;
 }

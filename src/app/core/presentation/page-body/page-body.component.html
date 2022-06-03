@@ -2,12 +2,12 @@
 
   <div class="mibi-page-body">
     <div class="mibi-page-body__spinner" [ngClass]="{'mibi-page-body__spinner--active':isBusy}">
-      <mat-spinner *ngIf="isBusy" class="mibi-spinner" [color]="primary" _forceAnimations="true">
+      <mat-spinner *ngIf="isBusy" class="mibi-spinner" color="primary" _forceAnimations="true">
       </mat-spinner>
     </div>
     <div class="mibi-page-body__banner mibi-banner"
       [@slideInOut]="animationState"
-      (@slideInOut.done)="animationDone($event)"
+      (@slideInOut.done)="onAnimationDone($event)"
     >
       <mibi-banner-container></mibi-banner-container>
     </div>

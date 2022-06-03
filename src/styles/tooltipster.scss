@@ -1,0 +1,226 @@
+/* stylelint-disable selector-class-pattern */
+
+@use "colors";
+@use "layout";
+
+body {
+  // this is necessary because a tooltip can overflow a scrollbar unintentionally activating the page scroll bars
+  overflow: hidden;
+}
+
+$tooltip-tip-color: colors.$surface-color;
+$tooltip-error-color: colors.$error-color;
+$tooltip-warning-color: colors.$secondary-color;
+$tooltip-info-color: colors.$primary-color;
+
+*[id^="tooltipster-"] ul {
+  padding-left: layout.$double-space;
+}
+
+.tooltipster-box {
+  border-radius: 5px;
+  box-shadow: 0 0 14px rgba(0 0 0 / 30%);
+  border: 1px solid colors.$on-background-color;
+  margin: layout.$single-space;
+}
+
+.tooltipster-content {
+  font-size: 12px;
+  font-style: italic;
+  padding: 2px 5px 3px 3px;
+  margin-top: 5px;
+}
+
+.tooltipster-sidetip {
+  .tooltipster-arrow-background {
+    border: 9px solid transparent;
+  }
+
+  .tooltipster-arrow-border {
+    border: 9px solid transparent;
+  }
+
+  &.tooltipster-bottom {
+    .tooltipster-arrow-uncropped {
+      top: -9px;
+    }
+
+    .tooltipster-arrow-border {
+      border-bottom-color: colors.$on-background-color;
+    }
+
+    .tooltipster-arrow-background {
+      top: 1px;
+    }
+  }
+
+  &.tooltipster-right {
+    .tooltipster-arrow-uncropped {
+      left: -9px;
+    }
+
+    .tooltipster-arrow-border {
+      border-right-color: colors.$on-background-color;
+    }
+
+    .tooltipster-arrow-background {
+      left: 1px;
+    }
+  }
+
+  &.tooltipster-left {
+    .tooltipster-arrow-border {
+      border-left-color: colors.$on-background-color;
+    }
+
+    .tooltipster-arrow-background {
+      left: -1px;
+    }
+  }
+
+  &.tooltipster-top {
+    .tooltipster-arrow-border {
+      border-top-color: colors.$on-background-color;
+    }
+
+    .tooltipster-arrow-background {
+      top: -1px;
+    }
+  }
+
+  &.tooltipster-tip {
+    &.tooltipster-bottom .tooltipster-arrow-background {
+      border-bottom-color: $tooltip-tip-color;
+    }
+
+    &.tooltipster-left .tooltipster-arrow-background {
+      border-left-color: $tooltip-tip-color;
+    }
+
+    &.tooltipster-top .tooltipster-arrow-background {
+      border-top-color: $tooltip-tip-color;
+    }
+
+    &.tooltipster-right .tooltipster-arrow-background {
+      border-right-color: $tooltip-tip-color;
+    }
+
+    .tooltipster-box {
+      background: $tooltip-tip-color;
+    }
+
+    .tooltipster-content {
+      color: colors.$on-surface-color;
+    }
+  }
+
+  &.tooltipster-info {
+    &.tooltipster-bottom .tooltipster-arrow-background {
+      border-bottom-color: $tooltip-info-color;
+    }
+
+    &.tooltipster-left .tooltipster-arrow-background {
+      border-left-color: $tooltip-info-color;
+    }
+
+    &.tooltipster-top .tooltipster-arrow-background {
+      border-top-color: $tooltip-info-color;
+    }
+
+    &.tooltipster-right .tooltipster-arrow-background {
+      border-right-color: $tooltip-info-color;
+    }
+
+    .tooltipster-box {
+      background: $tooltip-info-color;
+    }
+
+    .tooltipster-content {
+      color: colors.$on-primary-color;
+    }
+  }
+
+  &.tooltipster-warning {
+    &.tooltipster-bottom .tooltipster-arrow-background {
+      border-bottom-color: $tooltip-warning-color;
+    }
+
+    &.tooltipster-left .tooltipster-arrow-background {
+      border-left-color: $tooltip-warning-color;
+    }
+
+    &.tooltipster-top .tooltipster-arrow-background {
+      border-top-color: $tooltip-warning-color;
+    }
+
+    &.tooltipster-right .tooltipster-arrow-background {
+      border-right-color: $tooltip-warning-color;
+    }
+
+    .tooltipster-box {
+      background: $tooltip-warning-color;
+    }
+
+    .tooltipster-content {
+      color: colors.$on-secondary-color;
+    }
+  }
+
+  &.tooltipster-error {
+    &.tooltipster-bottom .tooltipster-arrow-background {
+      border-bottom-color: $tooltip-error-color;
+    }
+
+    &.tooltipster-left .tooltipster-arrow-background {
+      border-left-color: $tooltip-error-color;
+    }
+
+    &.tooltipster-top .tooltipster-arrow-background {
+      border-top-color: $tooltip-error-color;
+    }
+
+    &.tooltipster-right .tooltipster-arrow-background {
+      border-right-color: $tooltip-error-color;
+    }
+
+    .tooltipster-box {
+      background: $tooltip-error-color;
+    }
+
+    .tooltipster-content {
+      color: colors.$on-error-color;
+    }
+  }
+
+  .tooltipster-arrow {
+    height: 10px;
+    margin-left: -9px;
+    width: 18px;
+  }
+}
+
+.tooltipster-sidetip.tooltipster-error.tooltipster-left .tooltipster-arrow,
+.tooltipster-sidetip.tooltipster-error.tooltipster-right .tooltipster-arrow,
+.tooltipster-sidetip.tooltipster-warning.tooltipster-left .tooltipster-arrow,
+.tooltipster-sidetip.tooltipster-warning.tooltipster-right .tooltipster-arrow {
+  height: 14px;
+  margin-left: layout.$half-space;
+  margin-top: -(layout.$double-space);
+  width: 5px;
+}
+
+.tooltipster-sidetip.tooltipster-info.tooltipster-left .tooltipster-arrow,
+.tooltipster-sidetip.tooltipster-info.tooltipster-right .tooltipster-arrow {
+  height: 17px;
+  margin-left: layout.$half-space;
+  margin-top: -(layout.$double-space);
+  width: 10px;
+}
+
+.tooltipster-sidetip.tooltipster-tip.tooltipster-left .tooltipster-arrow,
+.tooltipster-sidetip.tooltipster-tip.tooltipster-right .tooltipster-arrow {
+  height: 18px;
+  margin-left: 2px;
+  margin-top: -(layout.$double-space);
+  width: layout.$single-space;
+}

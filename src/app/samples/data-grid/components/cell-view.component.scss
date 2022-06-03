@@ -1,8 +1,9 @@
-@import "abstracts";
+@use "sass:map";
+@use "colors";
 
-$mibi-ui-color: map-get($mibi-primary, "A400");
-$mibi-border-color: $surface-color;
-$mibi-grid-border: 0.5px solid $surface-color;
+$mibi-ui-color: map.get(colors.$primary-palette, "A400");
+$mibi-border-color: colors.$surface-color;
+$mibi-grid-border: 0.5px solid colors.$surface-color;
 $mibi-hover-opacity: 0.075;
 $mibi-selection-opacity: 0.2;
 
@@ -33,7 +34,7 @@ $mibi-selection-opacity: 0.2;
   bottom: -2.5px;
   left: 0;
   height: 2.5px;
-  background-image: linear-gradient(to bottom, rgba(black, 0.4), rgba(white, 0));
+  background-image: linear-gradient(to bottom, rgba(0 0 0 / 40%), rgba(255 255 255 / 0%));
 }
 
 .mibi-shadow--right {
@@ -47,7 +48,7 @@ $mibi-selection-opacity: 0.2;
   top: 0;
   right: -2.5px;
   width: 2.5px;
-  background-image: linear-gradient(to right, rgba(black, 0.4), rgba(white, 0));
+  background-image: linear-gradient(to right, rgba(0 0 0 / 40%), rgba(255 255 255 / 0%));
 }
 
 .mibi-overlay {

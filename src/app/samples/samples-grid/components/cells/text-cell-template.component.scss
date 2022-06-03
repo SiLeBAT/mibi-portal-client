@@ -1,14 +1,15 @@
-@import "abstracts";
-@import "../../samples-grid.styles";
+@use "sass:color";
+@use "colors";
+@use "../../samples-grid";
 
 .mibi-text-cell {
-  @include mibi-samples-grid-default-cell-style();
+  @include samples-grid.default-cell-style;
 
   height: 100%;
 }
 
 .mibi-text-cell--readonly {
-  background-color: lighten($surface-color, 15%);
+  background-color: color.adjust(colors.$surface-color, $lightness: 15%);
 }
 
 .mibi-text-cell--col-header {

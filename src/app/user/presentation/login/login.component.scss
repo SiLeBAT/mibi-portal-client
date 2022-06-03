@@ -1,5 +1,8 @@
-@import "../../../../assets/sass/abstracts";
-@import "../../../../assets/sass/layout";
+@use "material";
+
+.mibi-form-field {
+  @include material.form-field;
+}
 
 .mibi-login-submit-button {
   width: 100%;

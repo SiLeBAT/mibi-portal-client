@@ -1,8 +1,10 @@
-@import "../../../../assets/sass/abstracts";
+@use "sass:math";
+@use "colors";
+@use "layout";
 
 .mibi-faq-toc {
   display: grid;
-  padding-bottom: $mibi-quadruple-space;
+  padding-bottom: layout.$quadruple-space;
 }
 
 .mibi-faq-toc__content {
@@ -10,17 +12,17 @@
 }
 
 .mibi-faq-toc-item {
-  background: $primary-color;
-  margin: $mibi-single-space 0;
-  padding: $mibi-half-space/2 $mibi-double-space;
+  background: colors.$primary-color;
+  margin: layout.$single-space 0;
+  padding: math.div(layout.$half-space, 2) layout.$double-space;
   text-align: center;
 }
 
 .mibi-faq-toc-link {
-  color: $on-primary-color;
+  color: colors.$on-primary-color;
   text-decoration: none;
 }
 
 .mibi-faq-toc-link:hover {
-  color: $surface-color;
+  color: colors.$surface-color;
 }

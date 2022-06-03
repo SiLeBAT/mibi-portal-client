@@ -22,7 +22,7 @@ describe('Testing the Registration Page', function () {
     describe('Testing the Registration page links', function () {
         it('should navigate back to the Login page', function () {
             cy.contains('Zurück').click();
-            cy.url().should('include', this.paths.login);
+            cy.url().should('equal', Cypress.config().baseUrl + this.paths.login);
         });
 
         it('should navigate to the Datenschutzerklärung page', function () {
@@ -118,7 +118,7 @@ describe('Testing the Registration Page', function () {
             fillOutRegistrationForm(this.users[4]);
             cy.get('[type="submit"]').click();
             cy.contains(this.banner.registrationFailure);
-            cy.url().should('include', this.paths.register);
+            cy.url().should('equal', Cypress.config().baseUrl + this.paths.register);
         });
 
         it('should display banner for 400', function () {
@@ -134,7 +134,7 @@ describe('Testing the Registration Page', function () {
             fillOutRegistrationForm(this.users[4]);
             cy.get('[type="submit"]').click();
             cy.contains(this.banner.registrationFailure);
-            cy.url().should('include', this.paths.register);
+            cy.url().should('equal', Cypress.config().baseUrl + this.paths.register);
         });
 
     });

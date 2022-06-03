@@ -1,0 +1,9 @@
+// Refactor: Move this to a new shared component for form-fields
+
+@mixin form-field() {
+  display: block;
+}
+
+@mixin form-field-error() {
+  text-align: right;
+}

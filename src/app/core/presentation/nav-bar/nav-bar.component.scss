@@ -1,13 +1,13 @@
-@import "../../../../assets/sass/abstracts";
-@import "../../../../assets/sass/components";
+@use "layout";
+@use "../actions";
 
-.hidden {
+.mibi-hidden {
   display: none !important;
 }
 
 .mibi-nav-bar {
   height: 100%;
-  padding-top: $mibi-half-space;
+  padding-top: layout.$half-space;
   display: flex;
   justify-content: space-between;
 }
@@ -17,19 +17,19 @@
 }
 
 .mibi-nav-bar-link {
-  @include app-bar-link();
+  @include actions.app-bar-link;
 
-  padding: $mibi-single-space;
+  padding: layout.$single-space;
   height: 100%;
   display: flex;
   align-items: center;
 
   &--active {
-    background-color: $mibi-action-color;
+    background-color: actions.$action-color;
   }
 }
 
 .mibi-nav-bar-link__text {
   flex: 0 1 auto;
-  padding-bottom: $mibi-half-space;
+  padding-bottom: layout.$half-space;
 }

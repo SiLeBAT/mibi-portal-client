@@ -1,27 +1,17 @@
-import { MultiTargetAction } from '../../ngrx/multi-target-action';
+import { createAction, props } from '@ngrx/store';
 import { DialogConfiguration } from '../dialog.model';
 
-export enum DialogActionTypes {
-    DialogOpenMTA = '[Shared/Dialog] Open Dialog',
-    DialogConfirmMTA = '[Shared/Dialog] Inform of dialog confirmed',
-    DialogCancelMTA = '[Shared/Dialog] Inform of dialog cancelled'
-}
-export class DialogOpenMTA implements MultiTargetAction {
-    readonly type = DialogActionTypes.DialogOpenMTA;
+export const dialogOpenMTA = createAction(
+    '[Shared/Dialog] Open Dialog',
+    props<{target: string; configuration: DialogConfiguration }>()
+);
 
-    constructor(public target: string, public payload: { configuration: DialogConfiguration }) { }
-}
+export const dialogCancelMTA = createAction(
+    '[Shared/Dialog] Cancel dialog',
+    props<{target: string}>()
+);
 
-export class DialogConfirmMTA implements MultiTargetAction {
-    readonly type = DialogActionTypes.DialogConfirmMTA;
-
-    constructor(public target: string) { }
-}
-
-export class DialogCancelMTA implements MultiTargetAction {
-    readonly type = DialogActionTypes.DialogCancelMTA;
-
-    constructor(public target: string) { }
-}
-
-export type DialogAction = DialogOpenMTA | DialogConfirmMTA | DialogCancelMTA;
+export const dialogConfirmMTA = createAction(
+    '[Shared/Dialog] Confirm dialog',
+    props<{target: string}>()
+);

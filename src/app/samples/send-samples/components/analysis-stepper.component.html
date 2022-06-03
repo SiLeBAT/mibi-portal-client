@@ -1,0 +1,119 @@
+<mibi-box-layout>
+    <header class="mibi-header mat-title">
+        Zusätzlich gewünschte Untersuchungen
+    </header>
+    <mibi-dialog-warnings-view class="mibi-warnings" [warnings]="warnings$ | async"></mibi-dialog-warnings-view>
+    <mat-horizontal-stepper
+        [linear]="isLinear"
+        #stepper
+        class="mibi-analysis-stepper"
+    >
+        <mat-step
+            label="{{ nrl.abbreviation }}"
+            *ngFor="
+                let nrl of stepperViewModel$ | async;
+                let first = first;
+                let last = last
+            "
+        >
+            <p>
+                Das {{ nrl.abbreviation }} führt standardmäßig folgende Methoden
+                durch: {{ nrl.standardProcedures.join("; ") }}
+            </p>
+            <p>
+                Sollten Sie darüber hinaus weitere Wünsche zur Probenanalyse
+                haben bzw. Zusatzinformationen zu Ihren Proben mitteilen wollen,
+                klicken Sie bitte die entsprechende Option an.
+            </p>
+            <form [formGroup]="analysisForm[nrl.abbreviation]">
+                <div class="mibi-optional-selection">
+                    <mat-checkbox
+                        color="primary"
+                        *ngFor="let op of nrl.optionalProcedures; let j = index"
+                        formControlName="{{ op.controlName }}"
+                        >{{ op.value }}</mat-checkbox
+                    >
+                    <mat-checkbox
+                        color="primary"
+                        [(ngModel)]="showOther[nrl.abbreviation]"
+                        [ngModelOptions]="{ standalone: true }"
+                        (change)="onChangeShowOther(nrl.abbreviation)"
+                        >Sonstiges (nach Absprache)</mat-checkbox
+                    >
+                    <textarea
+                        formControlName="other"
+                        [hidden]="!showOther[nrl.abbreviation]"
+                    ></textarea>
+                    <mat-checkbox
+                        color="primary"
+                        [(ngModel)]="showCompareHuman[nrl.abbreviation]"
+                        [ngModelOptions]="{ standalone: true }"
+                        (change)="onChangeCompareHuman(nrl.abbreviation)"
+                        >Vergleiche mit humanen Isolaten</mat-checkbox
+                    >
+                    <textarea
+                        formControlName="compareHuman"
+                        [hidden]="!showCompareHuman[nrl.abbreviation]"
+                    ></textarea>
+                    <div class="mibi-urgency-selection">
+                        <label>Dringlichkeit:</label>
+                        <mat-radio-group
+                            formControlName="urgency"
+                            aria-label="Dringlichkeit"
+                            class="mibi-urgency-selection__button-group"
+                        >
+                            <mat-radio-button
+                                value="NORMAL"
+                                class="mibi-urgency-selection__button"
+                                color="primary"
+                                >normal</mat-radio-button
+                            >
+                            <mat-radio-button
+                                color="primary"
+                                value="EILT"
+                                class="mibi-urgency-selection__button"
+                                >eilt</mat-radio-button
+                            >
+                        </mat-radio-group>
+                    </div>
+                </div>
+            </form>
+            <div class="mibi-button-group">
+                <button
+                    class="mibi-button-group__button"
+                    mat-button
+                    color="primary"
+                    (click)="onCancel()"
+                >
+                    Zurück zu den Daten
+                </button>
+                <div class="mibi-button-group__stepper-button-group">
+                    <button
+                        mat-button
+                        color="primary"
+                        matStepperPrevious
+                        *ngIf="!first"
+                    >
+                        Vorheriges BfR-Labor
+                    </button>
+                    <button
+                        mat-button
+                        color="primary"
+                        matStepperNext
+                        *ngIf="!last"
+                    >
+                        Nächstes BfR-Labor
+                    </button>
+                </div>
+                <button
+                    class="mibi-button-group__button"
+                    mat-flat-button
+                    color="primary"
+                    (click)="onSend()"
+                >
+                    Senden
+                </button>
+            </div>
+        </mat-step>
+    </mat-horizontal-stepper>
+</mibi-box-layout>

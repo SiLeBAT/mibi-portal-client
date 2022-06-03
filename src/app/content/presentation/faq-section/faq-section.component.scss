@@ -1,14 +1,15 @@
-@import "../../../../assets/sass/abstracts";
+@use "colors";
+@use "layout";
 
 .mibi-faq-section {
-  margin-bottom: $mibi-double-space;
+  margin-bottom: layout.$double-space;
   padding: 0 30% * 0.5;
 }
 
 .mibi-faq-section-title {
-  background: $primary-color;
-  color: $on-primary-color;
+  background: colors.$primary-color;
+  color: colors.$on-primary-color;
   text-align: center;
-  padding: $mibi-single-space;
+  padding: layout.$single-space;
   margin: 0;
 }

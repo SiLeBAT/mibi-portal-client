@@ -1,6 +1,6 @@
-import { Component, OnInit, Output, ChangeDetectorRef } from '@angular/core';
-import { FormGroup, FormControl, Validators, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-import * as zxcvbn from 'zxcvbn';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import zxcvbn from 'zxcvbn';
 
 // PasswordStrengthValidator
 

@@ -12,8 +12,8 @@ describe('Testing the Profile page', function () {
                 }
             );
         });
-        it('should redirect to the Welcome page', function () {
-            cy.url().should('include', this.paths.root);
+        it('should redirect to the Login page', function () {
+            cy.url().should('equal', Cypress.config().baseUrl + this.paths.login);
         });
     });
 

@@ -2,40 +2,37 @@ import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { User } from '../../../user/model/user.model';
-import * as userActions from '../../../user/state/user.actions';
-import { Router } from '@angular/router';
-import { selectCurrentUser } from '../../../user/state/user.selectors';
+import { selectUserCurrentUser } from '../../../user/state/user.selectors';
 import { UserMainSlice } from '../../../user/user.state';
+import { navigateMSA } from '../../../shared/navigate/navigate.actions';
+import { userLogoutMSA } from '../../../user/state/user.actions';
 
 @Component({
     selector: 'mibi-avatar-container',
     template: `<mibi-avatar
     [currentUser$]="currentUser$"
-    (onProfile)="onProfile()"
-    (onLogout)="onLogout()">
+    (profile)="onProfile()"
+    (logout)="onLogout()">
     </mibi-avatar>`
 })
 export class AvatarContainerComponent implements OnInit {
 
     currentUser$: Observable<User | null>;
 
-    constructor(private router: Router,
-        private store$: Store<UserMainSlice>) { }
+    constructor(private store$: Store<UserMainSlice>) { }
 
     ngOnInit() {
         this.currentUser$ = this.store$.pipe(
-            select(selectCurrentUser)
+            select(selectUserCurrentUser)
         );
 
     }
 
     onLogout() {
-        this.store$.dispatch(new userActions.LogoutUserMSA());
+        this.store$.dispatch(userLogoutMSA());
     }
 
     onProfile() {
-        this.router.navigate(['/users/profile']).catch(() => {
-            throw new Error('Unable to navigate.');
-        });
+        this.store$.dispatch(navigateMSA({ url: '/users/profile' }));
     }
 }

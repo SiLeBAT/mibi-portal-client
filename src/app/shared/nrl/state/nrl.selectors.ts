@@ -1,7 +1,7 @@
 import { createSelector } from '@ngrx/store';
-import { NRLState } from './nrl.reducer';
+import { NrlState } from './nrl.reducer';
 import { selectSharedSlice } from '../../shared.state';
 
-export const selectNRLMainState = selectSharedSlice<NRLState>();
+export const selectNrlState = selectSharedSlice<NrlState>();
 
-export const selectNRLs = createSelector(selectNRLMainState, state => state.nrls);
+export const selectNrls = createSelector(selectNrlState, state => state.nrls);

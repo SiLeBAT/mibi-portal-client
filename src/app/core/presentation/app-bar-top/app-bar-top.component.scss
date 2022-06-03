@@ -1,6 +1,6 @@
-@import "../../../../assets/sass/abstracts";
-@import "../../../../assets/sass/components";
-@import "../../../../assets/sass/layout";
+@use "colors";
+@use "layout";
+@use "../actions";
 
 .mibi-app-bar {
   height: 100%;
@@ -11,13 +11,13 @@
 .mibi-app-bar__top {
   flex: 0 1 auto;
 
-  @include mibi-layout-safari-fix();
+  @include layout.safari-fix;
 }
 
 .mibi-app-bar-top {
   overflow: auto;
   display: flex;
-  background-color: $primary-color;
+  background-color: colors.$primary-color;
 }
 
 .mibi-app-bar-top__left {
@@ -25,14 +25,14 @@
 }
 
 .mibi-app-title {
-  @include app-bar-link();
+  @include actions.app-bar-link;
 
   text-align: center;
   height: 100%;
   display: flex;
   align-items: center;
-  padding: $mibi-single-space;
-  padding-left: $mibi-double-space;
+  padding: layout.$single-space;
+  padding-left: layout.$double-space;
   font-size: 1.1rem;
   line-height: 1;
 }

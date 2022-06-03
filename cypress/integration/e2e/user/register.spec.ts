@@ -27,7 +27,7 @@ describe('Use-cases Register Page', function () {
             cy.get('[name="password2"]').type(user.password);
             cy.get('[type="submit"]').click();
             cy.contains(this.banner.registrationSuccess);
-            cy.url().should('include', this.paths.login);
+            cy.url().should('equal', Cypress.config().baseUrl + this.paths.login);
         });
 
     });

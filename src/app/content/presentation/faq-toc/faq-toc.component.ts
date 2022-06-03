@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import * as _ from 'lodash';
 import { IFAQGroup } from '../faq-section/faq-section.component';
 
 interface IFAQTocEntry {
@@ -19,12 +18,10 @@ export class FAQTocComponent implements OnInit {
     faqTocEntries: IFAQTocEntry[] = [];
 
     ngOnInit(): void {
-        this.faqTocEntries = this.faqCollection.filter((faqGroup: IFAQGroup) => !!faqGroup.title).map((faqGroup: IFAQGroup) => {
-            return {
-                title: faqGroup.title.toUpperCase(),
-                id: faqGroup.id,
-                count: faqGroup.faqs.length
-            };
-        });
+        this.faqTocEntries = this.faqCollection.filter((faqGroup: IFAQGroup) => !!faqGroup.title).map((faqGroup: IFAQGroup) => ({
+            title: faqGroup.title.toUpperCase(),
+            id: faqGroup.id,
+            count: faqGroup.faqs.length
+        }));
     }
 }

@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { UserActionViewModelConfiguration, UserActionType, ColorType } from '../../shared/model/user-action.model';
 import { Store } from '@ngrx/store';
-import { ClientError } from '../model/client-error';
 import { Router } from '@angular/router';
-import { ValidateSamplesMSA } from '../../samples/validate-samples/validate-samples.actions';
+import { validateSamplesSSA } from '../../samples/validate-samples/validate-samples.actions';
 import { CoreMainSlice } from '../core.state';
-import { ExportExcelFileSSA, ImportExcelFileMSA, DestroySampleSetSOA } from '../../samples/state/samples.actions';
-import { ShowDialogMSA } from '../state/core.actions';
-import { SendSamplesOpenAnalysisDialogSSA } from '../../samples/analysis-stepper/state/analysis-stepper.actions';
 import { environment } from '../../../environments/environment';
+import { closeSamplesSSA } from '../../samples/close-samples/close-samples.actions';
+import { importSamplesMSA } from '../../samples/import-samples/import-samples.actions';
+import { exportSamplesSSA } from '../../samples/export-samples/export-samples.actions';
+import { sendSamplesSSA } from '../../samples/send-samples/state/send-samples.actions';
+import { navigateMSA } from '../../shared/navigate/navigate.actions';
 
 @Injectable({
     providedIn: 'root'
@@ -69,7 +70,7 @@ export class UserActionService {
     }];
 
     constructor(
-        private store: Store<CoreMainSlice>, private router: Router) { }
+        private store$: Store<CoreMainSlice>, private router: Router) { }
 
     getConfigOfType(type: UserActionType): UserActionViewModelConfiguration {
         const config = _.find(this.userActionConfiguration, (c: UserActionViewModelConfiguration) => c.type === type);
@@ -93,51 +94,26 @@ export class UserActionService {
     }
 
     private navigate(url: string) {
-        this.router.navigate([url]).catch(() => {
-            throw new ClientError('Unable to navigate.');
-        });
+        this.store$.dispatch(navigateMSA({ url: url }));
     }
 
     private validate() {
-        this.store.dispatch(new ValidateSamplesMSA());
+        this.store$.dispatch(validateSamplesSSA());
     }
 
     private export() {
-        this.store.dispatch(new ExportExcelFileSSA());
+        this.store$.dispatch(exportSamplesSSA());
     }
 
     private import(file: File) {
-        this.store.dispatch(new ImportExcelFileMSA({ file }));
+        this.store$.dispatch(importSamplesMSA({ excelFile: { file: file } }));
     }
 
     private send() {
-        this.store.dispatch(new SendSamplesOpenAnalysisDialogSSA());
+        this.store$.dispatch(sendSamplesSSA());
     }
 
     private close() {
-        this.store.dispatch(new ShowDialogMSA({
-            message: `Wenn Sie die Tabelle schließen, gehen Ihre Änderungen verloren. Wollen Sie das?`,
-            title: 'Schließen',
-            mainAction: {
-                type: UserActionType.CUSTOM,
-                label: 'Ok',
-                onExecute: () => {
-                    this.store.dispatch(new DestroySampleSetSOA());
-                    this.navigate('/upload');
-                },
-                icon: '',
-                color: ColorType.PRIMARY,
-                focused: true
-            },
-            auxilliaryAction: {
-                type: UserActionType.CUSTOM,
-                label: 'Abbrechen',
-                onExecute: () => {
-                },
-                icon: '',
-                color: ColorType.PRIMARY
-            }
-        }));
-
+        this.store$.dispatch(closeSamplesSSA());
     }
 }

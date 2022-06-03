@@ -1,26 +1,32 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Store, select } from '@ngrx/store';
-import { DialogState, DialogData } from './../state/dialog.reducer';
+import { DialogState } from './../state/dialog.reducer';
 import { selectDialogData } from './../state/dialog.selectors';
 import { Observable } from 'rxjs';
-import { DialogConfirmMTA, DialogCancelMTA } from './../state/dialog.actions';
+import { dialogConfirmMTA, dialogCancelMTA } from './../state/dialog.actions';
 import { SharedSlice } from '../../shared.state';
-import { tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
+import { DialogConfiguration } from '../dialog.model';
 
 @Component({
     selector: 'mibi-new-dialog',
-    template: `<mibi-dialog-view
-    [config]="(data$ | async).configuration"
-    (onConfirm) = "onConfirm()"
-    (onCancel) = "onCancel()">
-    </mibi-dialog-view>`
+    template: `
+        <mibi-dialog-view
+            [config]="config$ | async"
+            (confirm) = "onConfirm()"
+            (cancel) = "onCancel()"
+        ></mibi-dialog-view>`
 })
 export class NewDialogComponent {
-    data$: Observable<DialogData> = this.store$.pipe(
+    config$: Observable<DialogConfiguration> = this.store$.pipe(
         select(selectDialogData),
-        tap((data) => { this.caller = data.caller; })
-        );
+        map(data => {
+            this.caller = data.caller;
+            return data.configuration;
+        })
+    );
+
     private caller: string;
 
     constructor(
@@ -28,12 +34,12 @@ export class NewDialogComponent {
         private store$: Store<SharedSlice<DialogState>>) { }
 
     onConfirm() {
-        this.store$.dispatch(new DialogConfirmMTA(this.caller));
+        this.store$.dispatch(dialogConfirmMTA({ target: this.caller }));
         this.close();
     }
 
     onCancel() {
-        this.store$.dispatch(new DialogCancelMTA(this.caller));
+        this.store$.dispatch(dialogCancelMTA({ target: this.caller }));
         this.close();
     }
 

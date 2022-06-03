@@ -13,7 +13,7 @@ when the submit button is clicked. On submit the register() method is called if 
             required
             [matAutocomplete]="autoGroup"
         />
-        <mat-error class="mibi-form-field__mat-error"
+        <mat-error class="mibi-form-field__error"
             >Muss ein gültiges Institut sein.</mat-error
         >
         <mat-autocomplete #autoGroup="matAutocomplete">
@@ -61,7 +61,7 @@ when the submit button is clicked. On submit the register() method is called if 
             required
         />
         <mat-error
-            class="mibi-form-field__mat-error"
+            class="mibi-form-field__error"
             *ngIf="registerForm.controls.email.errors?.email"
             >Muss eine gültige E-Mail sein.</mat-error
         >

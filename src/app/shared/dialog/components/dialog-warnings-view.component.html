@@ -1,0 +1,7 @@
+<ul class="mibi-warnings">
+    <li *ngFor="let warning of warnings" class="mibi-warnings__item">
+        <span *ngFor="let part of warning"
+            [ngClass]="{'mibi-warning-part--emphasized': part.emphasized === true}"
+        >{{part.text}}</span>
+    </li>
+</ul>

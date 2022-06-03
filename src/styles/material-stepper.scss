@@ -1,0 +1,12 @@
+/* stylelint-disable selector-class-pattern */
+
+@use "layout";
+
+.mibi-stepper-dialog-container > .mat-dialog-container {
+  padding: 0 0 layout.$triple-space 0;
+}
+
+.mibi-analysis-stepper > .mat-horizontal-content-container {
+  padding: 0 layout.$double-space;
+  margin: 0 0 layout.$double-space 0;
+}

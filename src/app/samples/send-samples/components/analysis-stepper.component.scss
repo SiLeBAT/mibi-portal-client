@@ -1,0 +1,46 @@
+@use "colors";
+@use "layout";
+
+.mibi-button-group {
+  display: flex;
+  justify-content: space-between;
+}
+
+.mibi-button-group__stepper-button-group {
+  display: flex;
+  justify-content: space-around;
+}
+
+.mibi-button-group__button {
+  margin: 0 layout.$double-space;
+}
+
+.mibi-optional-selection {
+  display: flex;
+  flex-direction: column;
+}
+
+.mibi-urgency-selection {
+  margin: layout.$double-space 0;
+}
+
+.mibi-urgency-selection__button-group {
+  margin: 0 layout.$double-space;
+  display: inline-flex;
+}
+
+.mibi-urgency-selection__button {
+  margin: 0 layout.$single-space;
+}
+
+.mibi-header {
+  background-color: colors.$primary-color;
+  color: colors.$on-primary-color;
+  padding: layout.$single-space;
+  text-align: center;
+}
+
+.mibi-warnings {
+  display: block;
+  margin: layout.$single-space;
+}

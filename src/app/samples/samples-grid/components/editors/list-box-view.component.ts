@@ -61,11 +61,11 @@ export class SamplesGridListBoxViewComponent implements OnChanges {
 
     // EVENT HANDLERS
 
-    onMouseOut(e: MouseEvent, index: number): void {
+    onMouseOut(_e: MouseEvent, _index: number): void {
         this.changeHover(-1);
     }
 
-    onMouseOver(e: MouseEvent, index: number): void {
+    onMouseOver(_e: MouseEvent, index: number): void {
         this.changeHover(index);
     }
 
@@ -96,11 +96,11 @@ export class SamplesGridListBoxViewComponent implements OnChanges {
         }
     }
 
-    onEnter(e: KeyboardEvent): void {
+    onEnter(_e: KeyboardEvent): void {
         this.confirm.emit(this.selection);
     }
 
-    onEsc(e: KeyboardEvent): void {
+    onEsc(_e: KeyboardEvent): void {
         this.changeSelection(-1);
         this.cancel.emit();
     }
@@ -126,9 +126,9 @@ export class SamplesGridListBoxViewComponent implements OnChanges {
 
         const searchIndex = value.toLowerCase().indexOf(this.filter.toLowerCase());
         if (searchIndex !== -1) {
-            filteredValue.pre = value.substr(0, searchIndex);
-            filteredValue.filter = value.substr(searchIndex, this.filter.length),
-            filteredValue.post = value.substr(searchIndex + this.filter.length);
+            filteredValue.pre = value.slice(0, searchIndex);
+            filteredValue.filter = value.slice(searchIndex, searchIndex + this.filter.length);
+            filteredValue.post = value.slice(searchIndex + this.filter.length);
         }
         return filteredValue;
     }

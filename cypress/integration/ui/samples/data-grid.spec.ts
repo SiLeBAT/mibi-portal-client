@@ -34,7 +34,7 @@ describe('Testing the Sample data grid', function () {
 
     describe('Testing without uploaded data', function () {
         it('should redirect to upload page', function () {
-            cy.url().should('include', this.paths.upload);
+            cy.url().should('equal', Cypress.config().baseUrl + this.paths.upload);
         });
     });
     // FIXME: Upload is not working yet

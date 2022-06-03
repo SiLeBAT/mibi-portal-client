@@ -1,11 +1,12 @@
-@import "../../../../assets/sass/abstracts";
+@use "colors";
+@use "layout";
 
 .mibi-banner {
   display: flex;
   flex-flow: row wrap;
   align-items: center;
   justify-content: center;
-  background-color: $background-color;
+  background-color: colors.$background-color;
 }
 
 .mibi-banner__message {
@@ -24,24 +25,24 @@
 
 .mibi-banner-message__icon {
   flex: 0 0 auto;
-  margin: $mibi-single-space;
+  margin: layout.$single-space;
 
   &--error {
-    color: $error-color;
+    color: colors.$error-color;
   }
 
   &--success {
-    color: $secondary-color;
+    color: colors.$secondary-color;
   }
 
   &--warning {
-    color: $secondary-color;
+    color: colors.$secondary-color;
   }
 }
 
 .mibi-banner-message__text {
   flex: 0 1 auto;
-  padding: $mibi-single-space;
+  padding: layout.$single-space;
 }
 
 .mibi-banner-actions {

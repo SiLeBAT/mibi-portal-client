@@ -12,7 +12,7 @@ export class AdminTokenValidationResolver implements Resolve<UserActivation> {
     constructor(
         private dataService: DataService) { }
 
-    resolve(activatedRoute: ActivatedRouteSnapshot, sanp: RouterStateSnapshot): Observable<UserActivation> {
+    resolve(activatedRoute: ActivatedRouteSnapshot, _snap: RouterStateSnapshot): Observable<UserActivation> {
         const token = activatedRoute.params['id'];
         return this.dataService.activateAccount(token);
     }

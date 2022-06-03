@@ -1,33 +1,45 @@
-import { SampleData, Sample } from './../model/sample-management.model';
+import { SampleData, Sample, SampleValidationErrorLevel, AnnotatedSampleDataEntry, SamplePropertyValues } from '../model/sample-management.model';
 import { createSelector } from '@ngrx/store';
-import { SamplePropertyValues } from '../model/sample-management.model';
 import { selectSamplesSlice } from '../samples.state';
 import { SamplesMainState } from './samples.reducer';
-import * as _ from 'lodash';
+import _ from 'lodash';
 
 export function getDataValuesFromAnnotatedData(sampleData: SampleData): SamplePropertyValues {
-    const result: SamplePropertyValues = {};
-    Object.keys(sampleData).forEach(prop => result[prop] = sampleData[prop].value);
-    return result;
+    const result: Partial<SamplePropertyValues> = {};
+    Object.keys(sampleData).forEach((prop: keyof SampleData) => result[prop] = sampleData[prop].value);
+    return result as SamplePropertyValues;
 }
 
-export function getDataFromAnnotatedData(sample: Sample): SampleData {
-    return sample.sampleData;
+export function getSampleDataEntryHasValidationErrors(
+    sampleDataEntry: AnnotatedSampleDataEntry, errorLevel: SampleValidationErrorLevel): boolean {
+    return sampleDataEntry.errors.some(error =>
+        error.level === errorLevel
+    );
+}
+
+export function getSampleHasValidationErrors(sample: Sample, errorLevel: SampleValidationErrorLevel): boolean {
+    return _.some(sample.sampleData, sampleDataEntry =>
+        getSampleDataEntryHasValidationErrors(sampleDataEntry, errorLevel)
+    );
+}
+
+export function getSamplesHasValidationErrors(samples: Sample[], errorLevel: SampleValidationErrorLevel): boolean {
+    return samples.some(sample => getSampleHasValidationErrors(sample, errorLevel));
 }
 
 export const selectSamplesMainState = selectSamplesSlice<SamplesMainState>();
 
 export const selectSamplesMainData = createSelector(selectSamplesMainState, state => state.mainData);
 
-export const selectFormData = createSelector(selectSamplesMainData, state => state.formData);
+export const selectSampleData = createSelector(selectSamplesMainData, mainData => mainData.sampleData);
 
-export const selectImportedFile = createSelector(selectSamplesMainData, state => state.importedFile);
+export const selectImportedFile = createSelector(selectSamplesMainData, mainData => mainData.importedFile);
 
-export const selectImportedFileData = createSelector(selectImportedFile, state => state ? state.data : []);
+export const selectImportedFileData = createSelector(selectImportedFile, importedFile => importedFile ? importedFile.data : []);
 
-export const selectMetaData = createSelector(selectSamplesMainData, state => state.meta);
+export const selectMetaData = createSelector(selectSamplesMainData, mainData => mainData.meta);
 
-export const selectImportedFileName = createSelector(selectImportedFile, (file) => {
+export const selectImportedFileName = createSelector(selectImportedFile, file => {
     // this should never be null
     if (file !== null) {
         return file.fileName;
@@ -36,11 +48,21 @@ export const selectImportedFileName = createSelector(selectImportedFile, (file) 
     }
 });
 
-export const selectMarshalData = createSelector(selectSamplesMainData, state => ({
-    samples: state.formData,
-    meta: state.meta
+export const selectMarshalData = createSelector(selectSamplesMainData, mainData => ({
+    samples: mainData.sampleData,
+    meta: mainData.meta
 }));
 
-export const selectHasEntries = createSelector(selectFormData, state => !!state.length);
+export const selectHasEntries = createSelector(selectSampleData, samples => samples.length > 0);
 
-export const selectHasValidationErrors = createSelector(selectFormData, state => !!state.length);
+export const selectHasErrors = createSelector(selectSampleData, samples =>
+    getSamplesHasValidationErrors(samples, SampleValidationErrorLevel.ERROR)
+);
+
+export const selectHasWarnings = createSelector(selectSampleData, samples =>
+    getSamplesHasValidationErrors(samples, SampleValidationErrorLevel.WARNING)
+);
+
+export const selectHasAutoCorrections = createSelector(selectSampleData, samples =>
+    getSamplesHasValidationErrors(samples, SampleValidationErrorLevel.AUTOCORRECTED)
+);

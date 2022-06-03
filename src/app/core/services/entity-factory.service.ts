@@ -1,7 +1,7 @@
 
 import { SampleData, Sample, SampleMeta } from './../../samples/model/sample-management.model';
 import { Injectable } from '@angular/core';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import {
     SampleSet,
     MarshalledData,
@@ -42,9 +42,7 @@ export class EntityFactoryService {
     toSampleSet(dto: SampleSetDTO): SampleSet {
         const annotatedSampleSet: SampleSet = {
             meta: this.toSampleSetMetaData(dto.meta),
-            samples: dto.samples.map(sample => {
-                return this.toSample(sample);
-            })
+            samples: dto.samples.map(sample => this.toSample(sample))
         };
         return annotatedSampleSet;
     }
@@ -58,8 +56,8 @@ export class EntityFactoryService {
     }
 
     private toSampleData(dto: AnnotatedSampleDataDTO): SampleData {
-        const annotatedSampleData: Record<SampleProperty, AnnotatedSampleDataEntry> = {};
-        Object.keys(dto).forEach(prop => annotatedSampleData[prop] = this.toAnnotatedSampleDataEntry(dto[prop]));
+        const annotatedSampleData: Partial<SampleData> = {};
+        Object.keys(dto).forEach((prop: SampleProperty) => annotatedSampleData[prop] = this.toAnnotatedSampleDataEntry(dto[prop]));
         return annotatedSampleData as SampleData;
     }
 

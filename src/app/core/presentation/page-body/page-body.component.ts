@@ -12,15 +12,15 @@ import { fadeAnimation, transitionAnimation } from '../../../shared/animations/r
 export class PageBodyComponent {
     @Input() isBusy: boolean;
     @Input() isBanner: boolean;
-    @Output() onAnimationDone = new EventEmitter<void>();
+    @Output() animationDone = new EventEmitter<void>();
 
     get animationState(): string {
         return this.isBanner ? 'in' : 'out';
     }
 
-    animationDone(event: AnimationEvent) {
+    onAnimationDone(event: AnimationEvent) {
         if (event.fromState === 'in') {
-            this.onAnimationDone.emit();
+            this.animationDone.emit();
         }
     }
 }

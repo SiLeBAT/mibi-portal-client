@@ -7,11 +7,11 @@ import { Component, Input } from '@angular/core';
 })
 export class BoxLayoutComponent {
 
-// tslint:disable-next-line: no-input-rename
+    // eslint-disable-next-line @angular-eslint/no-input-rename
     @Input('x-overflow-handling')
     xOverflowHandling: string;
 
-// tslint:disable-next-line: no-input-rename
+    // eslint-disable-next-line @angular-eslint/no-input-rename
     @Input('y-overflow-handling')
     yOverflowHandling: string;
 
