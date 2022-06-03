@@ -60,11 +60,11 @@
         },
         {
             "q": "Text wird teilweise in schmalen Spalten angezeigt und daher häufig umgebrochen.",
-            "a": "Je schmaler der Monitor ist, desto weniger Platz bleibt pro Spalte übrig. Sie können für ein angenehmeres Lesen die Spalte breiter ziehen. Hierzu bewegen Sie die Maus auf die senkrechte Linie zwischen zwei Spaltenüberschriften. Sobald Sie sich der Mauszeiger in das Symbol für das Verändern der Spaltenbreite verwandelt hat (ein senkrechter Strich mit je einem Pfeil nach links und rechts), klicken Sie mit der linken Maustaste und ziehen die Maus nach rechts, bis der Text vollständig zu sehen ist. Eine weitere Möglichkeit besteht darin, einen Doppelklick in die entsprechende Zelle zu machen. Dann ist der vollständige Text zu lesen."
+            "a": "Je schmaler der Monitor ist, desto weniger Platz bleibt pro Spalte übrig. Wir empfehlen eine Bildschirmauflösung von mindestens 1440 Pixeln in der Breite, besser noch Full HD (1920 x 1080 Pixel)."
         },
         {
             "q": "Was bedeuten die blauen Umrandungen um manche Zellen?",
-            "a": "Einzelne Zellen der Tabelle werden umrandet, wenn sich der online dargestellte Inhalt von dem Inhalt in dem von Ihnen hochgeladenen Einsendeformular unterscheidet. Dies kann in zwei Fällen passieren:<ol><li>Direkt nach dem Hochladen des Einsendeformulars sind Zellen umrandet. In diesem Fall sind sie auch blau gefärbt, da die Autokorrektur Ihre ursprünglichen Angaben verändert hat. Wenn Sie z.B. korrekterweise den Code für einen Erreger aus ADV-Katalog Nr. 16 angegeben haben, dann ersetzt die Autokorrektur diesen durch den dazugehörigen ADV- Text.</li><li>Sie haben Ihr Einsendeformular hochgeladen und haben einen Fehler entdeckt. Wenn Sie diesen online editieren, zeigt die blaue Umrandung an, dass Sie diese Zelle der Tabelle im Vergleich zur hochgeladenen Datei verändert haben.</li></ol>"
+            "a": "Einzelne Zellen der Tabelle werden umrandet, wenn sich der online dargestellte Inhalt von dem Inhalt in dem von Ihnen hochgeladenen Einsendeformular unterscheidet. Dies kann in zwei Fällen passieren:<ol><li>Direkt nach dem Hochladen des Einsendeformulars sind Zellen umrandet. In diesem Fall sind sie auch blau gefärbt, da die Autokorrektur Ihre ursprünglichen Angaben verändert hat. Wenn Sie z.B. korrekterweise den Code für einen Erreger aus ADV-Katalog Nr. 16 angegeben haben, dann ersetzt die Autokorrektur diesen durch den dazugehörigen ADV-Text.</li><li>Sie haben Ihr Einsendeformular hochgeladen und haben einen Fehler entdeckt. Wenn Sie diesen online editieren, zeigt die blaue Umrandung an, dass Sie diese Zelle der Tabelle im Vergleich zur hochgeladenen Datei verändert haben.</li></ol>"
         }
     ],
     "senden": [
@@ -76,7 +76,7 @@
     "problem melden": [
         {
             "q": "Ich komme an einer Stelle nicht weiter und auch diese FAQs helfen mir nicht. Wie erhalte ich Hilfe?",
-            "a": "Klicken Sie unten auf der Website auf „Problem melden“. Eine neue E-Mail wird in Ihrem E-Mail-Programm geöffnet. Die Adresse ist bereits eingetragen, so dass Sie nur noch das Problem kurz schildern müssen. Gerne können Sie auch die entsprechende Datei anhängen, falls das Problem damit zu tun hat. Wir werden uns umgehend bei Ihnen melden."
+            "a": "Klicken Sie unten rechts im grau hinterlegten Footer auf „Problem melden“. Eine neue E-Mail wird in Ihrem E-Mail-Programm geöffnet. Die Adresse ist bereits eingetragen, so dass Sie nur noch das Problem kurz schildern müssen. Gerne können Sie auch die entsprechende Datei anhängen, falls das Problem damit zu tun hat. Wir werden uns umgehend bei Ihnen melden."
         },
         {
             "q": "Meine Daten waren korrekt, aber die Autokorrektur hat meine Daten verändert oder die Validierung zeigt einen Fehler an. Wie kann ich meine Daten korrekt an das BfR senden?",
@@ -86,16 +86,16 @@
     "abmelden": [
         {
             "q": "Ich bin angemeldet und möchte mich nun abmelden. Doch wo finde ich den entsprechenden Button?",
-            "a": "Klicken Sie oben rechts im blauen Menüband auf die weiße Büste und dann auf „Abmelden“. Ihr Login verliert nach 24 Stunden automatisch seine Gültigkeit."
+            "a": "Klicken Sie oben rechts im blauen Menüband auf die weiße Büste und dann auf „Abmelden“."
         }
     ],
     "andere themen": [
         {
             "q": "Ich sehe nach dem Eingeben des <a href=\"https://mibi-portal.bfr.bund.de\" target=\"_blank\">MiBi-Portal-Weblinks</a> nur eine weiße Fläche im Browser. Was läuft hier schief?",
-            "a": "Das MiBi-Portal verwendet Ressourcen, die von den folgenden Browsern unterstützt werden: <ul><li>Mozilla Firefox: ab Version 52</li><li>Google Chrome: ab Version 64</li><li>Microsoft Edge: ab Version 41</li><li>Apple Safari: ab Version 11</li><li>Opera: ab Version 54</li></ul>Bei älteren Browserversionen ist nach dem Aufruf des MiBi-Portal-Weblinks möglicherweise nur ein weißes Browserfenster zu sehen. Dies kann auch bei anderen Browsern passieren, wie z.B. dem Internet Explorer. Bitte verwenden Sie in diesem Fall einen der oben aufgelisteten Browser."
+            "a": "Das MiBi-Portal verwendet Ressourcen, die von den folgenden Browsern unterstützt werden: <ul><li>Mozilla Firefox: ab Version 70</li><li>Google Chrome: ab Version 80</li><li>Microsoft Edge: ab Version 79</li><li>Apple Safari: ab Version 13</li></ul>Bei älteren Browserversionen könnte es zu Darstellungsproblemen kommen und bei nicht unterstützten Browsern (z.B. Internet Explorer) ist nach dem Aufruf des MiBi-Portal-Weblinks möglicherweise nur ein weißes Browserfenster zu sehen. Bitte verwenden Sie in diesem Fall einen der oben aufgelisteten Browser."
         },
         {
-            "q": "Warum gibt es jetzt das MiBi-Portal?",
+            "q": "Warum gibt es das MiBi-Portal?",
             "a": "Hierfür gibt es mehrere Gründe: <ul><li>Die Weiterleitung der Einsendeformulare erfolgte bisher manuell und war sehr zeitaufwändig. Das MiBi-Portal schickt nun abhängig vom angegebenen Erreger die Probendaten automatisch an das richtige BfR-Labor und erzeugt dabei für jedes Labor ein eigenes Einsendeformular. Dadurch fällt der früher für Datenmelder bestehende Umstand, Proben nach Erreger getrennt auf je ein Einsendeformular aufteilen zu müssen, weg. Welches BfR-Labor die jeweiligen Datenzeilen erhalten wird, können Sie der Spalte „NRL“ ganz links im MiBi-Portal entnehmen.</li><li>Zusätzlich zur Zeitersparnis wird auch eine höhere Datenqualität erwartet: Die im Portal eingebauten Plausibilitätsprüfungen untersuchen ADV-Codes, Datumsangaben, Erreger-Schreibweisen und Zugehörigkeiten von Proben zum Zoonosen-Monitoring. Bei Fehlern, die eine Verwertbarkeit für das BfR einschränken, wird aufgefordert, diese zu korrigieren. Dies hat  Vorteile auf beiden Seiten, denn es fallen z.B. die häufigen telefonischen Rückfragen weg.</li></ul>"
 		},
         {
