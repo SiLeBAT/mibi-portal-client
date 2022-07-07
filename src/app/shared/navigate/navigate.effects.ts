@@ -19,7 +19,7 @@ export class NavigateEffects {
         ofType(navigateMSA),
         concatMap(action => {
             try {
-                this.router.navigate([action.url]).catch(error => {
+                this.router.navigate([action.path]).catch(error => {
                     this.logger.error('Error during navigation.', error.stack);
                 });
             } catch (error) {

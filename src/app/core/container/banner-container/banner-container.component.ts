@@ -9,6 +9,7 @@ import { selectBannerData } from '../../state/core.selectors';
 import { hideBannerSOA } from '../../state/core.actions';
 import { BannerData } from '../../state/core.reducer';
 import { Observable } from 'rxjs';
+import { UserLinkProviderService } from '../../../user/link-provider.service';
 
 @Component({
     selector: 'mibi-banner-container',
@@ -119,21 +120,21 @@ export class BannerContainerComponent {
         passwordChangeSuccess: {
             message: 'Bitte melden Sie sich mit Ihrem neuen Passwort an',
             type: AlertType.SUCCESS,
-            auxilliaryAction: { ...this.userActionService.getNavigationConfig('/users/login'),  label: 'Zum Login'  },
+            auxilliaryAction: { ...this.userActionService.getNavigationConfig(this.userLinks.login),  label: 'Zum Login'  },
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
 
         },
         passwordChangeFailure: {
             message: `Fehler beim Zurücksetzen des Passworts. Bitte klicken Sie im Bereich "Anmelden" auf "Passwort vergessen?" und lassen Sie sich einen neuen Link zum Zurücksetzen des Passworts zuschicken.`,
             type: AlertType.ERROR,
-            auxilliaryAction: { ...this.userActionService.getNavigationConfig('/users/recovery'),  label: 'Zum Passwort-Reset'  },
+            auxilliaryAction: { ...this.userActionService.getNavigationConfig(this.userLinks.recovery),  label: 'Zum Passwort-Reset'  },
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
 
         },
         loginFailure: {
             message: 'Es gab einen Fehler beim Einloggen. Bitte registrieren Sie sich oder, wenn Sie sich schon registriert haben, kontaktieren Sie das MiBi-Portal-Team.',
             type: AlertType.ERROR,
-            auxilliaryAction: { ...this.userActionService.getNavigationConfig('/users/register'),  label: 'Zur Registrierung'  },
+            auxilliaryAction: { ...this.userActionService.getNavigationConfig(this.userLinks.register),  label: 'Zur Registrierung'  },
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
 
         },
@@ -146,7 +147,7 @@ export class BannerContainerComponent {
         loginUnauthorized: {
             message: 'Nicht authorisiert, bitte einloggen.',
             type: AlertType.ERROR,
-            auxilliaryAction: { ...this.userActionService.getNavigationConfig('/users/login'),  label: 'Zum Login'  },
+            auxilliaryAction: { ...this.userActionService.getNavigationConfig(this.userLinks.login),  label: 'Zum Login'  },
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
         },
         exportFailure: {
@@ -158,7 +159,8 @@ export class BannerContainerComponent {
 
     constructor(
         private store$: Store<CoreMainSlice>,
-        private userActionService: UserActionService
+        private userActionService: UserActionService,
+        private userLinks: UserLinkProviderService
     ) {
         this.banner$ = this.store$.pipe(
             select(selectBannerData),

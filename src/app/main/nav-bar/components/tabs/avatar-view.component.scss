@@ -1,9 +1,7 @@
 @use "sass:math";
 @use "colors";
 @use "layout";
-@use "../actions";
-
-$nav-bar-color: colors.$primary-color;
+@use "app/main/styles";
 
 .mibi-avatar {
   height: 100%;
@@ -18,7 +16,7 @@ $nav-bar-color: colors.$primary-color;
 }
 
 .mibi-avatar-button {
-  @include actions.app-bar-link;
+  @include styles.app-bar-link;
 
   display: flex;
   justify-content: center;
@@ -48,27 +46,4 @@ $nav-bar-color: colors.$primary-color;
 
 .mibi-user-info__divider {
   margin: layout.$single-space;
-}
-
-.mibi-register {
-  height: 100%;
-  display: flex;
-  justify-content: flex-end;
-}
-
-.mibi-register__content {
-  flex: 0 1 auto;
-}
-
-.mibi-register-link {
-  @include actions.app-bar-link;
-
-  height: 100%;
-  display: flex;
-  align-items: center;
-  padding: layout.$single-space;
-}
-
-.mibi-register-link__text {
-  flex: 0 1 auto;
 }

@@ -1,23 +1,20 @@
+@use "colors";
 @use "layout";
-@use "../actions";
+@use "app/main/styles";
 
-.mibi-hidden {
-  display: none !important;
-}
-
-.mibi-nav-bar {
+.mibi-tabs {
   height: 100%;
   padding-top: layout.$half-space;
   display: flex;
   justify-content: space-between;
 }
 
-.mibi-nav-bar__item {
+.mibi-tabs__item {
   flex: 0 1 auto;
 }
 
-.mibi-nav-bar-link {
-  @include actions.app-bar-link;
+.mibi-link {
+  @include styles.app-bar-link;
 
   padding: layout.$single-space;
   height: 100%;
@@ -25,11 +22,11 @@
   align-items: center;
 
   &--active {
-    background-color: actions.$action-color;
+    background-color: colors.$action-color;
   }
 }
 
-.mibi-nav-bar-link__text {
+.mibi-link__text {
   flex: 0 1 auto;
   padding-bottom: layout.$half-space;
 }

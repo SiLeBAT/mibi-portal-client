@@ -14,6 +14,7 @@ export const samplesReducerMap: ActionReducerMap<SamplesState, Action> = {
     lastSentFiles: sendSamplesLastSentFilesReducer,
     dialogWarnings: sendSamplesDialogWarningsReducer
 };
+
 export const samplesEffects = [
     SendSamplesEffects,
     ValidateSamplesEffects,

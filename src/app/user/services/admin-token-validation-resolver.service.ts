@@ -3,6 +3,7 @@ import { ActivatedRouteSnapshot, RouterStateSnapshot, Resolve } from '@angular/r
 import { DataService } from '../../core/services/data.service';
 import { Observable } from 'rxjs';
 import { UserActivation } from '../model/user.model';
+import { UserLinkProviderService } from '../link-provider.service';
 
 @Injectable({
     providedIn: 'root'
@@ -10,10 +11,12 @@ import { UserActivation } from '../model/user.model';
 export class AdminTokenValidationResolver implements Resolve<UserActivation> {
 
     constructor(
-        private dataService: DataService) { }
+        private dataService: DataService,
+        private userLinks: UserLinkProviderService
+    ) { }
 
     resolve(activatedRoute: ActivatedRouteSnapshot, _snap: RouterStateSnapshot): Observable<UserActivation> {
-        const token = activatedRoute.params['id'];
+        const token = activatedRoute.params[this.userLinks.adminActivateIdParam];
         return this.dataService.activateAccount(token);
     }
 }

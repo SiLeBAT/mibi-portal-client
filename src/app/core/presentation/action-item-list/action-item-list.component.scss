@@ -2,7 +2,7 @@
 @use "@angular/material" as mat;
 @use "colors";
 @use "layout";
-@use "../actions";
+@use "app/main/styles";
 
 .mibi-app-bar-bottom {
   height: 100%;
@@ -10,7 +10,7 @@
   flex-wrap: wrap;
   justify-content: flex-end;
   align-items: center;
-  background-color: actions.$action-color;
+  background-color: colors.$action-color;
   color: mat.get-color-from-palette(colors.$primary-palette, darker-contrast);
 }
 
@@ -43,7 +43,7 @@
 }
 
 .mibi-action-link {
-  @include actions.app-bar-link;
+  @include styles.app-bar-link;
 
   height: 100%;
   display: flex;

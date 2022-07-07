@@ -3,6 +3,7 @@ import { CanActivate } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { take } from 'rxjs/operators';
 import { navigateMSA } from '../../shared/navigate/navigate.actions';
+import { SamplesLinkProviderService } from '../link-provider.service';
 import { SamplesMainSlice } from '../samples.state';
 import { selectHasEntries } from '../state/samples.selectors';
 
@@ -11,7 +12,10 @@ import { selectHasEntries } from '../state/samples.selectors';
 })
 export class NoSampleGuard implements CanActivate {
 
-    constructor(private store$: Store<SamplesMainSlice>) { }
+    constructor(
+        private store$: Store<SamplesMainSlice>,
+        private samplesLinks: SamplesLinkProviderService
+    ) { }
 
     async canActivate() {
         return this.store$.pipe(select(selectHasEntries),
@@ -31,7 +35,7 @@ export class NoSampleGuard implements CanActivate {
     }
 
     private onDissallow() {
-        this.store$.dispatch(navigateMSA({ url: '/upload' }));
+        this.store$.dispatch(navigateMSA({ path: this.samplesLinks.upload }));
         return false;
     }
 }

@@ -6,6 +6,7 @@ import { DialogConfiguration } from '../../shared/dialog/dialog.model';
 import { dialogConfirmMTA, dialogOpenMTA } from '../../shared/dialog/state/dialog.actions';
 import { navigateMSA } from '../../shared/navigate/navigate.actions';
 import { ofTarget } from '../../shared/ngrx/multi-target-action';
+import { SamplesLinkProviderService } from '../link-provider.service';
 import { samplesDestroyMainDataSOA } from '../state/samples.actions';
 import { closeSamplesSSA } from './close-samples.actions';
 import { closeSamplesConfirmDialogStrings } from './close-samples.constants';
@@ -16,7 +17,8 @@ export class CloseSamplesEffects {
     private readonly CONFIRM_DIALOG_TARGET = 'Samples/CloseSamples/Confirm';
 
     constructor(
-        private actions$: Actions
+        private actions$: Actions,
+        private samplesLinks: SamplesLinkProviderService
     ) { }
 
     closeSamples$ = createEffect(() => this.actions$.pipe(
@@ -31,7 +33,7 @@ export class CloseSamplesEffects {
         ofType(dialogConfirmMTA),
         ofTarget(this.CONFIRM_DIALOG_TARGET),
         concatMap(() => of(
-            navigateMSA({ url: '/upload' }),
+            navigateMSA({ path: this.samplesLinks.upload }),
             samplesDestroyMainDataSOA()
         ))
     ));

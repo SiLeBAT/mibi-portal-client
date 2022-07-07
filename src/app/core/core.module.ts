@@ -1,7 +1,5 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NavBarComponent } from './presentation/nav-bar/nav-bar.component';
-import { NavBarContainerComponent } from './container/nav-bar-container/nav-bar-container.component';
 import { SharedModule } from '../shared/shared.module';
 import { RouterModule } from '@angular/router';
 import { HomeComponent } from './presentation/home/home.component';
@@ -28,13 +26,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDividerModule } from '@angular/material/divider';
 import { EffectsModule } from '@ngrx/effects';
-import { AvatarComponent } from './presentation/avatar/avatar.component';
-import { AvatarContainerComponent } from './container/avatar-container/avatar-container.component';
 import { FooterNavContainerComponent } from './container/footer-nav-container/footer-nav-container.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FooterNavComponent } from './presentation/footer-nav/footer-nav.component';
 import { coreReducerMap, coreEffects } from './core.store';
 import { CORE_SLICE_NAME } from './core.state';
+import { MainModule } from '../main/main.module';
 
 @NgModule({
     imports: [
@@ -47,6 +44,7 @@ import { CORE_SLICE_NAME } from './core.state';
         FormsModule,
         ReactiveFormsModule,
         SharedModule,
+        MainModule,
         MomentModule,
         MatMenuModule,
         MatIconModule,
@@ -58,16 +56,12 @@ import { CORE_SLICE_NAME } from './core.state';
     ],
     declarations: [
         FooterNavContainerComponent,
-        AvatarComponent,
-        AvatarContainerComponent,
         AppBarTopContainerComponent,
         ActionItemListComponent,
         AppBarTopComponent,
         LastChangeDisplayContainerComponent,
         LastChangeDisplayComponent,
         HomeComponent,
-        NavBarComponent,
-        NavBarContainerComponent,
         DefaultPageLayoutComponent,
         PageBodyComponent,
         PageBodyContainerComponent,

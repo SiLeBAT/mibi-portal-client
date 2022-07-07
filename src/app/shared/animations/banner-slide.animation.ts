@@ -2,8 +2,8 @@ import {
     trigger, state, style, transition, animate
 } from '@angular/animations';
 
-export const slideInOutAnimation = [
-    trigger('slideInOut', [
+export const bannerSlideAnimation = [
+    trigger('bannerSlideAnimation', [
         state('out', style({
             'display' : 'none',
             'transform': 'translate(-50%, -110%)'

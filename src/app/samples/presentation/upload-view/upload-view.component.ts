@@ -11,18 +11,19 @@ import { importSamplesMSA } from '../../import-samples/import-samples.actions';
     styleUrls: ['./upload-view.component.scss']
 })
 export class UploadViewComponent {
-
     constructor(private store$: Store<SamplesMainSlice>) {
-        this.store$.dispatch(showActionBarSOA({
-            title: '',
-            enabledActions: [
-                UserActionType.VALIDATE,
-                UserActionType.SEND,
-                UserActionType.EXPORT,
-                UserActionType.UPLOAD,
-                UserActionType.DOWNLOAD_TEMPLATE
-            ]
-        }));
+        setTimeout(() => {
+            this.store$.dispatch(showActionBarSOA({
+                title: '',
+                enabledActions: [
+                    UserActionType.VALIDATE,
+                    UserActionType.SEND,
+                    UserActionType.EXPORT,
+                    UserActionType.UPLOAD,
+                    UserActionType.DOWNLOAD_TEMPLATE
+                ]
+            }));
+        });
     }
 
     fileUpload(file: File) {

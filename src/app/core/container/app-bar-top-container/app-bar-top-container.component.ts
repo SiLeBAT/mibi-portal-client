@@ -3,7 +3,6 @@ import _ from 'lodash';
 import { Store, select } from '@ngrx/store';
 import { map } from 'rxjs/operators';
 import { Observable, combineLatest } from 'rxjs';
-import { environment } from '../../../../environments/environment';
 import { UserActionViewModelConfiguration, UserActionType } from '../../../shared/model/user-action.model';
 import { UserActionService } from '../../services/user-action.service';
 import { SamplesMainSlice } from '../../../samples/samples.state';
@@ -16,7 +15,6 @@ import { selectUserCurrentUser } from '../../../user/state/user.selectors';
 @Component({
     selector: 'mibi-app-bar-top-container',
     template: `<mibi-app-bar-top
-        [appName]="appName"
         [actionBarEnabled]="actionBarEnabled$ | async"
         [actionBarTitle]="actionBarTitle$ | async"
         [actionConfigs]="actionConfigs$ | async"
@@ -25,7 +23,6 @@ import { selectUserCurrentUser } from '../../../user/state/user.selectors';
 })
 export class AppBarTopContainerComponent {
 
-    appName = environment.appName;
     actionBarEnabled$: Observable<boolean> = this.store$.pipe(select(selectActionBarEnabled));
     actionBarTitle$: Observable<string> = this.store$.pipe(select(selectActionBarTitle));
     actionConfigs$: Observable<UserActionViewModelConfiguration[]>;

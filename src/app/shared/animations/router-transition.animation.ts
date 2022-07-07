@@ -1,12 +1,12 @@
 import { trigger, animate, transition, style, query, group } from '@angular/animations';
 
-export const fadeAnimation = trigger('fadeAnimation', [
-    transition('noRoute => *', []),
-    transition('* => samples', [
+export const routerTransitionFadeAnimation = trigger('routerTransitionFadeAnimation', [
+    transition('initial => *', []),
+    transition('* => disabled', [
         animate('0.3s', style({ 'opacity': '0' })),
         animate('0.1s', style({ 'opacity': '0' }))
     ]),
-    transition('samples => *', [
+    transition('disabled => *', [
         style({ 'opacity': '0' }),
         animate('0.3s', style({ 'opacity': '1' }))
     ]),
@@ -16,9 +16,9 @@ export const fadeAnimation = trigger('fadeAnimation', [
     ])
 ]);
 
-export const transitionAnimation = trigger('transitionAnimation', [
-    transition('noRoute => *', []),
-    transition('samples => *', []),
+export const routerTransitionAnimation = trigger('routerTransitionAnimation', [
+    transition('initial => *', []),
+    transition('disabled => *', []),
     transition('* => *', [
         query(':leave, :enter', [
             style({ 'display': 'none' })

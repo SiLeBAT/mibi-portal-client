@@ -1,7 +1,6 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { AuthGuard } from './services/auth-guard.service';
+import { RouterModule, Routes } from '@angular/router';
 import { LoginViewComponent } from './presentation/login-view/login-view.component';
 import { LoginComponent } from './presentation/login/login.component';
 import { LoginContainerComponent } from './container/login-container/login-container.component';
@@ -27,8 +26,6 @@ import { AdminActivateViewComponent } from './presentation/admin-activate-view/a
 import { AdminActivateComponent } from './presentation/admin-activate/admin-activate.component';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { TokenValidationResolver } from './services/token-validation-resolver.service';
-import { AdminTokenValidationResolver } from './services/admin-token-validation-resolver.service';
 import { DatenschutzHinweiseComponent } from './presentation/datenschutzhinweise/datenschutzhinweise.component';
 import { DatenSchutzHinweiseViewComponent } from './presentation/datenschutzhinweise-view/datenschutzhinweise-view.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -37,10 +34,39 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { AnonymousGuard } from './services/anonymous-guard.service';
 import { PasswordComponent } from './password/password.component';
 import { USER_SLICE_NAME } from './user.state';
 import { userReducerMap, userEffects } from './user.store';
+import { userPathsParams, userPathsSegments } from './user.paths';
+import { AnonymousGuard } from './services/anonymous-guard.service';
+import { TokenValidationResolver } from './services/token-validation-resolver.service';
+import { AdminTokenValidationResolver } from './services/admin-token-validation-resolver.service';
+import { AuthGuard } from './services/auth-guard.service';
+
+const parametrizedPaths = {
+    reset: userPathsSegments.reset + '/:' + userPathsParams.reset.id,
+    activate: userPathsSegments.activate + '/:' + userPathsParams.activate.id,
+    adminActivate: userPathsSegments.adminActivate + '/:' + userPathsParams.adminActivate.id
+};
+
+const routes: Routes = [{
+    path: userPathsSegments.users,
+    children: [
+        { path: userPathsSegments.login, component: LoginViewComponent, canActivate: [AnonymousGuard] },
+        { path: userPathsSegments.register, component: RegisterViewComponent, canActivate: [AnonymousGuard] },
+        { path: userPathsSegments.recovery, component: RecoveryViewComponent, canActivate: [AnonymousGuard] },
+        { path: parametrizedPaths.reset, component: ResetViewComponent, canActivate: [AnonymousGuard] },
+        { path: parametrizedPaths.activate, component: ActivateViewComponent, resolve: { tokenValid: TokenValidationResolver } },
+        {
+            path: parametrizedPaths.adminActivate,
+            component: AdminActivateViewComponent,
+            resolve: { adminTokenValid: AdminTokenValidationResolver }
+        },
+        { path: userPathsSegments.profile, component: ProfileContainerComponent, canActivate: [AuthGuard] },
+        { path: userPathsSegments.privacyPolicy, component: DatenSchutzHinweiseViewComponent },
+        { path: '**', redirectTo: userPathsSegments.login }
+    ]
+}];
 
 @NgModule({
     imports: [
@@ -54,24 +80,7 @@ import { userReducerMap, userEffects } from './user.store';
         MatAutocompleteModule,
         PasswordStrengthMeterModule,
         SharedModule,
-        RouterModule.forChild([{
-            path: 'users',
-            children: [
-                { path: 'login', component: LoginViewComponent, canActivate: [AnonymousGuard] },
-                { path: 'register', component: RegisterViewComponent, canActivate: [AnonymousGuard] },
-                { path: 'recovery', component: RecoveryViewComponent, canActivate: [AnonymousGuard] },
-                { path: 'reset/:id', component: ResetViewComponent, canActivate: [AnonymousGuard] },
-                { path: 'activate/:id', component: ActivateViewComponent, resolve: { tokenValid: TokenValidationResolver } },
-                {
-                    path: 'adminactivate/:id',
-                    component: AdminActivateViewComponent,
-                    resolve: { adminTokenValid: AdminTokenValidationResolver }
-                },
-                { path: 'profile', component: ProfileContainerComponent, canActivate: [AuthGuard] },
-                { path: 'datenschutzhinweise', component: DatenSchutzHinweiseViewComponent },
-                { path: '**', redirectTo: 'login' }
-            ]
-        }]),
+        RouterModule.forChild(routes),
         StoreModule.forFeature(USER_SLICE_NAME, userReducerMap),
         EffectsModule.forFeature(userEffects)
     ],

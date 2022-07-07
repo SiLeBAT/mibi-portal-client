@@ -18,24 +18,26 @@ import { samplesUpdateSampleDataEntrySOA } from './state/samples.actions';
     `,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SamplesComponent implements OnDestroy {
+export class SamplesEditorComponent implements OnDestroy {
 
     readonly samples$: Observable<Sample[]> = this.store$.pipe(select(selectSampleData));
 
     private fileNameSubscription: Subscription;
 
     constructor(private readonly store$: Store<SamplesMainSlice>) {
-        this.store$.dispatch(showActionBarSOA({
-            title: '',
-            enabledActions: [
-                UserActionType.SEND,
-                UserActionType.VALIDATE,
-                UserActionType.EXPORT,
-                UserActionType.CLOSE,
-                UserActionType.UPLOAD,
-                UserActionType.DOWNLOAD_TEMPLATE
-            ]
-        }));
+        setTimeout(() => {
+            this.store$.dispatch(showActionBarSOA({
+                title: '',
+                enabledActions: [
+                    UserActionType.SEND,
+                    UserActionType.VALIDATE,
+                    UserActionType.EXPORT,
+                    UserActionType.CLOSE,
+                    UserActionType.UPLOAD,
+                    UserActionType.DOWNLOAD_TEMPLATE
+                ]
+            }));
+        });
 
         this.fileNameSubscription = this.store$.pipe(
             select(selectImportedFileName),

@@ -15,6 +15,7 @@ import { ContentMainSlice } from '../../../content/content.state';
 import { UserMainSlice } from '../../user.state';
 import { navigateMSA } from '../../../shared/navigate/navigate.actions';
 import { Observable } from 'rxjs';
+import { UserLinkProviderService } from '../../link-provider.service';
 
 @Component({
     selector: 'mibi-register-container',
@@ -32,7 +33,8 @@ export class RegisterContainerComponent implements OnInit, OnDestroy {
     constructor(
         private store$: Store<ContentMainSlice & UserMainSlice>,
         private dataService: DataService,
-        private userActionService: UserActionService
+        private userActionService: UserActionService,
+        private userLinks: UserLinkProviderService
     ) { }
 
     ngOnInit() {
@@ -62,7 +64,7 @@ export class RegisterContainerComponent implements OnInit, OnDestroy {
         ).toPromise().then(
             (response: UserRegistrationRequest) => {
                 this.store$.dispatch(updateIsBusySOA({ isBusy: false }));
-                this.store$.dispatch(navigateMSA({ url: 'users/login' }));
+                this.store$.dispatch(navigateMSA({ path: this.userLinks.login }));
                 this.store$.dispatch(showCustomBannerSOA({
                     banner: {
                         message: `Bitte aktivieren Sie Ihren Account: Eine E-mail mit weiteren Anweisungen wurde an ${response.email} gesendet`,

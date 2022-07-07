@@ -2,13 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GuardedUnloadComponent } from './shared/container/guarded-unload.component';
 import { Store, select } from '@ngrx/store';
 import { takeWhile, tap } from 'rxjs/operators';
-import { DataService } from './core/services/data.service';
-import { TokenizedUser } from './user/model/user.model';
 import { SamplesMainSlice } from './samples/samples.state';
 import { selectHasEntries } from './samples/state/samples.selectors';
-import { updateIsBusySOA, showBannerSOA } from './core/state/core.actions';
-import { userForceLogoutMSA, userUpdateCurrentUserSOA, userUpdateInstitutionsSOA } from './user/state/user.actions';
-import { nrlUpdateNrlsSOA } from './shared/nrl/state/nrl.actions';
+import { initSSA } from './main/init/init.actions';
 
 @Component({
     selector: 'mibi-root',
@@ -19,7 +15,7 @@ export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDe
     private componentActive = true;
     private canUnload: boolean = true;
 
-    constructor(private store$: Store<SamplesMainSlice>, private dataService: DataService) {
+    constructor(private store$: Store<SamplesMainSlice>) {
         super();
     }
 
@@ -31,9 +27,7 @@ export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDe
             takeWhile(() => this.componentActive)
         ).subscribe();
 
-        this.loadInstitutions();
-        this.loadNRLs();
-        this.loadUser();
+        this.store$.dispatch(initSSA());
     }
 
     ngOnDestroy() {
@@ -42,58 +36,5 @@ export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDe
 
     unloadGuard(): boolean {
         return this.canUnload;
-    }
-
-    private loadInstitutions() {
-        this.store$.dispatch(updateIsBusySOA({ isBusy: true }));
-        this.dataService.getAllInstitutions().toPromise().then(
-            institutions => {
-                this.store$.dispatch(updateIsBusySOA({ isBusy: false }));
-                this.store$.dispatch(userUpdateInstitutionsSOA({ institutions: institutions }));
-            }
-        ).catch(
-            () => {
-                this.store$.dispatch(updateIsBusySOA({ isBusy: false }));
-                this.store$.dispatch(showBannerSOA({ predefined: 'defaultError' }));
-                throw new Error('Unable to fetch institutions');
-            }
-        );
-    }
-
-    private loadNRLs() {
-        this.dataService.getAllNRLs().toPromise().then(
-            data => {
-                this.store$.dispatch(nrlUpdateNrlsSOA({ nrlDTO: data }));
-            }
-        ).catch(
-            () => { throw new Error('Unable to fetch nrls'); }
-        );
-    }
-
-    private loadUser() {
-        const userJson: string | null = localStorage.getItem('currentUser');
-        if (!userJson) {
-            return;
-        }
-        const user: TokenizedUser = JSON.parse(userJson);
-
-        this.store$.dispatch(updateIsBusySOA({ isBusy: true }));
-        this.dataService.refreshToken().toPromise().then(
-            refreshResponse => {
-                this.store$.dispatch(updateIsBusySOA({ isBusy: false }));
-                if (refreshResponse.refresh) {
-                    user.token = refreshResponse.token;
-                    this.dataService.setCurrentUser(user);
-                    this.store$.dispatch(userUpdateCurrentUserSOA({ user: user }));
-                } else {
-                    this.store$.dispatch(userForceLogoutMSA());
-                }
-            }
-        ).catch(
-            () => {
-                this.store$.dispatch(updateIsBusySOA({ isBusy: false }));
-                this.store$.dispatch(userForceLogoutMSA());
-            }
-        );
     }
 }

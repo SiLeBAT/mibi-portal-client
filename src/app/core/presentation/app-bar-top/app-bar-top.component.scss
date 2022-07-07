@@ -1,6 +1,4 @@
-@use "colors";
 @use "layout";
-@use "../actions";
 
 .mibi-app-bar {
   height: 100%;
@@ -9,48 +7,13 @@
 }
 
 .mibi-app-bar__top {
-  flex: 0 1 auto;
+  flex: 1 1 auto;
+  overflow: auto;
 
   @include layout.safari-fix;
 }
 
-.mibi-app-bar-top {
-  overflow: auto;
-  display: flex;
-  background-color: colors.$primary-color;
-}
-
-.mibi-app-bar-top__left {
-  flex: 0 1 auto;
-}
-
-.mibi-app-title {
-  @include actions.app-bar-link;
-
-  text-align: center;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  padding: layout.$single-space;
-  padding-left: layout.$double-space;
-  font-size: 1.1rem;
-  line-height: 1;
-}
-
-.mibi-app-title__text {
-  flex: 0 1 auto;
-}
-
-.mibi-app-bar-top__center {
-  flex: 0 1 auto;
-  margin-left: auto;
-}
-
-.mibi-app-bar-top__right {
-  flex: 0 1 5%;
-}
-
 .mibi-app-bar__bottom {
-  flex: 0 1 auto;
+  flex: 1 1 auto;
   overflow: auto;
 }

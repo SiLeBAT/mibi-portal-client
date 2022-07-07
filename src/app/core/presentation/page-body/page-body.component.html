@@ -6,16 +6,16 @@
       </mat-spinner>
     </div>
     <div class="mibi-page-body__banner mibi-banner"
-      [@slideInOut]="animationState"
-      (@slideInOut.done)="onAnimationDone($event)"
+      [@bannerSlideAnimation]="getBannerAnimationState()"
+      (@bannerSlideAnimation.done)="onBannerAnimationDone($event)"
     >
       <mibi-banner-container></mibi-banner-container>
     </div>
     <div class="mibi-page-body__main"
-      [@fadeAnimation]="o.isActivated ? (o.activatedRoute.url | async) : 'noRoute'"
-      [@transitionAnimation]="o.isActivated ? (o.activatedRoute.url | async) : 'noRoute'"
+      [@routerTransitionFadeAnimation]="getRouterAnimationState(mainOutlet)"
+      [@routerTransitionAnimation]="getRouterAnimationState(mainOutlet)"
     >
-      <router-outlet #o="outlet"></router-outlet>
+      <router-outlet #mainOutlet="outlet"></router-outlet>
     </div>
   </div>
 

@@ -18,13 +18,17 @@ export class ActivateContainerComponent implements OnInit {
         private store$: Store<UserMainState>
     ) { }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.tokenValid = this.activatedRoute.snapshot.data['tokenValid'];
 
         if (this.tokenValid) {
-            this.store$.dispatch(showBannerSOA({ predefined: 'accountActivationSuccess' }));
+            setTimeout(() => {
+                this.store$.dispatch(showBannerSOA({ predefined: 'accountActivationSuccess' }));
+            });
         } else {
-            this.store$.dispatch(showBannerSOA({ predefined: 'accountActivationFailure' }));
+            setTimeout(() => {
+                this.store$.dispatch(showBannerSOA({ predefined: 'accountActivationFailure' }));
+            });
         }
     }
 }
