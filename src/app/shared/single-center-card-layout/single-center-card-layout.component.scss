@@ -1,0 +1,41 @@
+@use "layout";
+
+.mibi-card-container {
+  height: 100%;
+  display: grid;
+  grid-template: minmax(0, min-content) / minmax(0, max-content);
+  justify-content: center;
+  padding: layout.$octuple-space 10% layout.$quadruple-space;
+}
+
+.mibi-card {
+  display: grid;
+  grid-template: 0 min-content minmax(0, min-content) min-content / minmax(auto, max-content);
+  max-width: 800px;
+  overflow: auto;
+}
+
+.mibi-card__flex {
+  min-width: 0;
+}
+
+.mibi-card-spacer {
+  display: flex;
+}
+
+.mibi-card-spacer__content {
+  width: 400px;
+  flex: 1 1 auto;
+}
+
+.mibi-card-title {
+  line-height: normal;
+}
+
+.mibi-card-content {
+  overflow: auto;
+}
+
+.mibi-card-content--no-auto-scroll {
+  overflow: visible;
+}

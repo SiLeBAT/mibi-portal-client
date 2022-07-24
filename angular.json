@@ -16,6 +16,9 @@
       "root": "",
       "sourceRoot": "src",
       "prefix": "mibi",
+      "i18n": {
+        "sourceLocale": "de"
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",

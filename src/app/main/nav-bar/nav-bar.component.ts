@@ -36,21 +36,21 @@ const selectNavTabsConfig = createSelector<SamplesMainSlice & UserMainSlice, boo
     template: `
         <mibi-nav-bar-layout>
             <mibi-nav-bar-title-view
-                title
+                mibi-nav-bar-title
                 [tab]="titleTab"
             ></mibi-nav-bar-title-view>
             <mibi-nav-bar-tabs-view
-                tabs
+                mibi-nav-bar-tabs
                 [tabs]="navTabs$ | async"
             ></mibi-nav-bar-tabs-view>
             <mibi-nav-bar-login-view
                 *ngIf="(avatarUser$ | async) === null"
-                user
+                mibi-nav-bar-user
                 [tab]="loginTab"
             ></mibi-nav-bar-login-view>
             <mibi-nav-bar-avatar-view
                 *ngIf="(avatarUser$ | async) as user"
-                user
+                mibi-nav-bar-user
                 [user]="user"
                 (logout)="onAvatarLogout()"
                 (profile)="onAvatarProfile()"

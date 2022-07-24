@@ -6,6 +6,7 @@ import { Component, Input } from '@angular/core';
     styleUrls: ['./wall-of-text-layout.component.scss']
 })
 export class WallOfTextLayoutComponent {
-    @Input() cardtitle: string;
+    // Do not rename this to html reserved keyword "title" it will add title-tooltips to all child elements
+    @Input() wotTitle: string;
 
 }

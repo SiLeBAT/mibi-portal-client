@@ -8,6 +8,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatTableModule } from '@angular/material/table';
 import { CoreModule } from '../core/core.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -37,6 +38,7 @@ import { samplesPathsSegments } from './samples.paths';
 import { NoSampleGuard } from './services/no-sample-guard.service';
 import { AuthGuard } from '../user/services/auth-guard.service';
 import { AnimationsRouteData } from '../shared/animations/animations.model';
+import { OrderListViewComponent } from './order-list/order-list-view.component';
 
 const disabledTransitionAnimationData: AnimationsRouteData = {
     transitionAnimation: 'disabled'
@@ -53,7 +55,8 @@ const routes: Routes = [
                 canActivate: [NoSampleGuard],
                 data: { ...disabledTransitionAnimationData }
             },
-            { path: samplesPathsSegments.viewer, component: SamplesViewerComponent, canActivate: [AuthGuard] }
+            { path: samplesPathsSegments.viewer, component: SamplesViewerComponent, canActivate: [AuthGuard] },
+            { path: '**', redirectTo: samplesPathsSegments.editor }
         ]
     }
 ];
@@ -69,6 +72,7 @@ const routes: Routes = [
         MatRadioModule,
         MatCheckboxModule,
         MatFormFieldModule,
+        MatTableModule,
         RouterModule.forChild(routes),
         StoreModule.forFeature(SAMPLES_SLICE_NAME, samplesReducerMap),
         EffectsModule.forFeature(samplesEffects),
@@ -92,6 +96,7 @@ const routes: Routes = [
         SamplesGridListBoxViewComponent,
         SamplesGridDataEditorViewComponent,
         SamplesGridViewComponent,
+        OrderListViewComponent,
         SamplesEditorComponent,
         SamplesViewerComponent
     ],

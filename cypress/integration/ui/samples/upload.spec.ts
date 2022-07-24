@@ -11,7 +11,7 @@ describe('Testing the Sample Upload Page', function () {
 
     describe('Testing the Sample Upload Page content', function () {
         it('should display the page greeting', function () {
-            cy.contains('h1', 'Probeneinsendebogen hochladen');
+            cy.contains('div', 'Probeneinsendebogen hochladen');
         });
     });
 });

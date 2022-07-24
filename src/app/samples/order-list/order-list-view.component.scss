@@ -1,0 +1,32 @@
+@use "@angular/material" as mat;
+@use "layout";
+@use "colors";
+
+$mibi-hover-opacity: 0.075;
+$mibi-selection-opacity: 0.2;
+
+.mibi-order-list {
+  @include mat.elevation(1);
+
+  height: 100%;
+  display: block;
+  overflow: auto;
+}
+
+/* stylelint-disable-next-line selector-class-pattern */
+.mat-column-date {
+  white-space: nowrap;
+}
+
+/* stylelint-disable-next-line selector-class-pattern */
+.mat-column-name {
+  padding-left: layout.$quadruple-space;
+}
+
+.mibi-order:hover {
+  background-color: rgba(colors.$ui-color, $mibi-hover-opacity);
+}
+
+.mibi-order:active {
+  background-color: rgba(colors.$ui-color, $mibi-selection-opacity);
+}
