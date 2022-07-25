@@ -17,7 +17,10 @@
       "sourceRoot": "src",
       "prefix": "mibi",
       "i18n": {
-        "sourceLocale": "de"
+        "sourceLocale": {
+          "code": "de",
+          "baseHref": ""
+        }
       },
       "architect": {
         "build": {
@@ -25,6 +28,7 @@
           "options": {
             "outputPath": "public",
             "index": "src/index.html",
+            "localize": true,
             "main": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "polyfills": "src/polyfills.ts",
