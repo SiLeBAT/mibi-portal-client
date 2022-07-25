@@ -6,8 +6,6 @@ $mibi-hover-opacity: 0.075;
 $mibi-selection-opacity: 0.2;
 
 .mibi-order-list {
-  @include mat.elevation(1);
-
   height: 100%;
   display: block;
   overflow: auto;
