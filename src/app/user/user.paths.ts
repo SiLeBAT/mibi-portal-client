@@ -7,7 +7,7 @@ export const userPathsSegments = {
     privacyPolicy: 'datenschutzhinweise',
     reset: 'reset',
     activate: 'activate',
-    adminActivate: 'adminActivate'
+    adminActivate: 'adminactivate'
 };
 
 export const userPaths = {
