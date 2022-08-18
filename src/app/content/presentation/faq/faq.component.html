@@ -4,5 +4,7 @@
             <div class="mibi-faq-title" [innerHtml]="question"></div>
         </mat-panel-title>
     </mat-expansion-panel-header>
-    <div class="mibi-faq-text" [innerHtml]="answer"></div>
+    <ng-template matExpansionPanelContent>
+        <div class="mibi-faq-text" [innerHtml]="answer"></div>
+    </ng-template>
 </mat-expansion-panel>

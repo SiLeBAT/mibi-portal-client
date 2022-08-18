@@ -1,6 +1,6 @@
 <mibi-box-layout x-overflow-handling y-overflow-handling>
 
-  <div class="mibi-page-body">
+  <div #scrollContainer class="mibi-page-body">
     <div class="mibi-page-body__spinner" [ngClass]="{'mibi-page-body__spinner--active':isBusy}">
       <mat-spinner *ngIf="isBusy" class="mibi-spinner" color="primary" _forceAnimations="true">
       </mat-spinner>
@@ -14,6 +14,7 @@
     <div class="mibi-page-body__main"
       [@fadeAnimation]="o.isActivated ? (o.activatedRoute.url | async) : 'noRoute'"
       [@transitionAnimation]="o.isActivated ? (o.activatedRoute.url | async) : 'noRoute'"
+      (@transitionAnimation.done)="onRouterAnimationDone(scrollContainer)"
     >
       <router-outlet #o="outlet"></router-outlet>
     </div>
