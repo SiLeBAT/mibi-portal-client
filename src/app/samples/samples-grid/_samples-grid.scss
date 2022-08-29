@@ -2,7 +2,7 @@
 @use "sass:color";
 @use "colors";
 
-$edit-color: color.adjust(map.get(colors.$primary-palette, "A400"), $lightness: -25%);
+$edit-color: color.adjust(colors.$ui-color, $lightness: -25%);
 
 $cell-border: 1px solid colors.$surface-color;
 $cell-padding: 0.15rem 0.3rem;

@@ -148,3 +148,8 @@ $light-theme: mat.define-light-theme($primary-palette, $accent-palette, $warn-pa
 
 $action-color: mat.get-color-from-palette($primary-palette, 300);
 $ui-color: mat.get-color-from-palette($primary-palette, "A400");
+
+// Color modifiers
+
+$hover-opacity: 0.075;
+$selection-opacity: 0.2;

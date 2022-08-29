@@ -39,6 +39,7 @@ import { NoSampleGuard } from './services/no-sample-guard.service';
 import { AuthGuard } from '../user/services/auth-guard.service';
 import { AnimationsRouteData } from '../shared/animations/animations.model';
 import { OrderListViewComponent } from './order-list/order-list-view.component';
+import { MatSortModule } from '@angular/material/sort';
 
 const disabledTransitionAnimationData: AnimationsRouteData = {
     transitionAnimation: 'disabled'
@@ -73,6 +74,7 @@ const routes: Routes = [
         MatCheckboxModule,
         MatFormFieldModule,
         MatTableModule,
+        MatSortModule,
         RouterModule.forChild(routes),
         StoreModule.forFeature(SAMPLES_SLICE_NAME, samplesReducerMap),
         EffectsModule.forFeature(samplesEffects),

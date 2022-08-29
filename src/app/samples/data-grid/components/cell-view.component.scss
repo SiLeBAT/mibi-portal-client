@@ -1,11 +1,12 @@
 @use "sass:map";
+@use "sass:color";
 @use "colors";
 
-$mibi-ui-color: map.get(colors.$primary-palette, "A400");
+$mibi-ui-color: colors.$ui-color;
 $mibi-border-color: colors.$surface-color;
 $mibi-grid-border: 0.5px solid colors.$surface-color;
-$mibi-hover-opacity: 0.075;
-$mibi-selection-opacity: 0.2;
+$mibi-hover-opacity: colors.$hover-opacity;
+$mibi-selection-opacity: colors.$selection-opacity;
 
 .mibi-shadow {
   z-index: -1;
@@ -61,27 +62,27 @@ $mibi-selection-opacity: 0.2;
 }
 
 .mibi-hover-hint {
-  background-color: rgba(black, $mibi-hover-opacity);
+  background-color: color.change(black, $alpha: $mibi-hover-opacity);
 }
 
 .mibi-selection-hint {
-  background-color: rgba(black, $mibi-selection-opacity);
+  background-color: color.change(black, $alpha: $mibi-selection-opacity);
 }
 
 .mibi-selection-hover-hint {
-  background-color: rgba(black, $mibi-hover-opacity + $mibi-selection-opacity);
+  background-color: color.change(black, $alpha: $mibi-hover-opacity + $mibi-selection-opacity);
 }
 
 .mibi-selection--hover {
-  background-color: rgba($mibi-ui-color, $mibi-hover-opacity);
+  background-color: color.change($mibi-ui-color, $alpha: $mibi-hover-opacity);
 }
 
 .mibi-selection--selected {
-  background-color: rgba($mibi-ui-color, $mibi-selection-opacity);
+  background-color: color.change($mibi-ui-color, $alpha: $mibi-selection-opacity);
 }
 
 .mibi-selection--selected-hover {
-  background-color: rgba($mibi-ui-color, $mibi-selection-opacity + $mibi-hover-opacity);
+  background-color: color.change($mibi-ui-color, $alpha: $mibi-selection-opacity + $mibi-hover-opacity);
 }
 
 .mibi-selection-anchor {

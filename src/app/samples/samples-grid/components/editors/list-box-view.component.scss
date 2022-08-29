@@ -1,10 +1,11 @@
+@use "sass:color";
 @use "@angular/material" as mat;
 @use "colors";
 @use "layout";
 @use "../../samples-grid";
 
-$mibi-selection-opacity: 0.2;
-$mibi-hover-opacity: 0.075;
+$mibi-selection-opacity: colors.$selection-opacity;
+$mibi-hover-opacity: colors.$hover-opacity;
 
 @mixin mibi-text-style {
   @include samples-grid.default-text-style;
@@ -36,15 +37,15 @@ $mibi-hover-opacity: 0.075;
 }
 
 .mibi-list-item--hover {
-  background-color: rgba(samples-grid.$edit-color, $mibi-hover-opacity);
+  background-color: color.change(samples-grid.$edit-color, $alpha: $mibi-hover-opacity);
 }
 
 .mibi-list-item--selected {
-  background-color: rgba(samples-grid.$edit-color, $mibi-selection-opacity);
+  background-color: color.change(samples-grid.$edit-color, $alpha: $mibi-selection-opacity);
 }
 
 .mibi-list-item--selected-hover {
-  background-color: rgba(samples-grid.$edit-color, $mibi-selection-opacity + $mibi-hover-opacity);
+  background-color: color.change(samples-grid.$edit-color, $alpha: $mibi-selection-opacity + $mibi-hover-opacity);
 }
 
 .mibi-filtered-text {

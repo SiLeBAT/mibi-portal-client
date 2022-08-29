@@ -1,6 +1,8 @@
 @use "@angular/material" as mat;
 @use "colors";
 
+$mibi-border-color: colors.$surface-color;
+
 .mibi-panel {
   position: relative;
   z-index: 0;
@@ -27,7 +29,7 @@
   user-select: none;
 
   // mask precision gaps between grid lines visible in firefox
-  background-color: colors.$surface-color;
+  background-color: $mibi-border-color;
 }
 
 .mibi-grid__cell {

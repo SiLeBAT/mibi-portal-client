@@ -1,14 +1,16 @@
+@use "sass:color";
 @use "@angular/material" as mat;
 @use "layout";
 @use "colors";
 
-$mibi-hover-opacity: 0.075;
-$mibi-selection-opacity: 0.2;
-
-.mibi-order-list {
+.mibi-scroll-container {
   height: 100%;
-  display: block;
   overflow: auto;
+}
+
+.mibi-table {
+  width: 100%;
+  user-select: none;
 }
 
 /* stylelint-disable-next-line selector-class-pattern */
@@ -21,10 +23,23 @@ $mibi-selection-opacity: 0.2;
   padding-left: layout.$quadruple-space;
 }
 
-.mibi-order:hover {
-  background-color: rgba(colors.$ui-color, $mibi-hover-opacity);
+.mibi-cell {
+  position: relative;
 }
 
-.mibi-order:active {
-  background-color: rgba(colors.$ui-color, $mibi-selection-opacity);
+.mibi-cell__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.mibi-row:hover .mibi-cell__overlay--hint {
+  background-color: color.change(colors.$ui-color, $alpha: colors.$hover-opacity);
+}
+
+.mibi-row:active .mibi-cell__overlay--hint {
+  background-color: color.change(colors.$ui-color, $alpha: colors.$selection-opacity);
 }
