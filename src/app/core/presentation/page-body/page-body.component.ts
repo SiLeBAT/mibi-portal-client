@@ -2,7 +2,7 @@ import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { AnimationEvent } from '@angular/animations';
 import { bannerSlideAnimation } from '../../../shared/animations/banner-slide.animation';
 import { routerTransitionFadeAnimation, routerTransitionAnimation } from '../../../shared/animations/router-transition.animation';
-import { Router, RouterOutlet } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
 import { AnimationsRouteData } from '../../../shared/animations/animations.model';
 
 @Component({
@@ -15,8 +15,6 @@ export class PageBodyComponent {
     @Input() isBusy: boolean;
     @Input() isBanner: boolean;
     @Output() animationDone = new EventEmitter<void>();
-
-    constructor(private router: Router) { }
 
     getBannerAnimationState(): string {
         return this.isBanner ? 'in' : 'out';
@@ -33,12 +31,17 @@ export class PageBodyComponent {
             return 'disabled';
         }
 
-        return this.router.url;
+        return outlet.activatedRoute.snapshot.url[0]?.path ?? '';
     }
 
     onBannerAnimationDone(event: AnimationEvent) {
         if (event.fromState === 'in') {
             this.animationDone.emit();
         }
+    }
+
+    onRouterTransitionAnimationDone(scrollContainer: {scrollTop: number; scrollLeft: number}): void {
+        scrollContainer.scrollTop = 0;
+        scrollContainer.scrollLeft = 0;
     }
 }
