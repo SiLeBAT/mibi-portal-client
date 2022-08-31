@@ -26,7 +26,9 @@ export class OrderListViewComponent implements AfterViewInit, OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
         if(changes.orders) {
-            this.dataSource.data = changes.orders.currentValue as OrderListOrder[];
+            const newData = changes.orders.currentValue as OrderListOrder[];
+            const preSortedData = newData.sort((a, b) => b.date.getTime() - a.date.getTime());
+            this.dataSource.data = preSortedData;
         }
     }
 
