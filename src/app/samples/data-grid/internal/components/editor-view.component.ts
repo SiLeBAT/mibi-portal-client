@@ -12,9 +12,9 @@ import {
     DataGridCellData,
     DataGridEditorContext,
     DataGridEditorData
-} from '../data-grid.model';
-import { DataGridCellController } from '../domain/cell-controller.model';
-import { DataGridCellTool } from '../domain/cell-tool.entity';
+} from '../../data-grid.model';
+import { DataGridCellController } from '../cell-controller.model';
+import { DataGridCellTool } from '../cell-tool.class';
 
 @Component({
     selector: 'mibi-data-grid-editor-view',

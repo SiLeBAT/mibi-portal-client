@@ -1,5 +1,5 @@
 import { DataGridRowId, DataGridColId, DataGridMap } from '../data-grid.model';
-import { DataGridDirtyEmitterMap } from './dirty-emitter-map.entity';
+import { DataGridDirtyEmitterMap } from './dirty-emitter-map.class';
 
 export class DataGridChangeDetector {
     private dirtyMarks: true[][] = [];

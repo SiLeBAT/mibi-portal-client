@@ -9,10 +9,10 @@ import {
     DataGridCellViewModel,
     DataGridCellContext,
     DataGridCellData
-} from '../data-grid.model';
-import { DataGridCellController } from '../domain/cell-controller.model';
-import { DataGridCellTool } from '../domain/cell-tool.entity';
-import { DataGridSelectionManager } from '../domain/selection-manager.entity';
+} from '../../data-grid.model';
+import { DataGridCellController } from '../cell-controller.model';
+import { DataGridCellTool } from '../cell-tool.class';
+import { DataGridSelectionManager } from '../selection-manager.class';
 
 @Component({
     selector: 'mibi-data-grid-cell-view',

@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, ViewChild, OnInit, ElementRef, Input, Output, EventEmitter } from '@angular/core';
-import { AnnotatedSampleDataEntry } from '../../../model/sample-management.model';
+import { SamplesGridDataCellData, SamplesGridEditorData } from '../../samples-grid.model';
 
 @Component({
     selector: 'mibi-samples-grid-data-editor-view',
@@ -9,8 +9,8 @@ import { AnnotatedSampleDataEntry } from '../../../model/sample-management.model
 })
 export class SamplesGridDataEditorViewComponent implements OnInit {
 
-    @Input() data: AnnotatedSampleDataEntry;
-    @Output() dataValueChange = new EventEmitter<string>();
+    @Input() data: SamplesGridDataCellData;
+    @Output() dataValueChange = new EventEmitter<SamplesGridEditorData>();
 
     @Output() confirm = new EventEmitter<void>();
     @Output() cancel = new EventEmitter<void>();

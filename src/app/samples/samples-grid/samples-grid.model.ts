@@ -1,5 +1,7 @@
-import { Sample, SampleData } from '../model/sample-management.model';
-import { DataGridRowId, DataGridColId, DataGridCellData } from '../data-grid/data-grid.model';
+import { DataGridCellViewModel, DataGridViewModel, DataGridEditorEvent } from '../data-grid/data-grid.model';
+import { AnnotatedSampleDataEntry } from '../model/sample-management.model';
+
+// Cell types
 
 export enum SamplesGridCellType {
     TEXT,
@@ -10,24 +12,20 @@ export enum SamplesGridEditorType {
     DATA
 }
 
-export interface SamplesGridColumnModel {
-    colId: DataGridColId;
-    cellType: SamplesGridCellType;
-    editorType?: SamplesGridEditorType;
-    isRowHeader: boolean;
-    isReadOnly: boolean;
-    headerText: string;
-    getData(sample: Sample, sampleIndex: number): DataGridCellData;
-}
+// Data model
 
-export interface SamplesGridDataColumnModel extends SamplesGridColumnModel {
-    selector: keyof SampleData;
-}
+export type SamplesGridTextCellData = string;
+export type SamplesGridDataCellData = AnnotatedSampleDataEntry;
+export type SamplesGridCellData = SamplesGridTextCellData | SamplesGridDataCellData;
 
-export interface SamplesGridModel {
-    columns: SamplesGridColumnModel[];
-    headerRowId: DataGridRowId;
-    headerCellType: SamplesGridCellType;
-    getSampleRowId(index: number): DataGridRowId;
-    getSampleIndex(rowId: DataGridRowId): number;
+export type SamplesGridEditorData = string;
+
+// View model
+
+export type SamplesGridCellViewModel = DataGridCellViewModel<SamplesGridCellType, SamplesGridEditorType>;
+
+export type SamplesGridViewModel = DataGridViewModel<SamplesGridCellViewModel, SamplesGridCellData>;
+
+export interface SamplesGridDataChangeEvent extends DataGridEditorEvent {
+    data: SamplesGridEditorData;
 }

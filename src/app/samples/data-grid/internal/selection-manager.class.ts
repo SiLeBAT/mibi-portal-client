@@ -1,5 +1,5 @@
-import { DataGridCellTool } from './cell-tool.entity';
-import { DataGridChangeDetector } from './change-detector.entity';
+import { DataGridCellTool } from './cell-tool.class';
+import { DataGridChangeDetector } from './change-detector.class';
 
 export class DataGridSelectionManager {
     readonly anchor: DataGridCellTool;

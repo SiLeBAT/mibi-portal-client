@@ -1,4 +1,4 @@
-import { DataGridChangeDetector } from './change-detector.entity';
+import { DataGridChangeDetector } from './change-detector.class';
 
 export class DataGridCellTool {
     private _row: number = -1;

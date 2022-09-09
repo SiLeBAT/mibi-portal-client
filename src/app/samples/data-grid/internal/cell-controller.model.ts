@@ -1,5 +1,5 @@
-import { DataGridCellTool } from './cell-tool.entity';
-import { DataGridSelectionManager } from './selection-manager.entity';
+import { DataGridCellTool } from './cell-tool.class';
+import { DataGridSelectionManager } from './selection-manager.class';
 import {
     DataGridCellData,
     DataGridCellViewModel,

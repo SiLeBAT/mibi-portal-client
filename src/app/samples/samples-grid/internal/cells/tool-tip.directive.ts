@@ -1,14 +1,15 @@
 import { Directive, ElementRef, Input, OnChanges, SimpleChanges } from '@angular/core';
 import 'tooltipster';
-import { AnnotatedSampleDataEntry, SampleValidationErrorLevel } from '../../../model/sample-management.model';
 import { createToolTip, ToolTipTheme, ToolTipAlignment } from '../../../../shared/model/tooltip.model';
-import { samplesGridToolTipOldValuePreamble, samplesGridToolTipOldValueEmpty } from '../../constants/tool-tip.constants';
+import { samplesGridToolTipOldValuePreamble, samplesGridToolTipOldValueEmpty } from '../../tool-tip.constants';
+import { SamplesGridDataCellData } from '../../samples-grid.model';
+import { SampleValidationErrorLevel } from '../../../model/sample-management.model';
 
 @Directive({
     selector: '[mibiSamplesGridToolTip]'
 })
 export class SamplesGridToolTipDirective implements OnChanges {
-    @Input('mibiSamplesGridToolTip') data: AnnotatedSampleDataEntry;
+    @Input('mibiSamplesGridToolTip') data: SamplesGridDataCellData;
 
     constructor(private hostElement: ElementRef) {}
 

@@ -12,9 +12,9 @@ import {
     ElementRef,
     ViewChild
 } from '@angular/core';
-import { DataGridCellTool } from '../domain/cell-tool.entity';
-import { DataGridSelectionManager } from '../domain/selection-manager.entity';
-import { DataGridClearingManager } from '../domain/clearing-manager.entity';
+import { DataGridCellTool } from './internal/cell-tool.class';
+import { DataGridSelectionManager } from './internal/selection-manager.class';
+import { DataGridClearingManager } from './internal/clearing-manager.class';
 import {
     DataGridCellViewModel,
     DataGridCellContext,
@@ -27,10 +27,10 @@ import {
     DataGridMap,
     DataGridTemplateMap,
     DataGridEditorContext
-} from '../data-grid.model';
-import { DataGridCellController, DataGridDirtyEmitter } from '../domain/cell-controller.model';
-import { DataGridChangeDetector } from '../domain/change-detector.entity';
-import { DataGridDirtyEmitterMap } from '../domain/dirty-emitter-map.entity';
+} from './data-grid.model';
+import { DataGridCellController, DataGridDirtyEmitter } from './internal/cell-controller.model';
+import { DataGridChangeDetector } from './internal/change-detector.class';
+import { DataGridDirtyEmitterMap } from './internal/dirty-emitter-map.class';
 import { Subject } from 'rxjs';
 
 enum MouseButton {
@@ -44,11 +44,13 @@ enum MouseButtons {
 
 @Component({
     selector: 'mibi-data-grid-view',
-    templateUrl: './grid-view.component.html',
-    styleUrls: ['./grid-view.component.scss'],
+    templateUrl: './data-grid-view.component.html',
+    styleUrls: ['./data-grid-view.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DataGridViewComponent implements AfterViewInit, OnChanges {
+
+    // PUBLIC INTERFACE
 
     @Input() model: DataGridViewModel;
     @Input() cellTemplates: DataGridTemplateMap<DataGridCellContext>;

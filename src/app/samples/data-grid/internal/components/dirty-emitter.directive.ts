@@ -1,6 +1,6 @@
 import { Directive, Input, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { DataGridDirtyEmitter } from '../domain/cell-controller.model';
+import { DataGridDirtyEmitter } from '../cell-controller.model';
 import { tap } from 'rxjs/operators';
 
 @Directive({

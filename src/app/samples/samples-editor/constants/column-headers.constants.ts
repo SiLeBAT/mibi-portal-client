@@ -1,8 +1,8 @@
-export const samplesGridIdHeader = '';
+export const samplesEditorIdHeader = '';
 
-export const samplesGridNrlHeader = 'NRL';
+export const samplesEditorNrlHeader = 'NRL';
 
-export const samplesGridSampleDataHeaders = {
+export const samplesEditorDataHeaders = {
     'sample_id':
         'Ihre Probe\u00ADnummer',
     'sample_id_avv':

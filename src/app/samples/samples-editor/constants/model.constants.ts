@@ -1,49 +1,51 @@
-import { samplesGridIdHeader, samplesGridNrlHeader, samplesGridSampleDataHeaders } from './column-headers.constants';
+import { samplesEditorIdHeader, samplesEditorNrlHeader, samplesEditorDataHeaders } from './column-headers.constants';
 import {
-    SamplesGridColumnModel,
-    SamplesGridDataColumnModel,
-    SamplesGridModel,
     SamplesGridCellType,
     SamplesGridEditorType
-} from '../samples-grid.model';
+} from '../../samples-grid/samples-grid.model';
+import {
+    SamplesEditorColumnModel,
+    SamplesEditorDataColumnModel,
+    SamplesEditorModel
+} from '../samples-editor.model';
 import { DataGridColId } from '../../data-grid/data-grid.model';
 
-function createIdModel(colId: DataGridColId): SamplesGridColumnModel {
+function createIdModel(colId: DataGridColId): SamplesEditorColumnModel {
     return {
         colId: colId,
         cellType: SamplesGridCellType.TEXT,
         isRowHeader: true,
         isReadOnly: true,
-        headerText: samplesGridIdHeader,
+        headerText: samplesEditorIdHeader,
         getData: (sample, sampleIndex) => (sampleIndex + 1).toString()
     };
 }
 
-function createNrlModel(colId: DataGridColId): SamplesGridColumnModel {
+function createNrlModel(colId: DataGridColId): SamplesEditorColumnModel {
     return {
         colId: colId,
         cellType: SamplesGridCellType.TEXT,
         isRowHeader: false,
         isReadOnly: true,
-        headerText: samplesGridNrlHeader,
+        headerText: samplesEditorNrlHeader,
         getData: (sample) => sample.sampleMeta.nrl
     };
 }
 
-function createDataModel(colId: DataGridColId, selector: keyof typeof samplesGridSampleDataHeaders): SamplesGridDataColumnModel {
+function createDataModel(colId: DataGridColId, selector: keyof typeof samplesEditorDataHeaders): SamplesEditorDataColumnModel {
     return {
         colId: colId,
         cellType: SamplesGridCellType.DATA,
         editorType: SamplesGridEditorType.DATA,
         isRowHeader: false,
         isReadOnly: false,
-        headerText: samplesGridSampleDataHeaders[selector],
+        headerText: samplesEditorDataHeaders[selector],
         getData: (sample) => sample.sampleData[selector],
         selector: selector
     };
 }
 
-const columnModels: SamplesGridColumnModel[] = [
+const columnModels: SamplesEditorColumnModel[] = [
     createIdModel(1),
     createNrlModel(2),
     createDataModel(3, 'sample_id'),
@@ -67,7 +69,7 @@ const columnModels: SamplesGridColumnModel[] = [
     createDataModel(21, 'comment')
 ];
 
-export const samplesGridModel: SamplesGridModel = {
+export const samplesEditorModel: SamplesEditorModel = {
     columns: columnModels,
     headerRowId: 0,
     headerCellType: SamplesGridCellType.TEXT,
