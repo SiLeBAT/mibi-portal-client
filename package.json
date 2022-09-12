@@ -58,6 +58,7 @@
     "file-saver": "^2.0.5",
     "jquery": "~3.6.0",
     "lodash": "~4.17.21",
+    "material-icons": "1.11.11",
     "moment": "~2.29.4",
     "ngx-moment": "~5.0.0",
     "normalize.css": "~8.0.1",
