@@ -35,6 +35,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { FooterNavComponent } from './presentation/footer-nav/footer-nav.component';
 import { coreReducerMap, coreEffects } from './core.store';
 import { CORE_SLICE_NAME } from './core.state';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
     imports: [
@@ -42,6 +43,7 @@ import { CORE_SLICE_NAME } from './core.state';
         MatProgressSpinnerModule,
         BrowserAnimationsModule,
         MatDividerModule,
+        MatCardModule,
         CommonModule,
         HttpClientModule,
         FormsModule,

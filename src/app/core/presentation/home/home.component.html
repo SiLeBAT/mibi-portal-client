@@ -1,46 +1,77 @@
-<mibi-single-center-card-layout cardtitle="">
-    <mibi-view-card-body>
-        <mibi-box-layout>
-            <h1 class="mibi-home-title">{{ appName }}</h1>
-            <p>
-                Sie befinden sich auf dem neuen Datenaustausch-Portal der
-                mikrobiologischen nationalen Referenzlabore des Bundesinstituts
-                für Risikobewertung (BfR).
-            </p>
-            <p>
-                Hier haben Sie die Möglichkeit sich zu registrieren und nach dem
-                Einloggen Ihre im Probeneinsendebogen eingetragenen Daten
-                hochzuladen, zu validieren und an das BfR zu senden. Der
-                Probeneinsendebogen ist unter Probendaten \ Excel-Vorlage
-                verlinkt und steht auf der gewohnten BfR-Seite zur Verfügung.
-            </p>
-            <p>
-                Möchten Sie Ihren Probeneinsendebogen nur kurz prüfen,
-                können Sie die Validierung der Proben wie gewohnt auch ohne sich
-                einzuloggen vornehmen.
-            </p>
-            <p>
-                Bei Fragen, Problemen oder Anregungen können Sie gerne mit uns
-                in
-                <a href="mailto:{{ supportContact }}" target="_top">Kontakt</a>
-                treten.
-            </p>
-        </mibi-box-layout>
-    </mibi-view-card-body>
-    <mibi-view-card-actions>
-        <mibi-box-layout>
-            <p>
-                Ihr MiBi-Portal Team
-            </p>
-            <p>
-                <a href="https://www.bfr.bund.de" target="_blank">
-                    <img
-                        class="mibi-home-logo"
-                        src="../../assets/BfR_Logo_DE.png"
-                        alt="BfR Logo"
-                    />
-                </a>
-            </p>
-        </mibi-box-layout>
-    </mibi-view-card-actions>
-</mibi-single-center-card-layout>
+<mibi-box-layout>
+    <div class="mibi-card-layout">
+        <div class="mibi-card-layout__content mibi-cards">
+            <mat-card class="mibi-cards__item">
+                <mat-card-header class="mibi-card-layout-item">
+                    <mat-card-title class="mibi-card-title mibi-mat-card-title">Wartungsarbeiten am 11.10.2022</mat-card-title>
+                </mat-card-header>
+                <mat-card-content class="mibi-card-layout-item">
+                    <mibi-box-layout>
+                        <p>
+                            Am Dienstag, den 11. Oktober 2022 werden routinemäßige Wartungsarbeiten am MiBi-Portal-Server durchgeführt. Das Portal wird an diesem Tag zwischenzeitlich nicht verfügbar sein.
+                        </p>
+                        <p>
+                            In dringenden Fällen können Sie ihre Isolatdaten per E-Mail an <a href="mailto:nrls-mibi@bfr.bund.de" target="_top">nrls-mibi@bfr.bund.de</a> senden.
+                        </p>
+                    </mibi-box-layout>
+                </mat-card-content>
+                <mat-card-actions class="mibi-card-layout-item">
+                    <mibi-box-layout>
+                        <p>
+                            Ihr MiBi-Portal Team
+                        </p>
+                    </mibi-box-layout>
+                </mat-card-actions>
+            </mat-card>
+            <mat-card class="mibi-cards__item">
+                <mat-card-header class="mibi-card-layout-item">
+                    <mat-card-title class="mibi-card-title mibi-mat-card-title"></mat-card-title>
+                </mat-card-header>
+                <mat-card-content class="mibi-card-layout-item">
+                    <mibi-box-layout>
+                        <h1 class="mibi-home-title">{{ appName }}</h1>
+                        <p>
+                            Sie befinden sich auf dem neuen Datenaustausch-Portal der
+                            mikrobiologischen nationalen Referenzlabore des Bundesinstituts
+                            für Risikobewertung (BfR).
+                        </p>
+                        <p>
+                            Hier haben Sie die Möglichkeit sich zu registrieren und nach dem
+                            Einloggen Ihre im Probeneinsendebogen eingetragenen Daten
+                            hochzuladen, zu validieren und an das BfR zu senden. Der
+                            Probeneinsendebogen ist unter Probendaten \ Excel-Vorlage
+                            verlinkt und steht auf der gewohnten BfR-Seite zur Verfügung.
+                        </p>
+                        <p>
+                            Möchten Sie Ihren Probeneinsendebogen nur kurz prüfen,
+                            können Sie die Validierung der Proben wie gewohnt auch ohne sich
+                            einzuloggen vornehmen.
+                        </p>
+                        <p>
+                            Bei Fragen, Problemen oder Anregungen können Sie gerne mit uns
+                            in
+                            <a href="mailto:{{ supportContact }}" target="_top">Kontakt</a>
+                            treten.
+                        </p>
+                    </mibi-box-layout>
+                </mat-card-content>
+                <mat-card-actions class="mibi-card-layout-item">
+                    <mibi-box-layout>
+                        <p>
+                            Ihr MiBi-Portal Team
+                        </p>
+                        <p>
+                            <a href="https://www.bfr.bund.de" target="_blank">
+                                <img
+                                    class="mibi-home-logo"
+                                    src="../../assets/BfR_Logo_DE.png"
+                                    alt="BfR Logo"
+                                />
+                            </a>
+                        </p>
+                    </mibi-box-layout>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+    </div>
+</mibi-box-layout>
