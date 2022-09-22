@@ -23,4 +23,9 @@ export class PageBodyComponent {
             this.animationDone.emit();
         }
     }
+
+    onRouterAnimationDone(scrollContainer: {scrollTop: number; scrollLeft: number}): void {
+        scrollContainer.scrollTop = 0;
+        scrollContainer.scrollLeft = 0;
+    }
 }

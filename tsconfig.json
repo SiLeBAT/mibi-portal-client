@@ -1,51 +1,67 @@
 {
-  "compileOnSave": false,
-  "compilerOptions": {
-    "baseUrl": "./src",
-    "module": "es2020",
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "outDir": "./dist/out-tsc",
-    "target": "ES2017",
-    "types": ["jest"],
-    "lib": ["es2018", "dom"],
-    "sourceMap": true,
-    "declaration": false,
-    "downlevelIteration": true,
-    "importHelpers": true,
-    "experimentalDecorators": true,
-    "removeComments": true,
-    "forceConsistentCasingInFileNames": true,
-    "newLine": "lf",
+    "compileOnSave": false,
+    "compilerOptions": {
+        // Modules
+        "baseUrl": "./src",
+        "module": "es2020",
+        "moduleResolution": "node",
+        "types": [
+            "jest"
+        ],
+        "typeRoots": [
+            "./node_modules/@types"
+        ],
+        "resolveJsonModule": true,
 
-    "alwaysStrict": true,
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "strictNullChecks": true,
-    "strictBindCallApply": true,
-    // "strictFunctionTypes": true,
-    // "strictPropertyInitialization": true,
-    // "useUnknownInCatchVariables": true,
-    // "strict": true
+        // Emit
+        "outDir": "./dist/out-tsc",
+        "downlevelIteration": true,
+        "importHelpers": true,
+        "sourceMap": true,
+        "removeComments": true,
+        "newLine": "lf",
 
-    "noImplicitReturns": true,
-    // "noUnusedLocals": true,
-    // "noUnusedParameters": true,
-    // "useDefineForClassFields": true,
-    // "noUncheckedIndexedAccess": true,
-    // "noPropertyAccessFromIndexSignature": true,
-    "noImplicitOverride": true,
-    "noFallthroughCasesInSwitch": true
-  },
-  "angularCompilerOptions": {
-    "fullTemplateTypeCheck": true,
-    // "strictTemplates": true,
-    "strictInjectionParameters": true,
-    "strictInputAccessModifiers": true
-  },
-  "include": [
-      "src/**/*.ts",
-      "src/**/*.d.ts"
+        // Interop Constraints
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+
+        // Language and Environment
+        "target": "ES2017",
+        "lib": [
+            "es2018",
+            "dom"
+        ],
+        "experimentalDecorators": true,
+        // "useDefineForClassFields": true,
+
+        // Type Checking: strict mode
+        "alwaysStrict": true,
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "strictBindCallApply": true,
+        // "strictFunctionTypes": true,
+        "strictNullChecks": true,
+        // "strictPropertyInitialization": true,
+        // "useUnknownInCatchVariables": true,
+        // "strict": true
+
+        // Type Checking 
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitOverride": true,
+        "noImplicitReturns": true,
+        // "noPropertyAccessFromIndexSignature": true,
+        // "noUncheckedIndexedAccess": true,
+        // "noUnusedLocals": true,
+        // "noUnusedParameters": true,
+    },
+    "angularCompilerOptions": {
+        "fullTemplateTypeCheck": true,
+        // "strictTemplates": true,
+        "strictInjectionParameters": true,
+        "strictInputAccessModifiers": true
+    },
+    "include": [
+        "src/**/*.ts",
+        "src/**/*.d.ts"
     ]
 }
