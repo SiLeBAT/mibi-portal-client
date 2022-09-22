@@ -34,10 +34,16 @@
 .mibi-card-title {
   font-size: 2em;
   line-height: normal;
+  color: colors.$primary-color;
+  text-align: center;
+}
+
+.mibi-mat-card-header {
+  justify-content: center;
 }
 
 .mibi-mat-card-title {
-  margin-left: -16px;
+  // margin-left: -16px;
 }
 
 .mibi-home-title {
