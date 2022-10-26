@@ -19,12 +19,15 @@ import { SamplesLinkProviderService } from '../../samples/link-provider.service'
 
 interface NavTabsConfig {
     hasEntries: boolean;
+    isAuthenticated: boolean;
 }
 
-const selectNavTabsConfig = createSelector<SamplesMainSlice, boolean, NavTabsConfig>(
+const selectNavTabsConfig = createSelector<SamplesMainSlice & UserMainSlice, boolean, User | null, NavTabsConfig>(
     selectHasEntries,
-    (hasEntries) => ({
-        hasEntries: hasEntries
+    selectUserCurrentUser,
+    (hasEntries, currentUser) => ({
+        hasEntries: hasEntries,
+        isAuthenticated: currentUser !== null
     })
 );
 
@@ -89,6 +92,13 @@ export class NavBarComponent {
         };
     }
 
+    get viewerTab(): NavBarTab {
+        return {
+            name: navBarTabNames.viewer,
+            link: this.samplesLinks.viewer
+        };
+    }
+
     get loginTab(): NavBarTab {
         return {
             name: navBarTabNames.login,
@@ -113,7 +123,11 @@ export class NavBarComponent {
 
     private getNavTabs(config: NavTabsConfig): NavBarTab[] {
         const editorOrUploadTab = config.hasEntries ? this.samplesEditorTab : this.samplesUploadTab;
-        return [editorOrUploadTab];
+        if(config.isAuthenticated) {
+            return [editorOrUploadTab, this.viewerTab];
+        } else {
+            return [editorOrUploadTab];
+        }
     }
 
     private getAvatarUser(user: User | null): NavBarAvatarUser | null {

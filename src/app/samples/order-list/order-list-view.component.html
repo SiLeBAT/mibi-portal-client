@@ -1,0 +1,34 @@
+<mibi-single-center-card-layout cardTitle="Auftrag wählen" disable-content-overflow-handling>
+    <mibi-card-content>
+
+        <div class="mibi-scroll-container">
+            <table mat-table recycleRows 
+                matSort matSortDisableClear="true" matSortActive="date" matSortDirection="desc"
+                class="mibi-table"
+                [dataSource]="dataSource"
+            >
+                <ng-container matColumnDef="date">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header start="desc">Datum, Zeit</th>
+                    <td mat-cell *matCellDef="let item" class="mibi-cell">
+                        {{item.date | date:'medium'}}
+                        <div class="mibi-cell__overlay mibi-cell__overlay--hint"></div>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Dateiname</th>
+                    <td mat-cell *matCellDef="let item" class="mibi-cell">
+                        {{item.name}}
+                        <div class="mibi-cell__overlay mibi-cell__overlay--hint"></div>
+                    </td>
+                </ng-container>
+            
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+                    class="mibi-row"
+                    (click)="onRowClick(row.id)"
+                ></tr>
+            </table>
+        </div>
+
+    </mibi-card-content>
+</mibi-single-center-card-layout>

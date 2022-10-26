@@ -8,6 +8,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatTableModule } from '@angular/material/table';
 import { CoreModule } from '../core/core.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -32,9 +33,13 @@ import { DataGridDirtyEmitterDirective } from './data-grid/internal/components/d
 import { SamplesGridListBoxViewComponent } from './samples-grid/internal/editors/list-box-view.component';
 import { SamplesGridDataEditorViewComponent } from './samples-grid/internal/editors/data-editor-view.component';
 import { SamplesGridToolTipDirective } from './samples-grid/internal/cells/tool-tip.directive';
+import { SamplesViewerComponent } from './samples-viewer.component';
 import { samplesPathsSegments } from './samples.paths';
 import { NoSampleGuard } from './services/no-sample-guard.service';
+import { AuthGuard } from '../user/services/auth-guard.service';
 import { AnimationsRouteData } from '../shared/animations/animations.model';
+import { OrderListViewComponent } from './order-list/order-list-view.component';
+import { MatSortModule } from '@angular/material/sort';
 
 const disabledTransitionAnimationData: AnimationsRouteData = {
     transitionAnimation: 'disabled'
@@ -51,6 +56,7 @@ const routes: Routes = [
                 canActivate: [NoSampleGuard],
                 data: { ...disabledTransitionAnimationData }
             },
+            { path: samplesPathsSegments.viewer, component: SamplesViewerComponent, canActivate: [AuthGuard] },
             { path: '**', redirectTo: samplesPathsSegments.editor }
         ]
     }
@@ -67,6 +73,8 @@ const routes: Routes = [
         MatRadioModule,
         MatCheckboxModule,
         MatFormFieldModule,
+        MatTableModule,
+        MatSortModule,
         RouterModule.forChild(routes),
         StoreModule.forFeature(SAMPLES_SLICE_NAME, samplesReducerMap),
         EffectsModule.forFeature(samplesEffects),
@@ -90,7 +98,9 @@ const routes: Routes = [
         SamplesGridListBoxViewComponent,
         SamplesGridDataEditorViewComponent,
         SamplesGridViewComponent,
-        SamplesEditorComponent
+        OrderListViewComponent,
+        SamplesEditorComponent,
+        SamplesViewerComponent
     ],
     exports: [],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]

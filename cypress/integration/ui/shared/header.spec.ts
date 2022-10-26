@@ -9,7 +9,7 @@ describe('Testing the Header', function () {
     const navBarUserSelector = '.mibi-nav-bar__right';
     const navBarTitleSelector = '.mibi-nav-bar__left';
     const appName = 'MiBi-Portal';
-    const samplesTab = 'Probendaten';
+    const samplesTab = 'Neuer Auftrag ans BfR';
     const signIn = 'Anmelden';
 
     describe('Testing an anonymous user', function () {
