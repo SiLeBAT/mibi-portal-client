@@ -1,0 +1,32 @@
+@use "colors";
+@use "layout";
+@use "app/main/styles";
+
+.mibi-tabs {
+  height: 100%;
+  padding-top: layout.$half-space;
+  display: flex;
+  justify-content: space-between;
+}
+
+.mibi-tabs__item {
+  flex: 0 1 auto;
+}
+
+.mibi-link {
+  @include styles.app-bar-link;
+
+  padding: layout.$single-space;
+  height: 100%;
+  display: flex;
+  align-items: center;
+
+  &--active {
+    background-color: colors.$action-color;
+  }
+}
+
+.mibi-link__text {
+  flex: 0 1 auto;
+  padding-bottom: layout.$half-space;
+}

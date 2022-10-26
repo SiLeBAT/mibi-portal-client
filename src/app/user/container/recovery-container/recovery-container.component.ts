@@ -12,6 +12,7 @@ import { ContentMainState } from '../../../content/state/content.reducer';
 import { selectSupportContact } from '../../../content/state/content.selectors';
 import { ContentSlice } from '../../../content/content.state';
 import { navigateMSA } from '../../../shared/navigate/navigate.actions';
+import { UserLinkProviderService } from '../../link-provider.service';
 
 @Component({
     selector: 'mibi-recovery-container',
@@ -24,7 +25,8 @@ export class RecoveryContainerComponent implements OnInit, OnDestroy {
     constructor(
         private store$: Store<ContentSlice<ContentMainState>>,
         private dataService: DataService,
-        private userActionService: UserActionService
+        private userActionService: UserActionService,
+        private userLinks: UserLinkProviderService
     ) { }
 
     ngOnInit() {
@@ -45,7 +47,7 @@ export class RecoveryContainerComponent implements OnInit, OnDestroy {
         this.dataService.resetPasswordRequest(email).toPromise()
             .then((response: UserPasswordResetRequest) => {
                 this.store$.dispatch(updateIsBusySOA({ isBusy: false }));
-                this.store$.dispatch(navigateMSA({ url: 'users/login' }));
+                this.store$.dispatch(navigateMSA({ path: this.userLinks.login }));
                 this.store$.dispatch(showCustomBannerSOA({
                     banner: {
                         message: `Eine E-mail mit weiteren Anweisungen wurde an ${response.email} gesendet. Wenn Sie keine E-mail erhalten, könnte das bedeuten, daß Sie sich mit einer anderen E-mail-Adresse angemeldet haben.`,

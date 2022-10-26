@@ -1,21 +1,21 @@
-<mibi-single-center-card-layout cardtitle="Login">
-    <mibi-view-card-body>
+<mibi-single-center-card-layout cardTitle="Login">
+    <mibi-card-content>
         <mibi-login-container></mibi-login-container>
-    </mibi-view-card-body>
-    <mibi-view-card-actions class="mibi-login-actions">
+    </mibi-card-content>
+    <mibi-card-actions class="mibi-login-actions">
         <a
             class="mibi-login-actions__button"
             mat-button
-            [routerLink]="['/users/register']"
+            [routerLink]="[userLinks.register]"
             color="primary"
             >Registrierung</a
         >
         <a
             class="mibi-login-actions__button"
             mat-button
-            [routerLink]="['/users/recovery']"
+            [routerLink]="[userLinks.recovery]"
             color="primary"
             >Passwort vergessen?</a
         >
-    </mibi-view-card-actions>
+    </mibi-card-actions>
 </mibi-single-center-card-layout>

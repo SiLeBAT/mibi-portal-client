@@ -11,7 +11,6 @@ import { importSamplesMSA } from '../../import-samples/import-samples.actions';
     styleUrls: ['./upload-view.component.scss']
 })
 export class UploadViewComponent {
-
     constructor(private store$: Store<SamplesMainSlice>) {
         this.store$.dispatch(showActionBarSOA({
             title: '',

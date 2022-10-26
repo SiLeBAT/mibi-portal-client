@@ -1,43 +1,24 @@
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-
-interface ITokenized {
-    token: string;
-}
+import { DataService } from './data.service';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-    intercept(req: HttpRequest<any>,
-        next: HttpHandler): Observable<HttpEvent<any>> {
 
-        const token = this.getToken();
+    constructor(private dataService: DataService) {}
 
-        if (token) {
+    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+        const currentUser = this.dataService.getCurrentUser();
+
+        if (currentUser !== null && currentUser.token) {
             req = req.clone({
                 setHeaders: {
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${currentUser.token}`
                 }
             });
         }
 
         return next.handle(req);
     }
-
-    private getToken() {
-        const cu: string | null = localStorage.getItem('currentUser');
-        if (!cu) {
-            return null;
-        }
-        const currentUser: ITokenized = JSON.parse(cu);
-        let token;
-        if (currentUser && currentUser.token) {
-            token = currentUser.token;
-        } else {
-            token = null;
-        }
-
-        return token;
-    }
-
 }

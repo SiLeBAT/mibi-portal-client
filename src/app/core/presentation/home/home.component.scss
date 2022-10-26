@@ -1,14 +1,14 @@
 @use "colors";
 
-.mibi-home-title {
+.mibi-title {
   color: colors.$primary-color;
   text-align: center;
-  font-size: 4em;
+  font-size: 2em;
   line-height: normal;
-  font-style: bold;
-  margin-bottom: 5%;
+  margin-top: 0.25em;
+  margin-bottom: 0.5em;
 }
 
-.mibi-home-logo {
+.mibi-logo {
   width: 14rem;
 }

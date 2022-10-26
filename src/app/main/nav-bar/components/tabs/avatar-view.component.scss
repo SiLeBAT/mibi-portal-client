@@ -1,0 +1,49 @@
+@use "sass:math";
+@use "colors";
+@use "layout";
+@use "app/main/styles";
+
+.mibi-avatar {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: math.div(layout.$half-space, 2) layout.$single-space;
+}
+
+.mibi-avatar__content {
+  flex: 0 0 auto;
+}
+
+.mibi-avatar-button {
+  @include styles.app-bar-link;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: solid;
+}
+
+.mibi-avatar-button__icon {
+  display: block;
+  flex: 0 0 auto;
+}
+
+.mibi-user-info {
+  padding: layout.$single-space layout.$double-space;
+  display: grid;
+  grid-template: auto auto / auto auto;
+  grid-gap: layout.$single-space;
+}
+
+.mibi-user-info__icon {
+  color: colors.$secondary-color;
+}
+
+.mibi-user-info__auxilliary {
+  grid-column-start: 2;
+}
+
+.mibi-user-info__divider {
+  margin: layout.$single-space;
+}

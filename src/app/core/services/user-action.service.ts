@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import _ from 'lodash';
 import { UserActionViewModelConfiguration, UserActionType, ColorType } from '../../shared/model/user-action.model';
 import { Store } from '@ngrx/store';
-import { Router } from '@angular/router';
 import { validateSamplesSSA } from '../../samples/validate-samples/validate-samples.actions';
 import { CoreMainSlice } from '../core.state';
 import { environment } from '../../../environments/environment';
@@ -70,7 +69,7 @@ export class UserActionService {
     }];
 
     constructor(
-        private store$: Store<CoreMainSlice>, private router: Router) { }
+        private store$: Store<CoreMainSlice>) { }
 
     getConfigOfType(type: UserActionType): UserActionViewModelConfiguration {
         const config = _.find(this.userActionConfiguration, (c: UserActionViewModelConfiguration) => c.type === type);
@@ -83,18 +82,18 @@ export class UserActionService {
         };
     }
 
-    getNavigationConfig(url: string): UserActionViewModelConfiguration {
+    getNavigationConfig(path: string): UserActionViewModelConfiguration {
         return {
             label: 'Navigieren',
             type: UserActionType.NAVIGATE,
-            onExecute: this.navigate.bind(this, url),
+            onExecute: this.navigate.bind(this, path),
             icon: '',
             color: ColorType.ACCENT
         };
     }
 
-    private navigate(url: string) {
-        this.store$.dispatch(navigateMSA({ url: url }));
+    private navigate(path: string) {
+        this.store$.dispatch(navigateMSA({ path: path }));
     }
 
     private validate() {

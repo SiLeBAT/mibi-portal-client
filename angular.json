@@ -16,12 +16,19 @@
       "root": "",
       "sourceRoot": "src",
       "prefix": "mibi",
+      "i18n": {
+        "sourceLocale": {
+          "code": "de",
+          "baseHref": ""
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "public",
             "index": "src/index.html",
+            "localize": true,
             "main": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "polyfills": "src/polyfills.ts",

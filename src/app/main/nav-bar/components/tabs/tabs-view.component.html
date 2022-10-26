@@ -1,0 +1,11 @@
+<mibi-box-layout>
+
+<nav class="mibi-tabs">
+  <div class="mibi-tabs__item" *ngFor="let tab of tabs">
+    <a class="mibi-link" [routerLink]="tab.link" [routerLinkActive]="'mibi-link--active'">
+      <div class="mibi-link__text">{{tab.name}}</div>
+    </a>
+  </div>
+</nav>
+
+</mibi-box-layout>

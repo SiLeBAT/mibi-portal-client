@@ -8,6 +8,7 @@ import { LogService } from '../../core/services/log.service';
 import { hideBannerSOA, showBannerSOA, updateIsBusySOA } from '../../core/state/core.actions';
 import { navigateMSA } from '../../shared/navigate/navigate.actions';
 import { ExcelFile } from '../model/sample-management.model';
+import { SamplesLinkProviderService } from '../link-provider.service';
 import { SamplesMainSlice } from '../samples.state';
 import { samplesUpdateMainDataSOA, samplesUpdateSamplesSOA } from '../state/samples.actions';
 import { selectSamplesMainData } from '../state/samples.selectors';
@@ -22,7 +23,8 @@ export class ImportSamplesEffects {
         private actions$: Actions,
         private store$: Store<SamplesMainSlice>,
         private dataService: DataService,
-        private logger: LogService
+        private logger: LogService,
+        private samplesLinks: SamplesLinkProviderService
     ) { }
 
     importSamples$ = createEffect(() => this.actions$.pipe(
@@ -43,7 +45,7 @@ export class ImportSamplesEffects {
             concatMap(sampleSet => concat(
                 of(
                     samplesUpdateMainDataSOA({ sampleSet: sampleSet }),
-                    navigateMSA({ url: '/samples' })
+                    navigateMSA({ path: this.samplesLinks.editor })
                 ),
                 this.importSamplesValidate()
             )),

@@ -7,7 +7,6 @@ import { UserActionViewModelConfiguration } from '../../../shared/model/user-act
     styleUrls: ['./app-bar-top.component.scss']
 })
 export class AppBarTopComponent {
-    @Input() appName: string;
     @Input() actionBarEnabled: boolean;
     @Input() actionBarTitle: string;
     @Input() actionConfigs: UserActionViewModelConfiguration[];

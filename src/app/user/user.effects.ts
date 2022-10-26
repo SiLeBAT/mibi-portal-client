@@ -21,12 +21,13 @@ import {
     userForceLogoutMSA
 } from './state/user.actions';
 import { DialogConfiguration } from '../shared/dialog/dialog.model';
-import { userLogoutConfirmDialogStrings } from './user.constants';
+import { UserLinkProviderService } from './link-provider.service';
 import { SamplesMainSlice } from '../samples/samples.state';
 import { selectHasEntries } from '../samples/state/samples.selectors';
 import { dialogConfirmMTA, dialogOpenMTA } from '../shared/dialog/state/dialog.actions';
 import { navigateMSA } from '../shared/navigate/navigate.actions';
 import { ofTarget } from '../shared/ngrx/multi-target-action';
+import { userLogoutConfirmDialogStrings } from './user.constants';
 
 @Injectable()
 export class UserMainEffects {
@@ -38,7 +39,8 @@ export class UserMainEffects {
         private store$: Store<SamplesMainSlice>,
         private dataService: DataService,
         private userActionService: UserActionService,
-        private logger: LogService
+        private logger: LogService,
+        private userLinks: UserLinkProviderService
     ) { }
 
     login$ = createEffect(() => this.actions$.pipe(
@@ -101,9 +103,9 @@ export class UserMainEffects {
     }
 
     private logout(): Observable<Action> {
-        this.dataService.logout();
+        this.dataService.removeCurrentUser();
         return of(
-            navigateMSA({ url: 'users/login' }),
+            navigateMSA({ path: this.userLinks.login }),
             userDestroyCurrentUserSOA(),
             samplesDestroyMainDataSOA()
         );

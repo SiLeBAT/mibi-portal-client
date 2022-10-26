@@ -1,7 +1,7 @@
 {
   "root": "/",
-  "upload": "/upload",
-  "samples": "/samples",
+  "upload": "/samples/upload",
+  "samples": "/samples/editor",
   "login": "/users/login",
   "recovery": "/users/recovery",
   "register": "/users/register",

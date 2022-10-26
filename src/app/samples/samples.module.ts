@@ -1,6 +1,6 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { StoreModule } from '@ngrx/store';
 import { SharedModule } from '../shared/shared.module';
 import { UploadViewComponent } from './presentation/upload-view/upload-view.component';
@@ -16,27 +16,44 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatStepperModule } from '@angular/material/stepper';
 import { SAMPLES_SLICE_NAME } from './samples.state';
 import { samplesReducerMap, samplesEffects } from './samples.store';
-import { NoSampleGuard } from './services/no-sample-guard.service';
 import { SendDialogComponent } from './send-samples/components/send-dialog.component';
 import { SendDialogViewComponent } from './send-samples/components/send-dialog-view.component';
 import { AnalysisStepperComponent } from './send-samples/components/analysis-stepper.component';
-import { DataGridViewComponent } from './data-grid/components/grid-view.component';
-import { SamplesGridDataEditorTemplateComponent } from './samples-grid/components/editors/data-editor-template.component';
-import { SamplesGridViewComponent } from './samples-grid/components/samples-grid-view.component';
-import { SamplesGridTextCellTemplateComponent } from './samples-grid/components/cells/text-cell-template.component';
-import { SamplesGridDataCellTemplateComponent } from './samples-grid/components/cells/data-cell-template.component';
-import { DataGridCellViewComponent } from './data-grid/components/cell-view.component';
-import { SamplesGridAutoFocusDirective } from './samples-grid/components/editors/auto-focus.directive';
-import { SamplesComponent } from './samples.component';
-import { DataGridEditorViewComponent } from './data-grid/components/editor-view.component';
-import { DataGridDirtyEmitterDirective } from './data-grid/components/dirty-emitter.directive';
-import { SamplesGridListBoxViewComponent } from './samples-grid/components/editors/list-box-view.component';
-import { SamplesGridDataEditorViewComponent } from './samples-grid/components/editors/data-editor-view.component';
-import { SamplesGridToolTipDirective } from './samples-grid/components/cells/tool-tip.directive';
+import { DataGridViewComponent } from './data-grid/data-grid-view.component';
+import { SamplesGridDataEditorTemplateComponent } from './samples-grid/internal/editors/data-editor-template.component';
+import { SamplesGridViewComponent } from './samples-grid/samples-grid-view.component';
+import { SamplesGridTextCellTemplateComponent } from './samples-grid/internal/cells/text-cell-template.component';
+import { SamplesGridDataCellTemplateComponent } from './samples-grid/internal/cells/data-cell-template.component';
+import { DataGridCellViewComponent } from './data-grid/internal/components/cell-view.component';
+import { SamplesGridAutoFocusDirective } from './samples-grid/internal/editors/auto-focus.directive';
+import { SamplesEditorComponent } from './samples-editor/samples-editor.component';
+import { DataGridEditorViewComponent } from './data-grid/internal/components/editor-view.component';
+import { DataGridDirtyEmitterDirective } from './data-grid/internal/components/dirty-emitter.directive';
+import { SamplesGridListBoxViewComponent } from './samples-grid/internal/editors/list-box-view.component';
+import { SamplesGridDataEditorViewComponent } from './samples-grid/internal/editors/data-editor-view.component';
+import { SamplesGridToolTipDirective } from './samples-grid/internal/cells/tool-tip.directive';
+import { samplesPathsSegments } from './samples.paths';
+import { NoSampleGuard } from './services/no-sample-guard.service';
+import { AnimationsRouteData } from '../shared/animations/animations.model';
 
-const SAMPLES_ROUTES = [
-    { path: 'upload', component: UploadViewComponent },
-    { path: 'samples', component: SamplesComponent, canActivate: [NoSampleGuard] }
+const disabledTransitionAnimationData: AnimationsRouteData = {
+    transitionAnimation: 'disabled'
+};
+
+const routes: Routes = [
+    {
+        path: samplesPathsSegments.samples,
+        children: [
+            { path: samplesPathsSegments.upload, component: UploadViewComponent },
+            {
+                path: samplesPathsSegments.editor,
+                component: SamplesEditorComponent,
+                canActivate: [NoSampleGuard],
+                data: { ...disabledTransitionAnimationData }
+            },
+            { path: '**', redirectTo: samplesPathsSegments.editor }
+        ]
+    }
 ];
 
 @NgModule({
@@ -50,7 +67,7 @@ const SAMPLES_ROUTES = [
         MatRadioModule,
         MatCheckboxModule,
         MatFormFieldModule,
-        RouterModule.forChild(SAMPLES_ROUTES),
+        RouterModule.forChild(routes),
         StoreModule.forFeature(SAMPLES_SLICE_NAME, samplesReducerMap),
         EffectsModule.forFeature(samplesEffects),
         SharedModule,
@@ -73,7 +90,7 @@ const SAMPLES_ROUTES = [
         SamplesGridListBoxViewComponent,
         SamplesGridDataEditorViewComponent,
         SamplesGridViewComponent,
-        SamplesComponent
+        SamplesEditorComponent
     ],
     exports: [],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]

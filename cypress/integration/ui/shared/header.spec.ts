@@ -5,9 +5,9 @@ import { User } from '../../../support/test.model';
 
 describe('Testing the Header', function () {
 
-    const activeNavigationLinkSelector = '.mibi-nav-bar-link';
-    const appBarRightSelector = '.mibi-app-bar-top__right';
-    const appBarLeftSelector = '.mibi-app-bar-top__left';
+    const navBarTabsSelector = '.mibi-nav-bar__center';
+    const navBarUserSelector = '.mibi-nav-bar__right';
+    const navBarTitleSelector = '.mibi-nav-bar__left';
     const appName = 'MiBi-Portal';
     const samplesTab = 'Probendaten';
     const signIn = 'Anmelden';
@@ -25,20 +25,21 @@ describe('Testing the Header', function () {
             describe('Testing the Header links', function () {
 
                 it('should have link to the Welcome page', function () {
-                    cy.get(appBarLeftSelector).within(() => {
+                    cy.get(navBarTitleSelector).within(() => {
                         cy.contains(appName)
                             .should('have.attr', 'href', '/');
                     });
                 });
 
                 it('should have link to the Upload page', function () {
-                    cy.get(activeNavigationLinkSelector).not('.hidden').should('have.attr', 'href', this.paths.upload).within(() => {
-                        cy.contains(samplesTab);
+                    cy.get(navBarTabsSelector).within(() => {
+                        cy.contains(samplesTab)
+                            .should('have.attr', 'href', this.paths.upload);
                     });
                 });
 
                 it('should have link to the Login page', function () {
-                    cy.get(appBarRightSelector).within(() => {
+                    cy.get(navBarUserSelector).within(() => {
                         cy.contains(signIn)
                             .should('have.attr', 'href', this.paths.login);
                     });
@@ -63,7 +64,7 @@ describe('Testing the Header', function () {
             describe('Testing the Header links', function () {
 
                 it('should have link to the Samples page', function () {
-                    cy.get(activeNavigationLinkSelector).not('.hidden').should('have.attr', 'href', this.paths.samples).within(() => {
+                    cy.get(navBarTabsSelector).not('.hidden').should('have.attr', 'href', this.paths.samples).within(() => {
                         cy.contains(samplesTab);
                     });
                 });
@@ -94,7 +95,7 @@ describe('Testing the Header', function () {
         describe('Testing the Header links', function () {
 
             it('should have drop-down showing User information', function () {
-                cy.get(appBarRightSelector).within(() => {
+                cy.get(navBarUserSelector).within(() => {
                     cy.get('.mibi-avatar');
                 }).click();
                 cy.get('.mibi-user-info').within(() => {
@@ -103,7 +104,7 @@ describe('Testing the Header', function () {
             });
 
             it('should link to user profile', function () {
-                cy.get(appBarRightSelector).within(() => {
+                cy.get(navBarUserSelector).within(() => {
                     cy.get('.mibi-avatar');
                 }).click();
                 cy.get('a[role="menuitem"]').within(() => {
@@ -113,7 +114,7 @@ describe('Testing the Header', function () {
             });
 
             it('should log out the user', function () {
-                cy.get(appBarRightSelector).within(() => {
+                cy.get(navBarUserSelector).within(() => {
                     cy.get('.mibi-avatar');
                 }).click();
                 cy.get('button[role="menuitem"]').within(() => {

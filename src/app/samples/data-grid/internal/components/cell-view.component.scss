@@ -1,0 +1,96 @@
+@use "sass:map";
+@use "sass:color";
+@use "colors";
+
+$mibi-ui-color: colors.$ui-color;
+$mibi-border-color: colors.$surface-color;
+$mibi-grid-border: 0.5px solid colors.$surface-color;
+$mibi-hover-opacity: colors.$hover-opacity;
+$mibi-selection-opacity: colors.$selection-opacity;
+
+.mibi-shadow {
+  z-index: -1;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+// elements with z-index -1 are buggy when scrolling in chrome
+.mibi-shadow-chrome {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.mibi-shadow--bottom {
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  box-shadow: 0 0.5px 2px 0 black;
+}
+
+.mibi-shadow-chrome--bottom {
+  bottom: -2.5px;
+  left: 0;
+  height: 2.5px;
+  background-image: linear-gradient(to bottom, rgba(0 0 0 / 40%), rgba(255 255 255 / 0%));
+}
+
+.mibi-shadow--right {
+  top: 0;
+  right: 0;
+  width: 1px;
+  box-shadow: 0.5px 0 2px 0 black;
+}
+
+.mibi-shadow-chrome--right {
+  top: 0;
+  right: -2.5px;
+  width: 2.5px;
+  background-image: linear-gradient(to right, rgba(0 0 0 / 40%), rgba(255 255 255 / 0%));
+}
+
+.mibi-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.mibi-hover-hint {
+  background-color: color.change(black, $alpha: $mibi-hover-opacity);
+}
+
+.mibi-selection-hint {
+  background-color: color.change(black, $alpha: $mibi-selection-opacity);
+}
+
+.mibi-selection-hover-hint {
+  background-color: color.change(black, $alpha: $mibi-hover-opacity + $mibi-selection-opacity);
+}
+
+.mibi-selection--hover {
+  background-color: color.change($mibi-ui-color, $alpha: $mibi-hover-opacity);
+}
+
+.mibi-selection--selected {
+  background-color: color.change($mibi-ui-color, $alpha: $mibi-selection-opacity);
+}
+
+.mibi-selection--selected-hover {
+  background-color: color.change($mibi-ui-color, $alpha: $mibi-selection-opacity + $mibi-hover-opacity);
+}
+
+.mibi-selection-anchor {
+  outline: $mibi-ui-color solid 2px;
+  outline-offset: -2px;
+}
+
+.mibi-cursor {
+  outline: $mibi-ui-color solid 3px;
+  outline-offset: -3px;
+}

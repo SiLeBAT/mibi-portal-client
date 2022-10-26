@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { UserLinkProviderService } from '../../../user/link-provider.service';
 import { PersonellIdCard } from '../../personnel/personnel.model';
 
 export interface DatenschutzerklaerungViewModel {
@@ -21,4 +22,6 @@ export class DatenschutzerklaerungComponent {
     get dsGvoLink(): string {
         return this.model.dsGvoLink;
     }
+
+    constructor(public userLinks: UserLinkProviderService) {}
 }

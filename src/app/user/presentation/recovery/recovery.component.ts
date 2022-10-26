@@ -1,5 +1,6 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { UserLinkProviderService } from '../../link-provider.service';
 
 @Component({
     selector: 'mibi-recovery',
@@ -10,6 +11,8 @@ export class RecoveryComponent implements OnInit {
     recoveryForm: FormGroup;
 
     @Output() recovery = new EventEmitter();
+
+    constructor(public userLinks: UserLinkProviderService) {}
 
     ngOnInit() {
         this.recoveryForm = new FormGroup({

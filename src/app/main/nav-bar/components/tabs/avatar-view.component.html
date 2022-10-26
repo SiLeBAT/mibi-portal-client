@@ -1,0 +1,31 @@
+<mibi-box-layout>
+
+<nav class="mibi-avatar">
+    <div class="mibi-avatar__content">
+    <button class="mibi-avatar-button" type="button" mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon class="mibi-avatar-button__icon">person</mat-icon>
+    </button>
+    </div>
+    <mat-menu #menu="matMenu">
+    <mibi-box-layout>
+        <div class="mibi-user-info">
+        <mat-icon class="mibi-user-info__icon">face</mat-icon>
+        <div class="mat-body-strong">{{ user.name }}</div>
+        <div class="mibi-user-info__auxilliary mat-small">
+            <div>{{ user.email }}</div>
+        </div>
+        </div>
+        <mat-divider class="mibi-user-info__divider"></mat-divider>
+        <a mat-menu-item (click)="onProfile()">
+        <mat-icon>person</mat-icon>
+        <span>Profil</span>
+        </a>
+        <button mat-menu-item (click)="onLogout()">
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Abmelden</span>
+        </button>
+    </mibi-box-layout>
+    </mat-menu>
+</nav>
+  
+  </mibi-box-layout>

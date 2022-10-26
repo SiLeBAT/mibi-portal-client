@@ -1,0 +1,20 @@
+@use "colors";
+
+.mibi-nav-bar {
+  height: 100%;
+  display: flex;
+  background-color: colors.$primary-color;
+}
+
+.mibi-nav-bar__left {
+  flex: 0 1 auto;
+}
+
+.mibi-nav-bar__center {
+  flex: 0 1 auto;
+  margin-left: auto;
+}
+
+.mibi-nav-bar__right {
+  flex: 0 1 5%;
+}

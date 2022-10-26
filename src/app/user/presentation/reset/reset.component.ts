@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, ViewChild, AfterViewInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { PasswordComponent } from '../../password/password.component';
+import { UserLinkProviderService } from '../../link-provider.service';
 
 @Component({
     selector: 'mibi-reset',
@@ -13,6 +14,8 @@ export class ResetComponent implements OnInit, AfterViewInit {
     @Output() resetPassword = new EventEmitter();
 
     @ViewChild(PasswordComponent) private passwordComponent: PasswordComponent;
+
+    constructor(public userLinks: UserLinkProviderService) {}
 
     ngOnInit() {
         this.resetForm = new FormGroup({ });

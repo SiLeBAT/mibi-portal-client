@@ -73,14 +73,28 @@ export class DataService {
         faq: './assets/faq.json'
     };
 
+    private LOCAL_STORAGE_CURRENT_USER = 'currentUser';
+
     constructor(
         private httpClient: HttpClient,
         private dtoService: DTOFactoryService,
         private entityFactoryService: EntityFactoryService) {
     }
 
-    setCurrentUser(user: TokenizedUser) {
-        localStorage.setItem('currentUser', JSON.stringify(user));
+    getCurrentUser(): TokenizedUser | null {
+        const userJson: string | null = localStorage.getItem(this.LOCAL_STORAGE_CURRENT_USER);
+        if (userJson !== null) {
+            return JSON.parse(userJson);
+        }
+        return null;
+    }
+
+    setCurrentUser(user: TokenizedUser): void {
+        localStorage.setItem(this.LOCAL_STORAGE_CURRENT_USER, JSON.stringify(user));
+    }
+
+    removeCurrentUser(): void {
+        localStorage.removeItem(this.LOCAL_STORAGE_CURRENT_USER);
     }
 
     getFAQs(): Observable<FAQResponseDTO> {
@@ -89,10 +103,6 @@ export class DataService {
 
     getSystemInfo(): Observable<SystemInformationResponseDTO> {
         return this.httpClient.get<SystemInformationResponseDTO>(this.URL.systemInfo);
-    }
-
-    logout() {
-        localStorage.removeItem('currentUser');
     }
 
     login(credentials: Credentials): Observable<TokenizedUser> {

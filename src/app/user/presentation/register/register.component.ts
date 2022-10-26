@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { RegistrationDetails } from '../../model/user.model';
 import { PasswordComponent } from '../../password/password.component';
+import { UserLinkProviderService } from '../../link-provider.service';
 
 // InstituteValidator
 
@@ -27,6 +28,8 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     @Output() register = new EventEmitter();
 
     @ViewChild(PasswordComponent) private passwordComponent: PasswordComponent;
+
+    constructor(public userLinks: UserLinkProviderService) {}
 
     ngOnInit() {
         this.registerForm = new FormGroup({

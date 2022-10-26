@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { UserLinkProviderService } from '../../link-provider.service';
 
 @Component({
     selector: 'mibi-login-view',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
     styleUrls: ['./login-view.component.scss']
 })
 export class LoginViewComponent {
-
+    constructor(public userLinks: UserLinkProviderService) {}
 }

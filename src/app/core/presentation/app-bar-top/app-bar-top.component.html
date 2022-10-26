@@ -2,17 +2,7 @@
 
 <div class="mibi-app-bar">
     <div class="mibi-app-bar__top">
-        <div class="mibi-app-bar-top">
-            <div class="mibi-app-bar-top__left">
-                <a class="mibi-app-title" [routerLink]="['/']">
-                    <div class="mibi-app-title__text">
-                        {{ appName }}
-                    </div>
-                </a>
-            </div>
-            <mibi-nav-bar-container class="mibi-app-bar-top__center"></mibi-nav-bar-container>
-            <mibi-avatar-container class="mibi-app-bar-top__right"></mibi-avatar-container>
-        </div>
+        <mibi-nav-bar></mibi-nav-bar>
     </div>
     <mibi-action-item-list *ngIf="actionBarEnabled"
         class="mibi-app-bar__bottom"

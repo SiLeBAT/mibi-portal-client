@@ -1,17 +1,17 @@
 <div class="mibi-scroll-container">
 
-<mibi-wall-of-text-layout cardtitle="MiBi-Portal FAQ">
-    <wot-preamble>
+<mibi-wall-of-text-layout wotTitle="MiBi-Portal FAQ">
+    <mibi-wot-preamble>
         <mibi-faq-toc [faqCollection]="faqCollection"></mibi-faq-toc>
-    </wot-preamble>
-    <wot-content>
+    </mibi-wot-preamble>
+    <mibi-wot-content>
         <section>
             <mibi-faq-section
                 *ngFor="let faqGroup of faqCollection"
                 [faqGroup]="faqGroup"
             ></mibi-faq-section>
         </section>
-    </wot-content>
+    </mibi-wot-content>
 </mibi-wall-of-text-layout>
 
 </div>

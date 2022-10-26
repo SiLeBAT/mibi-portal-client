@@ -1,9 +1,23 @@
 @use "@angular/material" as mat;
 @use "colors";
 
+.mibi-upload-container {
+  height: 100%;
+  display: flex;
+}
+
+.mibi-upload-container__content {
+  width: 100vw;
+  flex: 0 1 auto;
+}
+
 .mibi-upload {
   @include mat.elevation(2);
 
+  height: 100%;
+  display: grid;
+  grid-template-columns: minmax(min-content, 100%);
+  overflow: auto;
   text-align: center;
   background: colors.$surface-color;
   border-radius: 7px;
@@ -11,7 +25,6 @@
   transition: all 0.2s ease;
   user-select: none;
   color: colors.$primary-color;
-  overflow: auto;
 }
 
 .mibi-upload:hover {
@@ -29,5 +42,5 @@
 
 .mibi-upload-button {
   background: colors.$primary-color;
-  margin-bottom: 0.5rem;
+  margin: 0 auto 0.5rem;
 }

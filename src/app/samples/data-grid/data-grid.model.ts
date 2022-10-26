@@ -2,28 +2,34 @@ import { TemplateRef } from '@angular/core';
 
 export type DataGridTemplateId = number;
 
-export interface DataGridCellViewModel {
+export interface DataGridCellViewModel<
+    TCellTemplateId extends DataGridTemplateId = DataGridTemplateId,
+    TEditorTemplateId extends DataGridTemplateId = DataGridTemplateId
+> {
     readonly isReadOnly: boolean;
     readonly isColHeader: boolean;
     readonly isRowHeader: boolean;
-    readonly cellTemplateId: DataGridTemplateId;
-    readonly editorTemplateId?: DataGridTemplateId;
+    readonly cellTemplateId: TCellTemplateId;
+    readonly editorTemplateId?: TEditorTemplateId;
 }
 
 export type DataGridRowId = number;
 export type DataGridColId = number;
 
-export type DataGridCellData = any;
-export type DataGridEditorData = any;
+export type DataGridCellData = unknown;
+export type DataGridEditorData = unknown;
 
 export type DataGridRowMap<T> = Record<DataGridColId, T>;
 export type DataGridMap<T> = Record<DataGridRowId, DataGridRowMap<T>>;
 
-export interface DataGridViewModel {
+export interface DataGridViewModel<
+    TCellModel extends DataGridCellViewModel = DataGridCellViewModel,
+    TCellData = DataGridCellData
+> {
     readonly rows: DataGridRowId[];
     readonly cols: DataGridColId[];
-    readonly cellModels: DataGridMap<DataGridCellViewModel>;
-    readonly cellData: DataGridMap<DataGridCellData>;
+    readonly cellModels: DataGridMap<TCellModel>;
+    readonly cellData: DataGridMap<TCellData>;
 }
 
 export interface DataGridCellContext {
@@ -38,10 +44,13 @@ export interface DataGridEditorContext extends DataGridCellContext {
     cancel(): void;
 }
 
-export type DataGridTemplateMap<T> = Record<DataGridTemplateId, TemplateRef<T>>;
+export type DataGridTemplateMap<
+    TContext extends DataGridCellContext | DataGridEditorContext,
+    TId extends DataGridTemplateId = DataGridTemplateId
+> = Record<TId, TemplateRef<TContext>>;
 
-export interface DataGridEditorEvent {
+export interface DataGridEditorEvent<TEditorData = DataGridEditorData> {
     rowId: DataGridRowId;
     colId: DataGridColId;
-    data: DataGridEditorData | undefined;
+    data: TEditorData | undefined;
 }

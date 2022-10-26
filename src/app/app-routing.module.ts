@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './core/presentation/home/home.component';
 
-const ROUTES: Routes = [
+const routes: Routes = [
     { path: '', component: HomeComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
@@ -10,7 +10,10 @@ const ROUTES: Routes = [
 
 @NgModule({
     imports: [
-        RouterModule.forRoot(ROUTES, { anchorScrolling: 'enabled' })
+        RouterModule.forRoot(routes, {
+            anchorScrolling: 'enabled',
+            initialNavigation: 'disabled'
+        })
     ],
     exports: [RouterModule]
 })

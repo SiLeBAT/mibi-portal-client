@@ -1,0 +1,10 @@
+<mibi-data-grid-view 
+    [model]="model"
+    [cellTemplates]="cellTemplates"
+    [editorTemplates]="editorTemplates"
+    (editorConfirm)="onEditorConfirm($event)"
+></mibi-data-grid-view>
+
+<mibi-samples-grid-text-cell-template #textCellTemplate></mibi-samples-grid-text-cell-template>
+<mibi-samples-grid-data-cell-template #dataCellTemplate></mibi-samples-grid-data-cell-template>
+<mibi-samples-grid-data-editor-template #dataEditorTemplate></mibi-samples-grid-data-editor-template>

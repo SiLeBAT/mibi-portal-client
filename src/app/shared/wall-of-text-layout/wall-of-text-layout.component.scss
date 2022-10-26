@@ -1,0 +1,35 @@
+@use "colors";
+@use "layout";
+
+.mibi-wot {
+  display: flex;
+  margin-top: layout.$double-space;
+  padding: layout.$double-space;
+}
+
+.mibi-wot__margin {
+  flex: 1 0 0;
+}
+
+.mibi-wot__content {
+  flex: 0 1 1024px;
+  display: grid;
+}
+
+.mibi-wot-title {
+  text-align: center;
+}
+
+.mibi-wot-preamble {
+  display: flex;
+}
+
+.mibi-wot-preamble__margin {
+  flex: 1 0 0;
+}
+
+.mibi-wot-preamble__content {
+  flex: 0 0 75%;
+  padding: layout.$single-space 0;
+  border-top: 1px solid colors.$primary-color;
+}

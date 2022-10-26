@@ -9,6 +9,8 @@ import { selectUserCurrentUser } from '../../state/user.selectors';
 import { UserMainSlice } from '../../user.state';
 import { userLoginSSA } from '../../state/user.actions';
 import { navigateMSA } from '../../../shared/navigate/navigate.actions';
+import { UserLinkProviderService } from '../../link-provider.service';
+import { SamplesLinkProviderService } from '../../../samples/link-provider.service';
 
 @Component({
     selector: 'mibi-login-container',
@@ -19,7 +21,11 @@ import { navigateMSA } from '../../../shared/navigate/navigate.actions';
 export class LoginContainerComponent implements OnInit, OnDestroy {
 
     private componentActive = true;
-    constructor(private store$: Store<UserMainSlice & SamplesMainSlice>) { }
+    constructor(
+        private store$: Store<UserMainSlice & SamplesMainSlice>,
+        private samplesLinks: SamplesLinkProviderService,
+        private userLinks: UserLinkProviderService
+    ) { }
 
     ngOnInit(): void {
 
@@ -31,9 +37,9 @@ export class LoginContainerComponent implements OnInit, OnDestroy {
             tap(([currentUser, hasEntries]) => {
                 if (currentUser) {
                     if (hasEntries) {
-                        this.store$.dispatch(navigateMSA({ url: '/samples' }));
+                        this.store$.dispatch(navigateMSA({ path: this.samplesLinks.editor }));
                     } else {
-                        this.store$.dispatch(navigateMSA({ url: '/users/profile' }));
+                        this.store$.dispatch(navigateMSA({ path: this.userLinks.profile }));
                     }
                 }
             })
