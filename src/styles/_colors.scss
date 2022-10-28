@@ -3,6 +3,7 @@
 // BfR colors
 
 $bfr-base: #003869;
+
 $bfr-accent1: #bad8e9;
 $bfr-accent2: rgb(0 174 195);
 $bfr-accent3: rgb(0 169 122);
@@ -10,24 +11,29 @@ $bfr-accent4: rgb(175 202 0);
 $bfr-accent5: rgb(255 221 0);
 $bfr-accent6: rgb(243 146 0);
 $bfr-accent7: #e40038;
-$bfr-grey: rgb(50 70 87);
+
+$bfr-grey1: rgb(50 70 87);
+$bfr-grey2: rgb(82 104 127);
+$bfr-grey3: rgb(127 145 165);
+$bfr-grey4: rgb(182 194 206);
+$bfr-grey5: rgb(224 229 235);
 
 
-$bfr-blue: rgb(3 78 162); // #034ea2
-$bfr-white: rgb(255 255 255); // #ffffff
-$bfr-lightgrey: rgb(204 204 204); // #cccccc
-$bfr-black: rgb(0 0 0); // #000000
-$bfr-ocre: rgb(241 199 83); // #f1c753
-$bfr-lightocre: rgb(246 231 187); // #f6e7bb
-$bfr-darkgrey: rgb(102 102 102); // #666666
-$bfr-red: rgb(254 0 0); // #fe0000
+// $bfr-blue: rgb(3 78 162); // #034ea2
+// $bfr-white: rgb(255 255 255); // #ffffff
+// $bfr-lightgrey: rgb(204 204 204); // #cccccc
+// $bfr-black: rgb(0 0 0); // #000000
+// $bfr-ocre: rgb(241 199 83); // #f1c753
+// $bfr-lightocre: rgb(246 231 187); // #f6e7bb
+// $bfr-darkgrey: rgb(102 102 102); // #666666
+// $bfr-red: rgb(254 0 0); // #fe0000
 
 // Material Design colors
 
 $primary-color: $bfr-base;
 $secondary-color: $bfr-accent1;
 $background-color: white;
-$surface-color: white;
+$surface-color: $bfr-grey5;
 $error-color: $bfr-accent7;
 
 $on-primary-color: white;
@@ -38,10 +44,9 @@ $on-error-color: white;
 
 // Angular Material theme
 
-// Colors generated using this tool: http://mcg.mbitson.com
-// Output Format: Angular JS 2
+// Colors generated using this tool: https://materialpalettes.com
+// Another tool: http://mcg.mbitson.com
 
-// from primary-color
 $primary-colors: (
   50: #e2eef5,
   100: #b7d6e7,
@@ -52,33 +57,24 @@ $primary-colors: (
   600: #2473aa,
   700: #196399,
   800: #0f5388,
-  900: #003869,
-  A100 : #7199ff,
-  A200 : #3e74ff,
-  A400 : #0b4fff,
-  A700 : #0043f1,
+  900: $primary-color,
   contrast: (
     50 : #000000,
     100 : #000000,
     200 : #000000,
-    300 : #ffffff,
-    400 : #ffffff,
-    500 : #ffffff,
+    300 : #000000,
+    400 : #000000,
+    500 : #000000,
     600 : #ffffff,
     700 : #ffffff,
     800 : #ffffff,
-    900 : #ffffff,
-    A100 : #000000,
-    A200 : #ffffff,
-    A400 : #ffffff,
-    A700 : #ffffff,
+    900 : #ffffff
   )
 );
 
-// from secondary color
-$accent-colors: (
+$secondary-colors: (
   50: #e3eff5,
-  100: #bad8e9,
+  100: $secondary-color,
   200: #8bc0df,
   300: #55a9d8,
   400: #1698d5,
@@ -87,10 +83,6 @@ $accent-colors: (
   700: #006bb5,
   800: #005aa5,
   900: #003f89,
-  A100 : #ffffff,
-  A200 : #ffffff,
-  A400 : #ffffff,
-  A700 : #f4fbff,
   contrast: (
     50 : #000000,
     100 : #000000,
@@ -99,49 +91,138 @@ $accent-colors: (
     400 : #000000,
     500 : #000000,
     600 : #000000,
-    700 : #000000,
-    800 : #000000,
-    900 : #000000,
-    A100 : #000000,
-    A200 : #000000,
-    A400 : #000000,
-    A700 : #000000,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff
   )
 );
 
-// from error color
-$warn-colors: (
-  50 : #fce0e7,
-  100 : #f7b3c3,
-  200 : #f2809c,
-  300 : #ec4d74,
-  400 : #e82656,
-  500 : #e40038,
-  600 : #e10032,
-  700 : #dd002b,
-  800 : #d90024,
-  900 : #d10017,
-  A100 : #fff9f9,
-  A200 : #ffc6c9,
-  A400 : #ff9399,
-  A700 : #ff7a81,
+$error-colors: (
+  50: #ffebf0,
+  100: #ffccd7,
+  200: #f797a1,
+  300: #f16d7b,
+  400: #fe445a,
+  500: #ff2541,
+  600: #f61740,
+  700: $error-color,
+  800: #d70031,
+  900: #c90024,
   contrast: (
     50 : #000000,
     100 : #000000,
     200 : #000000,
     300 : #000000,
-    400 : #ffffff,
-    500 : #ffffff,
-    600 : #ffffff,
+    400 : #000000,
+    500 : #000000,
+    600 : #000000,
     700 : #ffffff,
     800 : #ffffff,
-    900 : #ffffff,
-    A100 : #000000,
-    A200 : #000000,
-    A400 : #000000,
-    A700 : #000000,
+    900 : #ffffff
   )
 );
+
+// from primary-color
+// $primary-colors: (
+//   50: #e2eef5,
+//   100: #b7d6e7,
+//   200: #8cbcd8,
+//   300: #64a2c8,
+//   400: #4890bf,
+//   500: #2e7fb5,
+//   600: #2473aa,
+//   700: #196399,
+//   800: #0f5388,
+//   900: #003869,
+//   A100 : #7199ff,
+//   A200 : #3e74ff,
+//   A400 : #0b4fff,
+//   A700 : #0043f1,
+//   contrast: (
+//     50 : #000000,
+//     100 : #000000,
+//     200 : #000000,
+//     300 : #ffffff,
+//     400 : #ffffff,
+//     500 : #ffffff,
+//     600 : #ffffff,
+//     700 : #ffffff,
+//     800 : #ffffff,
+//     900 : #ffffff,
+//     A100 : #000000,
+//     A200 : #ffffff,
+//     A400 : #ffffff,
+//     A700 : #ffffff,
+//   )
+// );
+
+// // from secondary color
+// $accent-colors: (
+//   50: #e3eff5,
+//   100: #bad8e9,
+//   200: #8bc0df,
+//   300: #55a9d8,
+//   400: #1698d5,
+//   500: #0088d2,
+//   600: #007bc6,
+//   700: #006bb5,
+//   800: #005aa5,
+//   900: #003f89,
+//   A100 : #ffffff,
+//   A200 : #ffffff,
+//   A400 : #ffffff,
+//   A700 : #f4fbff,
+//   contrast: (
+//     50 : #000000,
+//     100 : #000000,
+//     200 : #000000,
+//     300 : #000000,
+//     400 : #000000,
+//     500 : #000000,
+//     600 : #000000,
+//     700 : #000000,
+//     800 : #000000,
+//     900 : #000000,
+//     A100 : #000000,
+//     A200 : #000000,
+//     A400 : #000000,
+//     A700 : #000000,
+//   )
+// );
+
+// // from error color
+// $warn-colors: (
+//   50 : #fce0e7,
+//   100 : #f7b3c3,
+//   200 : #f2809c,
+//   300 : #ec4d74,
+//   400 : #e82656,
+//   500 : #e40038,
+//   600 : #e10032,
+//   700 : #dd002b,
+//   800 : #d90024,
+//   900 : #d10017,
+//   A100 : #fff9f9,
+//   A200 : #ffc6c9,
+//   A400 : #ff9399,
+//   A700 : #ff7a81,
+//   contrast: (
+//     50 : #000000,
+//     100 : #000000,
+//     200 : #000000,
+//     300 : #000000,
+//     400 : #ffffff,
+//     500 : #ffffff,
+//     600 : #ffffff,
+//     700 : #ffffff,
+//     800 : #ffffff,
+//     900 : #ffffff,
+//     A100 : #000000,
+//     A200 : #000000,
+//     A400 : #000000,
+//     A700 : #000000,
+//   )
+// );
 
 $primary-palette: mat.define-palette($primary-colors);
 $accent-palette: mat.define-palette($accent-colors);
