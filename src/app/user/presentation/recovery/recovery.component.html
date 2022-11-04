@@ -6,7 +6,7 @@
     </p>
     <br />
     <form [formGroup]="recoveryForm" (ngSubmit)="onRecovery()">
-        <mat-form-field class="mibi-form-field">
+        <mat-form-field class="mibi-form-field" color="accent">
             <input
                 matInput
                 placeholder="E-Mail"
@@ -16,15 +16,6 @@
             />
         </mat-form-field>
         <div class="mibi-recocery-actions">
-            <button
-                class="mibi-recocery-actions__button"
-                mat-raised-button
-                color="primary"
-                type="submit"
-                [disabled]="!recoveryForm.valid"
-            >
-                Passwort zurücksetzen
-            </button>
             <a
                 class="mibi-recocery-actions__button"
                 [routerLink]="[userLinks.login]"
@@ -33,6 +24,15 @@
             >
                 Zurück
             </a>
+            <button
+                class="mibi-recocery-actions__button"
+                mat-raised-button
+                color="accent"
+                type="submit"
+                [disabled]="!recoveryForm.valid"
+            >
+                Passwort zurücksetzen
+            </button>
         </div>
     </form>
 </mibi-box-layout>

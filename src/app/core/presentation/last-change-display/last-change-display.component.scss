@@ -1,4 +1,3 @@
-@use "colors";
 @use "layout";
 
 .mibi-last-change {
@@ -10,5 +9,4 @@
 
 .mibi-last-change__content {
   padding: layout.$single-space 1rem;
-  color: colors.$on-background-color;
 }

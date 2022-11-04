@@ -2,52 +2,35 @@
 
 // BfR colors
 
-$bfr-base: #003869;
+$_bfr-base: #003869;
 
-$bfr-accent1: #bad8e9;
-$bfr-accent2: rgb(0 174 195);
-$bfr-accent3: rgb(0 169 122);
-$bfr-accent4: rgb(175 202 0);
-$bfr-accent5: rgb(255 221 0);
-$bfr-accent6: rgb(243 146 0);
-$bfr-accent7: #e40038;
+$_bfr-accent1: #bad8e9;
 
-$bfr-grey1: rgb(50 70 87);
-$bfr-grey2: rgb(82 104 127);
-$bfr-grey3: rgb(127 145 165);
-$bfr-grey4: rgb(182 194 206);
-$bfr-grey5: rgb(224 229 235);
+$_bfr-accent2: #00aec3;
+$_bfr-accent3: #00a97a;
 
+$_bfr-accent4: #afca00;
+$_bfr-accent5: #ffdd00;
+$_bfr-accent6: #f39200;
+$_bfr-accent7: #e40038;
 
-// $bfr-blue: rgb(3 78 162); // #034ea2
-// $bfr-white: rgb(255 255 255); // #ffffff
-// $bfr-lightgrey: rgb(204 204 204); // #cccccc
-// $bfr-black: rgb(0 0 0); // #000000
-// $bfr-ocre: rgb(241 199 83); // #f1c753
-// $bfr-lightocre: rgb(246 231 187); // #f6e7bb
-// $bfr-darkgrey: rgb(102 102 102); // #666666
-// $bfr-red: rgb(254 0 0); // #fe0000
+$_bfr-grey1: #324657;
+$_bfr-grey2: #52687f;
+$_bfr-grey3: #7f91a5;
+$_bfr-grey4: #b6c2ce;
+$_bfr-grey5: #e0e5eb;
 
-// Material Design colors
-
-$primary-color: $bfr-base;
-$secondary-color: $bfr-accent1;
-$background-color: white;
-$surface-color: $bfr-grey5;
-$error-color: $bfr-accent7;
-
-$on-primary-color: white;
-$on-secondary-color: black;
-$on-background-color: black;
-$on-surface-color: black;
-$on-error-color: white;
-
-// Angular Material theme
+// BfR palettes
 
 // Colors generated using this tool: https://materialpalettes.com
+// - generates more vibrant colors
 // Another tool: http://mcg.mbitson.com
+// - sticks more to the given colors
+// Contrast acquired with this tool: https://m2.material.io/resources/color/#!/?view.left=1&view.right=0
+// - first hue with a legible white is set to white for the contrast color, all other black
+// - reason: we want a more lively look of our colored parts in the app, so text should be white if possible
 
-$primary-colors: (
+$_bfr-base-palette: (
   50: #e2eef5,
   100: #b7d6e7,
   200: #8cbcd8,
@@ -57,24 +40,24 @@ $primary-colors: (
   600: #2473aa,
   700: #196399,
   800: #0f5388,
-  900: $primary-color,
+  900: #003869, // base
   contrast: (
-    50 : #000000,
-    100 : #000000,
-    200 : #000000,
-    300 : #000000,
-    400 : #000000,
-    500 : #000000,
-    600 : #ffffff,
-    700 : #ffffff,
-    800 : #ffffff,
-    900 : #ffffff
+    50 : black,
+    100 : black,
+    200 : black,
+    300 : black,
+    400 : white,
+    500 : white,
+    600 : white,
+    700 : white,
+    800 : white,
+    900 : white
   )
 );
 
-$secondary-colors: (
+$_bfr-accent1-palette: (
   50: #e3eff5,
-  100: $secondary-color,
+  100: #bad8e9, // accent1
   200: #8bc0df,
   300: #55a9d8,
   400: #1698d5,
@@ -84,20 +67,145 @@ $secondary-colors: (
   800: #005aa5,
   900: #003f89,
   contrast: (
-    50 : #000000,
-    100 : #000000,
-    200 : #000000,
-    300 : #000000,
-    400 : #000000,
-    500 : #000000,
-    600 : #000000,
-    700 : #ffffff,
-    800 : #ffffff,
-    900 : #ffffff
+    50 : black,
+    100 : black,
+    200 : black,
+    300 : black,
+    400 : white,
+    500 : white,
+    600 : white,
+    700 : white,
+    800 : white,
+    900 : white
   )
 );
 
-$error-colors: (
+$_bfr-accent2-palette: (
+  50: #e0f8fa,
+  100: #b3ecf2,
+  200: #81e0eb,
+  300: #4ed3e2,
+  400: #27c9db,
+  500: #00c0d6,
+  600: #00afc3, // accent2
+  700: #019aa9,
+  800: #018691,
+  900: #016366,
+  contrast: (
+    50 : black,
+    100 : black,
+    200 : black,
+    300 : black,
+    400 : black,
+    500 : black,
+    600 : black,
+    700 : white,
+    800 : white,
+    900 : white
+  )
+);
+
+$_bfr-accent3-palette: (
+  50: #e6f6f0,
+  100: #c2e9d9,
+  200: #9adbc2,
+  300: #6dceaa,
+  400: #47c397,
+  500: #07b985,
+  600: #00a979, // accent3
+  700: #00966b,
+  800: #00855e,
+  900: #066447,
+  contrast: (
+    50 : black,
+    100 : black,
+    200 : black,
+    300 : black,
+    400 : black,
+    500 : black,
+    600 : white,
+    700 : white,
+    800 : white,
+    900 : white
+  )
+);
+
+$_bfr-accent4-palette: (
+  50: #f7fbe5,
+  100: #ebf4be,
+  200: #ddee93,
+  300: #cfe767,
+  400: #c4e142,
+  500: #bbdc0c,
+  600: #afca00, // accent4
+  700: #a0b400,
+  800: #909d00,
+  900: #787600,
+  contrast: (
+    50 : black,
+    100 : black,
+    200 : black,
+    300 : black,
+    400 : black,
+    500 : black,
+    600 : black,
+    700 : black,
+    800 : black,
+    900 : white
+  )
+);
+
+$_bfr-accent5-palette: (
+  50: #fffee6,
+  100: #fffac0,
+  200: #fef695,
+  300: #fcf267,
+  400: #f9ee3e,
+  500: #f6e900,
+  600: #ffdd00, // accent5
+  700: #ffc400,
+  800: #ffab00,
+  900: #ff7e00,
+  contrast: (
+    50 : black,
+    100 : black,
+    200 : black,
+    300 : black,
+    400 : black,
+    500 : black,
+    600 : black,
+    700 : black,
+    800 : black,
+    900 : black
+  )
+);
+
+$_bfr-accent6-palette: (
+  50: #fdf2e0,
+  100: #fbdeb1,
+  200: #f9c87e,
+  300: #f6b24b,
+  400: #f5a125,
+  500: #f39200, // accent6
+  600: #ef8600,
+  700: #e97700,
+  800: #e36700,
+  900: #d94d00,
+  contrast: (
+    50 : black,
+    100 : black,
+    200 : black,
+    300 : black,
+    400 : black,
+    500 : black,
+    600 : black,
+    700 : black,
+    800 : white,
+    900 : white
+  )
+);
+
+$_bfr-accent7-palette: (
   50: #ffebf0,
   100: #ffccd7,
   200: #f797a1,
@@ -105,135 +213,80 @@ $error-colors: (
   400: #fe445a,
   500: #ff2541,
   600: #f61740,
-  700: $error-color,
+  700: #e40039, // accent7
   800: #d70031,
   900: #c90024,
   contrast: (
-    50 : #000000,
-    100 : #000000,
-    200 : #000000,
-    300 : #000000,
-    400 : #000000,
-    500 : #000000,
-    600 : #000000,
-    700 : #ffffff,
-    800 : #ffffff,
-    900 : #ffffff
+    50 : black,
+    100 : black,
+    200 : black,
+    300 : black,
+    400 : white,
+    500 : white,
+    600 : white,
+    700 : white,
+    800 : white,
+    900 : white
   )
 );
 
-// from primary-color
-// $primary-colors: (
-//   50: #e2eef5,
-//   100: #b7d6e7,
-//   200: #8cbcd8,
-//   300: #64a2c8,
-//   400: #4890bf,
-//   500: #2e7fb5,
-//   600: #2473aa,
-//   700: #196399,
-//   800: #0f5388,
-//   900: #003869,
-//   A100 : #7199ff,
-//   A200 : #3e74ff,
-//   A400 : #0b4fff,
-//   A700 : #0043f1,
-//   contrast: (
-//     50 : #000000,
-//     100 : #000000,
-//     200 : #000000,
-//     300 : #ffffff,
-//     400 : #ffffff,
-//     500 : #ffffff,
-//     600 : #ffffff,
-//     700 : #ffffff,
-//     800 : #ffffff,
-//     900 : #ffffff,
-//     A100 : #000000,
-//     A200 : #ffffff,
-//     A400 : #ffffff,
-//     A700 : #ffffff,
-//   )
-// );
+// used bfr grey colors and filled gaps with color tool
 
-// // from secondary color
-// $accent-colors: (
-//   50: #e3eff5,
-//   100: #bad8e9,
-//   200: #8bc0df,
-//   300: #55a9d8,
-//   400: #1698d5,
-//   500: #0088d2,
-//   600: #007bc6,
-//   700: #006bb5,
-//   800: #005aa5,
-//   900: #003f89,
-//   A100 : #ffffff,
-//   A200 : #ffffff,
-//   A400 : #ffffff,
-//   A700 : #f4fbff,
-//   contrast: (
-//     50 : #000000,
-//     100 : #000000,
-//     200 : #000000,
-//     300 : #000000,
-//     400 : #000000,
-//     500 : #000000,
-//     600 : #000000,
-//     700 : #000000,
-//     800 : #000000,
-//     900 : #000000,
-//     A100 : #000000,
-//     A200 : #000000,
-//     A400 : #000000,
-//     A700 : #000000,
-//   )
-// );
+$_bfr-grey-palette: (
+  50: #e0e5eb, // grey5
+  100: #d2dbe3,
+  200: #b6c2ce, // grey4
+  300: #95a5b6,
+  400: #7f91a5, // grey3
+  500: #5f7690,
+  600: #52687f, // grey2
+  700: #40586d,
+  800: #324657, // grey1
+  900: #20313f,
+  contrast: (
+    50 : black,
+    100 : black,
+    200 : black,
+    300 : black,
+    400 : white,
+    500 : white,
+    600 : white,
+    700 : white,
+    800 : white,
+    900 : white
+  )
+);
 
-// // from error color
-// $warn-colors: (
-//   50 : #fce0e7,
-//   100 : #f7b3c3,
-//   200 : #f2809c,
-//   300 : #ec4d74,
-//   400 : #e82656,
-//   500 : #e40038,
-//   600 : #e10032,
-//   700 : #dd002b,
-//   800 : #d90024,
-//   900 : #d10017,
-//   A100 : #fff9f9,
-//   A200 : #ffc6c9,
-//   A400 : #ff9399,
-//   A700 : #ff7a81,
-//   contrast: (
-//     50 : #000000,
-//     100 : #000000,
-//     200 : #000000,
-//     300 : #000000,
-//     400 : #ffffff,
-//     500 : #ffffff,
-//     600 : #ffffff,
-//     700 : #ffffff,
-//     800 : #ffffff,
-//     900 : #ffffff,
-//     A100 : #000000,
-//     A200 : #000000,
-//     A400 : #000000,
-//     A700 : #000000,
-//   )
-// );
+// Angular Material palettes (optional arguments: default, lighter, darker)
 
-$primary-palette: mat.define-palette($primary-colors);
-$accent-palette: mat.define-palette($accent-colors);
-$warn-palette: mat.define-palette($warn-colors);
+$primary-palette: mat.define-palette($_bfr-base-palette, 700, 500, 900); // darker range
+$secondary-palette: mat.define-palette($_bfr-accent1-palette, 500, 100, 800); // full range
 
-$light-theme: mat.define-light-theme($primary-palette, $accent-palette, $warn-palette);
+$surface-palette: mat.define-palette($_bfr-grey-palette, 200, 50, 400); // lighter range
 
-// Custom colors
+$success-palette: mat.define-palette($_bfr-accent3-palette, 600, 400, 800); // darker range
+$warn-palette: mat.define-palette($_bfr-accent5-palette, 600, 400, 800); // darker range
+$error-palette: mat.define-palette($_bfr-accent7-palette, 700, 500, 900); // darker range
 
-$action-color: mat.get-color-from-palette($primary-palette, 300);
-$ui-color: mat.get-color-from-palette($primary-palette, "A400");
+// Additional colors
+
+$background-color: white;
+$on-background-color: black;
+
+$bfr-base-color: mat.get-color-from-palette($primary-palette, 900);
+$on-bfr-base-color: mat.get-color-from-palette($primary-palette, "900-contrast");
+
+$bfr-accent-color: mat.get-color-from-palette($secondary-palette, 100);
+
+// Angular Material theme
+
+$light-theme: mat.define-light-theme(
+  ( color: (
+    primary: $primary-palette,
+    accent: $secondary-palette,
+    warn: $error-palette
+  ))
+);
 
 // Color modifiers
 

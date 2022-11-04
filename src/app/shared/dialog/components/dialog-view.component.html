@@ -5,14 +5,16 @@
         <div class="mibi-dialog">
             <h1 mat-dialog-title>{{config.title}}</h1>
             <div mat-dialog-content class="mibi-mat-dialog-content">
-                <mibi-dialog-warnings-view [warnings]="config.warnings"></mibi-dialog-warnings-view>
+                <div *ngIf="config.warnings.length > 0" class="mibi-warnings">
+                    <mibi-dialog-warnings-view [warnings]="config.warnings"></mibi-dialog-warnings-view>
+                </div>
                 <div class="mibi-dialog-message"> {{config.message}} </div>
                 <ng-content></ng-content>
             </div>
             <div mat-dialog-actions class="mibi-mat-dialog-actions">
-                <button type="button" mat-button *ngIf="config.cancelButtonConfig" color="primary"
+                <button type="button" mat-button *ngIf="config.cancelButtonConfig" color="accent"
                     (click)="onCancel()">{{config.cancelButtonConfig.label}}</button>
-                <button type="button" mat-raised-button cdkFocusInitial color="primary"
+                <button type="button" mat-raised-button cdkFocusInitial color="accent"
                     (click)="onConfirm()">{{config.confirmButtonConfig.label}}</button>
             </div>
         </div>

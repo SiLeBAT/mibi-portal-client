@@ -1,3 +1,4 @@
+@use "@angular/material" as mat;
 @use "colors";
 
 .mibi-datenschutzerklaerung {
@@ -20,7 +21,7 @@
 }
 
 .mibi-datenschutzerklaerung-footer {
-  border-top: 1px solid colors.$primary-color;
+  border-top: 1px solid mat.get-color-from-palette(colors.$primary-palette, "default");
 }
 
 .mibi-datenschutzerklaerung-list {

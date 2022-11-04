@@ -1,4 +1,5 @@
 @use "sass:color";
+@use "@angular/material" as mat;
 @use "colors";
 @use "../../samples-grid";
 
@@ -9,7 +10,7 @@
 }
 
 .mibi-text-cell--readonly {
-  background-color: color.adjust(colors.$surface-color, $lightness: 15%);
+  background-color: color.adjust(mat.get-color-from-palette(colors.$surface-palette, "lighter"), $lightness: 5%);
 }
 
 .mibi-text-cell--col-header {

@@ -1,3 +1,4 @@
+@use "@angular/material" as mat;
 @use "colors";
 @use "layout";
 
@@ -34,10 +35,10 @@
 }
 
 .mibi-header {
-  background-color: colors.$primary-color;
-  color: colors.$on-primary-color;
   padding: layout.$single-space;
   text-align: center;
+  background-color: mat.get-color-from-palette(colors.$primary-palette, "default");
+  color: mat.get-color-from-palette(colors.$primary-palette, "default-contrast");
 }
 
 .mibi-warnings {

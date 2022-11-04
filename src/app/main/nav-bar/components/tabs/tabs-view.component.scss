@@ -1,6 +1,7 @@
-@use "colors";
+@use "@angular/material" as mat;
 @use "layout";
-@use "app/main/styles";
+@use "colors";
+@use "../../nav-bar.styles" as nav;
 
 .mibi-tabs {
   height: 100%;
@@ -14,16 +15,26 @@
 }
 
 .mibi-link {
-  @include styles.app-bar-link;
-
   padding: layout.$single-space;
   height: 100%;
   display: flex;
   align-items: center;
+  font-size: 1rem;
+  line-height: 1rem;
+  text-decoration: none;
+  background-color: nav.$main-color;
+  color: nav.$text-color;
+}
 
-  &--active {
-    background-color: colors.$action-color;
-  }
+.mibi-link:hover {
+  background-color: mat.get-color-from-palette(colors.$primary-palette, "default");
+  color: mat.get-color-from-palette(colors.$primary-palette, "default-contrast");
+}
+
+.mibi-link--active,
+.mibi-link--active:hover {
+  background-color: mat.get-color-from-palette(colors.$primary-palette, "lighter");
+  color: mat.get-color-from-palette(colors.$primary-palette, "lighter-contrast");
 }
 
 .mibi-link__text {

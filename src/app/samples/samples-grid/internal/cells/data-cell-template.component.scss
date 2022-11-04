@@ -14,12 +14,12 @@
 }
 
 .mibi-data-cell--warning {
-  background-color: mat.get-color-from-palette(colors.$accent-palette, 100);
+  background-color: mat.get-color-from-palette(colors.$warn-palette, 100);
   font-weight: bold;
 }
 
 .mibi-data-cell--error {
-  background-color: mat.get-color-from-palette(colors.$warn-palette, 100);
+  background-color: mat.get-color-from-palette(colors.$error-palette, 100);
   font-weight: bold;
 }
 

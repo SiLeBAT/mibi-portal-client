@@ -1,7 +1,7 @@
 import { Component, Output, EventEmitter, OnInit, OnDestroy, ContentChild, AfterContentInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { takeWhile, tap } from 'rxjs/operators';
-import { UserActionType, ColorType } from '../../model/user-action.model';
+import { UserActionType } from '../../model/user-action.model';
 import { Observable, Subject } from 'rxjs';
 import { UploadAbstractComponent } from '../../presentation/upload/upload.abstract';
 import { UploadErrorType } from '../../model/upload.model';
@@ -111,7 +111,6 @@ export class UploadContainerComponent implements OnInit, OnDestroy, AfterContent
                         this.myTrigger.next(!this.isGuardActive);
                     },
                     icon: '',
-                    color: ColorType.PRIMARY,
                     focused: true
                 },
                 auxilliaryAction: {
@@ -119,8 +118,7 @@ export class UploadContainerComponent implements OnInit, OnDestroy, AfterContent
                     label: 'Abbrechen',
                     // eslint-disable-next-line @typescript-eslint/no-empty-function
                     onExecute: () => {},
-                    icon: '',
-                    color: ColorType.PRIMARY
+                    icon: ''
                 }
             }}));
         }

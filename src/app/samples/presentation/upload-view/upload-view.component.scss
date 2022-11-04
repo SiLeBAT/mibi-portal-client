@@ -19,16 +19,16 @@
   grid-template-columns: minmax(min-content, 100%);
   overflow: auto;
   text-align: center;
-  background: colors.$surface-color;
   border-radius: 7px;
-  border: 3px solid colors.$surface-color;
+  border: 3px solid mat.get-color-from-palette(colors.$surface-palette, "lighter");
   transition: all 0.2s ease;
   user-select: none;
-  color: colors.$primary-color;
+  background-color: mat.get-color-from-palette(colors.$surface-palette, "lighter");
+  color: mat.get-color-from-palette(colors.$secondary-palette, "darker");
 }
 
 .mibi-upload:hover {
-  border-color: colors.$primary-color;
+  border-color: mat.get-color-from-palette(colors.$secondary-palette, "darker");
 }
 
 .mibi-upload-icon {
@@ -41,6 +41,5 @@
 }
 
 .mibi-upload-button {
-  background: colors.$primary-color;
   margin: 0 auto 0.5rem;
 }

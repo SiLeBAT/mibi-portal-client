@@ -1,9 +1,11 @@
 @use "colors";
+@use "../nav-bar.styles" as nav;
 
 .mibi-nav-bar {
   height: 100%;
   display: flex;
-  background-color: colors.$primary-color;
+  background-color: nav.$main-color;
+  color: nav.$text-color;
 }
 
 .mibi-nav-bar__left {

@@ -1,12 +1,12 @@
 @use "colors";
 
 .mibi-title {
-  color: colors.$primary-color;
+  margin-top: 0.25em;
+  margin-bottom: 0.5em;
+  color: colors.$bfr-base-color;
   text-align: center;
   font-size: 2em;
   line-height: normal;
-  margin-top: 0.25em;
-  margin-bottom: 0.5em;
 }
 
 .mibi-logo {

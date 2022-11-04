@@ -1,4 +1,5 @@
 @use "sass:math";
+@use "@angular/material" as mat;
 @use "colors";
 @use "layout";
 
@@ -11,18 +12,16 @@
   margin: 0 auto;
 }
 
-.mibi-faq-toc-item {
-  background: colors.$primary-color;
+.mibi-faq-toc-link {
+  display: block;
   margin: layout.$single-space 0;
   padding: math.div(layout.$half-space, 2) layout.$double-space;
   text-align: center;
-}
-
-.mibi-faq-toc-link {
-  color: colors.$on-primary-color;
   text-decoration: none;
+  background-color: mat.get-color-from-palette(colors.$primary-palette, "lighter");
+  color: mat.get-color-from-palette(colors.$primary-palette, "lighter-contrast");
 }
 
 .mibi-faq-toc-link:hover {
-  color: colors.$surface-color;
+  color: mat.get-color-from-palette(colors.$secondary-palette, "lighter");
 }

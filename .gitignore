@@ -43,6 +43,7 @@ testem.log
 /cypress/videos
 /cypress/screenshots
 /cypress/reports
+/cypress/examples
 
 # System Files
 .DS_Store
