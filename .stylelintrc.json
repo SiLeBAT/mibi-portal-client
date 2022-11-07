@@ -2,6 +2,7 @@
   "extends": "stylelint-config-standard-scss",
   "rules": {
     "selector-class-pattern": "^mibi(-[a-z]+)+(__[a-z]+(-[a-z]+)*)?(--[a-z]+(-[a-z]+)*)?$",
-    "scss/dollar-variable-empty-line-before": null
+    "scss/dollar-variable-empty-line-before": null,
+    "color-hex-length": "long"
   }
 }
