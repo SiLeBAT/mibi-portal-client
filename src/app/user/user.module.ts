@@ -34,6 +34,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatListModule } from '@angular/material/list';
 import { PasswordComponent } from './password/password.component';
 import { USER_SLICE_NAME } from './user.state';
 import { userReducerMap, userEffects } from './user.store';
@@ -78,6 +79,7 @@ const routes: Routes = [{
         MatCardModule,
         MatButtonModule,
         MatAutocompleteModule,
+        MatListModule,
         PasswordStrengthMeterModule,
         SharedModule,
         RouterModule.forChild(routes),

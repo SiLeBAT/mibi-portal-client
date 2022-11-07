@@ -1,15 +1,14 @@
 <mibi-box-layout>
-    <br />
     <p>
         Bitte geben Sie Ihre E-Mail Adresse an, die Sie für die Registrierung
         verwendet haben
     </p>
-    <br />
     <form [formGroup]="recoveryForm" (ngSubmit)="onRecovery()">
-        <mat-form-field class="mibi-form-field" color="accent">
+        <mat-form-field class="mibi-form-field" appearance="fill" color="accent">
+            <mat-label>E-Mail</mat-label>
             <input
                 matInput
-                placeholder="E-Mail"
+                placeholder="Geben Sie Ihre E-Mail-Adresse ein"
                 name="email"
                 formControlName="email"
                 required

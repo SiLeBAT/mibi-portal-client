@@ -1,7 +1,5 @@
-@use "material";
-
 .mibi-form-field {
-  @include material.form-field;
+  display: block;
 }
 
 .mibi-recocery-actions {

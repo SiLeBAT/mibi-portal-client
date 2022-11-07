@@ -1,20 +1,26 @@
+<mibi-box-layout>
+
 <form [formGroup]="resetForm" (ngSubmit)="onResetPassword()">
 
-    <div class="mibi-reset-info">Bitte geben Sie ein neues Passwort ein.</div>
+    <p>Bitte geben Sie ein neues Passwort ein.</p>
 
     <mibi-password></mibi-password>
 
     <div class="mibi-reset-actions">
-        <button class="mibi-reset-actions__button" 
-            mat-raised-button color="accent"
+        <a class="mibi-reset-actions__button" mat-button color="primary" [routerLink]="[userLinks.login]">
+            Zurück
+        </a>
+        <button 
+            class="mibi-reset-actions__button" 
+            mat-raised-button
+            color="accent"
             type="submit"
             [disabled]="!resetForm.valid"
         >
             Passwort zurücksetzen
         </button>
-        <a class="mibi-reset-actions__button" mat-button color="primary" [routerLink]="[userLinks.login]">
-            Zurück
-        </a>
     </div>
 
 </form>
+
+</mibi-box-layout>

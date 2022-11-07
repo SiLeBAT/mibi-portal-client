@@ -15,6 +15,19 @@ $octuple-space: $single-space * 8;
   padding: 0;
 }
 
+@mixin form-group() {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: $double-space;
+  row-gap: $single-space;
+  margin-bottom: $single-space;
+}
+
+@mixin form-field() {
+  flex: 1 0 auto;
+  min-width: 250px; // error and hints should not exceed this width
+}
+
 // fix for flex-column in safari, opera not setting the height to flexed height
 @mixin safari-fix {
   height: max-content;

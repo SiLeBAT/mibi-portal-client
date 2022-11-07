@@ -1,18 +1,25 @@
 @use "layout";
+@use "@angular/material" as mat;
+
+// mat-dialog scrolling behavior is buggy, so we override those styles
 
 .mibi-mat-dialog {
-  margin: -24px;
-  max-height: 100vh;
-}
-
-.mibi-dialog {
   height: 100%;
-  padding: 24px;
-  overflow: auto;
+  // mat dialog always sets height to content height
+  // to enable content scrolling the height has to be limited
+  // => max-height of mat-dialog-service config - padding added by mat-dialog
+  max-height: calc(80vh - 48px); 
+  display: grid;
+  grid-template-rows: auto minmax(0, 100%) auto; // we want the content to be individually scrollable
+  overflow: auto; // handles x-overflow, y-overflow is handled by mat-dialog-container
+  margin-bottom: -16px; // undoing margin/padding removal of mat-actions
 }
 
 .mibi-mat-dialog-content {
-  margin: 0;
+  max-height: initial; // we already set the max-height for the whole dialog
+  display: grid;
+  grid-auto-rows: auto;
+  margin: 0; // we use the padding of the mat-dialog-container
   padding: 0;
 }
 
@@ -20,13 +27,13 @@
   padding-bottom: layout.$half-space;
 }
 
-.mibi-dialog-message {
-  margin-bottom: layout.$single-space;
+.mibi-message {
+  padding-bottom: layout.$single-space;
 }
 
 .mibi-mat-dialog-actions {
   flex-wrap: nowrap;
   justify-content: space-between;
-  margin-bottom: 0;
+  margin-bottom: 0; // margins messes up the height calculations of the parent elements
   padding-bottom: 0;
 }

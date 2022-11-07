@@ -7,13 +7,27 @@
   justify-content: space-between;
 }
 
-.mibi-button-group__stepper-button-group {
+.mibi-stepper-button-group {
   display: flex;
   justify-content: space-around;
+  margin-left: layout.$single-space;
 }
 
-.mibi-button-group__button {
-  margin: 0 layout.$double-space;
+.mibi-stepper-button {
+  margin-left: layout.$single-space;
+  text-transform: none;
+}
+
+.mibi-stepper-button-icon {
+  font-weight: bold;
+}
+
+.mibi-button {
+  margin-left: layout.$double-space;
+}
+
+.mibi-button--first {
+  margin-left: 0;
 }
 
 .mibi-optional-selection {

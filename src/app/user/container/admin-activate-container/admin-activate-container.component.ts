@@ -26,7 +26,6 @@ export class AdminActivateContainerComponent implements OnInit {
 
     ngOnInit(): void {
         this.adminTokenValid = this.activatedRoute.snapshot.data['adminTokenValid'];
-
         if (this.adminTokenValid.activation) {
             this.name = this.adminTokenValid.username;
             setTimeout(() => {

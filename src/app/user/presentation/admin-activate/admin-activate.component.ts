@@ -3,7 +3,8 @@ import { environment } from '../../../../environments/environment';
 
 @Component({
     selector: 'mibi-admin-activate',
-    templateUrl: './admin-activate.component.html'
+    templateUrl: './admin-activate.component.html',
+    styleUrls: ['./admin-activate.component.scss']
 })
 export class AdminActivateComponent {
 

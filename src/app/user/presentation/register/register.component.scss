@@ -1,12 +1,11 @@
 @use "layout";
-@use "material";
 
-.mibi-form-field {
-  @include material.form-field;
+.mibi-form-group {
+  @include layout.form-group();
 }
 
-.mibi-form-field__error {
-  @include material.form-field-error;
+.mibi-form-field {
+  @include layout.form-field();
 }
 
 .mibi-register-mat-option {
@@ -18,7 +17,7 @@
 }
 
 .mibi-register-actions {
-  margin-top: layout.$double-space;
+  margin-top: layout.$triple-space;
   display: flex;
   justify-content: space-between;
 }

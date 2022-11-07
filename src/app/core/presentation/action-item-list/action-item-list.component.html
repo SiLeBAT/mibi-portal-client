@@ -23,7 +23,7 @@
         </div>
         <div class="mibi-app-bar-bottom__right">
             <ul class="mibi-action-list">
-                <li *ngFor="let config of actionConfigs" class="mibi-action-list__item" mat-button>
+                <li *ngFor="let config of actionConfigs" class="mibi-action-list__item">
                     <ng-container *ngTemplateOutlet="
                         isUpload(config.type) ? uploadActionItem : customActionItem;
                         context: config

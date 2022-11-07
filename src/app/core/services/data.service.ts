@@ -3,7 +3,7 @@ import { DTOFactoryService } from './dto-factory.service';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, tap } from 'rxjs/operators';
 import {
     Sample,
     SampleSet,
