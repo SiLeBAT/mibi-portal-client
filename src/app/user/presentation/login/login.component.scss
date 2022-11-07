@@ -1,11 +1,11 @@
 @use "layout";
 
 .mibi-form-group {
-  @include layout.form-group();
+  @include layout.form-group;
 }
 
 .mibi-form-field {
-  @include layout.form-field();
+  @include layout.form-field;
 }
 
 .mibi-login-submit-button {

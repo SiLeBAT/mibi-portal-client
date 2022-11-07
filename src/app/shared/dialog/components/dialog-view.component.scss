@@ -5,10 +5,11 @@
 
 .mibi-mat-dialog {
   height: 100%;
+
   // mat dialog always sets height to content height
   // to enable content scrolling the height has to be limited
   // => max-height of mat-dialog-service config - padding added by mat-dialog
-  max-height: calc(80vh - 48px); 
+  max-height: calc(80vh - 48px);
   display: grid;
   grid-template-rows: auto minmax(0, 100%) auto; // we want the content to be individually scrollable
   overflow: auto; // handles x-overflow, y-overflow is handled by mat-dialog-container
