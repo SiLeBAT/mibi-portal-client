@@ -1,11 +1,7 @@
 @use "layout";
 
-.mibi-reset-info {
-  margin-bottom: layout.$double-space;
-}
-
 .mibi-reset-actions {
-  margin-top: layout.$double-space;
+  margin-top: layout.$triple-space;
   display: flex;
   justify-content: space-between;
 }

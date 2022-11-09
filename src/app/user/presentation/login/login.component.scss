@@ -1,7 +1,11 @@
-@use "material";
+@use "layout";
+
+.mibi-form-group {
+  @include layout.form-group;
+}
 
 .mibi-form-field {
-  @include material.form-field;
+  @include layout.form-field;
 }
 
 .mibi-login-submit-button {

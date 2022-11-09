@@ -3,7 +3,8 @@ import { UserLinkProviderService } from '../../link-provider.service';
 
 @Component({
     selector: 'mibi-activate',
-    templateUrl: './activate.component.html'
+    templateUrl: './activate.component.html',
+    styleUrls: ['./activate.component.scss']
 })
 export class ActivateComponent {
     @Input() tokenValid: boolean;

@@ -3,20 +3,24 @@
     cardTitle="Konto aktiviert"
 >
     <mibi-card-content>
-        <p>Sie haben Ihr {{ appName }} Konto aktiviert.</p>
-        <p>
-            Sobald der {{ appName }} Administrator Ihr Konto freigeschaltet hat,
-            können Sie sich einloggen. Sie erhalten nach erfolgter Freischaltung
-            eine Benachrichtigung.
-        </p>
+        <mibi-box-layout>
+            <p>Sie haben Ihr {{ appName }} Konto aktiviert.</p>
+            <p class="mibi-last">
+                Sobald der {{ appName }} Administrator Ihr Konto freigeschaltet hat,
+                können Sie sich einloggen. Sie erhalten nach erfolgter Freischaltung
+                eine Benachrichtigung.
+            </p>
+        </mibi-box-layout>
     </mibi-card-content>
 </mibi-single-center-card-layout>
 
 <ng-template #invalidToken>
     <mibi-single-center-card-layout cardTitle="Fehler">
         <mibi-card-content>
-            <p>Ihre Kontoaktivierung ist fehlgeschlagen.</p>
-            <p>Bitte erneut registrieren.</p>
+            <mibi-box-layout>
+                <p>Ihre Kontoaktivierung ist fehlgeschlagen.</p>
+                <p class="mibi-last">Bitte erneut registrieren.</p>
+            </mibi-box-layout>
         </mibi-card-content>
         <mibi-card-actions>
             <a mat-button color="primary" [routerLink]="[userLinks.register]">

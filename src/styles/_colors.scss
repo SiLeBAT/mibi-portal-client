@@ -2,23 +2,23 @@
 
 // BfR colors
 
-$_bfr-base: #003869;
+$-bfr-base: #003869;
 
-$_bfr-accent1: #bad8e9;
+$-bfr-accent1: #bad8e9;
 
-$_bfr-accent2: #00aec3;
-$_bfr-accent3: #00a97a;
+$-bfr-accent2: #00aec3;
+$-bfr-accent3: #00a97a;
 
-$_bfr-accent4: #afca00;
-$_bfr-accent5: #ffdd00;
-$_bfr-accent6: #f39200;
-$_bfr-accent7: #e40038;
+$-bfr-accent4: #afca00;
+$-bfr-accent5: #ffdd00;
+$-bfr-accent6: #f39200;
+$-bfr-accent7: #e40038;
 
-$_bfr-grey1: #324657;
-$_bfr-grey2: #52687f;
-$_bfr-grey3: #7f91a5;
-$_bfr-grey4: #b6c2ce;
-$_bfr-grey5: #e0e5eb;
+$-bfr-grey1: #324657;
+$-bfr-grey2: #52687f;
+$-bfr-grey3: #7f91a5;
+$-bfr-grey4: #b6c2ce;
+$-bfr-grey5: #e0e5eb;
 
 // BfR palettes
 
@@ -30,7 +30,7 @@ $_bfr-grey5: #e0e5eb;
 // - first hue with a legible white is set to white for the contrast color, all other black
 // - reason: we want a more lively look of our colored parts in the app, so text should be white if possible
 
-$_bfr-base-palette: (
+$-bfr-base-palette: (
   50: #e2eef5,
   100: #b7d6e7,
   200: #8cbcd8,
@@ -55,7 +55,7 @@ $_bfr-base-palette: (
   )
 );
 
-$_bfr-accent1-palette: (
+$-bfr-accent1-palette: (
   50: #e3eff5,
   100: #bad8e9, // accent1
   200: #8bc0df,
@@ -80,7 +80,7 @@ $_bfr-accent1-palette: (
   )
 );
 
-$_bfr-accent2-palette: (
+$-bfr-accent2-palette: (
   50: #e0f8fa,
   100: #b3ecf2,
   200: #81e0eb,
@@ -105,7 +105,7 @@ $_bfr-accent2-palette: (
   )
 );
 
-$_bfr-accent3-palette: (
+$-bfr-accent3-palette: (
   50: #e6f6f0,
   100: #c2e9d9,
   200: #9adbc2,
@@ -130,7 +130,7 @@ $_bfr-accent3-palette: (
   )
 );
 
-$_bfr-accent4-palette: (
+$-bfr-accent4-palette: (
   50: #f7fbe5,
   100: #ebf4be,
   200: #ddee93,
@@ -155,7 +155,7 @@ $_bfr-accent4-palette: (
   )
 );
 
-$_bfr-accent5-palette: (
+$-bfr-accent5-palette: (
   50: #fffee6,
   100: #fffac0,
   200: #fef695,
@@ -180,7 +180,7 @@ $_bfr-accent5-palette: (
   )
 );
 
-$_bfr-accent6-palette: (
+$-bfr-accent6-palette: (
   50: #fdf2e0,
   100: #fbdeb1,
   200: #f9c87e,
@@ -205,7 +205,7 @@ $_bfr-accent6-palette: (
   )
 );
 
-$_bfr-accent7-palette: (
+$-bfr-accent7-palette: (
   50: #ffebf0,
   100: #ffccd7,
   200: #f797a1,
@@ -232,7 +232,7 @@ $_bfr-accent7-palette: (
 
 // used bfr grey colors and filled gaps with color tool
 
-$_bfr-grey-palette: (
+$-bfr-grey-palette: (
   50: #e0e5eb, // grey5
   100: #d2dbe3,
   200: #b6c2ce, // grey4
