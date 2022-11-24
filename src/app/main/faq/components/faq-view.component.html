@@ -1,0 +1,24 @@
+<div class="mibi-scroll-container">
+<div #scrollPanel>
+
+<mibi-wall-of-text-layout wotTitle="MiBi-Portal FAQ">
+    <div mibi-wot-preamble class="mibi-toc">
+        <div *ngFor="let section of faq.sections">
+            <a class="mibi-toc-link mat-h4"
+                [routerLink]="['.']"
+                [fragment]="section.urlFragment"
+            >{{section.title}}</a>
+        </div>
+    </div>
+    <div mibi-wot-content class="mibi-sections">
+        <section>
+            <mibi-faq-section-view [entries]="faq.topEntries"></mibi-faq-section-view>
+        </section>
+        <section #faqSection *ngFor="let section of faq.sections" [id]="section.urlFragment">
+            <mibi-faq-section-view [entries]="section.entries" [title]="section.title"></mibi-faq-section-view>
+        </section>
+    </div>
+</mibi-wall-of-text-layout>
+
+</div>
+</div>

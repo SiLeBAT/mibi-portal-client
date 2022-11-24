@@ -7,4 +7,6 @@ import { mainPaths } from './main.paths';
 })
 export class MainLinkProviderService {
     get home(): string { return mainPaths.home; }
+
+    get faq(): string { return mainPaths.faq; }
 }

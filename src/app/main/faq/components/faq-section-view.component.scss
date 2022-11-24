@@ -2,15 +2,19 @@
 @use "colors";
 @use "layout";
 
-.mibi-faq-section {
-  margin-bottom: layout.$double-space;
-  padding: 0 30% * 0.5;
-}
-
-.mibi-faq-section-title {
+.mibi-title {
   padding: layout.$single-space;
   margin: 0;
   background-color: mat.get-color-from-palette(colors.$primary-palette, "lighter");
   color: mat.get-color-from-palette(colors.$primary-palette, "lighter-contrast");
   text-align: center;
+}
+
+.mibi-panel-title {
+  font-weight: bold;
+  padding: layout.$double-space layout.$single-space;
+}
+
+.mibi-panel-text {
+  padding: layout.$single-space;
 }

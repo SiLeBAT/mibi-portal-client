@@ -1,4 +1,4 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginViewComponent } from './presentation/login-view/login-view.component';
@@ -109,7 +109,6 @@ const routes: Routes = [{
         DatenschutzHinweiseComponent,
         DatenSchutzHinweiseViewComponent
     ],
-    exports: [],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    exports: []
 })
 export class UserModule { }

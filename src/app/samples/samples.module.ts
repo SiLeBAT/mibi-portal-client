@@ -1,4 +1,4 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { StoreModule } from '@ngrx/store';
@@ -92,7 +92,6 @@ const routes: Routes = [
         SamplesGridViewComponent,
         SamplesEditorComponent
     ],
-    exports: [],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    exports: []
 })
 export class SamplesModule { }

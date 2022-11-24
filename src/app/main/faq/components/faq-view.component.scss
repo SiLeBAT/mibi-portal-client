@@ -1,0 +1,37 @@
+@use "@angular/material" as mat;
+@use "colors";
+@use "layout";
+
+.mibi-scroll-container {
+  height: 100%;
+  overflow: auto;
+}
+
+.mibi-toc {
+  display: grid;
+  padding-bottom: layout.$quadruple-space;
+  justify-content: center;
+  gap: layout.$single-space;
+}
+
+.mibi-toc-link {
+  display: block;
+  margin: 0;
+  padding: 0 layout.$double-space;
+  text-align: center;
+  text-decoration: none;
+  background-color: mat.get-color-from-palette(colors.$primary-palette, "lighter");
+  color: mat.get-color-from-palette(colors.$primary-palette, "lighter-contrast");
+}
+
+.mibi-toc-link:hover {
+  color: mat.get-color-from-palette(colors.$secondary-palette, "lighter");
+}
+
+.mibi-sections {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: minmax(min-content, 70%);
+  gap: layout.$double-space;
+  margin-bottom: layout.$double-space;
+}

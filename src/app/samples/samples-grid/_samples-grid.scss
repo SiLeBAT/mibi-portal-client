@@ -3,6 +3,7 @@
 @use "@angular/material" as mat;
 @use "colors";
 
+$ui-color: mat.get-color-from-palette(colors.$secondary-palette, "default");
 $edit-color: mat.get-color-from-palette(colors.$secondary-palette, "darker");
 
 $cell-border: 1px solid mat.get-color-from-palette(colors.$surface-palette, "default");

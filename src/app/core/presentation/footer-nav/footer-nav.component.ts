@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ContentLinkProviderService } from '../../../content/link-provider.service';
+import { MainLinkProviderService } from '../../../main/link-provider.service';
 import { MailConfiguration } from '../../model/mail.model';
 
 @Component({
@@ -10,5 +11,8 @@ import { MailConfiguration } from '../../model/mail.model';
 export class FooterNavComponent {
     @Input() supportMailConfig: MailConfiguration;
 
-    constructor(public contentLinks: ContentLinkProviderService) {}
+    constructor(
+        public mainLinks: MainLinkProviderService,
+        public contentLinks: ContentLinkProviderService
+    ) {}
 }

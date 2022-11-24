@@ -5,6 +5,5 @@ import { contentPaths } from './content.paths';
     providedIn: 'root'
 })
 export class ContentLinkProviderService {
-    get faq(): string { return contentPaths.faq; }
     get dataProtection(): string { return contentPaths.dataProtection; }
 }

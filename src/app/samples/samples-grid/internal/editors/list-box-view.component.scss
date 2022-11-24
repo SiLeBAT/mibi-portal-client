@@ -38,15 +38,15 @@ $mibi-hover-opacity: colors.$hover-opacity;
 }
 
 .mibi-list-item--hover {
-  background-color: color.change(samples-grid.$edit-color, $alpha: $mibi-hover-opacity);
+  background-color: color.change(samples-grid.$ui-color, $alpha: $mibi-hover-opacity);
 }
 
 .mibi-list-item--selected {
-  background-color: color.change(samples-grid.$edit-color, $alpha: $mibi-selection-opacity);
+  background-color: color.change(samples-grid.$ui-color, $alpha: $mibi-selection-opacity);
 }
 
 .mibi-list-item--selected-hover {
-  background-color: color.change(samples-grid.$edit-color, $alpha: $mibi-selection-opacity + $mibi-hover-opacity);
+  background-color: color.change(samples-grid.$ui-color, $alpha: $mibi-selection-opacity + $mibi-hover-opacity);
 }
 
 .mibi-filtered-text {
