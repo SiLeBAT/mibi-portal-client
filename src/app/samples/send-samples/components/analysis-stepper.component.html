@@ -91,7 +91,7 @@
             <div class="mibi-button-group">
                 <button 
                     class="mibi-button mibi-button--first"
-                    mat-button
+                    mat-stroked-button
                     color="accent"
                     (click)="onCancel()"
                 >
@@ -100,7 +100,7 @@
                 <div class="mibi-stepper-button-group">
                     <button
                         class="mibi-stepper-button"
-                        mat-stroked-button
+                        mat-button
                         color="accent"
                         matStepperPrevious
                         *ngIf="!first"
@@ -110,7 +110,7 @@
                     </button>
                     <button
                         class="mibi-stepper-button"
-                        mat-stroked-button
+                        mat-button
                         color="accent"
                         matStepperNext
                         *ngIf="!last"

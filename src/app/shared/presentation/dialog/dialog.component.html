@@ -8,9 +8,9 @@
                 <ng-container>{{data.message}}</ng-container>
             </div>
             <div mat-dialog-actions class="mibi-mat-dialog-actions">
-                <button *ngIf="!!data.auxilliaryAction" type="button" mat-button color="accent"
+                <button *ngIf="!!data.auxilliaryAction" type="button" mat-stroked-button color="accent"
                     (click)="onAuxAction()">{{data.auxilliaryAction.label}}</button>
-                <button cdkFocusInitial type="button" mat-raised-button color="accent"
+                <button cdkFocusInitial type="button" mat-flat-button color="accent"
                     (click)="onMainAction()">{{data.mainAction.label}}</button>
             </div>
         </div>

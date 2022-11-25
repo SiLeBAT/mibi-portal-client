@@ -9,17 +9,17 @@
 }
 
 .mibi-data-cell--auto-correction {
-  background-color: mat.get-color-from-palette(colors.$primary-palette, 100);
+  background-color: mat.get-color-from-palette(colors.$primary-palette, 50);
   font-weight: bold;
 }
 
 .mibi-data-cell--warning {
-  background-color: mat.get-color-from-palette(colors.$warn-palette, 100);
+  background-color: mat.get-color-from-palette(colors.$warn-palette, 200);
   font-weight: bold;
 }
 
 .mibi-data-cell--error {
-  background-color: mat.get-color-from-palette(colors.$error-palette, 100);
+  background-color: mat.get-color-from-palette(colors.$error-palette, 200);
   font-weight: bold;
 }
 

@@ -18,8 +18,8 @@ $tooltip-on-error-color: mat.get-color-from-palette(colors.$error-palette, "defa
 $tooltip-warning-color: mat.get-color-from-palette(colors.$warn-palette, "default");
 $tooltip-on-warning-color: mat.get-color-from-palette(colors.$warn-palette, "default-contrast");
 
-$tooltip-info-color: mat.get-color-from-palette(colors.$primary-palette, "default");
-$tooltip-on-info-color: mat.get-color-from-palette(colors.$primary-palette, "default-contrast");
+$tooltip-info-color: mat.get-color-from-palette(colors.$primary-palette, "lighter");
+$tooltip-on-info-color: mat.get-color-from-palette(colors.$primary-palette, "lighter-contrast");
 
 $tooltip-border-color: black;
 
