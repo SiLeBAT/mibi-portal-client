@@ -1,8 +1,7 @@
 @use "sass:math";
 @use "@angular/material" as mat;
-@use "colors";
 @use "layout";
-@use "app/main/styles";
+@use "colors";
 
 .mibi-app-bar-bottom {
   height: 100%;
@@ -10,8 +9,8 @@
   flex-wrap: wrap;
   justify-content: flex-end;
   align-items: center;
-  background-color: colors.$action-color;
-  color: mat.get-color-from-palette(colors.$primary-palette, darker-contrast);
+  background-color: mat.get-color-from-palette(colors.$primary-palette, "lighter");
+  color: mat.get-color-from-palette(colors.$primary-palette, "lighter-contrast");
 }
 
 .mibi-app-bar-bottom__left {
@@ -43,13 +42,20 @@
 }
 
 .mibi-action-link {
-  @include styles.app-bar-link;
-
   height: 100%;
   display: flex;
   align-items: center;
   padding: layout.$half-space layout.$single-space;
+  font-size: 1rem;
+  line-height: 1rem;
   cursor: pointer;
+  text-decoration: none;
+  background-color: mat.get-color-from-palette(colors.$primary-palette, "lighter");
+  color: mat.get-color-from-palette(colors.$primary-palette, "lighter-contrast");
+}
+
+.mibi-action-link:hover {
+  color: colors.$bfr-accent-color;
 }
 
 .mibi-action-link__label {

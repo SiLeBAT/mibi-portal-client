@@ -1,3 +1,4 @@
+@use "@angular/material" as mat;
 @use "colors";
 @use "layout";
 
@@ -31,5 +32,5 @@
 .mibi-wot-preamble__content {
   flex: 0 0 75%;
   padding: layout.$single-space 0;
-  border-top: 1px solid colors.$primary-color;
+  border-top: 1px solid mat.get-color-from-palette(colors.$primary-palette, "default");
 }

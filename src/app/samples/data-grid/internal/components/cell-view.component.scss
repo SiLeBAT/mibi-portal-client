@@ -1,10 +1,10 @@
 @use "sass:map";
 @use "sass:color";
+@use "@angular/material" as mat;
 @use "colors";
 
-$mibi-ui-color: colors.$ui-color;
-$mibi-border-color: colors.$surface-color;
-$mibi-grid-border: 0.5px solid colors.$surface-color;
+$mibi-ui-color: mat.get-color-from-palette(colors.$secondary-palette, "default");
+$mibi-hint-color: mat.get-color-from-palette(colors.$surface-palette, "darker");
 $mibi-hover-opacity: colors.$hover-opacity;
 $mibi-selection-opacity: colors.$selection-opacity;
 
@@ -62,15 +62,15 @@ $mibi-selection-opacity: colors.$selection-opacity;
 }
 
 .mibi-hover-hint {
-  background-color: color.change(black, $alpha: $mibi-hover-opacity);
+  background-color: color.change($mibi-hint-color, $alpha: $mibi-hover-opacity);
 }
 
 .mibi-selection-hint {
-  background-color: color.change(black, $alpha: $mibi-selection-opacity);
+  background-color: color.change($mibi-hint-color, $alpha: $mibi-selection-opacity);
 }
 
 .mibi-selection-hover-hint {
-  background-color: color.change(black, $alpha: $mibi-hover-opacity + $mibi-selection-opacity);
+  background-color: color.change($mibi-hint-color, $alpha: $mibi-hover-opacity + $mibi-selection-opacity);
 }
 
 .mibi-selection--hover {

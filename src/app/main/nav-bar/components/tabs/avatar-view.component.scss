@@ -1,7 +1,8 @@
 @use "sass:math";
+@use "@angular/material" as mat;
 @use "colors";
 @use "layout";
-@use "app/main/styles";
+@use "../../nav-bar.styles" as nav;
 
 .mibi-avatar {
   height: 100%;
@@ -16,12 +17,17 @@
 }
 
 .mibi-avatar-button {
-  @include styles.app-bar-link;
-
   display: flex;
   justify-content: center;
   align-items: center;
-  border: solid;
+  border: 3px solid;
+  background-color: nav.$main-color;
+  color: nav.$text-color;
+}
+
+.mibi-avatar-button:hover {
+  color: nav.$main-color;
+  background-color: nav.$hover-color;
 }
 
 .mibi-avatar-button__icon {
@@ -37,7 +43,7 @@
 }
 
 .mibi-user-info__icon {
-  color: colors.$secondary-color;
+  color: mat.get-color-from-palette(colors.$secondary-palette, "default");
 }
 
 .mibi-user-info__auxilliary {

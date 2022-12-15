@@ -14,7 +14,7 @@ import {
 import {
     ActivationResponseDTO,
     SystemInformationResponseDTO,
-    FAQResponseDTO,
+    FaqResponseDTO,
     TokenRefreshResponseDTO,
     PutSamplesXLSXResponseDTO,
     TokenizedUserDTO,
@@ -97,8 +97,8 @@ export class DataService {
         localStorage.removeItem(this.LOCAL_STORAGE_CURRENT_USER);
     }
 
-    getFAQs(): Observable<FAQResponseDTO> {
-        return this.httpClient.get<FAQResponseDTO>(this.URL.faq);
+    getFaq(): Observable<FaqResponseDTO> {
+        return this.httpClient.get<FaqResponseDTO>(this.URL.faq);
     }
 
     getSystemInfo(): Observable<SystemInformationResponseDTO> {

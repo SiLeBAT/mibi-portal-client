@@ -2,11 +2,16 @@
   <div class="mibi-banner">
     <div class="mibi-banner__message">
       <div class="mibi-banner-message">
-        <mat-icon class="mibi-banner-message__icon" [ngClass]="{
-      'mibi-banner-message__icon--success': banner.type === 'success',
-      'mibi-banner-message__icon--error': banner.type === 'error' }">{{banner.icon}}
+        <mat-icon class="mibi-banner-message__icon"
+          [ngClass]="{
+            'mibi-banner-message__icon--success': banner.type === 'success',
+            'mibi-banner-message__icon--error': banner.type === 'error',
+            'mibi-banner-message__icon--warning': banner.type === 'warning'
+          }"
+        >
+          {{banner.icon}}
         </mat-icon>
-        <div class="mibi-banner-message__text mat-body-2">{{banner.message}}</div>
+        <div class="mibi-banner-message__text">{{banner.message}}</div>
       </div>
     </div>
     <div class="mibi-banner__actions">

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ComponentType } from '@angular/cdk/overlay';
-import { dialogMatConfiguration } from './dialog.constants';
 
 @Injectable({
     providedIn: 'root'
@@ -9,7 +8,7 @@ import { dialogMatConfiguration } from './dialog.constants';
 export class DialogService {
     constructor(private dialog: MatDialog) { }
 
-    openDialog(component: ComponentType<unknown>, matConfiguration = dialogMatConfiguration) {
+    openDialog(component: ComponentType<unknown>, matConfiguration?: MatDialogConfig) {
         this.dialog.open(component, matConfiguration);
     }
 }

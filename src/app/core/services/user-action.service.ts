@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import _ from 'lodash';
-import { UserActionViewModelConfiguration, UserActionType, ColorType } from '../../shared/model/user-action.model';
+import { UserActionViewModelConfiguration, UserActionType } from '../../shared/model/user-action.model';
 import { Store } from '@ngrx/store';
 import { validateSamplesSSA } from '../../samples/validate-samples/validate-samples.actions';
 import { CoreMainSlice } from '../core.state';
@@ -20,43 +20,37 @@ export class UserActionService {
         label: 'Validieren',
         type: UserActionType.VALIDATE,
         onExecute: this.validate.bind(this),
-        icon: 'spellcheck',
-        color: ColorType.ACCENT
+        icon: 'spellcheck'
     },
     {
         label: 'Hochladen',
         type: UserActionType.UPLOAD,
         onExecute: this.import.bind(this),
-        icon: 'publish',
-        color: ColorType.ACCENT
+        icon: 'publish'
     },
     {
         label: 'Exportieren',
         type: UserActionType.EXPORT,
         onExecute: this.export.bind(this),
-        icon: 'file_copy',
-        color: ColorType.ACCENT
+        icon: 'file_copy'
     },
     {
         label: 'Senden',
         type: UserActionType.SEND,
         onExecute: this.send.bind(this),
-        icon: 'send',
-        color: ColorType.ACCENT
+        icon: 'send'
     },
     {
         label: 'Schließen',
         type: UserActionType.DISMISS_BANNER,
         onExecute: () => null,
-        icon: '',
-        color: ColorType.ACCENT
+        icon: ''
     },
     {
         label: 'Schließen',
         type: UserActionType.CLOSE,
         onExecute: this.close.bind(this),
-        icon: 'clear',
-        color: ColorType.ACCENT
+        icon: 'clear'
     },
     {
         label: 'Excel-Vorlage',
@@ -64,8 +58,7 @@ export class UserActionService {
         onExecute: () => {
             window.open(environment.sampleSheetURL, '_blank');
         },
-        icon: 'assignment_returned',
-        color: ColorType.ACCENT
+        icon: 'assignment_returned'
     }];
 
     constructor(
@@ -77,8 +70,7 @@ export class UserActionService {
             label: '',
             type: UserActionType.CUSTOM,
             onExecute: () => null,
-            icon: '',
-            color: ColorType.ACCENT
+            icon: ''
         };
     }
 
@@ -87,8 +79,7 @@ export class UserActionService {
             label: 'Navigieren',
             type: UserActionType.NAVIGATE,
             onExecute: this.navigate.bind(this, path),
-            icon: '',
-            color: ColorType.ACCENT
+            icon: ''
         };
     }
 

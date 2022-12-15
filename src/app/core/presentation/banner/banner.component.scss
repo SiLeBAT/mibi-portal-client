@@ -1,3 +1,4 @@
+@use "@angular/material" as mat;
 @use "colors";
 @use "layout";
 
@@ -7,6 +8,7 @@
   align-items: center;
   justify-content: center;
   background-color: colors.$background-color;
+  color: colors.$on-background-color;
 }
 
 .mibi-banner__message {
@@ -28,15 +30,15 @@
   margin: layout.$single-space;
 
   &--error {
-    color: colors.$error-color;
+    color: mat.get-color-from-palette(colors.$error-palette, "default");
   }
 
   &--success {
-    color: colors.$secondary-color;
+    color: mat.get-color-from-palette(colors.$success-palette, "default");
   }
 
   &--warning {
-    color: colors.$secondary-color;
+    color: mat.get-color-from-palette(colors.$warn-palette, "default");
   }
 }
 

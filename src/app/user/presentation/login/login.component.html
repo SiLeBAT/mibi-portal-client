@@ -1,14 +1,38 @@
+<mibi-box-layout>
+
 <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
-  <div>
-    <mat-form-field class="mibi-form-field">
-      <input matInput placeholder="E-Mail" name="email" formControlName="email" required>
-    </mat-form-field>
-  </div>
-  <div>
-    <mat-form-field class="mibi-form-field">
-      <input matInput placeholder="Passwort" type="password" name="password" formControlName="password" required>
-    </mat-form-field>
-  </div>
-  <button class="mibi-login-submit-button" mat-raised-button color="primary" type="submit"
-    [disabled]="!loginForm.valid">Anmelden</button>
+    <div class="mibi-form-group">
+        <mat-form-field class="mibi-form-field" appearance="fill" color="accent">
+            <mat-label>E-Mail</mat-label>
+            <input
+                matInput
+                placeholder="Geben Sie Ihre E-Mail-Adresse ein"
+                name="email"
+                formControlName="email"
+                required
+            >
+        </mat-form-field>
+    </div>
+    <div class="mibi-form-group">
+        <mat-form-field class="mibi-form-field" appearance="fill" color="accent">
+            <mat-label>Passwort</mat-label>
+            <input
+                matInput
+                placeholder="Geben Sie Ihr Passwort ein"
+                type="password"
+                name="password"
+                formControlName="password"
+                required
+            >
+        </mat-form-field>
+    </div>
+    <button 
+        class="mibi-login-submit-button"
+        mat-flat-button
+        color="accent"
+        type="submit"
+        [disabled]="!loginForm.valid"
+    >Anmelden</button>
 </form>
+
+</mibi-box-layout>

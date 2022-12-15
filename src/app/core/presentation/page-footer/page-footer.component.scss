@@ -6,8 +6,9 @@
 
   height: 100%;
   display: flex;
-  border-top: 2px solid colors.$primary-color;
-  background-color: colors.$surface-color;
+  border-top: 2px solid colors.$bfr-base-color;
+  background-color: mat.get-color-from-palette(colors.$surface-palette, "lighter");
+  color: mat.get-color-from-palette(colors.$surface-palette, "lighter-contrast");
 }
 
 .mibi-footer__left {

@@ -56,13 +56,13 @@ describe('Testing the Password Reset page', function () {
 
         it('should require email', function () {
             cy.get('[name="email"]').focus().blur();
-            cy.get('.mat-form-field-label').should('have.css', 'color', 'rgb(254, 0, 0)');
+            cy.get('.mat-form-field-label').should('have.css', 'color', 'rgb(228, 0, 57)');
             cy.get('[type="submit"]').should('be.disabled');
         });
 
         it('should require valid email', function () {
             cy.get('[name="email"]').type('NonexistentUser').blur();
-            cy.get('.mat-form-field-label').should('have.css', 'color', 'rgb(254, 0, 0)');
+            cy.get('.mat-form-field-label').should('have.css', 'color', 'rgb(228, 0, 57)');
             cy.get('[type="submit"]').should('be.disabled');
         });
 

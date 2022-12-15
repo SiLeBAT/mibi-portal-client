@@ -48,7 +48,7 @@ export class BannerContainerComponent {
         },
         sendCancel: {
             message: 'Es wurden keine Probendaten an das BfR gesendet',
-            type: AlertType.ERROR,
+            type: AlertType.WARNING,
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
 
         },
@@ -88,7 +88,7 @@ export class BannerContainerComponent {
 
         autocorrections: {
             message: 'Es wurden Felder autokorregiert. Bitte prüfen und nochmals senden.',
-            type: AlertType.ERROR,
+            type: AlertType.WARNING,
             auxilliaryAction: { ...this.userActionService.getConfigOfType(UserActionType.SEND),  label: 'Nochmals Senden'  },
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
 

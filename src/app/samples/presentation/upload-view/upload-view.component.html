@@ -1,25 +1,23 @@
 <mibi-single-center-card-layout cardTitle="Probeneinsendebogen hochladen" disable-content-overflow-handling>
-    <mibi-card-content>
-        <mibi-upload-container (uploadFile)="fileUpload($event)">
-            <mibi-upload #uploadChild>
-                <div class="mibi-upload-container">
-                    <div class="mibi-upload mibi-upload-container__content">
-                        <div class="mibi-upload-icon">
-                            <mat-icon [inline]="true">save_alt</mat-icon>
-                        </div>
-                        <div class="mibi-upload-text">
-                            Per Drag&Drop in dieses Feld ziehen
-                        </div>
-                        <div class="mibi-upload-text">oder</div>
-                        <button
-                            class="mibi-upload-button"
-                            type="button"
-                            mat-flat-button
-                            color="primary"
-                        >Datei wählen</button>
+    <mibi-upload-container mibi-card-content (uploadFile)="fileUpload($event)">
+        <mibi-upload #uploadChild>
+            <div class="mibi-upload-container">
+                <div class="mibi-upload mibi-upload-container__content">
+                    <div class="mibi-upload-icon">
+                        <mat-icon [inline]="true">save_alt</mat-icon>
                     </div>
+                    <div class="mibi-upload-text">
+                        Per Drag&Drop in dieses Feld ziehen
+                    </div>
+                    <div class="mibi-upload-text">oder</div>
+                    <button
+                        class="mibi-upload-button"
+                        type="button"
+                        mat-raised-button
+                        color="accent"
+                    >Datei wählen</button>
                 </div>
-            </mibi-upload>
-        </mibi-upload-container>
-    </mibi-card-content>
+            </div>
+        </mibi-upload>
+    </mibi-upload-container>
 </mibi-single-center-card-layout>

@@ -1,22 +1,31 @@
 <div class="mibi-mat-dialog">
 
-    <mibi-box-layout>
-    
-        <div class="mibi-dialog">
-            <h1 mat-dialog-title>{{config.title}}</h1>
-            <div mat-dialog-content class="mibi-mat-dialog-content">
-                <mibi-dialog-warnings-view [warnings]="config.warnings"></mibi-dialog-warnings-view>
-                <div class="mibi-dialog-message"> {{config.message}} </div>
-                <ng-content></ng-content>
-            </div>
-            <div mat-dialog-actions class="mibi-mat-dialog-actions">
-                <button type="button" mat-button *ngIf="config.cancelButtonConfig" color="primary"
-                    (click)="onCancel()">{{config.cancelButtonConfig.label}}</button>
-                <button type="button" mat-raised-button cdkFocusInitial color="primary"
-                    (click)="onConfirm()">{{config.confirmButtonConfig.label}}</button>
-            </div>
+    <h1 mat-dialog-title>{{config.title}}</h1>
+
+    <div mat-dialog-content class="mibi-mat-dialog-content">
+        <div *ngIf="config.warnings.length > 0" class="mibi-warnings mibi-mat-dialog-content__item">
+            <mibi-dialog-warnings-view [warnings]="config.warnings"></mibi-dialog-warnings-view>
         </div>
-    
-    </mibi-box-layout>
-    
+        <div class="mibi-message mibi-mat-dialog-content__item"> {{config.message}} </div>
+        <div class="mibi-mat-dialog-content__item">
+            <ng-content></ng-content>
+        </div>
+    </div>
+
+    <div mat-dialog-actions class="mibi-mat-dialog-actions">
+        <button *ngIf="config.cancelButtonConfig"
+            type="button"
+            mat-stroked-button
+            color="accent"
+            (click)="onCancel()"
+        >{{config.cancelButtonConfig.label}}</button>
+        <button
+            type="button"
+            mat-flat-button
+            cdkFocusInitial
+            color="accent"
+            (click)="onConfirm()"
+        >{{config.confirmButtonConfig.label}}</button>
+    </div>
+
 </div>

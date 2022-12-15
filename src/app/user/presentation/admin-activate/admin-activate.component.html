@@ -2,18 +2,13 @@
     *ngIf="adminTokenValid; else invalidToken"
     cardTitle="Konto aktiviert"
 >
-    <mibi-card-content>
-        <p>
-            Sie haben das {{ appName }} Konto für {{ name }} als Admin aktiviert
-        </p>
-    </mibi-card-content>
+    <p mibi-card-content class="mibi-last">
+        Sie haben das {{ appName }} Konto für {{ name }} als Admin aktiviert.
+    </p>
 </mibi-single-center-card-layout>
 
 <ng-template #invalidToken>
     <mibi-single-center-card-layout cardTitle="Fehler">
-        <mibi-card-content>
-            <p>Ihre Admin Kontoaktivierung ist fehlgeschlagen.</p>
-            <p>Bitte erneut registrieren lassen.</p>
-        </mibi-card-content>
+        <p mibi-card-content class="mibi-last">Ihre Admin Kontoaktivierung ist fehlgeschlagen.</p>
     </mibi-single-center-card-layout>
 </ng-template>

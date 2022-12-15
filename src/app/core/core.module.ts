@@ -1,4 +1,4 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared/shared.module';
 import { RouterModule } from '@angular/router';
@@ -77,7 +77,6 @@ import { MainModule } from '../main/main.module';
         ReactiveFormsModule,
         DefaultPageLayoutComponent,
         BannerContainerComponent
-    ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    ]
 })
 export class CoreModule { }

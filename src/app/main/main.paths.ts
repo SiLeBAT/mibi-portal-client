@@ -1,4 +1,9 @@
 
+export const mainPathsSegments = {
+    faq: 'faq'
+};
+
 export const mainPaths = {
-    home: ''
+    home: '',
+    faq: '/' + mainPathsSegments.faq
 };

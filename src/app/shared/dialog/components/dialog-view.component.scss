@@ -1,28 +1,52 @@
 @use "layout";
+@use "@angular/material" as mat;
+
+// mat-dialog scrolling behavior is buggy, so we override those styles
+
+$mibi-padding: 48px; // mat-dialog padding * 2
 
 .mibi-mat-dialog {
-  margin: -24px;
-  max-height: 100vh;
-}
-
-.mibi-dialog {
   height: 100%;
-  padding: 24px;
-  overflow: auto;
+
+  // mat dialog always sets height to content height
+  // to enable content scrolling the height has to be limited
+  max-height: calc(80vh - #{$mibi-padding});
+
+  // additional we limit the width
+  max-width: calc(80vw - #{$mibi-padding});
+  display: grid;
+  grid-template-rows: min-content minmax(0, min-content) min-content;
+  overflow: auto; // handles x-overflow, y-overflow is handled by mat-dialog-container
+  margin-bottom: -16px; // undoing margin/padding removal for mat-actions
 }
 
 .mibi-mat-dialog-content {
-  margin: 0;
+  max-height: initial; // we already set the max-height for the whole dialog
+  display: grid; // give the projected content a defined height and sets preferred dialog width
+  grid-auto-rows: auto;
+
+  // we have to set the preferred width here on the content scroll container to override scrolling limits
+  grid-template-columns: fit-content(400px - $mibi-padding); // = max(minimum=0, min(limit, max-content))
+  margin: 0; // we use the padding of the mat-dialog-container
   padding: 0;
+  overflow: auto;
 }
 
-.mibi-dialog-message {
-  margin-bottom: layout.$single-space;
+.mibi-mat-dialog-content__item {
+  min-width: 0; // firefox fix, tells fit-content the actual minimum = 0 by overflow handled by scrolling
+}
+
+.mibi-warnings {
+  padding-bottom: layout.$half-space;
+}
+
+.mibi-message {
+  padding-bottom: layout.$single-space;
 }
 
 .mibi-mat-dialog-actions {
   flex-wrap: nowrap;
   justify-content: space-between;
-  margin-bottom: 0;
+  margin-bottom: 0; // margins messes up the height calculations of the parent elements
   padding-bottom: 0;
 }

@@ -1,0 +1,20 @@
+@use "@angular/material" as mat;
+@use "colors";
+@use "layout";
+
+.mibi-title {
+  padding: layout.$single-space;
+  margin: 0;
+  background-color: mat.get-color-from-palette(colors.$primary-palette, "lighter");
+  color: mat.get-color-from-palette(colors.$primary-palette, "lighter-contrast");
+  text-align: center;
+}
+
+.mibi-panel-title {
+  font-weight: 500;
+  padding: layout.$double-space layout.$single-space;
+}
+
+.mibi-panel-text {
+  padding: layout.$single-space;
+}

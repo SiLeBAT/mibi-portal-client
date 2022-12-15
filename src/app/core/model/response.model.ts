@@ -83,9 +83,19 @@ export interface PostSubmittedResponseDTO {
     order: AnnotatedOrderDTO;
 }
 
-interface QA {
-    readonly q: string;
-    readonly a: string;
+export interface FaqEntryDTO {
+    q: string;
+    a: string;
 }
 
-export type FAQResponseDTO = Readonly<Record<string, QA[]>>;
+export interface FaqSectionDTO {
+    title: string;
+    url: string;
+    faq: FaqEntryDTO[];
+}
+
+export interface FaqResponseDTO {
+    topFaq: FaqEntryDTO[];
+    sections: FaqSectionDTO[];
+}
+

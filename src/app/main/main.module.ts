@@ -4,7 +4,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { RouterModule } from '@angular/router';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { RouterModule, Routes } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { SharedModule } from '../shared/shared.module';
 import { mainEffects } from './main.store';
@@ -14,6 +15,15 @@ import { NavBarAvatarViewComponent } from './nav-bar/components/tabs/avatar-view
 import { NavBarLoginViewComponent } from './nav-bar/components/tabs/login-view.component';
 import { NavBarTabsViewComponent } from './nav-bar/components/tabs/tabs-view.component';
 import { NavBarTitleViewComponent } from './nav-bar/components/tabs/title-view.component';
+import { mainPathsSegments } from './main.paths';
+import { FaqComponent } from './faq/components/faq.component';
+import { FaqResolverService } from './faq/faq-resolver.service';
+import { FaqViewComponent } from './faq/components/faq-view.component';
+import { FaqSectionViewComponent } from './faq/components/faq-section-view.component';
+
+const routes: Routes = [{
+    path: mainPathsSegments.faq, component: FaqComponent, resolve: { faq: FaqResolverService }
+}];
 
 @NgModule({
     imports: [
@@ -22,8 +32,9 @@ import { NavBarTitleViewComponent } from './nav-bar/components/tabs/title-view.c
         MatIconModule,
         MatButtonModule,
         MatDividerModule,
+        MatExpansionModule,
         SharedModule,
-        RouterModule.forChild([]),
+        RouterModule.forChild(routes),
         EffectsModule.forFeature(mainEffects)
     ],
     declarations: [
@@ -32,11 +43,13 @@ import { NavBarTitleViewComponent } from './nav-bar/components/tabs/title-view.c
         NavBarLoginViewComponent,
         NavBarAvatarViewComponent,
         NavBarLayoutComponent,
-        NavBarComponent
+        NavBarComponent,
+        FaqSectionViewComponent,
+        FaqViewComponent,
+        FaqComponent
     ],
     exports: [
         NavBarComponent
-    ],
-    schemas: []
+    ]
 })
 export class MainModule { }

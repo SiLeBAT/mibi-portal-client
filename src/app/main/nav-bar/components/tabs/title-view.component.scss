@@ -1,17 +1,21 @@
 @use "layout";
-@use "app/main/styles";
+@use "../../nav-bar.styles" as nav;
 
 .mibi-title {
-  @include styles.app-bar-link;
-
   text-align: center;
   height: 100%;
   display: flex;
   align-items: center;
-  padding: layout.$single-space;
-  padding-left: layout.$double-space;
+  padding: layout.$single-space layout.$double-space;
   font-size: 1.1rem;
   line-height: 1;
+  text-decoration: none;
+  background-color: nav.$main-color;
+  color: nav.$text-color;
+}
+
+.mibi-title:hover {
+  color: nav.$hover-color;
 }
 
 .mibi-title__text {

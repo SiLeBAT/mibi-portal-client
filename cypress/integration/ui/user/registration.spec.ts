@@ -51,57 +51,57 @@ describe('Testing the Registration Page', function () {
 
         it('should require institute', function () {
             fillOutRegistrationForm(this.users[4]);
-            cy.get('[formcontrolname="institution"]').clear().blur();
-            cy.contains('Wählen Sie Ihr Institut').should('have.css', 'color', 'rgb(254, 0, 0)');
+            cy.get('[formcontrolname="institution"]').clear().blur()
+                .parent().contains('Institut').should('have.css', 'color', 'rgb(228, 0, 57)');
             cy.get('[type="submit"]').should('be.disabled');
         });
 
         it('should require first name', function () {
             fillOutRegistrationForm(this.users[4]);
             cy.get('[name="firstName"]').clear().blur();
-            cy.contains('Vorname').should('have.css', 'color', 'rgb(254, 0, 0)');
+            cy.contains('Vorname').should('have.css', 'color', 'rgb(228, 0, 57)');
             cy.get('[type="submit"]').should('be.disabled');
         });
 
         it('should require last name', function () {
             fillOutRegistrationForm(this.users[4]);
             cy.get('[name="lastName"]').clear().blur();
-            cy.contains('Nachname').should('have.css', 'color', 'rgb(254, 0, 0)');
+            cy.contains('Nachname').should('have.css', 'color', 'rgb(228, 0, 57)');
             cy.get('[type="submit"]').should('be.disabled');
         });
 
         it('should require email', function () {
             fillOutRegistrationForm(this.users[4]);
             cy.get('[name="email"]').clear().blur();
-            cy.contains('E-Mail').should('have.css', 'color', 'rgb(254, 0, 0)');
+            cy.contains('E-Mail').should('have.css', 'color', 'rgb(228, 0, 57)');
             cy.get('[type="submit"]').should('be.disabled');
         });
 
         it('should require valid email', function () {
             fillOutRegistrationForm(this.users[4]);
             cy.get('[name="email"]').clear().type('NonexistentUser').blur();
-            cy.contains('E-Mail').should('have.css', 'color', 'rgb(254, 0, 0)');
+            cy.contains('E-Mail').should('have.css', 'color', 'rgb(228, 0, 57)');
             cy.get('[type="submit"]').should('be.disabled');
         });
 
         it('should require password1', function () {
             fillOutRegistrationForm(this.users[4]);
             cy.get('[name="password1"]').clear().blur();
-            cy.contains('Passwort').should('have.css', 'color', 'rgb(254, 0, 0)');
+            cy.contains('Passwort').should('have.css', 'color', 'rgb(228, 0, 57)');
             cy.get('[type="submit"]').should('be.disabled');
         });
 
         it('should require password2', function () {
             fillOutRegistrationForm(this.users[4]);
             cy.get('[name="password2"]').clear().blur();
-            cy.contains('Passwort bestätigen').should('have.css', 'color', 'rgb(254, 0, 0)');
+            cy.contains('Passwort bestätigen').should('have.css', 'color', 'rgb(228, 0, 57)');
             cy.get('[type="submit"]').should('be.disabled');
         });
 
         it('should require password1 & password2 to match', function () {
             fillOutRegistrationForm(this.users[4]);
             cy.get('[name="password2"]').clear().type('nottherightpassword').blur();
-            cy.contains('Passwort bestätigen').should('have.css', 'color', 'rgb(254, 0, 0)');
+            cy.contains('Passwort bestätigen').should('have.css', 'color', 'rgb(228, 0, 57)');
             cy.get('[type="submit"]').should('be.disabled');
         });
 
@@ -145,7 +145,7 @@ describe('Testing the Registration Page', function () {
 
 function fillOutRegistrationForm(user: Record<string, string>) {
     cy.get('[formcontrolname="institution"]').type('F');
-    cy.contains(' Fancy Institute, Berlin, 10115 Berlin').click();
+    cy.contains('Fancy Institute, Berlin, 10115 Berlin').click();
     cy.get('[name="firstName"]').type(user.firstName);
     cy.get('[name="lastName"]').type(user.lastName);
     cy.get('[name="email"]').type(user.email);

@@ -1,3 +1,4 @@
+@use "@angular/material" as mat;
 @use "colors";
 @use "layout";
 
@@ -6,13 +7,26 @@
   justify-content: space-between;
 }
 
-.mibi-button-group__stepper-button-group {
-  display: flex;
-  justify-content: space-around;
+.mibi-button {
+  margin-left: layout.$double-space;
 }
 
-.mibi-button-group__button {
-  margin: 0 layout.$double-space;
+.mibi-button--first {
+  margin-left: 0;
+}
+
+.mibi-stepper-button-group {
+  display: flex;
+  justify-content: space-around;
+  margin-left: layout.$single-space;
+}
+
+.mibi-stepper-button {
+  margin-left: layout.$single-space;
+}
+
+.mibi-stepper-button-icon {
+  font-weight: bold;
 }
 
 .mibi-optional-selection {
@@ -34,10 +48,10 @@
 }
 
 .mibi-header {
-  background-color: colors.$primary-color;
-  color: colors.$on-primary-color;
   padding: layout.$single-space;
   text-align: center;
+  background-color: mat.get-color-from-palette(colors.$primary-palette, "default");
+  color: mat.get-color-from-palette(colors.$primary-palette, "default-contrast");
 }
 
 .mibi-warnings {

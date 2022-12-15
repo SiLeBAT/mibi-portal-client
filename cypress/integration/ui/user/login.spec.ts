@@ -14,8 +14,8 @@ describe('Testing the Login Page', function () {
             cy.contains('mat-card-title', 'Login');
             cy.get('form').within(() => {
                 cy.contains('button', 'Anmelden');
-                cy.get('[data-placeholder="E-Mail"]');
-                cy.get('[data-placeholder="Passwort"]');
+                cy.get('[formcontrolname="email"]');
+                cy.get('[formcontrolname="password"]');
             });
         });
     });
@@ -43,21 +43,21 @@ describe('Testing the Login Page', function () {
         it('should require email', function () {
             cy.get('[name="email"]').focus();
             cy.get('[name="password"]').type(this.users[0].password);
-            cy.contains('E-Mail').should('have.css', 'color', 'rgb(254, 0, 0)');
+            cy.contains('E-Mail').should('have.css', 'color', 'rgb(228, 0, 57)');
             cy.get('[type="submit"]').should('be.disabled');
         });
 
         it('should require valid email', function () {
             cy.get('[name="email"]').type('NonexistentUser');
             cy.get('[name="password"]').type('NonexistentPassword');
-            cy.contains('E-Mail').should('have.css', 'color', 'rgb(254, 0, 0)');
+            cy.contains('E-Mail').should('have.css', 'color', 'rgb(228, 0, 57)');
             cy.get('[type="submit"]').should('be.disabled');
         });
 
         it('should require password', function () {
             cy.get('[name="email"]').type(this.users[0].email);
             cy.get('[name="password"]').focus().blur();
-            cy.contains('Passwort').should('have.css', 'color', 'rgb(254, 0, 0)');
+            cy.contains('Passwort').should('have.css', 'color', 'rgb(228, 0, 57)');
             cy.get('[type="submit"]').should('be.disabled');
         });
 

@@ -3,88 +3,90 @@ first name, last name, username and password. It displays validation messages fo
 when the submit button is clicked. On submit the register() method is called if the form is valid. -->
 
 <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
-    <mat-form-field class="mibi-form-field">
-        <input
-            type="text"
-            matInput
-            placeholder="Wählen Sie Ihr Institut"
-            formControlName="institution"
-            autocomplete="off"
-            required
-            [matAutocomplete]="autoGroup"
-        />
-        <mat-error class="mibi-form-field__error"
-            >Muss ein gültiges Institut sein.</mat-error
-        >
-        <mat-autocomplete #autoGroup="matAutocomplete">
-            <mat-option
-                class="mibi-register-mat-option"
-                *ngFor="let institution of filteredOptions$ | async"
-                [value]="institution"
-            >
-                {{ institution }}
-            </mat-option>
-        </mat-autocomplete>
-    </mat-form-field>
 
     <p>
         Sollte Ihr Institut hier nicht aufgelistet sein, senden Sie uns bitte
         eine <a href="mailto:{{ supportContact }}"> Nachricht</a>.
     </p>
 
-    <mat-form-field class="mibi-form-field">
-        <input
-            matInput
-            placeholder="Vorname"
-            name="firstName"
-            formControlName="firstName"
-            required
-        />
-    </mat-form-field>
+    <div class="mibi-form-group">
+        <mat-form-field class="mibi-form-field" appearance="outline" color="accent">
+            <mat-label>Institut</mat-label>
+            <input
+                type="text"
+                matInput
+                placeholder="Wählen Sie Ihr Institut"
+                formControlName="institution"
+                autocomplete="off"
+                required
+                [matAutocomplete]="autoGroup"
+            />
+            <mat-error>Muss ein gültiges Institut sein.</mat-error>
+            <mat-autocomplete #autoGroup="matAutocomplete">
+                <mat-option
+                    class="mibi-register-mat-option"
+                    *ngFor="let institution of filteredOptions$ | async"
+                    [value]="institution"
+                >{{ institution }}</mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+    </div>
 
-    <mat-form-field class="mibi-form-field">
-        <input
-            matInput
-            placeholder="Nachname"
-            name="lastName"
-            formControlName="lastName"
-            required
-        />
-    </mat-form-field>
+    <div class="mibi-form-group">
+        <mat-form-field class="mibi-form-field" appearance="fill" color="accent">
+            <mat-label>Vorname</mat-label>
+            <input
+                matInput
+                placeholder="Geben Sie Ihren Vornamen ein"
+                name="firstName"
+                formControlName="firstName"
+                required
+            />
+        </mat-form-field>
 
-    <mat-form-field class="mibi-form-field">
-        <input
-            matInput
-            placeholder="E-Mail"
-            name="email"
-            formControlName="email"
-            required
-        />
-        <mat-error
-            class="mibi-form-field__error"
-            *ngIf="registerForm.controls.email.errors?.email"
-            >Muss eine gültige E-Mail sein.</mat-error
-        >
-    </mat-form-field>
+        <mat-form-field class="mibi-form-field" appearance="fill" color="accent">
+            <mat-label>Nachname</mat-label>
+            <input
+                matInput
+                placeholder="Geben Sie Ihren Nachnamen ein"
+                name="lastName"
+                formControlName="lastName"
+                required
+            />
+        </mat-form-field>
+    </div>
+
+    <div class="mibi-form-group">
+        <mat-form-field class="mibi-form-field" appearance="fill" color="accent">
+            <mat-label>E-Mail</mat-label>
+            <input 
+                matInput
+                placeholder="Geben Sie Ihre E-Mail-Adresse ein"
+                name="email"
+                formControlName="email"
+                required
+            />
+            <mat-error *ngIf="registerForm.controls.email.errors?.email">
+                Muss eine gültige E-Mail sein.
+            </mat-error>
+        </mat-form-field>
+    </div>
 
     <mibi-password></mibi-password>
 
     <div class="mibi-register-actions">
-        <button
-            class="mibi-register-actions__button"
-            mat-raised-button
-            color="primary"
-            type="submit"
-            [disabled]="!registerForm.valid"
-        >
-            Registrieren
-        </button>
         <a
             class="mibi-register-actions__button"
             mat-button
             color="primary"
             [routerLink]="[userLinks.login]"
-            >Zurück</a
-        >
+        >Zurück</a>
+        <button
+            class="mibi-register-actions__button"
+            mat-flat-button
+            color="accent"
+            type="submit"
+            [disabled]="!registerForm.valid"
+        >Registrieren</button>
     </div>
 </form>

@@ -6,16 +6,16 @@
             </div>
             <mat-card-title class="mibi-card-title">
                 {{ cardTitle }}
-                <ng-content select="mibi-card-title"></ng-content>
+                <ng-content select="[mibi-card-title]"></ng-content>
             </mat-card-title>
             <mat-card-content 
                 class="mibi-card-content mibi-card__flex"
                 [ngClass]="{'mibi-card-content--no-auto-scroll': disableContentOverflowHandling !== undefined}"
             >
-                <ng-content select="mibi-card-content"></ng-content>
+                <ng-content select="[mibi-card-content]"></ng-content>
             </mat-card-content>
             <mat-card-actions>
-                <ng-content select="mibi-card-actions"></ng-content>
+                <ng-content select="[mibi-card-actions]"></ng-content>
             </mat-card-actions>
         </mat-card>
     </div>

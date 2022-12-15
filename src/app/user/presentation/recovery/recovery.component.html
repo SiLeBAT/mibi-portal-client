@@ -1,38 +1,43 @@
 <mibi-box-layout>
-    <br />
+
+<form [formGroup]="recoveryForm" (ngSubmit)="onRecovery()">
     <p>
         Bitte geben Sie Ihre E-Mail Adresse an, die Sie für die Registrierung
-        verwendet haben
+        verwendet haben.
     </p>
-    <br />
-    <form [formGroup]="recoveryForm" (ngSubmit)="onRecovery()">
-        <mat-form-field class="mibi-form-field">
+
+    <div class="mibi-form-group">
+        <mat-form-field class="mibi-form-field" appearance="fill" color="accent">
+            <mat-label>E-Mail</mat-label>
             <input
                 matInput
-                placeholder="E-Mail"
+                placeholder="Geben Sie Ihre E-Mail-Adresse ein"
                 name="email"
                 formControlName="email"
                 required
             />
         </mat-form-field>
-        <div class="mibi-recocery-actions">
-            <button
-                class="mibi-recocery-actions__button"
-                mat-raised-button
-                color="primary"
-                type="submit"
-                [disabled]="!recoveryForm.valid"
-            >
-                Passwort zurücksetzen
-            </button>
-            <a
-                class="mibi-recocery-actions__button"
-                [routerLink]="[userLinks.login]"
-                mat-button
-                color="primary"
-            >
-                Zurück
-            </a>
-        </div>
-    </form>
+    </div>
+
+    <div class="mibi-recocery-actions">
+        <a
+            class="mibi-recocery-actions__button"
+            [routerLink]="[userLinks.login]"
+            mat-button
+            color="primary"
+        >
+            Zurück
+        </a>
+        <button
+            class="mibi-recocery-actions__button"
+            mat-flat-button
+            color="accent"
+            type="submit"
+            [disabled]="!recoveryForm.valid"
+        >
+            Passwort zurücksetzen
+        </button>
+    </div>
+</form>
+
 </mibi-box-layout>
