@@ -223,7 +223,8 @@ export class SendSamplesEffects {
     private createComment(comment: string, alreadySent: boolean): string {
         if (alreadySent) {
             const strings = sendSamplesCommentWarningsStrings;
-            return strings.preamble + ' ' + strings.alreadySent + ' ' + comment;
+            const warning = strings.preamble + ' ' + strings.alreadySent;
+            return comment === '' ? warning : warning + '\n\n' + comment;
         }
         return comment;
     }
