@@ -106,13 +106,25 @@ export class BannerContainerComponent {
 
         },
         accountActivationSuccess: {
-            message: 'Kontoaktivierung erfolgreich!',
+            message: 'Bestätigung der E-Mail-Adresse erfolgreich!',
             type: AlertType.SUCCESS,
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
 
         },
         accountActivationFailure: {
-            message: 'Kontoaktivierung fehlgeschlagen.  Bitte kontaktieren Sie das MiBi-Portal-Team.',
+            message: 'Bestätigung der E-Mail-Adresse fehlgeschlagen. Bitte kontaktieren Sie das MiBi-Portal-Team.',
+            type: AlertType.ERROR,
+            mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
+
+        },
+        adminAccountActivationSuccess: {
+            message: 'Kontoaktivierung erfolgreich!',
+            type: AlertType.SUCCESS,
+            mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
+
+        },
+        adminAccountActivationFailure: {
+            message: 'Kontoaktivierung fehlgeschlagen.',
             type: AlertType.ERROR,
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
 

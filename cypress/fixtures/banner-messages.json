@@ -3,6 +3,6 @@
   "repeatedLoginError": "Zu viele fehlgeschlagene Logins, bitte warten Sie",
   "passwordResetRequest": "Eine E-mail mit weiteren Anweisungen wurde an user1@test.com gesendet. Wenn Sie keine E-mail erhalten, könnte das bedeuten, daß Sie sich mit einer anderen E-mail-Adresse angemeldet haben",
   "passwordResetError": "Fehler beim Passwort-Zurücksetzen. Eine E-mail mit weiteren Informationen wurde an ",
-  "registrationSuccess": "Bitte aktivieren Sie Ihren Account: Eine E-mail mit weiteren Anweisungen wurde an newUser@test.com gesendet",
+  "registrationSuccess": "Bitte bestätigen Sie Ihre E-Mail-Adresse: Eine E-mail mit weiteren Anweisungen wurde an newUser@test.com gesendet",
   "registrationFailure": "Fehler beim Registrieren. Eine E-mail mit weiteren Informationen wurde an newUser@test.com gesendet. Wenn Sie keine E-mail erhalten, wenden Sie sich bitte direkt per E-mail an uns"
 }

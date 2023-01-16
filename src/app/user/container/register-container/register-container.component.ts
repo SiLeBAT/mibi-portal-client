@@ -67,7 +67,7 @@ export class RegisterContainerComponent implements OnInit, OnDestroy {
                 this.store$.dispatch(navigateMSA({ path: this.userLinks.login }));
                 this.store$.dispatch(showCustomBannerSOA({
                     banner: {
-                        message: `Bitte aktivieren Sie Ihren Account: Eine E-mail mit weiteren Anweisungen wurde an ${response.email} gesendet`,
+                        message: `Bitte bestätigen Sie Ihre E-Mail-Adresse: Eine E-mail mit weiteren Anweisungen wurde an ${response.email} gesendet`,
                         type: AlertType.SUCCESS,
                         mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
                     }

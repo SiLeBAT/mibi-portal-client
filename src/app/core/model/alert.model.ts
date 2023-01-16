@@ -32,6 +32,8 @@ export type BannerType =
     | 'wrongUploadFilesize'
     | 'accountActivationSuccess'
     | 'accountActivationFailure'
+    | 'adminAccountActivationSuccess'
+    | 'adminAccountActivationFailure'
     | 'passwordChangeSuccess'
     | 'passwordChangeFailure'
     | 'loginFailure'

@@ -30,12 +30,12 @@ export class AdminActivateContainerComponent implements OnInit {
         if (this.adminTokenValid.activation) {
             this.name = this.adminTokenValid.username;
             setTimeout(() => {
-                this.store$.dispatch(showBannerSOA({ predefined: 'accountActivationSuccess' }));
+                this.store$.dispatch(showBannerSOA({ predefined: 'adminAccountActivationSuccess' }));
             });
         } else {
             this.name = '';
             setTimeout(() => {
-                this.store$.dispatch(showBannerSOA({ predefined: 'accountActivationFailure' }));
+                this.store$.dispatch(showBannerSOA({ predefined: 'adminAccountActivationFailure' }));
             });
         }
     }

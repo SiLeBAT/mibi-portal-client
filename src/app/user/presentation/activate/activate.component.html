@@ -1,13 +1,12 @@
 <mibi-single-center-card-layout
     *ngIf="tokenValid; else invalidToken"
-    cardTitle="Konto aktiviert"
+    cardTitle="E-Mail-Adresse bestätigt"
 >
     <mibi-box-layout mibi-card-content>
-        <p>Sie haben Ihr {{ appName }} Konto aktiviert.</p>
+        <p>Sie haben Ihre E-Mail-Adresse bestätigt.</p>
         <p class="mibi-last">
             Sobald der {{ appName }} Administrator Ihr Konto freigeschaltet hat,
-            können Sie sich einloggen. Sie erhalten nach erfolgter Freischaltung
-            eine Benachrichtigung.
+            erhalten Sie eine Benachrichtigung und können sich einloggen.
         </p>
     </mibi-box-layout>
 </mibi-single-center-card-layout>
@@ -15,7 +14,7 @@
 <ng-template #invalidToken>
     <mibi-single-center-card-layout cardTitle="Fehler">
         <mibi-box-layout mibi-card-content>
-            <p>Ihre Kontoaktivierung ist fehlgeschlagen.</p>
+            <p>Die Bestätigung Ihrer E-Mail-Adresse ist fehlgeschlagen.</p>
             <p class="mibi-last">Bitte erneut registrieren.</p>
         </mibi-box-layout>
         <a mibi-card-actions mat-button color="primary" [routerLink]="[userLinks.register]">
