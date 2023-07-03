@@ -38,25 +38,25 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^12.2.16",
-    "@angular/cdk": "~12.2.13",
-    "@angular/common": "^12.2.16",
-    "@angular/compiler": "^12.2.16",
-    "@angular/core": "^12.2.16",
-    "@angular/forms": "^12.2.16",
-    "@angular/material": "~12.2.13",
-    "@angular/platform-browser": "^12.2.16",
-    "@angular/platform-browser-dynamic": "^12.2.16",
-    "@angular/router": "^12.2.16",
+    "@angular/animations": "^13.4.0",
+    "@angular/cdk": "^13.3.9",
+    "@angular/common": "^13.4.0",
+    "@angular/compiler": "^13.4.0",
+    "@angular/core": "^13.4.0",
+    "@angular/forms": "^13.4.0",
+    "@angular/material": "^13.3.9",
+    "@angular/platform-browser": "^13.4.0",
+    "@angular/platform-browser-dynamic": "^13.4.0",
+    "@angular/router": "^13.4.0",
     "@auth0/angular-jwt": "~5.0.2",
     "@fontsource/material-icons": "4.5.4",
     "@fontsource/roboto": "4.5.8",
-    "@ngrx/effects": "~12.5.1",
-    "@ngrx/router-store": "~12.5.1",
-    "@ngrx/store": "~12.5.1",
-    "@ngrx/store-devtools": "~12.5.1",
+    "@ngrx/effects": "^13.2.0",
+    "@ngrx/router-store": "^13.2.0",
+    "@ngrx/store": "^13.2.0",
+    "@ngrx/store-devtools": "^13.2.0",
     "angular-file": "~3.6.0",
-    "angular-password-strength-meter": "~2.0.0",
+    "angular-password-strength-meter": "~4.3.0",
     "file-saver": "^2.0.5",
     "jquery": "~3.6.0",
     "lodash": "~4.17.21",
@@ -70,15 +70,15 @@
     "zxcvbn": "~4.4.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~12.2.17",
-    "@angular-eslint/builder": "^12.7.0",
-    "@angular-eslint/schematics": "^12.7.0",
-    "@angular-eslint/template-parser": "^12.7.0",
-    "@angular/cli": "~12.2.17",
-    "@angular/compiler-cli": "^12.2.16",
-    "@angular/language-service": "^12.2.16",
-    "@angular/localize": "^12.2.16",
-    "@ngrx/schematics": "~12.5.1",
+    "@angular-devkit/build-angular": "~13.3.11",
+    "@angular-eslint/builder": "^13.5.0",
+    "@angular-eslint/schematics": "^13.5.0",
+    "@angular-eslint/template-parser": "^13.5.0",
+    "@angular/cli": "~13.3.11",
+    "@angular/compiler-cli": "^13.4.0",
+    "@angular/language-service": "^13.4.0",
+    "@angular/localize": "^13.4.0",
+    "@ngrx/schematics": "~13.2.0",
     "@types/file-saver": "2.0.5",
     "@types/jest": "27.0.1",
     "@types/lodash": "4.14.182",
@@ -101,20 +101,9 @@
     "rimraf": "~3.0.2",
     "stylelint": "~14.8.2",
     "stylelint-config-standard-scss": "~3.0.0",
-    "typescript": "4.3.5"
+    "typescript": "4.6.4"
   },
-  "overrides": {
-    "angular-password-strength-meter": {
-      "@angular/common": "^12.2.16",
-      "@angular/core": "^12.2.16",
-      "@types/zxcvbn": "4.4.1",
-      "tslib": "~2.3.1"
-    },
-    "@angular-devkit/build-angular": {
-      "loader-utils": "2.0.4"
-    }
-  },
-  "mibiConfig": {
+    "mibiConfig": {
     "lastChange": "2019-04-16 11:25:17 +0200"
   }
 }

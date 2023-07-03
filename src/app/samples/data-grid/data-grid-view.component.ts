@@ -417,17 +417,15 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
         this.editorDirtyEmitter.next();
     }
 
-    private getClientRect(row: number, col: number): ClientRect {
-        // use boundingClientRect to get floating point precision values
-        const gridRect: ClientRect = this.gridRef.nativeElement.getBoundingClientRect();
-        const cellRect: ClientRect = this.gridRef.nativeElement.children[row * this.colCount + col].getBoundingClientRect();
-        return {
-            top: cellRect.top - gridRect.top,
-            bottom: cellRect.bottom - gridRect.top,
-            left: cellRect.left - gridRect.left,
-            right: cellRect.right - gridRect.left,
-            width: cellRect.width,
-            height: cellRect.height
-        };
+    private getClientRect(row: number, col: number): DOMRect {
+        // use getBoundingClientRect to get floating point precision values
+        const gridRect: DOMRect = this.gridRef.nativeElement.getBoundingClientRect();
+        const cellRect: DOMRect = this.gridRef.nativeElement.children[row * this.colCount + col].getBoundingClientRect();
+        return new DOMRect(
+            cellRect.left - gridRect.left,
+            cellRect.top - gridRect.top,
+            cellRect.width,
+            cellRect.height
+        );
     }
 }
