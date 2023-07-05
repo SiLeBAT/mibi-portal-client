@@ -1,4 +1,4 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EffectsModule } from '@ngrx/effects';
 import { routerReducer } from '@ngrx/router-store';
@@ -7,7 +7,7 @@ import { AppComponent } from './app/app.component';
 import { CoreModule } from './app/core/core.module';
 
 describe('AppComponent', () => {
-    beforeEach(async(async () => {
+    beforeEach(async () => {
         await TestBed.configureTestingModule({
             imports: [
                 RouterTestingModule,
@@ -26,7 +26,7 @@ describe('AppComponent', () => {
             ],
             declarations: [AppComponent]
         }).compileComponents();
-    }));
+    });
 
     it('should create the app', () => {
         const fixture = TestBed.createComponent(AppComponent);

@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 import { UserLinkProviderService } from '../../link-provider.service';
 
 @Component({
@@ -8,15 +8,15 @@ import { UserLinkProviderService } from '../../link-provider.service';
     styleUrls: ['./recovery.component.scss']
 })
 export class RecoveryComponent implements OnInit {
-    recoveryForm: FormGroup;
+    recoveryForm: UntypedFormGroup;
 
     @Output() recovery = new EventEmitter();
 
     constructor(public userLinks: UserLinkProviderService) {}
 
     ngOnInit() {
-        this.recoveryForm = new FormGroup({
-            email: new FormControl(null, [
+        this.recoveryForm = new UntypedFormGroup({
+            email: new UntypedFormControl(null, [
                 Validators.required,
                 Validators.email
             ])
