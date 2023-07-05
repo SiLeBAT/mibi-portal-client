@@ -15,5 +15,5 @@ export const defaultEnvironment: Environment = {
     supportContact: 'mibi-portal@bfr.bund.de',
     version: packageJson.version,
     lastChange: packageJson.mibiConfig.lastChange,
-    sampleSheetURL: 'https://www.bfr.bund.de/cm/343/Einsendebogen-v15.xlsx'
+    sampleSheetURL: 'https://www.bfr.bund.de/cm/343/Einsendebogen-v16.xlsx'
 };
