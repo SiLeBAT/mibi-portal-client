@@ -78,7 +78,7 @@ const routes: Routes = [{
         MatCardModule,
         MatButtonModule,
         MatAutocompleteModule,
-        PasswordStrengthMeterModule,
+        PasswordStrengthMeterModule.forRoot(),
         SharedModule,
         RouterModule.forChild(routes),
         StoreModule.forFeature(USER_SLICE_NAME, userReducerMap),
