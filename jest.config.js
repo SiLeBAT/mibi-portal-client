@@ -1,4 +1,6 @@
+/* eslint-env es6 */
 const { defaults: jestNgPreset } = require('jest-preset-angular/presets');
+
 module.exports = {
   globals: {
     'ts-jest': {

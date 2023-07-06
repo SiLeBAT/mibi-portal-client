@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { DialogConfiguration } from '../../../shared/dialog/dialog.model';
 
 @Component({
@@ -16,7 +16,7 @@ export class SendDialogViewComponent {
     @Output()
     cancel: EventEmitter<void> = new EventEmitter();
 
-    commentControl = new FormControl('');
+    commentControl = new UntypedFormControl('');
 
     onConfirm() {
         this.confirm.emit(this.commentControl.value);

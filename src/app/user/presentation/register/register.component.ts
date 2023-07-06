@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, Input, ViewChild, AfterViewInit } from '@angular/core';
-import { FormGroup, FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Institution } from '../../../user/model/institution.model';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
@@ -19,7 +19,7 @@ const instituteValidator = (control: AbstractControl): ValidationErrors | null =
     styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit, AfterViewInit {
-    registerForm: FormGroup;
+    registerForm: UntypedFormGroup;
     filteredOptions$: Observable<Institution[]>;
 
     @Input() institutions: Institution[];
@@ -32,11 +32,11 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     constructor(public userLinks: UserLinkProviderService) {}
 
     ngOnInit() {
-        this.registerForm = new FormGroup({
-            institution: new FormControl(null, [Validators.required, instituteValidator]),
-            firstName: new FormControl(null, Validators.required),
-            lastName: new FormControl(null, Validators.required),
-            email: new FormControl(null, [
+        this.registerForm = new UntypedFormGroup({
+            institution: new UntypedFormControl(null, [Validators.required, instituteValidator]),
+            firstName: new UntypedFormControl(null, Validators.required),
+            lastName: new UntypedFormControl(null, Validators.required),
+            email: new UntypedFormControl(null, [
                 Validators.required,
                 Validators.email
             ])
