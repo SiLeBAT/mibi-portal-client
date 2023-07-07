@@ -8,13 +8,10 @@ import { Component, Input } from '@angular/core';
 export class BoxLayoutComponent {
 
     // eslint-disable-next-line @angular-eslint/no-input-rename
-    @Input('x-overflow-handling')
-    xOverflowHandling: string;
+    @Input('x-overflow-handling') xOverflowHandling: string;
 
     // eslint-disable-next-line @angular-eslint/no-input-rename
-    @Input('y-overflow-handling')
-    yOverflowHandling: string;
+    @Input('y-overflow-handling') yOverflowHandling: string;
 
-    @Input()
-    test: string;
+    @Input() test: string;
 }

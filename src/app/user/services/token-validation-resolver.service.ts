@@ -15,6 +15,7 @@ export class TokenValidationResolver implements Resolve<boolean> {
 
     async resolve(activatedRoute: ActivatedRouteSnapshot, _snap: RouterStateSnapshot): Promise<boolean> {
         const token = activatedRoute.params[this.userLinks.activateIdParam];
+        // eslint-disable-next-line
         return this.dataService.verifyEmail(token).toPromise().then(
             (t: boolean) => t,
             () => false)

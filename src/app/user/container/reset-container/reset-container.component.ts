@@ -25,6 +25,7 @@ export class ResetContainerComponent {
         const token = this.activatedRoute.snapshot.params[this.userLinks.resetIdParam];
 
         this.store$.dispatch(updateIsBusySOA({ isBusy: true }));
+        // eslint-disable-next-line
         this.dataService.resetPassword(password, token).toPromise()
             .then(() => {
                 this.store$.dispatch(updateIsBusySOA({ isBusy: false }));

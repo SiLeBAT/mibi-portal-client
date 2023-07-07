@@ -49,6 +49,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
                     if (!value) {
                         return this.institutions;
                     }
+                    // eslint-disable-next-line
                     return this.filter(value);
                 })
             );

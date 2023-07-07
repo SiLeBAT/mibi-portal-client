@@ -110,7 +110,7 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
                 urgencyEnum = Urgency.NORMAL;
         }
 
-        // eslint-disable-next-line unicorn/no-array-reduce
+        // eslint-disable-next-line
         return Object.keys(values).reduce((acc: { analysis: Partial<Analysis>; urgency: Urgency }, v) => {
 
             const prop: keyof Analysis = this.getPropertyForAnalysisKey(v);

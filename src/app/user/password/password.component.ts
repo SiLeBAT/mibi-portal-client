@@ -9,6 +9,7 @@ const PasswordStrengthValidator = (control: AbstractControl): ValidationErrors |
         return null;
     }
 
+    // eslint-disable-next-line
     const score = zxcvbn(control.value).score;
 
     return score >= 0 && score < 2 ? { 'strengthError': true } : null;

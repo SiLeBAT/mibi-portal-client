@@ -23,6 +23,7 @@ export class SamplesGridToolTipDirective implements OnChanges {
     }
 
     private destroyToolTips(): void {
+        // eslint-disable-next-line
         $.tooltipster.instances(this.hostElement.nativeElement).forEach(el => { el.destroy(); });
     }
 

@@ -5,5 +5,5 @@ import { DataGridCellContext, DataGridEditorContext } from '../../data-grid/data
 @Directive()
 export abstract class SamplesGridTemplateContainer<T extends DataGridCellContext | DataGridEditorContext> {
     @ViewChild('template', { static: true })
-    template: TemplateRef<T>;
+        template: TemplateRef<T>;
 }

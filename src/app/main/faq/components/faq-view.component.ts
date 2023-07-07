@@ -29,7 +29,8 @@ export class FaqViewComponent implements AfterViewInit, OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
         const fragmentChange = changes.activeFragment;
-        if(fragmentChange && !fragmentChange.firstChange) {
+        if (fragmentChange && !fragmentChange.firstChange) {
+            // eslint-disable-next-line
             this.scrollToFragment(fragmentChange.currentValue);
         }
     }

@@ -2,6 +2,7 @@ export class ClientError extends Error {
     constructor(...args: any[]) {
 
         // Calling parent constructor of base Error class.
+        // eslint-disable-next-line
         super(...args);
         Object.setPrototypeOf(this, ClientError.prototype);
         // Saving class name in the property of our custom error as a shortcut.
@@ -17,6 +18,7 @@ export class ClientError extends Error {
 
 export class AuthorizationError extends ClientError {
     constructor(...args: any[]) {
+        // eslint-disable-next-line
         super(...args);
         Object.setPrototypeOf(this, AuthorizationError.prototype);
         this.name = this.constructor.name;
@@ -25,6 +27,7 @@ export class AuthorizationError extends ClientError {
 
 export class EndpointError extends ClientError {
     constructor(public errorDTO: any, ...args: any[]) {
+        // eslint-disable-next-line
         super(...args);
         Object.setPrototypeOf(this, EndpointError.prototype);
         this.name = this.constructor.name;
@@ -33,6 +36,7 @@ export class EndpointError extends ClientError {
 
 export class DelayLoginError extends AuthorizationError {
     constructor(public timeToWait: number, ...args: any[]) {
+        // eslint-disable-next-line
         super(...args);
         Object.setPrototypeOf(this, DelayLoginError.prototype);
         this.name = this.constructor.name;

@@ -10,6 +10,5 @@ export class SingleCenterCardLayoutComponent {
     @Input() cardTitle: string;
 
     // eslint-disable-next-line @angular-eslint/no-input-rename
-    @Input('disable-content-overflow-handling')
-    disableContentOverflowHandling?: '';
+    @Input('disable-content-overflow-handling') disableContentOverflowHandling?: '';
 }
