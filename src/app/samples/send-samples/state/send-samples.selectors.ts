@@ -15,8 +15,8 @@ export const selectSendSamplesDialogWarnings = createSelector(
     state => state.dialogWarnings
 );
 
-export const selectSendSamplesIsFileAlreadySent = createSelector<
-SamplesMainSlice & SamplesSlice<SendSamplesState>, string, string[], boolean>(
+// eslint-disable-next-line
+export const selectSendSamplesIsFileAlreadySent = createSelector<SamplesMainSlice & SamplesSlice<SendSamplesState>,[string,string[]],boolean>(
     selectImportedFileName,
     selectSendSamplesLastSentFiles,
     (fileName, lastSentFiles) => lastSentFiles.includes(fileName)

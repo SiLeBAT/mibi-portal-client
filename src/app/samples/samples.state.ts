@@ -10,5 +10,5 @@ export interface SamplesSlice<T> {
 export type SamplesMainSlice = SamplesSlice<SamplesMainState>;
 
 export function selectSamplesSlice<T>() {
-    return createFeatureSelector<SamplesSlice<T>, T>(SAMPLES_SLICE_NAME);
+    return createFeatureSelector< T>(SAMPLES_SLICE_NAME);
 }

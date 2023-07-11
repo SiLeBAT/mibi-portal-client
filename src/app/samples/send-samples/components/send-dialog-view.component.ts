@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { DialogConfiguration } from '../../../shared/dialog/dialog.model';
 
 @Component({
@@ -10,15 +10,14 @@ import { DialogConfiguration } from '../../../shared/dialog/dialog.model';
 export class SendDialogViewComponent {
     @Input()config: DialogConfiguration;
 
-    @Output()
-    confirm: EventEmitter<string> = new EventEmitter();
+    @Output() confirm: EventEmitter<string> = new EventEmitter();
 
-    @Output()
-    cancel: EventEmitter<void> = new EventEmitter();
+    @Output() cancel: EventEmitter<void> = new EventEmitter();
 
-    commentControl = new FormControl('');
+    commentControl = new UntypedFormControl('');
 
     onConfirm() {
+        // eslint-disable-next-line
         this.confirm.emit(this.commentControl.value);
     }
 

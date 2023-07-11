@@ -10,5 +10,5 @@ export interface ContentSlice<T> {
 export type ContentMainSlice = ContentSlice<ContentMainState>;
 
 export function selectContentSlice<T>() {
-    return createFeatureSelector<ContentSlice<T>, T>(CONTENT_SLICE_NAME);
+    return createFeatureSelector< T>(CONTENT_SLICE_NAME);
 }

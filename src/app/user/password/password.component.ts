@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import zxcvbn from 'zxcvbn';
 
 // PasswordStrengthValidator
@@ -9,6 +9,7 @@ const PasswordStrengthValidator = (control: AbstractControl): ValidationErrors |
         return null;
     }
 
+    // eslint-disable-next-line
     const score = zxcvbn(control.value).score;
 
     return score >= 0 && score < 2 ? { 'strengthError': true } : null;
@@ -16,7 +17,7 @@ const PasswordStrengthValidator = (control: AbstractControl): ValidationErrors |
 
 // PasswordConfirmationValidator
 
-const PasswordConfirmationValidator = (formGroup: FormGroup): ValidationErrors | null => {
+const PasswordConfirmationValidator = (formGroup: UntypedFormGroup): ValidationErrors | null => {
     const pw1 = formGroup.get('password1');
     const pw2 = formGroup.get('password2');
 
@@ -39,15 +40,15 @@ const PasswordConfirmationValidator = (formGroup: FormGroup): ValidationErrors |
     styleUrls: ['./password.component.scss']
 })
 export class PasswordComponent implements OnInit {
-    passwordForm: FormGroup;
-    passwordControl: FormControl;
+    passwordForm: UntypedFormGroup;
+    passwordControl: UntypedFormControl;
 
     ngOnInit() {
-        this.passwordControl = new FormControl(null, [Validators.required, Validators.minLength(8), PasswordStrengthValidator]);
+        this.passwordControl = new UntypedFormControl(null, [Validators.required, Validators.minLength(8), PasswordStrengthValidator]);
 
-        this.passwordForm = new FormGroup({
+        this.passwordForm = new UntypedFormGroup({
             password1: this.passwordControl,
-            password2: new FormControl(null, Validators.required)
+            password2: new UntypedFormControl(null, Validators.required)
         }, { validators: PasswordConfirmationValidator });
     }
 }

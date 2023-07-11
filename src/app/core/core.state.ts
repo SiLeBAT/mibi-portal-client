@@ -10,5 +10,5 @@ export interface CoreSlice<T> {
 export type CoreMainSlice = CoreSlice<CoreMainState>;
 
 export function selectCoreSlice<T>() {
-    return createFeatureSelector<CoreSlice<T>, T>(CORE_SLICE_NAME);
+    return createFeatureSelector< T>(CORE_SLICE_NAME);
 }
