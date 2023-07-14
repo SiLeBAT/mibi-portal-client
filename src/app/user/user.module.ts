@@ -52,7 +52,7 @@ import { userReducerMap, userEffects } from './user.store';
         MatCardModule,
         MatButtonModule,
         MatAutocompleteModule,
-        PasswordStrengthMeterModule,
+        PasswordStrengthMeterModule.forRoot(),
         SharedModule,
         RouterModule.forChild([{
             path: 'users',

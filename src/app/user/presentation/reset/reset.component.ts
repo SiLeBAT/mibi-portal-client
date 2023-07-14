@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, ViewChild, AfterViewInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { PasswordComponent } from '../../password/password.component';
 
 @Component({
@@ -8,14 +8,14 @@ import { PasswordComponent } from '../../password/password.component';
     styleUrls: ['./reset.component.scss']
 })
 export class ResetComponent implements OnInit, AfterViewInit {
-    resetForm: FormGroup;
+    resetForm: UntypedFormGroup;
 
     @Output() resetPassword = new EventEmitter();
 
     @ViewChild(PasswordComponent) private passwordComponent: PasswordComponent;
 
     ngOnInit() {
-        this.resetForm = new FormGroup({ });
+        this.resetForm = new UntypedFormGroup({ });
     }
 
     ngAfterViewInit(): void {

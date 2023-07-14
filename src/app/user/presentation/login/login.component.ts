@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 
 @Component({
     selector: 'mibi-login',
@@ -7,18 +7,18 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
     styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-    loginForm: FormGroup;
+    loginForm: UntypedFormGroup;
 
     @Output() login = new EventEmitter();
 
     ngOnInit() {
 
-        this.loginForm = new FormGroup({
-            email: new FormControl(null, [
+        this.loginForm = new UntypedFormGroup({
+            email: new UntypedFormControl(null, [
                 Validators.required,
                 Validators.email
             ]),
-            password: new FormControl(null, Validators.required)
+            password: new UntypedFormControl(null, Validators.required)
         });
     }
 

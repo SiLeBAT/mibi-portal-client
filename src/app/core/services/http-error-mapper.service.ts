@@ -31,6 +31,7 @@ export class HttpErrorMapperService implements HttpInterceptor {
         switch (errorResponse.error.code) {
             case 3:
                 if (errorResponse.error.waitTime) {
+                    // eslint-disable-next-line
                     throw new DelayLoginError(errorResponse.error.waitTime, 'Delay login error.');
                 }
                 throw new AuthorizationError('Authorization error.');

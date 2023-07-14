@@ -14,6 +14,7 @@ export class AdminTokenValidationResolver implements Resolve<UserActivation> {
 
     resolve(activatedRoute: ActivatedRouteSnapshot, _snap: RouterStateSnapshot): Observable<UserActivation> {
         const token = activatedRoute.params['id'];
+        // eslint-disable-next-line
         return this.dataService.activateAccount(token);
     }
 }

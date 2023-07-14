@@ -7,5 +7,5 @@ export interface SharedSlice<T> {
 }
 
 export function selectSharedSlice<T>() {
-    return createFeatureSelector<SharedSlice<T>, T>(SHARED_SLICE_NAME);
+    return createFeatureSelector< T>(SHARED_SLICE_NAME);
 }

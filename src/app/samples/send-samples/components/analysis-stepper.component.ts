@@ -2,7 +2,7 @@ import { Urgency } from '../../model/sample.enums';
 import _ from 'lodash';
 import { Observable } from 'rxjs';
 import { SendSamplesState } from '../state/send-samples.reducer';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store, select, createSelector } from '@ngrx/store';
 import { selectSampleData } from '../../state/samples.selectors';
@@ -41,7 +41,7 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
     warnings$: Observable<DialogWarning[]> = this.store$.select(selectSendSamplesDialogWarnings);
     showOther: Record<string, boolean> = {};
     showCompareHuman: Record<string, boolean> = {};
-    analysisForm: Record<string, FormGroup>;
+    analysisForm: Record<string, UntypedFormGroup>;
     analysis: Record<string, Analysis>;
 
     isLinear = false;
@@ -51,7 +51,7 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
     constructor(
         private dialogRef: MatDialogRef<AnalysisStepperComponent>,
         private store$: Store<SamplesMainSlice & SamplesSlice<SendSamplesState>>,
-        private fb: FormBuilder
+        private fb: UntypedFormBuilder
     ) { }
 
     ngOnDestroy(): void {
@@ -60,9 +60,9 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.stepperViewModel$ = this.store$.pipe(
-            select(createSelector<SamplesMainSlice | SharedSlice<NrlState> | SamplesSlice<SendSamplesState>,
-                Sample[], NRLDTO[],
-                { samples: Sample[]; nrls: NRLDTO[] }>(
+            select(
+                // eslint-disable-next-line
+                createSelector<SamplesMainSlice | SharedSlice<NrlState> | SamplesSlice<SendSamplesState>,[Sample[], NRLDTO[]], { samples: Sample[]; nrls: NRLDTO[] }>(
                     selectSampleData,
                     selectNrls,
                     (
@@ -110,7 +110,7 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
                 urgencyEnum = Urgency.NORMAL;
         }
 
-        // eslint-disable-next-line unicorn/no-array-reduce
+        // eslint-disable-next-line
         return Object.keys(values).reduce((acc: { analysis: Partial<Analysis>; urgency: Urgency }, v) => {
 
             const prop: keyof Analysis = this.getPropertyForAnalysisKey(v);
@@ -170,7 +170,7 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
 
     private createFormControls(analysisStepVM: AnalysisStepViewModel[], samples: Sample[]) {
         // eslint-disable-next-line unicorn/no-array-reduce, unicorn/prefer-object-from-entries
-        return analysisStepVM.reduce((accumulator: Record<string, FormGroup>, vm) => {
+        return analysisStepVM.reduce((accumulator: Record<string, UntypedFormGroup>, vm) => {
             const exampleSample = _.find(samples, s => s.sampleMeta.nrl === vm.abbreviation);
 
             this.showCompareHuman[vm.abbreviation] = exampleSample ?
