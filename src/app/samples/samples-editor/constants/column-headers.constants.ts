@@ -7,38 +7,43 @@ export const samplesEditorDataHeaders = {
         'Ihre Probe\u00ADnummer',
     'sample_id_avv':
         'Probe\u00ADnummer nach AVVData',
-    'pathogen_adv':
-        'Erreger (Text aus ADV-Kat-Nr.16)',
+    'partial_sample_id':
+        'AVV\u00ADDatA\u00ADTeilpr\u00ADoben\u00ADNr.',
+    'pathogen_avv':
+        'Erreger (Code oder Text aus AVV-DatA-Kat-Nr.324)',
     'pathogen_text':
-        'Erreger (Textfeld / Ergänzung)',
+        'Erreger (Freitext)',
     'sampling_date':
         'Datum der Probe\u00ADnahme',
     'isolation_date':
         'Datum der Isolierung',
-    'sampling_location_adv':
-        'Ort der Probe\u00ADnahme (Code aus ADV-Kat-Nr.9)',
+    'sampling_location_avv':
+        'Ort der Probe\u00ADnahme (Code aus AVV-DatA-Kat-Nr.313)',
     'sampling_location_zip':
         'Ort der Probe\u00ADnahme (PLZ)',
     'sampling_location_text':
-        'Ort der Probe\u00ADnahme (Text)',
-    'topic_adv':
-        'Oberbe\u00ADgriff (Kodier\u00ADsystem) der Matrizes (Code aus ADV-Kat-Nr.2)',
-    'matrix_adv':
-        'Matrix Code (Code aus ADV\u00ADKat\u00ADNr.3)',
-    'matrix_text':
-        'Matrix (Textfeld / Ergänzung)',
-    'process_state_adv':
-        'Ver\u00ADarbeitungs\u00ADzustand (Code aus ADV-Kat\u00ADNr.12)',
-    'sampling_reason_adv':
-        'Grund der Probe\u00ADnahme (Code aus ADV-Kat\u00ADNr.4)',
-    'sampling_reason_text':
-        'Grund der Probe\u00ADnahme (Textfeld / Ergänzung)',
-    'operations_mode_adv':
-        'Betriebs\u00ADart (Code aus ADV-Kat-Nr.8)',
+        'Ort der Probe\u00ADnahme (Freitext)',
+    'animal_avv':
+        'Tiere Code (Code aus AVV-DatA-Kat-Nr.339)',
+    'matrix_avv':
+        'Matrix Code (Code aus AVV-DatA-Kat-Nr.319)',
+    'animal_matrix_text':
+        'Tiere/Matrix (Freitext)',
+    'primary_production_avv':
+        'Angabe\u00ADn zur Primärp\u00ADroduktio\u00ADn (Code aus AVV-DatA-Kat-Nr.316)',
+    'control_program_avv':
+        'Kontroll\u00ADprogramm (Code aus AVV-DatA-Kat-Nr.322)',
+    'sampling_reason_avv':
+        'Untersuchungs\u00ADgrund (Code aus AVV-DatA-Kat-Nr.326)',
+    'program_reason_text':
+        'Kontrollprogramm/ Untersuchungsgrund (Freitext)',
+    'operations_mode_avv':
+        'Betriebs\u00ADart (Code aus AVV-DatA-Kat-Nr.303)',
     'operations_mode_text':
-        'Betriebs\u00ADart (Textfeld / Ergänzung)',
+        'Betriebs\u00ADart (Freitext)',
     'vvvo':
         'VVVO-Nr / Herde',
     'comment':
         'Be\u00ADmerkung (u.a. Unter\u00ADsuchungs\u00ADprogramm)'
 };
+

@@ -110,22 +110,22 @@ Cypress.Commands.add("loadSamplesFile", fileName => {
 //                     sample: {
 //                         sample_id: { value: "1" },
 //                         sample_id_avv: { value: "1-ABC" },
-//                         pathogen_adv: { value: "Escherichia coli" },
+//                         pathogen_avv: { value: "Escherichia coli" },
 //                         pathogen_text: { value: "" },
 //                         sampling_date: { value: "14.09.2017" },
 //                         isolation_date: { value: "15.09.2017" },
-//                         sampling_location_adv: { value: "11000000" },
+//                         sampling_location_avv: { value: "11000000" },
 //                         sampling_location_zip: { value: "10178" },
 //                         sampling_location_text: { value: "Berlin" },
-//                         topic_adv: { value: "01" },
-//                         matrix_adv: { value: "063502" },
-//                         matrix_text: {
+//                         animal_avv: { value: "01" },
+//                         matrix_avv: { value: "063502" },
+//                         animal_matrix_text: {
 //                             value: "Hähnchen auch tiefgefroren"
 //                         },
-//                         process_state_adv: { value: "999" },
-//                         sampling_reason_adv: { value: "10" },
-//                         sampling_reason_text: { value: "Planprobe" },
-//                         operations_mode_adv: { value: "4010000" },
+//                         primary_production_avv: { value: "999" },
+//                         sampling_reason_avv: { value: "10" },
+//                         program_reason_text: { value: "Planprobe" },
+//                         operations_mode_avv: { value: "4010000" },
 //                         operations_mode_text: {
 //                             value: "Lebensmitteleinzelhandel"
 //                         },

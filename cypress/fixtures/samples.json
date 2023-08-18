@@ -29,7 +29,7 @@
                 "errors": [],
                 "correctionOffer": []
               },
-              "pathogen_adv": {
+              "pathogen_avv": {
                 "value": "Escherichia coli",
                 "errors": [],
                 "correctionOffer": []
@@ -49,7 +49,7 @@
                 "errors": [],
                 "correctionOffer": []
               },
-              "sampling_location_adv": {
+              "sampling_location_avv": {
                 "value": "11000000",
                 "errors": [],
                 "correctionOffer": []
@@ -64,37 +64,37 @@
                 "errors": [],
                 "correctionOffer": []
               },
-              "topic_adv": {
+              "animal_avv": {
                 "value": "01",
                 "errors": [],
                 "correctionOffer": []
               },
-              "matrix_adv": {
+              "matrix_avv": {
                 "value": "063502",
                 "errors": [],
                 "correctionOffer": []
               },
-              "matrix_text": {
+              "animal_matrix_text": {
                 "value": "Hähnchen auch tiefgefroren",
                 "errors": [],
                 "correctionOffer": []
               },
-              "process_state_adv": {
+              "primary_production_avv": {
                 "value": "999",
                 "errors": [],
                 "correctionOffer": []
               },
-              "sampling_reason_adv": {
+              "sampling_reason_avv": {
                 "value": "10",
                 "errors": [],
                 "correctionOffer": []
               },
-              "sampling_reason_text": {
+              "program_reason_text": {
                 "value": "Planprobe",
                 "errors": [],
                 "correctionOffer": []
               },
-              "operations_mode_adv": {
+              "operations_mode_avv": {
                 "value": "4010000",
                 "errors": [],
                 "correctionOffer": []
