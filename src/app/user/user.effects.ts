@@ -49,6 +49,13 @@ export class UserMainEffects {
                 hideBannerSOA()
             ),
             endWith(
+                showCustomBannerSOA({
+                    banner: {
+                        message: `Zu Ihrer Information: Ab sofort erhalten sie die E-Mail mit dem Probenbegleitschein (PDF) von der E-Mail-Adresse 'mibi-portal@bfr.berlin'.`,
+                        type: AlertType.WARNING,
+                        mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
+                    }
+                }),
                 updateIsBusySOA({ isBusy: false })
             )
         ))
