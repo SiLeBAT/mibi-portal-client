@@ -83,6 +83,15 @@ export class UserMainEffects {
                 this.dataService.setCurrentUser(user);
                 return userUpdateCurrentUserSOA({ user: user });
             }),
+            endWith(
+                showCustomBannerSOA({
+                    banner: {
+                        message: `Zu Ihrer Information: Ab sofort erhalten sie die E-Mail mit dem Probenbegleitschein (PDF) von der E-Mail-Adresse 'mibi-portal@bfr.berlin'.`,
+                        type: AlertType.WARNING,
+                        mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
+                    }
+                })
+            ),
             catchError((error) => {
                 this.logger.error('User authentication failed.', error.stack);
                 if (error instanceof DelayLoginError) {
