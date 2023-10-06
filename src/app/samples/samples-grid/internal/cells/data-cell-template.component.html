@@ -13,5 +13,6 @@
             'mibi-data-cell--correction-offer': hasCorrectionOffers(data),
             'mibi-data-cell--edited': isEdited(data)
         }"
-    >{{data.value}}</div>
+        [innerHTML]="data.value | softLineBreaks: ',\:;|-'">
+    </div>
 </ng-template>

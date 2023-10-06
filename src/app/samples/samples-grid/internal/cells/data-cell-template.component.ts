@@ -3,6 +3,7 @@ import { DataGridCellContext } from '../../../data-grid/data-grid.model';
 import { SamplesGridTemplateContainer } from '../template-container';
 import { SamplesGridDataCellData } from '../../samples-grid.model';
 import { SampleValidationErrorLevel } from '../../../model/sample-management.model';
+// import { SoftLineBreaksPipe } from '../../../../shared/presentation/pipes/soft-line-breaks.pipe';
 
 @Component({
     selector: 'mibi-samples-grid-data-cell-template',
