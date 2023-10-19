@@ -71,8 +71,8 @@ export class EntityFactoryService {
 
     private fromNRLStringToEnum(nrlString: string): NRL {
         switch (nrlString.trim()) {
-            case 'NRL-Vibrio':
-                return NRL.NRL_Vibrio;
+            case 'KL-Vibrio':
+                return NRL.KL_Vibrio;
             case 'NRL-VTEC':
                 return NRL.NRL_VTEC;
             case 'L-Bacillus':
@@ -93,10 +93,6 @@ export class EntityFactoryService {
                 return NRL.KL_Yersinia;
             case 'NRL-Trichinella':
                 return NRL.NRL_Trichinella;
-            case 'NRL-Virus':
-                return NRL.NRL_Virus;
-            case 'KL-Leptospira':
-                return NRL.KL_Leptospira;
             case 'Labor nicht erkannt':
             default:
                 return NRL.UNKNOWN;
