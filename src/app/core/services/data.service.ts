@@ -42,7 +42,7 @@ import {
 } from '../model/shared-dto.model';
 import { InstitutionDTO } from '../../user/model/institution.model';
 import { SamplesMainData } from '../../samples/state/samples.reducer';
-import { InvalidInputError, InputChangedError } from '../model/data-service-error';
+import { InvalidInputError, InputChangedError, ExcelVersionError } from '../model/data-service-error';
 
 @Injectable({
     providedIn: 'root'
@@ -163,6 +163,18 @@ export class DataService {
         return this.httpClient.put<PutSamplesJSONResponseDTO>(this.URL.unmarshal, formData, httpOptions).pipe(
             map((dto: PutSamplesJSONResponseDTO) => this.entityFactoryService.toSampleSet(dto.order.sampleSet)),
             catchError((error) => {
+                if (error instanceof EndpointError) {
+                    if (error.errorDTO.version) {
+                        const excelVersion: string = error.errorDTO.version;
+                        switch (error.errorDTO.code) {
+                            case 7:
+                                throw new ExcelVersionError(excelVersion, 'Invalid excel version error.');
+                            default:
+                                throw error;
+                        }
+                    }
+                }
+
                 throw new ClientError(`Failed to read excel file. error=${error}`);
             }));
     }

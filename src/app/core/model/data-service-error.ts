@@ -18,3 +18,12 @@ export class InputChangedError extends ClientError {
         this.name = this.constructor.name;
     }
 }
+
+export class ExcelVersionError extends ClientError {
+    constructor(public version: string,...args: any[]) {
+        // eslint-disable-next-line
+        super(...args);
+        Object.setPrototypeOf(this, ExcelVersionError.prototype);
+        this.name = this.constructor.name;
+    }
+}

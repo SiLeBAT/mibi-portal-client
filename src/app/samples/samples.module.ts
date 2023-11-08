@@ -36,6 +36,7 @@ import { samplesPathsSegments } from './samples.paths';
 import { NoSampleGuard } from './services/no-sample-guard.service';
 import { AnimationsRouteData } from '../shared/animations/animations.model';
 import { SoftLineBreaksPipe } from './pipes/soft-line-breaks.pipe';
+import { ExcelVersionDialogComponent } from './import-samples/components/excel-version-dialog.component';
 
 const disabledTransitionAnimationData: AnimationsRouteData = {
     transitionAnimation: 'disabled'
@@ -92,7 +93,8 @@ const routes: Routes = [
         SamplesGridDataEditorViewComponent,
         SamplesGridViewComponent,
         SamplesEditorComponent,
-        SoftLineBreaksPipe
+        SoftLineBreaksPipe,
+        ExcelVersionDialogComponent
     ],
     exports: []
 })
