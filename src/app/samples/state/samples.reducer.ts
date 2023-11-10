@@ -51,7 +51,8 @@ const initialMainData: SamplesMainData = {
         },
         fileName: '',
         customerRefNumber: '',
-        signatureDate: ''
+        signatureDate: '',
+        version: ''
     }
 
 };

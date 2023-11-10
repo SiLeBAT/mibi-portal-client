@@ -38,6 +38,7 @@ export interface SampleSetMetaDTO {
     readonly fileName?: string;
     readonly customerRefNumber?: string;
     readonly signatureDate?: string;
+    readonly version?: string;
 }
 
 interface SampleValidationErrorDTO {

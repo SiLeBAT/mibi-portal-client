@@ -78,7 +78,8 @@ export class DTOFactoryService {
             sender: meta.sender,
             fileName: meta.fileName,
             customerRefNumber: meta.customerRefNumber,
-            signatureDate: meta.signatureDate
+            signatureDate: meta.signatureDate,
+            version: meta.version
         };
     }
 

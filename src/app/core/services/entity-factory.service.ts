@@ -104,7 +104,8 @@ export class EntityFactoryService {
             sender: dto.sender,
             fileName: dto.fileName ? dto.fileName : '',
             customerRefNumber: dto.customerRefNumber ? dto.customerRefNumber : '',
-            signatureDate: dto.signatureDate ? dto.signatureDate : ''
+            signatureDate: dto.signatureDate ? dto.signatureDate : '',
+            version: dto.version ? dto.version : ''
         };
     }
 
