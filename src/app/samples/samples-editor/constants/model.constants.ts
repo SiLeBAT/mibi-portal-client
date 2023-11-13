@@ -68,7 +68,8 @@ const columnModels: SamplesEditorColumnModel[] = [
     createDataModel(20, 'operations_mode_avv'),
     createDataModel(21, 'operations_mode_text'),
     createDataModel(22, 'vvvo'),
-    createDataModel(23, 'comment')
+    createDataModel(23, 'program_avv'),
+    createDataModel(24, 'comment')
 ];
 
 export const samplesEditorModel: SamplesEditorModel = {
