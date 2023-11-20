@@ -89,12 +89,13 @@ export class ImportSamplesEffects {
             string2: strings.message3,
             string3: strings.message4,
             link: strings.link,
-            string4: strings.message5
+            string4: strings.message5,
+            cancelButtonText: strings.cancelButtonText
         };
 
         const dialogConfig = {
             data: dialogData,
-            height: '36em',
+            height: '40em',
             width: '65em'
         };
 

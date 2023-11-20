@@ -1,5 +1,9 @@
 import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Store } from '@ngrx/store';
+import { SharedSlice } from '../../../shared/shared.state';
+import { DialogState } from '../../../shared/dialog/state/dialog.reducer';
+import { dialogCancelMTA } from '../../../shared/dialog/state/dialog.actions';
 
 export interface ExcelVersionDialogData {
     title: string;
@@ -8,6 +12,7 @@ export interface ExcelVersionDialogData {
     string3: string;
     link: string;
     string4: string;
+    cancelButtonText: string;
   }
 
 @Component({
@@ -16,5 +21,21 @@ export interface ExcelVersionDialogData {
     styleUrls: ['./excel-version-dialog.component.scss']
 })
 export class ExcelVersionDialogComponent {
-    constructor(@Inject(MAT_DIALOG_DATA) public data: ExcelVersionDialogData) { }
+    private caller = '';
+
+    constructor(
+        private dialogRef: MatDialogRef<ExcelVersionDialogComponent>,
+        private store$: Store<SharedSlice<DialogState>>,
+        @Inject(MAT_DIALOG_DATA) public data: ExcelVersionDialogData
+    ) { }
+
+    onCancel() {
+        this.store$.dispatch(dialogCancelMTA({ target: this.caller }));
+        this.close();
+    }
+
+    private close(): void {
+        this.dialogRef.close();
+    }
+
 }

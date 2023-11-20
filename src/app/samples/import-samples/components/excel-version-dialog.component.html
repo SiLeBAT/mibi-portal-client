@@ -20,5 +20,15 @@
                 <span class="mibi-dialog-text-style">{{ data.string4 }}</span>
             </p>
         </div>
+
+        <div mat-dialog-actions class="mibi-mat-dialog-cancel-actions">
+            <button *ngIf="data.cancelButtonText"
+                type="button"
+                mat-stroked-button
+                color="accent"
+                (click)="onCancel()"
+            >{{ data.cancelButtonText }}</button>
+        </div>
+
     </div>
 </mibi-box-layout>
