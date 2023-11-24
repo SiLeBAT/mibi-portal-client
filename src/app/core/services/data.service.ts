@@ -149,7 +149,8 @@ export class DataService {
             })
         };
         const formData: FormData = new FormData();
-        formData.append('file', requestData.file, requestData.file.name);
+        const encodedFileName = encodeURIComponent(requestData.file.name);
+        formData.append('file', requestData.file, encodedFileName);
         return this.httpClient.put<PutSamplesJSONResponseDTO>(this.URL.unmarshal, formData, httpOptions).pipe(
             map((dto: PutSamplesJSONResponseDTO) => this.entityFactoryService.toSampleSet(dto.order.sampleSet)),
             catchError((error) => {
