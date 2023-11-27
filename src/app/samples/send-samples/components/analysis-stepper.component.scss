@@ -58,3 +58,12 @@
   display: block;
   margin: layout.$single-space;
 }
+
+.mibi-other-hint--max-chars-reached,
+.mibi-comparehuman-hint--max-chars-reached {
+  color: mat.get-color-from-palette(colors.$error-palette, "default");
+}
+
+.mibi-other-input {
+  padding-bottom: 1em;
+}
