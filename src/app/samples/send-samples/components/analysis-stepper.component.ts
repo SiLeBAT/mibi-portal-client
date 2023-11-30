@@ -48,6 +48,9 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
 
     stepperViewModel$: Observable<AnalysisStepViewModel[]>;
 
+    textOther: string = '';
+    textCompareHuman: string = '';
+
     constructor(
         private dialogRef: MatDialogRef<AnalysisStepperComponent>,
         private store$: Store<SamplesMainSlice & SamplesSlice<SendSamplesState>>,
@@ -86,15 +89,19 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
 
     onChangeShowOther(nrl: string) {
         if (!this.showOther[nrl]) {
+            this.textOther = this.analysisForm[nrl].controls.other.value;
             this.analysisForm[nrl].controls.other.setValue('');
+        } else {
+            this.analysisForm[nrl].controls.other.setValue(this.textOther);
         }
     }
 
     onChangeCompareHuman(nrl: string) {
         if (!this.showCompareHuman[nrl]) {
+            this.textCompareHuman = this.analysisForm[nrl].controls.compareHuman.value;
             this.analysisForm[nrl].controls.compareHuman.setValue('');
         } else {
-            this.analysisForm[nrl].controls.compareHuman.setValue(this.analysisForm[nrl].controls.compareHuman.value);
+            this.analysisForm[nrl].controls.compareHuman.setValue(this.textCompareHuman);
         }
 
     }
