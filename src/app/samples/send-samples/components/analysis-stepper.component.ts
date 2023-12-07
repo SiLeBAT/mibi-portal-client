@@ -50,6 +50,7 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
 
     textOther: string = '';
     textCompareHuman: string = '';
+    maxCharacters: number = 120;
 
     constructor(
         private dialogRef: MatDialogRef<AnalysisStepperComponent>,

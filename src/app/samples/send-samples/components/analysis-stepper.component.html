@@ -49,13 +49,13 @@
                             rows="1"
                             placeholder="Kommentar für das NRL"
                             formControlName="other"
-                            maxlength="130"
+                            maxlength="{{ maxCharacters }}"
                         ></textarea>
                         <mat-hint
                             align="start"
-                            [class.mibi-other-hint--max-chars-reached]="(otherInput.value?.length || 0) >= 130"
+                            [class.mibi-other-hint--max-chars-reached]="(otherInput.value?.length || 0) >= maxCharacters"
                         >
-                            {{otherInput.value?.length || 0}}/130
+                            {{otherInput.value?.length || 0}}/{{ maxCharacters }}
                         </mat-hint>
                     </mat-form-field>
                     <mat-checkbox
@@ -72,13 +72,13 @@
                             rows="1"
                             placeholder="Kommentar für das NRL"
                             formControlName="compareHuman"
-                            maxlength="130"
+                            maxlength="{{ maxCharacters }}"
                         ></textarea>
                         <mat-hint
                             align="start"
-                            [class.mibi-comparehuman-hint--max-chars-reached]="(compareHumanInput.value?.length || 0) >= 130"
+                            [class.mibi-comparehuman-hint--max-chars-reached]="(compareHumanInput.value?.length || 0) >= maxCharacters"
                         >
-                            {{compareHumanInput.value?.length || 0}}/130
+                            {{compareHumanInput.value?.length || 0}}/{{ maxCharacters }}
                         </mat-hint>
                     </mat-form-field>
                     <div class="mibi-urgency-selection">
