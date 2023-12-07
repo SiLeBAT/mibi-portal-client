@@ -8,7 +8,7 @@ export const samplesEditorDataHeaders = {
     'sample_id_avv':
         'Probe\u00ADnummer nach AVV Data',
     'partial_sample_id':
-        'AVV DatA\u00ADTeil\u00ADpro\u00ADben\u00ADNr.',
+        'AVV DatA-Teil\u00ADpro\u00ADben-Nr.',
     'pathogen_avv':
         'Erreger (Code oder Text aus AVV DatA-Kat-Nr. 324)',
     'pathogen_text':
@@ -28,7 +28,7 @@ export const samplesEditorDataHeaders = {
     'matrix_avv':
         'Matrix (Code aus AVV DatA-Kat-Nr. 319)',
     'animal_matrix_text':
-        'Tiere/Matrix (Text)',
+        'Tiere / Matrix (Text)',
     'primary_production_avv':
         'Anga\u00ADben zur Primär\u00ADproduk\u00ADtion (Code aus AVV DatA-Kat-Nr. 316)',
     'control_program_avv':
