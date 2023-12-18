@@ -11,7 +11,7 @@ export interface Environment {
 
 export const defaultEnvironment: Environment = {
     production: true,
-    appName: 'MiBi-Portal',
+    appName: 'MiBi-Portal ADV',
     supportContact: 'mibi-portal@bfr.bund.de',
     version: packageJson.version,
     lastChange: packageJson.mibiConfig.lastChange,
