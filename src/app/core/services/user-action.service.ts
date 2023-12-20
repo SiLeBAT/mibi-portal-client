@@ -51,14 +51,6 @@ export class UserActionService {
         type: UserActionType.CLOSE,
         onExecute: this.close.bind(this),
         icon: 'clear'
-    },
-    {
-        label: 'Excel-Vorlage',
-        type: UserActionType.DOWNLOAD_TEMPLATE,
-        onExecute: () => {
-            window.open(environment.sampleSheetURL, '_blank');
-        },
-        icon: 'assignment_returned'
     }];
 
     constructor(
