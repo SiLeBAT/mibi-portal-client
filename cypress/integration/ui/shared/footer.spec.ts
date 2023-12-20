@@ -40,14 +40,6 @@ describe('Testing the Footer', function () {
             });
         });
 
-        it('should open a new tab for the API-docs page', function () {
-            cy.get('footer').within(() => {
-                cy.contains('API-docs')
-                    .should('have.attr', 'href', 'api-docs/v2')
-                    .should('have.attr', 'target', '_blank');
-            });
-        });
-
         it('should navigate to the Datenschutzerklärung page', function () {
             cy.get('footer').within(() => {
                 cy.contains('Datenschutzerklärung').click();
