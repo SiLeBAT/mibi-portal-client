@@ -4,6 +4,7 @@ import { UserActionViewModelConfiguration, UserActionType } from '../../shared/m
 import { Store } from '@ngrx/store';
 import { validateSamplesSSA } from '../../samples/validate-samples/validate-samples.actions';
 import { CoreMainSlice } from '../core.state';
+import { environment } from '../../../environments/environment';
 import { closeSamplesSSA } from '../../samples/close-samples/close-samples.actions';
 import { importSamplesMSA } from '../../samples/import-samples/import-samples.actions';
 import { exportSamplesSSA } from '../../samples/export-samples/export-samples.actions';
@@ -50,6 +51,14 @@ export class UserActionService {
         type: UserActionType.CLOSE,
         onExecute: this.close.bind(this),
         icon: 'clear'
+    },
+    {
+        label: 'Excel-Vorlage',
+        type: UserActionType.DOWNLOAD_TEMPLATE,
+        onExecute: () => {
+            window.open(environment.sampleSheetURL, '_blank');
+        },
+        icon: 'assignment_returned'
     }];
 
     constructor(
