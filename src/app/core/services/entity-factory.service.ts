@@ -91,8 +91,6 @@ export class EntityFactoryService {
                 return NRL.NRL_AR;
             case 'KL-Yersinia':
                 return NRL.KL_Yersinia;
-            case 'NRL-Trichinella':
-                return NRL.NRL_Trichinella;
             case 'Labor nicht erkannt':
             default:
                 return NRL.UNKNOWN;
