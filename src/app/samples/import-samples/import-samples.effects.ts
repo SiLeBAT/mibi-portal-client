@@ -88,8 +88,9 @@ export class ImportSamplesEffects {
             string1: `${strings.message1} ${version} ${strings.message2}`,
             string2: strings.message3,
             string3: strings.message4,
-            link: strings.link,
             string4: strings.message5,
+            link: strings.link,
+            string5: strings.message6,
             cancelButtonText: strings.cancelButtonText
         };
 
