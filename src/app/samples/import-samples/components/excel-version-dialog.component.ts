@@ -10,8 +10,9 @@ export interface ExcelVersionDialogData {
     string1: string;
     string2: string;
     string3: string;
-    link: string;
     string4: string;
+    link: string;
+    string5: string;
     cancelButtonText: string;
   }
 
