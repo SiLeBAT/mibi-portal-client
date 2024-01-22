@@ -1,5 +1,26 @@
-import { OrderDTO, AnnotatedOrderDTO } from './shared-dto.model';
+import { AnnotatedOrderDTO, OrderDTO } from './shared-dto.model';
 
+
+export interface ParseResponse<T> {
+    results: T[];
+}
+
+export interface ParseEntityDTO {
+    objectId: string;
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface ParseInstitutionDTO extends ParseEntityDTO {
+    readonly state_short: string;
+    readonly name1: string;
+    readonly name2: string;
+    readonly city: string;
+    readonly zip: string;
+    readonly phone: string;
+    readonly fax: string;
+    readonly email: string[];
+}
 export interface TokenRefreshResponseDTO {
     readonly refresh: boolean;
     readonly token: string;

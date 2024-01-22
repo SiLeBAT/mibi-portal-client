@@ -20,6 +20,7 @@ chrome-profiler-events*.json
 *.launch
 .settings/
 *.sublime-workspace
+.vscode
 
 # IDE - VSCode
 .vscode/*
@@ -39,6 +40,7 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
+/local
 
 # e2e
 /cypress/videos
