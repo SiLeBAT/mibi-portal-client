@@ -1,66 +1,69 @@
-import { EntityFactoryService } from './entity-factory.service';
-import { DTOFactoryService } from './dto-factory.service';
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import {
+    ExcelFile,
+    MarshalledData,
     Sample,
     SampleSet,
-    MarshalledData,
-    SampleSubmission,
-    ExcelFile
+    SampleSubmission
 } from '../../samples/model/sample-management.model';
+import { SamplesMainData } from '../../samples/state/samples.reducer';
+import { InstitutionDTO } from '../../user/model/institution.model';
+import { Credentials, RegistrationDetails, TokenizedUser } from '../../user/model/user.model';
+import { ClientError, EndpointError } from '../model/client-error';
+import { ExcelVersionError, InputChangedError, InvalidInputError } from '../model/data-service-error';
+import {
+    NewPasswordRequestDTO,
+    PostSubmittedRequestDTO,
+    PutSamplesJSONRequestDTO,
+    PutValidatedRequestDTO,
+    RegistrationDetailsDTO,
+    ResetRequestDTO
+} from '../model/request.model';
 import {
     ActivationResponseDTO,
-    SystemInformationResponseDTO,
     FaqResponseDTO,
-    TokenRefreshResponseDTO,
-    PutSamplesXLSXResponseDTO,
-    TokenizedUserDTO,
-    RegistrationRequestResponseDTO,
-    PasswordResetRequestResponseDTO,
-    InstituteCollectionDTO,
     NRLCollectionDTO,
-    PutSamplesJSONResponseDTO,
+    NRLDTO,
+    ParseInstitutionDTO,
+    ParseResponse,
+    PasswordResetRequestResponseDTO,
     PostSubmittedResponseDTO,
+    PutSamplesJSONResponseDTO,
+    PutSamplesXLSXResponseDTO,
     PutValidatedResponseDTO,
-    NRLDTO
+    RegistrationRequestResponseDTO,
+    SystemInformationResponseDTO,
+    TokenRefreshResponseDTO,
+    TokenizedUserDTO
 } from '../model/response.model';
-import { TokenizedUser, Credentials, RegistrationDetails } from '../../user/model/user.model';
-import {
-    ResetRequestDTO,
-    NewPasswordRequestDTO,
-    RegistrationDetailsDTO,
-    PostSubmittedRequestDTO,
-    PutValidatedRequestDTO,
-    PutSamplesJSONRequestDTO
-} from '../model/request.model';
-import { ClientError, EndpointError } from '../model/client-error';
 import {
     AnnotatedOrderDTO
 } from '../model/shared-dto.model';
-import { InstitutionDTO } from '../../user/model/institution.model';
-import { SamplesMainData } from '../../samples/state/samples.reducer';
-import { InvalidInputError, InputChangedError, ExcelVersionError } from '../model/data-service-error';
+import { DTOFactoryService } from './dto-factory.service';
+import { EntityFactoryService } from './entity-factory.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class DataService {
 
+    private PARSE_REST_API = 'admin/parse/classes';
     private API_VERSION = 'v2';
     private USER = 'users';
     private SAMPLE = 'samples';
     private TOKEN = 'tokens';
-    private INSTITUTE = 'institutes';
+    private INSTITUTE = 'institutions';
     private NRL = 'nrls';
     private URL = {
         submit: [this.API_VERSION, this.SAMPLE, 'submitted'].join('/'),
         validate: [this.API_VERSION, this.SAMPLE, 'validated'].join('/'),
         marshal: [this.API_VERSION, this.SAMPLE].join('/'),
         unmarshal: [this.API_VERSION, this.SAMPLE].join('/'),
-        institutions: [this.API_VERSION, this.INSTITUTE].join('/'),
+        institutions: [this.PARSE_REST_API, this.INSTITUTE].join('/'),
         nrls: [this.API_VERSION, this.NRL].join('/'),
         login: [this.API_VERSION, this.USER, 'login'].join('/'),
         register: [this.API_VERSION, this.USER, 'registration'].join('/'),
@@ -74,6 +77,12 @@ export class DataService {
     };
 
     private LOCAL_STORAGE_CURRENT_USER = 'currentUser';
+
+    private parseOptions = {
+        headers: {
+            ['X-Parse-Application-Id']: environment.appId
+        }
+    };
 
     constructor(
         private httpClient: HttpClient,
@@ -193,8 +202,18 @@ export class DataService {
     }
 
     getAllInstitutions(): Observable<InstitutionDTO[]> {
-        return this.httpClient.get<InstituteCollectionDTO>(this.URL.institutions).pipe(
-            map((dto: InstituteCollectionDTO) => dto.institutes));
+        return this.httpClient.get<ParseResponse<ParseInstitutionDTO>>(this.URL.institutions, this.parseOptions).pipe(
+            map((dto: ParseResponse<ParseInstitutionDTO>) => dto.results.map(institution => ({
+                id: institution.objectId,
+                short: institution.state_short,
+                name: institution.name1,
+                addendum: institution.name2 || '',
+                city: institution.city || '',
+                zip: institution.zip || '',
+                phone: institution.phone,
+                fax: institution.fax || '',
+                email: institution.email || []
+            }))));
     }
 
     getAllNRLs(): Observable<NRLDTO[]> {
