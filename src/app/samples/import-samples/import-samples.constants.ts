@@ -6,7 +6,7 @@ export const importSamplesWrongVersionDialogStrings = {
     message4: `Wenn Sie ADV-codierte Daten an das BfR melden möchten, `,
     message5: `laden Sie Ihren Einsendebogen bitte im "MiBi-Portal ADV" hoch und melden Sie sich dort noch einmal an:`,
 
-    link: 'https://nolar-dev.bfr.berlin',
+    link: 'https://nolar-dev.bfr.berlin/users/login',
 
     message6: `Dieses MiBi-Portal ist ausschließlich für AVV DatA-codierte Daten vorgesehen,
     die Sie über den Einsendebogen ab Version 17 hier hochladen können.`,
