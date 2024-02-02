@@ -7,6 +7,8 @@ export interface Environment {
     version: string;
     lastChange: string;
     sampleSheetURL: string;
+    appId: string;
+
 }
 
 export const defaultEnvironment: Environment = {
@@ -15,5 +17,8 @@ export const defaultEnvironment: Environment = {
     supportContact: 'mibi-portal@bfr.bund.de',
     version: packageJson.version,
     lastChange: packageJson.mibiConfig.lastChange,
-    sampleSheetURL: 'https://www.bfr.bund.de/cm/343/Einsendebogen-v17.xlsx'
+    sampleSheetURL: 'https://www.bfr.bund.de/cm/343/Einsendebogen-v17.xlsx',
+    appId: 'app_blub'
+
+
 };

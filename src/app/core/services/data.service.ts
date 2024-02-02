@@ -1,48 +1,49 @@
-import { EntityFactoryService } from './entity-factory.service';
-import { DTOFactoryService } from './dto-factory.service';
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import {
+    ExcelFile,
+    MarshalledData,
     Sample,
     SampleSet,
-    MarshalledData,
-    SampleSubmission,
-    ExcelFile
+    SampleSubmission
 } from '../../samples/model/sample-management.model';
+import { SamplesMainData } from '../../samples/state/samples.reducer';
+import { InstitutionDTO } from '../../user/model/institution.model';
+import { Credentials, RegistrationDetails, TokenizedUser } from '../../user/model/user.model';
+import { ClientError, EndpointError } from '../model/client-error';
+import { ExcelVersionError, InputChangedError, InvalidInputError } from '../model/data-service-error';
+import {
+    NewPasswordRequestDTO,
+    PostSubmittedRequestDTO,
+    PutSamplesJSONRequestDTO,
+    PutValidatedRequestDTO,
+    RegistrationDetailsDTO,
+    ResetRequestDTO
+} from '../model/request.model';
 import {
     ActivationResponseDTO,
-    SystemInformationResponseDTO,
     FaqResponseDTO,
-    TokenRefreshResponseDTO,
-    PutSamplesXLSXResponseDTO,
-    TokenizedUserDTO,
-    RegistrationRequestResponseDTO,
-    PasswordResetRequestResponseDTO,
     InstituteCollectionDTO,
     NRLCollectionDTO,
-    PutSamplesJSONResponseDTO,
+    NRLDTO,
+    PasswordResetRequestResponseDTO,
     PostSubmittedResponseDTO,
+    PutSamplesJSONResponseDTO,
+    PutSamplesXLSXResponseDTO,
     PutValidatedResponseDTO,
-    NRLDTO
+    RegistrationRequestResponseDTO,
+    SystemInformationResponseDTO,
+    TokenRefreshResponseDTO,
+    TokenizedUserDTO
 } from '../model/response.model';
-import { TokenizedUser, Credentials, RegistrationDetails } from '../../user/model/user.model';
-import {
-    ResetRequestDTO,
-    NewPasswordRequestDTO,
-    RegistrationDetailsDTO,
-    PostSubmittedRequestDTO,
-    PutValidatedRequestDTO,
-    PutSamplesJSONRequestDTO
-} from '../model/request.model';
-import { ClientError, EndpointError } from '../model/client-error';
 import {
     AnnotatedOrderDTO
 } from '../model/shared-dto.model';
-import { InstitutionDTO } from '../../user/model/institution.model';
-import { SamplesMainData } from '../../samples/state/samples.reducer';
-import { InvalidInputError, InputChangedError, ExcelVersionError } from '../model/data-service-error';
+import { environment } from './../../../environments/environment';
+import { DTOFactoryService } from './dto-factory.service';
+import { EntityFactoryService } from './entity-factory.service';
 
 @Injectable({
     providedIn: 'root'
@@ -75,6 +76,13 @@ export class DataService {
 
     private LOCAL_STORAGE_CURRENT_USER = 'currentUser';
 
+    private PARSE_OPTIONS = {
+        headers: new HttpHeaders({
+            'X-Parse-Application-Id': environment.appId
+        })
+    };
+
+
     constructor(
         private httpClient: HttpClient,
         private dtoService: DTOFactoryService,
@@ -98,15 +106,15 @@ export class DataService {
     }
 
     getFaq(): Observable<FaqResponseDTO> {
-        return this.httpClient.get<FaqResponseDTO>(this.URL.faq);
+        return this.httpClient.get<FaqResponseDTO>(this.URL.faq, this.PARSE_OPTIONS);
     }
 
     getSystemInfo(): Observable<SystemInformationResponseDTO> {
-        return this.httpClient.get<SystemInformationResponseDTO>(this.URL.systemInfo);
+        return this.httpClient.get<SystemInformationResponseDTO>(this.URL.systemInfo, this.PARSE_OPTIONS);
     }
 
     login(credentials: Credentials): Observable<TokenizedUser> {
-        return this.httpClient.post<TokenizedUserDTO>(this.URL.login, credentials).pipe(
+        return this.httpClient.post<TokenizedUserDTO>(this.URL.login, credentials, this.PARSE_OPTIONS).pipe(
             map((dto: TokenizedUserDTO) => dto)
         );
     }
@@ -117,7 +125,7 @@ export class DataService {
             comment: sendableFormData.comment,
             receiveAs: sendableFormData.receiveAs.toString()
         };
-        return this.httpClient.post<PostSubmittedResponseDTO>(this.URL.submit, requestDTO).pipe(
+        return this.httpClient.post<PostSubmittedResponseDTO>(this.URL.submit, requestDTO, this.PARSE_OPTIONS).pipe(
             map((dto: PostSubmittedResponseDTO) =>
                 dto.order.sampleSet.samples.map(sample => this.entityFactoryService.toSample(sample))),
             catchError((err) => {
@@ -144,7 +152,7 @@ export class DataService {
 
     validateSampleData(requestData: SamplesMainData): Observable<Sample[]> {
         const requestDTO: PutValidatedRequestDTO = { order: this.dtoService.fromSamplesMainDataToOrderDTO(requestData) };
-        return this.httpClient.put<PutValidatedResponseDTO>(this.URL.validate, requestDTO).pipe(
+        return this.httpClient.put<PutValidatedResponseDTO>(this.URL.validate, requestDTO, this.PARSE_OPTIONS).pipe(
             map((dto: PutValidatedResponseDTO) =>
                 dto.order.sampleSet.samples.map(sample =>
                     this.entityFactoryService.toSample(sample)
@@ -155,7 +163,8 @@ export class DataService {
         const httpOptions = {
             headers: new HttpHeaders({
                 // 'Content-Type': 'multipart/form-data',
-                'Accept': 'application/json'
+                'Accept': 'application/json',
+                'X-Parse-Application-Id': environment.appId
             })
         };
         const formData: FormData = new FormData();
@@ -185,7 +194,8 @@ export class DataService {
         const httpOptions = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
-                'Accept': 'multipart/form-data'
+                'Accept': 'multipart/form-data',
+                'X-Parse-Application-Id': environment.appId
             })
         };
         return this.httpClient.put<PutSamplesXLSXResponseDTO>(this.URL.marshal, requestBody, httpOptions).pipe(
@@ -193,12 +203,12 @@ export class DataService {
     }
 
     getAllInstitutions(): Observable<InstitutionDTO[]> {
-        return this.httpClient.get<InstituteCollectionDTO>(this.URL.institutions).pipe(
+        return this.httpClient.get<InstituteCollectionDTO>(this.URL.institutions, this.PARSE_OPTIONS).pipe(
             map((dto: InstituteCollectionDTO) => dto.institutes));
     }
 
     getAllNRLs(): Observable<NRLDTO[]> {
-        return this.httpClient.get<NRLCollectionDTO>(this.URL.nrls).pipe(
+        return this.httpClient.get<NRLCollectionDTO>(this.URL.nrls, this.PARSE_OPTIONS).pipe(
             map((dto: NRLCollectionDTO) => dto.nrls));
     }
 
@@ -209,25 +219,25 @@ export class DataService {
 
     resetPasswordRequest(email: string): Observable<PasswordResetRequestResponseDTO> {
         const resetRequest: ResetRequestDTO = { email: email };
-        return this.httpClient.put<PasswordResetRequestResponseDTO>(this.URL.resetPasswordRequest, resetRequest);
+        return this.httpClient.put<PasswordResetRequestResponseDTO>(this.URL.resetPasswordRequest, resetRequest, this.PARSE_OPTIONS);
     }
 
     resetPassword(password: string, token: string) {
         const newPassword: NewPasswordRequestDTO = { password: password };
-        return this.httpClient.patch([this.URL.resetPassword, token].join('/'), newPassword);
+        return this.httpClient.patch([this.URL.resetPassword, token].join('/'), newPassword, this.PARSE_OPTIONS);
     }
 
     verifyEmail(token: string): Observable<boolean> {
-        return this.httpClient.patch<ActivationResponseDTO>([this.URL.verifyEmail, token].join('/'), null).pipe(
+        return this.httpClient.patch<ActivationResponseDTO>([this.URL.verifyEmail, token].join('/'), null, this.PARSE_OPTIONS).pipe(
             map(r => r.activation)
         );
     }
 
     activateAccount(adminToken: string): Observable<ActivationResponseDTO> {
-        return this.httpClient.patch<ActivationResponseDTO>([this.URL.activateAccount, adminToken].join('/'), null);
+        return this.httpClient.patch<ActivationResponseDTO>([this.URL.activateAccount, adminToken].join('/'), null, this.PARSE_OPTIONS);
     }
 
     refreshToken(): Observable<TokenRefreshResponseDTO> {
-        return this.httpClient.post<TokenRefreshResponseDTO>(this.URL.refresh, null);
+        return this.httpClient.post<TokenRefreshResponseDTO>(this.URL.refresh, null, this.PARSE_OPTIONS);
     }
 }
