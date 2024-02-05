@@ -1,6 +1,6 @@
 {
   "name": "mibi-portal-client",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -85,7 +85,7 @@
     "@types/tooltipster": "0.0.31",
     "@types/zxcvbn": "4.4.1",
     "@typescript-eslint/eslint-plugin": "5.43.0",
-    "cypress": "~9.3.1",
+    "cypress": "^13.6.3",
     "cypress-multi-reporters": "^1.6.0",
     "eslint": "^8.27.0",
     "eslint-plugin-rxjs": "~5.0.2",

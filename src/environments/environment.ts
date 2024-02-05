@@ -5,5 +5,6 @@ import { defaultEnvironment, Environment } from './default.environment';
 export const environment: Environment = {
     ...defaultEnvironment,
     production: false,
-    appName: defaultEnvironment.appName + '-Dev'
+    appName: defaultEnvironment.appName + '-Dev',
+    appId: 'app_blub'
 };
