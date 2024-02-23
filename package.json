@@ -23,19 +23,18 @@
     "lint:code": "ng lint",
     "lint:styles": "stylelint \"src/**/*.scss\"",
     "cypress:open": "cypress open",
-    "prepare": "(husky -v && husky ) || echo husky not installed"
-
-
+    "prepare": "(husky -v && husky ) || echo husky not installed",
+    "lint:fix": "npm run lint:code -- --fix && npm run lint:styles -- --fix"
   },
   "lint-staged": {
     "src/**/*.ts": [
-      "eslint --fix --fix-type layout"
+      "eslint"
     ],
     "src/**/*.html": [
-      "eslint --fix --fix-type layout"
+      "eslint"
     ],
     "src/**/*.scss": [
-      "stylelint --fix"
+      "stylelint"
     ]
   },
   "private": true,
