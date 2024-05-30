@@ -1,55 +1,54 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { EntityFactoryService } from './entity-factory.service';
+import { DTOFactoryService } from './dto-factory.service';
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import {
-    ExcelFile,
-    MarshalledData,
     Sample,
     SampleSet,
-    SampleSubmission
+    MarshalledData,
+    SampleSubmission,
+    ExcelFile
 } from '../../samples/model/sample-management.model';
-import { SamplesMainData } from '../../samples/state/samples.reducer';
-import { InstitutionDTO } from '../../user/model/institution.model';
-import { Credentials, RegistrationDetails, TokenizedUser } from '../../user/model/user.model';
-import { ClientError, EndpointError } from '../model/client-error';
-import { InputChangedError, InvalidInputError } from '../model/data-service-error';
-import {
-    NewPasswordRequestDTO,
-    PostSubmittedRequestDTO,
-    PutSamplesJSONRequestDTO,
-    PutValidatedRequestDTO,
-    RegistrationDetailsDTO,
-    ResetRequestDTO
-} from '../model/request.model';
 import {
     ActivationResponseDTO,
+    SystemInformationResponseDTO,
     FAQResponseDTO,
+    TokenRefreshResponseDTO,
+    PutSamplesXLSXResponseDTO,
+    TokenizedUserDTO,
+    RegistrationRequestResponseDTO,
+    PasswordResetRequestResponseDTO,
     InstituteCollectionDTO,
     NRLCollectionDTO,
-    NRLDTO,
-    PasswordResetRequestResponseDTO,
-    PostSubmittedResponseDTO,
     PutSamplesJSONResponseDTO,
-    PutSamplesXLSXResponseDTO,
+    PostSubmittedResponseDTO,
     PutValidatedResponseDTO,
-    RegistrationRequestResponseDTO,
-    SystemInformationResponseDTO,
-    TokenRefreshResponseDTO,
-    TokenizedUserDTO
+    NRLDTO
 } from '../model/response.model';
+import { TokenizedUser, Credentials, RegistrationDetails } from '../../user/model/user.model';
+import {
+    ResetRequestDTO,
+    NewPasswordRequestDTO,
+    RegistrationDetailsDTO,
+    PostSubmittedRequestDTO,
+    PutValidatedRequestDTO,
+    PutSamplesJSONRequestDTO
+} from '../model/request.model';
+import { ClientError, EndpointError } from '../model/client-error';
 import {
     AnnotatedOrderDTO
 } from '../model/shared-dto.model';
-import { DTOFactoryService } from './dto-factory.service';
-import { EntityFactoryService } from './entity-factory.service';
+import { InstitutionDTO } from '../../user/model/institution.model';
+import { SamplesMainData } from '../../samples/state/samples.reducer';
+import { InvalidInputError, InputChangedError } from '../model/data-service-error';
 
 @Injectable({
     providedIn: 'root'
 })
 export class DataService {
 
-    private MIBI_REDIRECT = 'https://mibi-portal.bfr.bund.de/';
     private API_VERSION = 'v2';
     private USER = 'users';
     private SAMPLE = 'samples';
@@ -61,18 +60,15 @@ export class DataService {
         validate: [this.API_VERSION, this.SAMPLE, 'validated'].join('/'),
         marshal: [this.API_VERSION, this.SAMPLE].join('/'),
         unmarshal: [this.API_VERSION, this.SAMPLE].join('/'),
-
-        institutions: [this.MIBI_REDIRECT + this.API_VERSION, this.INSTITUTE].join('/'),
-        nrls: [this.MIBI_REDIRECT + this.API_VERSION, this.NRL].join('/'),
-
-        login: [this.MIBI_REDIRECT + this.API_VERSION, this.USER, 'login'].join('/'),
-        register: [this.MIBI_REDIRECT + this.API_VERSION, this.USER, 'registration'].join('/'),
-        resetPasswordRequest: [this.MIBI_REDIRECT + this.API_VERSION, this.USER, 'reset-password-request'].join('/'),
-        resetPassword: [this.MIBI_REDIRECT + this.API_VERSION, this.USER, 'reset-password'].join('/'),
-        verifyEmail: [this.MIBI_REDIRECT + this.API_VERSION, this.USER, 'verification'].join('/'),
-        activateAccount: [this.MIBI_REDIRECT + this.API_VERSION, this.USER, 'activation'].join('/'),
-        refresh: [this.MIBI_REDIRECT + this.API_VERSION, this.TOKEN].join('/'),
-
+        institutions: [this.API_VERSION, this.INSTITUTE].join('/'),
+        nrls: [this.API_VERSION, this.NRL].join('/'),
+        login: [this.API_VERSION, this.USER, 'login'].join('/'),
+        register: [this.API_VERSION, this.USER, 'registration'].join('/'),
+        resetPasswordRequest: [this.API_VERSION, this.USER, 'reset-password-request'].join('/'),
+        resetPassword: [this.API_VERSION, this.USER, 'reset-password'].join('/'),
+        verifyEmail: [this.API_VERSION, this.USER, 'verification'].join('/'),
+        activateAccount: [this.API_VERSION, this.USER, 'activation'].join('/'),
+        refresh: [this.API_VERSION, this.TOKEN].join('/'),
         systemInfo: [this.API_VERSION, 'info'].join('/'),
         faq: './assets/faq.json'
     };
