@@ -87,7 +87,7 @@ export class BannerContainerComponent {
         },
 
         autocorrections: {
-            message: 'Es wurden Felder autokorregiert. Bitte prüfen und nochmals senden.',
+            message: 'Es wurden Felder automatisch korrigiert. Bitte prüfen und nochmals senden.',
             type: AlertType.WARNING,
             auxilliaryAction: { ...this.userActionService.getConfigOfType(UserActionType.SEND),  label: 'Nochmals Senden'  },
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
