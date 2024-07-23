@@ -1,27 +1,27 @@
 
-import { SampleData, Sample, SampleMeta } from './../../samples/model/sample-management.model';
 import { Injectable } from '@angular/core';
 import _ from 'lodash';
 import {
-    SampleSet,
-    MarshalledData,
     AnnotatedSampleDataEntry,
+    MarshalledData,
     SampleProperty,
+    SampleSet,
     SampleSetMetaData
 } from '../../samples/model/sample-management.model';
+import { NRL, Urgency } from '../../samples/model/sample.enums';
+import { ClientError } from '../model/client-error';
 import {
     PutSamplesXLSXResponseDTO
 } from '../model/response.model';
-import { ClientError } from '../model/client-error';
 import {
     AnnotatedSampleDataDTO,
     AnnotatedSampleDataEntryDTO,
-    SampleSetMetaDTO,
-    SampleSetDTO,
     SampleDTO,
-    SampleMetaDTO
+    SampleMetaDTO,
+    SampleSetDTO,
+    SampleSetMetaDTO
 } from '../model/shared-dto.model';
-import { Urgency, NRL } from '../../samples/model/sample.enums';
+import { Sample, SampleData, SampleMeta } from './../../samples/model/sample-management.model';
 
 @Injectable({
     providedIn: 'root'
@@ -73,6 +73,8 @@ export class EntityFactoryService {
         switch (nrlString.trim()) {
             case 'NRL-Vibrio':
                 return NRL.NRL_Vibrio;
+            case 'KL-Vibrio':
+                return NRL.KL_Vibrio;
             case 'NRL-VTEC':
                 return NRL.NRL_VTEC;
             case 'L-Bacillus':
