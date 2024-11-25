@@ -11,7 +11,7 @@
         >
           {{banner.icon}}
         </mat-icon>
-        <div class="mibi-banner-message__text">{{banner.message}}</div>
+        <div class="mibi-banner-message__text" [innerHTML]="banner.message"></div>
       </div>
     </div>
     <div class="mibi-banner__actions">
