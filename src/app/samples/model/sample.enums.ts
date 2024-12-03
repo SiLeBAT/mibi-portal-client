@@ -9,6 +9,7 @@ export enum NRL {
     NRL_VTEC = 'NRL-VTEC',
     L_Bacillus = 'L-Bacillus',
     NRL_AR = 'NRL-AR',
+    NRL_AR_Kleb = 'NRL-AR-Kleb',
     NRL_Campy = 'NRL-Campy',
     NRL_Staph = 'NRL-Staph',
     NRL_Listeria = 'NRL-Listeria',
