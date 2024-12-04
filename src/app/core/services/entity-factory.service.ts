@@ -89,6 +89,8 @@ export class EntityFactoryService {
                 return NRL.NRL_Campy;
             case 'NRL-AR':
                 return NRL.NRL_AR;
+            case 'NRL-AR-Kleb':
+                return NRL.NRL_AR_Kleb;
             case 'KL-Yersinia':
                 return NRL.KL_Yersinia;
             case 'Labor nicht erkannt':
