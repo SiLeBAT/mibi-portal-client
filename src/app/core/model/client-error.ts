@@ -42,3 +42,13 @@ export class DelayLoginError extends AuthorizationError {
         this.name = this.constructor.name;
     }
 }
+
+export class InvalidEmailError extends ClientError {
+    constructor(public errorDTO: any, ...args: any[]) {
+        // eslint-disable-next-line
+        super(...args);
+        Object.setPrototypeOf(this, InvalidEmailError.prototype);
+        this.name = this.constructor.name;
+    }
+}
+
