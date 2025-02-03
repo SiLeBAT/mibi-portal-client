@@ -12,7 +12,7 @@ import {
 import { SamplesMainData } from '../../samples/state/samples.reducer';
 import { InstitutionDTO } from '../../user/model/institution.model';
 import { Credentials, RegistrationDetails, TokenizedUser } from '../../user/model/user.model';
-import { ClientError, EndpointError } from '../model/client-error';
+import { ClientError, EndpointError, InvalidEmailError } from '../model/client-error';
 import { ExcelVersionError, InputChangedError, InvalidInputError } from '../model/data-service-error';
 import {
     NewPasswordRequestDTO,
@@ -179,6 +179,15 @@ export class DataService {
                         switch (error.errorDTO.code) {
                             case 7:
                                 throw new ExcelVersionError(excelVersion, 'Invalid excel version error.');
+                            default:
+                                throw error;
+                        }
+                    }
+
+                    if (error.errorDTO.code) {
+                        switch (error.errorDTO.code) {
+                            case 8:
+                                throw new InvalidEmailError('Invalid email address');
                             default:
                                 throw error;
                         }

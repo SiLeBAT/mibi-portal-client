@@ -64,6 +64,12 @@ export class BannerContainerComponent {
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
 
         },
+        invalidEmailFailure: {
+            message: 'Bitte geben Sie auf der ersten Seite des Einsendebogens eine gültige Email-Adresse an.',
+            type: AlertType.ERROR,
+            mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
+
+        },
         sendFailure: {
             message: 'Es gab einen Fehler beim Versenden der Datei an das MiBi-Portal.',
             type: AlertType.ERROR,
