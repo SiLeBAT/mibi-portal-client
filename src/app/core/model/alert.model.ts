@@ -24,6 +24,7 @@ export type BannerType =
     | 'sendCancel'
     | 'validationFailure'
     | 'uploadFailure'
+    | 'invalidEmailFailure'
     | 'sendFailure'
     | 'sendSuccess'
     | 'validationErrors'

@@ -17,6 +17,7 @@ import { ExcelVersionError } from '../../core/model/data-service-error';
 import { ExcelVersionDialogData, ExcelVersionDialogComponent } from './components/excel-version-dialog.component';
 import { DialogService } from '../../shared/dialog/dialog.service';
 import { importSamplesWrongVersionDialogStrings } from './import-samples.constants';
+import { InvalidEmailError } from 'app/core/model/client-error';
 
 @Injectable()
 export class ImportSamplesEffects {
@@ -60,6 +61,11 @@ export class ImportSamplesEffects {
                     this.logger.warn('Imported Excel file returned with invalid version error');
                     this.openExcelVersionDialog(error);
                     return EMPTY;
+                }
+
+                if (error instanceof InvalidEmailError) {
+                    this.logger.warn('Imported Excel file returned with invalid email address');
+                    return of(showBannerSOA({ predefined: 'invalidEmailFailure' }));
                 }
 
                 return of(showBannerSOA({ predefined: 'uploadFailure' }));

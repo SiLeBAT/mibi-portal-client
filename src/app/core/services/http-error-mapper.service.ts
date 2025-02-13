@@ -47,6 +47,8 @@ export class HttpErrorMapperService implements HttpInterceptor {
                 throw new EndpointError(errorResponse.error, 'Invalid Input error.');
             case 7:
                 throw new EndpointError(errorResponse.error, 'Invalid excel version error.');
+            case 8:
+                throw new EndpointError(errorResponse.error, 'Invalid email address');
             default:
                 throw new ClientError('Invalid Input error.');
         }

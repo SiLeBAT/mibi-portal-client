@@ -64,6 +64,12 @@ export class BannerContainerComponent {
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
 
         },
+        invalidEmailFailure: {
+            message: 'Bitte geben Sie auf der ersten Seite des Einsendebogens eine gültige Email-Adresse an.',
+            type: AlertType.ERROR,
+            mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
+
+        },
         sendFailure: {
             message: 'Es gab einen Fehler beim Versenden der Datei an das MiBi-Portal.',
             type: AlertType.ERROR,
@@ -73,7 +79,7 @@ export class BannerContainerComponent {
         sendSuccess: {
             type: AlertType.SUCCESS,
             message: `Der Auftrag wurde an das BfR gesendet.
-            Bitte drucken Sie das PDF-Dokument in Ihrem Mailanhang
+            <strong>Bitte drucken Sie das PDF-Dokument</strong> in Ihrem Mailanhang
             aus und legen Sie es Ihren Isolaten bei.`,
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
 
@@ -87,7 +93,7 @@ export class BannerContainerComponent {
         },
 
         autocorrections: {
-            message: 'Es wurden Felder autokorregiert. Bitte prüfen und nochmals senden.',
+            message: 'Es wurden Felder automatisch korrigiert. Bitte prüfen und nochmals senden.',
             type: AlertType.WARNING,
             auxilliaryAction: { ...this.userActionService.getConfigOfType(UserActionType.SEND),  label: 'Nochmals Senden'  },
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
