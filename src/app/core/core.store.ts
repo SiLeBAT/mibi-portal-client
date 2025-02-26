@@ -1,5 +1,11 @@
 import { Action, ActionReducerMap } from '@ngrx/store';
-import { CoreMainState, coreIsBusyReducer, coreActionBarConfigReducer, coreBannerReducer } from './state/core.reducer';
+import {
+    CoreMainState,
+    coreIsBusyReducer,
+    coreActionBarConfigReducer,
+    coreBannerReducer,
+    coreIsAlternativeWelcomePageReducer
+} from './state/core.reducer';
 import { CoreMainEffects } from './core.effects';
 
 type CoreState = CoreMainState;
@@ -7,7 +13,8 @@ type CoreState = CoreMainState;
 export const coreReducerMap: ActionReducerMap<CoreState, Action> = {
     actionBarConfig: coreActionBarConfigReducer,
     isBusy: coreIsBusyReducer,
-    banner: coreBannerReducer
+    banner: coreBannerReducer,
+    alternativeWelcomePage: coreIsAlternativeWelcomePageReducer
 };
 
 export const coreEffects = [

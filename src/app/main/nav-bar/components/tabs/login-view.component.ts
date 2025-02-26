@@ -9,4 +9,5 @@ import { NavBarTab } from '../../nav-bar.model';
 })
 export class NavBarLoginViewComponent {
     @Input() tab: NavBarTab;
+    @Input() isAlternativeWelcomePage: boolean;
 }

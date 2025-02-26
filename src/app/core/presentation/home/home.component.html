@@ -1,6 +1,29 @@
 <mibi-single-center-card-layout cardTitle="">
+
     <div mibi-card-title class="mibi-title">{{ appName }}</div>
+
     <mibi-box-layout mibi-card-content>
+
+        <div *ngIf="isAlternativeWelcomePage" class="mibi-alternative-page">
+            <hr>
+            <br>
+            <p>
+                Momentan kann das MiBi-Portal nicht verwendet werden. Eine Lösung ist in Arbeit.
+                <br>
+                Bitte senden Sie Ihren Einsendebogen per E-Mail an <a href="mailto:NRLs-Mibi@bfr.bund.de" target="_blank">NRLs-Mibi@bfr.bund.de</a>.
+                <br>
+                Als Probenbegleitschein drucken Sie bitte Ihren Einsendebogen aus.
+            </p>
+            <p>
+                Der Fehler betrifft nur das MiBi-Portal für AVV DatA-codierte Einsendebögen.
+                Ihre ADV-codierten Einsendebögen können Sie weiterhin unter <a href="https://nolar-dev.bfr.berlin" target="_blank">https://nolar-dev.bfr.berlin</a>
+                hochladen und ans BfR senden."
+            </p>
+            <br>
+            <hr>
+            <br>
+        </div>
+
         <p>
             Sie befinden sich auf dem Datenaustausch-Portal der
             mikrobiologischen nationalen Referenzlabore des Bundesinstituts
@@ -24,19 +47,21 @@
             <a href="mailto:{{ supportContact }}" target="_top">Kontakt</a>
             treten.
         </p>
+
     </mibi-box-layout>
+
     <mibi-box-layout mibi-card-actions>
         <p>
             Ihr MiBi-Portal Team
         </p>
         <p>
             <a href="https://www.bfr.bund.de" target="_blank">
-                <img
+                <img 
                     class="mibi-logo"
                     src="../../assets/BfR_Logo_DE.png"
-                    alt="BfR Logo"
-                />
+                    alt="BfR Logo" />
             </a>
         </p>
     </mibi-box-layout>
+
 </mibi-single-center-card-layout>

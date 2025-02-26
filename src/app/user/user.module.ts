@@ -42,6 +42,7 @@ import { AnonymousGuard } from './services/anonymous-guard.service';
 import { TokenValidationResolver } from './services/token-validation-resolver.service';
 import { AdminTokenValidationResolver } from './services/admin-token-validation-resolver.service';
 import { AuthGuard } from './services/auth-guard.service';
+import { LoginRedirectGuard } from './services/login-redirect-guard.service';
 
 const parametrizedPaths = {
     reset: userPathsSegments.reset + '/:' + userPathsParams.reset.id,
@@ -52,7 +53,7 @@ const parametrizedPaths = {
 const routes: Routes = [{
     path: userPathsSegments.users,
     children: [
-        { path: userPathsSegments.login, component: LoginViewComponent, canActivate: [AnonymousGuard] },
+        { path: userPathsSegments.login, component: LoginViewComponent, canActivate: [AnonymousGuard, LoginRedirectGuard] },
         { path: userPathsSegments.register, component: RegisterViewComponent, canActivate: [AnonymousGuard] },
         { path: userPathsSegments.recovery, component: RecoveryViewComponent, canActivate: [AnonymousGuard] },
         { path: parametrizedPaths.reset, component: ResetViewComponent, canActivate: [AnonymousGuard] },
