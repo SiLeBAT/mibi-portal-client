@@ -107,7 +107,7 @@ export class BannerContainerComponent {
         },
         wrongUploadFilesize: {
             type: AlertType.ERROR,
-            message: 'Zu grosse Datei: Dateien müssen kleiner als 2 Mb sein.',
+            message: 'Zu grosse Datei: Dateien müssen kleiner als 0.5 Mb sein.',
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
 
         },
