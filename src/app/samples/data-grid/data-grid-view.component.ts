@@ -78,6 +78,9 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
 
     // PRIVATE PROPERTIES
 
+    @ViewChild('gridRefScroll', { static: true })
+    private gridRefScroll: ElementRef;
+
     @ViewChild('grid', { static: true })
     private gridRef: ElementRef;
 
@@ -121,6 +124,10 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
+        if (this.gridRefScroll && this.gridRefScroll.nativeElement) {
+            this.gridRefScroll.nativeElement.scrollTop = 0;
+        }
+
         let isGridDirty = false;
         const modelChange = changes.model;
         if (modelChange) {
