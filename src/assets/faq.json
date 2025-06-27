@@ -47,16 +47,34 @@
           "a": "Klicken Sie oben im blauen Menüband auf Probendaten. Es gibt zwei Möglichkeiten:<ol><li>Klicken Sie den Button „Datei wählen“ an. Ein Datei-Explorer-Fenster öffnet sich, über das Sie eine *.xlsx-Datei von Ihrer Festplatte bzw. von Ihrem Netzwerklaufwerk auswählen können.</li><li>Positionieren Sie Ihren Datei-Explorer neben Ihrem Browser-Fenster und ziehen Sie mit Drag&Drop eine *.xlsx-Datei aus dem Datei-Explorer zum Browser-Fenster. Lassen Sie die Maus los, wenn sich der Mauszeiger im grau hinterlegten Bereich befindet.</li></ol>"
         },
         {
-          "q": "Mein Einsendeformular wird nicht akzeptiert. Dabei hatte ich es damals von der BfR- Website heruntergeladen.",
-          "a": "Das MiBi-Portal akzeptiert ausschließlich Dateien mit der Endung *.xlsx. Das aktuelle <a href=\"https://www.bfr.bund.de/de/einsendeformular_fuer_isolate_und_proben-9257.html\" target=\"_blank\" rel=\"noopener\">Einsendeformular</a> hat diese Dateiendung. Sollten Sie eine ältere Version des Einsendeformulars verwenden, bitten wir Sie, sich von der oben angegebenen Website die aktuelle Version herunterzuladen und diese zu verwenden. Bitte achten Sie auch darauf, welches MiBi-Portal Sie gerade verwenden:<ul><li>Dies ist das MiBi-Portal für AVV DatA-codierte Isolatdaten. Diese können Sie mit der Einsendebogen-Version 17 oder mit nachfolgenden Versionen hochladen.</li><li>Sollten Sie die Einsendebogen-Version 16 verwenden, wird Sie ein Popup-Fenster darauf hinweisen, dass diese Version für ADV-codierte Isolatdaten gedacht ist und sie im <a href=\"https://nolar-dev.bfr.berlin\" target=\"_blank\" rel=\"noopener\">MiBi-Portal ADV</a> hochgeladen werden kann.</li></ul>"
+          "q": "Mein Einsendeformular wird nicht akzeptiert. Dabei hatte ich es damals von der BfR-Website heruntergeladen.",
+          "a": "Das MiBi-Portal akzeptiert ausschließlich Dateien mit der Endung *.xlsx. Das aktuelle <a href=\"https://www.bfr.bund.de/de/einsendeformular_fuer_isolate_und_proben-9257.html\" target=\"_blank\" rel=\"noopener\">Einsendeformular</a> hat diese Dateiendung. Sollten Sie eine ältere Version des Einsendeformulars verwenden, bitten wir Sie, sich von der oben angegebenen Website die aktuelle Version herunterzuladen und diese zu verwenden. Bitte achten Sie auch darauf, welches MiBi-Portal Sie gerade verwenden:<ul><li>Dies ist das MiBi-Portal für AVV DatA-codierte Isolatdaten. Diese können Sie mit der Einsendeformular-Version 17 oder mit nachfolgenden Versionen hochladen.</li><li>Sollten Sie die Einsendeformular-Version 16 verwenden, wird Sie ein Popup-Fenster darauf hinweisen, dass diese Version für ADV-codierte Isolatdaten gedacht ist und sie im <a href=\"https://nolar-dev.bfr.berlin\" target=\"_blank\" rel=\"noopener\">MiBi-Portal ADV</a> hochgeladen werden kann.</li></ul>"
         },
         {
           "q": "Ich habe eine Excel-Datei mit der Endung *.xls, aber diese wird vom MiBi-Portal nicht akzeptiert. Was nun?",
-          "a": "Das MiBi-Portal akzeptiert ausschließlich Exceldateien mit der Endung *.xlsx. Bitte laden Sie das aktuelle <a href=\"https://www.bfr.bund.de/de/einsendeformular_fuer_isolate_und_proben-9257.html\" target=\"_blank\" rel=\"noopener\">Einsendeformular</a> und kopieren Sie Ihre Daten in diese Excel-Datei."
+          "a": "Das MiBi-Portal akzeptiert ausschließlich Exceldateien mit der Endung *.xlsx. Bitte laden Sie das aktuelle <a href=\"https://www.bfr.bund.de/de/einsendeformular_fuer_isolate_und_proben-9257.html\" target=\"_blank\" rel=\"noopener\">Einsendeformular</a> herunter und kopieren Sie Ihre Daten in diese Excel-Datei."
         },
         {
           "q": "Muss ich angemeldet sein, um ein Einsendeformular hochzuladen?",
           "a": "Nein, man kann ohne Anmeldung das Einsendeformular hochladen. Entscheidet man sich anschließend, die Daten an das BfR zu senden, kann man sich anmelden und gelangt anschließend wieder auf die Seite mit den eigenen gerade hochgeladenen Daten."
+        }
+      ]
+    },
+    {
+      "title": "Zoonosen-Monitoring",
+      "url": "zomo",
+      "faq": [
+        {
+          "q": "Ich erhalte die Fehlermeldung „...passt nicht zum angegebenen Zoonosen-Monitoring-Programm aus AVV DatA-Katalog Nr. 328“. Was muss ich hier beachten und korrigieren?",
+          "a": "Wenn Sie in Spalte „Programm“ einen AVV DatA-Code aus Katalog Nr. 328 eingeben, der zum Zoonosen-Monitoring gehört, müssen die Spalten „Ihre Probenummer“ und „Probenummer nach AVV DatA“ Werte enthalten, die beiden Datumsspalten müssen jeweils ein korrektes Datum im Format TT.MM.JJJJ enthalten und zusätzlich muss ein AVV DatA-Code zur Tier- und/oder Lebensmittelmatrix zwingend angegeben werden. Letzerer muss zum angegebenen Zoonosen-Monitoring-Programm passen. Die Angabe einer Betriebsart ist zusätzlich wünschenswert."
+        },
+		{
+          "q": "Ich habe einen korrekten Code aus dem AVV DatA-Katalog Nr. 328 in der entsprechenden Spalte des Einsendeformulars angegeben, aber ich erhalte trotzdem vom MiBi-Portal die Fehlermeldung „Ungültiger Code. Code ist nicht im AVV DatA-Katalog Nr. 328 enthalten.“. Was hat das zu bedeuten?",
+          "a": "Seit es die Codierung nach AVV DatA gibt, sind immer mehrere gültige Versionen eines Katalogs gültig. Aus diesem Grund verwendet das MiBi-Portal das Datum der Probenahme, um die Codes mit der jeweils letzten davor veröffentlichten Version eines AVV DatA-Katalogs abzugleichen. Wenn Sie zum Beispiel Anfang des Jahres eine Zoonosen-Monitoring-Probe vom Vorjahr nachmelden möchten und dementsprechend das Datum der Probenahme vom letzten Jahr ist, muss auch der Code zum Zoonosen-Monitoring-Programm (AVV DatA-Katalog Nr. 328) aus einer Version stammen, die vor diesem Datum veröffentlicht wurde. Bei einem Programm-Code aus dem aktuellen Jahr würde bei dieser Datumsangabe der in der Frage genannte Fehler erscheinen."
+        },
+		{
+          "q": "Ich möchte Isolatdaten ans BfR senden, die zu keinem Zoonosen-Monitoring-Programm gehören. Die Spalte „Programm“ enthält daher keinen Code. Sie wurde vom MiBi-Portal allerdings mit der Fehlermeldung „Programm fehlt. (Pflicht bei ZoMo)“ rot markiert.",
+          "a": "Bitte sehen Sie nach, ob Sie den Text „Zoonosen-Monitoring“ in Spalte „Kontrollprogramm / Untersuchungsgrund (Text)“ oder den entsprechenden Code in Spalte „Kontrollprogramm (Code aus AVV DatA-Kat-Nr. 322)“ angegeben haben. In diesen beiden Fällen ist die Angabe eines Programms in Form eines Codes aus AVV DatA-Katalog Nr. 328 Pflicht. Sobald Sie das Kontrollprogramm gelöscht haben, wird der Programm-Code nicht mehr erwartet."
         }
       ]
     },
@@ -80,7 +98,7 @@
         },
         {
           "q": "Text wird teilweise in schmalen Spalten angezeigt und daher häufig umgebrochen.",
-          "a": "Je schmaler der Monitor ist, desto weniger Platz bleibt pro Spalte übrig. Wir empfehlen eine Bildschirmauflösung von mindestens 1440 Pixeln in der Breite, besser noch Full HD (1920 x 1080 Pixel)."
+          "a": "Je schmaler der Monitor ist, desto weniger Platz bleibt pro Spalte übrig. Wir empfehlen eine Bildschirmauflösung von mindestens 1570 Pixeln in der Breite, besser noch Full HD (1920 x 1080 Pixel)."
         },
         {
           "q": "Was bedeuten die blauen Umrandungen um manche Zellen?",
@@ -128,7 +146,7 @@
       "faq": [
         {
           "q": "Ich sehe nach dem Eingeben des MiBi-Portal-Weblinks nur eine weiße Fläche im Browser. Was läuft hier schief?",
-          "a": "Das MiBi-Portal verwendet Ressourcen, die von der aktuellen Version des Firefox-Browsers sowie von den neuesten zwei Versionen der Browser Chrome, Edge und Safari unterstützt werden. Bei älteren Browserversionen könnte es zu Darstellungsproblemen kommen und bei nicht unterstützten Browsern (zum Beispiel Internet Explorer) ist nach dem Aufruf des MiBi-Portal-Weblinks möglicherweise nur ein weißes Browserfenster zu sehen. Bitte verwenden Sie in diesem Fall einen der genannten Browser."
+          "a": "Das MiBi-Portal verwendet Ressourcen, die von den aktuellen Versionen der Browser Firefox, Chrome und Edge unterstützt werden. Bei älteren Browserversionen könnte es zu Darstellungsproblemen kommen und bei nicht unterstützten Browsern (zum Beispiel Internet Explorer) ist nach dem Aufruf des MiBi-Portal-Weblinks möglicherweise nur ein weißes Browserfenster zu sehen. Bitte verwenden Sie in diesem Fall einen der genannten Browser."
         },
         {
           "q": "Warum gibt es das MiBi-Portal?",
