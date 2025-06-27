@@ -5,6 +5,7 @@ import {
     showBannerSOA,
     showCustomBannerSOA,
     updateActionBarTitleSOA,
+    updateClientDashboardInfoSOA,
     updateIsBusySOA
 } from './core.actions';
 import { Banner, BannerType } from '../model/alert.model';
@@ -18,6 +19,7 @@ export interface CoreMainState {
     actionBarConfig: CoreActionBarConfig;
     isBusy: boolean;
     banner: BannerData;
+    alternativeWelcomePage: boolean;
 }
 
 export interface CoreActionBarConfig {
@@ -47,6 +49,11 @@ const initialBanner: BannerData = {
 export const coreIsBusyReducer = createReducer(
     false,
     on(updateIsBusySOA, (_state, action) => action.isBusy)
+);
+
+export const coreIsAlternativeWelcomePageReducer = createReducer(
+    false,
+    on(updateClientDashboardInfoSOA, (_state, action) => action.alternativeWelcomePage)
 );
 
 export const coreActionBarConfigReducer = createReducer(

@@ -16,6 +16,8 @@ import { MainLinkProviderService } from '../link-provider.service';
 import { UserLinkProviderService } from '../../user/link-provider.service';
 import { environment } from '../../../environments/environment';
 import { SamplesLinkProviderService } from '../../samples/link-provider.service';
+import { selectIsAlternativeWelcomePage } from '../../core/state/core.selectors';
+import { CoreMainSlice } from '../../core/core.state';
 
 interface NavTabsConfig {
     hasEntries: boolean;
@@ -43,6 +45,7 @@ const selectNavTabsConfig = createSelector<SamplesMainSlice, boolean, NavTabsCon
             <mibi-nav-bar-login-view
                 *ngIf="(avatarUser$ | async) === null"
                 mibi-nav-bar-user
+                [isAlternativeWelcomePage]="isAlternativeWelcomePage$ | async"
                 [tab]="loginTab"
             ></mibi-nav-bar-login-view>
             <mibi-nav-bar-avatar-view
@@ -66,6 +69,10 @@ export class NavBarComponent {
     avatarUser$: Observable<NavBarAvatarUser | null> = this.store$.pipe(
         select(selectUserCurrentUser),
         map(currentUser => this.getAvatarUser(currentUser))
+    );
+
+    isAlternativeWelcomePage$: Observable<boolean> = this.store$.pipe(
+        select(selectIsAlternativeWelcomePage)
     );
 
     get titleTab(): NavBarTab {
@@ -97,7 +104,7 @@ export class NavBarComponent {
     }
 
     constructor(
-        private store$: Store<SamplesMainSlice & UserMainSlice>,
+        private store$: Store<SamplesMainSlice & UserMainSlice & CoreMainSlice>,
         private samplesLinks: SamplesLinkProviderService,
         private mainLinks: MainLinkProviderService,
         private userLinks: UserLinkProviderService

@@ -9,7 +9,6 @@ import { selectUserCurrentUser } from '../../state/user.selectors';
 import { UserMainSlice } from '../../user.state';
 import { userLoginSSA } from '../../state/user.actions';
 import { navigateMSA } from '../../../shared/navigate/navigate.actions';
-import { UserLinkProviderService } from '../../link-provider.service';
 import { SamplesLinkProviderService } from '../../../samples/link-provider.service';
 
 @Component({
@@ -23,8 +22,7 @@ export class LoginContainerComponent implements OnInit, OnDestroy {
     private componentActive = true;
     constructor(
         private store$: Store<UserMainSlice & SamplesMainSlice>,
-        private samplesLinks: SamplesLinkProviderService,
-        private userLinks: UserLinkProviderService
+        private samplesLinks: SamplesLinkProviderService
     ) { }
 
     ngOnInit(): void {
@@ -39,7 +37,7 @@ export class LoginContainerComponent implements OnInit, OnDestroy {
                     if (hasEntries) {
                         this.store$.dispatch(navigateMSA({ path: this.samplesLinks.editor }));
                     } else {
-                        this.store$.dispatch(navigateMSA({ path: this.userLinks.profile }));
+                        this.store$.dispatch(navigateMSA({ path: this.samplesLinks.upload }));
                     }
                 }
             })

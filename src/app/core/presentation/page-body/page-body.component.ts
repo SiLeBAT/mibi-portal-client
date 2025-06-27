@@ -14,6 +14,7 @@ import { AnimationsRouteData } from '../../../shared/animations/animations.model
 export class PageBodyComponent {
     @Input() isBusy: boolean;
     @Input() isBanner: boolean;
+    @Input() isAlternativeWelcomePageActive: boolean;
     @Output() animationDone = new EventEmitter<void>();
 
     getBannerAnimationState(): string {

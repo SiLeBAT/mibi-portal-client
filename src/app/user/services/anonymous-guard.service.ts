@@ -11,7 +11,6 @@ import { selectUserCurrentUser } from '../state/user.selectors';
 import { UserMainSlice } from '../user.state';
 import { userForceLogoutMSA } from '../state/user.actions';
 import { navigateMSA } from '../../shared/navigate/navigate.actions';
-import { UserLinkProviderService } from '../link-provider.service';
 import { SamplesLinkProviderService } from '../../samples/link-provider.service';
 
 @Injectable({
@@ -21,8 +20,7 @@ export class AnonymousGuard implements CanActivate {
 
     constructor(
         private store$: Store<UserMainState & SamplesMainSlice & UserMainSlice>,
-        private samplesLinks: SamplesLinkProviderService,
-        private userLinks: UserLinkProviderService
+        private samplesLinks: SamplesLinkProviderService
     ) { }
 
     canActivate(_activated: ActivatedRouteSnapshot, _snap: RouterStateSnapshot) {
@@ -42,7 +40,7 @@ export class AnonymousGuard implements CanActivate {
                     if (hasEntries) {
                         this.store$.dispatch(navigateMSA({ path: this.samplesLinks.editor }));
                     } else {
-                        this.store$.dispatch(navigateMSA({ path: this.userLinks.profile }));
+                        this.store$.dispatch(navigateMSA({ path: this.samplesLinks.upload }));
                     }
                     return true;
                 } else {

@@ -24,6 +24,8 @@ import {
 } from '../model/request.model';
 import {
     ActivationResponseDTO,
+    ClientDashboardInfo,
+    ClientDashboardInfoDTO,
     FaqResponseDTO,
     InstituteCollectionDTO,
     NRLCollectionDTO,
@@ -56,12 +58,14 @@ export class DataService {
     private TOKEN = 'tokens';
     private INSTITUTE = 'institutes';
     private NRL = 'nrls';
+    private CLIENT_DASHBOARD_INFO = 'client-dashboard-info';
     private URL = {
         submit: [this.API_VERSION, this.SAMPLE, 'submitted'].join('/'),
         validate: [this.API_VERSION, this.SAMPLE, 'validated'].join('/'),
         marshal: [this.API_VERSION, this.SAMPLE].join('/'),
         unmarshal: [this.API_VERSION, this.SAMPLE].join('/'),
         institutions: [this.API_VERSION, this.INSTITUTE].join('/'),
+        clientDashboardInfo: [this.API_VERSION, this.CLIENT_DASHBOARD_INFO].join('/'),
         nrls: [this.API_VERSION, this.NRL].join('/'),
         login: [this.API_VERSION, this.USER, 'login'].join('/'),
         register: [this.API_VERSION, this.USER, 'registration'].join('/'),
@@ -214,6 +218,12 @@ export class DataService {
     getAllInstitutions(): Observable<InstitutionDTO[]> {
         return this.httpClient.get<InstituteCollectionDTO>(this.URL.institutions, this.PARSE_OPTIONS).pipe(
             map((dto: InstituteCollectionDTO) => dto.institutes));
+    }
+
+    getClientDashboardInfo(): Observable<ClientDashboardInfo> {
+        return this.httpClient.get<ClientDashboardInfoDTO>(this.URL.clientDashboardInfo, this.PARSE_OPTIONS).pipe(
+            map((dto: ClientDashboardInfoDTO) => dto.clientDashboardInfo)
+        );
     }
 
     getAllNRLs(): Observable<NRLDTO[]> {

@@ -60,5 +60,6 @@ export class LastChangeDisplayContainerComponent implements OnInit {
             }
         );
         this.clientVersion = environment.version;
+
     }
 }

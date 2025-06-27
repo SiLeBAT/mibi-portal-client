@@ -3,6 +3,7 @@ import { DialogContent } from '../model/dialog.model';
 import { UserActionType } from '../../shared/model/user-action.model';
 import { Banner, BannerType } from '../model/alert.model';
 
+
 export const showBannerSOA = createAction(
     '[Core] Create and show Banner',
     props<{ predefined: BannerType }>()
@@ -39,4 +40,9 @@ export const showDialogMSA = createAction(
 export const updateIsBusySOA = createAction(
     '[Core] Show or hide Busy Spinner',
     props<{ isBusy: boolean }>()
+);
+
+export const updateClientDashboardInfoSOA = createAction(
+    '[Core] Update Client Dashboard Info Status',
+    props<{ alternativeWelcomePage: boolean }>()
 );

@@ -48,6 +48,15 @@ export interface InstituteDTO {
     readonly email: string[];
 }
 
+export interface ClientDashboardInfoDTO {
+    clientDashboardInfo: ClientDashboardInfo;
+}
+
+export interface ClientDashboardInfo {
+    readonly name: string;
+    readonly isActive: boolean;
+}
+
 export interface NRLDTO {
     readonly id: string;
     readonly standardProcedures: AnalysisProcedureDTO[];

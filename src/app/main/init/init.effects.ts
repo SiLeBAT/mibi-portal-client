@@ -3,10 +3,10 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { EMPTY, merge, Observable, of } from 'rxjs';
-import { catchError, concatMap, endWith, finalize, map, startWith } from 'rxjs/operators';
+import { catchError, concatMap, endWith, finalize, map, startWith, tap } from 'rxjs/operators';
 import { DataService } from '../../core/services/data.service';
 import { LogService } from '../../core/services/log.service';
-import { showBannerSOA, updateIsBusySOA } from '../../core/state/core.actions';
+import { showBannerSOA, updateIsBusySOA, updateClientDashboardInfoSOA } from '../../core/state/core.actions';
 import { nrlUpdateNrlsSOA } from '../../shared/nrl/state/nrl.actions';
 import { userForceLogoutMSA, userUpdateCurrentUserSOA, userUpdateInstitutionsSOA } from '../../user/state/user.actions';
 import { initSSA } from './init.actions';
@@ -33,7 +33,8 @@ export class InitEffects {
         return merge(
             this.loadInstitutions(),
             this.loadNRLs(),
-            this.loadUser()
+            this.loadUser(),
+            this.loadClientDashboardInfo()
         ).pipe(
             finalize(() => {
                 this.router.initialNavigation();
@@ -57,6 +58,17 @@ export class InitEffects {
             map(data => nrlUpdateNrlsSOA({ nrlDTO: data })),
             catchError(error => {
                 this.logger.error('Unable to fetch nrls', error.stack);
+                throw error;
+            })
+        );
+    }
+
+    private loadClientDashboardInfo(): Observable<Action> {
+        return this.dataService.getClientDashboardInfo().pipe(
+            tap(data => this.logger.info('InitEffects, loadClientDashboardInfo, data; ', data)),
+            map(data => updateClientDashboardInfoSOA({ alternativeWelcomePage: data.isActive })),
+            catchError(error => {
+                this.logger.error('Unable to fetch client dashboard info', error.stack);
                 throw error;
             })
         );

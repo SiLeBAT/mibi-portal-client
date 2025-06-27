@@ -2,9 +2,21 @@
 
 <nav class="mibi-login">
     <div class="mibi-login__content">
-        <a class="mibi-link" [routerLink]="tab.link">
+        <a 
+            *ngIf="!isAlternativeWelcomePage; else disabledLink"
+            class="mibi-link"
+            [routerLink]="tab.link"
+        >
             <div class="mibi-link__text">{{tab.name}}</div>
         </a>
+        <ng-template #disabledLink>
+            <a 
+                class="mibi-link-deactivated"
+                [routerLink]="null"
+            >
+                <div class="mibi-link__text">{{tab.name}}</div>
+            </a>
+        </ng-template>
     </div>
 </nav>
 
