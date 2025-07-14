@@ -1,5 +1,6 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { KeycloakService } from '../../services/keycloak.service';
 
 @Component({
     selector: 'mibi-login',
@@ -10,7 +11,7 @@ export class LoginComponent implements OnInit {
     loginForm: UntypedFormGroup;
 
     @Output() login = new EventEmitter();
-
+    constructor(public keycloak: KeycloakService) { }
     ngOnInit() {
 
         this.loginForm = new UntypedFormGroup({
@@ -27,5 +28,13 @@ export class LoginComponent implements OnInit {
             email: this.loginForm.value.email,
             password: this.loginForm.value.password
         });
+    }
+
+    klogin() {
+        this.keycloak.login();
+    }
+
+    klogout() {
+        this.keycloak.logout();
     }
 }

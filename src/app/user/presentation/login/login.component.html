@@ -1,38 +1,69 @@
 <mibi-box-layout>
-
-<form [formGroup]="loginForm" (ngSubmit)="onLogin()">
-    <div class="mibi-form-group">
-        <mat-form-field class="mibi-form-field" appearance="fill" color="accent">
-            <mat-label>E-Mail</mat-label>
-            <input
-                matInput
-                placeholder="Geben Sie Ihre E-Mail-Adresse ein"
-                name="email"
-                formControlName="email"
-                required
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        <div class="mibi-form-group">
+            <mat-form-field
+                class="mibi-form-field"
+                appearance="fill"
+                color="accent"
             >
-        </mat-form-field>
-    </div>
-    <div class="mibi-form-group">
-        <mat-form-field class="mibi-form-field" appearance="fill" color="accent">
-            <mat-label>Passwort</mat-label>
-            <input
-                matInput
-                placeholder="Geben Sie Ihr Passwort ein"
-                type="password"
-                name="password"
-                formControlName="password"
-                required
+                <mat-label>E-Mail</mat-label>
+                <input
+                    matInput
+                    placeholder="Geben Sie Ihre E-Mail-Adresse ein"
+                    name="email"
+                    formControlName="email"
+                    required
+                />
+            </mat-form-field>
+        </div>
+        <div class="mibi-form-group">
+            <mat-form-field
+                class="mibi-form-field"
+                appearance="fill"
+                color="accent"
             >
-        </mat-form-field>
+                <mat-label>Passwort</mat-label>
+                <input
+                    matInput
+                    placeholder="Geben Sie Ihr Passwort ein"
+                    type="password"
+                    name="password"
+                    formControlName="password"
+                    required
+                />
+            </mat-form-field>
+        </div>
+        <button
+            class="mibi-login-submit-button"
+            mat-flat-button
+            color="accent"
+            type="submit"
+            [disabled]="!loginForm.valid"
+        >
+            Anmelden
+        </button>
+    </form>
+    <div *ngIf="!keycloak.isLoggedIn()">
+        <button
+            style="margin-top: 20px"
+            class="mibi-login-submit-button"
+            mat-flat-button
+            color="accent"
+            (click)="klogin()"
+        >
+            Login with Keycloak
+        </button>
     </div>
-    <button 
-        class="mibi-login-submit-button"
-        mat-flat-button
-        color="accent"
-        type="submit"
-        [disabled]="!loginForm.valid"
-    >Anmelden</button>
-</form>
-
+    <div *ngIf="keycloak.isLoggedIn()">
+        <p>Hello, {{ keycloak.getUsername() }}!</p>
+        <button
+            style="margin-top: 20px"
+            class="mibi-login-submit-button"
+            mat-flat-button
+            color="accent"
+            (click)="klogout()"
+        >
+            Logout
+        </button>
+    </div>
 </mibi-box-layout>

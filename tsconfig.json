@@ -45,7 +45,7 @@
         // "useUnknownInCatchVariables": true,
         // "strict": true
 
-        // Type Checking 
+        // Type Checking
         "noFallthroughCasesInSwitch": true,
         "noImplicitOverride": true,
         "noImplicitReturns": true,
