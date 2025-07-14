@@ -9,6 +9,9 @@
             "jest"
         ],
         "typeRoots": [
+            "./src/typings",
+            "./node_modules/keycloak-js/types",
+            "./node_modules/@types/keycloak-js",
             "./node_modules/@types"
         ],
         "resolveJsonModule": true,

@@ -38,3 +38,4 @@ export class LoginComponent implements OnInit {
         this.keycloak.logout();
     }
 }
+
