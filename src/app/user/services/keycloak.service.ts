@@ -11,9 +11,10 @@ export class KeycloakService {
     async init(): Promise<boolean> {
         return new Promise((resolve, reject) => {
             keycloak = new Keycloak({
-                url: 'http://localhost:8080/', // your Keycloak server
+                url: 'https://t-ma-keycloak-01.bfr.bund.de', // your Keycloak server
                 realm: 'mibi',
-                clientId: 'public-client-parse'     // must match Keycloak client ID
+                clientId: 'mibi-client',     // must match Keycloak client ID
+                pkceMethod: 'S256'
             });
 
             keycloak.init({

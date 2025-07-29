@@ -9,7 +9,6 @@ import { KeycloakService } from '../../services/keycloak.service';
 })
 export class LoginComponent implements OnInit {
     loginForm: UntypedFormGroup;
-
     @Output() login = new EventEmitter();
     constructor(public keycloak: KeycloakService) { }
     ngOnInit() {
@@ -36,6 +35,9 @@ export class LoginComponent implements OnInit {
 
     klogout() {
         this.keycloak.logout();
+    }
+    kprofile() {
+        window.open('http://localhost:8080/realms/mibi/account', '_blank');
     }
 }
 
