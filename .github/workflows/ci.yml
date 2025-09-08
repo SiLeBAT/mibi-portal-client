@@ -25,6 +25,13 @@ jobs:
         run: node -v
       - name: print ls -al
         run: ls -al
+      - name: print lastChange before
+        run: grep lastChange package.json
+      - name: replace lastChange in package.json with the commit date
+        run: |
+          out=$(git log -1 --format=%cd --date=iso | xargs)
+          sed -i '/"mibiConfig"/,/\}/ s/"lastChange": "[^"]*"/"lastChange": "'"${out}"'"/' package.json
+          grep lastChange package.json
 
 #           - name: Install dependencies
 #         run: npm ci
