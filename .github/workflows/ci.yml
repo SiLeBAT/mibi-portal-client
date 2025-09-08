@@ -7,6 +7,7 @@ on:
   push:
     branches:
       - develop
+      - task/mpc656
 jobs:
   preparation:
     name: checkout code
