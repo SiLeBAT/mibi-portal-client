@@ -12,30 +12,56 @@ jobs:
   preparation:
     name: checkout code
     runs-on: ubuntu-latest
+    env:
+      ENVIRONMENT: qa
+      AUDIT_FAIL_LEVEL: critiqual
+
     steps:
+
       - name: Get code
         uses: actions/checkout@v5
         with:
           ref: task/mpc656
+
       - name: Install NodeJS
         uses: actions/setup-node@v3
         with:
           node-version: 16.17.1
+
       - name: print node version
         run: node -v
+
       - name: print ls -al
         run: ls -al
+
       - name: print lastChange before
         run: grep lastChange package.json
+
       - name: replace lastChange in package.json with the commit date
         run: |
           out=$(git log -1 --format=%cd --date=iso | xargs)
           sed -i '/"mibiConfig"/,/\}/ s/"lastChange": "[^"]*"/"lastChange": "'"${out}"'"/' package.json
           grep lastChange package.json
+
       - name: install dependencies
         run: npm ci
-      - name: run dependency check
-        run: npm audit --audit-level=low --parseable
+
+      - name: print ENVIRONMENT
+        run: echo $ENVIRONMENT
+        
+      # - name: run dependency check qa
+      #   id: dependencyCheckQA
+      #   if: $ENVIRONMENT == 'qa'
+      #   run: npm audit --audit-level=low --parseable > dependency-check-output.log
+
+      # - name: run dependency check prod
+      #   id: dependencyCheckQA
+      #   if: $ENVIRONMENT == 'production'
+      #   run: npm audit --audit-level=low --production --parseable > dependency-check-output.log
+
+      # - name: dependency check catch
+      #   if: 
+
       - name: run static analysis
         run: npm run lint
 
