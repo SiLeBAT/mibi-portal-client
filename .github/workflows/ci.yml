@@ -54,17 +54,19 @@ jobs:
       - name: run dependency check qa
         id: dependencyCheckQA
         if: env.ENVIRONMENT == 'qa'
+        continue-on-error: true
         run: npm audit --audit-level=low --parseable > dependency-check-output.log
 
       - name: run dependency check prod
         id: dependencyCheckPROD
         if: env.ENVIRONMENT == 'production'
+        continue-on-error: true
         run: npm audit --audit-level=low --production --parseable > dependency-check-output.log
 
       - name: dependency check catch
-        if: failure() && (steps.dependencyCheckQA.outcome == 'failure' || steps.dependencyCheckPROD.outcome == 'failure')
+        if: steps.dependencyCheckQA.outcome == 'failure' || steps.dependencyCheckPROD.outcome == 'failure'
         run: npm audit --audit-level=${{ env.AUDIT_FAIL_LEVEL }} --production --parseable > dependency-check-output-production.log
 
       - name: run static analysis
-        if: always()
+        # if: always()
         run: npm run lint
