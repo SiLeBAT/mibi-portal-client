@@ -63,7 +63,7 @@ jobs:
 
       - name: dependency check catch
         if: failure() && (steps.dependencyCheckQA.outcome == 'failure' || steps.dependencyCheckPROD.outcome == 'failure')
-        run: npm audit --audit-level=${env.AUDIT_FAIL_LEVEL} --production --parseable > dependency-check-output-production.log
+        run: npm audit --audit-level=${{ env.AUDIT_FAIL_LEVEL }} --production --parseable > dependency-check-output-production.log
 
       - name: run static analysis
         run: npm run lint
