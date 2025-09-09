@@ -1,0 +1,113 @@
+# npm audit report
+
+@babel/runtime  <7.26.10
+Severity: moderate
+Babel has inefficient RegExp complexity in generated code with .replace when transpiling named capturing groups - https://github.com/advisories/GHSA-968p-4wvh-cqc8
+fix available via `npm audit fix --force`
+Will install @angular-devkit/build-angular@20.2.2, which is a breaking change
+node_modules/@babel/runtime
+  @angular-devkit/build-angular  <=19.2.14 || 20.0.0-next.0 - 20.0.0-rc.4
+  Depends on vulnerable versions of @angular-devkit/build-webpack
+  Depends on vulnerable versions of @babel/runtime
+  Depends on vulnerable versions of esbuild
+  Depends on vulnerable versions of inquirer
+  Depends on vulnerable versions of webpack
+  Depends on vulnerable versions of webpack-dev-server
+  node_modules/@angular-devkit/build-angular
+    jest-preset-angular  12.0.0-next.0 - 13.1.2
+    Depends on vulnerable versions of @angular-devkit/build-angular
+    node_modules/jest-preset-angular
+
+esbuild  <=0.24.2
+Severity: moderate
+esbuild enables any website to send any requests to the development server and read the response - https://github.com/advisories/GHSA-67mh-4wv8-2f99
+fix available via `npm audit fix --force`
+Will install @angular-devkit/build-angular@20.2.2, which is a breaking change
+node_modules/esbuild
+
+follow-redirects  <=1.15.5
+Severity: moderate
+follow-redirects' Proxy-Authorization header kept across hosts - https://github.com/advisories/GHSA-cxjh-pqwp-8mfp
+fix available via `npm audit fix --force`
+Will install @angular-devkit/build-angular@20.2.2, which is a breaking change
+node_modules/follow-redirects
+  http-proxy  
+  Depends on vulnerable versions of follow-redirects
+  node_modules/http-proxy
+    http-proxy-middleware  0.19.2 || >=1.0.4
+    Depends on vulnerable versions of http-proxy
+    node_modules/http-proxy-middleware
+      webpack-dev-server  *
+      Depends on vulnerable versions of http-proxy-middleware
+      node_modules/webpack-dev-server
+        @angular-devkit/build-webpack  <=0.1703.17
+        Depends on vulnerable versions of webpack-dev-server
+        node_modules/@angular-devkit/build-webpack
+
+form-data  4.0.0 - 4.0.3
+Severity: critical
+form-data uses unsafe random function in form-data for choosing boundary - https://github.com/advisories/GHSA-fjxv-7rqg-78g4
+fix available via `npm audit fix`
+node_modules/jsdom/node_modules/form-data
+
+nanoid  <3.3.8
+Severity: moderate
+Predictable results in nanoid generation when given non-integer values - https://github.com/advisories/GHSA-mwcw-c2x4-8c55
+fix available via `npm audit fix --force`
+Will install mocha@10.8.2, which is outside the stated dependency range
+node_modules/mocha/node_modules/nanoid
+  mocha  8.2.0 - 10.5.2
+  Depends on vulnerable versions of nanoid
+  Depends on vulnerable versions of serialize-javascript
+  node_modules/mocha
+
+on-headers  <1.1.0
+on-headers is vulnerable to http response header manipulation - https://github.com/advisories/GHSA-76c9-3jph-rj3q
+fix available via `npm audit fix`
+node_modules/on-headers
+  compression  1.0.3 - 1.8.0
+  Depends on vulnerable versions of on-headers
+  node_modules/compression
+
+serialize-javascript  6.0.0 - 6.0.1
+Severity: moderate
+Cross-site Scripting (XSS) in serialize-javascript - https://github.com/advisories/GHSA-76p7-773f-r4q5
+fix available via `npm audit fix --force`
+Will install mocha@10.8.2, which is outside the stated dependency range
+node_modules/mocha/node_modules/serialize-javascript
+
+tmp  <=0.2.3
+tmp allows arbitrary temporary file / directory write via symbolic link `dir` parameter - https://github.com/advisories/GHSA-52f5-9888-hmc6
+fix available via `npm audit fix --force`
+Will install @angular-eslint/schematics@20.2.0, which is a breaking change
+node_modules/external-editor/node_modules/tmp
+node_modules/tmp
+  @angular-eslint/schematics  1.2.1-alpha.0 - 18.0.0-alpha.16
+  Depends on vulnerable versions of @angular/cli
+  Depends on vulnerable versions of tmp
+  node_modules/@angular-eslint/schematics
+  external-editor  >=1.1.1
+  Depends on vulnerable versions of tmp
+  node_modules/external-editor
+    inquirer  3.0.0 - 8.2.6 || 9.0.0 - 9.3.7
+    Depends on vulnerable versions of external-editor
+    node_modules/inquirer
+      @angular/cli  <=1.4.0-rc.2 || 7.0.0-beta.0 - 18.1.0-rc.1
+      Depends on vulnerable versions of inquirer
+      node_modules/@angular/cli
+
+webpack  5.0.0-alpha.0 - 5.93.0
+Severity: moderate
+Webpack's AutoPublicPathRuntimeModule has a DOM Clobbering Gadget that leads to XSS - https://github.com/advisories/GHSA-4vvj-4cpr-p986
+fix available via `npm audit fix --force`
+Will install @angular-devkit/build-angular@20.2.2, which is a breaking change
+node_modules/webpack
+
+
+21 vulnerabilities (7 low, 13 moderate, 1 critical)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force

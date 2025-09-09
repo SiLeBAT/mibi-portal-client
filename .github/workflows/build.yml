@@ -1,4 +1,4 @@
-name: Mibi Client CI Project
+name: Mibi Client Build
 on: 
   workflow_dispatch:
   pull_request:
@@ -32,6 +32,10 @@ jobs:
           out=$(git log -1 --format=%cd --date=iso | xargs)
           sed -i '/"mibiConfig"/,/\}/ s/"lastChange": "[^"]*"/"lastChange": "'"${out}"'"/' package.json
           grep lastChange package.json
+      - name: install dependencies
+        run: npm ci
+      - name: run dependency check
+        run: npm audit --audit-level=low --parseable
 
 #           - name: Install dependencies
 #         run: npm ci
