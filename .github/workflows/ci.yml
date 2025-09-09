@@ -9,8 +9,8 @@ on:
       - develop
       - task/mpc656
 env:
-  ENVIRONMENT: production
-  AUDIT_FAIL_LEVEL: critiqual
+  ENVIRONMENT: qa
+  AUDIT_FAIL_LEVEL: critical
   NODE_VERSION: 16.17.1
 
 jobs:
@@ -30,15 +30,6 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      # - name: print node version
-      #   run: node -v
-
-      # - name: print ls -al
-      #   run: ls -al
-
-      # - name: print lastChange before
-      #   run: grep lastChange package.json
-
       - name: replace lastChange in package.json with the commit date
         run: |
           out=$(git log -1 --format=%cd --date=iso | xargs)
@@ -56,9 +47,6 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
 
-      # - name: print ENVIRONMENT
-      #   run: echo $ENVIRONMENT
-        
       - name: run dependency check qa
         id: dependencyCheckQA
         if: env.ENVIRONMENT == 'qa'
