@@ -1,4 +1,4 @@
-name: Mibi Client Build
+name: Mibi Client CI
 on: 
   workflow_dispatch:
   pull_request:
@@ -8,13 +8,15 @@ on:
     branches:
       - develop
       - task/mpc656
+env:
+  ENVIRONMENT: qa
+  AUDIT_FAIL_LEVEL: critiqual
+  NODE_VERSION: 16.17.1
+
 jobs:
-  preparation:
+  static-analysis:
     name: checkout code
     runs-on: ubuntu-latest
-    env:
-      ENVIRONMENT: qa
-      AUDIT_FAIL_LEVEL: critiqual
 
     steps:
 
@@ -26,7 +28,7 @@ jobs:
       - name: Install NodeJS
         uses: actions/setup-node@v3
         with:
-          node-version: 16.17.1
+          node-version: env.NODE_VERSION
 
       - name: print node version
         run: node -v
@@ -49,18 +51,19 @@ jobs:
       - name: print ENVIRONMENT
         run: echo $ENVIRONMENT
         
-      # - name: run dependency check qa
-      #   id: dependencyCheckQA
-      #   if: $ENVIRONMENT == 'qa'
-      #   run: npm audit --audit-level=low --parseable > dependency-check-output.log
+      - name: run dependency check qa
+        id: dependencyCheckQA
+        if: env.ENVIRONMENT == 'qa'
+        run: npm audit --audit-level=low --parseable > dependency-check-output.log
 
-      # - name: run dependency check prod
-      #   id: dependencyCheckQA
-      #   if: $ENVIRONMENT == 'production'
-      #   run: npm audit --audit-level=low --production --parseable > dependency-check-output.log
+      - name: run dependency check prod
+        id: dependencyCheckPROD
+        if: env.ENVIRONMENT == 'production'
+        run: npm audit --audit-level=low --production --parseable > dependency-check-output.log
 
-      # - name: dependency check catch
-      #   if: 
+      - name: dependency check catch
+        if: failure() && (steps.dependencyCheckQA.outcome == 'failure' || steps.dependencyCheckPROD.outcome == 'failure')
+        run: npm audit --audit-level=${env.AUDIT_FAIL_LEVEL} --production --parseable > dependency-check-output-production.log
 
       - name: run static analysis
         run: npm run lint
