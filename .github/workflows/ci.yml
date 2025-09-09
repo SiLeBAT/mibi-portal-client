@@ -9,7 +9,7 @@ on:
       - develop
       - task/mpc656
 env:
-  ENVIRONMENT: qa
+  ENVIRONMENT: production
   AUDIT_FAIL_LEVEL: critiqual
   NODE_VERSION: 16.17.1
 
