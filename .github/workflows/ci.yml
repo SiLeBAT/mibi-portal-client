@@ -15,7 +15,7 @@ env:
 
 jobs:
   static-analysis:
-    name: checkout code
+    name: static analysis
     runs-on: ubuntu-latest
 
     steps:
@@ -66,25 +66,5 @@ jobs:
         run: npm audit --audit-level=${{ env.AUDIT_FAIL_LEVEL }} --production --parseable > dependency-check-output-production.log
 
       - name: run static analysis
+        if: always()
         run: npm run lint
-
-#           - name: Install dependencies
-#         run: npm ci
-#       - name: Run tests
-#         run: npm test
-#   deploy:
-#     needs: test
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Get code
-#         uses: actions/checkout@v3
-#       - name: Install NodeJS
-#         uses: actions/setup-node@v3
-#         with:
-#           node-version: 18
-#       - name: Install dependencies
-#         run: npm ci
-#       - name: Build project
-#         run: npm run build
-#       - name: Deploy
-#         run: echo "Deploying ..."
