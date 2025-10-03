@@ -1,6 +1,12 @@
 name: Mibi Client CI Reusable
-on: workflow_call
-# on: 
+on: 
+  workflow_call:
+    inputs:
+      node-version:
+        description: Nodejs version to run ci
+        required: true
+        type: string
+# on:   
 #   workflow_dispatch:
 #   pull_request:
 #     branches:
@@ -12,7 +18,7 @@ on: workflow_call
 env:
   ENVIRONMENT: qa
   AUDIT_FAIL_LEVEL: critical
-  NODE_VERSION: 16.17.1
+  # NODE_VERSION: 16.17.1
 
 jobs:
   static-analysis:
@@ -29,7 +35,11 @@ jobs:
       - name: Install NodeJS
         uses: actions/setup-node@v5
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          # node-version: ${{ env.NODE_VERSION }}
+          node-version: ${{ inputs.node-version }}
+
+      - name: show node version
+        run: node -v
 
       - name: replace lastChange in package.json with the commit date
         run: |
