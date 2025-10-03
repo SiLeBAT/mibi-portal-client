@@ -1,0 +1,14 @@
+name: Mibi Client CI Reusable
+on: 
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - develop
+  push:
+    branches:
+      - develop
+      - task/mpc656
+
+jobs:
+  static-analysis:
+    uses: ./.github/workflows/mibi-client_ci.yml

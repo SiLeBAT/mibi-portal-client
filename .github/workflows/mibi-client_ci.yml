@@ -1,13 +1,14 @@
-name: Mibi Client CI
-on: 
-  workflow_dispatch:
-  pull_request:
-    branches:
-      - develop
-  push:
-    branches:
-      - develop
-      - task/mpc656
+name: Mibi Client CI Reusable
+on: workflow_call
+# on: 
+#   workflow_dispatch:
+#   pull_request:
+#     branches:
+#       - develop
+#   push:
+#     branches:
+#       - develop
+#       - task/mpc656
 env:
   ENVIRONMENT: qa
   AUDIT_FAIL_LEVEL: critical
