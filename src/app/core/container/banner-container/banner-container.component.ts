@@ -65,7 +65,7 @@ export class BannerContainerComponent {
 
         },
         invalidEmailFailure: {
-            message: 'Bitte geben Sie auf der ersten Seite des Einsendebogens eine gültige Email-Adresse an.',
+            message: 'Bitte geben Sie auf der ersten Seite des Untersuchungsauftrags eine gültige Email-Adresse an.',
             type: AlertType.ERROR,
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
 
