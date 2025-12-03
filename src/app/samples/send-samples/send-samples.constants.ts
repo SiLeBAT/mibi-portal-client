@@ -9,7 +9,7 @@ export const sendSamplesDialogWarningsStrings = {
 export const sendSamplesSendDialogStrings = {
     title: 'Senden',
     message: 'Ihre Probendaten werden jetzt an das BfR gesendet.'
-        + ' Bitte vergessen Sie nicht den Untersuchungsauftrag in Ihrem Mailanhang auszudrucken und Ihren Isolaten beizulegen.',
+        + ' Bitte vergessen Sie nicht, den Untersuchungsauftrag in Ihrem Mailanhang auszudrucken und Ihren Isolaten beizulegen.',
     confirmButtonLabel: 'Senden',
     confirmWithWarningsButtonLabel: 'Trotzdem senden',
     cancelButtonLabel: 'Zurück'
