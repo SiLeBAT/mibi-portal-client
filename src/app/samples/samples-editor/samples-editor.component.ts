@@ -2,13 +2,13 @@ import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 import { map, tap } from 'rxjs/operators';
-import { ChangedDataGridField } from '../model/sample-management.model';
+import { ChangedDataGridField, Sample } from '../model/sample-management.model';
 import { selectSampleData, selectImportedFileName } from '../state/samples.selectors';
 import { SamplesMainSlice } from '../samples.state';
 import { showActionBarSOA, updateActionBarTitleSOA } from '../../core/state/core.actions';
 import { UserActionType } from '../../shared/model/user-action.model';
 import { samplesUpdateSampleDataEntrySOA } from '../state/samples.actions';
-import { samplesEditorModel } from './constants/model.constants';
+import { samplesEditorModel, samplesEditorModel18 } from './constants/model.constants';
 import { SamplesEditorCacheBySampleCount } from './cache-by-sample-count.class';
 import { DataGridColId } from '../data-grid/data-grid.model';
 import { SamplesEditorColumnModel, SamplesEditorDataColumnModel } from './samples-editor.model';
@@ -27,20 +27,29 @@ export class SamplesEditorComponent implements OnDestroy {
 
     readonly samplesGridModel$: Observable<SamplesGridViewModel> = this.store$.pipe(
         select(selectSampleData),
-        map(samples => this.samplesGridModelCache.update(samples))
+        map(samples => this.getSamplesGridViewModel(samples))
     );
 
     private readonly model = samplesEditorModel;
+    private readonly modelV18 = samplesEditorModel18;
     private readonly columnModelMap: Record<DataGridColId, SamplesEditorColumnModel> = {};
+    private readonly columnModelMapV18: Record<DataGridColId, SamplesEditorColumnModel> = {};
 
     private readonly samplesGridModelCache = new SamplesEditorCacheBySampleCount(this.model);
+    private readonly samplesGridModelCacheV18 = new SamplesEditorCacheBySampleCount(this.modelV18);
 
     private fileNameSubscription: Subscription;
+
+    private currentVersion = '18';
 
     constructor(private readonly store$: Store<SamplesMainSlice>) {
 
         this.model.columns.forEach(colModel => {
             this.columnModelMap[colModel.colId] = colModel;
+        });
+
+        this.modelV18.columns.forEach(colModel => {
+            this.columnModelMapV18[colModel.colId] = colModel;
         });
 
         this.store$.dispatch(showActionBarSOA({
@@ -68,7 +77,18 @@ export class SamplesEditorComponent implements OnDestroy {
     }
 
     onDataChange(e: SamplesGridDataChangeEvent): void {
-        const dataModel = this.columnModelMap[e.colId] as SamplesEditorDataColumnModel;
+        let dataModel: SamplesEditorDataColumnModel;
+        switch (this.currentVersion) {
+            case '17': {
+                dataModel = this.columnModelMap[e.colId] as SamplesEditorDataColumnModel;
+                break;
+            }
+            case '18':
+            default: {
+                dataModel = this.columnModelMapV18[e.colId] as SamplesEditorDataColumnModel;
+                break;
+            }
+        }
 
         const changedField: ChangedDataGridField = {
             rowIndex: this.model.getSampleIndex(e.rowId),
@@ -77,5 +97,17 @@ export class SamplesEditorComponent implements OnDestroy {
         };
 
         this.store$.dispatch(samplesUpdateSampleDataEntrySOA({ changedField: changedField }));
+    }
+
+    private getSamplesGridViewModel(samples: Sample[]) {
+        if (samples.length > 0
+            && samples[0].sampleData.sequence_id !== undefined
+            && samples[0].sampleData.sequence_status !== undefined) {
+            this.currentVersion = '18';
+            return this.samplesGridModelCacheV18.update(samples);
+        }
+        this.currentVersion = '17';
+
+        return this.samplesGridModelCache.update(samples);
     }
 }

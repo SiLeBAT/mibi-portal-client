@@ -85,6 +85,8 @@ export interface SampleData {
     partial_sample_id: AnnotatedSampleDataEntry;
     pathogen_avv: AnnotatedSampleDataEntry;
     pathogen_text: AnnotatedSampleDataEntry;
+    sequence_id: AnnotatedSampleDataEntry;
+    sequence_status: AnnotatedSampleDataEntry;
     sampling_date: AnnotatedSampleDataEntry;
     isolation_date: AnnotatedSampleDataEntry;
     sampling_location_avv: AnnotatedSampleDataEntry;
