@@ -52,6 +52,7 @@
   text-decoration: none;
   background-color: mat.get-color-from-palette(colors.$primary-palette, "lighter");
   color: mat.get-color-from-palette(colors.$primary-palette, "lighter-contrast");
+  border: none;
 }
 
 .mibi-action-link:hover {

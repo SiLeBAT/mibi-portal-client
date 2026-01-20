@@ -16,6 +16,12 @@
     </mibi-upload-container>
 </ng-template>
 
+<ng-template #downloadTemplateActionItem let-onClick="onExecute" let-label="label" let-tooltip="tooltip">
+    <a mat-menu-item (click)="onClick($event)" [matTooltip]="tooltip" matTooltipPosition="left">
+        {{label}}
+    </a>
+</ng-template>
+
 <mibi-box-layout>
     <div class="mibi-app-bar-bottom">
         <div class="mibi-app-bar-bottom__left">
@@ -23,11 +29,26 @@
         </div>
         <div class="mibi-app-bar-bottom__right">
             <ul class="mibi-action-list">
-                <li *ngFor="let config of actionConfigs" class="mibi-action-list__item">
-                    <ng-container *ngTemplateOutlet="
-                        isUpload(config.type) ? uploadActionItem : customActionItem;
-                        context: config
-                    "></ng-container>
+                <ng-container *ngFor="let config of actionConfigs">
+                    <li *ngIf="!isDownloadTemplate(config.type)" class="mibi-action-list__item">
+                        <ng-container *ngTemplateOutlet="
+                            isUpload(config.type) ? uploadActionItem : customActionItem;
+                            context: config
+                        "></ng-container>
+                    </li>
+                </ng-container>
+
+                <li>
+                    <button type="button" class="mibi-action-link" [matMenuTriggerFor]="excelTemplateMenu" aria-label="Excel-Vorlage öffnen">
+                        <mat-icon [inline]="true" class="mibi-action-link__icon">assignment_returned</mat-icon>
+                        <span class="mibi-action-link__label">Excel-Vorlage</span>
+                        <mat-icon [inline]="true" class="mibi-action-link__icon">arrow_drop_down</mat-icon>
+                    </button>
+                    <mat-menu #excelTemplateMenu="matMenu">
+                        <ng-container *ngFor="let config of downloadTemplateConfigs">
+                            <ng-container *ngTemplateOutlet="downloadTemplateActionItem; context: config"></ng-container>
+                        </ng-container>
+                    </mat-menu>
                 </li>
             </ul>
         </div>
