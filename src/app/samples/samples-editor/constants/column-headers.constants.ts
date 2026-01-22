@@ -81,7 +81,7 @@ export const samplesEditorDataHeadersV18 = {
     'animal_matrix_text':
         'Tiere / Matrix (Text)',
     'primary_production_avv':
-        'Anga\u00ADben zur Primär\u00ADproduk\u00ADtion (Code aus AVV DatA-Kat-Nr. 316)',
+        'Zusatz\u00ADangaben in der Kenn\u00ADzeichnung (Code aus AVV DatA-Kat-Nr. 337)',
     'control_program_avv':
         'Kontroll\u00ADprogramm (Code aus AVV DatA-Kat-Nr. 322)',
     'sampling_reason_avv':
