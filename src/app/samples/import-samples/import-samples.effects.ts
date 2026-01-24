@@ -91,6 +91,7 @@ export class ImportSamplesEffects {
         const version = error.version;
         const dialogData: ExcelVersionDialogData = {
             title: strings.title,
+            string0: strings.message0,
             string1: `${strings.message1} ${version} ${strings.message2}`,
             string2: strings.message3,
             string3: strings.message4,
@@ -102,7 +103,7 @@ export class ImportSamplesEffects {
 
         const dialogConfig = {
             data: dialogData,
-            height: '40em',
+            height: '52em',
             width: '65em'
         };
 

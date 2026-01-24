@@ -1,5 +1,8 @@
 export const importSamplesWrongVersionDialogStrings = {
     title: 'Falsche Version des Untersuchungsauftrags verwendet',
+    message0: `Der Untersuchungsauftrag (ehemals "Einsendebogen") V16 wird ab dem 01.05.2026 nicht mehr akzeptiert.
+    Somit können dann - knapp zweieinhalb Jahre nach Einführung des AVV DatA-Formats - keine ADV-Codes mehr an das BfR gemeldet werden.
+    Bitte verwenden Sie nur noch den Untersuchungsauftrag V18 und AVV DatA-Codes.`,
     message1: `Sie haben versucht, einen Untersuchungsauftrag der Version `,
     message2: `hochzuladen.`,
     message3: `Version 16 und frühere Versionen des Untersuchungsauftrags sind für ADV-codierte Daten gedacht.`,
