@@ -13,3 +13,8 @@ html {
 *::after {
   box-sizing: inherit;
 }
+
+.mibi-action-link__tooltip {
+  font-size: 0.9rem;
+  line-height: 1.3;
+}

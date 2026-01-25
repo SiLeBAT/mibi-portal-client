@@ -17,7 +17,7 @@
 </ng-template>
 
 <ng-template #downloadTemplateActionItem let-onClick="onExecute" let-label="label" let-tooltip="tooltip">
-    <a mat-menu-item (click)="onClick($event)" [matTooltip]="tooltip" matTooltipPosition="left">
+    <a mat-menu-item (click)="onClick($event)" [matTooltip]="tooltip" matTooltipPosition="left" matTooltipClass="mibi-action-link__tooltip">
         {{label}}
     </a>
 </ng-template>
