@@ -8,7 +8,7 @@ import { UploadErrorType } from '../../model/upload.model';
 export class UploadAbstractComponent implements OnDestroy, AfterViewInit {
 
     private _lastInvalids: { file: File; type: string }[] = [];
-    maxFileSize = 2_097_152;
+    maxFileSize = 524_288;
 
     @Output() invokeValidation = new EventEmitter<File>();
     @Output() errorHandler = new EventEmitter<string>();

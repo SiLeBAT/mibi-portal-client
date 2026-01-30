@@ -53,12 +53,20 @@ export class UserActionService {
         icon: 'clear'
     },
     {
-        label: 'Excel-Vorlage',
+        label: 'Untersuchungsauftrag v17',
         type: UserActionType.DOWNLOAD_TEMPLATE,
         onExecute: () => {
-            window.open(environment.sampleSheetURL, '_blank');
+            window.open(environment.sampleSheetV17URL, '_blank');
         },
-        icon: 'assignment_returned'
+        tooltip: 'Der bisherige Untersuchungsauftrag in Version 17 kann noch bis zum 30.04.2026 verwendet werden.'
+    },
+    {
+        label: 'Untersuchungsauftrag v18',
+        type: UserActionType.DOWNLOAD_TEMPLATE,
+        onExecute: () => {
+            window.open(environment.sampleSheetV18URL, '_blank');
+        },
+        tooltip: 'Der Untersuchungsauftrag in Version 18 enthält zwei neue Spalten für ID und und Status einer Genomsequenzierung.'
     }];
 
     constructor(

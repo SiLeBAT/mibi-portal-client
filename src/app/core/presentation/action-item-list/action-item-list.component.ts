@@ -13,4 +13,13 @@ export class ActionItemListComponent {
     isUpload(actionType: UserActionType): boolean {
         return actionType === UserActionType.UPLOAD;
     }
+
+    isDownloadTemplate(actionType: UserActionType): boolean {
+        return actionType === UserActionType.DOWNLOAD_TEMPLATE;
+    }
+
+    get downloadTemplateConfigs() {
+        return (this.actionConfigs ?? [])
+            .filter(c => this.isDownloadTemplate(c.type));
+    }
 }

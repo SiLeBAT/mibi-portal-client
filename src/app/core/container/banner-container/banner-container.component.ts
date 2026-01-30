@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Store, select } from '@ngrx/store';
 import { Banner, AlertType, BannerType } from '../../model/alert.model';
 import { map } from 'rxjs/operators';
@@ -65,7 +66,7 @@ export class BannerContainerComponent {
 
         },
         invalidEmailFailure: {
-            message: 'Bitte geben Sie auf der ersten Seite des Einsendebogens eine gültige Email-Adresse an.',
+            message: 'Bitte geben Sie auf der ersten Seite des Untersuchungsauftrags eine gültige Email-Adresse an.',
             type: AlertType.ERROR,
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
 
@@ -78,16 +79,19 @@ export class BannerContainerComponent {
         },
         sendSuccess: {
             type: AlertType.SUCCESS,
-            message: `Der Auftrag wurde an das BfR gesendet.
-            <strong>Bitte drucken Sie das PDF-Dokument</strong> in Ihrem Mailanhang
-            aus und legen Sie es Ihren Isolaten bei.`,
+            message: `<div style="text-align:center">
+            Der Auftrag wurde an das BfR gesendet.<br>
+            <strong>Bitte drucken Sie</strong><br>
+            <strong style="font-size:18px;color:#FF0000;">das PDF-Dokument</strong><br>
+            in Ihrem Mailanhang aus und legen Sie es Ihren Isolaten bei.
+            </div>`,
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
 
         },
         validationErrors: {
             message: 'Es gibt noch rot gekennzeichnete Fehler. Bitte vor dem Senden korrigieren.',
             type: AlertType.ERROR,
-            auxilliaryAction: { ...this.userActionService.getConfigOfType(UserActionType.SEND),  label: 'Nochmals Senden'  },
+            auxilliaryAction: { ...this.userActionService.getConfigOfType(UserActionType.SEND), label: 'Nochmals Senden' },
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
 
         },
@@ -95,7 +99,7 @@ export class BannerContainerComponent {
         autocorrections: {
             message: 'Es wurden Felder automatisch korrigiert. Bitte prüfen und nochmals senden.',
             type: AlertType.WARNING,
-            auxilliaryAction: { ...this.userActionService.getConfigOfType(UserActionType.SEND),  label: 'Nochmals Senden'  },
+            auxilliaryAction: { ...this.userActionService.getConfigOfType(UserActionType.SEND), label: 'Nochmals Senden' },
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
 
         },
@@ -107,7 +111,7 @@ export class BannerContainerComponent {
         },
         wrongUploadFilesize: {
             type: AlertType.ERROR,
-            message: 'Zu grosse Datei: Dateien müssen kleiner als 2 Mb sein.',
+            message: 'Zu grosse Datei: Dateien müssen kleiner als 0.5 Mb sein.',
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
 
         },
@@ -138,21 +142,21 @@ export class BannerContainerComponent {
         passwordChangeSuccess: {
             message: 'Bitte melden Sie sich mit Ihrem neuen Passwort an',
             type: AlertType.SUCCESS,
-            auxilliaryAction: { ...this.userActionService.getNavigationConfig(this.userLinks.login),  label: 'Zum Login'  },
+            auxilliaryAction: { ...this.userActionService.getNavigationConfig(this.userLinks.login), label: 'Zum Login' },
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
 
         },
         passwordChangeFailure: {
             message: `Fehler beim Zurücksetzen des Passworts. Bitte klicken Sie im Bereich "Anmelden" auf "Passwort vergessen?" und lassen Sie sich einen neuen Link zum Zurücksetzen des Passworts zuschicken.`,
             type: AlertType.ERROR,
-            auxilliaryAction: { ...this.userActionService.getNavigationConfig(this.userLinks.recovery),  label: 'Zum Passwort-Reset'  },
+            auxilliaryAction: { ...this.userActionService.getNavigationConfig(this.userLinks.recovery), label: 'Zum Passwort-Reset' },
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
 
         },
         loginFailure: {
             message: 'Es gab einen Fehler beim Einloggen. Bitte registrieren Sie sich oder, wenn Sie sich schon registriert haben, kontaktieren Sie das MiBi-Portal-Team.',
             type: AlertType.ERROR,
-            auxilliaryAction: { ...this.userActionService.getNavigationConfig(this.userLinks.register),  label: 'Zur Registrierung'  },
+            auxilliaryAction: { ...this.userActionService.getNavigationConfig(this.userLinks.register), label: 'Zur Registrierung' },
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
 
         },
@@ -165,7 +169,7 @@ export class BannerContainerComponent {
         loginUnauthorized: {
             message: 'Nicht authorisiert, bitte einloggen.',
             type: AlertType.ERROR,
-            auxilliaryAction: { ...this.userActionService.getNavigationConfig(this.userLinks.login),  label: 'Zum Login'  },
+            auxilliaryAction: { ...this.userActionService.getNavigationConfig(this.userLinks.login), label: 'Zum Login' },
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
         },
         exportFailure: {
@@ -178,7 +182,8 @@ export class BannerContainerComponent {
     constructor(
         private store$: Store<CoreMainSlice>,
         private userActionService: UserActionService,
-        private userLinks: UserLinkProviderService
+        private userLinks: UserLinkProviderService,
+        private sanitizer: DomSanitizer
     ) {
         this.banner$ = this.store$.pipe(
             select(selectBannerData),
@@ -211,6 +216,10 @@ export class BannerContainerComponent {
             return null;
         }
 
+        const oriMessage = banner.message;
+        const safeMessage = this.sanitizer.bypassSecurityTrustHtml(oriMessage);
+        banner = { ...banner, message: safeMessage as string };
+
         if (!banner.icon) {
             switch (banner.type) {
                 case AlertType.ERROR:
@@ -222,6 +231,7 @@ export class BannerContainerComponent {
                     return { ...banner, icon: 'warning' };
             }
         }
+
         return banner;
     }
 }

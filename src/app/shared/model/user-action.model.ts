@@ -3,8 +3,9 @@ export interface UserActionViewModelConfiguration {
     // eslint-disable-next-line @typescript-eslint/ban-types
     onExecute: Function;
     type: UserActionType;
-    icon: string;
+    icon?: string;
     focused?: boolean;
+    tooltip?: string;
 }
 
 export enum UserActionType {

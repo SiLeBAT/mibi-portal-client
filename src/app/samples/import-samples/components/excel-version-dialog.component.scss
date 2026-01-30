@@ -1,7 +1,8 @@
+@use "@angular/material" as mat;
 @use "colors";
 
 .mibi-excel-version-dialog {
-  padding: 40px;
+  padding: 35px;
 }
 
 .mibi-title {
@@ -16,6 +17,11 @@
 .mibi-dialog-text-style {
   font-size: 1.3em;
   line-height: 1.5;
+}
+
+.mibi-dialog-text-style-yellow {
+  background-color: mat.get-color-from-palette(colors.$warn-palette, "default");
+  padding: 1em;
 }
 
 .mibi-dialog-text-style-underline {

@@ -28,6 +28,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { EffectsModule } from '@ngrx/effects';
 import { FooterNavContainerComponent } from './container/footer-nav-container/footer-nav-container.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { FooterNavComponent } from './presentation/footer-nav/footer-nav.component';
 import { coreReducerMap, coreEffects } from './core.store';
 import { CORE_SLICE_NAME } from './core.state';
@@ -49,6 +50,7 @@ import { MainModule } from '../main/main.module';
         MatMenuModule,
         MatIconModule,
         MatToolbarModule,
+        MatTooltipModule,
         MatDialogModule,
         RouterModule.forChild([]),
         StoreModule.forFeature(CORE_SLICE_NAME, coreReducerMap),

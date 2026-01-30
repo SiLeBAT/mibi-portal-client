@@ -45,9 +45,9 @@ export class AppBarTopContainerComponent {
                 let newConfig: UserActionViewModelConfiguration[] = [];
                 if (enabledActions.length > 0) {
                     enabledActions.forEach(enabledAction => {
-                        const config = _.find(configuration, (c: UserActionViewModelConfiguration) => c.type === enabledAction);
+                        const config = _.filter(configuration, (c: UserActionViewModelConfiguration) => c.type === enabledAction);
                         if (config) {
-                            newConfig.push(config);
+                            newConfig.push(...config);
                         }
                     });
                 }
