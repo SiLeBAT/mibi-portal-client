@@ -1,6 +1,6 @@
 {
   "name": "mibi-portal-client",
-  "version": "3.0.5",
+  "version": "3.1.0",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -110,7 +110,7 @@
     "@cypress/request": {
       "form-data": "2.5.5"
     }
-},
+  },
   "mibiConfig": {
     "lastChange": "2019-04-16 11:25:17 +0200"
   }

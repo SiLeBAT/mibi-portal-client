@@ -19,7 +19,7 @@ export const defaultEnvironment: Environment = {
     version: packageJson.version,
     lastChange: packageJson.mibiConfig.lastChange,
     sampleSheetV17URL: 'https://www.bfr.bund.de/cm/343/Einsendebogen-v17.xlsx',
-    sampleSheetV18URL: 'https://www.bfr.bund.de/cm/343/Einsendebogen-v17.xlsx',
+    sampleSheetV18URL: 'https://www.bfr.bund.de/assets/02_Service/01_Einsendeformulare/Untersuchungsauftrag-V18.xlsx',
     appId: 'app_blub'
 
 
