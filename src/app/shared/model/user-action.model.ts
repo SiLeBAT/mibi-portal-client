@@ -1,3 +1,5 @@
+import { ZomoPlanFile } from '../../core/model/response.model';
+
 export interface UserActionViewModelConfiguration {
     label: string;
     // eslint-disable-next-line @typescript-eslint/ban-types
@@ -6,8 +8,9 @@ export interface UserActionViewModelConfiguration {
     icon?: string;
     focused?: boolean;
     tooltip?: string;
+    zomoPlanFiles?: ZomoPlanFile[];
 }
 
 export enum UserActionType {
-    VALIDATE, UPLOAD, EXPORT, SEND, DISMISS_BANNER, NAVIGATE, CUSTOM, DOWNLOAD_TEMPLATE, CLOSE
+    VALIDATE, UPLOAD, EXPORT, SEND, DISMISS_BANNER, NAVIGATE, CUSTOM, DOWNLOAD_TEMPLATE, CLOSE, DOWNLOAD_ZOMO_PLAN_FILE
 }

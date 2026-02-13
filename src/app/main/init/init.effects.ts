@@ -6,7 +6,7 @@ import { EMPTY, merge, Observable, of } from 'rxjs';
 import { catchError, concatMap, endWith, finalize, map, startWith, tap } from 'rxjs/operators';
 import { DataService } from '../../core/services/data.service';
 import { LogService } from '../../core/services/log.service';
-import { showBannerSOA, updateIsBusySOA, updateClientDashboardInfoSOA } from '../../core/state/core.actions';
+import { showBannerSOA, updateIsBusySOA, updateClientDashboardInfoSOA, updateZomoPlanFilesSOA } from '../../core/state/core.actions';
 import { nrlUpdateNrlsSOA } from '../../shared/nrl/state/nrl.actions';
 import { userForceLogoutMSA, userUpdateCurrentUserSOA, userUpdateInstitutionsSOA } from '../../user/state/user.actions';
 import { initSSA } from './init.actions';
@@ -34,7 +34,8 @@ export class InitEffects {
             this.loadInstitutions(),
             this.loadNRLs(),
             this.loadUser(),
-            this.loadClientDashboardInfo()
+            this.loadClientDashboardInfo(),
+            this.loadZomoPlanFiles()
         ).pipe(
             finalize(() => {
                 this.router.initialNavigation();
@@ -63,6 +64,16 @@ export class InitEffects {
         );
     }
 
+    private loadZomoPlanFiles(): Observable<Action> {
+        return this.dataService.getAllZomoPlanFiles().pipe(
+            map(data => updateZomoPlanFilesSOA({ zomoPlanFiles: data })),
+            catchError(error => {
+                this.logger.error('Unable to fetch zomo plan file years', error.stack);
+                throw error;
+            })
+        );
+    }
+
     private loadClientDashboardInfo(): Observable<Action> {
         return this.dataService.getClientDashboardInfo().pipe(
             tap(data => this.logger.info('InitEffects, loadClientDashboardInfo, data; ', data)),
@@ -76,7 +87,7 @@ export class InitEffects {
 
     private loadUser(): Observable<Action> {
         const user = this.dataService.getCurrentUser();
-        if(user === null) {
+        if (user === null) {
             return EMPTY;
         }
 

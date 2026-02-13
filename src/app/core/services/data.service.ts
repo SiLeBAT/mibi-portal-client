@@ -38,7 +38,9 @@ import {
     RegistrationRequestResponseDTO,
     SystemInformationResponseDTO,
     TokenRefreshResponseDTO,
-    TokenizedUserDTO
+    TokenizedUserDTO,
+    ZomoPlanFile,
+    ZomoPlanFileCollectionDTO
 } from '../model/response.model';
 import {
     AnnotatedOrderDTO
@@ -59,6 +61,7 @@ export class DataService {
     private INSTITUTE = 'institutes';
     private NRL = 'nrls';
     private CLIENT_DASHBOARD_INFO = 'client-dashboard-info';
+    private ZOMO_PLAN_FILE = 'zomo-plan-file';
     private URL = {
         submit: [this.API_VERSION, this.SAMPLE, 'submitted'].join('/'),
         validate: [this.API_VERSION, this.SAMPLE, 'validated'].join('/'),
@@ -66,6 +69,7 @@ export class DataService {
         unmarshal: [this.API_VERSION, this.SAMPLE].join('/'),
         institutions: [this.API_VERSION, this.INSTITUTE].join('/'),
         clientDashboardInfo: [this.API_VERSION, this.CLIENT_DASHBOARD_INFO].join('/'),
+        zomoPlanFiles: [this.API_VERSION, this.ZOMO_PLAN_FILE].join('/'),
         nrls: [this.API_VERSION, this.NRL].join('/'),
         login: [this.API_VERSION, this.USER, 'login'].join('/'),
         register: [this.API_VERSION, this.USER, 'registration'].join('/'),
@@ -224,6 +228,11 @@ export class DataService {
         return this.httpClient.get<ClientDashboardInfoDTO>(this.URL.clientDashboardInfo, this.PARSE_OPTIONS).pipe(
             map((dto: ClientDashboardInfoDTO) => dto.clientDashboardInfo)
         );
+    }
+
+    getAllZomoPlanFiles(): Observable<ZomoPlanFile[]> {
+        return this.httpClient.get<ZomoPlanFileCollectionDTO>(this.URL.zomoPlanFiles, this.PARSE_OPTIONS).pipe(
+            map((dto: ZomoPlanFileCollectionDTO) => dto.zomoPlanFiles));
     }
 
     getAllNRLs(): Observable<NRLDTO[]> {
