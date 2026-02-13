@@ -57,6 +57,15 @@ export interface ClientDashboardInfo {
     readonly isActive: boolean;
 }
 
+export interface ZomoPlanFileCollectionDTO {
+    zomoPlanFiles: ZomoPlanFile[];
+}
+
+export interface ZomoPlanFile {
+    readonly url: string;
+    readonly year: string;
+}
+
 export interface NRLDTO {
     readonly id: string;
     readonly standardProcedures: AnalysisProcedureDTO[];

@@ -8,7 +8,7 @@ import { UserActionService } from '../../services/user-action.service';
 import { SamplesMainSlice } from '../../../samples/samples.state';
 import { CoreMainSlice } from '../../core.state';
 import { UserMainSlice } from '../../../user/user.state';
-import { selectActionBarEnabled, selectActionBarTitle, selectActionBarEnabledActions, selectIsBusy } from '../../state/core.selectors';
+import { selectActionBarEnabled, selectActionBarTitle, selectActionBarEnabledActions, selectIsBusy, selectZomoPlanFiles } from '../../state/core.selectors';
 import { selectHasEntries } from '../../../samples/state/samples.selectors';
 import { selectUserCurrentUser } from '../../../user/state/user.selectors';
 
@@ -35,9 +35,10 @@ export class AppBarTopContainerComponent {
             this.store$.pipe(select(selectActionBarEnabledActions)),
             this.store$.pipe(select(selectHasEntries)),
             this.store$.pipe(select(selectUserCurrentUser)),
-            this.store$.pipe(select(selectIsBusy))
+            this.store$.pipe(select(selectIsBusy)),
+            this.store$.pipe(select(selectZomoPlanFiles))
         ]).pipe(
-            map(([enabledActions, hasEntries, currentUser, isBusy]) => {
+            map(([enabledActions, hasEntries, currentUser, isBusy, zomoPlanFiles]) => {
                 const configuration = this.userActionService.userActionConfiguration;
                 if (enabledActions.length === 0 || isBusy) {
                     return [];
@@ -59,8 +60,15 @@ export class AppBarTopContainerComponent {
                         && c.type !== UserActionType.CLOSE);
                 }
                 if (!currentUser) {
-                    newConfig = _.filter(newConfig, (c: UserActionViewModelConfiguration) => c.type !== UserActionType.SEND);
+                    newConfig = _.filter(newConfig, (c: UserActionViewModelConfiguration) => (
+                        c.type !== UserActionType.SEND) && (c.type !== UserActionType.DOWNLOAD_ZOMO_PLAN_FILE
+                    ));
                 }
+                newConfig = newConfig.map(c =>
+                    c.type === UserActionType.DOWNLOAD_ZOMO_PLAN_FILE
+                        ? { ...c, zomoPlanFiles: zomoPlanFiles }
+                        : c
+                );
 
                 return newConfig;
             })

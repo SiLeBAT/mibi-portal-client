@@ -42,10 +42,10 @@ export class SamplesGridToolTipDirective implements OnChanges {
         for (const validationError of this.data.errors) {
             switch (validationError.level) {
                 case SampleValidationErrorLevel.ERROR:
-                    errors.push(validationError.message);
+                    errors.push(...validationError.message.split('|'));
                     break;
                 case SampleValidationErrorLevel.WARNING:
-                    warnings.push(validationError.message);
+                    warnings.push(...validationError.message.split('|'));
                     break;
                 case SampleValidationErrorLevel.AUTOCORRECTED:
                     autoCorrections.push(validationError.message);

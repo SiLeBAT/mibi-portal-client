@@ -19,7 +19,8 @@ export class UploadViewComponent {
                 UserActionType.SEND,
                 UserActionType.EXPORT,
                 UserActionType.UPLOAD,
-                UserActionType.DOWNLOAD_TEMPLATE
+                UserActionType.DOWNLOAD_TEMPLATE,
+                UserActionType.DOWNLOAD_ZOMO_PLAN_FILE
             ]
         }));
     }
