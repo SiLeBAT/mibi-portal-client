@@ -1,4 +1,4 @@
-import { ZomoPlanFile } from '../../core/model/response.model';
+import { ZomoPlanFileInfo } from '../../core/model/response.model';
 
 export interface UserActionViewModelConfiguration {
     label: string;
@@ -8,7 +8,7 @@ export interface UserActionViewModelConfiguration {
     icon?: string;
     focused?: boolean;
     tooltip?: string;
-    zomoPlanFiles?: ZomoPlanFile[];
+    zomoPlanFiles?: ZomoPlanFileInfo[];
 }
 
 export enum UserActionType {

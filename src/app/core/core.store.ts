@@ -8,6 +8,7 @@ import {
     coreZomoPlanFilesReducer
 } from './state/core.reducer';
 import { CoreMainEffects } from './core.effects';
+import { DownloadZomoPlanFileEffects } from './download-zomo-plan-file/download-zomo-plan-file.effects';
 
 type CoreState = CoreMainState;
 
@@ -20,5 +21,6 @@ export const coreReducerMap: ActionReducerMap<CoreState, Action> = {
 };
 
 export const coreEffects = [
-    CoreMainEffects
+    CoreMainEffects,
+    DownloadZomoPlanFileEffects
 ];

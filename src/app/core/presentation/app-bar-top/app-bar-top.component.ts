@@ -1,5 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { UserActionViewModelConfiguration } from '../../../shared/model/user-action.model';
+import { ZomoPlanFileInfo } from '../../model/response.model';
 
 @Component({
     selector: 'mibi-app-bar-top',
@@ -10,4 +11,9 @@ export class AppBarTopComponent {
     @Input() actionBarEnabled: boolean;
     @Input() actionBarTitle: string;
     @Input() actionConfigs: UserActionViewModelConfiguration[];
+    @Output() zomoPlanFileInfoChangeEvent = new EventEmitter<ZomoPlanFileInfo>();
+
+    onDownloadZomoPlanFile(zomoPlanFileInfo: ZomoPlanFileInfo) {
+        this.zomoPlanFileInfoChangeEvent.emit(zomoPlanFileInfo);
+    }
 }

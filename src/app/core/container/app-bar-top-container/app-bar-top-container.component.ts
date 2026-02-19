@@ -11,6 +11,8 @@ import { UserMainSlice } from '../../../user/user.state';
 import { selectActionBarEnabled, selectActionBarTitle, selectActionBarEnabledActions, selectIsBusy, selectZomoPlanFiles } from '../../state/core.selectors';
 import { selectHasEntries } from '../../../samples/state/samples.selectors';
 import { selectUserCurrentUser } from '../../../user/state/user.selectors';
+import { ZomoPlanFileInfo } from '../../model/response.model';
+import { downloadZomoPlanFileSSA } from '../../download-zomo-plan-file/download-zomo-plan-file.actions';
 
 @Component({
     selector: 'mibi-app-bar-top-container',
@@ -18,6 +20,7 @@ import { selectUserCurrentUser } from '../../../user/state/user.selectors';
         [actionBarEnabled]="actionBarEnabled$ | async"
         [actionBarTitle]="actionBarTitle$ | async"
         [actionConfigs]="actionConfigs$ | async"
+        (zomoPlanFileInfoChangeEvent)="onDownloadZomoPlanFile($event)"
     >
     </mibi-app-bar-top>`
 })
@@ -73,5 +76,10 @@ export class AppBarTopContainerComponent {
                 return newConfig;
             })
         );
+    }
+
+    onDownloadZomoPlanFile(zomoPlanFileInfo: ZomoPlanFileInfo) {
+        this.store$.dispatch(downloadZomoPlanFileSSA({ zomoPlanFileInfo: zomoPlanFileInfo }));
+
     }
 }

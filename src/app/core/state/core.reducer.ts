@@ -13,7 +13,7 @@ import { Banner, BannerType } from '../model/alert.model';
 import { routerNavigationAction, routerRequestAction } from '@ngrx/router-store';
 import { UserActionType } from '../../shared/model/user-action.model';
 import { createReducer, on } from '@ngrx/store';
-import { ZomoPlanFile } from '../model/response.model';
+import { ZomoPlanFileInfo } from '../model/response.model';
 
 // STATE
 
@@ -22,7 +22,7 @@ export interface CoreMainState {
     isBusy: boolean;
     banner: BannerData;
     alternativeWelcomePage: boolean;
-    zomoPlanFiles: ZomoPlanFile[];
+    zomoPlanFiles: ZomoPlanFileInfo[];
 }
 
 export interface CoreActionBarConfig {
@@ -59,7 +59,7 @@ export const coreIsAlternativeWelcomePageReducer = createReducer(
     on(updateClientDashboardInfoSOA, (_state, action) => action.alternativeWelcomePage)
 );
 
-export const coreZomoPlanFilesReducer = createReducer<ZomoPlanFile[]>(
+export const coreZomoPlanFilesReducer = createReducer<ZomoPlanFileInfo[]>(
     [],
     on(updateZomoPlanFilesSOA, (_state, action) => action.zomoPlanFiles)
 );

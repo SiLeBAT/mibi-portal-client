@@ -58,12 +58,17 @@ export interface ClientDashboardInfo {
 }
 
 export interface ZomoPlanFileCollectionDTO {
-    zomoPlanFiles: ZomoPlanFile[];
+    zomoPlanFiles: ZomoPlanFileInfo[];
 }
 
-export interface ZomoPlanFile {
-    readonly url: string;
+export interface ZomoPlanFileInfo {
     readonly year: string;
+    readonly id: string;
+}
+
+export interface ZomoPlanFileData {
+    readonly blob: Blob;
+    readonly fileName: string;
 }
 
 export interface NRLDTO {

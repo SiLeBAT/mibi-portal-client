@@ -40,4 +40,5 @@ export type BannerType =
     | 'loginFailure'
     | 'registrationFailure'
     | 'loginUnauthorized'
-    | 'exportFailure';
+    | 'exportFailure'
+    | 'downloadFailure';

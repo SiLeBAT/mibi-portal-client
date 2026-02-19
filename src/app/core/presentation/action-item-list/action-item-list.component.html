@@ -60,7 +60,7 @@
                     </ng-container>
                     <ng-template #hasFiles>
                         <ng-container *ngIf="downloadZomoPlanFileConfig?.zomoPlanFiles!.length === 1; else manyFiles">
-                            <a class="mibi-action-link" [href]="downloadZomoPlanFileConfig?.zomoPlanFiles![0].url" target="_blank" rel="noopener noreferrer">
+                            <a class="mibi-action-link" (click)="onDownloadZomoPlanFile(downloadZomoPlanFileConfig?.zomoPlanFiles![0])">
                                 <mat-icon [inline]="true" class="mibi-action-link__icon">assignment_returned</mat-icon>
                                 <span class="mibi-action-link__label">{{ downloadZomoPlanFileConfig?.label }}</span>
                             </a>
@@ -72,7 +72,7 @@
                                 <mat-icon [inline]="true" class="mibi-action-link__icon">arrow_drop_down</mat-icon>
                             </button>
                             <mat-menu #zomoPlanFileMenu="matMenu">
-                                <a mat-menu-item *ngFor="let zomoPlanFile of downloadZomoPlanFileConfig?.zomoPlanFiles" [href]="zomoPlanFile.url" target="_blank" rel="noopener noreferrer">
+                                <a mat-menu-item *ngFor="let zomoPlanFile of downloadZomoPlanFileConfig?.zomoPlanFiles" (click)="onDownloadZomoPlanFile(zomoPlanFile)">
                                     {{ downloadZomoPlanFileConfig?.label}} {{ zomoPlanFile.year }}
                                 </a>
                             </mat-menu>
