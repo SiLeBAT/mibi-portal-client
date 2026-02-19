@@ -176,6 +176,11 @@ export class BannerContainerComponent {
             message: 'Es gab einen Fehler beim Exportieren der Datei.',
             type: AlertType.ERROR,
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
+        },
+        downloadFailure: {
+            message: 'Es gab einen Fehler beim Herunterladen der Zomo-Plan Datei.',
+            type: AlertType.ERROR,
+            mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
         }
     };
 

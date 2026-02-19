@@ -1,4 +1,5 @@
 
+import { HttpResponse } from '@angular/common/http';
 import { SampleData, Sample, SampleMeta } from './../../samples/model/sample-management.model';
 import { Injectable } from '@angular/core';
 import _ from 'lodash';
@@ -10,7 +11,8 @@ import {
     SampleSetMetaData
 } from '../../samples/model/sample-management.model';
 import {
-    PutSamplesXLSXResponseDTO
+    PutSamplesXLSXResponseDTO,
+    ZomoPlanFileData
 } from '../model/response.model';
 import { ClientError } from '../model/client-error';
 import {
@@ -53,6 +55,27 @@ export class EntityFactoryService {
             mimeType: dto.type,
             fileName: dto.fileName
         };
+    }
+
+    fromBlobResponseToZomoPlanFileData(response: HttpResponse<Blob>, year: string): ZomoPlanFileData {
+        const contentDisposition = response.headers.get('Content-Disposition');
+        let fileName = `ZomoPlan_${year}.docx`; // fallback filename
+
+        if (contentDisposition) {
+            const filenameMatch = contentDisposition.match(/filename[^\n;=]*=((["']).*?\2|[^\n;]*)/);
+            if (filenameMatch && filenameMatch[1]) {
+                fileName = decodeURIComponent(
+                    filenameMatch[1].replace(/["']/g, '')
+                );
+            }
+        }
+
+        const zomoPlanFileData: ZomoPlanFileData = {
+            blob: response.body as Blob,
+            fileName: fileName
+        };
+
+        return zomoPlanFileData;
     }
 
     private toSampleData(dto: AnnotatedSampleDataDTO): SampleData {

@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -39,8 +39,9 @@ import {
     SystemInformationResponseDTO,
     TokenRefreshResponseDTO,
     TokenizedUserDTO,
-    ZomoPlanFile,
-    ZomoPlanFileCollectionDTO
+    ZomoPlanFileCollectionDTO,
+    ZomoPlanFileInfo,
+    ZomoPlanFileData
 } from '../model/response.model';
 import {
     AnnotatedOrderDTO
@@ -69,7 +70,8 @@ export class DataService {
         unmarshal: [this.API_VERSION, this.SAMPLE].join('/'),
         institutions: [this.API_VERSION, this.INSTITUTE].join('/'),
         clientDashboardInfo: [this.API_VERSION, this.CLIENT_DASHBOARD_INFO].join('/'),
-        zomoPlanFiles: [this.API_VERSION, this.ZOMO_PLAN_FILE].join('/'),
+        zomoPlanFileInfos: [this.API_VERSION, this.ZOMO_PLAN_FILE].join('/'),
+        downloadZomoPlanFile: [this.API_VERSION, this.ZOMO_PLAN_FILE, 'download'].join('/'),
         nrls: [this.API_VERSION, this.NRL].join('/'),
         login: [this.API_VERSION, this.USER, 'login'].join('/'),
         register: [this.API_VERSION, this.USER, 'registration'].join('/'),
@@ -219,6 +221,23 @@ export class DataService {
             map((dto: PutSamplesXLSXResponseDTO) => this.entityFactoryService.fromPutSamplesXLSXResponseDTOToMarshalledData(dto)));
     }
 
+    downloadZomoPlanFile(zomoPlanFileInfo: ZomoPlanFileInfo): Observable<ZomoPlanFileData> {
+        const requestBody: ZomoPlanFileInfo = zomoPlanFileInfo;
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'X-Parse-Application-Id': environment.appId
+            }),
+            responseType: 'blob' as 'json',
+            observe: 'response' as 'body'
+        };
+
+        return this.httpClient.put<HttpResponse<Blob>>(this.URL.downloadZomoPlanFile, requestBody, httpOptions).pipe(
+            map((response: HttpResponse<Blob>) => this.entityFactoryService.fromBlobResponseToZomoPlanFileData(
+                response,
+                zomoPlanFileInfo.year
+            )));
+    }
+
     getAllInstitutions(): Observable<InstitutionDTO[]> {
         return this.httpClient.get<InstituteCollectionDTO>(this.URL.institutions, this.PARSE_OPTIONS).pipe(
             map((dto: InstituteCollectionDTO) => dto.institutes));
@@ -230,8 +249,8 @@ export class DataService {
         );
     }
 
-    getAllZomoPlanFiles(): Observable<ZomoPlanFile[]> {
-        return this.httpClient.get<ZomoPlanFileCollectionDTO>(this.URL.zomoPlanFiles, this.PARSE_OPTIONS).pipe(
+    getAllZomoPlanFiles(): Observable<ZomoPlanFileInfo[]> {
+        return this.httpClient.get<ZomoPlanFileCollectionDTO>(this.URL.zomoPlanFileInfos, this.PARSE_OPTIONS).pipe(
             map((dto: ZomoPlanFileCollectionDTO) => dto.zomoPlanFiles));
     }
 
