@@ -8,6 +8,7 @@
         class="mibi-app-bar__bottom"
         [actionBarTitle]="actionBarTitle"
         [actionConfigs]="actionConfigs"
+        (zomoPlanFileInfoChangeEvent)="onDownloadZomoPlanFile($event)"
     ></mibi-action-item-list>
 </div>
 

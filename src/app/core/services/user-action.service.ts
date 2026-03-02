@@ -67,6 +67,12 @@ export class UserActionService {
             window.open(environment.sampleSheetV18URL, '_blank');
         },
         tooltip: 'Der Untersuchungsauftrag in Version 18 enthält zwei neue Spalten für ID und und Status einer Genomsequenzierung.'
+    },
+    {
+        label: 'ZoMo-Plan',
+        type: UserActionType.DOWNLOAD_ZOMO_PLAN_FILE,
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        onExecute: () => {}
     }];
 
     constructor(

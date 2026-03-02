@@ -67,3 +67,10 @@
   flex: 0 1 auto;
   padding-right: math.div(layout.$half-space, 2);
 }
+
+.mibi-action-link__disabled {
+  color: colors.$bfr-accent-color;
+  pointer-events: none;
+  cursor: default;
+  text-decoration: none;
+}

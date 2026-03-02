@@ -2,6 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { DialogContent } from '../model/dialog.model';
 import { UserActionType } from '../../shared/model/user-action.model';
 import { Banner, BannerType } from '../model/alert.model';
+import { ZomoPlanFileInfo } from '../model/response.model';
 
 
 export const showBannerSOA = createAction(
@@ -45,4 +46,9 @@ export const updateIsBusySOA = createAction(
 export const updateClientDashboardInfoSOA = createAction(
     '[Core] Update Client Dashboard Info Status',
     props<{ alternativeWelcomePage: boolean }>()
+);
+
+export const updateZomoPlanFilesSOA = createAction(
+    '[Core] Update Available Zomo Plan Files',
+    props<{ zomoPlanFiles: ZomoPlanFileInfo[] }>()
 );

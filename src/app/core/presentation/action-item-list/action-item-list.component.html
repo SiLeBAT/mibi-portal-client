@@ -30,7 +30,7 @@
         <div class="mibi-app-bar-bottom__right">
             <ul class="mibi-action-list">
                 <ng-container *ngFor="let config of actionConfigs">
-                    <li *ngIf="!isDownloadTemplate(config.type)" class="mibi-action-list__item">
+                    <li *ngIf="!isDownloadTemplate(config.type) && !isDownloadZomoPlanFile(config.type)" class="mibi-action-list__item">
                         <ng-container *ngTemplateOutlet="
                             isUpload(config.type) ? uploadActionItem : customActionItem;
                             context: config
@@ -39,7 +39,7 @@
                 </ng-container>
 
                 <li>
-                    <button type="button" class="mibi-action-link" [matMenuTriggerFor]="excelTemplateMenu" aria-label="Excel-Vorlage öffnen">
+                    <button type="button" class="mibi-action-link" [matMenuTriggerFor]="excelTemplateMenu">
                         <mat-icon [inline]="true" class="mibi-action-link__icon">assignment_returned</mat-icon>
                         <span class="mibi-action-link__label">Excel-Vorlage</span>
                         <mat-icon [inline]="true" class="mibi-action-link__icon">arrow_drop_down</mat-icon>
@@ -49,6 +49,35 @@
                             <ng-container *ngTemplateOutlet="downloadTemplateActionItem; context: config"></ng-container>
                         </ng-container>
                     </mat-menu>
+                </li>
+
+                <li *ngIf="zomoPlanFileConfigExists()">
+                    <ng-container *ngIf="(downloadZomoPlanFileConfig?.zomoPlanFiles?.length || 0) === 0; else hasFiles">
+                        <a class="mibi-action-link mibi-action-link__disabled">
+                            <mat-icon [inline]="true" class="mibi-action-link__icon">assignment_returned</mat-icon>
+                            <span class="mibi-action-link__label">{{ downloadZomoPlanFileConfig?.label }}</span>
+                        </a>
+                    </ng-container>
+                    <ng-template #hasFiles>
+                        <ng-container *ngIf="downloadZomoPlanFileConfig?.zomoPlanFiles!.length === 1; else manyFiles">
+                            <a class="mibi-action-link" (click)="onDownloadZomoPlanFile(downloadZomoPlanFileConfig?.zomoPlanFiles![0])">
+                                <mat-icon [inline]="true" class="mibi-action-link__icon">assignment_returned</mat-icon>
+                                <span class="mibi-action-link__label">{{ downloadZomoPlanFileConfig?.label }}</span>
+                            </a>
+                        </ng-container>
+                        <ng-template #manyFiles>
+                            <button type="button" class="mibi-action-link" [matMenuTriggerFor]="zomoPlanFileMenu">
+                                <mat-icon [inline]="true" class="mibi-action-link__icon">assignment_returned</mat-icon>
+                                <span class="mibi-action-link__label">{{ downloadZomoPlanFileConfig?.label }}</span>
+                                <mat-icon [inline]="true" class="mibi-action-link__icon">arrow_drop_down</mat-icon>
+                            </button>
+                            <mat-menu #zomoPlanFileMenu="matMenu">
+                                <a mat-menu-item *ngFor="let zomoPlanFile of downloadZomoPlanFileConfig?.zomoPlanFiles" (click)="onDownloadZomoPlanFile(zomoPlanFile)">
+                                    {{ downloadZomoPlanFileConfig?.label}} {{ zomoPlanFile.year }}
+                                </a>
+                            </mat-menu>
+                        </ng-template>
+                    </ng-template>
                 </li>
             </ul>
         </div>
