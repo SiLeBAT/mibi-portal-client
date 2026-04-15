@@ -7,7 +7,6 @@ export interface UserActionViewModelConfiguration {
     type: UserActionType;
     icon?: string;
     focused?: boolean;
-    tooltip?: string;
     zomoPlanFiles?: ZomoPlanFileInfo[];
 }
 
