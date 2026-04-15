@@ -16,21 +16,12 @@ export class ActionItemListComponent {
         return actionType === UserActionType.UPLOAD;
     }
 
-    isDownloadTemplate(actionType: UserActionType): boolean {
-        return actionType === UserActionType.DOWNLOAD_TEMPLATE;
-    }
-
     isDownloadZomoPlanFile(actionType: UserActionType): boolean {
         return actionType === UserActionType.DOWNLOAD_ZOMO_PLAN_FILE;
     }
 
     zomoPlanFileConfigExists(): boolean {
         return this.downloadZomoPlanFileConfigs.length > 0;
-    }
-
-    get downloadTemplateConfigs() {
-        return (this.actionConfigs ?? [])
-            .filter(c => this.isDownloadTemplate(c.type));
     }
 
     get downloadZomoPlanFileConfigs() {
