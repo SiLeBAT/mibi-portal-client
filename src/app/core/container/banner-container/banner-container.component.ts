@@ -169,7 +169,6 @@ export class BannerContainerComponent {
         loginUnauthorized: {
             message: 'Nicht authorisiert, bitte einloggen.',
             type: AlertType.ERROR,
-            auxilliaryAction: { ...this.userActionService.getNavigationConfig(this.userLinks.login), label: 'Zum Login' },
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
         },
         exportFailure: {
