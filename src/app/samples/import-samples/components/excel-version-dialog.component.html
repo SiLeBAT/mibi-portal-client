@@ -4,25 +4,36 @@
         <br />
         <div mat-dialog-content>
             <br />
-            <p class="mibi-dialog-text-style-yellow">
-                <span class="mibi-dialog-text-style">{{ data.string0 }}</span>
-            </p>
-            <p>
-                <span class="mibi-dialog-text-style">{{ data.string1 }}</span>
-            </p>
-            <p>
-                <span class="mibi-dialog-text-style">{{ data.string2 }}</span>
-            </p>
-            <p>
-                <span class="mibi-dialog-text-style">{{ data.string3 }} </span>
-                <span class="mibi-dialog-text-style mibi-dialog-text-style-underline">{{ data.string4 }} </span>
-            </p>
-            <br />
-            <p class="mibi-link mibi-dialog-text-style"><a target="_blank" href="{{ data.link }}">{{ data.link }}</a></p>
-            <br />
-            <p>
-                <span class="mibi-dialog-text-style">{{ data.string5 }}</span>
-            </p>
+            <ng-container *ngIf="!data.useAlternativeTexts">
+                <p class="mibi-dialog-text-style-yellow">
+                    <span class="mibi-dialog-text-style">{{ data.string0 }}</span>
+                </p>
+                <p>
+                    <span class="mibi-dialog-text-style">{{ data.string1 }}</span>
+                </p>
+                <p>
+                    <span class="mibi-dialog-text-style">{{ data.string2 }}</span>
+                </p>
+                <p>
+                    <span class="mibi-dialog-text-style">{{ data.string3 }} </span>
+                    <span class="mibi-dialog-text-style mibi-dialog-text-style-underline">{{ data.string4 }} </span>
+                </p>
+                <br />
+                <p class="mibi-link mibi-dialog-text-style"><a target="_blank" href="{{ data.link }}">{{ data.link }}</a></p>
+                <br />
+                <p>
+                    <span class="mibi-dialog-text-style">{{ data.string5 }}</span>
+                </p>
+            </ng-container>
+            <ng-container *ngIf="data.useAlternativeTexts">
+                <p>
+                    <span class="mibi-dialog-text-style">{{ data.alternativeText2a }}</span>
+                </p>
+                <br />
+                <p>
+                    <span class="mibi-dialog-text-style">{{ data.alternativeText3a }}</span>
+                </p>
+            </ng-container>
         </div>
 
         <div mat-dialog-actions class="mibi-mat-dialog-cancel-actions">

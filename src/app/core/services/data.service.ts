@@ -186,9 +186,10 @@ export class DataService {
                 if (error instanceof EndpointError) {
                     if (error.errorDTO.version) {
                         const excelVersion: string = error.errorDTO.version;
+                        const currentVersions: string[] = error.errorDTO.currentVersions || [];
                         switch (error.errorDTO.code) {
                             case 7:
-                                throw new ExcelVersionError(excelVersion, 'Invalid excel version error.');
+                                throw new ExcelVersionError(excelVersion, currentVersions, 'Invalid excel version error.');
                             default:
                                 throw error;
                         }
