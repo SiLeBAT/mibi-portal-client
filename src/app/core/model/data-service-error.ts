@@ -20,7 +20,7 @@ export class InputChangedError extends ClientError {
 }
 
 export class ExcelVersionError extends ClientError {
-    constructor(public version: string,...args: any[]) {
+    constructor(public version: string, public currentVersions: string[], ...args: any[]) {
         // eslint-disable-next-line
         super(...args);
         Object.setPrototypeOf(this, ExcelVersionError.prototype);

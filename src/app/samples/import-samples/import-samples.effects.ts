@@ -88,22 +88,48 @@ export class ImportSamplesEffects {
 
     private openExcelVersionDialog(error: ExcelVersionError) {
         const strings = importSamplesWrongVersionDialogStrings;
-        const version = error.version;
-        const dialogData: ExcelVersionDialogData = {
-            title: strings.title,
-            string0: strings.message0,
-            string1: `${strings.message1} ${version} ${strings.message2}`,
-            string2: strings.message3,
-            string3: strings.message4,
-            string4: strings.message5,
-            link: strings.link,
-            string5: strings.message6,
-            cancelButtonText: strings.cancelButtonText
-        };
+        const uploadedVersion = error.version;
+        const currentVersions = error.currentVersions;
+        const versionNumber = Number.parseInt(uploadedVersion, 10);
+        const useAlternativeTexts = versionNumber >= 17;
+
+        let dialogData: ExcelVersionDialogData;
+        let dialogHeight: string;
+
+        if (useAlternativeTexts) {
+            const currentVersion = currentVersions.length > 0
+                ? String(Math.max(...currentVersions.map(v => Number.parseInt(v, 10))))
+                : '';
+            dialogData = {
+                title: strings.title,
+                cancelButtonText: strings.cancelButtonText,
+                useAlternativeTexts: true,
+                alternativeText2a: `${strings.alternativeMessage2aPart1} ${uploadedVersion} ${strings.alternativeMessage2aPart2}`,
+                alternativeText3a: `${strings.alternativeMessage3aPart1} ${currentVersion} ${strings.alternativeMessage3aPart2}`
+            };
+            dialogHeight = '32em';
+        } else {
+            const currentVersion = currentVersions.length > 0
+                ? String(Math.min(...currentVersions.map(v => Number.parseInt(v, 10))))
+                : '';
+            dialogData = {
+                title: strings.title,
+                cancelButtonText: strings.cancelButtonText,
+                useAlternativeTexts: false,
+                string0: strings.message0,
+                string1: `${strings.message1} ${uploadedVersion} ${strings.message2}`,
+                string2: strings.message3,
+                string3: strings.message4,
+                string4: strings.message5,
+                link: strings.link,
+                string5: `${strings.message6Part1} ${currentVersion} ${strings.message6Part2}`
+            };
+            dialogHeight = '52em';
+        }
 
         const dialogConfig = {
             data: dialogData,
-            height: '52em',
+            height: dialogHeight,
             width: '65em'
         };
 
