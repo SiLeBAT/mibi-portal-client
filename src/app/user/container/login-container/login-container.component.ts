@@ -10,6 +10,7 @@ import { UserMainSlice } from '../../user.state';
 import { userLoginSSA } from '../../state/user.actions';
 import { navigateMSA } from '../../../shared/navigate/navigate.actions';
 import { SamplesLinkProviderService } from '../../../samples/link-provider.service';
+import { validateSamplesSSA } from '../../../samples/validate-samples/validate-samples.actions';
 
 @Component({
     selector: 'mibi-login-container',
@@ -35,6 +36,7 @@ export class LoginContainerComponent implements OnInit, OnDestroy {
             tap(([currentUser, hasEntries]) => {
                 if (currentUser) {
                     if (hasEntries) {
+                        this.store$.dispatch(validateSamplesSSA());
                         this.store$.dispatch(navigateMSA({ path: this.samplesLinks.editor }));
                     } else {
                         this.store$.dispatch(navigateMSA({ path: this.samplesLinks.upload }));
