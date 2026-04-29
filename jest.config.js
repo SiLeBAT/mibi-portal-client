@@ -1,14 +1,15 @@
 /* eslint-env es6 */
-const { defaults: jestNgPreset } = require('jest-preset-angular/presets');
-
 module.exports = {
-  globals: {
-    'ts-jest': {
-      ...jestNgPreset.globals['ts-jest'],
-      tsconfig: '<rootDir>/tsconfig.spec.json',
-    },
-  },
-  preset: "jest-preset-angular",
+  preset: 'jest-preset-angular',
   roots: ['src'],
-  setupFilesAfterEnv: ["<rootDir>/src/setup-jest.ts"]
-}
+  setupFilesAfterEnv: ['<rootDir>/src/setup-jest.ts'],
+  transform: {
+    '^.+\\.(ts|js|mjs|html|svg)$': [
+      'jest-preset-angular',
+      {
+        tsconfig: '<rootDir>/tsconfig.spec.json',
+        stringifyContentPathRegex: '\\.html$',
+      }
+    ]
+  }
+};
