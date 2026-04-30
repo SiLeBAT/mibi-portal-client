@@ -18,3 +18,60 @@ html {
   font-size: 0.9rem;
   line-height: 1.3;
 }
+
+// stylelint-disable selector-class-pattern -- overriding Angular Material/CDK internal classes
+
+// Angular Material 17 removed the legacy-padding mixin (which gave the surface 24px padding
+// and used negative element margins). Now each section (title/content/actions) has its own
+// MDC padding via CSS variables. We zero the left/right/top/bottom of each section and add
+// only the gaps between sections, since our dialog components add their own 24px outer padding.
+.cdk-overlay-container {
+  // Title: no side padding (outer dialog padding handles it), 16px below to separate from content
+  --mat-dialog-headline-padding: 0 0 16px;
+
+  // Content: no padding (outer dialog padding handles it)
+  --mat-dialog-content-padding: 0;
+  --mat-dialog-with-actions-content-padding: 0;
+
+  // Actions: 16px top to separate from content, no sides/bottom
+  --mat-dialog-actions-padding: 16px 0 0;
+
+  .mat-mdc-dialog-surface,
+  .mdc-dialog__surface {
+    overflow: hidden !important;
+  }
+
+  .mdc-dialog__title {
+    padding: 0 0 16px !important;
+    margin: 0 !important;
+  }
+
+  .mdc-dialog__title::before {
+    height: 0 !important;
+  }
+
+  .mdc-dialog__content {
+    padding: 0 !important;
+  }
+
+  .mdc-dialog__actions {
+    padding: 16px 0 0 !important;
+    min-height: unset !important;
+  }
+}
+
+// AM17 MDC reserves 16px below every form field via .mat-mdc-form-field-bottom-align::before
+// (display:inline-block; height:16px — in normal flow). Collapse both the wrapper and the ::before
+// so the spacer never contributes to ancestor scroll containers.
+// Exception: subscriptSizing="dynamic" adds mat-mdc-form-field-subscript-dynamic-size to the wrapper
+// itself and already sets content:unset on ::before + makes hint/error wrappers position:static.
+.mat-mdc-form-field-subscript-wrapper:not(.mat-mdc-form-field-subscript-dynamic-size) {
+  height: 0 !important;
+  overflow: visible !important;
+
+  &::before {
+    content: none !important; // remove the 16px inline-block spacer from normal flow
+  }
+}
+
+// stylelint-enable selector-class-pattern

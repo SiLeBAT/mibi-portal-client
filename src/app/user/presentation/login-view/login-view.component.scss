@@ -1,6 +1,7 @@
 .mibi-login-actions {
   display: flex;
   justify-content: space-between;
+  width: 100%; // fill mat-card-actions flex container so space-between works
 }
 
 .mibi-login-actions__button {

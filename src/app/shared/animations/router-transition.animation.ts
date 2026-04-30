@@ -17,27 +17,24 @@ export const routerTransitionFadeAnimation = trigger('routerTransitionFadeAnimat
     ])
 ]);
 
-// after 0.3s switches out to display:none and in to display:block
+// after 0.3s switches out to opacity:0 and in to opacity:1
 export const routerTransitionAnimation = trigger('routerTransitionAnimation', [
     transition('initial => *', []),
     transition('disabled => *', []),
     transition('* => *', [
         query(':leave, :enter', [
-            style({ 'display': 'none' })
+            style({ 'opacity': '0' })
         ], { optional: true }),
 
         group([
             query(':leave', [
-                style({ 'display': 'inline' }),
-                animate('0.3s'),
-                style({ 'display': 'none' })
+                style({ 'opacity': '1' }),
+                animate('0.3s', style({ 'opacity': '0' }))
             ], { optional: true }),
 
             query(':enter', [
-                animate('0.3s'),
-                style({ 'display': 'inline' })
+                animate('0.3s', style({ 'opacity': '1' }))
             ], { optional: true })
         ])
-
     ])
 ]);

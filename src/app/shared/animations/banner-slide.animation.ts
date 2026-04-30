@@ -5,7 +5,7 @@ import {
 export const bannerSlideAnimation = [
     trigger('bannerSlideAnimation', [
         state('out', style({
-            'display' : 'none',
+            'visibility': 'hidden',
             'transform': 'translate(-50%, -110%)'
         })),
         transition('in => out', [
@@ -15,7 +15,7 @@ export const bannerSlideAnimation = [
         ]),
         transition('out => in', [
             style({
-                'display': 'block'
+                'visibility': 'visible'
             }),
             animate('400ms ease-in-out', style({
                 'transform': 'translate(-50%, 0)'

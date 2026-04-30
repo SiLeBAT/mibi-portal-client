@@ -21,6 +21,10 @@
 @include mat.core;
 @include mat.all-component-typographies(fonts.$typography);
 
+// AM17 removed typography-hierarchy from mat.core() — must be called explicitly.
+// Targets body.mat-typography (set in index.html) and restores 14px body font (AM16 default).
+@include mat.typography-hierarchy(fonts.$typography);
+
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.

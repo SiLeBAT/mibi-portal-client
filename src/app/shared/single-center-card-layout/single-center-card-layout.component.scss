@@ -10,9 +10,10 @@
 
 .mibi-card {
   display: grid;
-  grid-template: 0 min-content minmax(0, min-content) min-content / minmax(auto, max-content);
+  grid-template: 0 min-content min-content min-content / minmax(auto, max-content);
   max-width: 800px;
-  overflow: auto;
+  overflow: visible; // card content area handles its own overflow; card itself should not scroll
+  padding: 16px; // restore v16 mat-card default padding (removed in AM17 MDC)
 }
 
 .mibi-card__flex {
@@ -30,10 +31,12 @@
 
 .mibi-card-title {
   line-height: normal;
+  margin-bottom: layout.$single-space; // restore spacing between title and content (AM17 MDC resets to 0)
 }
 
 .mibi-card-content {
-  overflow: auto;
+  overflow: visible; // page-level scrolling handles any overflow (card content is min-content sized)
+  padding: 0; // override AM17 mat-mdc-card-content 0 16px padding (card padding handles spacing)
 }
 
 .mibi-card-content--no-auto-scroll {
