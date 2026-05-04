@@ -142,6 +142,6 @@ export class SamplesGridDataEditorViewComponent implements OnInit {
 
     private refocusEditor(): void {
         this.editorRef.nativeElement.blur();
-        this.editorRef.nativeElement.focus();
+        this.editorRef.nativeElement.focus({ preventScroll: true });
     }
 }

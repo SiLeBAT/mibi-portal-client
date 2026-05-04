@@ -95,7 +95,7 @@ export interface SampleData {
     animal_avv: AnnotatedSampleDataEntry;
     matrix_avv: AnnotatedSampleDataEntry;
     animal_matrix_text: AnnotatedSampleDataEntry;
-    primary_production_avv: AnnotatedSampleDataEntry;
+    additional_marks_avv: AnnotatedSampleDataEntry;
     control_program_avv: AnnotatedSampleDataEntry;
     sampling_reason_avv: AnnotatedSampleDataEntry;
     program_reason_text: AnnotatedSampleDataEntry;

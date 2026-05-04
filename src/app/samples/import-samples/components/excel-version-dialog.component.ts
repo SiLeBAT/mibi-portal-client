@@ -7,15 +7,20 @@ import { dialogCancelMTA } from '../../../shared/dialog/state/dialog.actions';
 
 export interface ExcelVersionDialogData {
     title: string;
-    string0: string;
-    string1: string;
-    string2: string;
-    string3: string;
-    string4: string;
-    link: string;
-    string5: string;
     cancelButtonText: string;
-  }
+    useAlternativeTexts: boolean;
+    // V16 and below:
+    string0?: string;
+    string1?: string;
+    string2?: string;
+    string3?: string;
+    string4?: string;
+    link?: string;
+    string5?: string;
+    // V17 and above:
+    alternativeText2a?: string;
+    alternativeText3a?: string;
+}
 
 @Component({
     selector: 'mibi-send-excel-version-dialog',

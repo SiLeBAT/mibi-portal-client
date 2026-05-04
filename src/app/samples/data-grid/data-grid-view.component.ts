@@ -124,10 +124,6 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (this.gridRefScroll && this.gridRefScroll.nativeElement) {
-            this.gridRefScroll.nativeElement.scrollTop = 0;
-        }
-
         let isGridDirty = false;
         const modelChange = changes.model;
         if (modelChange) {
@@ -136,6 +132,9 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
 
             if (modelChange.firstChange) {
                 this.cellDirtyEmitterMap.init(newModel.rows, newModel.cols);
+                if (this.gridRefScroll && this.gridRefScroll.nativeElement) {
+                    this.gridRefScroll.nativeElement.scrollTop = 0;
+                }
             } else {
                 const rowsChanged = oldModel.rows !== newModel.rows;
                 const colsChanged = oldModel.cols !== newModel.cols;
@@ -144,6 +143,9 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
 
                 if (rowsChanged || colsChanged) {
                     this.cellDirtyEmitterMap.update(newModel.rows, newModel.cols, colsChanged);
+                    if (this.gridRefScroll && this.gridRefScroll.nativeElement) {
+                        this.gridRefScroll.nativeElement.scrollTop = 0;
+                    }
                 }
 
                 if (cellModelsChanged) {
