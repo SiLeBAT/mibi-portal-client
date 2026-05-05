@@ -180,6 +180,11 @@ export class BannerContainerComponent {
             message: 'Es gab einen Fehler beim Herunterladen der Zomo-Plan Datei.',
             type: AlertType.ERROR,
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
+        },
+        tooManyDataRows: {
+            message: 'Maximal 500 Datenzeilen können mittels eines Untersuchungsauftrags hochgeladen werden. Zusätzliche Zeilen wurden verworfen.',
+            type: AlertType.WARNING,
+            mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
         }
     };
 
