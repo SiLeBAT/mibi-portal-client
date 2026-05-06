@@ -32,5 +32,5 @@
 
   @include layout.safari-fix;
 
-  overflow: auto;
+  overflow: hidden; // MDC v15 button touch-target extends beyond button bounds — clip it
 }
