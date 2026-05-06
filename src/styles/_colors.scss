@@ -285,7 +285,7 @@ $light-theme: mat.define-light-theme(
     primary: $primary-palette,
     accent: $secondary-palette,
     warn: $error-palette
-  ))
+  ), density: -1 )
 );
 
 // Color modifiers

@@ -2,7 +2,7 @@
 
 @use "layout";
 
-.mibi-stepper-dialog-container > .mat-dialog-container {
+.mibi-stepper-dialog-container .mat-mdc-dialog-surface {
   padding: 0 0 layout.$triple-space 0;
 }
 

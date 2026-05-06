@@ -4,6 +4,17 @@
 $default-font-family: "Roboto, sans-serif";
 
 // Typography
+// All levels defined explicitly to restore v14 letter-spacing: normal on every level.
+// MDC v15 introduced non-zero letter-spacing on all levels (e.g. body-1: 0.5px, headline-6: 0.15px)
+// while v14 had letter-spacing: normal everywhere. define-typography-level() defaults to normal.
 $typography: mat.define-typography-config(
-  $font-family: $default-font-family
+  $font-family: $default-font-family,
+  $headline-5: mat.define-typography-level(24px, 32px, 400),
+  $headline-6: mat.define-typography-level(20px, 32px, 500),
+  $subtitle-1: mat.define-typography-level(16px, 28px, 400),
+  $subtitle-2: mat.define-typography-level(14px, 24px, 500),
+  $body-1:     mat.define-typography-level(14px, 20px, 400),
+  $body-2:     mat.define-typography-level(14px, 20px, 400),
+  $caption:    mat.define-typography-level(12px, 20px, 400),
+  $button:     mat.define-typography-level(14px, 36px, 500),
 );

@@ -1,6 +1,7 @@
 .mibi-login-actions {
   display: flex;
   justify-content: space-between;
+  width: 100%; // mat-card-actions is now a flex row in v15 MDC; without this, space-between has no room to distribute
 }
 
 .mibi-login-actions__button {
