@@ -24,7 +24,7 @@
   left: 50%;
   transform: translateX(-50%);
   max-height: 100%;
-  overflow: auto;
+  overflow: hidden; // MDC v15 button touch-target extends beyond button bounds — clip it
   z-index: 1;
 }
 

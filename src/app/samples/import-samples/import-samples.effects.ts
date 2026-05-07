@@ -22,6 +22,8 @@ import { InvalidEmailError } from 'app/core/model/client-error';
 @Injectable()
 export class ImportSamplesEffects {
 
+    private readonly maxDataRows = 500;
+
     constructor(
         private actions$: Actions,
         private store$: Store<SamplesMainSlice>,
@@ -46,13 +48,21 @@ export class ImportSamplesEffects {
 
     private importSamples(excelFile: ExcelFile): Observable<Action> {
         return this.dataService.unmarshalExcel(excelFile).pipe(
-            concatMap(sampleSet => concat(
-                of(
-                    samplesUpdateMainDataSOA({ sampleSet: sampleSet }),
-                    navigateMSA({ path: this.samplesLinks.editor })
-                ),
-                this.importSamplesValidate()
-            )),
+            concatMap(sampleSet => {
+                const tooManyRows = sampleSet.samples.length > this.maxDataRows;
+                const processedSampleSet = tooManyRows
+                    ? { ...sampleSet, samples: sampleSet.samples.slice(0, this.maxDataRows) }
+                    : sampleSet;
+
+                return concat(
+                    of(
+                        samplesUpdateMainDataSOA({ sampleSet: processedSampleSet }),
+                        navigateMSA({ path: this.samplesLinks.editor })
+                    ),
+                    tooManyRows ? of(showBannerSOA({ predefined: 'tooManyDataRows' })) : EMPTY,
+                    this.importSamplesValidate()
+                );
+            }),
             catchError((error) => {
 
                 this.logger.error('Failed to import Excel File.', error.stack);
