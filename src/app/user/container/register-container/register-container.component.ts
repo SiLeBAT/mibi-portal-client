@@ -14,7 +14,7 @@ import { updateIsBusySOA, showCustomBannerSOA } from '../../../core/state/core.a
 import { ContentMainSlice } from '../../../content/content.state';
 import { UserMainSlice } from '../../user.state';
 import { navigateMSA } from '../../../shared/navigate/navigate.actions';
-import { Observable } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 import { UserLinkProviderService } from '../../link-provider.service';
 
 @Component({
@@ -53,7 +53,7 @@ export class RegisterContainerComponent implements OnInit, OnDestroy {
 
     register(details: RegistrationDetails) {
         this.store$.dispatch(updateIsBusySOA({ isBusy: true }));
-        this.dataService.registrationRequest(
+        firstValueFrom(this.dataService.registrationRequest(
             {
                 email: details.email,
                 password: details.password,
@@ -61,7 +61,7 @@ export class RegisterContainerComponent implements OnInit, OnDestroy {
                 lastName: details.lastName,
                 instituteId: details.instituteId
             }
-        ).toPromise().then(
+        )).then(
             (response: UserRegistrationRequest) => {
                 this.store$.dispatch(updateIsBusySOA({ isBusy: false }));
                 this.store$.dispatch(navigateMSA({ path: this.userLinks.login }));

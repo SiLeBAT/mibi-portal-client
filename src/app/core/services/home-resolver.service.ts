@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+
 import { Store } from '@ngrx/store';
 import { selectIsAlternativeWelcomePage } from '../state/core.selectors';
 import { first } from 'rxjs/operators';
@@ -7,7 +7,7 @@ import { first } from 'rxjs/operators';
 @Injectable({
     providedIn: 'root'
 })
-export class HomeResolver implements Resolve<boolean> {
+export class HomeResolver  {
 
     constructor(
         private store$: Store

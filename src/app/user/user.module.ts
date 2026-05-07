@@ -8,6 +8,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { RegisterComponent } from './presentation/register/register.component';
 import { PasswordStrengthMeterModule } from 'angular-password-strength-meter';
+import { DEFAULT_PSM_OPTIONS } from 'angular-password-strength-meter/zxcvbn';
 import { RegisterContainerComponent } from './container/register-container/register-container.component';
 import { RegisterViewComponent } from './presentation/register-view/register-view.component';
 import { ProfileContainerComponent } from './container/profile-container/profile-container.component';
@@ -79,7 +80,7 @@ const routes: Routes = [{
         MatCardModule,
         MatButtonModule,
         MatAutocompleteModule,
-        PasswordStrengthMeterModule.forRoot(),
+        PasswordStrengthMeterModule.forRoot(DEFAULT_PSM_OPTIONS),
         SharedModule,
         RouterModule.forChild(routes),
         StoreModule.forFeature(USER_SLICE_NAME, userReducerMap),

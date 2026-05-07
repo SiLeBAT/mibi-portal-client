@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate } from '@angular/router';
+
 import { Store, select } from '@ngrx/store';
 import { take } from 'rxjs/operators';
 import { navigateMSA } from '../../shared/navigate/navigate.actions';
@@ -10,7 +10,7 @@ import { selectHasEntries } from '../state/samples.selectors';
 @Injectable({
     providedIn: 'root'
 })
-export class NoSampleGuard implements CanActivate {
+export class NoSampleGuard  {
 
     constructor(
         private store$: Store<SamplesMainSlice>,
