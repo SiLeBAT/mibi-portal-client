@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, RouterStateSnapshot, Resolve } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { DataService } from '../../core/services/data.service';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -9,7 +9,7 @@ import { UserLinkProviderService } from '../link-provider.service';
 @Injectable({
     providedIn: 'root'
 })
-export class AdminTokenValidationResolver implements Resolve<UserActivation> {
+export class AdminTokenValidationResolver  {
 
     constructor(
         private dataService: DataService,

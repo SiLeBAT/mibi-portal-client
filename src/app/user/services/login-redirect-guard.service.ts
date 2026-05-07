@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { map, take } from 'rxjs/operators';
 import { selectIsAlternativeWelcomePage } from 'app/core/state/core.selectors';
@@ -8,7 +8,7 @@ import { LogService } from '../../core/services/log.service';
 @Injectable({
     providedIn: 'root'
 })
-export class LoginRedirectGuard implements CanActivate {
+export class LoginRedirectGuard  {
 
     constructor(
         private store$: Store,

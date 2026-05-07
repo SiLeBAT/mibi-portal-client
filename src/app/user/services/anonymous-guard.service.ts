@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { combineLatest } from 'rxjs';
@@ -16,7 +16,7 @@ import { SamplesLinkProviderService } from '../../samples/link-provider.service'
 @Injectable({
     providedIn: 'root'
 })
-export class AnonymousGuard implements CanActivate {
+export class AnonymousGuard  {
 
     constructor(
         private store$: Store<UserMainState & SamplesMainSlice & UserMainSlice>,

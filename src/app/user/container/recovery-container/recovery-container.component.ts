@@ -5,6 +5,7 @@ import { AlertType } from '../../../core/model/alert.model';
 import { UserActionService } from '../../../core/services/user-action.service';
 import { UserActionType } from '../../../shared/model/user-action.model';
 import { UserPasswordResetRequest } from '../../model/user.model';
+import { firstValueFrom } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
 import { ClientError } from '../../../core/model/client-error';
 import { updateIsBusySOA, showCustomBannerSOA } from '../../../core/state/core.actions';
@@ -44,7 +45,7 @@ export class RecoveryContainerComponent implements OnInit, OnDestroy {
 
     recovery(email: string) {
         this.store$.dispatch(updateIsBusySOA({ isBusy: true }));
-        this.dataService.resetPasswordRequest(email).toPromise()
+        firstValueFrom(this.dataService.resetPasswordRequest(email))
             .then((response: UserPasswordResetRequest) => {
                 this.store$.dispatch(updateIsBusySOA({ isBusy: false }));
                 this.store$.dispatch(navigateMSA({ path: this.userLinks.login }));

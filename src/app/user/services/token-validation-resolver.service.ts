@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, RouterStateSnapshot, Resolve } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { DataService } from '../../core/services/data.service';
 import { UserLinkProviderService } from '../link-provider.service';
 
 @Injectable({
     providedIn: 'root'
 })
-export class TokenValidationResolver implements Resolve<boolean> {
+export class TokenValidationResolver  {
 
     constructor(
         private dataService: DataService,
