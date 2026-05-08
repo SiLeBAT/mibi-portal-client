@@ -1,46 +1,48 @@
-import { ReceiveAs, Sample, SampleSubmission } from '../model/sample-management.model';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Action, Store } from '@ngrx/store';
+import _ from 'lodash';
+import { EMPTY, Observable, concat, of } from 'rxjs';
+import { catchError, concatMap, endWith, finalize, first, map, startWith, withLatestFrom } from 'rxjs/operators';
+import { AuthorizationError } from '../../core/model/client-error';
+import { InputChangedError, InvalidInputError } from '../../core/model/data-service-error';
+import { DataService } from '../../core/services/data.service';
+import { LogService } from '../../core/services/log.service';
+import { hideBannerSOA, showBannerSOA, updateIsBusySOA } from '../../core/state/core.actions';
+import { DialogWarning } from '../../shared/dialog/dialog.model';
+import { DialogService } from '../../shared/dialog/dialog.service';
+import { navigateMSA } from '../../shared/navigate/navigate.actions';
+import { KEYCLOAK_ENABLED } from '../../user/services/auth.tokens';
+import { KeycloakAuthService } from '../../user/services/keycloak-auth.service';
+import { userForceLogoutMSA } from '../../user/state/user.actions';
+import { SamplesLinkProviderService } from '../link-provider.service';
+import { ReceiveAs, Sample, SampleSubmission } from '../model/sample-management.model';
+import { SamplesMainSlice, SamplesSlice } from '../samples.state';
+import { samplesUpdateSamplesSOA } from '../state/samples.actions';
+import { SamplesMainData } from '../state/samples.reducer';
 import {
-    sendSamplesConfirmAnalysisSSA,
+    selectHasAutoCorrections,
+    selectHasErrors,
+    selectHasWarnings,
+    selectImportedFileName,
+    selectMetaData,
+    selectSampleData,
+    selectSamplesMainData
+} from '../state/samples.selectors';
+import { AnalysisStepperComponent } from './components/analysis-stepper.component';
+import { SendDialogComponent } from './components/send-dialog.component';
+import { sendSamplesCommentWarningsStrings, sendSamplesDialogWarningsStrings } from './send-samples.constants';
+import {
     sendSamplesAddSentFileSOA,
-    sendSamplesConfirmSendSSA,
     sendSamplesCancelAnalysisSSA,
     sendSamplesCancelSendSSA,
+    sendSamplesConfirmAnalysisSSA,
+    sendSamplesConfirmSendSSA,
     sendSamplesSSA,
     sendSamplesUpdateDialogWarningsSOA
 } from './state/send-samples.actions';
-import { SamplesSlice, SamplesMainSlice } from '../samples.state';
-import { Action, Store } from '@ngrx/store';
-import { withLatestFrom, map, catchError, concatMap, startWith, endWith, first, finalize } from 'rxjs/operators';
-import { samplesUpdateSamplesSOA } from '../state/samples.actions';
-import { showBannerSOA, updateIsBusySOA, hideBannerSOA } from '../../core/state/core.actions';
-import { Observable, of, EMPTY, concat } from 'rxjs';
 import { SendSamplesState } from './state/send-samples.reducer';
-import _ from 'lodash';
-import {
-    selectImportedFileName,
-    selectSampleData,
-    selectMetaData,
-    selectSamplesMainData,
-    selectHasErrors,
-    selectHasAutoCorrections,
-    selectHasWarnings
-} from '../state/samples.selectors';
-import { LogService } from '../../core/services/log.service';
-import { DataService } from '../../core/services/data.service';
-import { AuthorizationError } from '../../core/model/client-error';
-import { userForceLogoutMSA } from '../../user/state/user.actions';
-import { InvalidInputError, InputChangedError } from '../../core/model/data-service-error';
-import { DialogService } from '../../shared/dialog/dialog.service';
-import { SendDialogComponent } from './components/send-dialog.component';
-import { AnalysisStepperComponent } from './components/analysis-stepper.component';
-import { SamplesMainData } from '../state/samples.reducer';
-import { DialogWarning } from '../../shared/dialog/dialog.model';
-import { sendSamplesCommentWarningsStrings, sendSamplesDialogWarningsStrings } from './send-samples.constants';
 import { selectSendSamplesIsFileAlreadySent } from './state/send-samples.selectors';
-import { navigateMSA } from '../../shared/navigate/navigate.actions';
-import { SamplesLinkProviderService } from '../link-provider.service';
 
 @Injectable()
 export class SendSamplesEffects {
@@ -51,7 +53,9 @@ export class SendSamplesEffects {
         private dataService: DataService,
         private logger: LogService,
         private dialogService: DialogService,
-        private samplesLinks: SamplesLinkProviderService
+        private samplesLinks: SamplesLinkProviderService,
+        private authService: KeycloakAuthService,
+        @Inject(KEYCLOAK_ENABLED) private keycloakEnabled: boolean
     ) { }
 
     sendSamples$ = createEffect(() => this.actions$.pipe(
@@ -178,6 +182,10 @@ export class SendSamplesEffects {
                         showBannerSOA({ predefined: 'autocorrections' })
                     );
                 } else if (error instanceof AuthorizationError) {
+                    if (this.keycloakEnabled) {
+                        this.authService.login();
+                        return EMPTY;
+                    }
                     return of(
                         userForceLogoutMSA(),
                         // bug => this banner is not shown due to page navigation during logout

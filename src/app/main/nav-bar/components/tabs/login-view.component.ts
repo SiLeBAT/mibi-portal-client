@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { NavBarTab } from '../../nav-bar.model';
 
 @Component({
@@ -11,4 +11,9 @@ import { NavBarTab } from '../../nav-bar.model';
 export class NavBarLoginViewComponent {
     @Input() tab: NavBarTab;
     @Input() isAlternativeWelcomePage: boolean;
+    @Output() login = new EventEmitter<void>();
+
+    onLogin() {
+        this.login.emit();
+    }
 }

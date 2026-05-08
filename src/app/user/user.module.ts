@@ -39,10 +39,9 @@ import { PasswordComponent } from './password/password.component';
 import { USER_SLICE_NAME } from './user.state';
 import { userReducerMap, userEffects } from './user.store';
 import { userPathsParams, userPathsSegments } from './user.paths';
-import { AnonymousGuard } from './services/anonymous-guard.service';
 import { TokenValidationResolver } from './services/token-validation-resolver.service';
 import { AdminTokenValidationResolver } from './services/admin-token-validation-resolver.service';
-import { AuthGuard } from './services/auth-guard.service';
+import { AuthGuardSwitch } from './services/auth-guard-switch.service';
 import { LoginRedirectGuard } from './services/login-redirect-guard.service';
 
 const parametrizedPaths = {
@@ -54,17 +53,17 @@ const parametrizedPaths = {
 const routes: Routes = [{
     path: userPathsSegments.users,
     children: [
-        { path: userPathsSegments.login, component: LoginViewComponent, canActivate: [AnonymousGuard, LoginRedirectGuard] },
-        { path: userPathsSegments.register, component: RegisterViewComponent, canActivate: [AnonymousGuard] },
-        { path: userPathsSegments.recovery, component: RecoveryViewComponent, canActivate: [AnonymousGuard] },
-        { path: parametrizedPaths.reset, component: ResetViewComponent, canActivate: [AnonymousGuard] },
+        { path: userPathsSegments.login, component: LoginViewComponent, canActivate: [LoginRedirectGuard] },
+        { path: userPathsSegments.register, component: RegisterViewComponent },
+        { path: userPathsSegments.recovery, component: RecoveryViewComponent },
+        { path: parametrizedPaths.reset, component: ResetViewComponent },
         { path: parametrizedPaths.activate, component: ActivateViewComponent, resolve: { tokenValid: TokenValidationResolver } },
         {
             path: parametrizedPaths.adminActivate,
             component: AdminActivateViewComponent,
             resolve: { adminTokenValid: AdminTokenValidationResolver }
         },
-        { path: userPathsSegments.profile, component: ProfileContainerComponent, canActivate: [AuthGuard] },
+        { path: userPathsSegments.profile, component: ProfileContainerComponent, canActivate: [AuthGuardSwitch] },
         { path: userPathsSegments.privacyPolicy, component: DatenSchutzHinweiseViewComponent },
         { path: '**', redirectTo: userPathsSegments.login }
     ]
@@ -80,6 +79,7 @@ const routes: Routes = [{
         MatCardModule,
         MatButtonModule,
         MatAutocompleteModule,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         PasswordStrengthMeterModule.forRoot(DEFAULT_PSM_OPTIONS),
         SharedModule,
         RouterModule.forChild(routes),

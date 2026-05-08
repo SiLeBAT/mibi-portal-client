@@ -30,6 +30,9 @@ import { navigateMSA } from '../shared/navigate/navigate.actions';
 import { ofTarget } from '../shared/ngrx/multi-target-action';
 import { userLogoutConfirmDialogStrings } from './user.constants';
 
+// Legacy JWT auth effects. Inert when Keycloak is enabled: the actions these
+// react to (userLoginSSA / userLogoutMSA / ...) are only dispatched by the
+// legacy login form and avatar logout, which are not wired in Keycloak mode.
 @Injectable()
 export class UserMainEffects {
 

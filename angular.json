@@ -138,7 +138,5 @@
       "@angular-eslint/schematics"
     ],
     "analytics": false
-    
-    
   }
 }

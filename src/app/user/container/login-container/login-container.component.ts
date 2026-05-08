@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Credentials } from '../../../user/model/user.model';
 import { Store, select } from '@ngrx/store';
 import { tap, takeWhile } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
+import { Credentials } from '../../../user/model/user.model';
 import { SamplesMainSlice } from '../../../samples/samples.state';
 import { selectHasEntries } from '../../../samples/state/samples.selectors';
 import { selectUserCurrentUser } from '../../state/user.selectors';
@@ -11,23 +11,33 @@ import { userLoginSSA } from '../../state/user.actions';
 import { navigateMSA } from '../../../shared/navigate/navigate.actions';
 import { SamplesLinkProviderService } from '../../../samples/link-provider.service';
 import { validateSamplesSSA } from '../../../samples/validate-samples/validate-samples.actions';
+import { AppAuthService } from '../../services/app-auth.service';
 
 @Component({
     standalone: false,
     selector: 'mibi-login-container',
     template: `<mibi-login
+    [keycloakEnabled]="keycloakEnabled"
     (login)="login($event)">
     </mibi-login>`
 })
 export class LoginContainerComponent implements OnInit, OnDestroy {
 
+    readonly keycloakEnabled = this.appAuth.keycloakEnabled;
     private componentActive = true;
+
     constructor(
         private store$: Store<UserMainSlice & SamplesMainSlice>,
-        private samplesLinks: SamplesLinkProviderService
+        private samplesLinks: SamplesLinkProviderService,
+        private appAuth: AppAuthService
     ) { }
 
     ngOnInit(): void {
+        // Keycloak mode navigates via the BFF callback redirect; the legacy flow
+        // navigates here once the login effect populates the current user.
+        if (this.keycloakEnabled) {
+            return;
+        }
 
         combineLatest([
             this.store$.pipe(select(selectUserCurrentUser)),
@@ -51,7 +61,11 @@ export class LoginContainerComponent implements OnInit, OnDestroy {
         this.componentActive = false;
     }
 
-    login(credentials: Credentials) {
-        this.store$.dispatch(userLoginSSA({ credentials: credentials }));
+    login(credentials?: Credentials) {
+        if (this.keycloakEnabled) {
+            this.appAuth.login();
+        } else if (credentials) {
+            this.store$.dispatch(userLoginSSA({ credentials: credentials }));
+        }
     }
 }
