@@ -40,7 +40,8 @@ import { MainModule } from './main/main.module';
         StoreDevtoolsModule.instrument({
             name: 'MiBi Portal Devtools',
             maxAge: 25,
-            logOnly: environment.production
+            logOnly: environment.production,
+            connectInZone: true
         }),
         EffectsModule.forRoot([]),
         CoreModule,
