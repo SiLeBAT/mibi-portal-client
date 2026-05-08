@@ -110,13 +110,13 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "mibi-portal-client:build:production"
+              "buildTarget": "mibi-portal-client:build:production"
             },
             "qa": {
-              "browserTarget": "mibi-portal-client:build:qa"
+              "buildTarget": "mibi-portal-client:build:qa"
             },
             "development": {
-              "browserTarget": "mibi-portal-client:build:development"
+              "buildTarget": "mibi-portal-client:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -124,7 +124,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "mibi-portal-client:build"
+            "buildTarget": "mibi-portal-client:build"
           }
         },
         "lint": {
@@ -143,5 +143,6 @@
     "schematicCollections": [
       "@angular-eslint/schematics"
     ]
+    
   }
 }
