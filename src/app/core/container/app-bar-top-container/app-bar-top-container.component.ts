@@ -33,8 +33,8 @@ export class AppBarTopContainerComponent {
 
     constructor(
         private store$: Store<SamplesMainSlice & CoreMainSlice & UserMainSlice>,
-        private userActionService: UserActionService) {
-
+        private userActionService: UserActionService
+    ) {
         this.actionConfigs$ = combineLatest([
             this.store$.pipe(select(selectActionBarEnabledActions)),
             this.store$.pipe(select(selectHasEntries)),
@@ -81,6 +81,5 @@ export class AppBarTopContainerComponent {
 
     onDownloadZomoPlanFile(zomoPlanFileInfo: ZomoPlanFileInfo) {
         this.store$.dispatch(downloadZomoPlanFileSSA({ zomoPlanFileInfo: zomoPlanFileInfo }));
-
     }
 }

@@ -85,6 +85,10 @@ export class InitEffects {
         );
     }
 
+    // Legacy JWT bootstrap: rehydrate the session from a persisted token and
+    // refresh it. In Keycloak mode no token is persisted, so getCurrentUser()
+    // returns null and this is a no-op (the BFF session is loaded via
+    // AppAuthService.bootstrap() instead).
     private loadUser(): Observable<Action> {
         const user = this.dataService.getCurrentUser();
         if (user === null) {
@@ -103,4 +107,5 @@ export class InitEffects {
             catchError(() => of(userForceLogoutMSA()))
         );
     }
+
 }

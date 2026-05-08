@@ -5,7 +5,7 @@ import { User } from '../../user/model/user.model';
 import { selectUserCurrentUser } from '../../user/state/user.selectors';
 import { UserMainSlice } from '../../user/user.state';
 import { navigateMSA } from '../../shared/navigate/navigate.actions';
-import { userLogoutMSA } from '../../user/state/user.actions';
+import { AppAuthService } from '../../user/services/app-auth.service';
 import { navBarTabNames } from './nav-bar.constants';
 import { NavBarTab } from './nav-bar.model';
 import { map } from 'rxjs/operators';
@@ -48,6 +48,7 @@ const selectNavTabsConfig = createSelector<SamplesMainSlice, boolean, NavTabsCon
                 mibi-nav-bar-user
                 [isAlternativeWelcomePage]="isAlternativeWelcomePage$ | async"
                 [tab]="loginTab"
+                (login)="onLogin()"
             ></mibi-nav-bar-login-view>
             <mibi-nav-bar-avatar-view
                 *ngIf="(avatarUser$ | async) as user"
@@ -108,11 +109,16 @@ export class NavBarComponent {
         private store$: Store<SamplesMainSlice & UserMainSlice & CoreMainSlice>,
         private samplesLinks: SamplesLinkProviderService,
         private mainLinks: MainLinkProviderService,
-        private userLinks: UserLinkProviderService
+        private userLinks: UserLinkProviderService,
+        private auth: AppAuthService
     ) { }
 
+    onLogin() {
+        this.auth.login();
+    }
+
     onAvatarLogout() {
-        this.store$.dispatch(userLogoutMSA());
+        this.auth.logout();
     }
 
     onAvatarProfile() {

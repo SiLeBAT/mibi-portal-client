@@ -22,6 +22,11 @@ ts-jest.log
 .settings/
 *.sublime-workspace
 
+# AI
+.claude/
+AGENTS.md
+CLAUDE.md
+
 # IDE - VSCode
 .vscode/*
 !.vscode/settings.json
@@ -40,6 +45,7 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
+/local
 
 # e2e
 /cypress/videos
@@ -52,3 +58,4 @@ testem.log
 Thumbs.db
 
 local/
+.gitnexus

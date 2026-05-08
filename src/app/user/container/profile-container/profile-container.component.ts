@@ -6,7 +6,7 @@ import { Institution, fromDTOToInstitution } from '../../model/institution.model
 import _ from 'lodash';
 import { selectUserCurrentUser } from '../../state/user.selectors';
 import { UserMainSlice } from '../../user.state';
-import { userLogoutMSA } from '../../state/user.actions';
+import { AppAuthService } from '../../services/app-auth.service';
 
 @Component({
     standalone: false,
@@ -17,10 +17,13 @@ import { userLogoutMSA } from '../../state/user.actions';
     (logout)="logout()"></mibi-profile>`
 })
 export class ProfileContainerComponent implements OnInit, OnDestroy {
-    currentUser: User | null;
-    private institution: Institution;
+    currentUser: User | null = null;
+    private institution?: Institution;
     private componentActive = true;
-    constructor(private store$: Store<UserMainSlice>) { }
+    constructor(
+        private store$: Store<UserMainSlice>,
+        private appAuth: AppAuthService
+    ) { }
 
     ngOnInit() {
         this.store$.pipe(select(selectUserCurrentUser),
@@ -47,7 +50,7 @@ export class ProfileContainerComponent implements OnInit, OnDestroy {
     }
 
     logout() {
-        this.store$.dispatch(userLogoutMSA());
+        this.appAuth.logout();
     }
 
     getInstitutionName() {

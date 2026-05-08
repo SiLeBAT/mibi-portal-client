@@ -1,38 +1,47 @@
 <mibi-box-layout>
-
-<form [formGroup]="loginForm" (ngSubmit)="onLogin()">
-    <div class="mibi-form-group">
-        <mat-form-field class="mibi-form-field" appearance="fill" color="accent">
-            <mat-label>E-Mail</mat-label>
-            <input
-                matInput
-                placeholder="Geben Sie Ihre E-Mail-Adresse ein"
-                name="email"
-                formControlName="email"
-                required
-            >
-        </mat-form-field>
-    </div>
-    <div class="mibi-form-group">
-        <mat-form-field class="mibi-form-field" appearance="fill" color="accent">
-            <mat-label>Passwort</mat-label>
-            <input
-                matInput
-                placeholder="Geben Sie Ihr Passwort ein"
-                type="password"
-                name="password"
-                formControlName="password"
-                required
-            >
-        </mat-form-field>
-    </div>
-    <button 
+    <button
+        *ngIf="keycloakEnabled; else legacyForm"
         class="mibi-login-submit-button"
         mat-flat-button
         color="accent"
-        type="submit"
-        [disabled]="!loginForm.valid"
+        type="button"
+        (click)="onLoginKeycloak()"
     >Anmelden</button>
-</form>
 
+    <ng-template #legacyForm>
+        <form [formGroup]="loginForm" (ngSubmit)="onLoginLegacy()">
+            <div class="mibi-form-group">
+                <mat-form-field class="mibi-form-field" appearance="fill" color="accent">
+                    <mat-label>E-Mail</mat-label>
+                    <input
+                        matInput
+                        placeholder="Geben Sie Ihre E-Mail-Adresse ein"
+                        name="email"
+                        formControlName="email"
+                        required
+                    >
+                </mat-form-field>
+            </div>
+            <div class="mibi-form-group">
+                <mat-form-field class="mibi-form-field" appearance="fill" color="accent">
+                    <mat-label>Passwort</mat-label>
+                    <input
+                        matInput
+                        placeholder="Geben Sie Ihr Passwort ein"
+                        type="password"
+                        name="password"
+                        formControlName="password"
+                        required
+                    >
+                </mat-form-field>
+            </div>
+            <button
+                class="mibi-login-submit-button"
+                mat-flat-button
+                color="accent"
+                type="submit"
+                [disabled]="!loginForm.valid"
+            >Anmelden</button>
+        </form>
+    </ng-template>
 </mibi-box-layout>

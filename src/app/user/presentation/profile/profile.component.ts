@@ -10,8 +10,8 @@ import { User } from '../../../user/model/user.model';
 export class ProfileComponent {
 
     @Output() logout = new EventEmitter();
-    @Input() currentUser: User;
-    @Input() institution: string;
+    @Input() currentUser!: User;
+    @Input() institution = '';
 
     onLogout() {
         this.logout.emit();
