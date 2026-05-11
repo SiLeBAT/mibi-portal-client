@@ -167,7 +167,7 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
         const comparFN = (a: AnalysisProcedureDTO, b: AnalysisProcedureDTO) => a.key - b.key;
 
         return assignedNRLs.map(nrl => ({
-            abbreviation: nrl.id,
+            abbreviation: nrl.id as NRL,
             standardProcedures: nrl ? nrl.standardProcedures.sort(comparFN).map(p => p.value) : [],
             optionalProcedures: nrl ? nrl.optionalProcedures.sort(comparFN).map(p => ({
                 value: p.value,
