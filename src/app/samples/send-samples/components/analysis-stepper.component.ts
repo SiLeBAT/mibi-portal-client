@@ -1,4 +1,4 @@
-import { Urgency } from '../../model/sample.enums';
+import { Urgency, NRL } from '../../model/sample.enums';
 import _ from 'lodash';
 import { Observable } from 'rxjs';
 import { SendSamplesState } from '../state/send-samples.reducer';
@@ -20,7 +20,7 @@ import { DialogWarning } from '../../../shared/dialog/dialog.model';
 import { map, take, takeWhile } from 'rxjs/operators';
 
 interface AnalysisStepViewModel {
-    abbreviation: string;
+    abbreviation: NRL;
     standardProcedures: string[];
     optionalProcedures: OptionalProcedure[];
 }
