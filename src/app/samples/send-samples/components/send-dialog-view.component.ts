@@ -12,6 +12,7 @@ export class SendDialogViewComponent {
 
     @Output() confirm: EventEmitter<string> = new EventEmitter();
 
+    // eslint-disable-next-line @angular-eslint/no-output-native
     @Output() cancel: EventEmitter<void> = new EventEmitter();
 
     commentControl = new UntypedFormControl('');

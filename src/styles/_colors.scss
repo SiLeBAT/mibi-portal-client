@@ -259,28 +259,28 @@ $-bfr-grey-palette: (
 
 // Angular Material palettes (optional arguments: default, lighter, darker)
 
-$primary-palette: mat.define-palette($_bfr-base-palette, 700, 500, 900); // darker range
-$secondary-palette: mat.define-palette($_bfr-accent1-palette, 500, 100, 800); // full range
+$primary-palette: mat.m2-define-palette($_bfr-base-palette, 700, 500, 900); // darker range
+$secondary-palette: mat.m2-define-palette($_bfr-accent1-palette, 500, 100, 800); // full range
 
-$surface-palette: mat.define-palette($_bfr-grey-palette, 200, 50, 400); // lighter range
+$surface-palette: mat.m2-define-palette($_bfr-grey-palette, 200, 50, 400); // lighter range
 
-$success-palette: mat.define-palette($_bfr-accent3-palette, 600, 400, 800); // darker range
-$warn-palette: mat.define-palette($_bfr-accent5-palette, 600, 400, 800); // darker range
-$error-palette: mat.define-palette($_bfr-accent7-palette, 700, 500, 900); // darker range
+$success-palette: mat.m2-define-palette($_bfr-accent3-palette, 600, 400, 800); // darker range
+$warn-palette: mat.m2-define-palette($_bfr-accent5-palette, 600, 400, 800); // darker range
+$error-palette: mat.m2-define-palette($_bfr-accent7-palette, 700, 500, 900); // darker range
 
 // Additional colors
 
 $background-color: white;
 $on-background-color: black;
 
-$bfr-base-color: mat.get-color-from-palette($primary-palette, 900);
-$on-bfr-base-color: mat.get-color-from-palette($primary-palette, "900-contrast");
+$bfr-base-color: mat.m2-get-color-from-palette($primary-palette, 900);
+$on-bfr-base-color: mat.m2-get-color-from-palette($primary-palette, "900-contrast");
 
-$bfr-accent-color: mat.get-color-from-palette($secondary-palette, 100);
+$bfr-accent-color: mat.m2-get-color-from-palette($secondary-palette, 100);
 
 // Angular Material theme
 
-$light-theme: mat.define-light-theme(
+$light-theme: mat.m2-define-light-theme(
   ( color: (
     primary: $primary-palette,
     accent: $secondary-palette,

@@ -3,10 +3,10 @@
 @use "@angular/material" as mat;
 @use "colors";
 
-$ui-color: mat.get-color-from-palette(colors.$secondary-palette, "default");
-$edit-color: mat.get-color-from-palette(colors.$secondary-palette, "darker");
+$ui-color: mat.m2-get-color-from-palette(colors.$secondary-palette, "default");
+$edit-color: mat.m2-get-color-from-palette(colors.$secondary-palette, "darker");
 
-$cell-border: 1px solid mat.get-color-from-palette(colors.$surface-palette, "default");
+$cell-border: 1px solid mat.m2-get-color-from-palette(colors.$surface-palette, "default");
 $cell-padding: 0.15rem 0.3rem;
 
 @mixin default-text-style {

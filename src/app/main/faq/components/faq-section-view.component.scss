@@ -5,8 +5,8 @@
 .mibi-title {
   padding: layout.$single-space;
   margin: 0;
-  background-color: mat.get-color-from-palette(colors.$primary-palette, "lighter");
-  color: mat.get-color-from-palette(colors.$primary-palette, "lighter-contrast");
+  background-color: mat.m2-get-color-from-palette(colors.$primary-palette, "lighter");
+  color: mat.m2-get-color-from-palette(colors.$primary-palette, "lighter-contrast");
   text-align: center;
 }
 

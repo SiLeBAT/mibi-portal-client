@@ -20,15 +20,15 @@
   overflow: auto;
   text-align: center;
   border-radius: 7px;
-  border: 3px solid mat.get-color-from-palette(colors.$surface-palette, "lighter");
+  border: 3px solid mat.m2-get-color-from-palette(colors.$surface-palette, "lighter");
   transition: all 0.2s ease;
   user-select: none;
-  background-color: mat.get-color-from-palette(colors.$surface-palette, "lighter");
-  color: mat.get-color-from-palette(colors.$secondary-palette, "darker");
+  background-color: mat.m2-get-color-from-palette(colors.$surface-palette, "lighter");
+  color: mat.m2-get-color-from-palette(colors.$secondary-palette, "darker");
 }
 
 .mibi-upload:hover {
-  border-color: mat.get-color-from-palette(colors.$secondary-palette, "darker");
+  border-color: mat.m2-get-color-from-palette(colors.$secondary-palette, "darker");
 }
 
 .mibi-upload-icon {

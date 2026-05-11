@@ -3,8 +3,8 @@
 @use "@angular/material" as mat;
 @use "colors";
 
-$mibi-ui-color: mat.get-color-from-palette(colors.$secondary-palette, "default");
-$mibi-hint-color: mat.get-color-from-palette(colors.$surface-palette, "darker");
+$mibi-ui-color: mat.m2-get-color-from-palette(colors.$secondary-palette, "default");
+$mibi-hint-color: mat.m2-get-color-from-palette(colors.$surface-palette, "darker");
 $mibi-hover-opacity: colors.$hover-opacity;
 $mibi-selection-opacity: colors.$selection-opacity;
 

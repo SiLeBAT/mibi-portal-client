@@ -11,6 +11,7 @@ export class DialogViewComponent {
 
     @Output() confirm: EventEmitter<void> = new EventEmitter();
 
+    // eslint-disable-next-line @angular-eslint/no-output-native
     @Output() cancel: EventEmitter<void> = new EventEmitter();
 
     onConfirm() {

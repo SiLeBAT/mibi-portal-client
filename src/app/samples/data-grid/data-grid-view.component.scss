@@ -1,7 +1,7 @@
 @use "@angular/material" as mat;
 @use "colors";
 
-$mibi-border-color: mat.get-color-from-palette(colors.$surface-palette, "default");
+$mibi-border-color: mat.m2-get-color-from-palette(colors.$surface-palette, "default");
 
 .mibi-panel {
   position: relative;

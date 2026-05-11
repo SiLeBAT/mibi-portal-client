@@ -30,15 +30,15 @@
   margin: layout.$single-space;
 
   &--error {
-    color: mat.get-color-from-palette(colors.$error-palette, "default");
+    color: mat.m2-get-color-from-palette(colors.$error-palette, "default");
   }
 
   &--success {
-    color: mat.get-color-from-palette(colors.$success-palette, "default");
+    color: mat.m2-get-color-from-palette(colors.$success-palette, "default");
   }
 
   &--warning {
-    color: mat.get-color-from-palette(colors.$warn-palette, "default");
+    color: mat.m2-get-color-from-palette(colors.$warn-palette, "default");
   }
 }
 
