@@ -41,7 +41,9 @@ import {
     TokenizedUserDTO,
     ZomoPlanFileCollectionDTO,
     ZomoPlanFileInfo,
-    ZomoPlanFileData
+    ZomoPlanFileData,
+    OrderEntryDTO,
+    OrderCollectionDTO
 } from '../model/response.model';
 import {
     AnnotatedOrderDTO
@@ -63,6 +65,7 @@ export class DataService {
     private NRL = 'nrls';
     private CLIENT_DASHBOARD_INFO = 'client-dashboard-info';
     private ZOMO_PLAN_FILE = 'zomo-plan-file';
+    private ORDER = 'orders';
     private URL = {
         submit: [this.API_VERSION, this.SAMPLE, 'submitted'].join('/'),
         validate: [this.API_VERSION, this.SAMPLE, 'validated'].join('/'),
@@ -73,6 +76,7 @@ export class DataService {
         zomoPlanFileInfos: [this.API_VERSION, this.ZOMO_PLAN_FILE].join('/'),
         downloadZomoPlanFile: [this.API_VERSION, this.ZOMO_PLAN_FILE, 'download'].join('/'),
         nrls: [this.API_VERSION, this.NRL].join('/'),
+        orderList: [this.API_VERSION, this.ORDER].join('/'),
         login: [this.API_VERSION, this.USER, 'login'].join('/'),
         register: [this.API_VERSION, this.USER, 'registration'].join('/'),
         resetPasswordRequest: [this.API_VERSION, this.USER, 'reset-password-request'].join('/'),
@@ -258,6 +262,11 @@ export class DataService {
     getAllNRLs(): Observable<NRLDTO[]> {
         return this.httpClient.get<NRLCollectionDTO>(this.URL.nrls, this.PARSE_OPTIONS).pipe(
             map((dto: NRLCollectionDTO) => dto.nrls));
+    }
+
+    getOrderList(): Observable<OrderEntryDTO[]> {
+        return this.httpClient.get<OrderCollectionDTO>(this.URL.orderList, this.PARSE_OPTIONS).pipe(
+            map((dto: OrderCollectionDTO) => dto.orders));
     }
 
     registrationRequest(registrationDetails: RegistrationDetails): Observable<RegistrationRequestResponseDTO> {
