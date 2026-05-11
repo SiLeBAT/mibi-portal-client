@@ -243,21 +243,21 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
     // CLEARING EVENT HANDLERS
 
     onGridMouseDown(e: MouseEvent): void {
-        if (e.button !== MouseButton.PRIMARY) {
+        if ((e.button as MouseButton) !== MouseButton.PRIMARY) {
             return;
         }
         this.clearing.clickGrid();
     }
 
     onContainerMouseDown(e: MouseEvent): void {
-        if (e.button !== MouseButton.PRIMARY) {
+        if ((e.button as MouseButton) !== MouseButton.PRIMARY) {
             return;
         }
         this.clearing.clickContainer();
     }
 
     onScrollContainerMouseDown(e: MouseEvent): void {
-        if (e.button !== MouseButton.PRIMARY) {
+        if ((e.button as MouseButton) !== MouseButton.PRIMARY) {
             return;
         }
         this.clearing.clickScrollContainer();
@@ -265,7 +265,7 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
 
     @HostListener('window:mousedown', ['$event'])
     onWindowMouseDown(e: MouseEvent): void {
-        if (e.button !== MouseButton.PRIMARY) {
+        if ((e.button as MouseButton) !== MouseButton.PRIMARY) {
             return;
         }
 
@@ -311,11 +311,11 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
     // PRIVATE UI EVENT HANDLERS
 
     private onCellMouseOver(e: MouseEvent, row: number, col: number): void {
-        if (e.buttons === MouseButtons.NONE && !this.isEdgeMouseDownLeft) {
+        if ((e.buttons as MouseButtons) === MouseButtons.NONE && !this.isEdgeMouseDownLeft) {
             this.startSelection(this.hover, row, col);
         }
 
-        if (e.buttons !== MouseButtons.PRIMARY && !this.isEdgeMouseDownLeft) {
+        if ((e.buttons as MouseButtons) !== MouseButtons.PRIMARY && !this.isEdgeMouseDownLeft) {
             return;
         }
 
@@ -326,7 +326,7 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
     }
 
     private onCellMouseDown(e: MouseEvent, row: number, col: number): void {
-        if (e.button !== MouseButton.PRIMARY) {
+        if ((e.button as MouseButton) !== MouseButton.PRIMARY) {
             return;
         }
 
@@ -354,7 +354,7 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
     }
 
     private onCellClick(e: MouseEvent, row: number, col: number): void {
-        if (e.button !== MouseButton.PRIMARY) {
+        if ((e.button as MouseButton) !== MouseButton.PRIMARY) {
             return;
         }
 

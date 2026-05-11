@@ -58,7 +58,7 @@ export enum SampleValidationErrorLevel {
 
 export interface SampleValidationError {
     code: number;
-    level: number;
+    level: SampleValidationErrorLevel;
     message: string;
 }
 
