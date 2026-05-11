@@ -20,7 +20,7 @@
 }
 
 .mibi-dialog-text-style-yellow {
-  background-color: mat.get-color-from-palette(colors.$warn-palette, "default");
+  background-color: mat.m2-get-color-from-palette(colors.$warn-palette, "default");
   padding: 1em;
 }
 

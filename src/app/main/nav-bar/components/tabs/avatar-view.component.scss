@@ -43,7 +43,7 @@
 }
 
 .mibi-user-info__icon {
-  color: mat.get-color-from-palette(colors.$secondary-palette, "default");
+  color: mat.m2-get-color-from-palette(colors.$secondary-palette, "default");
 }
 
 .mibi-user-info__auxilliary {

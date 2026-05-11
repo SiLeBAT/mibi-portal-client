@@ -30,7 +30,7 @@
 }
 
 .mibi-link-deactivated {
-  color: mat.get-color-from-palette(colors.$surface-palette, "lighter");
+  color: mat.m2-get-color-from-palette(colors.$surface-palette, "lighter");
 }
 
 .mibi-link:hover {

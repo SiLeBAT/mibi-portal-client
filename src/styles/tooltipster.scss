@@ -9,17 +9,17 @@ body {
   overflow: hidden;
 }
 
-$tooltip-tip-color: mat.get-color-from-palette(colors.$surface-palette, "lighter");
-$tooltip-on-tip-color: mat.get-color-from-palette(colors.$surface-palette, "lighter-contrast");
+$tooltip-tip-color: mat.m2-get-color-from-palette(colors.$surface-palette, "lighter");
+$tooltip-on-tip-color: mat.m2-get-color-from-palette(colors.$surface-palette, "lighter-contrast");
 
-$tooltip-error-color: mat.get-color-from-palette(colors.$error-palette, "default");
-$tooltip-on-error-color: mat.get-color-from-palette(colors.$error-palette, "default-contrast");
+$tooltip-error-color: mat.m2-get-color-from-palette(colors.$error-palette, "default");
+$tooltip-on-error-color: mat.m2-get-color-from-palette(colors.$error-palette, "default-contrast");
 
-$tooltip-warning-color: mat.get-color-from-palette(colors.$warn-palette, "default");
-$tooltip-on-warning-color: mat.get-color-from-palette(colors.$warn-palette, "default-contrast");
+$tooltip-warning-color: mat.m2-get-color-from-palette(colors.$warn-palette, "default");
+$tooltip-on-warning-color: mat.m2-get-color-from-palette(colors.$warn-palette, "default-contrast");
 
-$tooltip-info-color: mat.get-color-from-palette(colors.$primary-palette, "default");
-$tooltip-on-info-color: mat.get-color-from-palette(colors.$primary-palette, "default-contrast");
+$tooltip-info-color: mat.m2-get-color-from-palette(colors.$primary-palette, "default");
+$tooltip-on-info-color: mat.m2-get-color-from-palette(colors.$primary-palette, "default-contrast");
 
 $tooltip-border-color: black;
 

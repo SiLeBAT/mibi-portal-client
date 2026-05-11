@@ -10,7 +10,7 @@
 }
 
 .mibi-text-cell--readonly {
-  background-color: color.adjust(mat.get-color-from-palette(colors.$surface-palette, "lighter"), $lightness: 5%);
+  background-color: color.adjust(mat.m2-get-color-from-palette(colors.$surface-palette, "lighter"), $lightness: 5%);
 }
 
 .mibi-text-cell--col-header {

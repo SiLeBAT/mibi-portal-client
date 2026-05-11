@@ -50,8 +50,8 @@
 .mibi-header {
   padding: layout.$single-space;
   text-align: center;
-  background-color: mat.get-color-from-palette(colors.$primary-palette, "default");
-  color: mat.get-color-from-palette(colors.$primary-palette, "default-contrast");
+  background-color: mat.m2-get-color-from-palette(colors.$primary-palette, "default");
+  color: mat.m2-get-color-from-palette(colors.$primary-palette, "default-contrast");
 }
 
 .mibi-warnings {
@@ -61,7 +61,7 @@
 
 .mibi-other-hint--max-chars-reached,
 .mibi-comparehuman-hint--max-chars-reached {
-  color: mat.get-color-from-palette(colors.$error-palette, "default");
+  color: mat.m2-get-color-from-palette(colors.$error-palette, "default");
 }
 
 .mibi-other-input {

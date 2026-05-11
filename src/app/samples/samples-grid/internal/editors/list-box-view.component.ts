@@ -26,6 +26,7 @@ export class SamplesGridListBoxViewComponent implements OnChanges {
     @Output() focusRelease = new EventEmitter<void>();
 
     @Output() confirm = new EventEmitter<number>();
+    // eslint-disable-next-line @angular-eslint/no-output-native
     @Output() cancel = new EventEmitter<void>();
 
     // TEMPLATE PROPERTIES

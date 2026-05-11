@@ -89,19 +89,13 @@
                 }
               ],
               "outputHashing": "all",
-              "vendorChunk": true,
-              "buildOptimizer": false,
               "sourceMap": true,
-              "optimization": false,
-              "namedChunks": true
+              "optimization": false
             },
             "development": {
-              "vendorChunk": true,
               "extractLicenses": false,
-              "buildOptimizer": false,
               "sourceMap": true,
-              "optimization": false,
-              "namedChunks": true
+              "optimization": false
             }
           },
           "defaultConfiguration": "production"
@@ -142,7 +136,9 @@
   "cli": {
     "schematicCollections": [
       "@angular-eslint/schematics"
-    ]
+    ],
+    "analytics": false
+    
     
   }
 }

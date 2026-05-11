@@ -28,6 +28,7 @@ export class DataGridEditorViewComponent {
 
     @Output() dataChange = new EventEmitter<DataGridEditorData>();
     @Output() confirm = new EventEmitter<void>();
+    // eslint-disable-next-line @angular-eslint/no-output-native
     @Output() cancel = new EventEmitter<void>();
 
     // TEMPLATE PROPERTIES

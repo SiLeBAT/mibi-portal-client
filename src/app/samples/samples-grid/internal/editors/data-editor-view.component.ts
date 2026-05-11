@@ -13,6 +13,7 @@ export class SamplesGridDataEditorViewComponent implements OnInit {
     @Output() dataValueChange = new EventEmitter<SamplesGridEditorData>();
 
     @Output() confirm = new EventEmitter<void>();
+    // eslint-disable-next-line @angular-eslint/no-output-native
     @Output() cancel = new EventEmitter<void>();
 
     // TEMPLATE PROPERTIES
