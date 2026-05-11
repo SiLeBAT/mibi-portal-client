@@ -17,6 +17,7 @@ import { StoreRouterConnectingModule, routerReducer } from '@ngrx/router-store';
 import { ContentModule } from './content/content.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MainModule } from './main/main.module';
+import { OrdersModule } from './orders/orders.module';
 
 @NgModule({
     declarations: [
@@ -50,6 +51,7 @@ import { MainModule } from './main/main.module';
         SamplesModule,
         UserModule,
         ContentModule,
+        OrdersModule,
         StoreRouterConnectingModule.forRoot(),
         // AppRoutingModule needs to be at the end
         AppRoutingModule

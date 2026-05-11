@@ -12,6 +12,7 @@ import { AlertType } from '../core/model/alert.model';
 import { UserActionType } from '../shared/model/user-action.model';
 import { UserActionService } from '../core/services/user-action.service';
 import { samplesDestroyMainDataSOA } from '../samples/state/samples.actions';
+import { orderListDestroySOA } from '../orders/state/order-list.actions';
 import { Action, Store } from '@ngrx/store';
 import {
     userLoginSSA,
@@ -107,7 +108,8 @@ export class UserMainEffects {
         return of(
             navigateMSA({ path: this.userLinks.login }),
             userDestroyCurrentUserSOA(),
-            samplesDestroyMainDataSOA()
+            samplesDestroyMainDataSOA(),
+            orderListDestroySOA()
         );
     }
 

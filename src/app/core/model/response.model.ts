@@ -88,6 +88,22 @@ export interface NRLCollectionDTO {
 export interface InstituteCollectionDTO {
     readonly institutes: InstituteDTO[];
 }
+
+export interface OrderCollectionDTO {
+    orders: OrderEntryDTO[];
+}
+
+export interface OrderEntryDTO {
+    id: string;
+    createdAt: Date;
+    sampleCount: number;
+    version: string;
+    fileName: string;
+    nrls: string[];
+    pathogens: string[];
+    results: string;
+}
+
 export interface PutSamplesXLSXResponseDTO {
     readonly data: string;
     readonly fileName: string;
