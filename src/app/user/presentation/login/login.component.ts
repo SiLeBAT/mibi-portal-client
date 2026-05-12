@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 
 @Component({
+    standalone: false,
     selector: 'mibi-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss']

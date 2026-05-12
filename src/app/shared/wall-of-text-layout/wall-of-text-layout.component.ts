@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
+    standalone: false,
     selector: 'mibi-wall-of-text-layout',
     templateUrl: './wall-of-text-layout.component.html',
     styleUrls: ['./wall-of-text-layout.component.scss']

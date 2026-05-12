@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 
 @Component({
+    standalone: false,
     selector: 'mibi-admin-activate',
     templateUrl: './admin-activate.component.html',
     styleUrls: ['./admin-activate.component.scss']

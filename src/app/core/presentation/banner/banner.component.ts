@@ -5,6 +5,7 @@ import {
 import { Banner } from '../../model/alert.model';
 
 @Component({
+    standalone: false,
     selector: 'mibi-banner',
     templateUrl: './banner.component.html',
     styleUrls: ['./banner.component.scss']

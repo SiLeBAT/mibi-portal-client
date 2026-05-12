@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from 
 import { NavBarAvatarUser } from './avatar-user.model';
 
 @Component({
+    standalone: false,
     selector: 'mibi-nav-bar-avatar-view',
     templateUrl: './avatar-view.component.html',
     styleUrls: ['./avatar-view.component.scss'],

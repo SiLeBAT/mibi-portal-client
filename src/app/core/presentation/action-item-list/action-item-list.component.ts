@@ -3,6 +3,7 @@ import { UserActionViewModelConfiguration, UserActionType } from '../../../share
 import { ZomoPlanFileInfo } from '../../model/response.model';
 
 @Component({
+    standalone: false,
     selector: 'mibi-action-item-list',
     templateUrl: './action-item-list.component.html',
     styleUrls: ['./action-item-list.component.scss']

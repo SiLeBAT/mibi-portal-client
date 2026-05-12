@@ -43,6 +43,7 @@ enum MouseButtons {
 }
 
 @Component({
+    standalone: false,
     selector: 'mibi-data-grid-view',
     templateUrl: './data-grid-view.component.html',
     styleUrls: ['./data-grid-view.component.scss'],

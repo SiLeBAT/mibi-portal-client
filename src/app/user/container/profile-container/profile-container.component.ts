@@ -9,6 +9,7 @@ import { UserMainSlice } from '../../user.state';
 import { userLogoutMSA } from '../../state/user.actions';
 
 @Component({
+    standalone: false,
     selector: 'mibi-profile-container',
     template: `<mibi-profile *ngIf="currentUser"
     [institution]="getInstitutionName()"

@@ -209,6 +209,7 @@
         "unicorn/prevent-abbreviations": "off",
         "unicorn/expiring-todo-comments": "off",
         "unicorn/no-abusive-eslint-disable": "off",
+        "@angular-eslint/prefer-standalone": "off",
         "@angular-eslint/component-selector": [
           "error",
           {

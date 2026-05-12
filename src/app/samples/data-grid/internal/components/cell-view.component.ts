@@ -15,6 +15,7 @@ import { DataGridCellTool } from '../cell-tool.class';
 import { DataGridSelectionManager } from '../selection-manager.class';
 
 @Component({
+    standalone: false,
     selector: 'mibi-data-grid-cell-view',
     templateUrl: './cell-view.component.html',
     styleUrls: ['./cell-view.component.scss'],

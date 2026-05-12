@@ -6,6 +6,7 @@ import { SampleValidationErrorLevel } from '../../../model/sample-management.mod
 // import { SoftLineBreaksPipe } from '../../../../shared/presentation/pipes/soft-line-breaks.pipe';
 
 @Component({
+    standalone: false,
     selector: 'mibi-samples-grid-data-cell-template',
     templateUrl: './data-cell-template.component.html',
     styleUrls: ['./data-cell-template.component.scss'],

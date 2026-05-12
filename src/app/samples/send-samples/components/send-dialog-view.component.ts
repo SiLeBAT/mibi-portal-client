@@ -3,6 +3,7 @@ import { UntypedFormControl } from '@angular/forms';
 import { DialogConfiguration } from '../../../shared/dialog/dialog.model';
 
 @Component({
+    standalone: false,
     selector: 'mibi-send-dialog-view',
     templateUrl: './send-dialog-view.component.html',
     styleUrls: ['./send-dialog-view.component.scss']

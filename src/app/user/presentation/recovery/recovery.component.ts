@@ -3,6 +3,7 @@ import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms
 import { UserLinkProviderService } from '../../link-provider.service';
 
 @Component({
+    standalone: false,
     selector: 'mibi-recovery',
     templateUrl: './recovery.component.html',
     styleUrls: ['./recovery.component.scss']

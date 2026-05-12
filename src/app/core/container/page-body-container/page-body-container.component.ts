@@ -7,6 +7,7 @@ import { selectIsBusy, selectIsBannerShown, selectIsAlternativeWelcomePage } fro
 import { tap } from 'rxjs/operators';
 
 @Component({
+    standalone: false,
     selector: 'mibi-page-body-container',
     template: `<mibi-page-body [isBusy]="isBusy$ | async" [isBanner]="isBanner$ | async" [isAlternativeWelcomePageActive]="isAlternativeWelcomePageActive$ | async" (animationDone)="onAnimationDone()"></mibi-page-body>`
 })

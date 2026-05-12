@@ -8,6 +8,7 @@ import { UserMainState } from '../../state/user.reducer';
 import { UserLinkProviderService } from '../../link-provider.service';
 
 @Component({
+    standalone: false,
     selector: 'mibi-reset-container',
     template: `<mibi-reset
     (resetPassword)="onResetPassword($event)"></mibi-reset>`

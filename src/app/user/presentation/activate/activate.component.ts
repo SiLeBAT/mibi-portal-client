@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { UserLinkProviderService } from '../../link-provider.service';
 
 @Component({
+    standalone: false,
     selector: 'mibi-activate',
     templateUrl: './activate.component.html',
     styleUrls: ['./activate.component.scss']

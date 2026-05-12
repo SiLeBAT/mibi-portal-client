@@ -3,6 +3,7 @@ import { MailConfiguration } from '../../model/mail.model';
 import { supportMailConfiguration } from '../../constants/support-contact.constants';
 
 @Component({
+    standalone: false,
     selector: 'mibi-footer-nav-container',
     template: `<mibi-footer-nav [supportMailConfig]="supportMailConfig"></mibi-footer-nav>`
 })

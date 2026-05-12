@@ -10,6 +10,7 @@ import { map } from 'rxjs/operators';
 import { DialogConfiguration } from '../dialog.model';
 
 @Component({
+    standalone: false,
     selector: 'mibi-new-dialog',
     template: `
         <mibi-dialog-view

@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { NavBarTab } from '../../nav-bar.model';
 
 @Component({
+    standalone: false,
     selector: 'mibi-nav-bar-title-view',
     templateUrl: './title-view.component.html',
     styleUrls: ['./title-view.component.scss'],

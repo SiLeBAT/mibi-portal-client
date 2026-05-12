@@ -16,6 +16,7 @@ import { navigateMSA } from '../../../shared/navigate/navigate.actions';
 import { UserLinkProviderService } from '../../link-provider.service';
 
 @Component({
+    standalone: false,
     selector: 'mibi-recovery-container',
     template: `<mibi-recovery (recovery)="recovery($event)"></mibi-recovery>`
 })

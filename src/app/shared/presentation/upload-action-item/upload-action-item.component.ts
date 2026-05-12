@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { UploadAbstractComponent } from '../upload/upload.abstract';
 
 @Component({
+    standalone: false,
     selector: 'mibi-upload-action-item',
     templateUrl: './upload-action-item.component.html'
 })

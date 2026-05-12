@@ -3,6 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogContent } from '../../../core/model/dialog.model';
 
 @Component({
+    standalone: false,
     selector: 'mibi-dialog',
     templateUrl: './dialog.component.html',
     styleUrls: ['./dialog.component.scss']

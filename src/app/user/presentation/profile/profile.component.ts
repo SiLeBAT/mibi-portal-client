@@ -2,6 +2,7 @@ import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { User } from '../../../user/model/user.model';
 
 @Component({
+    standalone: false,
     selector: 'mibi-profile',
     templateUrl: './profile.component.html',
     styleUrls: ['./profile.component.scss']

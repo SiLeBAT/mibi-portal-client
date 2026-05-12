@@ -6,6 +6,7 @@ export interface DatenschutzHinweiseViewModel {
 }
 
 @Component({
+    standalone: false,
     selector: 'mibi-datenschutzhinweise',
     templateUrl: './datenschutzhinweise.component.html',
     styleUrls: ['./datenschutzhinweise.component.scss']

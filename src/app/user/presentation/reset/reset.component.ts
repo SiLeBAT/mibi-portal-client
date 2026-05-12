@@ -4,6 +4,7 @@ import { PasswordComponent } from '../../password/password.component';
 import { UserLinkProviderService } from '../../link-provider.service';
 
 @Component({
+    standalone: false,
     selector: 'mibi-reset',
     templateUrl: './reset.component.html',
     styleUrls: ['./reset.component.scss']

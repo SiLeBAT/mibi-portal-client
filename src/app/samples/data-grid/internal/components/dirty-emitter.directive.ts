@@ -4,6 +4,7 @@ import { DataGridDirtyEmitter } from '../cell-controller.model';
 import { tap } from 'rxjs/operators';
 
 @Directive({
+    standalone: false,
     selector: '[mibiDataGridDirtyEmitter]'
 })
 export class DataGridDirtyEmitterDirective implements OnInit, OnDestroy {

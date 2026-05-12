@@ -2,6 +2,7 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, O
 import { Faq } from '../../../main/faq/faq.model';
 
 @Component({
+    standalone: false,
     selector: 'mibi-faq-view',
     templateUrl: './faq-view.component.html',
     styleUrls: ['./faq-view.component.scss'],

@@ -13,6 +13,7 @@ import { Observable } from 'rxjs';
 import { UserLinkProviderService } from '../../../user/link-provider.service';
 
 @Component({
+    standalone: false,
     selector: 'mibi-banner-container',
     template: `
         <mibi-banner *ngIf="(banner$ | async) as banner"

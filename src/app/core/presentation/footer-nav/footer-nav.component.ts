@@ -4,6 +4,7 @@ import { MainLinkProviderService } from '../../../main/link-provider.service';
 import { MailConfiguration } from '../../model/mail.model';
 
 @Component({
+    standalone: false,
     selector: 'mibi-footer-nav',
     templateUrl: './footer-nav.component.html',
     styleUrls: ['./footer-nav.component.scss']

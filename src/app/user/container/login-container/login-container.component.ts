@@ -13,6 +13,7 @@ import { SamplesLinkProviderService } from '../../../samples/link-provider.servi
 import { validateSamplesSSA } from '../../../samples/validate-samples/validate-samples.actions';
 
 @Component({
+    standalone: false,
     selector: 'mibi-login-container',
     template: `<mibi-login
     (login)="login($event)">
