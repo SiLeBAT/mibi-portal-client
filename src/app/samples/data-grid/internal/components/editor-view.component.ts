@@ -17,6 +17,7 @@ import { DataGridCellController } from '../cell-controller.model';
 import { DataGridCellTool } from '../cell-tool.class';
 
 @Component({
+    standalone: false,
     selector: 'mibi-data-grid-editor-view',
     templateUrl: './editor-view.component.html',
     styleUrls: ['./editor-view.component.scss'],

@@ -23,6 +23,7 @@ export interface ExcelVersionDialogData {
 }
 
 @Component({
+    standalone: false,
     selector: 'mibi-send-excel-version-dialog',
     templateUrl: 'excel-version-dialog.component.html',
     styleUrls: ['./excel-version-dialog.component.scss']

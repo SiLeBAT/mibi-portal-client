@@ -5,6 +5,7 @@ import { ToolTip, createToolTip, ToolTipTheme } from '../../../shared/model/tool
 import 'tooltipster';
 
 @Component({
+    standalone: false,
     selector: 'mibi-last-change-display',
     templateUrl: './last-change-display.component.html',
     styleUrls: ['./last-change-display.component.scss']

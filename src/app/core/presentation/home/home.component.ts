@@ -3,6 +3,7 @@ import { environment } from '../../../../environments/environment';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
+    standalone: false,
     selector: 'mibi-home',
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.scss']

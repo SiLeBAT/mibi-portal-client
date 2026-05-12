@@ -2,6 +2,7 @@ import { Component, ChangeDetectionStrategy, ViewChild, OnInit, ElementRef, Inpu
 import { SamplesGridDataCellData, SamplesGridEditorData } from '../../samples-grid.model';
 
 @Component({
+    standalone: false,
     selector: 'mibi-samples-grid-data-editor-view',
     templateUrl: './data-editor-view.component.html',
     styleUrls: ['./data-editor-view.component.scss'],

@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
+    standalone: false,
     selector: 'mibi-box-layout',
     templateUrl: './box-layout.component.html',
     styleUrls: ['./box-layout.component.scss']

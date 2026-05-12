@@ -7,6 +7,7 @@ import { selectHasEntries } from './samples/state/samples.selectors';
 import { initSSA } from './main/init/init.actions';
 
 @Component({
+    standalone: false,
     selector: 'mibi-root',
     templateUrl: './app.component.html'
 })

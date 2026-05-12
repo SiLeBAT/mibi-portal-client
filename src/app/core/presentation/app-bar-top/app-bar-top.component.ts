@@ -3,6 +3,7 @@ import { UserActionViewModelConfiguration } from '../../../shared/model/user-act
 import { ZomoPlanFileInfo } from '../../model/response.model';
 
 @Component({
+    standalone: false,
     selector: 'mibi-app-bar-top',
     templateUrl: './app-bar-top.component.html',
     styleUrls: ['./app-bar-top.component.scss']

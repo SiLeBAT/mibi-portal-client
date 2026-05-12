@@ -31,6 +31,7 @@ const selectNavTabsConfig = createSelector<SamplesMainSlice, boolean, NavTabsCon
 );
 
 @Component({
+    standalone: false,
     selector: 'mibi-nav-bar',
     template: `
         <mibi-nav-bar-layout>

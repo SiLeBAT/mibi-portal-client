@@ -18,6 +18,7 @@ import { firstValueFrom, Observable } from 'rxjs';
 import { UserLinkProviderService } from '../../link-provider.service';
 
 @Component({
+    standalone: false,
     selector: 'mibi-register-container',
     template: `<mibi-register *ngIf="(institutions$ | async) as institutions"
         (register)="register($event)"

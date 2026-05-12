@@ -3,6 +3,7 @@ import { ContentLinkProviderService } from '../../../content/link-provider.servi
 import { UserLinkProviderService } from '../../link-provider.service';
 
 @Component({
+    standalone: false,
     selector: 'mibi-register-view',
     templateUrl: './register-view.component.html',
     styleUrls: ['./register-view.component.scss']

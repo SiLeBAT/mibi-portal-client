@@ -30,6 +30,7 @@ interface OptionalProcedure {
     controlName: string;
 }
 @Component({
+    standalone: false,
     selector: 'mibi-analysis-stepper',
     templateUrl: './analysis-stepper.component.html',
     styleUrls: ['./analysis-stepper.component.scss']

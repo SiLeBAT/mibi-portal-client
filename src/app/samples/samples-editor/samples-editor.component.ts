@@ -15,6 +15,7 @@ import { SamplesEditorColumnModel, SamplesEditorDataColumnModel } from './sample
 import { SamplesGridDataChangeEvent, SamplesGridViewModel } from '../samples-grid/samples-grid.model';
 
 @Component({
+    standalone: false,
     template: `
         <mibi-samples-grid-view
             [model] = "samplesGridModel$ | async"

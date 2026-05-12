@@ -11,6 +11,7 @@ import { selectHasEntries } from '../../../samples/state/samples.selectors';
 import { showBannerSOA, showDialogMSA, hideBannerSOA } from '../../../core/state/core.actions';
 
 @Component({
+    standalone: false,
     selector: 'mibi-upload-container',
     template: '<ng-content></ng-content>'
 })

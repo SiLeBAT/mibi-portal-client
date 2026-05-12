@@ -35,6 +35,7 @@ const PasswordConfirmationValidator = (formGroup: UntypedFormGroup): ValidationE
 // PasswordComponent
 
 @Component({
+    standalone: false,
     selector: 'mibi-password',
     templateUrl: './password.component.html',
     styleUrls: ['./password.component.scss']

@@ -3,6 +3,7 @@ import { DataGridCellContext } from '../../../data-grid/data-grid.model';
 import { SamplesGridTemplateContainer } from '../template-container';
 
 @Component({
+    standalone: false,
     selector: 'mibi-samples-grid-text-cell-template',
     templateUrl: './text-cell-template.component.html',
     styleUrls: ['./text-cell-template.component.scss'],

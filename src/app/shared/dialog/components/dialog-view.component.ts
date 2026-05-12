@@ -2,6 +2,7 @@ import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { DialogConfiguration } from '../dialog.model';
 
 @Component({
+    standalone: false,
     selector: 'mibi-dialog-view',
     templateUrl: './dialog-view.component.html',
     styleUrls: ['./dialog-view.component.scss']

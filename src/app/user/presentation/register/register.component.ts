@@ -14,6 +14,7 @@ const instituteValidator = (control: AbstractControl): ValidationErrors | null =
 // Component
 
 @Component({
+    standalone: false,
     selector: 'mibi-register',
     templateUrl: './register.component.html',
     styleUrls: ['./register.component.scss']

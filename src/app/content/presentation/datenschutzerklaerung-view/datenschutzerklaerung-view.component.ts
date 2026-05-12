@@ -3,6 +3,7 @@ import { dataProtectionLinks, dataProtectionOfficerIdCard } from '../../data-pro
 import { DatenschutzerklaerungViewModel } from '../datenschutzerklaerung/datenschutzerklaerung.component';
 
 @Component({
+    standalone: false,
     selector: 'mibi-datenschutzerklaerung-view',
     templateUrl: './datenschutzerklaerung-view.component.html'
 })

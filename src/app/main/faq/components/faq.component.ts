@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Faq } from '../faq.model';
 
 @Component({
+    standalone: false,
     selector: 'mibi-faq',
     template: `
         <mibi-faq-view

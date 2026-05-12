@@ -3,6 +3,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { FaqEntry } from '../faq.model';
 
 @Component({
+    standalone: false,
     selector: 'mibi-faq-section-view',
     templateUrl: './faq-section-view.component.html',
     styleUrls: ['./faq-section-view.component.scss'],

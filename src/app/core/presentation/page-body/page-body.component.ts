@@ -6,6 +6,7 @@ import { RouterOutlet } from '@angular/router';
 import { AnimationsRouteData } from '../../../shared/animations/animations.model';
 
 @Component({
+    standalone: false,
     selector: 'mibi-page-body',
     templateUrl: './page-body.component.html',
     styleUrls: ['./page-body.component.scss'],

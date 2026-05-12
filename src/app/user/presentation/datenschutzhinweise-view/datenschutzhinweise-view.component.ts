@@ -3,6 +3,7 @@ import { dataProtectionOfficerIdCard } from '../../../content/data-protection/da
 import { DatenschutzHinweiseViewModel } from '../datenschutzhinweise/datenschutzhinweise.component';
 
 @Component({
+    standalone: false,
     selector: 'mibi-datenschutzhinweise-view',
     templateUrl: './datenschutzhinweise-view.component.html'
 })

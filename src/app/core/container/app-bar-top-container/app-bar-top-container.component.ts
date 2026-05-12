@@ -15,6 +15,7 @@ import { ZomoPlanFileInfo } from '../../model/response.model';
 import { downloadZomoPlanFileSSA } from '../../download-zomo-plan-file/download-zomo-plan-file.actions';
 
 @Component({
+    standalone: false,
     selector: 'mibi-app-bar-top-container',
     template: `<mibi-app-bar-top
         [actionBarEnabled]="actionBarEnabled$ | async"

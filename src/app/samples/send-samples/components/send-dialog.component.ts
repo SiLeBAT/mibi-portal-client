@@ -11,6 +11,7 @@ import { sendSamplesSendDialogStrings } from '../send-samples.constants';
 import { sendSamplesCancelSendSSA, sendSamplesConfirmSendSSA } from '../state/send-samples.actions';
 
 @Component({
+    standalone: false,
     selector: 'mibi-send-dialog',
     template:
         `<mibi-send-dialog-view

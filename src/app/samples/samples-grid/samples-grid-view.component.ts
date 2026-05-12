@@ -6,6 +6,7 @@ import { SamplesGridDataCellTemplateComponent } from './internal/cells/data-cell
 import { SamplesGridDataEditorTemplateComponent } from './internal/editors/data-editor-template.component';
 
 @Component({
+    standalone: false,
     selector: 'mibi-samples-grid-view',
     templateUrl: './samples-grid-view.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush

@@ -8,6 +8,7 @@ export interface DatenschutzerklaerungViewModel {
 }
 
 @Component({
+    standalone: false,
     selector: 'mibi-datenschutzerklaerung',
     templateUrl: './datenschutzerklaerung.component.html',
     styleUrls: ['./datenschutzerklaerung.component.scss']

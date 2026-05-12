@@ -10,6 +10,7 @@ import { updateSupportDetailSOA } from '../../../content/state/content.actions';
 import { SupportDetail } from '../../../content/model/support-detail.model';
 
 @Component({
+    standalone: false,
     selector: 'mibi-last-change-display-container',
     template: `<mibi-last-change-display
     *ngIf="isDataAvailable"

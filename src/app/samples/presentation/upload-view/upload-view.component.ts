@@ -6,6 +6,7 @@ import { showActionBarSOA } from '../../../core/state/core.actions';
 import { importSamplesMSA } from '../../import-samples/import-samples.actions';
 
 @Component({
+    standalone: false,
     selector: 'mibi-upload-view',
     templateUrl: './upload-view.component.html',
     styleUrls: ['./upload-view.component.scss']

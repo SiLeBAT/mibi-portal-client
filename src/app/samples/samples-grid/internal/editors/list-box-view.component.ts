@@ -7,6 +7,7 @@ interface FilteredValue {
 }
 
 @Component({
+    standalone: false,
     selector: 'mibi-samples-grid-list-box-view',
     templateUrl: './list-box-view.component.html',
     styleUrls: ['./list-box-view.component.scss'],

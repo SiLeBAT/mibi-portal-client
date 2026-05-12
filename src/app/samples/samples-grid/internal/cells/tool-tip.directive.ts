@@ -6,6 +6,7 @@ import { SamplesGridDataCellData } from '../../samples-grid.model';
 import { SampleValidationErrorLevel } from '../../../model/sample-management.model';
 
 @Directive({
+    standalone: false,
     selector: '[mibiSamplesGridToolTip]'
 })
 export class SamplesGridToolTipDirective implements OnChanges {

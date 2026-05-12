@@ -7,6 +7,7 @@ import { UserMainState } from '../../state/user.reducer';
 import { showBannerSOA } from '../../../core/state/core.actions';
 
 @Component({
+    standalone: false,
     selector: 'mibi-admin-activate-container',
     template: `<mibi-admin-activate
     [adminTokenValid]="adminTokenValid.activation"

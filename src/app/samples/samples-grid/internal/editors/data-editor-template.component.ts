@@ -3,6 +3,7 @@ import { SamplesGridTemplateContainer } from '../template-container';
 import { DataGridEditorContext } from '../../../data-grid/data-grid.model';
 
 @Component({
+    standalone: false,
     selector: 'mibi-samples-grid-data-editor-template',
     template: `
         <ng-template #template
