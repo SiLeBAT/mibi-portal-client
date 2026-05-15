@@ -17,27 +17,23 @@ export const routerTransitionFadeAnimation = trigger('routerTransitionFadeAnimat
     ])
 ]);
 
-// after 0.3s switches out to display:none and in to display:block
+// cross-fade: leaving route fades out, entering route fades in
 export const routerTransitionAnimation = trigger('routerTransitionAnimation', [
     transition('initial => *', []),
     transition('disabled => *', []),
     transition('* => *', [
-        query(':leave, :enter', [
-            style({ 'display': 'none' })
+        query(':enter', [
+            style({ 'opacity': '0' })
         ], { optional: true }),
 
         group([
             query(':leave', [
-                style({ 'display': 'inline' }),
-                animate('0.3s'),
-                style({ 'display': 'none' })
+                animate('0.3s', style({ 'opacity': '0' }))
             ], { optional: true }),
 
             query(':enter', [
-                animate('0.3s'),
-                style({ 'display': 'inline' })
+                animate('0.3s', style({ 'opacity': '1' }))
             ], { optional: true })
         ])
-
     ])
 ]);

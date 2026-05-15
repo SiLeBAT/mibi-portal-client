@@ -11,6 +11,7 @@
 
 # profiling files
 chrome-profiler-events*.json
+ts-jest.log
 
 # IDEs and editors
 /.idea

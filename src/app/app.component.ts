@@ -28,9 +28,7 @@ export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDe
             takeWhile(() => this.componentActive)
         ).subscribe();
 
-        setTimeout(() => {
-            this.store$.dispatch(initSSA());
-        });
+        this.store$.dispatch(initSSA());
     }
 
     ngOnDestroy() {
