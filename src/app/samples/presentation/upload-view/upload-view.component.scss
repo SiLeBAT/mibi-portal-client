@@ -1,5 +1,49 @@
 @use "@angular/material" as mat;
 @use "colors";
+@use "layout";
+
+:host {
+  display: block;
+  height: 100%;
+  overflow: auto;
+}
+
+.mibi-upload-page {
+  display: flex;
+  flex-direction: column;
+  gap: layout.$octuple-space;
+  min-height: 100%;
+  padding-bottom: layout.$double-space;
+  box-sizing: border-box;
+}
+
+.mibi-upload-page__upload-card {
+  display: block;
+  flex: 0 0 auto;
+
+  /* stylelint-disable selector-pseudo-element-no-unknown */
+  ::ng-deep .mibi-card-container {
+    height: auto;
+    padding: layout.$double-space 10% 0;
+  }
+
+  ::ng-deep .mibi-card-title {
+    text-align: center;
+    margin: 0 0 layout.$quadruple-space;
+  }
+  /* stylelint-enable selector-pseudo-element-no-unknown */
+}
+
+// When the orders container is empty (logged-out user, no <mat-card> rendered),
+// push the upload card further down the page.
+.mibi-upload-page:not(:has(.mibi-order-list)) .mibi-upload-page__upload-card {
+  margin-top: layout.$octuple-space;
+}
+
+.mibi-upload-page__orders {
+  display: block;
+  flex: 0 0 auto;
+}
 
 .mibi-upload-container {
   height: 100%;

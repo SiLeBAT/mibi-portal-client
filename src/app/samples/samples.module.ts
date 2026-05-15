@@ -37,6 +37,7 @@ import { NoSampleGuard } from './services/no-sample-guard.service';
 import { AnimationsRouteData } from '../shared/animations/animations.model';
 import { SoftLineBreaksPipe } from './pipes/soft-line-breaks.pipe';
 import { ExcelVersionDialogComponent } from './import-samples/components/excel-version-dialog.component';
+import { OrdersModule } from '../orders/orders.module';
 
 const disabledTransitionAnimationData: AnimationsRouteData = {
     transitionAnimation: 'disabled'
@@ -73,7 +74,8 @@ const routes: Routes = [
         StoreModule.forFeature(SAMPLES_SLICE_NAME, samplesReducerMap),
         EffectsModule.forFeature(samplesEffects),
         SharedModule,
-        CoreModule
+        CoreModule,
+        OrdersModule
     ],
     declarations: [
         UploadViewComponent,

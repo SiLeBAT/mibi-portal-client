@@ -1,0 +1,75 @@
+@use "layout";
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.mibi-order-list-filter-input {
+  position: relative;
+  width: 100%;
+}
+
+.mibi-order-list-filter-input__field {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 2px 24px 2px layout.$single-space;
+  border: 1px solid rgb(0 0 0 / 23%);
+  border-radius: 4px;
+  font: inherit;
+  background: transparent;
+
+  &:focus {
+    outline: none;
+    border-color: currentcolor;
+  }
+}
+
+// When a clear button is shown, leave extra right padding so text doesn't
+// slide under it.
+.mibi-order-list-filter-input__field--with-clear {
+  padding-right: 44px;
+}
+
+.mibi-order-list-filter-input__icon {
+  position: absolute;
+  top: 50%;
+  right: 4px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  color: rgb(0 0 0 / 54%);
+}
+
+.mibi-order-list-filter-input__clear {
+  position: absolute;
+  top: 50%;
+  right: 22px;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: rgb(0 0 0 / 54%);
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    color: rgb(0 0 0 / 87%);
+    outline: none;
+  }
+}
+
+.mibi-order-list-filter-input__clear-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+}
