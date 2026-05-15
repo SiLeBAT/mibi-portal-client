@@ -1,0 +1,121 @@
+<mat-card class="mibi-order-list">
+    <mat-card-title class="mibi-order-list__title">Ihre bisherigen Aufträge ans BfR</mat-card-title>
+    <mat-card-content class="mibi-order-list__content">
+        <table
+            mat-table
+            [dataSource]="dataSource"
+            matSort
+            class="mibi-order-list__table"
+        >
+            <ng-container matColumnDef="createdAt">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="mibi-order-list__col--created-at">Datum / Zeit</th>
+                <td mat-cell *matCellDef="let row" class="mibi-order-list__col--created-at">{{ row.createdAt | date:'dd.MM.yyyy HH:mm' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="fileName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Dateiname</th>
+                <td mat-cell *matCellDef="let row" class="mibi-order-list__cell--wrap">{{ row.fileName }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="pathogens">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Enthaltene Erreger</th>
+                <td mat-cell *matCellDef="let row" class="mibi-order-list__cell--wrap">{{ row.pathogens }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="nrls">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Auftrag an</th>
+                <td mat-cell *matCellDef="let row" class="mibi-order-list__cell--wrap">{{ row.nrls }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="sampleCount">
+                <th mat-header-cell *matHeaderCellDef class="mibi-order-list__col--sample-count">Probenanzahl</th>
+                <td mat-cell *matCellDef="let row" class="mibi-order-list__col--sample-count">{{ row.sampleCount }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="results">
+                <th mat-header-cell *matHeaderCellDef class="mibi-order-list__col--narrow">BfR-Ergebnisse verfügbar</th>
+                <td mat-cell *matCellDef="let row" class="mibi-order-list__col--narrow">{{ row.results }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef class="mibi-order-list__col--actions">Auftrag ansehen</th>
+                <td mat-cell *matCellDef="let row" class="mibi-order-list__col--actions">
+                    <button
+                        mat-icon-button
+                        type="button"
+                        aria-label="Auftrag ansehen"
+                        (click)="onOpenResults(row)"
+                    >
+                        <mat-icon>arrow_forward</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="filter-createdAt">
+                <th mat-header-cell *matHeaderCellDef class="mibi-order-list__filter-cell">
+                    <mibi-order-list-filter-input
+                        [value]="columnFilters.createdAt"
+                        ariaLabel="Datum / Zeit filtern"
+                        (valueChange)="onFilterChange('createdAt', $event)"
+                    ></mibi-order-list-filter-input>
+                </th>
+            </ng-container>
+
+            <ng-container matColumnDef="filter-fileName">
+                <th mat-header-cell *matHeaderCellDef class="mibi-order-list__filter-cell">
+                    <mibi-order-list-filter-input
+                        [value]="columnFilters.fileName"
+                        ariaLabel="Dateiname filtern"
+                        (valueChange)="onFilterChange('fileName', $event)"
+                    ></mibi-order-list-filter-input>
+                </th>
+            </ng-container>
+
+            <ng-container matColumnDef="filter-pathogens">
+                <th mat-header-cell *matHeaderCellDef class="mibi-order-list__filter-cell">
+                    <mibi-order-list-filter-input
+                        [value]="columnFilters.pathogens"
+                        ariaLabel="Enthaltene Erreger filtern"
+                        (valueChange)="onFilterChange('pathogens', $event)"
+                    ></mibi-order-list-filter-input>
+                </th>
+            </ng-container>
+
+            <ng-container matColumnDef="filter-nrls">
+                <th mat-header-cell *matHeaderCellDef class="mibi-order-list__filter-cell">
+                    <mibi-order-list-filter-input
+                        [value]="columnFilters.nrls"
+                        ariaLabel="Auftrag an filtern"
+                        (valueChange)="onFilterChange('nrls', $event)"
+                    ></mibi-order-list-filter-input>
+                </th>
+            </ng-container>
+
+            <ng-container matColumnDef="filter-sampleCount"><th mat-header-cell *matHeaderCellDef class="mibi-order-list__filter-cell"></th></ng-container>
+            <ng-container matColumnDef="filter-results"><th mat-header-cell *matHeaderCellDef class="mibi-order-list__filter-cell"></th></ng-container>
+            <ng-container matColumnDef="filter-actions"><th mat-header-cell *matHeaderCellDef class="mibi-order-list__filter-cell"></th></ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-header-row *matHeaderRowDef="[
+                'filter-createdAt',
+                'filter-fileName',
+                'filter-pathogens',
+                'filter-nrls',
+                'filter-sampleCount',
+                'filter-results',
+                'filter-actions'
+            ]"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <div class="mibi-order-list__footer-row">
+            <span class="mibi-order-list__footer">{{ rowCount }} Aufträge</span>
+            <mat-paginator
+                class="mibi-order-list__paginator"
+                [pageSizeOptions]="[5, 10, 25, 50]"
+                [pageSize]="10"
+                showFirstLastButtons
+            ></mat-paginator>
+        </div>
+    </mat-card-content>
+</mat-card>

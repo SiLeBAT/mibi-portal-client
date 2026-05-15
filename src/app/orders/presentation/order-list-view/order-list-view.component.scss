@@ -1,0 +1,118 @@
+@use "@angular/material" as mat;
+@use "colors";
+@use "layout";
+
+:host {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 layout.$quadruple-space;
+}
+
+.mibi-order-list {
+  width: 100%;
+  box-sizing: border-box;
+  padding: layout.$double-space;
+}
+
+.mibi-order-list__title {
+  text-align: center;
+  margin: 0 0 layout.$quadruple-space;
+}
+
+.mibi-order-list__content {
+  padding: 0;
+  overflow: hidden;
+}
+
+.mibi-order-list__table {
+  width: 100%;
+  table-layout: fixed;
+  border-top: 1px solid rgb(0 0 0 / 12%);
+
+  // Slim Material's default 52px / 56px row heights.
+  --mat-table-row-item-container-height: 30px;
+  --mat-table-header-container-height: 40px;
+  --mat-table-footer-container-height: 36px;
+
+  /* stylelint-disable selector-pseudo-element-no-unknown, selector-class-pattern */
+  ::ng-deep th.mat-mdc-header-cell,
+  ::ng-deep td.mat-mdc-cell {
+    border-right: 1px solid rgb(0 0 0 / 12%);
+    padding-top: layout.$half-space;
+    padding-bottom: layout.$half-space;
+  }
+
+  ::ng-deep th.mat-mdc-header-cell:last-child,
+  ::ng-deep td.mat-mdc-cell:last-child {
+    border-right: none;
+  }
+
+  // First header row: remove the divider to the filter row AND center-align titles.
+  // Sortable headers wrap their content in .mat-sort-header-container, so we
+  // also center that flex container.
+  ::ng-deep tr.mat-mdc-header-row:first-of-type > th.mat-mdc-header-cell {
+    border-bottom: none;
+    text-align: center;
+
+    .mat-sort-header-container {
+      justify-content: center;
+    }
+  }
+
+  // Row hover: light-blue (drag-and-drop background) + dark-blue text
+  // (top action bar background).
+  ::ng-deep tr.mat-mdc-row:hover {
+    background-color: mat.m2-get-color-from-palette(colors.$surface-palette, "lighter");
+    color: colors.$bfr-base-color;
+  }
+  /* stylelint-enable selector-pseudo-element-no-unknown, selector-class-pattern */
+}
+
+.mibi-order-list__cell--wrap {
+  white-space: normal;
+  word-break: break-word;
+}
+
+.mibi-order-list__col--created-at {
+  width: 150px;
+}
+
+.mibi-order-list__col--narrow {
+  width: 130px;
+  text-align: center;
+}
+
+.mibi-order-list__col--sample-count {
+  width: 130px;
+  text-align: center;
+}
+
+.mibi-order-list__col--actions {
+  width: 100px;
+  text-align: center;
+}
+
+.mibi-order-list__filter-cell {
+  padding-top: layout.$half-space;
+  padding-bottom: layout.$half-space;
+}
+
+.mibi-order-list__footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: layout.$double-space;
+  border-top: 1px solid rgb(0 0 0 / 12%);
+  padding-left: layout.$double-space;
+  padding-top: layout.$double-space;
+}
+
+.mibi-order-list__footer {
+  font-weight: 500;
+  flex: 0 0 auto;
+}
+
+.mibi-order-list__paginator {
+  flex: 1 1 auto;
+}

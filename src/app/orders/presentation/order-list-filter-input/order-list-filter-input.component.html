@@ -1,0 +1,22 @@
+<div class="mibi-order-list-filter-input">
+    <input
+        type="text"
+        class="mibi-order-list-filter-input__field"
+        [class.mibi-order-list-filter-input__field--with-clear]="!!value"
+        [ngModel]="value"
+        (ngModelChange)="onInput($event)"
+        [attr.aria-label]="ariaLabel"
+        [attr.placeholder]="placeholder ?? null"
+    />
+    @if (value) {
+        <button
+            type="button"
+            class="mibi-order-list-filter-input__clear"
+            aria-label="Suchfeld leeren"
+            (click)="onClear()"
+        >
+            <mat-icon class="mibi-order-list-filter-input__clear-icon">cancel</mat-icon>
+        </button>
+    }
+    <mat-icon class="mibi-order-list-filter-input__icon" aria-hidden="true">search</mat-icon>
+</div>

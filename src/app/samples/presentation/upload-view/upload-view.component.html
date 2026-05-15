@@ -1,23 +1,31 @@
-<mibi-single-center-card-layout cardTitle="Untersuchungsauftrag hochladen" disable-content-overflow-handling>
-    <mibi-upload-container mibi-card-content (uploadFile)="fileUpload($event)">
-        <mibi-upload #uploadChild>
-            <div class="mibi-upload-container">
-                <div class="mibi-upload mibi-upload-container__content">
-                    <div class="mibi-upload-icon">
-                        <mat-icon [inline]="true">save_alt</mat-icon>
+<div class="mibi-upload-page">
+    <mibi-single-center-card-layout
+        cardTitle="Untersuchungsauftrag hochladen"
+        class="mibi-upload-page__upload-card"
+        disable-content-overflow-handling
+    >
+        <mibi-upload-container mibi-card-content (uploadFile)="fileUpload($event)">
+            <mibi-upload #uploadChild>
+                <div class="mibi-upload-container">
+                    <div class="mibi-upload mibi-upload-container__content">
+                        <div class="mibi-upload-icon">
+                            <mat-icon [inline]="true">save_alt</mat-icon>
+                        </div>
+                        <div class="mibi-upload-text">
+                            Per Drag&Drop in dieses Feld ziehen
+                        </div>
+                        <div class="mibi-upload-text">oder</div>
+                        <button
+                            class="mibi-upload-button"
+                            type="button"
+                            mat-raised-button
+                            color="accent"
+                        >Datei wählen</button>
                     </div>
-                    <div class="mibi-upload-text">
-                        Per Drag&Drop in dieses Feld ziehen
-                    </div>
-                    <div class="mibi-upload-text">oder</div>
-                    <button
-                        class="mibi-upload-button"
-                        type="button"
-                        mat-raised-button
-                        color="accent"
-                    >Datei wählen</button>
                 </div>
-            </div>
-        </mibi-upload>
-    </mibi-upload-container>
-</mibi-single-center-card-layout>
+            </mibi-upload>
+        </mibi-upload-container>
+    </mibi-single-center-card-layout>
+
+    <mibi-order-list-container class="mibi-upload-page__orders"></mibi-order-list-container>
+</div>
