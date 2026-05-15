@@ -3,8 +3,8 @@
     "compilerOptions": {
         // Modules
         "baseUrl": "./src",
-        "module": "es2020",
-        "moduleResolution": "node",
+        "module": "ES2022",
+        "moduleResolution": "bundler",
         "types": [
             "jest"
         ],

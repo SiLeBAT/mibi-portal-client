@@ -34,7 +34,7 @@ import { OrdersModule } from './orders/orders.module';
                 strictStateSerializability: false,
                 // needs refactoring of upload feature (import action uses file as payload)
                 strictActionSerializability: false,
-                strictActionWithinNgZone: true,
+                strictActionWithinNgZone: false,
                 strictActionTypeUniqueness: true
             }
         }),
