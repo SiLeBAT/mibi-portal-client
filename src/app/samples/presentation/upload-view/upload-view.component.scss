@@ -20,18 +20,49 @@
 .mibi-upload-page__upload-card {
   display: block;
   flex: 0 0 auto;
+}
 
-  /* stylelint-disable selector-pseudo-element-no-unknown */
-  ::ng-deep .mibi-card-container {
-    height: auto;
-    padding: layout.$double-space 10% 0;
-  }
+// Inlined replacement for the former <mibi-single-center-card-layout> wrapper:
+// reproduces the centering, width constraints, and inner padding of the old
+// mat-card so the upload area keeps the same position/size — just without the
+// card surface (no background, no elevation).
+.mibi-upload-page__upload-card-container {
+  height: auto;
+  display: grid;
+  grid-template: minmax(0, min-content) / minmax(0, max-content);
+  justify-content: center;
+  padding: layout.$double-space 10% 0;
+}
 
-  ::ng-deep .mibi-card-title {
-    text-align: center;
-    margin: 0 0 layout.$quadruple-space;
-  }
-  /* stylelint-enable selector-pseudo-element-no-unknown */
+.mibi-upload-page__upload-card-box {
+  display: grid;
+  grid-template: 0 min-content min-content / minmax(auto, max-content);
+  max-width: 800px;
+  padding: 16px;
+}
+
+// Zero-height spacer that forces the box to be at least 400px wide,
+// matching the old shared layout's behavior.
+.mibi-upload-page__upload-card-spacer {
+  display: flex;
+}
+
+.mibi-upload-page__upload-card-spacer-content {
+  width: 400px;
+  flex: 1 1 auto;
+}
+
+.mibi-upload-page__upload-card-title {
+  line-height: normal;
+  text-align: center;
+  margin: 0 0 layout.$quadruple-space;
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.mibi-upload-page__upload-card-content {
+  min-width: 0;
+  overflow: visible;
 }
 
 // When the orders container is empty (logged-out user, no <mat-card> rendered),
@@ -43,6 +74,7 @@
 .mibi-upload-page__orders {
   display: block;
   flex: 0 0 auto;
+  margin-top: layout.$quadruple-space;
 }
 
 .mibi-upload-container {

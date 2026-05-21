@@ -4,9 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { ORDERS_SLICE_NAME } from './orders.state';
@@ -14,13 +13,13 @@ import { ordersReducerMap, ordersEffects } from './orders.store';
 import { OrderListViewComponent } from './presentation/order-list-view/order-list-view.component';
 import { OrderListFilterInputComponent } from './presentation/order-list-filter-input/order-list-filter-input.component';
 import { OrderListContainerComponent } from './container/order-list-container/order-list-container.component';
+import { createOrderPaginatorIntl } from './presentation/order-list-paginator/order-list-paginator.intl';
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
         MatButtonModule,
-        MatCardModule,
         MatIconModule,
         MatPaginatorModule,
         MatSortModule,
@@ -32,6 +31,9 @@ import { OrderListContainerComponent } from './container/order-list-container/or
         OrderListViewComponent,
         OrderListFilterInputComponent,
         OrderListContainerComponent
+    ],
+    providers: [
+        { provide: MatPaginatorIntl, useFactory: createOrderPaginatorIntl }
     ],
     exports: [
         OrderListContainerComponent
