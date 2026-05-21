@@ -39,6 +39,8 @@ import { SamplesMainData } from '../state/samples.reducer';
 import { DialogWarning } from '../../shared/dialog/dialog.model';
 import { sendSamplesCommentWarningsStrings, sendSamplesDialogWarningsStrings } from './send-samples.constants';
 import { selectSendSamplesIsFileAlreadySent } from './state/send-samples.selectors';
+import { navigateMSA } from '../../shared/navigate/navigate.actions';
+import { SamplesLinkProviderService } from '../link-provider.service';
 
 @Injectable()
 export class SendSamplesEffects {
@@ -48,7 +50,8 @@ export class SendSamplesEffects {
         private store$: Store<SamplesMainSlice & SamplesSlice<SendSamplesState>>,
         private dataService: DataService,
         private logger: LogService,
-        private dialogService: DialogService
+        private dialogService: DialogService,
+        private samplesLinks: SamplesLinkProviderService
     ) { }
 
     sendSamples$ = createEffect(() => this.actions$.pipe(
@@ -157,7 +160,8 @@ export class SendSamplesEffects {
         return this.dataService.sendSampleSheet(submission).pipe(
             concatMap(() => of(
                 sendSamplesAddSentFileSOA({ sentFile: fileName }),
-                showBannerSOA({ predefined: 'sendSuccess' })
+                showBannerSOA({ predefined: 'sendSuccess' }),
+                navigateMSA({ path: this.samplesLinks.upload })
             )),
             catchError((error) => {
                 this.logger.error('Failed to send samples from store', error.stack);

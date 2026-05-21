@@ -28,10 +28,12 @@
 .mibi-order-list__table {
   width: 100%;
   table-layout: fixed;
-  border-top: 1px solid rgb(0 0 0 / 12%);
+  border: 1px solid rgb(0 0 0 / 12%);
 
-  // Slim Material's default 52px / 56px row heights.
-  --mat-table-row-item-container-height: 30px;
+  // Slim Material's default 52px / 56px row heights. Use a small min-height
+  // so single-line rows are sized by content + cell padding (matching the
+  // tight spacing of multi-line rows).
+  --mat-table-row-item-container-height: 20px;
   --mat-table-header-container-height: 40px;
   --mat-table-footer-container-height: 36px;
 
@@ -48,6 +50,53 @@
     border-right: none;
   }
 
+  // Let body rows size themselves to content + cell padding. Without this,
+  // mat-icon-button (40px) in the actions column forces every row to 40px.
+  ::ng-deep tr.mat-mdc-row {
+    height: auto;
+  }
+
+  // Shrink the actions column icon button so it no longer dictates row height.
+  // Use flex so the icon stays centered inside the smaller button, and
+  // margin: auto so the button itself is centered inside the cell.
+  ::ng-deep .mibi-order-list__col--actions .mat-mdc-icon-button {
+    --mdc-icon-button-state-layer-size: 20px;
+    --mdc-icon-button-icon-size: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    margin: 0 auto;
+    padding: 0;
+    line-height: 1;
+
+    .mat-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      margin: 0;
+      padding: 0;
+      font-size: 20px;
+      line-height: 1;
+    }
+  }
+
+  // Header rows: use the same light-blue/white as the top "Hochladen" action bar.
+  ::ng-deep tr.mat-mdc-header-row > th.mat-mdc-header-cell {
+    background-color: mat.m2-get-color-from-palette(colors.$primary-palette, "lighter");
+    color: mat.m2-get-color-from-palette(colors.$primary-palette, "lighter-contrast");
+  }
+
+  // Sort arrow + active sort label should also use the contrast color.
+  ::ng-deep tr.mat-mdc-header-row .mat-sort-header-arrow,
+  ::ng-deep tr.mat-mdc-header-row .mat-sort-header-button {
+    color: mat.m2-get-color-from-palette(colors.$primary-palette, "lighter-contrast");
+  }
+
   // First header row: remove the divider to the filter row AND center-align titles.
   // Sortable headers wrap their content in .mat-sort-header-container, so we
   // also center that flex container.
@@ -58,6 +107,12 @@
     .mat-sort-header-container {
       justify-content: center;
     }
+  }
+
+  // Last header row (filter row): explicit divider to the body so the header
+  // section is visually framed against the body rows.
+  ::ng-deep tr.mat-mdc-header-row:last-of-type > th.mat-mdc-header-cell {
+    border-bottom: 1px solid rgb(0 0 0 / 12%);
   }
 
   // Row hover: light-blue (drag-and-drop background) + dark-blue text
@@ -103,9 +158,7 @@
   align-items: center;
   justify-content: space-between;
   gap: layout.$double-space;
-  border-top: 1px solid rgb(0 0 0 / 12%);
-  padding-left: layout.$double-space;
-  padding-top: layout.$double-space;
+  padding: layout.$single-space;
 }
 
 .mibi-order-list__footer {
