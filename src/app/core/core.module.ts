@@ -33,6 +33,7 @@ import { FooterNavComponent } from './presentation/footer-nav/footer-nav.compone
 import { coreReducerMap, coreEffects } from './core.store';
 import { CORE_SLICE_NAME } from './core.state';
 import { MainModule } from '../main/main.module';
+import { MarkdownModule, MARKED_OPTIONS } from 'ngx-markdown';
 
 @NgModule({
     imports: [
@@ -54,7 +55,16 @@ import { MainModule } from '../main/main.module';
         MatDialogModule,
         RouterModule.forChild([]),
         StoreModule.forFeature(CORE_SLICE_NAME, coreReducerMap),
-        EffectsModule.forFeature(coreEffects)
+        EffectsModule.forFeature(coreEffects),
+        MarkdownModule.forRoot({
+            markedOptions: {
+                provide: MARKED_OPTIONS,
+                useValue: {
+                    breaks: true,
+                    gfm: true
+                }
+            }
+        })
     ],
     declarations: [
         FooterNavContainerComponent,

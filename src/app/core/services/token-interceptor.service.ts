@@ -9,6 +9,10 @@ export class TokenInterceptor implements HttpInterceptor {
     constructor(private dataService: DataService) {}
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+        if (req.url.startsWith('/cms/')) {
+            return next.handle(req);
+        }
+
         const currentUser = this.dataService.getCurrentUser();
 
         if (currentUser !== null && currentUser.token) {

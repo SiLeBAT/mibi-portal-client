@@ -5,8 +5,9 @@ import { Action } from '@ngrx/store';
 import { EMPTY, merge, Observable, of } from 'rxjs';
 import { catchError, concatMap, endWith, finalize, map, startWith, tap } from 'rxjs/operators';
 import { DataService } from '../../core/services/data.service';
+import { StrapiService } from '../../core/services/strapi.service';
 import { LogService } from '../../core/services/log.service';
-import { showBannerSOA, updateIsBusySOA, updateClientDashboardInfoSOA, updateZomoPlanFilesSOA } from '../../core/state/core.actions';
+import { showBannerSOA, updateIsBusySOA, updateClientDashboardInfoSOA, updateZomoPlanFilesSOA, updateWelcomePageSOA } from '../../core/state/core.actions';
 import { nrlUpdateNrlsSOA } from '../../shared/nrl/state/nrl.actions';
 import { userForceLogoutMSA, userUpdateCurrentUserSOA, userUpdateInstitutionsSOA } from '../../user/state/user.actions';
 import { initSSA } from './init.actions';
@@ -18,7 +19,8 @@ export class InitEffects {
         private actions$: Actions,
         private logger: LogService,
         private router: Router,
-        private dataService: DataService
+        private dataService: DataService,
+        private strapiService: StrapiService
     ) { }
 
     init$ = createEffect(() => this.actions$.pipe(
@@ -35,7 +37,8 @@ export class InitEffects {
             this.loadNRLs(),
             this.loadUser(),
             this.loadClientDashboardInfo(),
-            this.loadZomoPlanFiles()
+            this.loadZomoPlanFiles(),
+            this.loadWelcomePage()
         ).pipe(
             finalize(() => {
                 this.router.initialNavigation();
@@ -82,6 +85,15 @@ export class InitEffects {
                 this.logger.error('Unable to fetch client dashboard info', error.stack);
                 throw error;
             })
+        );
+    }
+
+    private loadWelcomePage(): Observable<Action> {
+        return this.strapiService.getWelcomePage().pipe(
+            map(data => updateWelcomePageSOA({
+                isMaintenance: data?.isMaintenance ?? false,
+                content: data?.content ?? ''
+            }))
         );
     }
 
