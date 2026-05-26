@@ -51,6 +51,7 @@
   height: 100%;
   display: flex;
   justify-content: center;
+  align-items: center; // v15 MDC mat-button no longer stretches — center it vertically
   flex-flow: row wrap;
 }
 

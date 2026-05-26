@@ -1,10 +1,12 @@
 <mibi-single-center-card-layout cardTitle="Profil">
-    <mibi-box-layout mibi-card-content>
+    <div mibi-card-content>
         <p>{{ currentUser.firstName }} {{ currentUser.lastName }}</p>
         <p>{{ currentUser.email }}</p>
         <p class="mibi-last">{{ institution }}</p>
-    </mibi-box-layout>
-    <button mibi-card-actions type="button" mat-flat-button color="accent" (click)="onLogout()">
-        Abmelden
-    </button>
+        <div class="mibi-logout-wrapper">
+            <button type="button" mat-flat-button color="accent" (click)="onLogout()">
+                Abmelden
+            </button>
+        </div>
+    </div>
 </mibi-single-center-card-layout>

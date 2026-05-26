@@ -2,7 +2,7 @@
 @use "colors";
 
 .mibi-excel-version-dialog {
-  padding: 35px;
+  padding: 48px;
 }
 
 .mibi-title {
@@ -17,6 +17,7 @@
 .mibi-dialog-text-style {
   font-size: 1.3em;
   line-height: 1.5;
+  color: black; // v15 MDC mat-dialog-content sets rgba(0,0,0,0.6) — make fully opaque
 }
 
 .mibi-dialog-text-style-yellow {
