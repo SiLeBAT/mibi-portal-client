@@ -1,49 +1,47 @@
-<mibi-box-layout>
-    <div class="mibi-excel-version-dialog">
-        <div mat-dialog-title class="mibi-title">{{ data.title }}</div>
+<div class="mibi-excel-version-dialog">
+    <div mat-dialog-title class="mibi-title">{{ data.title }}</div>
+    <br />
+    <div mat-dialog-content>
         <br />
-        <div mat-dialog-content>
+        <ng-container *ngIf="!data.useAlternativeTexts">
+            <p class="mibi-dialog-text-style-yellow">
+                <span class="mibi-dialog-text-style">{{ data.string0 }}</span>
+            </p>
+            <p>
+                <span class="mibi-dialog-text-style">{{ data.string1 }}</span>
+            </p>
+            <p>
+                <span class="mibi-dialog-text-style">{{ data.string2 }}</span>
+            </p>
+            <p>
+                <span class="mibi-dialog-text-style">{{ data.string3 }} </span>
+                <span class="mibi-dialog-text-style mibi-dialog-text-style-underline">{{ data.string4 }} </span>
+            </p>
             <br />
-            <ng-container *ngIf="!data.useAlternativeTexts">
-                <p class="mibi-dialog-text-style-yellow">
-                    <span class="mibi-dialog-text-style">{{ data.string0 }}</span>
-                </p>
-                <p>
-                    <span class="mibi-dialog-text-style">{{ data.string1 }}</span>
-                </p>
-                <p>
-                    <span class="mibi-dialog-text-style">{{ data.string2 }}</span>
-                </p>
-                <p>
-                    <span class="mibi-dialog-text-style">{{ data.string3 }} </span>
-                    <span class="mibi-dialog-text-style mibi-dialog-text-style-underline">{{ data.string4 }} </span>
-                </p>
-                <br />
-                <p class="mibi-link mibi-dialog-text-style"><a target="_blank" href="{{ data.link }}">{{ data.link }}</a></p>
-                <br />
-                <p>
-                    <span class="mibi-dialog-text-style">{{ data.string5 }}</span>
-                </p>
-            </ng-container>
-            <ng-container *ngIf="data.useAlternativeTexts">
-                <p>
-                    <span class="mibi-dialog-text-style">{{ data.alternativeText2a }}</span>
-                </p>
-                <br />
-                <p>
-                    <span class="mibi-dialog-text-style">{{ data.alternativeText3a }}</span>
-                </p>
-            </ng-container>
-        </div>
-
-        <div mat-dialog-actions class="mibi-mat-dialog-cancel-actions">
-            <button *ngIf="data.cancelButtonText"
-                type="button"
-                mat-stroked-button
-                color="accent"
-                (click)="onCancel()"
-            >{{ data.cancelButtonText }}</button>
-        </div>
-
+            <p class="mibi-link mibi-dialog-text-style"><a target="_blank" href="{{ data.link }}">{{ data.link }}</a></p>
+            <br />
+            <p>
+                <span class="mibi-dialog-text-style">{{ data.string5 }}</span>
+            </p>
+        </ng-container>
+        <ng-container *ngIf="data.useAlternativeTexts">
+            <p>
+                <span class="mibi-dialog-text-style">{{ data.alternativeText2a }}</span>
+            </p>
+            <br />
+            <p>
+                <span class="mibi-dialog-text-style">{{ data.alternativeText3a }}</span>
+            </p>
+        </ng-container>
     </div>
-</mibi-box-layout>
+
+    <div mat-dialog-actions class="mibi-mat-dialog-cancel-actions">
+        <button *ngIf="data.cancelButtonText"
+            type="button"
+            mat-stroked-button
+            color="accent"
+            (click)="onCancel()"
+        >{{ data.cancelButtonText }}</button>
+    </div>
+
+</div>

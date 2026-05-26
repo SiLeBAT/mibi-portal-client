@@ -32,8 +32,14 @@
   padding-bottom: layout.$half-space;
 }
 
+h1[mat-dialog-title] {
+  font-size: 24px; // v15 MDC sets headline-6 (20px) — restore larger heading size
+  color: black; // v15 MDC sets rgba(0,0,0,0.87) — make fully opaque
+}
+
 .mibi-message {
   padding-bottom: layout.$single-space;
+  color: black; // v15 MDC mat-dialog-content sets rgba(0,0,0,0.6) — make fully opaque
 }
 
 .mibi-mat-dialog-actions {

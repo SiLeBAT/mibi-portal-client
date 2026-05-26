@@ -6,6 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { SingleCenterCardLayoutComponent } from './single-center-card-layout/single-center-card-layout.component';
+import { MibiCardActionsDirective } from './single-center-card-layout/mibi-card-actions.directive';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { WallOfTextLayoutComponent } from './wall-of-text-layout/wall-of-text-layout.component';
 import { UploadComponent } from './presentation/upload/upload.component';
@@ -54,6 +55,7 @@ import { DialogWarningsViewComponent } from './dialog/components/dialog-warnings
         UploadContainerComponent,
         UploadActionItemComponent,
         SingleCenterCardLayoutComponent,
+        MibiCardActionsDirective,
         WallOfTextLayoutComponent,
         BoxLayoutComponent,
         DialogWarningsViewComponent,
@@ -66,6 +68,7 @@ import { DialogWarningsViewComponent } from './dialog/components/dialog-warnings
         UploadComponent,
         UploadContainerComponent,
         SingleCenterCardLayoutComponent,
+        MibiCardActionsDirective,
         WallOfTextLayoutComponent,
         BoxLayoutComponent,
         DialogWarningsViewComponent,

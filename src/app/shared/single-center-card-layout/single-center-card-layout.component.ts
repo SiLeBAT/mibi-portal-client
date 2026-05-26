@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, ContentChild, Input } from '@angular/core';
+import { MibiCardActionsDirective } from './mibi-card-actions.directive';
 
 @Component({
     standalone: false,
@@ -12,4 +13,6 @@ export class SingleCenterCardLayoutComponent {
 
     // eslint-disable-next-line @angular-eslint/no-input-rename
     @Input('disable-content-overflow-handling') disableContentOverflowHandling?: '';
+
+    @ContentChild(MibiCardActionsDirective) cardActionsRef?: MibiCardActionsDirective;
 }

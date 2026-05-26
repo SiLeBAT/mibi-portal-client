@@ -10,3 +10,7 @@
   padding: 0 layout.$double-space;
   margin: 0 0 layout.$double-space 0;
 }
+
+.mibi-analysis-stepper > .mat-horizontal-stepper-header-container {
+  overflow: hidden;
+}

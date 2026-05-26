@@ -27,11 +27,23 @@
 
 .mibi-stepper-button-icon {
   font-weight: bold;
+  align-self: center; // v15 MDC button is a flex container — aligns icon on cross axis with label text
+}
+
+.mibi-stepper-button-icon--trailing {
+  order: 1 !important; // MDC applies order:-1 to all icons via mat-mdc-button-icon-leading — override needed
 }
 
 .mibi-optional-selection {
   display: flex;
   flex-direction: column;
+
+  /* stylelint-disable selector-pseudo-element-no-unknown, selector-class-pattern */
+  ::ng-deep .mat-mdc-checkbox {
+    margin-top: -8px; // MDC 40px touch target adds 11px per side — reduce gap
+    margin-bottom: -8px;
+  }
+  /* stylelint-enable selector-pseudo-element-no-unknown, selector-class-pattern */
 }
 
 .mibi-urgency-selection {

@@ -11,6 +11,10 @@
 .mibi-register-mat-option {
   white-space: normal;
   height: auto;
+  font-size: 16px; // v15 MDC reduced mat-option font size — restore
+
+  --mat-option-label-text-size: 16px; // MDC uses CSS custom property for inner text
+
   line-height: 1.5;
   padding-top: layout.$single-space;
   padding-bottom: layout.$single-space;

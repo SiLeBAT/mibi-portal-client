@@ -1,3 +1,9 @@
+@use "layout";
+
 .mibi-last {
   margin-bottom: 0;
+}
+
+.mibi-logout-wrapper {
+  margin-top: layout.$quadruple-space;
 }

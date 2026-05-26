@@ -1,4 +1,4 @@
-<mibi-box-layout>
+<div>
     <header class="mibi-header mat-h2">
         Zusätzlich gewünschte Untersuchungen
     </header>
@@ -121,7 +121,7 @@
                         matStepperPrevious
                         *ngIf="!first"
                     >
-                        <mat-icon [inline]="true" class="mibi-stepper-button-icon">navigate_before</mat-icon>
+                        <mat-icon class="mibi-stepper-button-icon">navigate_before</mat-icon>
                         Vorheriges BfR-Labor
                     </button>
                     <button
@@ -132,7 +132,7 @@
                         *ngIf="!last"
                     >
                         Nächstes BfR-Labor
-                        <mat-icon [inline]="true" class="mibi-stepper-button-icon">navigate_next</mat-icon>
+                        <mat-icon class="mibi-stepper-button-icon mibi-stepper-button-icon--trailing" iconPositionEnd>navigate_next</mat-icon>
                     </button>
                 </div>
                 <button
@@ -146,4 +146,4 @@
             </div>
         </mat-step>
     </mat-horizontal-stepper>
-</mibi-box-layout>
+</div>
