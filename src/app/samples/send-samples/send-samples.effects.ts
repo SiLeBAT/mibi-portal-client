@@ -160,8 +160,8 @@ export class SendSamplesEffects {
         return this.dataService.sendSampleSheet(submission).pipe(
             concatMap(() => of(
                 sendSamplesAddSentFileSOA({ sentFile: fileName }),
-                showBannerSOA({ predefined: 'sendSuccess' }),
-                navigateMSA({ path: this.samplesLinks.upload })
+                navigateMSA({ path: this.samplesLinks.upload }),
+                showBannerSOA({ predefined: 'sendSuccess' })
             )),
             catchError((error) => {
                 this.logger.error('Failed to send samples from store', error.stack);
