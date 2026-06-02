@@ -14,6 +14,18 @@
   padding: 0;
 }
 
+.mibi-dialog-message {
+  color: black; // direct child rule overrides inherited rgba(0,0,0,0.6) from mat-mdc-dialog-content
+  padding-bottom: 8px;
+}
+
+/* stylelint-disable selector-pseudo-element-no-unknown */
+.mibi-dialog ::ng-deep h1[mat-dialog-title] {
+  font-size: 24px; // v21 MDC sets 1rem — restore larger heading size
+  color: black; // v21 MDC sets rgba(0,0,0,0.87) — make fully opaque
+}
+/* stylelint-enable selector-pseudo-element-no-unknown */
+
 .mibi-mat-dialog-actions {
   flex-wrap: nowrap;
   justify-content: space-between;

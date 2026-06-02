@@ -25,11 +25,18 @@ body {
 
 /* stylelint-disable selector-class-pattern */
 
-// MDC declares these on .mat-mdc-dialog-container, so they must be overridden there (not on the parent)
-// subhead: rgba(0,0,0,0.87) → black; supporting-text: rgba(0,0,0,0.6) → black
+// AM v21 reads --mat-dialog-... tokens (v15 used --mdc-dialog-..., now stale)
+// subhead: rgba(0,0,0,0.87) → black; supporting-text: rgba(0,0,0,0.54) → black
+// font-size restored from 1rem (title-small) to 24px to match pre-upgrade headings
 .mat-mdc-dialog-container {
-  --mdc-dialog-subhead-color: black;
-  --mdc-dialog-supporting-text-color: black;
+  --mat-dialog-subhead-color: black;
+  --mat-dialog-supporting-text-color: black;
+  --mat-dialog-subhead-size: 24px;
+}
+
+// AM v21 sets card title to title-large (20px) — restore to 24px to match pre-upgrade
+.mat-mdc-card {
+  --mat-card-title-text-size: 24px;
 }
 
 // Angular Material v15 MDC — dialog layout global overrides
