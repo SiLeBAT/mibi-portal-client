@@ -11,7 +11,7 @@ export class TokenInterceptor implements HttpInterceptor {
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const currentUser = this.dataService.getCurrentUser();
 
-        if (currentUser !== null && currentUser.token) {
+        if (currentUser !== null && currentUser.token && !req.url.includes('/cms/')) {
             req = req.clone({
                 setHeaders: {
                     Authorization: `Bearer ${currentUser.token}`

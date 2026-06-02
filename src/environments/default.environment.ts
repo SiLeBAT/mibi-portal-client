@@ -8,7 +8,7 @@ export interface Environment {
     lastChange: string;
     sampleSheetURL: string;
     appId: string;
-
+    cmsApiUrl: string;
 }
 
 export const defaultEnvironment: Environment = {
@@ -18,7 +18,6 @@ export const defaultEnvironment: Environment = {
     version: packageJson.version,
     lastChange: packageJson.mibiConfig.lastChange,
     sampleSheetURL: 'https://www.bfr.bund.de/assets/02_Service/01_Einsendeformulare/Untersuchungsauftrag-V18.xlsx',
-    appId: 'app_blub'
-
-
+    appId: 'app_blub',
+    cmsApiUrl: 'https://fg43-support.bfr.berlin/cms/api'
 };

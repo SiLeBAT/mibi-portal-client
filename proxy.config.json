@@ -4,5 +4,12 @@
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true
+  },
+  "/cms/**": {
+    "target": "http://localhost:1338",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true,
+    "pathRewrite": { "^/cms": "" }
   }
 }

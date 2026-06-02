@@ -6,5 +6,6 @@ export const environment: Environment = {
     ...defaultEnvironment,
     production: false,
     appName: defaultEnvironment.appName + '-Dev',
-    appId: 'app_blub'
+    appId: 'app_blub',
+    cmsApiUrl: '/cms/api'
 };
