@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { DataService } from '../../core/services/data.service';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { StrapiService } from '../../core/services/strapi.service';
+import { map, switchMap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
 import { FaqEntryDTO, FaqResponseDTO, FaqSectionDTO } from '../../core/model/response.model';
 import { Faq, FaqEntry, FaqSection } from './faq.model';
 
@@ -10,11 +11,17 @@ import { Faq, FaqEntry, FaqSection } from './faq.model';
 })
 export class FaqService {
 
-    constructor(private dataService: DataService) { }
+    constructor(
+        private dataService: DataService,
+        private strapiService: StrapiService
+    ) {}
 
     getFaq(): Observable<Faq> {
-        return this.dataService.getFaq().pipe(
-            map(dto => this.mapFaq(dto))
+        return this.strapiService.getFaq().pipe(
+            switchMap(data => data !== null
+                ? of(data)
+                : this.dataService.getFaq().pipe(map(dto => this.mapFaq(dto)))
+            )
         );
     }
 
