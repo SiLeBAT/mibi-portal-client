@@ -5,7 +5,7 @@
         <div class="mibi-dialog">
             <h1 mat-dialog-title>{{data.title}}</h1>
             <div mat-dialog-content class="mibi-mat-dialog-content">
-                <ng-container>{{data.message}}</ng-container>
+                <div class="mibi-dialog-message">{{data.message}}</div>
             </div>
             <div mat-dialog-actions class="mibi-mat-dialog-actions">
                 <button *ngIf="!!data.auxilliaryAction" type="button" mat-stroked-button color="accent"

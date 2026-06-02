@@ -44,6 +44,10 @@
     margin-bottom: -8px;
   }
   /* stylelint-enable selector-pseudo-element-no-unknown, selector-class-pattern */
+
+  mat-form-field {
+    margin-top: 12px; // restore gap between checkbox touch target and textbox below
+  }
 }
 
 .mibi-urgency-selection {
