@@ -10,8 +10,7 @@ interface Address {
     instituteName: string;
     department?: string;
     street: string;
-    zip: string;
-    city: string;
+    zipCity: string;
     contactPerson: string;
     telephone: string;
     email: string;

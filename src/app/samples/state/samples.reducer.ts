@@ -43,8 +43,7 @@ const initialMainData: SamplesMainData = {
             instituteName: '',
             department: '',
             street: '',
-            zip: '',
-            city: '',
+            zipCity: '',
             contactPerson: '',
             telephone: '',
             email: ''
