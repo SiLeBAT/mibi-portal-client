@@ -10,8 +10,7 @@ interface AddressDTO {
     readonly instituteName: string;
     readonly department?: string;
     readonly street: string;
-    readonly zip: string;
-    readonly city: string;
+    readonly zipCity: string;
     readonly contactPerson: string;
     readonly telephone: string;
     readonly email: string;
