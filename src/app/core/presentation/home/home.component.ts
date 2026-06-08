@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { environment } from '../../../../environments/environment';
 import { ActivatedRoute } from '@angular/router';
 import { selectWelcomePageContent, selectWelcomePageIsMaintenance } from '../../state/core.selectors';
@@ -19,15 +17,13 @@ export class HomeComponent implements OnInit {
     supportContact: string = environment.supportContact;
     isAlternativeWelcomePage: boolean;
     isMaintenance$: Observable<boolean>;
-    maintenanceContent$: Observable<SafeHtml>;
+    maintenanceContent$: Observable<string>;
 
-    constructor(private route: ActivatedRoute, private store$: Store, private sanitizer: DomSanitizer) {}
+    constructor(private route: ActivatedRoute, private store$: Store) {}
 
     ngOnInit() {
         this.isAlternativeWelcomePage = this.route.snapshot.data['isAlternativeWelcomePage'];
         this.isMaintenance$ = this.store$.select(selectWelcomePageIsMaintenance);
-        this.maintenanceContent$ = this.store$.select(selectWelcomePageContent).pipe(
-            map(content => this.sanitizer.bypassSecurityTrustHtml(content))
-        );
+        this.maintenanceContent$ = this.store$.select(selectWelcomePageContent);
     }
 }

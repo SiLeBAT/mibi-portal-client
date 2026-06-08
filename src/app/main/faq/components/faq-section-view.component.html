@@ -3,11 +3,11 @@
     <mat-expansion-panel *ngFor="let entry of entries">
         <mat-expansion-panel-header collapsedHeight="auto" expandedHeight="auto">
             <mat-panel-title>
-                <div class="mibi-panel-title" [innerHtml]="sanitize(entry.question)"></div>
+                <div class="mibi-panel-title"><markdown [data]="entry.question" [inline]="true"></markdown></div>
             </mat-panel-title>
         </mat-expansion-panel-header>
         <ng-template matExpansionPanelContent>
-            <div class="mibi-panel-text" [innerHtml]="sanitize(entry.answer)"></div>
+            <div class="mibi-panel-text"><markdown [data]="entry.answer"></markdown></div>
         </ng-template>
     </mat-expansion-panel>
 </mat-accordion>

@@ -11,5 +11,6 @@ module.exports = {
         stringifyContentPathRegex: '\\.html$',
       }
     ]
-  }
+  },
+  transformIgnorePatterns: ['node_modules/(?!(.*\\.(mjs|esm\\.js)$|@angular/common/locales/.*\\.js$))']
 };

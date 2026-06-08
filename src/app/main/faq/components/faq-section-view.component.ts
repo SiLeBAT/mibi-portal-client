@@ -1,5 +1,4 @@
-import { Component, SecurityContext, Input, ChangeDetectionStrategy } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { FaqEntry } from '../faq.model';
 
 @Component({
@@ -13,10 +12,4 @@ export class FaqSectionViewComponent {
 
     @Input() title?: string;
     @Input() entries: FaqEntry[];
-
-    constructor(private sanitizer: DomSanitizer) { }
-
-    sanitize(input: string): SafeHtml {
-        return this.sanitizer.sanitize(SecurityContext.HTML, input) || '';
-    }
 }
