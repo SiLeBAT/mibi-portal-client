@@ -20,6 +20,7 @@ import { FaqComponent } from './faq/components/faq.component';
 import { FaqResolverService } from './faq/faq-resolver.service';
 import { FaqViewComponent } from './faq/components/faq-view.component';
 import { FaqSectionViewComponent } from './faq/components/faq-section-view.component';
+import { MarkdownModule } from 'ngx-markdown';
 
 const routes: Routes = [{
     path: mainPathsSegments.faq, component: FaqComponent, resolve: { faq: FaqResolverService }
@@ -35,7 +36,8 @@ const routes: Routes = [{
         MatExpansionModule,
         SharedModule,
         RouterModule.forChild(routes),
-        EffectsModule.forFeature(mainEffects)
+        EffectsModule.forFeature(mainEffects),
+        MarkdownModule.forChild()
     ],
     declarations: [
         NavBarTitleViewComponent,

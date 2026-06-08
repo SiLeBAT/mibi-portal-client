@@ -15,10 +15,12 @@ function makeService(
     get = jest.fn(),
     post = jest.fn(),
     dispatch = jest.fn()
-): { service: KeycloakAuthService; dispatch: jest.Mock } {
+): { service: KeycloakAuthService; dispatch: jest.Mock; navigateTo: jest.SpyInstance } {
     const http = { get: get, post: post } as unknown as HttpClient;
     const store = { dispatch: dispatch } as unknown as Store;
-    return { service: new KeycloakAuthService(http, store), dispatch: dispatch };
+    const service = new KeycloakAuthService(http, store);
+    const navigateTo = jest.spyOn(service as any, 'navigateTo').mockImplementation(() => {});
+    return { service: service, dispatch: dispatch, navigateTo: navigateTo };
 }
 
 describe('KeycloakAuthService', () => {
@@ -73,19 +75,14 @@ describe('KeycloakAuthService', () => {
             expect(post).toHaveBeenCalledWith('/v2/auth/logout', {});
         });
 
-        // Skipped: the service sets `window.location.href` to navigate, but in
-        // this jsdom version window.location and location.href are both
-        // non-configurable, so the assignment cannot be observed (it raises
-        // jsdom's "Not implemented: navigation" and leaves href unchanged).
-        // Testing this properly needs a navigation seam in KeycloakAuthService.
-        it.skip('navigates to endSessionUrl returned by server', async () => {
+        it('navigates to endSessionUrl returned by server', async () => {
             const endSessionUrl = 'https://kc/logout?redirect=app';
             const post = jest.fn().mockReturnValue(of({ endSessionUrl: endSessionUrl }));
-            const { service } = makeService(jest.fn(), post);
+            const { service, navigateTo } = makeService(jest.fn(), post);
 
             await service.logout().toPromise();
 
-            expect(window.location.href).toBe(endSessionUrl);
+            expect(navigateTo).toHaveBeenCalledWith(endSessionUrl);
         });
 
         it('dispatches userDestroyCurrentUserSOA on success', async () => {
@@ -121,9 +118,6 @@ describe('KeycloakAuthService', () => {
             const get = jest.fn().mockReturnValue(of(meResponse));
             const post = jest.fn().mockReturnValue(of({ endSessionUrl: '' }));
             const { service } = makeService(get, post);
-
-            delete (window as any).location;
-            (window as any).location = { href: '' };
 
             await service.me().toPromise();
             await service.logout().toPromise();

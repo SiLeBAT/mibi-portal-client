@@ -5,7 +5,7 @@
     <mibi-box-layout mibi-card-content>
 
         <ng-container *ngIf="isMaintenance$ | async; else normalContent">
-            <div [innerHTML]="maintenanceContent$ | async"></div>
+            <markdown [data]="maintenanceContent$ | async"></markdown>
         </ng-container>
 
         <ng-template #normalContent>

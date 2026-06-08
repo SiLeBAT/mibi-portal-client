@@ -19,6 +19,7 @@ import { SamplesModule } from './samples/samples.module';
 import { SharedModule } from './shared/shared.module';
 import { AppAuthService } from './user/services/app-auth.service';
 import { UserModule } from './user/user.module';
+import { MarkdownModule, MARKED_OPTIONS } from 'ngx-markdown';
 
 @NgModule({
     declarations: [
@@ -55,6 +56,12 @@ import { UserModule } from './user/user.module';
         OrdersModule,
         HttpClientXsrfModule.withOptions({ cookieName: 'XSRF-TOKEN', headerName: 'X-XSRF-TOKEN' }),
         StoreRouterConnectingModule.forRoot(),
+        MarkdownModule.forRoot({
+            markedOptions: {
+                provide: MARKED_OPTIONS,
+                useValue: { breaks: true }
+            }
+        }),
         // AppRoutingModule needs to be at the end
         AppRoutingModule
     ],

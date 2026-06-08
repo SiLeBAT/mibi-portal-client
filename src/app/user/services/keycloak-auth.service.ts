@@ -19,7 +19,11 @@ export class KeycloakAuthService {
     constructor(private http: HttpClient, private store$: Store) {}
 
     login(): void {
-        window.location.href = '/v2/auth/login';
+        this.navigateTo('/v2/auth/login');
+    }
+
+    protected navigateTo(url: string): void {
+        window.location.href = url;
     }
 
     me(): Observable<MeResponse> {
@@ -36,7 +40,7 @@ export class KeycloakAuthService {
             tap(response => {
                 this.currentUserSubject.next(null);
                 this.store$.dispatch(userDestroyCurrentUserSOA());
-                window.location.href = response.endSessionUrl;
+                this.navigateTo(response.endSessionUrl);
             })
         ) as unknown as Observable<void>;
     }
