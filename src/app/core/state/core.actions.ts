@@ -52,3 +52,8 @@ export const updateZomoPlanFilesSOA = createAction(
     '[Core] Update Available Zomo Plan Files',
     props<{ zomoPlanFiles: ZomoPlanFileInfo[] }>()
 );
+
+export const updateWelcomePageSOA = createAction(
+    '[Core] Update Welcome Page',
+    props<{ isMaintenance: boolean; content: string }>()
+);
