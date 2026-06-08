@@ -5,8 +5,7 @@ import { map, tap } from 'rxjs/operators';
 import { ChangedDataGridField } from '../model/sample-management.model';
 import { selectSampleData, selectImportedFileName } from '../state/samples.selectors';
 import { SamplesMainSlice } from '../samples.state';
-import { showActionBarSOA, updateActionBarTitleSOA } from '../../core/state/core.actions';
-import { UserActionType } from '../../shared/model/user-action.model';
+import { updateActionBarTitleSOA } from '../../core/state/core.actions';
 import { samplesUpdateSampleDataEntrySOA } from '../state/samples.actions';
 import { samplesEditorModel } from './constants/model.constants';
 import { SamplesEditorCacheBySampleCount } from './cache-by-sample-count.class';
@@ -43,19 +42,6 @@ export class SamplesEditorComponent implements OnDestroy {
         this.model.columns.forEach(colModel => {
             this.columnModelMap[colModel.colId] = colModel;
         });
-
-        this.store$.dispatch(showActionBarSOA({
-            title: '',
-            enabledActions: [
-                UserActionType.SEND,
-                UserActionType.VALIDATE,
-                UserActionType.EXPORT,
-                UserActionType.CLOSE,
-                UserActionType.UPLOAD,
-                UserActionType.DOWNLOAD_TEMPLATE,
-                UserActionType.DOWNLOAD_ZOMO_PLAN_FILE
-            ]
-        }));
 
         this.fileNameSubscription = this.store$.pipe(
             select(selectImportedFileName),

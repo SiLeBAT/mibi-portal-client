@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-
+import { Router, UrlTree } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { take } from 'rxjs/operators';
-import { navigateMSA } from '../../shared/navigate/navigate.actions';
+import { firstValueFrom } from 'rxjs';
 import { SamplesLinkProviderService } from '../link-provider.service';
 import { SamplesMainSlice } from '../samples.state';
 import { selectHasEntries } from '../state/samples.selectors';
@@ -10,32 +9,16 @@ import { selectHasEntries } from '../state/samples.selectors';
 @Injectable({
     providedIn: 'root'
 })
-export class NoSampleGuard  {
+export class NoSampleGuard {
 
     constructor(
         private store$: Store<SamplesMainSlice>,
+        private router: Router,
         private samplesLinks: SamplesLinkProviderService
-    ) { }
+    ) {}
 
-    async canActivate() {
-        return this.store$.pipe(select(selectHasEntries),
-            take(1))
-            .toPromise()
-            .then(
-                hasEntries => {
-                    if (hasEntries) {
-                        return true;
-                    } else {
-                        return this.onDissallow();
-                    }
-                },
-                () => this.onDissallow()
-            )
-            .catch(() => this.onDissallow());
-    }
-
-    private onDissallow() {
-        this.store$.dispatch(navigateMSA({ path: this.samplesLinks.upload }));
-        return false;
+    async canActivate(): Promise<boolean | UrlTree> {
+        const hasEntries = await firstValueFrom(this.store$.pipe(select(selectHasEntries)));
+        return hasEntries ? true : this.router.parseUrl(this.samplesLinks.upload);
     }
 }
