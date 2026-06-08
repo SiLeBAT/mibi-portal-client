@@ -16,3 +16,7 @@ export const selectActionBarTitle = createSelector(selectActionBarConfig, action
 export const selectActionBarEnabledActions = createSelector(selectActionBarConfig, actionBarConfig => actionBarConfig.enabledActions);
 
 export const selectZomoPlanFiles = createSelector(selectCoreMainState, state => state.zomoPlanFiles);
+
+export const selectWelcomePage = createSelector(selectCoreMainState, state => state.welcomePage);
+export const selectWelcomePageIsMaintenance = createSelector(selectWelcomePage, wp => wp.isMaintenance);
+export const selectWelcomePageContent = createSelector(selectWelcomePage, wp => wp.content);

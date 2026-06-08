@@ -7,7 +7,8 @@ import {
     updateActionBarTitleSOA,
     updateClientDashboardInfoSOA,
     updateZomoPlanFilesSOA,
-    updateIsBusySOA
+    updateIsBusySOA,
+    updateWelcomePageSOA
 } from './core.actions';
 import { Banner, BannerType } from '../model/alert.model';
 import { routerNavigationAction, routerRequestAction } from '@ngrx/router-store';
@@ -17,12 +18,18 @@ import { ZomoPlanFileInfo } from '../model/response.model';
 
 // STATE
 
+export interface WelcomePageState {
+    isMaintenance: boolean;
+    content: string;
+}
+
 export interface CoreMainState {
     actionBarConfig: CoreActionBarConfig;
     isBusy: boolean;
     banner: BannerData;
     alternativeWelcomePage: boolean;
     zomoPlanFiles: ZomoPlanFileInfo[];
+    welcomePage: WelcomePageState;
 }
 
 export interface CoreActionBarConfig {
@@ -62,6 +69,14 @@ export const coreIsAlternativeWelcomePageReducer = createReducer(
 export const coreZomoPlanFilesReducer = createReducer<ZomoPlanFileInfo[]>(
     [],
     on(updateZomoPlanFilesSOA, (_state, action) => action.zomoPlanFiles)
+);
+
+export const coreWelcomePageReducer = createReducer<WelcomePageState>(
+    { isMaintenance: false, content: '' },
+    on(updateWelcomePageSOA, (_state, action) => ({
+        isMaintenance: action.isMaintenance,
+        content: action.content
+    }))
 );
 
 export const coreActionBarConfigReducer = createReducer(

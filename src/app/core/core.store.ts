@@ -5,7 +5,8 @@ import {
     coreActionBarConfigReducer,
     coreBannerReducer,
     coreIsAlternativeWelcomePageReducer,
-    coreZomoPlanFilesReducer
+    coreZomoPlanFilesReducer,
+    coreWelcomePageReducer
 } from './state/core.reducer';
 import { CoreMainEffects } from './core.effects';
 import { DownloadZomoPlanFileEffects } from './download-zomo-plan-file/download-zomo-plan-file.effects';
@@ -17,7 +18,8 @@ export const coreReducerMap: ActionReducerMap<CoreState, Action> = {
     isBusy: coreIsBusyReducer,
     banner: coreBannerReducer,
     alternativeWelcomePage: coreIsAlternativeWelcomePageReducer,
-    zomoPlanFiles: coreZomoPlanFilesReducer
+    zomoPlanFiles: coreZomoPlanFilesReducer,
+    welcomePage: coreWelcomePageReducer
 };
 
 export const coreEffects = [
