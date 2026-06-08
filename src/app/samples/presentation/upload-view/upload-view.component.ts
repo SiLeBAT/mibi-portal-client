@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { UserActionType } from '../../../shared/model/user-action.model';
 import { SamplesMainSlice } from '../../samples.state';
-import { showActionBarSOA } from '../../../core/state/core.actions';
 import { importSamplesMSA } from '../../import-samples/import-samples.actions';
 
 @Component({
@@ -12,19 +10,7 @@ import { importSamplesMSA } from '../../import-samples/import-samples.actions';
     styleUrls: ['./upload-view.component.scss']
 })
 export class UploadViewComponent {
-    constructor(private store$: Store<SamplesMainSlice>) {
-        this.store$.dispatch(showActionBarSOA({
-            title: '',
-            enabledActions: [
-                UserActionType.VALIDATE,
-                UserActionType.SEND,
-                UserActionType.EXPORT,
-                UserActionType.UPLOAD,
-                UserActionType.DOWNLOAD_TEMPLATE,
-                UserActionType.DOWNLOAD_ZOMO_PLAN_FILE
-            ]
-        }));
-    }
+    constructor(private store$: Store<SamplesMainSlice>) {}
 
     fileUpload(file: File) {
         this.store$.dispatch(importSamplesMSA({ excelFile: { file: file } }));

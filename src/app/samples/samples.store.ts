@@ -6,6 +6,7 @@ import { SendSamplesEffects } from './send-samples/send-samples.effects';
 import { CloseSamplesEffects } from './close-samples/close-samples.effects';
 import { ImportSamplesEffects } from './import-samples/import-samples.effects';
 import { ExportSamplesEffects } from './export-samples/export-samples.effects';
+import { SamplesActionBarEffects } from './samples-action-bar.effects';
 
 type SamplesState = SamplesMainState & SendSamplesState;
 
@@ -20,5 +21,6 @@ export const samplesEffects = [
     ValidateSamplesEffects,
     CloseSamplesEffects,
     ImportSamplesEffects,
-    ExportSamplesEffects
+    ExportSamplesEffects,
+    SamplesActionBarEffects
 ];
