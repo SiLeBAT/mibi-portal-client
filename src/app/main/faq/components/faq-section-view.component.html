@@ -7,7 +7,9 @@
             </mat-panel-title>
         </mat-expansion-panel-header>
         <ng-template matExpansionPanelContent>
-            <div class="mibi-panel-text"><markdown [data]="entry.answer"></markdown></div>
+            <div class="mibi-panel-text" (click)="onAnswerClick($event)">
+                <markdown [data]="entry.answer"></markdown>
+            </div>
         </ng-template>
     </mat-expansion-panel>
 </mat-accordion>
