@@ -21,6 +21,23 @@ import { AppAuthService } from './user/services/app-auth.service';
 import { UserModule } from './user/user.module';
 import { MarkdownModule, MARKED_OPTIONS } from 'ngx-markdown';
 
+function markedOptionsFactory(): object {
+    return {
+        breaks: true,
+        renderer: {
+            link: (token: any): string => {
+                // Bare GFM autolinks (e.g. https://example.com typed as plain text)
+                // have a raw value that does not start with '[' — render as plain text.
+                if (!token.raw.startsWith('[') && !token.raw.startsWith('<')) {
+                    return token.text || token.href || '';
+                }
+                const title = token.title ? ` title="${token.title}"` : '';
+                return `<a href="${token.href}"${title}>${token.text || token.href}</a>`;
+            }
+        }
+    };
+}
+
 @NgModule({
     declarations: [
         AppComponent
@@ -59,7 +76,7 @@ import { MarkdownModule, MARKED_OPTIONS } from 'ngx-markdown';
         MarkdownModule.forRoot({
             markedOptions: {
                 provide: MARKED_OPTIONS,
-                useValue: { breaks: true }
+                useFactory: markedOptionsFactory
             }
         }),
         // AppRoutingModule needs to be at the end

@@ -21,6 +21,7 @@ interface StrapiFaqSection {
     id: number;
     title: string;
     url: string;
+    Priority?: number | null;
 }
 
 interface StrapiFaqEntry {
@@ -28,6 +29,7 @@ interface StrapiFaqEntry {
     question: string;
     answer: string;
     isTop: boolean;
+    Priority?: number | null;
     section: StrapiFaqSection | null;
 }
 
@@ -70,30 +72,38 @@ export class StrapiService {
             return null;
         }
 
+        const byPriority = (a: { Priority?: number | null }, b: { Priority?: number | null }) => {
+            if (a.Priority == null && b.Priority == null) { return 0; }
+            if (a.Priority == null) { return 1; }
+            if (b.Priority == null) { return -1; }
+            return a.Priority - b.Priority;
+        };
+
         const topEntries = entries
             .filter(e => e.isTop)
+            .sort(byPriority)
             .map(e => ({ question: e.question, answer: e.answer }));
 
-        const sectionMap = new Map<number, FaqSection>();
+        const sectionMap = new Map<number, { section: StrapiFaqSection; entries: StrapiFaqEntry[] }>();
         for (const entry of entries) {
             if (!entry.isTop && entry.section) {
                 if (!sectionMap.has(entry.section.id)) {
-                    sectionMap.set(entry.section.id, {
-                        title: entry.section.title,
-                        urlFragment: entry.section.url,
-                        entries: []
-                    });
+                    sectionMap.set(entry.section.id, { section: entry.section, entries: [] });
                 }
-                sectionMap.get(entry.section.id)!.entries.push({
-                    question: entry.question,
-                    answer: entry.answer
-                });
+                sectionMap.get(entry.section.id)!.entries.push(entry);
             }
         }
 
-        return {
-            topEntries: topEntries,
-            sections: [...sectionMap.values()]
-        };
+        const sections: FaqSection[] = [...sectionMap.values()]
+            .sort((a, b) => byPriority(a.section, b.section))
+            .map(({ section, entries: sectionEntries }) => ({
+                title: section.title,
+                urlFragment: section.url,
+                entries: sectionEntries
+                    .sort(byPriority)
+                    .map(e => ({ question: e.question, answer: e.answer }))
+            }));
+
+        return { topEntries: topEntries, sections: sections };
     }
 }
