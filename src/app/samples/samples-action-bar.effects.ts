@@ -18,12 +18,8 @@ export class SamplesActionBarEffects {
         map(() => showActionBarSOA({
             title: '',
             enabledActions: [
-                UserActionType.VALIDATE,
-                UserActionType.SEND,
-                UserActionType.EXPORT,
                 UserActionType.UPLOAD,
-                UserActionType.DOWNLOAD_TEMPLATE,
-                UserActionType.DOWNLOAD_ZOMO_PLAN_FILE
+                UserActionType.DOWNLOAD_TEMPLATE
             ]
         }))
     ));
