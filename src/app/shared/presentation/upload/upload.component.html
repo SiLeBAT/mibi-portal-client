@@ -5,6 +5,8 @@
     [maxSize]="maxFileSize"
     [fileDropDisabled]="dropDisabled"
     (fileChange)="onFileChange($event)"
+    (click)="onUploadInteraction()"
+    (dragenter)="onUploadInteraction()"
     [(lastInvalids)]="lastInvalids"
 >
     <ng-content></ng-content>
