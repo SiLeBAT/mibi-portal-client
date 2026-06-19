@@ -18,7 +18,7 @@ import { userForceLogoutMSA } from '../../user/state/user.actions';
 import { SamplesLinkProviderService } from '../link-provider.service';
 import { ReceiveAs, Sample, SampleSubmission } from '../model/sample-management.model';
 import { SamplesMainSlice, SamplesSlice } from '../samples.state';
-import { samplesUpdateSamplesSOA } from '../state/samples.actions';
+import { samplesDestroyMainDataSOA, samplesUpdateSamplesSOA } from '../state/samples.actions';
 import { SamplesMainData } from '../state/samples.reducer';
 import {
     selectHasAutoCorrections,
@@ -165,6 +165,10 @@ export class SendSamplesEffects {
             concatMap(() => of(
                 sendSamplesAddSentFileSOA({ sentFile: fileName }),
                 navigateMSA({ path: this.samplesLinks.upload }),
+                // Clear the sent samples from memory (as if "Schließen" had been clicked),
+                // so the "Probendaten" tab points back to upload and clicking it does nothing.
+                // Sent samples are viewed via the order list, not by leaving them in the editor.
+                samplesDestroyMainDataSOA(),
                 showBannerSOA({ predefined: 'sendSuccess' })
             )),
             catchError((error) => {
