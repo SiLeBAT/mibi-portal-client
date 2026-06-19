@@ -54,6 +54,12 @@ export class UploadAbstractComponent implements OnDestroy, AfterViewInit {
         this.invokeValidation.emit(file);
     }
 
+    onUploadInteraction() {
+        // Hide any open banner as soon as the user starts a new upload
+        // (clicks "Datei wählen" or drags a file into the drop area).
+        this.errorHandler.emit(UploadErrorType.CLEAR);
+    }
+
     onClick(e: Event) {
         // if (e.isTrusted) {
         //     return;
