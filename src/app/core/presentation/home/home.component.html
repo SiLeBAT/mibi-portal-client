@@ -1,70 +1,62 @@
-<mibi-single-center-card-layout cardTitle="">
+<div class="mibi-welcome">
 
-    <div mibi-card-title class="mibi-title">{{ appName }}</div>
+    <ng-container *ngIf="isMaintenance$ | async; else normalContent">
+        <markdown [data]="maintenanceContent$ | async"></markdown>
+    </ng-container>
 
-    <mibi-box-layout mibi-card-content>
-
-        <ng-container *ngIf="isMaintenance$ | async; else normalContent">
-            <markdown [data]="maintenanceContent$ | async"></markdown>
-        </ng-container>
-
-        <ng-template #normalContent>
-            <div *ngIf="isAlternativeWelcomePage" class="mibi-alternative-page">
-                <hr />
-                <p>
-                    Momentan kann das MiBi-Portal nicht verwendet werden. Eine Lösung ist in Arbeit.
-                    <br>
-                    Bitte senden Sie Ihren Untersuchungsauftrag per E-Mail an <a href="mailto:NRLs-Mibi@bfr.bund.de" target="_blank">NRLs-Mibi&#64;bfr.bund.de</a>.
-                    <br>
-                    Als Probenbegleitschein drucken Sie bitte Ihren Untersuchungsauftrag aus.
-                </p>
-                <p>
-                    Der Fehler betrifft nur das MiBi-Portal für AVV DatA-codierte Untersuchungsaufträge.
-                    Ihre ADV-codierten Untersuchungsaufträge können Sie weiterhin unter <a href="https://nolar-dev.bfr.berlin" target="_blank">https://nolar-dev.bfr.berlin</a>
-                    hochladen und ans BfR senden.
-                </p>
-                <hr />
-            </div>
-
+    <ng-template #normalContent>
+        <div *ngIf="isAlternativeWelcomePage$ | async" class="mibi-alternative-page">
+            <hr />
             <p>
-                Sie befinden sich auf dem Datenaustausch-Portal der
-                mikrobiologischen nationalen Referenzlabore des Bundesinstituts
-                für Risikobewertung (BfR).
+                Momentan kann das MiBi-Portal nicht verwendet werden. Eine Lösung ist in Arbeit.
+                <br>
+                Bitte senden Sie Ihren Untersuchungsauftrag per E-Mail an <a href="mailto:NRLs-Mibi@bfr.bund.de" target="_blank">NRLs-Mibi&#64;bfr.bund.de</a>.
+                <br>
+                Als Probenbegleitschein drucken Sie bitte Ihren Untersuchungsauftrag aus.
             </p>
             <p>
-                Hier haben Sie die Möglichkeit, sich zu registrieren und nach dem
-                Einloggen Ihre im Untersuchungsauftrag eingetragenen AVV DatA-codierten
-                Daten hochzuladen, zu validieren und an das BfR zu senden. Der
-                Untersuchungsauftrag ist unter Probendaten \ Excel-Vorlage verlinkt
-                und steht auf der gewohnten BfR-Seite zur Verfügung.
+                Der Fehler betrifft nur das MiBi-Portal für AVV DatA-codierte Untersuchungsaufträge.
+                Ihre ADV-codierten Untersuchungsaufträge können Sie weiterhin unter <a href="https://nolar-dev.bfr.berlin" target="_blank">https://nolar-dev.bfr.berlin</a>
+                hochladen und ans BfR senden.
             </p>
-            <p>
-                Möchten Sie Ihren Untersuchungsauftrag nur kurz prüfen,
-                können Sie die Validierung der Proben wie gewohnt auch ohne sich
-                einzuloggen vornehmen.
-            </p>
-            <p>
-                Bei Fragen, Problemen oder Anregungen können Sie gerne mit uns
-                in
-                <a href="mailto:{{ supportContact }}" target="_top">Kontakt</a>
-                treten.
-            </p>
-        </ng-template>
+            <hr />
+        </div>
 
-    </mibi-box-layout>
-
-    <mibi-box-layout mibiCardActions>
         <p>
-            Ihr MiBi-Portal Team
+            Sie befinden sich auf dem Datenaustausch-Portal der
+            mikrobiologischen nationalen Referenzlabore des Bundesinstituts
+            für Risikobewertung (BfR).
         </p>
         <p>
-            <a href="https://www.bfr.bund.de" target="_blank">
-                <img
-                    class="mibi-logo"
-                    src="../../assets/BfR_Logo_DE.png"
-                    alt="BfR Logo" />
-            </a>
+            Hier haben Sie die Möglichkeit, sich zu registrieren und nach dem
+            Einloggen Ihre im Untersuchungsauftrag eingetragenen AVV DatA-codierten
+            Daten hochzuladen, zu validieren und an das BfR zu senden. Der
+            Untersuchungsauftrag ist unter Excel-Vorlage verlinkt
+            und steht auf der gewohnten BfR-Seite zur Verfügung.
         </p>
-    </mibi-box-layout>
+        <p>
+            Möchten Sie Ihren Untersuchungsauftrag nur kurz prüfen,
+            können Sie die Validierung der Proben wie gewohnt auch ohne sich
+            einzuloggen vornehmen.
+        </p>
+        <p>
+            Bei Fragen, Problemen oder Anregungen können Sie gerne mit uns
+            in
+            <a href="mailto:{{ supportContact }}" target="_top">Kontakt</a>
+            treten.
+        </p>
+    </ng-template>
 
-</mibi-single-center-card-layout>
+    <p class="mibi-welcome__team">
+        Ihr MiBi-Portal Team
+    </p>
+    <p>
+        <a href="https://www.bfr.bund.de" target="_blank">
+            <img
+                class="mibi-logo"
+                src="../../assets/BfR_Logo_DE.png"
+                alt="BfR Logo" />
+        </a>
+    </p>
+
+</div>

@@ -17,9 +17,32 @@
   box-sizing: border-box;
 }
 
+// Upper part of the page: welcome text (left) and the upload field (right),
+// split into two equal-width columns.
+.mibi-upload-page__top {
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: layout.$octuple-space;
+  align-items: start;
+}
+
+.mibi-upload-page__welcome {
+  min-width: 0;
+  padding: layout.$double-space layout.$quadruple-space 0;
+}
+
 .mibi-upload-page__upload-card {
   display: block;
-  flex: 0 0 auto;
+  min-width: 0;
+}
+
+// Stack the two columns on narrower viewports so neither gets squeezed.
+@media (max-width: 992px) {
+  .mibi-upload-page__top {
+    grid-template-columns: 1fr;
+    gap: layout.$quadruple-space;
+  }
 }
 
 // Inlined replacement for the former <mibi-single-center-card-layout> wrapper:
@@ -66,8 +89,8 @@
 }
 
 // When the orders container is empty (logged-out user, no <mat-card> rendered),
-// push the upload card further down the page.
-.mibi-upload-page:not(:has(.mibi-order-list)) .mibi-upload-page__upload-card {
+// push the upper part further down the page so it is not hugging the top bar.
+.mibi-upload-page:not(:has(.mibi-order-list)) .mibi-upload-page__top {
   margin-top: layout.$octuple-space;
 }
 

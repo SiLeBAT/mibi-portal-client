@@ -31,10 +31,11 @@ describe('Testing the Header', function () {
                     });
                 });
 
-                it('should have link to the Upload page', function () {
+                it('should no longer show the "Probendaten" tab', function () {
+                    // The welcome text and upload field now share a single page,
+                    // so the center navigation no longer has a Probendaten tab.
                     cy.get(navBarTabsSelector).within(() => {
-                        cy.contains(samplesTab)
-                            .should('have.attr', 'href', this.paths.upload);
+                        cy.contains(samplesTab).should('not.exist');
                     });
                 });
 

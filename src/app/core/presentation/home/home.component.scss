@@ -1,12 +1,11 @@
 @use "colors";
 
-.mibi-title {
-  margin-top: 0.25em;
-  margin-bottom: 0.5em;
-  color: colors.$bfr-base-color;
-  text-align: center;
-  font-size: 2em;
-  line-height: normal;
+.mibi-welcome {
+  display: block;
+}
+
+.mibi-welcome__team {
+  margin-top: 1.5em;
 }
 
 .mibi-logo {
