@@ -1,8 +1,17 @@
-<mibi-single-center-card-layout cardTitle="Profil">
+<mibi-single-center-card-layout cardTitle="Persönliche Daten">
     <div mibi-card-content>
-        <p>{{ currentUser.firstName }} {{ currentUser.lastName }}</p>
-        <p>{{ currentUser.email }}</p>
-        <p class="mibi-last" *ngIf="institution">{{ institution }}</p>
+        <dl class="mibi-profile-details">
+            <dt>Vorname:</dt>
+            <dd>{{ currentUser.firstName }}</dd>
+            <dt>Nachname:</dt>
+            <dd>{{ currentUser.lastName }}</dd>
+            <dt>E-Mail:</dt>
+            <dd>{{ currentUser.email }}</dd>
+            <ng-container *ngIf="institution">
+                <dt>Institut:</dt>
+                <dd>{{ institution }}</dd>
+            </ng-container>
+        </dl>
         <div class="mibi-logout-wrapper">
             <button
                 type="button"

@@ -38,7 +38,7 @@ describe('Testing the Profile page', function () {
 
             // FIXME: Not working, see ticket: #272
             xit('should display the page greeting', function () {
-                cy.contains('mat-card-title', 'Profil');
+                cy.contains('mat-card-title', 'Persönliche Daten');
             });
 
             xit('should display the user information', function () {
