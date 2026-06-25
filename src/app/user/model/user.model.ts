@@ -3,6 +3,10 @@ export interface User {
     firstName?: string;
     lastName?: string;
     instituteId: string;
+    // Data-save consent: whether the user agreed to store their sample data and
+    // whether they have been asked at all (drives the post-login consent popup).
+    dataSaveAgreed?: boolean;
+    dataSaveViewed?: boolean;
 }
 export interface TokenizedUser extends User {
     token: string;

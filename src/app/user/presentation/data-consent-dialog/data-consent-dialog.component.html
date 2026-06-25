@@ -1,0 +1,35 @@
+<div class="mibi-data-consent-dialog">
+    <div class="mibi-consent-header">{{ strings.title }}</div>
+
+    <div class="mibi-consent-body">
+        <p class="mibi-consent-text">{{ strings.introductoryText }}</p>
+
+        <mat-radio-group
+            class="mibi-consent-choices"
+            (change)="onSelectionChange($event)"
+        >
+            <mat-radio-button class="mibi-consent-choice" [value]="true">
+                {{ strings.agreeChoice }}
+            </mat-radio-button>
+            <mat-radio-button class="mibi-consent-choice" [value]="false">
+                {{ strings.disagreeChoice }}
+            </mat-radio-button>
+        </mat-radio-group>
+
+        <p class="mibi-consent-text mibi-consent-concluding">
+            {{ strings.concludingText }}
+        </p>
+
+        <div class="mibi-consent-actions">
+            <button
+                type="button"
+                mat-flat-button
+                color="primary"
+                [disabled]="isSaveDisabled"
+                (click)="onSave()"
+            >
+                {{ strings.saveButtonLabel }}
+            </button>
+        </div>
+    </div>
+</div>

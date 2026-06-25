@@ -29,3 +29,7 @@ export interface RegistrationDetailsDTO {
     readonly lastName: string;
     readonly instituteId: string;
 }
+
+export interface UserConsentRequestDTO {
+    readonly dataSaveAgreed: boolean;
+}

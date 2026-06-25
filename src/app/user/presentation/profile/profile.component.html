@@ -11,6 +11,8 @@
                 <dt>Institut:</dt>
                 <dd>{{ institution }}</dd>
             </ng-container>
+            <dt>{{ consentStrings.label }}</dt>
+            <dd>{{ currentUser.dataSaveAgreed ? consentStrings.agreed : consentStrings.disagreed }}</dd>
         </dl>
         <div class="mibi-logout-wrapper">
             <button

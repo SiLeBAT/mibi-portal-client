@@ -52,6 +52,8 @@ function toTokenizedUser(me: MeResponse): TokenizedUser {
         firstName: me.preferred_username,
         lastName: '',
         instituteId: '',
-        token: ''
+        token: '',
+        dataSaveAgreed: me.dataSaveAgreed,
+        dataSaveViewed: me.dataSaveViewed
     };
 }

@@ -9,7 +9,13 @@ import {
 } from '../state/user.actions';
 import { KeycloakAuthService } from './keycloak-auth.service';
 
-const meResponse: MeResponse = { sub: 'u1', email: 'a@b.com', preferred_username: 'user1' };
+const meResponse: MeResponse = {
+    sub: 'u1',
+    email: 'a@b.com',
+    preferred_username: 'user1',
+    dataSaveAgreed: true,
+    dataSaveViewed: true
+};
 
 function makeService(
     get = jest.fn(),
@@ -49,7 +55,9 @@ describe('KeycloakAuthService', () => {
                         firstName: 'user1',
                         lastName: '',
                         instituteId: '',
-                        token: ''
+                        token: '',
+                        dataSaveAgreed: true,
+                        dataSaveViewed: true
                     }
                 })
             );
