@@ -5,6 +5,7 @@ import { takeWhile, tap } from 'rxjs/operators';
 import { SamplesMainSlice } from './samples/samples.state';
 import { selectHasEntries } from './samples/state/samples.selectors';
 import { initSSA } from './main/init/init.actions';
+import { DataConsentService } from './user/services/data-consent.service';
 
 @Component({
     standalone: false,
@@ -16,7 +17,10 @@ export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDe
     private componentActive = true;
     private canUnload: boolean = true;
 
-    constructor(private store$: Store<SamplesMainSlice>) {
+    constructor(
+        private store$: Store<SamplesMainSlice>,
+        private dataConsentService: DataConsentService
+    ) {
         super();
     }
 
@@ -29,6 +33,10 @@ export class AppComponent extends GuardedUnloadComponent implements OnInit, OnDe
         ).subscribe();
 
         this.store$.dispatch(initSSA());
+
+        // Show the data-save consent popup once a user is present and has not
+        // yet made a choice (covers both legacy login and Keycloak bootstrap).
+        this.dataConsentService.monitor();
     }
 
     ngOnDestroy() {

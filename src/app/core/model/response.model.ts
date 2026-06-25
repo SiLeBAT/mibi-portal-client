@@ -29,6 +29,13 @@ export interface TokenizedUserDTO {
     readonly lastName: string;
     readonly instituteId: string;
     readonly token: string;
+    readonly dataSaveAgreed: boolean;
+    readonly dataSaveViewed: boolean;
+}
+
+export interface UserConsentResponseDTO {
+    readonly dataSaveAgreed: boolean;
+    readonly dataSaveViewed: boolean;
 }
 
 export interface SystemInformationResponseDTO {

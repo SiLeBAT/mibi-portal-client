@@ -4,7 +4,13 @@ import { MeResponse } from '../model/auth.model';
 import { KeycloakAuthService } from './keycloak-auth.service';
 import { KeycloakAuthGuard } from './keycloak-auth.guard';
 
-const meResponse: MeResponse = { sub: 'u1', email: 'a@b.com', preferred_username: 'user1' };
+const meResponse: MeResponse = {
+    sub: 'u1',
+    email: 'a@b.com',
+    preferred_username: 'user1',
+    dataSaveAgreed: false,
+    dataSaveViewed: false
+};
 
 function makeGuard(
     me: jest.Mock,
