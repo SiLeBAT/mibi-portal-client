@@ -40,7 +40,7 @@ $-bfr-base-palette: (
   600: #2473aa,
   700: #196399,
   800: #0f5388,
-  900: #003869, // base
+  900: #003869, /* base*/
   contrast: (
     50 : black,
     100 : black,
@@ -57,7 +57,7 @@ $-bfr-base-palette: (
 
 $-bfr-accent1-palette: (
   50: #e3eff5,
-  100: #bad8e9, // accent1
+  100: #bad8e9, /* accent1*/
   200: #8bc0df,
   300: #55a9d8,
   400: #1698d5,
@@ -87,7 +87,7 @@ $-bfr-accent2-palette: (
   300: #4ed3e2,
   400: #27c9db,
   500: #00c0d6,
-  600: #00afc3, // accent2
+  600: #00afc3, /* accent2*/
   700: #019aa9,
   800: #018691,
   900: #016366,
@@ -112,7 +112,7 @@ $-bfr-accent3-palette: (
   300: #6dceaa,
   400: #47c397,
   500: #07b985,
-  600: #00a979, // accent3
+  600: #00a979, /* accent3*/
   700: #00966b,
   800: #00855e,
   900: #066447,
@@ -137,7 +137,7 @@ $-bfr-accent4-palette: (
   300: #cfe767,
   400: #c4e142,
   500: #bbdc0c,
-  600: #afca00, // accent4
+  600: #afca00, /* accent4*/
   700: #a0b400,
   800: #909d00,
   900: #787600,
@@ -162,7 +162,7 @@ $-bfr-accent5-palette: (
   300: #fcf267,
   400: #f9ee3e,
   500: #f6e900,
-  600: #ffdd00, // accent5
+  600: #ffdd00, /* accent5*/
   700: #ffc400,
   800: #ffab00,
   900: #ff7e00,
@@ -186,7 +186,7 @@ $-bfr-accent6-palette: (
   200: #f9c87e,
   300: #f6b24b,
   400: #f5a125,
-  500: #f39200, // accent6
+  500: #f39200, /* accent6*/
   600: #ef8600,
   700: #e97700,
   800: #e36700,
@@ -213,7 +213,7 @@ $-bfr-accent7-palette: (
   400: #fe445a,
   500: #ff2541,
   600: #f61740,
-  700: #e40039, // accent7
+  700: #e40039, /* accent7*/
   800: #d70031,
   900: #c90024,
   contrast: (
@@ -233,15 +233,15 @@ $-bfr-accent7-palette: (
 // used bfr grey colors and filled gaps with color tool
 
 $-bfr-grey-palette: (
-  50: #e0e5eb, // grey5
+  50: #e0e5eb, /* grey5*/
   100: #d2dbe3,
-  200: #b6c2ce, // grey4
+  200: #b6c2ce, /* grey4*/
   300: #95a5b6,
-  400: #7f91a5, // grey3
+  400: #7f91a5, /* grey3*/
   500: #5f7690,
-  600: #52687f, // grey2
+  600: #52687f, /* grey2*/
   700: #40586d,
-  800: #324657, // grey1
+  800: #324657, /* grey1*/
   900: #20313f,
   contrast: (
     50 : black,

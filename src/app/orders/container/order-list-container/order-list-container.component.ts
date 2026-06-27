@@ -7,6 +7,7 @@ import { UserMainSlice } from '../../../user/user.state';
 import { selectUserCurrentUser } from '../../../user/state/user.selectors';
 import { OrderRow } from '../../model/order-row.model';
 import { OrdersMainSlice } from '../../orders.state';
+import { orderListLoadSamplesWithResultsSOA } from '../../state/order-list.actions';
 import { selectOrderList } from '../../state/order-list.selectors';
 
 interface ParseDateObject {
@@ -40,8 +41,8 @@ export class OrderListContainerComponent {
         );
     }
 
-    onOpenOrderResults(_orderId: string): void {
-        // Stub: detail view does not exist yet.
+    onOpenOrderResults(orderId: string): void {
+        this.store$.dispatch(orderListLoadSamplesWithResultsSOA({ orderId: orderId }));
     }
 
     private orderToRow(order: OrderEntryDTO): OrderRow {

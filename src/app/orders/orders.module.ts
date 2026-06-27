@@ -9,7 +9,7 @@ import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginato
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { ORDERS_SLICE_NAME } from './orders.state';
-import { ordersReducerMap, ordersEffects } from './orders.store';
+import { ordersReducer, ordersEffects } from './orders.store';
 import { OrderListViewComponent } from './presentation/order-list-view/order-list-view.component';
 import { OrderListFilterInputComponent } from './presentation/order-list-filter-input/order-list-filter-input.component';
 import { OrderListContainerComponent } from './container/order-list-container/order-list-container.component';
@@ -24,7 +24,7 @@ import { createOrderPaginatorIntl } from './presentation/order-list-paginator/or
         MatPaginatorModule,
         MatSortModule,
         MatTableModule,
-        StoreModule.forFeature(ORDERS_SLICE_NAME, ordersReducerMap),
+        StoreModule.forFeature(ORDERS_SLICE_NAME, ordersReducer),
         EffectsModule.forFeature(ordersEffects)
     ],
     declarations: [
