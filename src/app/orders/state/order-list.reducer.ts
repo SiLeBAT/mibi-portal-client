@@ -1,17 +1,26 @@
 import { createReducer, on } from '@ngrx/store';
 import { OrderEntryDTO } from '../../core/model/response.model';
-import { orderListDestroySOA, orderListUpdateSOA } from './order-list.actions';
+import {
+    orderListAddSamplesWithResultsSOA,
+    orderListDestroySOA,
+    orderListUpdateSOA
+} from './order-list.actions';
 
 // STATE
 
-export interface OrderListState {
-    orders: OrderEntryDTO[];
-}
+export type OrderListState = OrderEntryDTO[];
 
 // REDUCER
 
-export const orderListReducer = createReducer<OrderEntryDTO[]>(
+export const orderListReducer = createReducer<OrderListState>(
     [],
     on(orderListUpdateSOA, (_state, action) => action.orders),
-    on(orderListDestroySOA, _state => [])
+    on(orderListDestroySOA, _state => []),
+    on(orderListAddSamplesWithResultsSOA, (state, action) =>
+        state.map(order =>
+            order.id === action.orderId
+                ? { ...order, samples: action.samples }
+                : order
+        )
+    )
 );

@@ -43,7 +43,8 @@ import {
     ZomoPlanFileInfo,
     ZomoPlanFileData,
     OrderEntryDTO,
-    OrderCollectionDTO
+    OrderCollectionDTO,
+    SamplesWithResultsCollectionDTO
 } from '../model/response.model';
 import {
     AnnotatedOrderDTO
@@ -267,6 +268,11 @@ export class DataService {
     getOrderList(): Observable<OrderEntryDTO[]> {
         return this.httpClient.get<OrderCollectionDTO>(this.URL.orderList, this.PARSE_OPTIONS).pipe(
             map((dto: OrderCollectionDTO) => dto.orders));
+    }
+
+    getSamplesWithResults(orderId: string): Observable<SamplesWithResultsCollectionDTO> {
+        const url = [this.URL.orderList, 'samples-with-results'].join('/');
+        return this.httpClient.post<SamplesWithResultsCollectionDTO>(url, { orderId: orderId }, this.PARSE_OPTIONS);
     }
 
     registrationRequest(registrationDetails: RegistrationDetails): Observable<RegistrationRequestResponseDTO> {

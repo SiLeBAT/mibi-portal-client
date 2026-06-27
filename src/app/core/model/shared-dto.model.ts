@@ -71,6 +71,7 @@ export interface SampleDataEntryDTO {
 export interface AnnotatedSampleDataEntryDTO extends SampleDataEntryDTO {
     errors?: SampleValidationErrorDTO[];
     correctionOffer?: string[];
+    nrlData?: string;
 }
 
 interface SampleSetDTOBase {

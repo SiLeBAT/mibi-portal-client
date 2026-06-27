@@ -1,4 +1,4 @@
-import { OrderDTO, AnnotatedOrderDTO } from './shared-dto.model';
+import { OrderDTO, AnnotatedOrderDTO, AnnotatedSampleDataDTO, SampleMetaDTO } from './shared-dto.model';
 
 export interface TokenRefreshResponseDTO {
     readonly refresh: boolean;
@@ -102,6 +102,28 @@ export interface OrderEntryDTO {
     nrls: string[];
     pathogens: string[];
     results: string;
+    samples?: SampleWithResultsDTO[];
+}
+
+export type ResultDataDTO = Record<string, string>;
+
+export interface ResultDTO {
+    id: string;
+    position: number;
+    resultData: ResultDataDTO;
+}
+
+export interface SampleWithResultsDTO {
+    id: string;
+    position: number;
+    sampleData: AnnotatedSampleDataDTO;
+    sampleMeta: SampleMetaDTO;
+    results: ResultDTO[];
+}
+
+export interface SamplesWithResultsCollectionDTO {
+    orderId: string;
+    samples: SampleWithResultsDTO[];
 }
 
 export interface PutSamplesXLSXResponseDTO {
