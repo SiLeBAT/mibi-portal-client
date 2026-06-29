@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Store, select } from '@ngrx/store';
-import { filter, map, switchMap, take } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { DataService } from '../../core/services/data.service';
 import { DataConsentDialogComponent } from '../presentation/data-consent-dialog/data-consent-dialog.component';
+import { WithdrawConsentDialogComponent } from '../presentation/withdraw-consent-dialog/withdraw-consent-dialog.component';
 import { TokenizedUser } from '../model/user.model';
 import { userUpdateCurrentUserSOA } from '../state/user.actions';
 import { selectUserCurrentUser } from '../state/user.selectors';
@@ -56,6 +58,37 @@ export class DataConsentService {
                     this.saveConsent(result);
                 }
             });
+    }
+
+    /** Re-grant consent from the profile checkbox (no confirmation needed). */
+    giveConsent(): void {
+        this.saveConsent(true);
+    }
+
+    /**
+     * Opens the withdraw-consent confirmation. Emits true if the user confirmed
+     * the withdrawal (in which case the choice is already persisted), false if
+     * they backed out (or dismissed the dialog) so the caller can revert the UI.
+     */
+    requestWithdraw(): Observable<boolean> {
+        return this.dialog
+            .open<WithdrawConsentDialogComponent, void, boolean>(
+                WithdrawConsentDialogComponent,
+                {
+                    autoFocus: false,
+                    width: '600px',
+                    maxWidth: '90vw'
+                }
+            )
+            .afterClosed()
+            .pipe(
+                map(result => result === true),
+                tap(confirmed => {
+                    if (confirmed) {
+                        this.saveConsent(false);
+                    }
+                })
+            );
     }
 
     private saveConsent(dataSaveAgreed: boolean): void {

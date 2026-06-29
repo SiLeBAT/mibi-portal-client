@@ -37,8 +37,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { PasswordComponent } from './password/password.component';
 import { DataConsentDialogComponent } from './presentation/data-consent-dialog/data-consent-dialog.component';
+import { WithdrawConsentDialogComponent } from './presentation/withdraw-consent-dialog/withdraw-consent-dialog.component';
 import { USER_SLICE_NAME } from './user.state';
 import { userReducerMap, userEffects } from './user.store';
 import { userPathsParams, userPathsSegments } from './user.paths';
@@ -84,6 +86,7 @@ const routes: Routes = [{
         MatAutocompleteModule,
         MatDialogModule,
         MatRadioModule,
+        MatCheckboxModule,
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         PasswordStrengthMeterModule.forRoot(DEFAULT_PSM_OPTIONS),
         SharedModule,
@@ -115,7 +118,8 @@ const routes: Routes = [{
         LoginViewComponent,
         DatenschutzHinweiseComponent,
         DatenSchutzHinweiseViewComponent,
-        DataConsentDialogComponent
+        DataConsentDialogComponent,
+        WithdrawConsentDialogComponent
     ],
     exports: []
 })

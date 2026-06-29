@@ -1,0 +1,26 @@
+<div class="mibi-withdraw-consent-dialog">
+    <div class="mibi-withdraw-consent-header">{{ strings.title }}</div>
+
+    <div class="mibi-withdraw-consent-body">
+        <p class="mibi-withdraw-consent-text">{{ strings.text }}</p>
+
+        <div class="mibi-withdraw-consent-actions">
+            <button
+                type="button"
+                mat-flat-button
+                color="primary"
+                (click)="onBack()"
+            >
+                {{ strings.backButtonLabel }}
+            </button>
+            <button
+                type="button"
+                mat-stroked-button
+                color="primary"
+                (click)="onWithdraw()"
+            >
+                {{ strings.withdrawButtonLabel }}
+            </button>
+        </div>
+    </div>
+</div>

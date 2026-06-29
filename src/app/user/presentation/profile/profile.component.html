@@ -1,28 +1,49 @@
-<mibi-single-center-card-layout cardTitle="Persönliche Daten">
-    <div mibi-card-content>
-        <dl class="mibi-profile-details">
-            <dt>Vorname:</dt>
-            <dd>{{ currentUser.firstName }}</dd>
-            <dt>Nachname:</dt>
-            <dd>{{ currentUser.lastName }}</dd>
-            <dt>E-Mail:</dt>
-            <dd>{{ currentUser.email }}</dd>
-            <ng-container *ngIf="institution">
-                <dt>Institut:</dt>
-                <dd>{{ institution }}</dd>
-            </ng-container>
-            <dt>{{ consentStrings.label }}</dt>
-            <dd>{{ currentUser.dataSaveAgreed ? consentStrings.agreed : consentStrings.disagreed }}</dd>
-        </dl>
-        <div class="mibi-logout-wrapper">
-            <button
-                type="button"
-                mat-flat-button
-                color="accent"
-                (click)="onLogout()"
-            >
-                Abmelden
-            </button>
-        </div>
+<mibi-box-layout x-overflow-handling y-overflow-handling>
+    <div class="mibi-profile">
+        <mat-card class="mibi-profile-card">
+            <mat-card-title class="mibi-profile-card__title">Persönliche Daten</mat-card-title>
+            <mat-card-content>
+                <dl class="mibi-profile-details">
+                    <dt>Vorname:</dt>
+                    <dd>{{ currentUser.firstName }}</dd>
+                    <dt>Nachname:</dt>
+                    <dd>{{ currentUser.lastName }}</dd>
+                    <dt>E-Mail:</dt>
+                    <dd>{{ currentUser.email }}</dd>
+                    <ng-container *ngIf="institution">
+                        <dt>Institut:</dt>
+                        <dd>{{ institution }}</dd>
+                    </ng-container>
+                </dl>
+                <div class="mibi-logout-wrapper">
+                    <button
+                        type="button"
+                        mat-flat-button
+                        color="accent"
+                        (click)="onLogout()"
+                    >
+                        Abmelden
+                    </button>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card class="mibi-profile-card">
+            <mat-card-title class="mibi-profile-card__title">
+                {{ consentStrings.boxTitle }}
+            </mat-card-title>
+            <mat-card-content>
+                <p class="mibi-consent-intro">{{ consentStrings.introductoryText }}</p>
+                <mat-checkbox
+                    #consentCheckbox
+                    color="primary"
+                    class="mibi-consent-checkbox"
+                    [checked]="!!currentUser.dataSaveAgreed"
+                    (change)="onConsentToggle($event)"
+                >
+                    {{ consentStrings.consentCheckboxLabel }}
+                </mat-checkbox>
+            </mat-card-content>
+        </mat-card>
     </div>
-</mibi-single-center-card-layout>
+</mibi-box-layout>
