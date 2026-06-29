@@ -1,14 +1,31 @@
 @use "layout";
 
+.mibi-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: layout.$quadruple-space;
+  padding: layout.$octuple-space 10% layout.$quadruple-space;
+}
+
+.mibi-profile-card {
+  width: 100%;
+  max-width: 800px;
+  padding: 16px;
+}
+
+.mibi-profile-card__title {
+  font-size: 24px;
+  line-height: normal;
+  margin-bottom: layout.$single-space;
+}
+
 .mibi-profile-details {
   display: grid;
   grid-template-columns: max-content 1fr;
   column-gap: layout.$double-space;
   row-gap: layout.$single-space;
   margin: 0;
-
-  // more space between the heading and the following text (see mockup)
-  margin-top: layout.$triple-space;
 
   dt,
   dd {
@@ -18,4 +35,13 @@
 
 .mibi-logout-wrapper {
   margin-top: layout.$quadruple-space;
+}
+
+.mibi-consent-intro {
+  margin: 0 0 layout.$double-space;
+  line-height: 1.4;
+}
+
+.mibi-consent-checkbox {
+  white-space: normal;
 }

@@ -17,7 +17,19 @@ export const userConsentDialogStrings = {
 };
 
 export const userConsentProfileStrings = {
-    label: 'Einwilligung zur Datenspeicherung:',
-    agreed: 'Erteilt',
-    disagreed: 'Nicht erteilt'
+    boxTitle: 'Speicherung von Isolatdaten und Analyseergebnissen',
+    // Per the ticket, reuse the official consent texts (not the mockup drafts).
+    introductoryText: userConsentDialogStrings.introductoryText,
+    consentCheckboxLabel: userConsentDialogStrings.agreeChoice
+};
+
+export const userConsentWithdrawStrings = {
+    title: 'Einwilligung zur Speicherung der Daten zurückziehen',
+    text:
+        'Es werden keine neuen Daten mehr im MiBi-Portal gespeichert. Bereits ' +
+        'gespeicherte Daten werden gelöscht. Es werden keine ' +
+        'E-Mail-Benachrichtigungen über vorhandene BfR-Analyseergebnisse mehr ' +
+        'versendet.',
+    backButtonLabel: 'Zurück',
+    withdrawButtonLabel: 'Einwilligung zurückziehen'
 };
