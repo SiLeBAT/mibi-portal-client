@@ -6,23 +6,20 @@ import { Institution, fromDTOToInstitution } from '../../model/institution.model
 import _ from 'lodash';
 import { selectUserCurrentUser } from '../../state/user.selectors';
 import { UserMainSlice } from '../../user.state';
-import { AppAuthService } from '../../services/app-auth.service';
 
 @Component({
     standalone: false,
     selector: 'mibi-profile-container',
     template: `<mibi-profile *ngIf="currentUser"
     [institution]="getInstitutionName()"
-    [currentUser]="currentUser"
-    (logout)="logout()"></mibi-profile>`
+    [currentUser]="currentUser"></mibi-profile>`
 })
 export class ProfileContainerComponent implements OnInit, OnDestroy {
     currentUser: User | null = null;
     private institution?: Institution;
     private componentActive = true;
     constructor(
-        private store$: Store<UserMainSlice>,
-        private appAuth: AppAuthService
+        private store$: Store<UserMainSlice>
     ) { }
 
     ngOnInit() {
@@ -47,10 +44,6 @@ export class ProfileContainerComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.componentActive = false;
-    }
-
-    logout() {
-        this.appAuth.logout();
     }
 
     getInstitutionName() {
