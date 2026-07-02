@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, Input, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
 import { User } from '../../../user/model/user.model';
 import { userConsentProfileStrings } from '../../user-consent.constants';
@@ -12,7 +12,6 @@ import { DataConsentService } from '../../services/data-consent.service';
 })
 export class ProfileComponent {
 
-    @Output() logout = new EventEmitter();
     @Input() currentUser!: User;
     @Input() institution = '';
 
@@ -21,10 +20,6 @@ export class ProfileComponent {
     readonly consentStrings = userConsentProfileStrings;
 
     constructor(private consentService: DataConsentService) {}
-
-    onLogout() {
-        this.logout.emit();
-    }
 
     onConsentToggle(change: MatCheckboxChange): void {
         if (change.checked) {
