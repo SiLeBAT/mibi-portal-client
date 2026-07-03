@@ -14,6 +14,8 @@ const order = (id: string): OrderEntryDTO => ({
     fileName: `${id}.xlsx`,
     nrls: [],
     pathogens: [],
+    sampleIds: [],
+    sampleIdsAVV: [],
     results: '0/0'
 });
 

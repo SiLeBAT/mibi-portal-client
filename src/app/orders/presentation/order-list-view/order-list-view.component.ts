@@ -5,7 +5,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { OrderRow } from '../../model/order-row.model';
 
-type FilterableColumn = 'createdAt' | 'fileName' | 'pathogens' | 'nrls';
+type FilterableColumn = 'createdAt' | 'fileName' | 'sampleIds' | 'sampleIdsAVV' | 'pathogens' | 'nrls';
 
 @Component({
     standalone: false,
@@ -27,6 +27,8 @@ export class OrderListViewComponent implements AfterViewInit, OnDestroy {
     readonly displayedColumns: ReadonlyArray<keyof OrderRow | 'actions'> = [
         'createdAt',
         'fileName',
+        'sampleIds',
+        'sampleIdsAVV',
         'pathogens',
         'nrls',
         'sampleCount',
@@ -37,6 +39,8 @@ export class OrderListViewComponent implements AfterViewInit, OnDestroy {
     readonly filterColumns: ReadonlyArray<FilterableColumn> = [
         'createdAt',
         'fileName',
+        'sampleIds',
+        'sampleIdsAVV',
         'pathogens',
         'nrls'
     ];
@@ -44,6 +48,8 @@ export class OrderListViewComponent implements AfterViewInit, OnDestroy {
     columnFilters: Record<FilterableColumn, string> = {
         createdAt: '',
         fileName: '',
+        sampleIds: '',
+        sampleIdsAVV: '',
         pathogens: '',
         nrls: ''
     };
