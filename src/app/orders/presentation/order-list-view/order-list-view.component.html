@@ -17,6 +17,16 @@
                 <td mat-cell *matCellDef="let row" class="mibi-order-list__cell--wrap">{{ row.fileName }}</td>
             </ng-container>
 
+            <ng-container matColumnDef="sampleIds">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Ihre Probenummer</th>
+                <td mat-cell *matCellDef="let row" class="mibi-order-list__cell--wrap">{{ row.sampleIds }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="sampleIdsAVV">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Probenummer nach AVV DatA</th>
+                <td mat-cell *matCellDef="let row" class="mibi-order-list__cell--wrap">{{ row.sampleIdsAVV }}</td>
+            </ng-container>
+
             <ng-container matColumnDef="pathogens">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Enthaltene Erreger</th>
                 <td mat-cell *matCellDef="let row" class="mibi-order-list__cell--wrap">{{ row.pathogens }}</td>
@@ -71,6 +81,26 @@
                 </th>
             </ng-container>
 
+            <ng-container matColumnDef="filter-sampleIds">
+                <th mat-header-cell *matHeaderCellDef class="mibi-order-list__filter-cell">
+                    <mibi-order-list-filter-input
+                        [value]="columnFilters.sampleIds"
+                        ariaLabel="Probenummer filtern"
+                        (valueChange)="onFilterChange('sampleIds', $event)"
+                    ></mibi-order-list-filter-input>
+                </th>
+            </ng-container>
+
+            <ng-container matColumnDef="filter-sampleIdsAVV">
+                <th mat-header-cell *matHeaderCellDef class="mibi-order-list__filter-cell">
+                    <mibi-order-list-filter-input
+                        [value]="columnFilters.sampleIdsAVV"
+                        ariaLabel="Probenummer nach AVV DatA filtern"
+                        (valueChange)="onFilterChange('sampleIdsAVV', $event)"
+                    ></mibi-order-list-filter-input>
+                </th>
+            </ng-container>
+
             <ng-container matColumnDef="filter-pathogens">
                 <th mat-header-cell *matHeaderCellDef class="mibi-order-list__filter-cell">
                     <mibi-order-list-filter-input
@@ -99,6 +129,8 @@
             <tr mat-header-row *matHeaderRowDef="[
                 'filter-createdAt',
                 'filter-fileName',
+                'filter-sampleIds',
+                'filter-sampleIdsAVV',
                 'filter-pathogens',
                 'filter-nrls',
                 'filter-sampleCount',

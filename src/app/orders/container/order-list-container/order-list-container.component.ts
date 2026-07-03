@@ -50,6 +50,8 @@ export class OrderListContainerComponent {
             id: order.id,
             createdAt: this.parseDate(order.createdAt),
             fileName: order.fileName,
+            sampleIds: this.joinUnique(order.sampleIds),
+            sampleIdsAVV: this.joinUnique(order.sampleIdsAVV),
             pathogens: this.joinUnique(order.pathogens),
             nrls: this.joinUnique(order.nrls),
             sampleCount: order.sampleCount,
