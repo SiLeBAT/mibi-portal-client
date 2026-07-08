@@ -2,6 +2,24 @@
 
 .mibi-welcome {
   display: block;
+
+  // Text column matches the upload box width, centered.
+  // 1450px cap + 16px side padding mirrors the upload card box so edges align.
+  max-width: 1450px;
+  margin: 0 auto;
+  padding: 0 16px;
+  box-sizing: border-box;
+
+  p {
+    text-align: justify;
+  }
+}
+
+.mibi-welcome__header {
+  text-align: center;
+  margin: 0 0 1em;
+  font-size: 2rem;
+  font-weight: 500;
 }
 
 .mibi-welcome__team {

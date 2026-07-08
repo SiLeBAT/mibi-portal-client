@@ -1,5 +1,7 @@
 <div class="mibi-welcome">
 
+    <h1 class="mibi-welcome__header">MiBi-Portal</h1>
+
     <ng-container *ngIf="isMaintenance$ | async; else normalContent">
         <markdown [data]="maintenanceContent$ | async"></markdown>
     </ng-container>
