@@ -54,6 +54,7 @@ function toTokenizedUser(me: MeResponse): TokenizedUser {
         instituteId: '',
         token: '',
         dataSaveAgreed: me.dataSaveAgreed,
-        dataSaveViewed: me.dataSaveViewed
+        dataSaveViewed: me.dataSaveViewed,
+        emailNotificationSettings: me.emailNotificationSettings
     };
 }

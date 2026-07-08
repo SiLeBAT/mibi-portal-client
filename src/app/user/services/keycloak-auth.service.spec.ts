@@ -14,7 +14,13 @@ const meResponse: MeResponse = {
     email: 'a@b.com',
     preferred_username: 'user1',
     dataSaveAgreed: true,
-    dataSaveViewed: true
+    dataSaveViewed: true,
+    emailNotificationSettings: {
+        enabled: false,
+        frequency: 'daily',
+        weekday: 'monday',
+        weekOfMonth: '1'
+    }
 };
 
 function makeService(
@@ -57,7 +63,13 @@ describe('KeycloakAuthService', () => {
                         instituteId: '',
                         token: '',
                         dataSaveAgreed: true,
-                        dataSaveViewed: true
+                        dataSaveViewed: true,
+                        emailNotificationSettings: {
+                            enabled: false,
+                            frequency: 'daily',
+                            weekday: 'monday',
+                            weekOfMonth: '1'
+                        }
                     }
                 })
             );

@@ -9,7 +9,13 @@ const meResponse: MeResponse = {
     email: 'a@b.com',
     preferred_username: 'user1',
     dataSaveAgreed: false,
-    dataSaveViewed: false
+    dataSaveViewed: false,
+    emailNotificationSettings: {
+        enabled: false,
+        frequency: 'daily',
+        weekday: 'monday',
+        weekOfMonth: '1'
+    }
 };
 
 function makeGuard(

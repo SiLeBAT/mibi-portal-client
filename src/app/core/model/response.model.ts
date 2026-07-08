@@ -1,3 +1,4 @@
+import { EmailNotificationSettings } from './email-notification-settings.model';
 import { OrderDTO, AnnotatedOrderDTO, AnnotatedSampleDataDTO, SampleMetaDTO } from './shared-dto.model';
 
 export interface TokenRefreshResponseDTO {
@@ -31,12 +32,15 @@ export interface TokenizedUserDTO {
     readonly token: string;
     readonly dataSaveAgreed: boolean;
     readonly dataSaveViewed: boolean;
+    readonly emailNotificationSettings: EmailNotificationSettings;
 }
 
 export interface UserConsentResponseDTO {
     readonly dataSaveAgreed: boolean;
     readonly dataSaveViewed: boolean;
 }
+
+export type UserEmailNotificationResponseDTO = EmailNotificationSettings;
 
 export interface SystemInformationResponseDTO {
     readonly version: string;

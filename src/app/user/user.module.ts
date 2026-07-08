@@ -41,6 +41,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { PasswordComponent } from './password/password.component';
 import { DataConsentDialogComponent } from './presentation/data-consent-dialog/data-consent-dialog.component';
 import { WithdrawConsentDialogComponent } from './presentation/withdraw-consent-dialog/withdraw-consent-dialog.component';
+import { EmailSettingsComponent } from './presentation/email-settings/email-settings.component';
 import { USER_SLICE_NAME } from './user.state';
 import { userReducerMap, userEffects } from './user.store';
 import { userPathsParams, userPathsSegments } from './user.paths';
@@ -119,7 +120,8 @@ const routes: Routes = [{
         DatenschutzHinweiseComponent,
         DatenSchutzHinweiseViewComponent,
         DataConsentDialogComponent,
-        WithdrawConsentDialogComponent
+        WithdrawConsentDialogComponent,
+        EmailSettingsComponent
     ],
     exports: []
 })
