@@ -1,0 +1,82 @@
+<mat-card class="mibi-profile-card">
+    <mat-card-title class="mibi-profile-card__title">
+        {{ strings.boxTitle }}
+    </mat-card-title>
+    <mat-card-content>
+        <mat-checkbox
+            color="primary"
+            class="mibi-email-settings__checkbox"
+            [checked]="settings.enabled"
+            (change)="onEnabledToggle($event)"
+        >
+            {{ strings.enableCheckboxLabel }}
+        </mat-checkbox>
+
+        <div *ngIf="settings.enabled" class="mibi-email-settings__options">
+            <mat-radio-group
+                class="mibi-email-settings__frequency"
+                [value]="settings.frequency"
+                (change)="onFrequencyChange($event)"
+            >
+                <mat-radio-button
+                    *ngFor="let frequency of strings.frequencies"
+                    color="primary"
+                    [value]="frequency.value"
+                >
+                    {{ frequency.label }}
+                </mat-radio-button>
+            </mat-radio-group>
+
+            <div
+                *ngIf="settings.frequency === 'weekly'"
+                class="mibi-email-settings__suboption"
+            >
+                <mat-radio-group
+                    class="mibi-email-settings__inline-group"
+                    [value]="settings.weekday"
+                    (change)="onWeekdayChange($event)"
+                >
+                    <mat-radio-button
+                        *ngFor="let weekday of strings.weekdays"
+                        color="primary"
+                        [value]="weekday.value"
+                    >
+                        {{ weekday.label }}
+                    </mat-radio-button>
+                </mat-radio-group>
+            </div>
+
+            <div
+                *ngIf="settings.frequency === 'monthly'"
+                class="mibi-email-settings__suboption"
+            >
+                <mat-radio-group
+                    class="mibi-email-settings__inline-group"
+                    [value]="settings.weekOfMonth"
+                    (change)="onWeekOfMonthChange($event)"
+                >
+                    <mat-radio-button
+                        *ngFor="let week of strings.weeksOfMonth"
+                        color="primary"
+                        [value]="week.value"
+                    >
+                        {{ week.label }}
+                    </mat-radio-button>
+                </mat-radio-group>
+                <mat-radio-group
+                    class="mibi-email-settings__inline-group"
+                    [value]="settings.weekday"
+                    (change)="onWeekdayChange($event)"
+                >
+                    <mat-radio-button
+                        *ngFor="let weekday of strings.weekdays"
+                        color="primary"
+                        [value]="weekday.value"
+                    >
+                        {{ weekday.label }}
+                    </mat-radio-button>
+                </mat-radio-group>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

@@ -1,3 +1,5 @@
+import { EmailNotificationSettings } from '../../core/model/email-notification-settings.model';
+
 export interface User {
     email: string;
     firstName?: string;
@@ -7,6 +9,8 @@ export interface User {
     // whether they have been asked at all (drives the post-login consent popup).
     dataSaveAgreed?: boolean;
     dataSaveViewed?: boolean;
+    // How often the user wants to be emailed about new BfR analysis results.
+    emailNotificationSettings?: EmailNotificationSettings;
 }
 export interface TokenizedUser extends User {
     token: string;

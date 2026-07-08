@@ -1,3 +1,4 @@
+import { EmailNotificationSettings } from './email-notification-settings.model';
 import { OrderDTO } from './shared-dto.model';
 
 export interface PutSamplesJSONRequestDTO {
@@ -33,3 +34,5 @@ export interface RegistrationDetailsDTO {
 export interface UserConsentRequestDTO {
     readonly dataSaveAgreed: boolean;
 }
+
+export type UserEmailNotificationRequestDTO = EmailNotificationSettings;

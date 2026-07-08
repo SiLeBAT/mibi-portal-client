@@ -21,7 +21,8 @@ import {
     PutValidatedRequestDTO,
     RegistrationDetailsDTO,
     ResetRequestDTO,
-    UserConsentRequestDTO
+    UserConsentRequestDTO,
+    UserEmailNotificationRequestDTO
 } from '../model/request.model';
 import {
     ActivationResponseDTO,
@@ -41,6 +42,7 @@ import {
     TokenRefreshResponseDTO,
     TokenizedUserDTO,
     UserConsentResponseDTO,
+    UserEmailNotificationResponseDTO,
     ZomoPlanFileCollectionDTO,
     ZomoPlanFileInfo,
     ZomoPlanFileData,
@@ -82,6 +84,7 @@ export class DataService {
         orderList: [this.API_VERSION, this.ORDER].join('/'),
         login: [this.API_VERSION, this.USER, 'login'].join('/'),
         consent: [this.API_VERSION, this.USER, 'consent'].join('/'),
+        emailNotifications: [this.API_VERSION, this.USER, 'email-notifications'].join('/'),
         register: [this.API_VERSION, this.USER, 'registration'].join('/'),
         resetPasswordRequest: [this.API_VERSION, this.USER, 'reset-password-request'].join('/'),
         resetPassword: [this.API_VERSION, this.USER, 'reset-password'].join('/'),
@@ -140,6 +143,16 @@ export class DataService {
     saveDataSaveConsent(dataSaveAgreed: boolean): Observable<UserConsentResponseDTO> {
         const requestDTO: UserConsentRequestDTO = { dataSaveAgreed: dataSaveAgreed };
         return this.httpClient.patch<UserConsentResponseDTO>(this.URL.consent, requestDTO, this.PARSE_OPTIONS);
+    }
+
+    saveEmailNotificationSettings(
+        settings: UserEmailNotificationRequestDTO
+    ): Observable<UserEmailNotificationResponseDTO> {
+        return this.httpClient.patch<UserEmailNotificationResponseDTO>(
+            this.URL.emailNotifications,
+            settings,
+            this.PARSE_OPTIONS
+        );
     }
 
     sendSampleSheet(sendableFormData: SampleSubmission) {

@@ -1,0 +1,52 @@
+@use "layout";
+
+// Match the sibling profile cards exactly. These card/title rules are repeated
+// here (not inherited from profile.component.scss) because Angular's view
+// encapsulation scopes those styles to the profile component only.
+:host {
+  display: block;
+  width: 100%;
+  max-width: 800px;
+}
+
+.mibi-profile-card {
+  width: 100%;
+  padding: 16px;
+}
+
+.mibi-profile-card__title {
+  font-size: 24px;
+  line-height: normal;
+  margin-bottom: layout.$single-space;
+}
+
+.mibi-email-settings__checkbox {
+  white-space: normal;
+}
+
+.mibi-email-settings__options {
+  display: flex;
+  flex-direction: column;
+  gap: layout.$double-space;
+  margin-top: layout.$double-space;
+  margin-left: layout.$double-space;
+}
+
+.mibi-email-settings__frequency {
+  display: flex;
+  flex-direction: column;
+  gap: layout.$single-space;
+}
+
+.mibi-email-settings__suboption {
+  display: flex;
+  flex-direction: column;
+  gap: layout.$single-space;
+  margin-left: layout.$quadruple-space;
+}
+
+.mibi-email-settings__inline-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: layout.$double-space;
+}
