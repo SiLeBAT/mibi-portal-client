@@ -12,6 +12,7 @@ import { ORDERS_SLICE_NAME } from './orders.state';
 import { ordersReducer, ordersEffects } from './orders.store';
 import { OrderListViewComponent } from './presentation/order-list-view/order-list-view.component';
 import { OrderListFilterInputComponent } from './presentation/order-list-filter-input/order-list-filter-input.component';
+import { OrderListFilterSelectComponent } from './presentation/order-list-filter-select/order-list-filter-select.component';
 import { OrderListContainerComponent } from './container/order-list-container/order-list-container.component';
 import { createOrderPaginatorIntl } from './presentation/order-list-paginator/order-list-paginator.intl';
 
@@ -30,6 +31,7 @@ import { createOrderPaginatorIntl } from './presentation/order-list-paginator/or
     declarations: [
         OrderListViewComponent,
         OrderListFilterInputComponent,
+        OrderListFilterSelectComponent,
         OrderListContainerComponent
     ],
     providers: [

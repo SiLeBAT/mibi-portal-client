@@ -4,8 +4,11 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { OrderRow } from '../../model/order-row.model';
+import { ResultsFilterValue } from '../order-list-filter-select/order-list-filter-select.component';
 
 type FilterableColumn = 'createdAt' | 'fileName' | 'sampleIds' | 'sampleIdsAVV' | 'pathogens' | 'nrls';
+
+type ResultsCategory = 'partial' | 'complete' | 'none';
 
 @Component({
     standalone: false,
@@ -54,18 +57,32 @@ export class OrderListViewComponent implements AfterViewInit, OnDestroy {
         nrls: ''
     };
 
+    resultsFilter: ResultsFilterValue = '';
+
     dataSource = new MatTableDataSource<OrderRow>([]);
 
     constructor() {
         this.dataSource.filterPredicate = (row, filter) => {
-            const filters = JSON.parse(filter) as Record<FilterableColumn, string>;
-            return (Object.keys(filters) as FilterableColumn[]).every(key => {
-                const searchTerm = filters[key].trim().toLowerCase();
+            const parsed = JSON.parse(filter) as {
+                columns: Record<FilterableColumn, string>;
+                results: ResultsFilterValue;
+            };
+
+            const columnsMatch = (Object.keys(parsed.columns) as FilterableColumn[]).every(key => {
+                const searchTerm = parsed.columns[key].trim().toLowerCase();
                 if (!searchTerm) {
                     return true;
                 }
                 return this.formatCell(row, key).toLowerCase().includes(searchTerm);
             });
+            if (!columnsMatch) {
+                return false;
+            }
+
+            if (parsed.results) {
+                return OrderListViewComponent.classifyResults(row.results) === parsed.results;
+            }
+            return true;
         };
 
         this.dataSource.sortingDataAccessor = (row, property) => {
@@ -93,10 +110,12 @@ export class OrderListViewComponent implements AfterViewInit, OnDestroy {
             ...this.columnFilters,
             [column]: value
         };
-        this.dataSource.filter = JSON.stringify(this.columnFilters);
-        if (this.dataSource.paginator) {
-            this.dataSource.paginator.firstPage();
-        }
+        this.applyFilter();
+    }
+
+    onResultsFilterChange(value: ResultsFilterValue): void {
+        this.resultsFilter = value;
+        this.applyFilter();
     }
 
     onOpenResults(row: OrderRow): void {
@@ -107,10 +126,40 @@ export class OrderListViewComponent implements AfterViewInit, OnDestroy {
         return this.dataSource.data.length;
     }
 
+    resultsCategory(row: OrderRow): ResultsCategory {
+        return OrderListViewComponent.classifyResults(row.results);
+    }
+
+    private applyFilter(): void {
+        this.dataSource.filter = JSON.stringify({
+            columns: this.columnFilters,
+            results: this.resultsFilter
+        });
+        if (this.dataSource.paginator) {
+            this.dataSource.paginator.firstPage();
+        }
+    }
+
     private formatCell(row: OrderRow, column: FilterableColumn): string {
         if (column === 'createdAt') {
             return this.datePipe.transform(row.createdAt, OrderListViewComponent.DATE_FORMAT) ?? '';
         }
         return row[column] ?? '';
+    }
+
+    // The order's "results" field is a "done/total" fraction (e.g. "3/5").
+    // Map it to the categories used for cell colouring and the dropdown filter:
+    // some (but not all) results -> partial (yellow), all results -> complete (green).
+    private static classifyResults(results: string): ResultsCategory {
+        const match = /^(\d+)\s*\/\s*(\d+)$/.exec((results ?? '').trim());
+        if (!match) {
+            return 'none';
+        }
+        const done = Number(match[1]);
+        const total = Number(match[2]);
+        if (total <= 0 || done <= 0) {
+            return 'none';
+        }
+        return done >= total ? 'complete' : 'partial';
     }
 }

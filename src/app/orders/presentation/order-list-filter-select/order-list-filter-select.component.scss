@@ -1,0 +1,90 @@
+@use "layout";
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.mibi-order-list-filter-select {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  width: 100%;
+}
+
+.mibi-order-list-filter-select__control {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 1px solid rgb(0 0 0 / 23%);
+  border-radius: 4px;
+  background: #ffffff;
+}
+
+.mibi-order-list-filter-select__control--partial {
+  background-color: #fef695;
+}
+
+.mibi-order-list-filter-select__control--complete {
+  background-color: #b8ff39;
+}
+
+.mibi-order-list-filter-select__field {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 2px 22px 2px layout.$single-space;
+  border: none;
+  border-radius: 4px;
+  font: inherit;
+  color: rgb(0 0 0 / 87%);
+  background: transparent;
+  appearance: none;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.mibi-order-list-filter-select__arrow {
+  position: absolute;
+  top: 50%;
+  right: 2px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  line-height: 18px;
+  color: rgb(0 0 0 / 54%);
+}
+
+.mibi-order-list-filter-select__clear {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: rgb(0 0 0 / 54%);
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    color: rgb(0 0 0 / 87%);
+    outline: none;
+  }
+}
+
+.mibi-order-list-filter-select__clear-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+}
