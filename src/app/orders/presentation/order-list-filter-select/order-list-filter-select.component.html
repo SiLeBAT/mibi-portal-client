@@ -1,0 +1,29 @@
+<div class="mibi-order-list-filter-select">
+    <div
+        class="mibi-order-list-filter-select__control"
+        [class.mibi-order-list-filter-select__control--partial]="value === 'partial'"
+        [class.mibi-order-list-filter-select__control--complete]="value === 'complete'"
+    >
+        <select
+            class="mibi-order-list-filter-select__field"
+            [ngModel]="value"
+            (ngModelChange)="onSelect($event)"
+            [attr.aria-label]="ariaLabel"
+        >
+            <option value="">Filter</option>
+            <option value="partial" style="background-color: #fef695;">Teilergebnisse</option>
+            <option value="complete" style="background-color: #b8ff39;">Analyse vollständig</option>
+        </select>
+        <mat-icon class="mibi-order-list-filter-select__arrow" aria-hidden="true">arrow_drop_down</mat-icon>
+    </div>
+    @if (value) {
+        <button
+            type="button"
+            class="mibi-order-list-filter-select__clear"
+            aria-label="Filter zurücksetzen"
+            (click)="onClear()"
+        >
+            <mat-icon class="mibi-order-list-filter-select__clear-icon">close</mat-icon>
+        </button>
+    }
+</div>

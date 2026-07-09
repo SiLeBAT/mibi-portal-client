@@ -138,6 +138,16 @@
   text-align: center;
 }
 
+// Colour the "BfR-Ergebnisse verfügbar" body cells so they can be filtered
+// by the dropdown: some results -> yellow, all results -> green.
+.mibi-order-list__results--partial {
+  background-color: #fef695;
+}
+
+.mibi-order-list__results--complete {
+  background-color: #b8ff39;
+}
+
 .mibi-order-list__col--sample-count {
   width: 130px;
   text-align: center;
