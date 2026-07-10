@@ -148,6 +148,12 @@
   background-color: #b8ff39;
 }
 
+// New BfR results the user has not opened yet: show the number in bold.
+// Turns normal once the corresponding arrow in "Auftrag ansehen" is clicked.
+.mibi-order-list__results--unseen {
+  font-weight: 700;
+}
+
 .mibi-order-list__col--sample-count {
   width: 130px;
   text-align: center;

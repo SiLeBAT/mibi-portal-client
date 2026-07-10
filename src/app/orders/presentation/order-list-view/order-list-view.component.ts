@@ -59,6 +59,11 @@ export class OrderListViewComponent implements AfterViewInit, OnDestroy {
 
     resultsFilter: ResultsFilterValue = '';
 
+    // Orders whose results the user has already opened (clicked the arrow in
+    // "Auftrag ansehen"). Their results number is shown in normal weight; orders
+    // with results that have not been opened yet are shown in bold.
+    private readonly seenOrderIds = new Set<string>();
+
     dataSource = new MatTableDataSource<OrderRow>([]);
 
     constructor() {
@@ -119,6 +124,7 @@ export class OrderListViewComponent implements AfterViewInit, OnDestroy {
     }
 
     onOpenResults(row: OrderRow): void {
+        this.seenOrderIds.add(row.id);
         this.openOrderResults.emit(row.id);
     }
 
@@ -128,6 +134,12 @@ export class OrderListViewComponent implements AfterViewInit, OnDestroy {
 
     resultsCategory(row: OrderRow): ResultsCategory {
         return OrderListViewComponent.classifyResults(row.results);
+    }
+
+    // Highlight (bold) the results number when the order has new BfR results
+    // (at least one result) that the user has not opened yet.
+    resultsUnseen(row: OrderRow): boolean {
+        return this.resultsCategory(row) !== 'none' && !this.seenOrderIds.has(row.id);
     }
 
     private applyFilter(): void {
