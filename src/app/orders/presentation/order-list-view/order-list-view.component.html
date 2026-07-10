@@ -50,6 +50,7 @@
                     class="mibi-order-list__col--narrow"
                     [class.mibi-order-list__results--partial]="resultsCategory(row) === 'partial'"
                     [class.mibi-order-list__results--complete]="resultsCategory(row) === 'complete'"
+                    [class.mibi-order-list__results--unseen]="resultsUnseen(row)"
                 >{{ row.results }}</td>
             </ng-container>
 
