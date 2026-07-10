@@ -7,8 +7,9 @@ import { UserMainSlice } from '../../../user/user.state';
 import { selectUserCurrentUser } from '../../../user/state/user.selectors';
 import { OrderRow } from '../../model/order-row.model';
 import { OrdersMainSlice } from '../../orders.state';
-import { orderListLoadSamplesWithResultsSOA } from '../../state/order-list.actions';
 import { selectOrderList } from '../../state/order-list.selectors';
+import { navigateMSA } from '../../../shared/navigate/navigate.actions';
+import { SamplesLinkProviderService } from '../../../samples/link-provider.service';
 
 interface ParseDateObject {
     iso: string;
@@ -30,7 +31,10 @@ export class OrderListContainerComponent {
     rows$: Observable<OrderRow[]>;
     isLoggedIn$: Observable<boolean>;
 
-    constructor(private store$: Store<OrdersMainSlice & UserMainSlice>) {
+    constructor(
+        private store$: Store<OrdersMainSlice & UserMainSlice>,
+        private samplesLinks: SamplesLinkProviderService
+    ) {
         this.rows$ = this.store$.pipe(
             select(selectOrderList),
             map(orders => orders.map(order => this.orderToRow(order)))
@@ -42,7 +46,7 @@ export class OrderListContainerComponent {
     }
 
     onOpenOrderResults(orderId: string): void {
-        this.store$.dispatch(orderListLoadSamplesWithResultsSOA({ orderId: orderId }));
+        this.store$.dispatch(navigateMSA({ path: this.samplesLinks.resultsForOrder(orderId) }));
     }
 
     private orderToRow(order: OrderEntryDTO): OrderRow {
