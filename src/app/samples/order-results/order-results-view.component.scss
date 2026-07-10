@@ -1,0 +1,54 @@
+@use "@angular/material" as mat;
+@use "colors";
+@use "layout";
+
+.mibi-order-results {
+  display: flex;
+  flex-direction: column;
+
+  &__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: layout.$single-space;
+
+    // Same colouring and height as the upload page's secondary bar (.mibi-app-bar-bottom):
+    // the bar height is content-driven; padding lives on the children, not the bar.
+    min-height: calc(1rem + (2 * #{layout.$half-space}));
+    font-size: 1rem;
+    line-height: 1rem;
+    background-color: mat.m2-get-color-from-palette(colors.$primary-palette, "lighter");
+    color: mat.m2-get-color-from-palette(colors.$primary-palette, "lighter-contrast");
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: layout.$single-space;
+    padding: layout.$half-space layout.$single-space;
+  }
+
+  &__download {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: layout.$half-space layout.$single-space;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    background: none;
+    border: none;
+  }
+
+  &__download:hover {
+    color: colors.$bfr-accent-color;
+  }
+
+  &__content {
+    padding: layout.$double-space;
+  }
+
+  &__placeholder {
+    color: rgb(0 0 0 / 50%);
+  }
+}

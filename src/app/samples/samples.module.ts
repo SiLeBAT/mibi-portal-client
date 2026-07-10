@@ -34,6 +34,9 @@ import { SamplesGridDataEditorViewComponent } from './samples-grid/internal/edit
 import { SamplesGridToolTipDirective } from './samples-grid/internal/cells/tool-tip.directive';
 import { samplesPathsSegments } from './samples.paths';
 import { NoSampleGuard } from './services/no-sample-guard.service';
+import { NoOrderGuard } from './services/no-order-guard.service';
+import { OrderResultsContainerComponent } from './order-results/order-results-container.component';
+import { OrderResultsViewComponent } from './order-results/order-results-view.component';
 import { AnimationsRouteData } from '../shared/animations/animations.model';
 import { SoftLineBreaksPipe } from './pipes/soft-line-breaks.pipe';
 import { ExcelVersionDialogComponent } from './import-samples/components/excel-version-dialog.component';
@@ -52,6 +55,12 @@ const routes: Routes = [
                 path: samplesPathsSegments.editor,
                 component: SamplesEditorComponent,
                 canActivate: [NoSampleGuard],
+                data: { ...disabledTransitionAnimationData }
+            },
+            {
+                path: samplesPathsSegments.results + '/:orderId',
+                component: OrderResultsContainerComponent,
+                canActivate: [NoOrderGuard],
                 data: { ...disabledTransitionAnimationData }
             },
             { path: '**', redirectTo: samplesPathsSegments.editor }
@@ -95,6 +104,8 @@ const routes: Routes = [
         SamplesGridDataEditorViewComponent,
         SamplesGridViewComponent,
         SamplesEditorComponent,
+        OrderResultsContainerComponent,
+        OrderResultsViewComponent,
         SoftLineBreaksPipe,
         ExcelVersionDialogComponent
     ],

@@ -1,0 +1,18 @@
+<div class="mibi-order-results">
+    <div class="mibi-order-results__bar">
+        <div class="mibi-order-results__meta">
+            <span class="mibi-order-results__date">{{ createdAt | date: 'dd.MM.yyyy HH:mm' }}</span>
+            <span class="mibi-order-results__file">{{ order?.fileName }}</span>
+        </div>
+        <!-- Placeholder stub; download functionality is added in Phase F. -->
+        <button
+            class="mibi-order-results__download"
+            type="button"
+        >Ergebnisse Herunterladen</button>
+    </div>
+
+    <div class="mibi-order-results__content">
+        <!-- Phase B: read-only BfR results table (mibi-samples-grid-view) -->
+        <p class="mibi-order-results__placeholder">Ergebnisdarstellung folgt…</p>
+    </div>
+</div>
