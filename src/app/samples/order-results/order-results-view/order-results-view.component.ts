@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { OrderEntryDTO } from '../../core/model/response.model';
+import { OrderEntryDTO } from '../../../core/model/response.model';
+import { SamplesGridViewModel } from '../../samples-grid/samples-grid.model';
 
 interface ParseDateObject {
     iso: string;
@@ -13,6 +14,7 @@ interface ParseDateObject {
 })
 export class OrderResultsViewComponent {
     @Input() order: OrderEntryDTO | null | undefined;
+    @Input() model: SamplesGridViewModel | null | undefined;
 
     get createdAt(): Date | null {
         const raw = this.order?.createdAt as unknown;

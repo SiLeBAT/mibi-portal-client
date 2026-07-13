@@ -12,7 +12,8 @@
     </div>
 
     <div class="mibi-order-results__content">
-        <!-- Phase B: read-only BfR results table (mibi-samples-grid-view) -->
-        <p class="mibi-order-results__placeholder">Ergebnisdarstellung folgt…</p>
+        @if (model) {
+            <mibi-samples-grid-view [model]="model"></mibi-samples-grid-view>
+        }
     </div>
 </div>

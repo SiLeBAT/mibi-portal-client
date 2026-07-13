@@ -5,6 +5,7 @@
 .mibi-order-results {
   display: flex;
   flex-direction: column;
+  height: 100%;
 
   &__bar {
     display: flex;
@@ -45,10 +46,9 @@
   }
 
   &__content {
-    padding: layout.$double-space;
-  }
-
-  &__placeholder {
-    color: rgb(0 0 0 / 50%);
+    // Let the reused grid fill the remaining height and scroll within the page,
+    // exactly as the samples editor does.
+    flex: 1 1 auto;
+    min-height: 0;
   }
 }
