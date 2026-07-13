@@ -35,8 +35,8 @@ import { SamplesGridToolTipDirective } from './samples-grid/internal/cells/tool-
 import { samplesPathsSegments } from './samples.paths';
 import { NoSampleGuard } from './services/no-sample-guard.service';
 import { NoOrderGuard } from './services/no-order-guard.service';
-import { OrderResultsContainerComponent } from './order-results/order-results-container.component';
-import { OrderResultsViewComponent } from './order-results/order-results-view.component';
+import { OrderResultsContainerComponent } from './order-results/order-results-view/order-results-container.component';
+import { OrderResultsViewComponent } from './order-results/order-results-view/order-results-view.component';
 import { AnimationsRouteData } from '../shared/animations/animations.model';
 import { SoftLineBreaksPipe } from './pipes/soft-line-breaks.pipe';
 import { ExcelVersionDialogComponent } from './import-samples/components/excel-version-dialog.component';
