@@ -1,0 +1,9 @@
+<ng-template #template
+    let-data="data"
+>
+    <div class="mibi-stacked-cell">
+        @for (value of data; track $index) {
+            <div class="mibi-stacked-cell__line">{{ value }}</div>
+        }
+    </div>
+</ng-template>

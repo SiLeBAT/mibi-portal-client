@@ -4,6 +4,18 @@
             <span class="mibi-order-results__date">{{ createdAt | date: 'dd.MM.yyyy HH:mm' }}</span>
             <span class="mibi-order-results__file">{{ order?.fileName }}</span>
         </div>
+
+        <nav class="mibi-order-results__tabs">
+            @for (tab of pathogens; track tab.id) {
+                <button
+                    type="button"
+                    class="mibi-order-results__tab"
+                    [class.mibi-order-results__tab--active]="tab.id === selectedPathogenId"
+                    (click)="onSelectPathogen(tab.id)"
+                >{{ tab.id === selectedPathogenId ? tab.fullName : tab.abbreviation }}</button>
+            }
+        </nav>
+
         <!-- Placeholder stub; download functionality is added in Phase F. -->
         <button
             class="mibi-order-results__download"

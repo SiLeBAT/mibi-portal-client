@@ -5,7 +5,10 @@ import { AnnotatedSampleDataEntry } from '../model/sample-management.model';
 
 export enum SamplesGridCellType {
     TEXT,
-    DATA
+    DATA,
+    // Read-only cell rendering a list of values as aligned stacked lines
+    // (used for samples that carry more than one result row).
+    STACKED
 }
 
 export enum SamplesGridEditorType {
@@ -16,7 +19,8 @@ export enum SamplesGridEditorType {
 
 export type SamplesGridTextCellData = string;
 export type SamplesGridDataCellData = AnnotatedSampleDataEntry;
-export type SamplesGridCellData = SamplesGridTextCellData | SamplesGridDataCellData;
+export type SamplesGridStackedCellData = string[];
+export type SamplesGridCellData = SamplesGridTextCellData | SamplesGridDataCellData | SamplesGridStackedCellData;
 
 export type SamplesGridEditorData = string;
 

@@ -3,6 +3,7 @@ import { DataGridCellContext, DataGridTemplateMap, DataGridEditorContext, DataGr
 import { SamplesGridCellType, SamplesGridDataCellData, SamplesGridDataChangeEvent, SamplesGridEditorData, SamplesGridEditorType, SamplesGridViewModel } from './samples-grid.model';
 import { SamplesGridTextCellTemplateComponent } from './internal/cells/text-cell-template.component';
 import { SamplesGridDataCellTemplateComponent } from './internal/cells/data-cell-template.component';
+import { SamplesGridStackedCellTemplateComponent } from './internal/cells/stacked-cell-template.component';
 import { SamplesGridDataEditorTemplateComponent } from './internal/editors/data-editor-template.component';
 
 @Component({
@@ -25,13 +26,17 @@ export class SamplesGridViewComponent implements OnInit {
     @ViewChild('dataCellTemplate', { static: true })
     private dataCellTemplate: SamplesGridDataCellTemplateComponent;
 
+    @ViewChild('stackedCellTemplate', { static: true })
+    private stackedCellTemplate: SamplesGridStackedCellTemplateComponent;
+
     @ViewChild('dataEditorTemplate', { static: true })
     private dataEditorTemplate: SamplesGridDataEditorTemplateComponent;
 
     ngOnInit(): void {
         this.cellTemplates = {
             [SamplesGridCellType.TEXT]: this.textCellTemplate.template,
-            [SamplesGridCellType.DATA]: this.dataCellTemplate.template
+            [SamplesGridCellType.DATA]: this.dataCellTemplate.template,
+            [SamplesGridCellType.STACKED]: this.stackedCellTemplate.template
         };
         this.editorTemplates = {
             [SamplesGridEditorType.DATA]: this.dataEditorTemplate.template
