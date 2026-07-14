@@ -49,7 +49,7 @@ services:
       - "3000"
     healthcheck:
       # Lenient: just confirm the API port accepts connections (any HTTP response = up).
-      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/',()=>process.exit(0)).on('error',()=>process.exit(1))"]
+      test: ["CMD", "node", "-e", "require('http').get('http://127.0.0.1:3000/',()=>process.exit(0)).on('error',()=>process.exit(1))"]
       interval: 10s
       timeout: 5s
       retries: 30
@@ -67,7 +67,10 @@ services:
     ports:
       - "4200:4200"
     healthcheck:
-      test: ["CMD", "sh", "-c", "wget -qO- http://localhost:4200 || exit 1"]
+      # Use 127.0.0.1, NOT localhost: in this Alpine image `localhost` resolves only to
+      # IPv6 (::1) while `ng serve` binds IPv4 (0.0.0.0:4200), so wget to localhost is
+      # refused on every check and the container never turns healthy (see e2e/README.md).
+      test: ["CMD", "sh", "-c", "wget -q -T 5 -O /dev/null http://127.0.0.1:4200 || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 30
