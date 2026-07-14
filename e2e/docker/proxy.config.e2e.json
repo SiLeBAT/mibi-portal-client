@@ -1,0 +1,8 @@
+{
+  "//": "Proxy used only inside the E2E container: point the client at the server container by service name (not localhost). No /cms — the CMS is out of scope.",
+  "/v2/**": {
+    "target": "http://server:3000",
+    "secure": false,
+    "changeOrigin": true
+  }
+}

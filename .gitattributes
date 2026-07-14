@@ -1,0 +1,5 @@
+# Keep the E2E shell + Docker build files as LF so they run in Linux containers
+# regardless of the checkout platform (the mongo entrypoint sources restore.sh).
+e2e/mongo/restore.sh text eol=lf
+e2e/docker/Dockerfile.client text eol=lf
+e2e/docker/Dockerfile.server text eol=lf

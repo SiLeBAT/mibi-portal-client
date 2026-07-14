@@ -1,0 +1,4 @@
+# Never commit the database dump — it may contain personal data (see e2e/README.md).
+# Keep this folder in git, ignore its contents.
+*
+!.gitignore

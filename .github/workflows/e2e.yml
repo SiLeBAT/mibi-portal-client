@@ -1,0 +1,115 @@
+# End-to-end tests in GitHub Actions — Dockerized stack, MANUAL trigger.
+#
+# Design: bring the whole MiBi-Portal stack up as containers inside the runner,
+# seed MongoDB from a DB dump, then run the Cypress suite against localhost.
+# Nothing here touches the BfR intranet, so the firewall is not involved.
+#
+# STATUS: scaffold. See e2e/README.md "Open requirements" before expecting a green run.
+
+name: E2E (Docker)
+
+# "Run by clicking a button" -> workflow_dispatch (manual only; no push/schedule).
+on:
+  workflow_dispatch:
+    inputs:
+      client_ref:
+        description: "mibi-portal-client branch/tag (has the Cypress specs)"
+        default: "develop"
+        required: true
+      server_ref:
+        description: "mibi-portal-server branch/tag"
+        default: "develop"
+        required: true
+      cloud_ref:
+        description: "mibi-parse-cloud branch/tag"
+        default: "develop"
+        required: true
+      spec:
+        description: "Cypress spec glob (blank = full suite)"
+        default: "cypress/integration/ui/welcome.smoke.spec.ts"
+        required: false
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      # --- 1. Get all three services' source (client repo is the one running this workflow) ---
+      - name: Checkout client
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ inputs.client_ref }}
+          path: mibi-portal-client
+
+      - name: Checkout server
+        uses: actions/checkout@v5
+        with:
+          repository: SiLeBAT/mibi-portal-server
+          ref: ${{ inputs.server_ref }}
+          path: mibi-portal-server
+          # TODO: if the repo is private, add: token: ${{ secrets.GH_PAT }}
+
+      - name: Checkout parse-cloud
+        uses: actions/checkout@v5
+        with:
+          repository: SiLeBAT/mibi-parse-cloud
+          ref: ${{ inputs.cloud_ref }}
+          path: mibi-parse-cloud
+          # TODO: if private, add: token: ${{ secrets.GH_PAT }}
+
+      # --- 2. Fetch the DB dump (mibiportal) the manager provides ---
+      #     For the first Welcome-page smoke run this is OPTIONAL — Mongo just starts empty.
+      #     For real API/data tests, provide the dump. See e2e/README.md req #1 & #2.
+      - name: Fetch DB dump (optional)
+        run: |
+          mkdir -p mibi-portal-client/e2e/seed
+          # TODO: pull the real dump, e.g.:
+          #   curl -sSL "${{ secrets.E2E_DB_DUMP_URL }}" -o mibi-portal-client/e2e/seed/dump.archive.gz
+          if [ ! -f mibi-portal-client/e2e/seed/dump.archive.gz ]; then
+            echo "::warning::No DB dump provided — starting Mongo empty (fine for the Welcome-page smoke test)."
+          fi
+
+      # --- 3. Build + start the whole stack (mongo seeded from the dump) ---
+      - name: Bring up the stack
+        working-directory: mibi-portal-client
+        env:
+          PARSE_APP_ID: ${{ secrets.PARSE_APP_ID || 'appId' }}
+          PARSE_MASTER_KEY: ${{ secrets.PARSE_MASTER_KEY || 'masterKey' }}
+        run: |
+          docker compose -f e2e/docker-compose.yml up -d --build --wait
+          docker compose -f e2e/docker-compose.yml ps
+
+      # --- 4. Run the Cypress E2E suite against the running stack ---
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          working-directory: mibi-portal-client
+          # The app is served by the client container; wait for it before starting.
+          wait-on: "http://localhost:4200"
+          wait-on-timeout: 180
+          # Blank spec => the package.json "test:e2e" default glob runs.
+          command: ${{ inputs.spec == '' && 'npm run test:e2e' || format('npx cypress run --spec {0}', inputs.spec) }}
+        env:
+          CYPRESS_BASE_URL: http://localhost:4200
+
+      # --- 5. Always collect artifacts + logs, then tear the stack down ---
+      - name: Upload Cypress report & screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-report
+          path: |
+            mibi-portal-client/cypress/reports
+            mibi-portal-client/cypress/screenshots
+          if-no-files-found: ignore
+
+      - name: Stack logs (on failure)
+        if: failure()
+        working-directory: mibi-portal-client
+        run: docker compose -f e2e/docker-compose.yml logs --no-color
+
+      - name: Tear down
+        if: always()
+        working-directory: mibi-portal-client
+        run: docker compose -f e2e/docker-compose.yml down -v

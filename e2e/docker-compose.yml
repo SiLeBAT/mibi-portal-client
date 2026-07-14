@@ -1,0 +1,77 @@
+# MiBi-Portal E2E stack — brought up inside the GitHub Actions runner (or locally).
+# Everything runs on localhost; no BfR intranet dependency.
+#
+# Scope (per confirmed requirements):
+#   - Seed the "mibiportal" database only (optional for the first Welcome-page smoke).
+#   - Auth is STUBBED: the server config has keycloak.enabled=false (its default). No login.
+#   - No CMS.
+#
+# Architecture (grounded in the repos, see e2e/README.md):
+#   mongo   :27017  db "mibiportal"
+#   server  :3000   Node API  ─┬─ ALSO hosts Parse Server (:1337) in-process
+#                              └─ loads mibi-parse-cloud as Parse cloud code
+#   client  :4200   Angular app (Cypress baseUrl); proxies /v2 -> server
+#
+# There is deliberately NO separate parse-cloud service: the server IS the Parse host.
+
+services:
+  mongo:
+    image: mongo:6
+    # Optional first-boot restore of the provided "mibiportal" dump (empty is fine for smoke).
+    volumes:
+      - ./seed:/seed:ro
+      - ./mongo/restore.sh:/docker-entrypoint-initdb.d/restore.sh:ro
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  server:
+    build:
+      context: ../../mibi-portal-server          # sibling checkout
+      dockerfile: ../mibi-portal-client/e2e/docker/Dockerfile.server
+      # The parse-cloud source is passed in as an extra build context (built inside the image).
+      additional_contexts:
+        cloud: ../../mibi-parse-cloud
+    depends_on:
+      mongo:
+        condition: service_healthy
+    environment:
+      # Auth is stubbed (keycloak.enabled=false in the image config), but the composition
+      # root still parses issuerUrl to derive the realm — so give it a well-formed dummy
+      # URL. No Keycloak is contacted while disabled. (node-config maps these env vars.)
+      MIBI_KEYCLOAK_ENABLED: "false"
+      MIBI_KEYCLOAK_ISSUER_URL: "http://localhost:8080/realms/mibi-e2e"
+    # No host port published: the client reaches the server over the Docker network
+    # (http://server:3000). This also avoids clashing with a local dev server on :3000.
+    expose:
+      - "3000"
+    healthcheck:
+      # Lenient: just confirm the API port accepts connections (any HTTP response = up).
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/',()=>process.exit(0)).on('error',()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 40s
+
+  client:
+    build:
+      context: ../../mibi-portal-client
+      dockerfile: e2e/docker/Dockerfile.client
+    # Only "started", not "healthy": the public Welcome page must render even while the
+    # server is still warming up (the first smoke test doesn't call the API).
+    depends_on:
+      server:
+        condition: service_started
+    ports:
+      - "4200:4200"
+    healthcheck:
+      test: ["CMD", "sh", "-c", "wget -qO- http://localhost:4200 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
+
+# Keycloak (auth) and Strapi (CMS) are intentionally not part of this stack:
+# auth is disabled in server config, and the tested pages don't need the CMS.

@@ -1,0 +1,10 @@
+# Keep node_modules and build output out of the Docker build context.
+# The image installs deps with `npm ci` and serves via `ng serve`.
+node_modules
+dist
+.angular
+.git
+cypress/screenshots
+cypress/videos
+cypress/reports
+*.log
