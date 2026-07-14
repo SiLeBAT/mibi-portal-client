@@ -1,0 +1,24 @@
+# Image for mibi-portal-client (Angular app), served for E2E.
+# BEST-EFFORT scaffold — verify against the repo.
+# Build context = the mibi-portal-client checkout (repo root).
+#
+# For E2E we run `ng serve` (like local dev) with a proxy that targets the OTHER
+# containers by service name. Simple and faithful to how the app talks to the API.
+# A production-style build (static files + nginx reverse proxy) is a later optimization.
+
+FROM node:20-alpine
+WORKDIR /app
+
+# .npmrc carries `legacy-peer-deps=true`, which npm ci needs to resolve the Angular deps.
+COPY package*.json .npmrc ./
+RUN npm ci
+
+COPY . .
+
+EXPOSE 4200
+# --host 0.0.0.0 so the runner can reach it; --disable-host-check for the container hostname.
+CMD ["npx", "ng", "serve", \
+     "--host", "0.0.0.0", \
+     "--port", "4200", \
+     "--disable-host-check", \
+     "--proxy-config", "e2e/docker/proxy.config.e2e.json"]

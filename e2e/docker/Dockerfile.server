@@ -1,0 +1,83 @@
+# syntax=docker/dockerfile:1
+#
+# Image for mibi-portal-server. This ONE service also hosts the Parse Server (:1337)
+# and loads mibi-parse-cloud as Parse *cloud code* (there is no separate parse-cloud
+# service). It exposes the REST API on :3000 that the client proxies to via /v2.
+#
+# The parse-cloud source is supplied to the build as an ADDITIONAL BUILD CONTEXT named
+# "cloud" (wired in docker-compose.yml). We build it here and point Parse's `cloud`
+# config at its compiled entry (lib/src/main.js).
+#
+# BEST-EFFORT scaffold — grounded in the repos' config, but not yet run end-to-end.
+
+# ---- Stage 1: build the Parse cloud code (mibi-parse-cloud) ----
+FROM node:20 AS cloudbuild
+WORKDIR /cloud
+COPY --from=cloud . .
+RUN npm ci && npm run build
+# compiled entry -> /cloud/lib/src/main.js ; its node_modules are needed at runtime
+
+# ---- Stage 2: build the server (mibi-portal-server) ----
+FROM node:20 AS serverbuild
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+# compiled entry -> /app/lib/main.js  (package.json: "start": "node ./lib/main.js")
+
+# ---- Stage 3: runtime ----
+FROM node:20
+WORKDIR /app
+
+# server build + deps + config
+COPY --from=serverbuild /app/lib ./lib
+COPY --from=serverbuild /app/node_modules ./node_modules
+COPY --from=serverbuild /app/package*.json ./
+COPY --from=serverbuild /app/config ./config
+# Runtime assets (e.g. BfR logos the cloud PDF service reads via ./assets/...).
+COPY --from=serverbuild /app/assets ./assets
+
+# parse cloud code + its own node_modules, at the path referenced by parseServer.cloud
+COPY --from=cloudbuild /cloud/lib ./_cloud/lib
+COPY --from=cloudbuild /cloud/node_modules ./_cloud/node_modules
+COPY --from=cloudbuild /cloud/package*.json ./_cloud/
+
+# Container config override. node-config loads config/local.json with high precedence,
+# so this wins over anything baked into the image. It points Parse at the Mongo
+# container and at the compiled cloud code, with Keycloak disabled (auth stubbed).
+RUN mkdir -p data && cat > config/local.json <<'JSON'
+{
+  "application": { "appName": "MiBi-Portal-E2E", "clientUrl": "http://localhost:4200" },
+  "server": { "port": 3000, "apiRoot": "" },
+  "dataStore": { "dataDir": "./data" },
+  "parseServer": {
+    "publicServerURL": "http://127.0.0.1:1337/admin/parse",
+    "serverURL": "http://127.0.0.1:1337/admin/parse",
+    "appId": "MIBI_E2E",
+    "masterKey": "e2e-master-key",
+    "databaseURI": "mongodb://mongo:27017/mibiportal",
+    "allowClientClassCreation": false,
+    "cloud": "/app/_cloud/lib/src/main.js",
+    "preserveFileName": true,
+    "maxUploadSize": "100mb",
+    "logLevel": "error",
+    "directAccess": true
+  },
+  "parseConnection": {
+    "serverURL": "http://127.0.0.1:1337/admin/parse",
+    "appId": "MIBI_E2E",
+    "masterKey": "e2e-master-key",
+    "host": "mongo:27017",
+    "database": "mibiportal"
+  },
+  "general": { "supportContact": "e2e@example.org", "logLevel": "info", "jwtSecret": "e2e-secret" },
+  "keycloak": { "enabled": false },
+  "session": { "secret": "e2e-session-secret", "ttlSeconds": 7200 },
+  "mail": { "fromAddress": "e2e@example.org", "replyToAddress": "e2e@example.org" }
+}
+JSON
+
+ENV NODE_ENV=e2e
+EXPOSE 3000
+CMD ["node", "lib/main.js"]
