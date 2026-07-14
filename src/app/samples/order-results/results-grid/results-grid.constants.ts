@@ -1,4 +1,4 @@
-import { SampleWithResultsDTO } from '../../../core/model/response.model';
+import { ResultDTO, SampleWithResultsDTO } from '../../../core/model/response.model';
 import { AnnotatedSampleDataEntryDTO } from '../../../core/model/shared-dto.model';
 import { AnnotatedSampleDataEntry, SampleProperty } from '../../model/sample-management.model';
 import { SamplesGridCellData, SamplesGridCellType } from '../../samples-grid/samples-grid.model';
@@ -46,9 +46,25 @@ function dataColumn(colId: number, selector: SampleProperty, headerText: string)
     };
 }
 
+// A sample can carry more than one result row (e.g. Salmonella). They are shown
+// as aligned stacked lines in each result column, ordered by ResultDTO.position.
+function orderedResults(sample: SampleWithResultsDTO): ResultDTO[] {
+    return [...sample.results].sort((a, b) => a.position - b.position);
+}
+
+function resultColumn(colId: number, key: string): ResultsGridColumnModel {
+    return {
+        colId: colId,
+        cellType: SamplesGridCellType.STACKED,
+        isRowHeader: false,
+        headerText: key,
+        getData: sample => orderedResults(sample).map(result => result.resultData[key] ?? '')
+    };
+}
+
 // Uploaded order columns to display (ticket #756), preceded by the row-number
 // row header and the NRL column, mirroring the samples editor / mockup.
-const resultsGridColumns: ResultsGridColumnModel[] = [
+const fixedColumns: ResultsGridColumnModel[] = [
     textColumn(1, true, samplesEditorIdHeader, (_sample, index) => (index + 1).toString()),
     textColumn(2, false, samplesEditorNrlHeader, sample => sample.sampleMeta.nrl),
     dataColumn(3, 'sample_id', samplesEditorDataHeaders.sample_id),
@@ -60,9 +76,17 @@ const resultsGridColumns: ResultsGridColumnModel[] = [
     dataColumn(9, 'animal_matrix_text', samplesEditorDataHeaders.animal_matrix_text)
 ];
 
-export const resultsGridModel: ResultsGridModel = {
-    columns: resultsGridColumns,
-    headerRowId: 0,
-    headerCellType: SamplesGridCellType.TEXT,
-    getSampleRowId: index => index + 1
-};
+const RESULT_COLUMN_ID_BASE = fixedColumns.length + 1;
+
+// Fixed uploaded columns followed by the active pathogen's BfR result columns.
+export function createResultsGridModel(resultColumnKeys: string[]): ResultsGridModel {
+    const resultColumns = resultColumnKeys.map(
+        (key, index) => resultColumn(RESULT_COLUMN_ID_BASE + index, key)
+    );
+    return {
+        columns: [...fixedColumns, ...resultColumns],
+        headerRowId: 0,
+        headerCellType: SamplesGridCellType.TEXT,
+        getSampleRowId: index => index + 1
+    };
+}

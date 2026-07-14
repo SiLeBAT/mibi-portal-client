@@ -24,6 +24,7 @@ import { SamplesGridDataEditorTemplateComponent } from './samples-grid/internal/
 import { SamplesGridViewComponent } from './samples-grid/samples-grid-view.component';
 import { SamplesGridTextCellTemplateComponent } from './samples-grid/internal/cells/text-cell-template.component';
 import { SamplesGridDataCellTemplateComponent } from './samples-grid/internal/cells/data-cell-template.component';
+import { SamplesGridStackedCellTemplateComponent } from './samples-grid/internal/cells/stacked-cell-template.component';
 import { DataGridCellViewComponent } from './data-grid/internal/components/cell-view.component';
 import { SamplesGridAutoFocusDirective } from './samples-grid/internal/editors/auto-focus.directive';
 import { SamplesEditorComponent } from './samples-editor/samples-editor.component';
@@ -99,6 +100,7 @@ const routes: Routes = [
         SamplesGridToolTipDirective,
         SamplesGridTextCellTemplateComponent,
         SamplesGridDataCellTemplateComponent,
+        SamplesGridStackedCellTemplateComponent,
         SamplesGridDataEditorTemplateComponent,
         SamplesGridListBoxViewComponent,
         SamplesGridDataEditorViewComponent,

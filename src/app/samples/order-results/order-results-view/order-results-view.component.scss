@@ -29,6 +29,37 @@
     padding: layout.$half-space layout.$single-space;
   }
 
+  &__tabs {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: stretch;
+    gap: layout.$half-space;
+    overflow-x: auto;
+  }
+
+  &__tab {
+    display: flex;
+    align-items: center;
+    padding: layout.$half-space layout.$single-space;
+    font: inherit;
+    color: inherit;
+    white-space: nowrap;
+    cursor: pointer;
+    background: none;
+    border: none;
+  }
+
+  &__tab:hover {
+    color: colors.$bfr-accent-color;
+  }
+
+  // Selected pathogen tab: full name, white background, blue font (mockup #3).
+  &__tab--active {
+    color: mat.m2-get-color-from-palette(colors.$primary-palette, "default");
+    cursor: default;
+    background-color: #ffffff;
+  }
+
   &__download {
     display: flex;
     align-items: center;
@@ -50,5 +81,20 @@
     // exactly as the samples editor does.
     flex: 1 1 auto;
     min-height: 0;
+  }
+}
+
+// Vertically centre the single-value left columns (row number, NRL and the
+// uploaded data cells) so they sit centred next to a sample's stacked
+// multi-result rows. Result cells (.mibi-stacked-cell) and column headers are
+// intentionally excluded; scoped to the results view so the editor is untouched.
+// Column flex keeps normal text wrapping while centring the value vertically.
+/* stylelint-disable selector-pseudo-element-no-unknown */
+:host ::ng-deep {
+  .mibi-data-cell,
+  .mibi-text-cell--readonly:not(.mibi-text-cell--col-header) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 }

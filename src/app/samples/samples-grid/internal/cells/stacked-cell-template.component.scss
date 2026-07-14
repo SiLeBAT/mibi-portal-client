@@ -1,0 +1,23 @@
+@use "../../samples-grid";
+
+.mibi-stacked-cell {
+  @include samples-grid.default-cell-style;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+
+  // No own padding: each line provides it, so the divider spans the full width.
+  padding: 0;
+}
+
+.mibi-stacked-cell__line {
+  min-height: 1.2em;
+  padding: 0.15rem 0.3rem;
+}
+
+// Separate the stacked result rows from each other.
+.mibi-stacked-cell__line:not(:last-child) {
+  border-bottom: samples-grid.$cell-border;
+}
