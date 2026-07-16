@@ -27,17 +27,13 @@
 .mibi-email-settings__options {
   display: flex;
   flex-direction: column;
-  gap: layout.$double-space;
+  gap: layout.$single-space;
   margin-top: layout.$double-space;
   margin-left: layout.$double-space;
 }
 
-.mibi-email-settings__frequency {
-  display: flex;
-  flex-direction: column;
-  gap: layout.$single-space;
-}
-
+// Indented under the frequency option it belongs to, so it reads as that
+// option's sub-choice rather than as the next option's.
 .mibi-email-settings__suboption {
   display: flex;
   flex-direction: column;
