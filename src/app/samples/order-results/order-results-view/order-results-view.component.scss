@@ -78,7 +78,7 @@
 
   &__content {
     // Let the reused grid fill the remaining height and scroll within the page,
-    // exactly as the samples editor does.
+    // exactly as the samples editor does. The toggle bar is a column inside it.
     flex: 1 1 auto;
     min-height: 0;
   }
@@ -96,5 +96,19 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+  }
+
+  // Stretch the grid to the page width and let the BfR result columns (1fr)
+  // share the remaining width equally. The data-grid sets grid-template-columns
+  // inline (repeat auto), so it must be overridden here.
+  .mibi-panel__content {
+    min-width: 100%;
+  }
+
+  .mibi-grid {
+    min-width: 100%;
+
+    /* stylelint-disable-next-line declaration-no-important */
+    grid-template-columns: var(--mibi-grid-cols) !important;
   }
 }

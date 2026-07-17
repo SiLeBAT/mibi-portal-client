@@ -58,15 +58,39 @@ function resultColumn(colId: number, key: string): ResultsGridColumnModel {
         cellType: SamplesGridCellType.STACKED,
         isRowHeader: false,
         headerText: key,
-        getData: sample => orderedResults(sample).map(result => result.resultData[key] ?? '')
+        getData: sample => orderedResults(sample).map(result => result.resultData[key] ?? ''),
+        fill: true
     };
 }
 
-// Uploaded order columns to display (ticket #756), preceded by the row-number
-// row header and the NRL column, mirroring the samples editor / mockup.
+// The in-grid separator/toggle column (mockup #7/#9). It renders as a coloured
+// bar with the label in the sticky header cell; the results view turns clicks on
+// it into the show-all-data toggle.
+function toggleColumn(colId: number, label: string): ResultsGridColumnModel {
+    return {
+        colId: colId,
+        cellType: SamplesGridCellType.TOGGLE,
+        isRowHeader: false,
+        headerText: '',
+        headerCellType: SamplesGridCellType.TOGGLE,
+        getHeaderData: () => label,
+        getData: () => ''
+    };
+}
+
+function idColumn(): ResultsGridColumnModel {
+    return textColumn(1, true, samplesEditorIdHeader, (_sample, index) => (index + 1).toString());
+}
+
+function nrlColumn(): ResultsGridColumnModel {
+    return textColumn(2, false, samplesEditorNrlHeader, sample => sample.sampleMeta.nrl);
+}
+
+// Uploaded order columns to display in the results view (ticket #756), preceded
+// by the row-number row header and the NRL column, mirroring the samples editor.
 const fixedColumns: ResultsGridColumnModel[] = [
-    textColumn(1, true, samplesEditorIdHeader, (_sample, index) => (index + 1).toString()),
-    textColumn(2, false, samplesEditorNrlHeader, sample => sample.sampleMeta.nrl),
+    idColumn(),
+    nrlColumn(),
     dataColumn(3, 'sample_id', samplesEditorDataHeaders.sample_id),
     dataColumn(4, 'sample_id_avv', samplesEditorDataHeaders.sample_id_avv),
     dataColumn(5, 'partial_sample_id', samplesEditorDataHeaders.partial_sample_id),
@@ -76,17 +100,52 @@ const fixedColumns: ResultsGridColumnModel[] = [
     dataColumn(9, 'animal_matrix_text', samplesEditorDataHeaders.animal_matrix_text)
 ];
 
-const RESULT_COLUMN_ID_BASE = fixedColumns.length + 1;
+const TOGGLE_COLUMN_ID = fixedColumns.length + 1;
+const RESULT_COLUMN_ID_BASE = fixedColumns.length + 2;
 
-// Fixed uploaded columns followed by the active pathogen's BfR result columns.
+// Fixed uploaded columns, then the toggle bar (between the two blocks), then the
+// active pathogen's BfR result columns.
 export function createResultsGridModel(resultColumnKeys: string[]): ResultsGridModel {
     const resultColumns = resultColumnKeys.map(
         (key, index) => resultColumn(RESULT_COLUMN_ID_BASE + index, key)
     );
     return {
-        columns: [...fixedColumns, ...resultColumns],
+        columns: [
+            ...fixedColumns,
+            toggleColumn(TOGGLE_COLUMN_ID, 'Alle Auftragsdaten anzeigen'),
+            ...resultColumns
+        ],
         headerRowId: 0,
         headerCellType: SamplesGridCellType.TEXT,
         getSampleRowId: index => index + 1
     };
+}
+
+// All uploaded order columns in samples-editor order, for the full-data view
+// (mockup #7 "Alle Auftragsdaten anzeigen"). No BfR result columns.
+const allDataSelectors = Object.keys(samplesEditorDataHeaders) as SampleProperty[];
+
+export function createFullDataGridModel(): ResultsGridModel {
+    const dataColumns = allDataSelectors.map(
+        (selector, index) => dataColumn(3 + index, selector, samplesEditorDataHeaders[selector])
+    );
+    const toggleColId = 3 + dataColumns.length;
+    return {
+        columns: [
+            idColumn(),
+            nrlColumn(),
+            ...dataColumns,
+            toggleColumn(toggleColId, 'BfR-Ergebnisse anzeigen')
+        ],
+        headerRowId: 0,
+        headerCellType: SamplesGridCellType.TEXT,
+        getSampleRowId: index => index + 1
+    };
+}
+
+// grid-template-columns for the results grid: uploaded/toggle columns keep their
+// content width (auto), BfR result columns share the remaining width (1fr each)
+// so the results block always spans to the end of the page with equal widths.
+export function gridColumnTemplate(model: ResultsGridModel): string {
+    return model.columns.map(column => (column.fill ? '1fr' : 'auto')).join(' ');
 }

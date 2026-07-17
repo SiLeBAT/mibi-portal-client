@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subject, combineLatest } from 'rxjs';
+import { map, scan, shareReplay, startWith } from 'rxjs/operators';
 import { OrderEntryDTO } from '../../../core/model/response.model';
 import { OrdersMainSlice } from '../../../orders/orders.state';
 import { orderListLoadSamplesWithResultsSOA } from '../../../orders/state/order-list.actions';
 import { selectOrderById } from '../../../orders/state/order-list.selectors';
 import { SamplesGridViewModel } from '../../samples-grid/samples-grid.model';
 import { buildResultsGridViewModel } from '../results-grid/results-grid.builder';
-import { createResultsGridModel } from '../results-grid/results-grid.constants';
+import { createFullDataGridModel, createResultsGridModel, gridColumnTemplate } from '../results-grid/results-grid.constants';
 import {
     PathogenTab,
     derivePathogenTabs,
@@ -23,10 +23,13 @@ import {
     template: `
         <mibi-order-results-view
             [order]="order$ | async"
-            [model]="gridModel$ | async"
+            [model]="(grid$ | async)?.model"
+            [columnTemplate]="(grid$ | async)?.columnTemplate"
             [pathogens]="pathogens$ | async"
             [selectedPathogenId]="selectedPathogenId$ | async"
+            [showFullData]="showFullData$ | async"
             (selectPathogen)="onSelectPathogen($event)"
+            (toggleFullData)="onToggleFullData()"
         ></mibi-order-results-view>
     `
 })
@@ -34,7 +37,13 @@ export class OrderResultsContainerComponent {
     readonly order$: Observable<OrderEntryDTO | undefined>;
     readonly pathogens$: Observable<PathogenTab[]>;
     readonly selectedPathogenId$: Observable<string | null>;
-    readonly gridModel$: Observable<SamplesGridViewModel>;
+    readonly grid$: Observable<{ model: SamplesGridViewModel; columnTemplate: string }>;
+    private readonly toggleFullData$ = new Subject<void>();
+    readonly showFullData$: Observable<boolean> = this.toggleFullData$.pipe(
+        scan(current => !current, false),
+        startWith(false),
+        shareReplay({ bufferSize: 1, refCount: true })
+    );
 
     private readonly orderId: string;
     private readonly selectedPathogen$ = new BehaviorSubject<string | null>(null);
@@ -62,17 +71,27 @@ export class OrderResultsContainerComponent {
             shareReplay({ bufferSize: 1, refCount: true })
         );
 
-        this.gridModel$ = combineLatest([this.order$, this.selectedPathogenId$]).pipe(
-            map(([order, pathogenId]) => {
+        this.grid$ = combineLatest([this.order$, this.selectedPathogenId$, this.showFullData$]).pipe(
+            map(([order, pathogenId, showFullData]) => {
                 const samples = order?.samples ?? [];
                 const rows = pathogenId ? filterSamplesByPathogen(samples, pathogenId) : samples;
-                const resultKeys = pathogenId ? getResultColumnKeys(pathogenId) : [];
-                return buildResultsGridViewModel(createResultsGridModel(resultKeys), rows);
-            })
+                const resultsModel = showFullData
+                    ? createFullDataGridModel()
+                    : createResultsGridModel(pathogenId ? getResultColumnKeys(pathogenId) : []);
+                return {
+                    model: buildResultsGridViewModel(resultsModel, rows),
+                    columnTemplate: gridColumnTemplate(resultsModel)
+                };
+            }),
+            shareReplay({ bufferSize: 1, refCount: true })
         );
     }
 
     onSelectPathogen(pathogenId: string): void {
         this.selectedPathogen$.next(pathogenId);
+    }
+
+    onToggleFullData(): void {
+        this.toggleFullData$.next();
     }
 }

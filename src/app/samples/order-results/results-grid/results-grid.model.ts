@@ -14,6 +14,14 @@ export interface ResultsGridColumnModel {
     isRowHeader: boolean;
     headerText: string;
     getData(sample: SampleWithResultsDTO, sampleIndex: number): SamplesGridCellData;
+    // Optional overrides for the header (column-header) cell. Used by the toggle
+    // column, whose header is a bar cell rather than the default text header.
+    headerCellType?: SamplesGridCellType;
+    getHeaderData?(): SamplesGridCellData;
+    // When true the column takes an equal fraction (1fr) of the remaining width,
+    // so the BfR result columns always span to the end of the page. Other columns
+    // keep their content width (auto).
+    fill?: boolean;
 }
 
 export interface ResultsGridModel {

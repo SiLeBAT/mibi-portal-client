@@ -25,6 +25,7 @@ import { SamplesGridViewComponent } from './samples-grid/samples-grid-view.compo
 import { SamplesGridTextCellTemplateComponent } from './samples-grid/internal/cells/text-cell-template.component';
 import { SamplesGridDataCellTemplateComponent } from './samples-grid/internal/cells/data-cell-template.component';
 import { SamplesGridStackedCellTemplateComponent } from './samples-grid/internal/cells/stacked-cell-template.component';
+import { SamplesGridToggleCellTemplateComponent } from './samples-grid/internal/cells/toggle-cell-template.component';
 import { DataGridCellViewComponent } from './data-grid/internal/components/cell-view.component';
 import { SamplesGridAutoFocusDirective } from './samples-grid/internal/editors/auto-focus.directive';
 import { SamplesEditorComponent } from './samples-editor/samples-editor.component';
@@ -38,6 +39,7 @@ import { NoSampleGuard } from './services/no-sample-guard.service';
 import { NoOrderGuard } from './services/no-order-guard.service';
 import { OrderResultsContainerComponent } from './order-results/order-results-view/order-results-container.component';
 import { OrderResultsViewComponent } from './order-results/order-results-view/order-results-view.component';
+import { ToggleBarHeightDirective } from './order-results/order-results-view/toggle-bar-height.directive';
 import { AnimationsRouteData } from '../shared/animations/animations.model';
 import { SoftLineBreaksPipe } from './pipes/soft-line-breaks.pipe';
 import { ExcelVersionDialogComponent } from './import-samples/components/excel-version-dialog.component';
@@ -101,6 +103,7 @@ const routes: Routes = [
         SamplesGridTextCellTemplateComponent,
         SamplesGridDataCellTemplateComponent,
         SamplesGridStackedCellTemplateComponent,
+        SamplesGridToggleCellTemplateComponent,
         SamplesGridDataEditorTemplateComponent,
         SamplesGridListBoxViewComponent,
         SamplesGridDataEditorViewComponent,
@@ -108,6 +111,7 @@ const routes: Routes = [
         SamplesEditorComponent,
         OrderResultsContainerComponent,
         OrderResultsViewComponent,
+        ToggleBarHeightDirective,
         SoftLineBreaksPipe,
         ExcelVersionDialogComponent
     ],

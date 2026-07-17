@@ -1,0 +1,39 @@
+@use "@angular/material" as mat;
+@use "colors";
+
+.mibi-toggle-cell {
+  position: relative;
+  display: block;
+  height: 100%;
+  min-width: 1.75rem;
+
+  // The label is positioned out of flow, so give the bar its own width/colour.
+  overflow: visible;
+  cursor: pointer;
+  background-color: mat.m2-get-color-from-palette(colors.$primary-palette, "lighter");
+}
+
+// Out-of-flow so a long vertical label never stretches its host cell/row.
+// Anchored at the top of the (sticky header) cell. Its length is capped at the
+// grid/bar height (exposed as --mibi-toggle-bar-height) and truncated with an
+// ellipsis, so it stays readable when the table has only a few rows.
+.mibi-toggle-cell__label {
+  position: absolute;
+  top: 0.3rem;
+  left: 50%;
+  display: block;
+  max-height: calc(var(--mibi-toggle-bar-height, 100vh) - 0.6rem);
+  overflow: hidden;
+  color: mat.m2-get-color-from-palette(colors.$primary-palette, "lighter-contrast");
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  writing-mode: vertical-rl;
+  transform: translateX(-50%) rotate(180deg);
+}
+
+// Hover only changes the label colour (like the secondary-menu tabs) — no cell
+// background change.
+.mibi-toggle-cell__label:hover {
+  color: colors.$bfr-accent-color;
+}

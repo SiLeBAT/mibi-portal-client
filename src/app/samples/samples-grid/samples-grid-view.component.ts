@@ -4,6 +4,7 @@ import { SamplesGridCellType, SamplesGridDataCellData, SamplesGridDataChangeEven
 import { SamplesGridTextCellTemplateComponent } from './internal/cells/text-cell-template.component';
 import { SamplesGridDataCellTemplateComponent } from './internal/cells/data-cell-template.component';
 import { SamplesGridStackedCellTemplateComponent } from './internal/cells/stacked-cell-template.component';
+import { SamplesGridToggleCellTemplateComponent } from './internal/cells/toggle-cell-template.component';
 import { SamplesGridDataEditorTemplateComponent } from './internal/editors/data-editor-template.component';
 
 @Component({
@@ -29,6 +30,9 @@ export class SamplesGridViewComponent implements OnInit {
     @ViewChild('stackedCellTemplate', { static: true })
     private stackedCellTemplate: SamplesGridStackedCellTemplateComponent;
 
+    @ViewChild('toggleCellTemplate', { static: true })
+    private toggleCellTemplate: SamplesGridToggleCellTemplateComponent;
+
     @ViewChild('dataEditorTemplate', { static: true })
     private dataEditorTemplate: SamplesGridDataEditorTemplateComponent;
 
@@ -36,7 +40,8 @@ export class SamplesGridViewComponent implements OnInit {
         this.cellTemplates = {
             [SamplesGridCellType.TEXT]: this.textCellTemplate.template,
             [SamplesGridCellType.DATA]: this.dataCellTemplate.template,
-            [SamplesGridCellType.STACKED]: this.stackedCellTemplate.template
+            [SamplesGridCellType.STACKED]: this.stackedCellTemplate.template,
+            [SamplesGridCellType.TOGGLE]: this.toggleCellTemplate.template
         };
         this.editorTemplates = {
             [SamplesGridEditorType.DATA]: this.dataEditorTemplate.template

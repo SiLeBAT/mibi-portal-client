@@ -8,7 +8,10 @@ export enum SamplesGridCellType {
     DATA,
     // Read-only cell rendering a list of values as aligned stacked lines
     // (used for samples that carry more than one result row).
-    STACKED
+    STACKED,
+    // A coloured bar cell with an optional (out-of-flow) vertical label; used to
+    // build a clickable separator/toggle column inside the grid.
+    TOGGLE
 }
 
 export enum SamplesGridEditorType {

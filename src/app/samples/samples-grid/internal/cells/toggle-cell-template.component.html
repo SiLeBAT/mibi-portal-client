@@ -1,0 +1,14 @@
+<ng-template #template
+    let-data="data"
+>
+    <!-- Suppress the grid's own selection/hover so the bar behaves like a button.
+         The click still bubbles and is handled by the results view via delegation. -->
+    <div class="mibi-toggle-cell"
+        (mousedown)="$event.stopPropagation()"
+        (mouseover)="$event.stopPropagation()"
+    >
+        @if (data) {
+            <span class="mibi-toggle-cell__label" [title]="data">{{ data }}</span>
+        }
+    </div>
+</ng-template>
