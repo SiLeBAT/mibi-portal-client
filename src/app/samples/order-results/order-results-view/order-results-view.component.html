@@ -23,9 +23,18 @@
         >Ergebnisse Herunterladen</button>
     </div>
 
-    <div class="mibi-order-results__content">
+    <div class="mibi-order-results__content" (click)="onGridClick($event)">
         @if (model) {
-            <mibi-samples-grid-view [model]="model"></mibi-samples-grid-view>
+            <!-- Recreate the grid when switching results/full-data mode: the reused
+                 data-grid mis-renders data cells when the column set changes while
+                 the rows stay the same. Tracking the mode forces a fresh grid. -->
+            @for (mode of [showFullData]; track mode) {
+                <mibi-samples-grid-view
+                    mibiToggleBarHeight
+                    [model]="model"
+                    [style.--mibi-grid-cols]="columnTemplate"
+                ></mibi-samples-grid-view>
+            }
         }
     </div>
 </div>

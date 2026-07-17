@@ -16,9 +16,14 @@ interface ParseDateObject {
 export class OrderResultsViewComponent {
     @Input() order: OrderEntryDTO | null | undefined;
     @Input() model: SamplesGridViewModel | null | undefined;
+    // grid-template-columns for the reused grid (result columns as equal 1fr).
+    @Input() columnTemplate: string | null | undefined;
     @Input() pathogens: PathogenTab[] | null | undefined;
     @Input() selectedPathogenId: string | null | undefined;
+    // Only used to force the grid to be recreated when the view mode changes.
+    @Input() showFullData: boolean | null | undefined;
     @Output() selectPathogen = new EventEmitter<string>();
+    @Output() toggleFullData = new EventEmitter<void>();
 
     get createdAt(): Date | null {
         const raw = this.order?.createdAt as unknown;
@@ -39,6 +44,15 @@ export class OrderResultsViewComponent {
 
     onSelectPathogen(pathogenId: string): void {
         this.selectPathogen.emit(pathogenId);
+    }
+
+    // The toggle bar is a column inside the grid; a click anywhere on it bubbles
+    // up here (the bar cells carry the .mibi-toggle-cell marker class).
+    onGridClick(event: Event): void {
+        const target = event.target as HTMLElement;
+        if (target.closest('.mibi-toggle-cell')) {
+            this.toggleFullData.emit();
+        }
     }
 
     private isParseDateObject(value: unknown): value is ParseDateObject {

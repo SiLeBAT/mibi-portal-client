@@ -22,9 +22,11 @@ export function buildResultsGridViewModel(
             isRowHeader: column.isRowHeader,
             isColHeader: true,
             isReadOnly: true,
-            cellTemplateId: model.headerCellType
+            cellTemplateId: column.headerCellType ?? model.headerCellType
         };
-        cellData[model.headerRowId][column.colId] = column.headerText;
+        cellData[model.headerRowId][column.colId] = column.getHeaderData
+            ? column.getHeaderData()
+            : column.headerText;
     });
 
     samples.forEach((sample, index) => {
