@@ -3,6 +3,7 @@ import { DatePipe } from '@angular/common';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Subscription } from 'rxjs';
 import { OrderRow } from '../../model/order-row.model';
 import { ResultsFilterValue } from '../order-list-filter-select/order-list-filter-select.component';
 
@@ -18,9 +19,22 @@ type ResultsCategory = 'partial' | 'complete' | 'none';
 })
 export class OrderListViewComponent implements AfterViewInit, OnDestroy {
     @Input() set rows(value: OrderRow[] | null) {
-        this.dataSource.data = value ?? [];
+        const rows = value ?? [];
+        // A freshly queried list (different orders) resets to the default sort;
+        // merely attaching samples to an order must not clobber the user's sort.
+        const orderIds = rows.map(row => row.id).join(',');
+        const isNewList = orderIds !== this.knownOrderIds;
+        this.knownOrderIds = orderIds;
+
+        this.dataSource.data = rows;
+        if (isNewList) {
+            this.applyDefaultSort();
+        }
+        this.emitSequence();
     }
     @Output() openOrderResults = new EventEmitter<string>();
+    /** The order ids in the sequence the table currently displays. */
+    @Output() sequenceChange = new EventEmitter<string[]>();
     @ViewChild(MatSort) sort!: MatSort;
     @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -64,6 +78,10 @@ export class OrderListViewComponent implements AfterViewInit, OnDestroy {
     // with results that have not been opened yet are shown in bold.
     private readonly seenOrderIds = new Set<string>();
 
+    // Order ids of the list last received, to detect a freshly queried list.
+    private knownOrderIds = '';
+    private sortSubscription?: Subscription;
+
     dataSource = new MatTableDataSource<OrderRow>([]);
 
     constructor() {
@@ -104,10 +122,15 @@ export class OrderListViewComponent implements AfterViewInit, OnDestroy {
     ngAfterViewInit(): void {
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
+        this.applyDefaultSort();
+        this.sortSubscription = this.sort.sortChange.subscribe(() => this.emitSequence());
+        this.emitSequence();
     }
 
     ngOnDestroy(): void {
+        this.sortSubscription?.unsubscribe();
         this.openOrderResults.complete();
+        this.sequenceChange.complete();
     }
 
     onFilterChange(column: FilterableColumn, value: string): void {
@@ -142,6 +165,27 @@ export class OrderListViewComponent implements AfterViewInit, OnDestroy {
         return this.resultsCategory(row) !== 'none' && !this.seenOrderIds.has(row.id);
     }
 
+    // Default ordering: newest first by date. Re-applied whenever the order list
+    // is queried anew from the backend.
+    private applyDefaultSort(): void {
+        if (!this.sort) {
+            return;
+        }
+        this.sort.active = 'createdAt';
+        this.sort.direction = 'desc';
+        this.sort.sortChange.emit({ active: 'createdAt', direction: 'desc' });
+    }
+
+    // Publishes the sequence the table displays (current sorting + filtering,
+    // across all pages) so other views can step through the orders in that order.
+    private emitSequence(): void {
+        const filtered = this.dataSource.filteredData ?? this.dataSource.data;
+        const displayed = this.sort
+            ? this.dataSource.sortData([...filtered], this.sort)
+            : filtered;
+        this.sequenceChange.emit(displayed.map(row => row.id));
+    }
+
     private applyFilter(): void {
         this.dataSource.filter = JSON.stringify({
             columns: this.columnFilters,
@@ -150,6 +194,7 @@ export class OrderListViewComponent implements AfterViewInit, OnDestroy {
         if (this.dataSource.paginator) {
             this.dataSource.paginator.firstPage();
         }
+        this.emitSequence();
     }
 
     private formatCell(row: OrderRow, column: FilterableColumn): string {

@@ -2,9 +2,10 @@ import { OrderEntryDTO, SampleWithResultsDTO } from '../../core/model/response.m
 import {
     orderListAddSamplesWithResultsSOA,
     orderListDestroySOA,
-    orderListUpdateSOA
+    orderListUpdateSOA,
+    orderListUpdateSequenceSOA
 } from './order-list.actions';
-import { orderListReducer } from './order-list.reducer';
+import { OrderListState, orderListReducer } from './order-list.reducer';
 
 const order = (id: string): OrderEntryDTO => ({
     id: id,
@@ -19,6 +20,11 @@ const order = (id: string): OrderEntryDTO => ({
     results: '0/0'
 });
 
+const state = (orders: OrderEntryDTO[], sequence: string[] = []): OrderListState => ({
+    orders: orders,
+    sequence: sequence
+});
+
 const samples = (id: string): SampleWithResultsDTO[] =>
     [
         {
@@ -31,43 +37,58 @@ const samples = (id: string): SampleWithResultsDTO[] =>
     ] as unknown as SampleWithResultsDTO[];
 
 describe('orderListReducer', () => {
-    it('replaces the state with the populated order list', () => {
+    it('replaces the orders with the populated order list', () => {
         const orders = [order('a'), order('b')];
-        const state = orderListReducer([], orderListUpdateSOA({ orders: orders }));
-        expect(state).toEqual(orders);
+        const result = orderListReducer(state([]), orderListUpdateSOA({ orders: orders }));
+        expect(result.orders).toEqual(orders);
+    });
+
+    it('invalidates a previously reported sequence when the list is refetched', () => {
+        const result = orderListReducer(
+            state([order('a')], ['a']),
+            orderListUpdateSOA({ orders: [order('b')] })
+        );
+        expect(result.sequence).toEqual([]);
     });
 
     it('clears the order list on destroy', () => {
-        const state = orderListReducer(
-            [order('a')],
-            orderListDestroySOA()
+        const result = orderListReducer(state([order('a')], ['a']), orderListDestroySOA());
+        expect(result.orders).toEqual([]);
+        expect(result.sequence).toEqual([]);
+    });
+
+    it('stores the displayed order sequence', () => {
+        const result = orderListReducer(
+            state([order('a'), order('b')]),
+            orderListUpdateSequenceSOA({ orderIds: ['b', 'a'] })
         );
-        expect(state).toEqual([]);
+        expect(result.sequence).toEqual(['b', 'a']);
+        expect(result.orders.map(o => o.id)).toEqual(['a', 'b']);
     });
 
     it('attaches samples to the matching order and leaves others untouched', () => {
-        const initial = [order('a'), order('b')];
+        const initial = state([order('a'), order('b')]);
         const payload = samples('a');
 
-        const state = orderListReducer(
+        const result = orderListReducer(
             initial,
             orderListAddSamplesWithResultsSOA({ orderId: 'a', samples: payload })
         );
 
-        expect(state.find(o => o.id === 'a')?.samples).toBe(payload);
-        expect(state.find(o => o.id === 'b')?.samples).toBeUndefined();
+        expect(result.orders.find(o => o.id === 'a')?.samples).toBe(payload);
+        expect(result.orders.find(o => o.id === 'b')?.samples).toBeUndefined();
     });
 
     it('does not mutate the previous state', () => {
-        const initial = [order('a')];
-        const state = orderListReducer(
+        const initial = state([order('a')]);
+        const result = orderListReducer(
             initial,
             orderListAddSamplesWithResultsSOA({
                 orderId: 'a',
                 samples: samples('a')
             })
         );
-        expect(state).not.toBe(initial);
-        expect(initial[0].samples).toBeUndefined();
+        expect(result).not.toBe(initial);
+        expect(initial.orders[0].samples).toBeUndefined();
     });
 });

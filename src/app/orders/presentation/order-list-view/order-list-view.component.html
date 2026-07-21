@@ -5,6 +5,8 @@
             mat-table
             [dataSource]="dataSource"
             matSort
+            matSortActive="createdAt"
+            matSortDirection="desc"
             class="mibi-order-list__table"
         >
             <ng-container matColumnDef="createdAt">
