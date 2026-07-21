@@ -10,7 +10,6 @@
   &__bar {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: layout.$single-space;
 
     // Same colouring and height as the upload page's secondary bar (.mibi-app-bar-bottom):
@@ -22,6 +21,23 @@
     color: mat.m2-get-color-from-palette(colors.$primary-palette, "lighter-contrast");
   }
 
+  // Side groups share the free space equally, so the order-switch control sits in
+  // the true middle of the bar. `flex-basis: 0` + the default `min-width: auto`
+  // means the left group can never shrink below its content: once the tabs grow
+  // past their half, they push the control to the right instead.
+  &__bar-left,
+  &__bar-right {
+    display: flex;
+    flex: 1 1 0;
+    align-self: stretch;
+    align-items: stretch;
+  }
+
+  &__bar-right {
+    align-items: center;
+    justify-content: flex-end;
+  }
+
   &__meta {
     display: flex;
     align-items: center;
@@ -29,12 +45,15 @@
     padding: layout.$half-space layout.$single-space;
   }
 
+  // Separators hug the tabs: one before the first, one directly after the last.
   &__tabs {
     display: flex;
-    flex: 1 1 auto;
+    flex: 0 0 auto;
+    align-self: stretch;
     align-items: stretch;
     gap: layout.$half-space;
-    overflow-x: auto;
+    border-right: 1px solid rgb(255 255 255 / 40%);
+    border-left: 1px solid rgb(255 255 255 / 40%);
   }
 
   &__tab {
@@ -60,6 +79,39 @@
     background-color: #ffffff;
   }
 
+  // Order switching (mockup #4): one control with two halves, kept in the middle
+  // of the bar by the equal side groups above.
+  &__orders {
+    display: flex;
+    flex: 0 0 auto;
+    align-self: stretch;
+    align-items: center;
+  }
+
+  &__order-nav {
+    display: flex;
+    align-items: center;
+    gap: layout.$half-space;
+    padding: layout.$half-space layout.$single-space;
+    font: inherit;
+    color: inherit;
+    white-space: nowrap;
+    cursor: pointer;
+    background: none;
+    border: none;
+  }
+
+  // No newer/older order: text and arrow go grey and the button is inactive.
+  &__order-nav:disabled {
+    color: rgb(127 127 127);
+    cursor: default;
+  }
+
+  &__order-nav:not(:disabled):hover {
+    color: colors.$bfr-accent-color;
+  }
+
+  // Pinned to the right by the order-switch control's trailing auto margin.
   &__download {
     display: flex;
     align-items: center;

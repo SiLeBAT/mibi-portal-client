@@ -1,26 +1,56 @@
 <div class="mibi-order-results">
+    <!-- Three-part bar: the side groups share the space equally, which keeps the
+         order-switch control in the true horizontal middle until the pathogen
+         tabs outgrow their half and push it to the right. -->
     <div class="mibi-order-results__bar">
-        <div class="mibi-order-results__meta">
-            <span class="mibi-order-results__date">{{ createdAt | date: 'dd.MM.yyyy HH:mm' }}</span>
-            <span class="mibi-order-results__file">{{ order?.fileName }}</span>
+        <div class="mibi-order-results__bar-left">
+            <div class="mibi-order-results__meta">
+                <span class="mibi-order-results__date">{{ createdAt | date: 'dd.MM.yyyy HH:mm' }}</span>
+                <span class="mibi-order-results__file">{{ order?.fileName }}</span>
+            </div>
+
+            <nav class="mibi-order-results__tabs">
+                @for (tab of pathogens; track tab.id) {
+                    <button
+                        type="button"
+                        class="mibi-order-results__tab"
+                        [class.mibi-order-results__tab--active]="tab.id === selectedPathogenId"
+                        (click)="onSelectPathogen(tab.id)"
+                    >{{ tab.id === selectedPathogenId ? tab.fullName : tab.abbreviation }}</button>
+                }
+            </nav>
         </div>
 
-        <nav class="mibi-order-results__tabs">
-            @for (tab of pathogens; track tab.id) {
-                <button
-                    type="button"
-                    class="mibi-order-results__tab"
-                    [class.mibi-order-results__tab--active]="tab.id === selectedPathogenId"
-                    (click)="onSelectPathogen(tab.id)"
-                >{{ tab.id === selectedPathogenId ? tab.fullName : tab.abbreviation }}</button>
-            }
-        </nav>
+        <!-- One control with two halves: left switches to newer orders,
+             right to older ones (mockup #4). -->
+        <div class="mibi-order-results__orders">
+            <button
+                class="mibi-order-results__order-nav"
+                type="button"
+                [disabled]="!hasNewerOrder"
+                (click)="onOpenNewerOrder()"
+            >
+                <span>Neuere Aufträge</span>
+                <mat-icon [inline]="true" class="mibi-order-results__order-nav-icon">arrow_back</mat-icon>
+            </button>
+            <button
+                class="mibi-order-results__order-nav"
+                type="button"
+                [disabled]="!hasOlderOrder"
+                (click)="onOpenOlderOrder()"
+            >
+                <mat-icon [inline]="true" class="mibi-order-results__order-nav-icon">arrow_forward</mat-icon>
+                <span>Ältere Aufträge</span>
+            </button>
+        </div>
 
-        <!-- Placeholder stub; download functionality is added in Phase F. -->
-        <button
-            class="mibi-order-results__download"
-            type="button"
-        >Ergebnisse Herunterladen</button>
+        <div class="mibi-order-results__bar-right">
+            <!-- Placeholder stub; download functionality is added in Phase F. -->
+            <button
+                class="mibi-order-results__download"
+                type="button"
+            >Ergebnisse Herunterladen</button>
+        </div>
     </div>
 
     <div class="mibi-order-results__content" (click)="onGridClick($event)">

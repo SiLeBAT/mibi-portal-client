@@ -19,3 +19,10 @@ export const orderListAddSamplesWithResultsSOA = createAction(
     '[OrderList] Add samples with results',
     props<{ orderId: string; samples: SampleWithResultsDTO[] }>()
 );
+
+// The order ids in the sequence the order list table currently displays
+// (i.e. after the user's sorting/filtering), so other views can follow it.
+export const orderListUpdateSequenceSOA = createAction(
+    '[OrderList] Update displayed order sequence',
+    props<{ orderIds: string[] }>()
+);

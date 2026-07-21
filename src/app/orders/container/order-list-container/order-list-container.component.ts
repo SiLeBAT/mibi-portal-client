@@ -6,14 +6,12 @@ import { OrderEntryDTO } from '../../../core/model/response.model';
 import { UserMainSlice } from '../../../user/user.state';
 import { selectUserCurrentUser } from '../../../user/state/user.selectors';
 import { OrderRow } from '../../model/order-row.model';
+import { parseOrderDate } from '../../model/order-date';
 import { OrdersMainSlice } from '../../orders.state';
+import { orderListUpdateSequenceSOA } from '../../state/order-list.actions';
 import { selectOrderList } from '../../state/order-list.selectors';
 import { navigateMSA } from '../../../shared/navigate/navigate.actions';
 import { SamplesLinkProviderService } from '../../../samples/link-provider.service';
-
-interface ParseDateObject {
-    iso: string;
-}
 
 @Component({
     standalone: false,
@@ -23,6 +21,7 @@ interface ParseDateObject {
             <mibi-order-list-view
                 [rows]="rows$ | async"
                 (openOrderResults)="onOpenOrderResults($event)"
+                (sequenceChange)="onSequenceChange($event)"
             ></mibi-order-list-view>
         }
     `
@@ -49,10 +48,16 @@ export class OrderListContainerComponent {
         this.store$.dispatch(navigateMSA({ path: this.samplesLinks.resultsForOrder(orderId) }));
     }
 
+    // Keep the store in sync with the sequence the table displays, so the results
+    // view can step through the orders in exactly that order.
+    onSequenceChange(orderIds: string[]): void {
+        this.store$.dispatch(orderListUpdateSequenceSOA({ orderIds: orderIds }));
+    }
+
     private orderToRow(order: OrderEntryDTO): OrderRow {
         return {
             id: order.id,
-            createdAt: this.parseDate(order.createdAt),
+            createdAt: parseOrderDate(order.createdAt) ?? new Date(Number.NaN),
             fileName: order.fileName,
             sampleIds: this.joinUnique(order.sampleIds),
             sampleIdsAVV: this.joinUnique(order.sampleIdsAVV),
@@ -61,27 +66,6 @@ export class OrderListContainerComponent {
             sampleCount: order.sampleCount,
             results: order.results
         };
-    }
-
-    private parseDate(raw: unknown): Date {
-        if (raw instanceof Date) {
-            return raw;
-        }
-        if (typeof raw === 'string' || typeof raw === 'number') {
-            return new Date(raw);
-        }
-        if (this.isParseDateObject(raw)) {
-            return new Date(raw.iso);
-        }
-        return new Date(Number.NaN);
-    }
-
-    private isParseDateObject(value: unknown): value is ParseDateObject {
-        return (
-            typeof value === 'object' &&
-            value !== null &&
-            typeof (value as { iso?: unknown }).iso === 'string'
-        );
     }
 
     private joinUnique(values: string[] | undefined): string {

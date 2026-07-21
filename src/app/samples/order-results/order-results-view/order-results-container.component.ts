@@ -1,12 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { BehaviorSubject, Observable, Subject, combineLatest } from 'rxjs';
-import { map, scan, shareReplay, startWith } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subject, Subscription, combineLatest } from 'rxjs';
+import { distinctUntilChanged, map, scan, shareReplay, startWith, switchMap } from 'rxjs/operators';
 import { OrderEntryDTO } from '../../../core/model/response.model';
 import { OrdersMainSlice } from '../../../orders/orders.state';
 import { orderListLoadSamplesWithResultsSOA } from '../../../orders/state/order-list.actions';
-import { selectOrderById } from '../../../orders/state/order-list.selectors';
+import {
+    OrderNeighbours,
+    selectOrderById,
+    selectOrderNeighbours
+} from '../../../orders/state/order-list.selectors';
+import { navigateMSA } from '../../../shared/navigate/navigate.actions';
+import { SamplesLinkProviderService } from '../../link-provider.service';
 import { SamplesGridViewModel } from '../../samples-grid/samples-grid.model';
 import { buildResultsGridViewModel } from '../results-grid/results-grid.builder';
 import { createFullDataGridModel, createResultsGridModel, gridColumnTemplate } from '../results-grid/results-grid.constants';
@@ -28,16 +34,19 @@ import {
             [pathogens]="pathogens$ | async"
             [selectedPathogenId]="selectedPathogenId$ | async"
             [showFullData]="showFullData$ | async"
+            [neighbours]="neighbours$ | async"
             (selectPathogen)="onSelectPathogen($event)"
             (toggleFullData)="onToggleFullData()"
+            (openOrder)="onOpenOrder($event)"
         ></mibi-order-results-view>
     `
 })
-export class OrderResultsContainerComponent {
+export class OrderResultsContainerComponent implements OnDestroy {
     readonly order$: Observable<OrderEntryDTO | undefined>;
     readonly pathogens$: Observable<PathogenTab[]>;
     readonly selectedPathogenId$: Observable<string | null>;
     readonly grid$: Observable<{ model: SamplesGridViewModel; columnTemplate: string }>;
+    readonly neighbours$: Observable<OrderNeighbours>;
     private readonly toggleFullData$ = new Subject<void>();
     readonly showFullData$: Observable<boolean> = this.toggleFullData$.pipe(
         scan(current => !current, false),
@@ -45,18 +54,38 @@ export class OrderResultsContainerComponent {
         shareReplay({ bufferSize: 1, refCount: true })
     );
 
-    private readonly orderId: string;
+    private readonly orderId$: Observable<string>;
     private readonly selectedPathogen$ = new BehaviorSubject<string | null>(null);
+    private readonly loadSubscription: Subscription;
 
     constructor(
         private readonly store$: Store<OrdersMainSlice>,
+        private readonly samplesLinks: SamplesLinkProviderService,
         route: ActivatedRoute
     ) {
-        this.orderId = route.snapshot.paramMap.get('orderId') ?? '';
-        // Ensure samples + results are loaded (the effect guards against re-fetching);
-        // this also makes the view work on a direct deep-link / page refresh.
-        this.store$.dispatch(orderListLoadSamplesWithResultsSOA({ orderId: this.orderId }));
-        this.order$ = this.store$.pipe(select(selectOrderById(this.orderId)));
+        // The route is reused when switching to another order, so react to the
+        // param stream rather than reading a one-off snapshot.
+        this.orderId$ = route.paramMap.pipe(
+            map(params => params.get('orderId') ?? ''),
+            distinctUntilChanged(),
+            shareReplay({ bufferSize: 1, refCount: true })
+        );
+
+        // Ensure samples + results are loaded for whichever order is shown (the
+        // effect guards against re-fetching); this also covers a direct deep-link
+        // or page refresh. Switching orders always resets to the first tab.
+        this.loadSubscription = this.orderId$.subscribe(orderId => {
+            this.selectedPathogen$.next(null);
+            this.store$.dispatch(orderListLoadSamplesWithResultsSOA({ orderId: orderId }));
+        });
+
+        this.order$ = this.orderId$.pipe(
+            switchMap(orderId => this.store$.pipe(select(selectOrderById(orderId))))
+        );
+
+        this.neighbours$ = this.orderId$.pipe(
+            switchMap(orderId => this.store$.pipe(select(selectOrderNeighbours(orderId))))
+        );
 
         this.pathogens$ = this.order$.pipe(
             map(order => derivePathogenTabs(order?.samples ?? [])),
@@ -87,11 +116,19 @@ export class OrderResultsContainerComponent {
         );
     }
 
+    ngOnDestroy(): void {
+        this.loadSubscription.unsubscribe();
+    }
+
     onSelectPathogen(pathogenId: string): void {
         this.selectedPathogen$.next(pathogenId);
     }
 
     onToggleFullData(): void {
         this.toggleFullData$.next();
+    }
+
+    onOpenOrder(orderId: string): void {
+        this.store$.dispatch(navigateMSA({ path: this.samplesLinks.resultsForOrder(orderId) }));
     }
 }

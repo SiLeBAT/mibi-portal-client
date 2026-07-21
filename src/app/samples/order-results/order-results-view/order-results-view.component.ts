@@ -1,11 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { OrderEntryDTO } from '../../../core/model/response.model';
+import { parseOrderDate } from '../../../orders/model/order-date';
+import { OrderNeighbours } from '../../../orders/state/order-list.selectors';
 import { SamplesGridViewModel } from '../../samples-grid/samples-grid.model';
 import { PathogenTab } from '../results-grid/pathogen-catalog';
-
-interface ParseDateObject {
-    iso: string;
-}
 
 @Component({
     standalone: false,
@@ -22,24 +20,35 @@ export class OrderResultsViewComponent {
     @Input() selectedPathogenId: string | null | undefined;
     // Only used to force the grid to be recreated when the view mode changes.
     @Input() showFullData: boolean | null | undefined;
+    @Input() neighbours: OrderNeighbours | null | undefined;
     @Output() selectPathogen = new EventEmitter<string>();
     @Output() toggleFullData = new EventEmitter<void>();
+    @Output() openOrder = new EventEmitter<string>();
 
     get createdAt(): Date | null {
-        const raw = this.order?.createdAt as unknown;
-        if (!raw) {
-            return null;
+        return parseOrderDate(this.order?.createdAt);
+    }
+
+    get hasNewerOrder(): boolean {
+        return !!this.neighbours?.newerOrderId;
+    }
+
+    get hasOlderOrder(): boolean {
+        return !!this.neighbours?.olderOrderId;
+    }
+
+    onOpenNewerOrder(): void {
+        const orderId = this.neighbours?.newerOrderId;
+        if (orderId) {
+            this.openOrder.emit(orderId);
         }
-        if (raw instanceof Date) {
-            return raw;
+    }
+
+    onOpenOlderOrder(): void {
+        const orderId = this.neighbours?.olderOrderId;
+        if (orderId) {
+            this.openOrder.emit(orderId);
         }
-        if (typeof raw === 'string' || typeof raw === 'number') {
-            return new Date(raw);
-        }
-        if (this.isParseDateObject(raw)) {
-            return new Date(raw.iso);
-        }
-        return null;
     }
 
     onSelectPathogen(pathogenId: string): void {
@@ -53,13 +62,5 @@ export class OrderResultsViewComponent {
         if (target.closest('.mibi-toggle-cell')) {
             this.toggleFullData.emit();
         }
-    }
-
-    private isParseDateObject(value: unknown): value is ParseDateObject {
-        return (
-            typeof value === 'object' &&
-            value !== null &&
-            typeof (value as { iso?: unknown }).iso === 'string'
-        );
     }
 }
