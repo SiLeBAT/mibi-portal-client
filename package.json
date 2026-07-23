@@ -72,6 +72,7 @@
     "rxjs": "~7.8.0",
     "tooltipster": "~4.2.8",
     "tslib": "~2.4.0",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.2/xlsx-0.20.2.tgz",
     "zone.js": "~0.15.0",
     "zxcvbn": "~4.4.2"
   },

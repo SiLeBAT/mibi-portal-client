@@ -1,7 +1,9 @@
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { from, Observable } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
+import { ExcelParserService } from '../../samples/excel/excel-parser.service';
+import { ParsedSampleSheet } from '../../samples/excel/excel-parser.model';
 import {
     ExcelFile,
     MarshalledData,
@@ -107,7 +109,8 @@ export class DataService {
     constructor(
         private httpClient: HttpClient,
         private dtoService: DTOFactoryService,
-        private entityFactoryService: EntityFactoryService) {
+        private entityFactoryService: EntityFactoryService,
+        private excelParser: ExcelParserService) {
     }
 
     getCurrentUser(): TokenizedUser | null {
@@ -196,17 +199,23 @@ export class DataService {
     }
 
     unmarshalExcel(requestData: ExcelFile): Observable<SampleSet> {
+        // MPS-312: the .xlsx is parsed to JSON in the browser and only JSON is sent
+        // to the API. Server-side NRL enrichment then turns it into a full SampleSet.
         const httpOptions = {
             headers: new HttpHeaders({
-                // 'Content-Type': 'multipart/form-data',
+                'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'X-Parse-Application-Id': environment.appId
             })
         };
-        const formData: FormData = new FormData();
-        const encodedFileName = encodeURIComponent(requestData.file.name);
-        formData.append('file', requestData.file, encodedFileName);
-        return this.httpClient.put<PutSamplesJSONResponseDTO>(this.URL.unmarshal, formData, httpOptions).pipe(
+        return from(this.excelParser.parse(requestData.file)).pipe(
+            switchMap((parsedSampleSheet: ParsedSampleSheet) =>
+                this.httpClient.put<PutSamplesJSONResponseDTO>(
+                    this.URL.unmarshal,
+                    { parsedSampleSheet: parsedSampleSheet },
+                    httpOptions
+                )
+            ),
             map((dto: PutSamplesJSONResponseDTO) => this.entityFactoryService.toSampleSet(dto.order.sampleSet)),
             catchError((error) => {
                 if (error instanceof EndpointError) {
