@@ -2,13 +2,13 @@ import { samplesEditorIdHeader, samplesEditorNrlHeader, samplesEditorDataHeaders
 import {
     SamplesGridCellType,
     SamplesGridEditorType
-} from '../../samples-grid/samples-grid.model';
+} from '../../../grid/samples-grid/samples-grid.model';
 import {
     SamplesEditorColumnModel,
     SamplesEditorDataColumnModel,
     SamplesEditorModel
 } from '../samples-editor.model';
-import { DataGridColId } from '../../data-grid/data-grid.model';
+import { DataGridColId } from '../../../grid/data-grid/data-grid.model';
 
 function createIdModel(colId: DataGridColId): SamplesEditorColumnModel {
     return {

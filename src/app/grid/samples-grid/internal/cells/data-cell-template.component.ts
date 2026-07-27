@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { DataGridCellContext } from '../../../data-grid/data-grid.model';
 import { SamplesGridTemplateContainer } from '../template-container';
 import { SamplesGridDataCellData } from '../../samples-grid.model';
-import { SampleValidationErrorLevel } from '../../../model/sample-management.model';
+import { SampleValidationErrorLevel } from '../../../../samples/model/sample-management.model';
 // import { SoftLineBreaksPipe } from '../../../../shared/presentation/pipes/soft-line-breaks.pipe';
 
 @Component({

@@ -56,7 +56,8 @@
               "moment",
               "tooltipster",
               "zxcvbn",
-              "file-saver"
+              "file-saver",
+              "jszip"
             ]
           },
           "configurations": {

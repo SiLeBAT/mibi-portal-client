@@ -1,12 +1,12 @@
 import { ResultDTO, SampleWithResultsDTO } from '../../../core/model/response.model';
 import { AnnotatedSampleDataEntryDTO } from '../../../core/model/shared-dto.model';
-import { AnnotatedSampleDataEntry, SampleProperty } from '../../model/sample-management.model';
-import { SamplesGridCellData, SamplesGridCellType } from '../../samples-grid/samples-grid.model';
+import { AnnotatedSampleDataEntry, SampleProperty } from '../../../samples/model/sample-management.model';
+import { SamplesGridCellData, SamplesGridCellType } from '../../../grid/samples-grid/samples-grid.model';
 import {
     samplesEditorDataHeaders,
     samplesEditorIdHeader,
     samplesEditorNrlHeader
-} from '../../samples-editor/constants/column-headers.constants';
+} from '../../../samples/samples-editor/constants/column-headers.constants';
 import { ResultsGridColumnModel, ResultsGridModel } from './results-grid.model';
 
 // The uploaded order data is already validated/submitted, so the read-only

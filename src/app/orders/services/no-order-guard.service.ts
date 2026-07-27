@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router, UrlTree } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { firstValueFrom } from 'rxjs';
-import { OrdersMainSlice } from '../../orders/orders.state';
-import { selectOrderById } from '../../orders/state/order-list.selectors';
-import { SamplesLinkProviderService } from '../link-provider.service';
+import { OrdersMainSlice } from '../orders.state';
+import { selectOrderById } from '../state/order-list.selectors';
+import { SamplesLinkProviderService } from '../../samples/link-provider.service';
 
 @Injectable({
     providedIn: 'root'

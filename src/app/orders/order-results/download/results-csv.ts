@@ -1,6 +1,6 @@
 import { ResultDTO, SampleWithResultsDTO } from '../../../core/model/response.model';
-import { SampleProperty } from '../../model/sample-management.model';
-import { samplesEditorDataHeaders } from '../../samples-editor/constants/column-headers.constants';
+import { SampleProperty } from '../../../samples/model/sample-management.model';
+import { samplesEditorDataHeaders } from '../../../samples/samples-editor/constants/column-headers.constants';
 import { getResultColumnKeys } from '../results-grid/pathogen-catalog';
 import { orderedResults } from '../results-grid/results-grid.constants';
 

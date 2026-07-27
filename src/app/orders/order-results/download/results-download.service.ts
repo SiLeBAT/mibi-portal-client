@@ -3,7 +3,7 @@ import { saveAs } from 'file-saver';
 import JSZip from 'jszip';
 import { OrderEntryDTO } from '../../../core/model/response.model';
 import { LogService } from '../../../core/services/log.service';
-import { parseOrderDate } from '../../../orders/model/order-date';
+import { parseOrderDate } from '../../model/order-date';
 import { derivePathogenTabs, filterSamplesByPathogen } from '../results-grid/pathogen-catalog';
 import { buildResultsCsv, downloadColumnsForPathogen } from './results-csv';
 

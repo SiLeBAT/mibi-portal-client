@@ -1,5 +1,5 @@
 import { DataGridCellViewModel, DataGridViewModel, DataGridEditorEvent } from '../data-grid/data-grid.model';
-import { AnnotatedSampleDataEntry } from '../model/sample-management.model';
+import { AnnotatedSampleDataEntry } from '../../samples/model/sample-management.model';
 
 // Cell types
 

@@ -1,6 +1,6 @@
 import { AnnotatedSampleDataEntry, Sample, SampleData } from '../model/sample-management.model';
-import { DataGridRowId, DataGridColId } from '../data-grid/data-grid.model';
-import { SamplesGridCellType, SamplesGridEditorType } from '../samples-grid/samples-grid.model';
+import { DataGridRowId, DataGridColId } from '../../grid/data-grid/data-grid.model';
+import { SamplesGridCellType, SamplesGridEditorType } from '../../grid/samples-grid/samples-grid.model';
 
 export interface SamplesEditorColumnModel {
     colId: DataGridColId;
