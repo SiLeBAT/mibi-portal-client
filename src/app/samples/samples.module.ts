@@ -8,6 +8,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
 import { CoreModule } from '../core/core.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -77,6 +78,7 @@ const routes: Routes = [
         MatIconModule,
         MatButtonModule,
         MatDialogModule,
+        MatMenuModule,
         MatInputModule,
         MatStepperModule,
         MatRadioModule,

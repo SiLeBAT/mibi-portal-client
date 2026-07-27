@@ -5,6 +5,9 @@ export interface PathogenTab {
     id: string;
     fullName: string;
     abbreviation: string;
+    // Filename-safe token used in the CSV download names (ticket #786), e.g.
+    // "Ecoli", "Salmonella".
+    fileToken: string;
 }
 
 interface PathogenCatalogEntry extends PathogenTab {
@@ -31,6 +34,7 @@ const pathogenCatalog: PathogenCatalogEntry[] = [
         id: 'escherichia-coli',
         fullName: 'Escherichia coli',
         abbreviation: 'E. coli',
+        fileToken: 'Ecoli',
         matches: erreger => normalize(erreger).startsWith('escherichia coli'),
         resultColumnKeys: ESCHERICHIA_COLI_RESULT_KEYS
     },
@@ -38,6 +42,7 @@ const pathogenCatalog: PathogenCatalogEntry[] = [
         id: 'salmonella',
         fullName: 'Salmonella',
         abbreviation: 'Salm',
+        fileToken: 'Salmonella',
         matches: erreger => normalize(erreger).startsWith('salmonella'),
         resultColumnKeys: SALMONELLA_RESULT_KEYS
     }
@@ -60,6 +65,8 @@ function resolvePathogen(sample: SampleWithResultsDTO): PathogenCatalogEntry {
         id: 'other:' + normalize(label),
         fullName: label,
         abbreviation: label,
+        // Filename-safe fallback token: drop spaces and dots (e.g. "E. coli").
+        fileToken: label.replace(/[\s.]+/g, '') || 'Unbekannt',
         matches: () => false,
         resultColumnKeys: []
     };
@@ -74,7 +81,8 @@ export function derivePathogenTabs(samples: SampleWithResultsDTO[]): PathogenTab
             byId.set(pathogen.id, {
                 id: pathogen.id,
                 fullName: pathogen.fullName,
-                abbreviation: pathogen.abbreviation
+                abbreviation: pathogen.abbreviation,
+                fileToken: pathogen.fileToken
             });
         }
     });

@@ -45,11 +45,19 @@
         </div>
 
         <div class="mibi-order-results__bar-right">
-            <!-- Placeholder stub; download functionality is added in Phase F. -->
             <button
                 class="mibi-order-results__download"
                 type="button"
-            >Ergebnisse Herunterladen</button>
+                [matMenuTriggerFor]="downloadMenu"
+            >
+                <mat-icon [inline]="true" class="mibi-order-results__download-icon">assignment_returned</mat-icon>
+                <span>Ergebnisse herunterladen</span>
+                <mat-icon [inline]="true" class="mibi-order-results__download-icon">arrow_drop_down</mat-icon>
+            </button>
+            <mat-menu #downloadMenu="matMenu">
+                <button mat-menu-item type="button" (click)="onDownloadDisplayed()">Angezeigter Erreger</button>
+                <button mat-menu-item type="button" (click)="onDownloadAll()">Alle Erreger dieses Auftrags</button>
+            </mat-menu>
         </div>
     </div>
 
