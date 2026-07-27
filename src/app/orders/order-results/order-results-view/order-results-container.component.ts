@@ -4,17 +4,17 @@ import { Store, select } from '@ngrx/store';
 import { BehaviorSubject, Observable, Subject, Subscription, combineLatest } from 'rxjs';
 import { distinctUntilChanged, map, scan, shareReplay, startWith, switchMap, take } from 'rxjs/operators';
 import { OrderEntryDTO } from '../../../core/model/response.model';
-import { OrdersMainSlice } from '../../../orders/orders.state';
-import { orderListLoadSamplesWithResultsSOA } from '../../../orders/state/order-list.actions';
+import { OrdersMainSlice } from '../../orders.state';
+import { orderListLoadSamplesWithResultsSOA } from '../../state/order-list.actions';
 import {
     OrderNeighbours,
     selectOrderById,
     selectOrderNeighbours
-} from '../../../orders/state/order-list.selectors';
+} from '../../state/order-list.selectors';
 import { navigateMSA } from '../../../shared/navigate/navigate.actions';
-import { SamplesLinkProviderService } from '../../link-provider.service';
+import { orderResultsPath } from '../../orders.paths';
 import { ResultsDownloadService } from '../download/results-download.service';
-import { SamplesGridViewModel } from '../../samples-grid/samples-grid.model';
+import { SamplesGridViewModel } from '../../../grid/samples-grid/samples-grid.model';
 import { buildResultsGridViewModel } from '../results-grid/results-grid.builder';
 import { createFullDataGridModel, createResultsGridModel, gridColumnTemplate } from '../results-grid/results-grid.constants';
 import {
@@ -63,7 +63,6 @@ export class OrderResultsContainerComponent implements OnDestroy {
 
     constructor(
         private readonly store$: Store<OrdersMainSlice>,
-        private readonly samplesLinks: SamplesLinkProviderService,
         private readonly download: ResultsDownloadService,
         route: ActivatedRoute
     ) {
@@ -133,7 +132,7 @@ export class OrderResultsContainerComponent implements OnDestroy {
     }
 
     onOpenOrder(orderId: string): void {
-        this.store$.dispatch(navigateMSA({ path: this.samplesLinks.resultsForOrder(orderId) }));
+        this.store$.dispatch(navigateMSA({ path: orderResultsPath(orderId) }));
     }
 
     onDownloadDisplayed(): void {

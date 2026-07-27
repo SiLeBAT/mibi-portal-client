@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { OrderEntryDTO } from '../../../core/model/response.model';
-import { parseOrderDate } from '../../../orders/model/order-date';
-import { OrderNeighbours } from '../../../orders/state/order-list.selectors';
-import { SamplesGridViewModel } from '../../samples-grid/samples-grid.model';
+import { parseOrderDate } from '../../model/order-date';
+import { OrderNeighbours } from '../../state/order-list.selectors';
+import { SamplesGridViewModel } from '../../../grid/samples-grid/samples-grid.model';
 import { PathogenTab } from '../results-grid/pathogen-catalog';
 
 @Component({

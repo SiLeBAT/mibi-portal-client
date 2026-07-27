@@ -9,9 +9,9 @@ import { updateActionBarTitleSOA } from '../../core/state/core.actions';
 import { samplesUpdateSampleDataEntrySOA } from '../state/samples.actions';
 import { samplesEditorModel } from './constants/model.constants';
 import { SamplesEditorCacheBySampleCount } from './cache-by-sample-count.class';
-import { DataGridColId } from '../data-grid/data-grid.model';
+import { DataGridColId } from '../../grid/data-grid/data-grid.model';
 import { SamplesEditorColumnModel, SamplesEditorDataColumnModel } from './samples-editor.model';
-import { SamplesGridDataChangeEvent, SamplesGridViewModel } from '../samples-grid/samples-grid.model';
+import { SamplesGridDataChangeEvent, SamplesGridViewModel } from '../../grid/samples-grid/samples-grid.model';
 
 @Component({
     standalone: false,

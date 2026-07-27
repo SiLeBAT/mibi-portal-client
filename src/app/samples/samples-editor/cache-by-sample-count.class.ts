@@ -3,9 +3,9 @@ import {
     DataGridRowId,
     DataGridMap,
     DataGridRowMap
-} from '../data-grid/data-grid.model';
+} from '../../grid/data-grid/data-grid.model';
 import { Sample } from '../model/sample-management.model';
-import { SamplesGridCellData, SamplesGridCellViewModel, SamplesGridTextCellData, SamplesGridViewModel } from '../samples-grid/samples-grid.model';
+import { SamplesGridCellData, SamplesGridCellViewModel, SamplesGridTextCellData, SamplesGridViewModel } from '../../grid/samples-grid/samples-grid.model';
 import { SamplesEditorModel } from './samples-editor.model';
 
 export class SamplesEditorCacheBySampleCount {

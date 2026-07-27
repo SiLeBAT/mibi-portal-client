@@ -1,6 +1,6 @@
 import { SampleWithResultsDTO } from '../../../core/model/response.model';
-import { DataGridMap, DataGridRowId } from '../../data-grid/data-grid.model';
-import { SamplesGridCellData, SamplesGridCellViewModel, SamplesGridViewModel } from '../../samples-grid/samples-grid.model';
+import { DataGridMap, DataGridRowId } from '../../../grid/data-grid/data-grid.model';
+import { SamplesGridCellData, SamplesGridCellViewModel, SamplesGridViewModel } from '../../../grid/samples-grid/samples-grid.model';
 import { ResultsGridModel } from './results-grid.model';
 
 /**

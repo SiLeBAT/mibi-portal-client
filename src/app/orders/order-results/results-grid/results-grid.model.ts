@@ -1,6 +1,6 @@
 import { SampleWithResultsDTO } from '../../../core/model/response.model';
-import { DataGridColId, DataGridRowId } from '../../data-grid/data-grid.model';
-import { SamplesGridCellData, SamplesGridCellType } from '../../samples-grid/samples-grid.model';
+import { DataGridColId, DataGridRowId } from '../../../grid/data-grid/data-grid.model';
+import { SamplesGridCellData, SamplesGridCellType } from '../../../grid/samples-grid/samples-grid.model';
 
 /**
  * Column definition for the read-only results grid. Analogous to

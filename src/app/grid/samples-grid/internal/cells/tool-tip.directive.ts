@@ -3,7 +3,7 @@ import 'tooltipster';
 import { createToolTip, ToolTipTheme, ToolTipAlignment } from '../../../../shared/model/tooltip.model';
 import { samplesGridToolTipOldValuePreamble, samplesGridToolTipOldValueEmpty } from '../../tool-tip.constants';
 import { SamplesGridDataCellData } from '../../samples-grid.model';
-import { SampleValidationErrorLevel } from '../../../model/sample-management.model';
+import { SampleValidationErrorLevel } from '../../../../samples/model/sample-management.model';
 
 @Directive({
     standalone: false,

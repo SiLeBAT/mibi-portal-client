@@ -11,7 +11,7 @@ import { OrdersMainSlice } from '../../orders.state';
 import { orderListUpdateSequenceSOA } from '../../state/order-list.actions';
 import { selectOrderList } from '../../state/order-list.selectors';
 import { navigateMSA } from '../../../shared/navigate/navigate.actions';
-import { SamplesLinkProviderService } from '../../../samples/link-provider.service';
+import { orderResultsPath } from '../../orders.paths';
 
 @Component({
     standalone: false,
@@ -31,8 +31,7 @@ export class OrderListContainerComponent {
     isLoggedIn$: Observable<boolean>;
 
     constructor(
-        private store$: Store<OrdersMainSlice & UserMainSlice>,
-        private samplesLinks: SamplesLinkProviderService
+        private store$: Store<OrdersMainSlice & UserMainSlice>
     ) {
         this.rows$ = this.store$.pipe(
             select(selectOrderList),
@@ -45,7 +44,7 @@ export class OrderListContainerComponent {
     }
 
     onOpenOrderResults(orderId: string): void {
-        this.store$.dispatch(navigateMSA({ path: this.samplesLinks.resultsForOrder(orderId) }));
+        this.store$.dispatch(navigateMSA({ path: orderResultsPath(orderId) }));
     }
 
     // Keep the store in sync with the sequence the table displays, so the results

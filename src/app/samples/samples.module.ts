@@ -20,29 +20,11 @@ import { samplesReducerMap, samplesEffects } from './samples.store';
 import { SendDialogComponent } from './send-samples/components/send-dialog.component';
 import { SendDialogViewComponent } from './send-samples/components/send-dialog-view.component';
 import { AnalysisStepperComponent } from './send-samples/components/analysis-stepper.component';
-import { DataGridViewComponent } from './data-grid/data-grid-view.component';
-import { SamplesGridDataEditorTemplateComponent } from './samples-grid/internal/editors/data-editor-template.component';
-import { SamplesGridViewComponent } from './samples-grid/samples-grid-view.component';
-import { SamplesGridTextCellTemplateComponent } from './samples-grid/internal/cells/text-cell-template.component';
-import { SamplesGridDataCellTemplateComponent } from './samples-grid/internal/cells/data-cell-template.component';
-import { SamplesGridStackedCellTemplateComponent } from './samples-grid/internal/cells/stacked-cell-template.component';
-import { SamplesGridToggleCellTemplateComponent } from './samples-grid/internal/cells/toggle-cell-template.component';
-import { DataGridCellViewComponent } from './data-grid/internal/components/cell-view.component';
-import { SamplesGridAutoFocusDirective } from './samples-grid/internal/editors/auto-focus.directive';
 import { SamplesEditorComponent } from './samples-editor/samples-editor.component';
-import { DataGridEditorViewComponent } from './data-grid/internal/components/editor-view.component';
-import { DataGridDirtyEmitterDirective } from './data-grid/internal/components/dirty-emitter.directive';
-import { SamplesGridListBoxViewComponent } from './samples-grid/internal/editors/list-box-view.component';
-import { SamplesGridDataEditorViewComponent } from './samples-grid/internal/editors/data-editor-view.component';
-import { SamplesGridToolTipDirective } from './samples-grid/internal/cells/tool-tip.directive';
+import { GridModule } from '../grid/grid.module';
 import { samplesPathsSegments } from './samples.paths';
 import { NoSampleGuard } from './services/no-sample-guard.service';
-import { NoOrderGuard } from './services/no-order-guard.service';
-import { OrderResultsContainerComponent } from './order-results/order-results-view/order-results-container.component';
-import { OrderResultsViewComponent } from './order-results/order-results-view/order-results-view.component';
-import { ToggleBarHeightDirective } from './order-results/order-results-view/toggle-bar-height.directive';
 import { AnimationsRouteData } from '../shared/animations/animations.model';
-import { SoftLineBreaksPipe } from './pipes/soft-line-breaks.pipe';
 import { ExcelVersionDialogComponent } from './import-samples/components/excel-version-dialog.component';
 import { OrdersModule } from '../orders/orders.module';
 
@@ -59,12 +41,6 @@ const routes: Routes = [
                 path: samplesPathsSegments.editor,
                 component: SamplesEditorComponent,
                 canActivate: [NoSampleGuard],
-                data: { ...disabledTransitionAnimationData }
-            },
-            {
-                path: samplesPathsSegments.results + '/:orderId',
-                component: OrderResultsContainerComponent,
-                canActivate: [NoOrderGuard],
                 data: { ...disabledTransitionAnimationData }
             },
             { path: '**', redirectTo: samplesPathsSegments.editor }
@@ -89,6 +65,7 @@ const routes: Routes = [
         EffectsModule.forFeature(samplesEffects),
         SharedModule,
         CoreModule,
+        GridModule,
         OrdersModule
     ],
     declarations: [
@@ -96,25 +73,7 @@ const routes: Routes = [
         SendDialogViewComponent,
         SendDialogComponent,
         AnalysisStepperComponent,
-        DataGridDirtyEmitterDirective,
-        DataGridCellViewComponent,
-        DataGridEditorViewComponent,
-        DataGridViewComponent,
-        SamplesGridAutoFocusDirective,
-        SamplesGridToolTipDirective,
-        SamplesGridTextCellTemplateComponent,
-        SamplesGridDataCellTemplateComponent,
-        SamplesGridStackedCellTemplateComponent,
-        SamplesGridToggleCellTemplateComponent,
-        SamplesGridDataEditorTemplateComponent,
-        SamplesGridListBoxViewComponent,
-        SamplesGridDataEditorViewComponent,
-        SamplesGridViewComponent,
         SamplesEditorComponent,
-        OrderResultsContainerComponent,
-        OrderResultsViewComponent,
-        ToggleBarHeightDirective,
-        SoftLineBreaksPipe,
         ExcelVersionDialogComponent
     ],
     exports: []
