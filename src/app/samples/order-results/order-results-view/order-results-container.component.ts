@@ -2,7 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { BehaviorSubject, Observable, Subject, Subscription, combineLatest } from 'rxjs';
-import { distinctUntilChanged, map, scan, shareReplay, startWith, switchMap } from 'rxjs/operators';
+import { distinctUntilChanged, map, scan, shareReplay, startWith, switchMap, take } from 'rxjs/operators';
 import { OrderEntryDTO } from '../../../core/model/response.model';
 import { OrdersMainSlice } from '../../../orders/orders.state';
 import { orderListLoadSamplesWithResultsSOA } from '../../../orders/state/order-list.actions';
@@ -13,6 +13,7 @@ import {
 } from '../../../orders/state/order-list.selectors';
 import { navigateMSA } from '../../../shared/navigate/navigate.actions';
 import { SamplesLinkProviderService } from '../../link-provider.service';
+import { ResultsDownloadService } from '../download/results-download.service';
 import { SamplesGridViewModel } from '../../samples-grid/samples-grid.model';
 import { buildResultsGridViewModel } from '../results-grid/results-grid.builder';
 import { createFullDataGridModel, createResultsGridModel, gridColumnTemplate } from '../results-grid/results-grid.constants';
@@ -38,6 +39,8 @@ import {
             (selectPathogen)="onSelectPathogen($event)"
             (toggleFullData)="onToggleFullData()"
             (openOrder)="onOpenOrder($event)"
+            (downloadDisplayed)="onDownloadDisplayed()"
+            (downloadAll)="onDownloadAll()"
         ></mibi-order-results-view>
     `
 })
@@ -61,6 +64,7 @@ export class OrderResultsContainerComponent implements OnDestroy {
     constructor(
         private readonly store$: Store<OrdersMainSlice>,
         private readonly samplesLinks: SamplesLinkProviderService,
+        private readonly download: ResultsDownloadService,
         route: ActivatedRoute
     ) {
         // The route is reused when switching to another order, so react to the
@@ -130,5 +134,21 @@ export class OrderResultsContainerComponent implements OnDestroy {
 
     onOpenOrder(orderId: string): void {
         this.store$.dispatch(navigateMSA({ path: this.samplesLinks.resultsForOrder(orderId) }));
+    }
+
+    onDownloadDisplayed(): void {
+        combineLatest([this.order$, this.selectedPathogenId$]).pipe(take(1)).subscribe(([order, pathogenId]) => {
+            if (order && pathogenId) {
+                this.download.downloadDisplayedPathogen(order, pathogenId);
+            }
+        });
+    }
+
+    onDownloadAll(): void {
+        this.order$.pipe(take(1)).subscribe(order => {
+            if (order) {
+                this.download.downloadAllPathogens(order);
+            }
+        });
     }
 }

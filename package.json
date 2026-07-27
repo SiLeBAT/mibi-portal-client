@@ -63,6 +63,7 @@
     "angular-password-strength-meter": "^10.0.0",
     "file-saver": "^2.0.5",
     "jquery": "~3.6.0",
+    "jszip": "^3.10.1",
     "lodash": "~4.18.1",
     "marked": "^18.0.5",
     "moment": "~2.29.4",

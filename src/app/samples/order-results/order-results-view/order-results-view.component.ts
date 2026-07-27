@@ -24,6 +24,8 @@ export class OrderResultsViewComponent {
     @Output() selectPathogen = new EventEmitter<string>();
     @Output() toggleFullData = new EventEmitter<void>();
     @Output() openOrder = new EventEmitter<string>();
+    @Output() downloadDisplayed = new EventEmitter<void>();
+    @Output() downloadAll = new EventEmitter<void>();
 
     get createdAt(): Date | null {
         return parseOrderDate(this.order?.createdAt);
@@ -49,6 +51,14 @@ export class OrderResultsViewComponent {
         if (orderId) {
             this.openOrder.emit(orderId);
         }
+    }
+
+    onDownloadDisplayed(): void {
+        this.downloadDisplayed.emit();
+    }
+
+    onDownloadAll(): void {
+        this.downloadAll.emit();
     }
 
     onSelectPathogen(pathogenId: string): void {

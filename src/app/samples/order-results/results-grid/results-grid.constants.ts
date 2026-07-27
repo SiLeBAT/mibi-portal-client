@@ -48,7 +48,7 @@ function dataColumn(colId: number, selector: SampleProperty, headerText: string)
 
 // A sample can carry more than one result row (e.g. Salmonella). They are shown
 // as aligned stacked lines in each result column, ordered by ResultDTO.position.
-function orderedResults(sample: SampleWithResultsDTO): ResultDTO[] {
+export function orderedResults(sample: SampleWithResultsDTO): ResultDTO[] {
     return [...sample.results].sort((a, b) => a.position - b.position);
 }
 

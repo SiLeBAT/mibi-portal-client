@@ -115,10 +115,12 @@
   &__download {
     display: flex;
     align-items: center;
+    gap: layout.$half-space;
     height: 100%;
     padding: layout.$half-space layout.$single-space;
     font: inherit;
     color: inherit;
+    white-space: nowrap;
     cursor: pointer;
     background: none;
     border: none;
