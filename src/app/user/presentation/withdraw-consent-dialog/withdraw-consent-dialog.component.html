@@ -4,23 +4,79 @@
     <div class="mibi-withdraw-consent-body">
         <p class="mibi-withdraw-consent-text">{{ strings.text }}</p>
 
+        @if (confirming) {
+            <p class="mibi-withdraw-consent-text">{{ strings.deletionWarning }}</p>
+
+            <div class="mibi-withdraw-consent-confirm">
+                <div class="mibi-withdraw-consent-confirm-prompt">
+                    <p class="mibi-withdraw-consent-confirm-title">
+                        {{ strings.confirmPrompt }}
+                    </p>
+                    <p class="mibi-withdraw-consent-confirm-instruction">
+                        {{ strings.confirmInstruction }}
+                    </p>
+                </div>
+
+                <mat-form-field
+                    class="mibi-withdraw-consent-confirm-field"
+                    appearance="outline"
+                >
+                    <input
+                        matInput
+                        type="text"
+                        [formControl]="confirmControl"
+                        [placeholder]="strings.confirmToken"
+                        autocomplete="off"
+                        autocapitalize="off"
+                        spellcheck="false"
+                    />
+                </mat-form-field>
+            </div>
+        }
+
         <div class="mibi-withdraw-consent-actions">
-            <button
-                type="button"
-                mat-flat-button
-                color="primary"
-                (click)="onBack()"
-            >
-                {{ strings.backButtonLabel }}
-            </button>
-            <button
-                type="button"
-                mat-stroked-button
-                color="primary"
-                (click)="onWithdraw()"
-            >
-                {{ strings.withdrawButtonLabel }}
-            </button>
+            <!-- Back is highlighted (primary) except once "delete" is typed. -->
+            @if (!withdrawHighlighted) {
+                <button
+                    type="button"
+                    mat-flat-button
+                    color="primary"
+                    (click)="onBack()"
+                >
+                    {{ strings.backButtonLabel }}
+                </button>
+            } @else {
+                <button
+                    type="button"
+                    mat-stroked-button
+                    color="primary"
+                    (click)="onBack()"
+                >
+                    {{ strings.backButtonLabel }}
+                </button>
+            }
+
+            <!-- Withdraw becomes the highlighted button only after "delete". -->
+            @if (withdrawHighlighted) {
+                <button
+                    type="button"
+                    mat-flat-button
+                    color="primary"
+                    (click)="onWithdraw()"
+                >
+                    {{ strings.withdrawButtonLabel }}
+                </button>
+            } @else {
+                <button
+                    type="button"
+                    mat-stroked-button
+                    color="primary"
+                    [disabled]="withdrawDisabled"
+                    (click)="onWithdraw()"
+                >
+                    {{ strings.withdrawButtonLabel }}
+                </button>
+            }
         </div>
     </div>
 </div>

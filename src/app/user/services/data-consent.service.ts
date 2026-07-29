@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { filter, map, switchMap, take, tap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError, filter, map, switchMap, take, tap } from 'rxjs/operators';
+import { showBannerSOA } from '../../core/state/core.actions';
 import { DataService } from '../../core/services/data.service';
 import { DataConsentDialogComponent } from '../presentation/data-consent-dialog/data-consent-dialog.component';
 import { WithdrawConsentDialogComponent } from '../presentation/withdraw-consent-dialog/withdraw-consent-dialog.component';
@@ -85,10 +86,70 @@ export class DataConsentService {
                 map(result => result === true),
                 tap(confirmed => {
                     if (confirmed) {
-                        this.saveConsent(false);
+                        this.withdrawConsentAndDeleteData();
                     }
                 })
             );
+    }
+
+    /**
+     * Withdrawing consent both revokes the data-save consent and deletes every
+     * order the user has stored (with its samples and results). The consent is
+     * persisted first, so that even if the deletion fails the withdrawal still
+     * stands (the user can retry the deletion) — and the deletion error is
+     * surfaced. The order list is reloaded after the attempt, reflecting the
+     * real server state (empty on success, unchanged if the deletion failed).
+     */
+    private withdrawConsentAndDeleteData(): void {
+        this.store$
+            .pipe(
+                select(selectUserCurrentUser),
+                take(1),
+                filter(
+                    (currentUser): currentUser is TokenizedUser => !!currentUser
+                ),
+                switchMap(currentUser =>
+                    this.dataService.saveDataSaveConsent(false).pipe(
+                        map(dto => ({
+                            ...currentUser,
+                            dataSaveAgreed: dto.dataSaveAgreed,
+                            dataSaveViewed: dto.dataSaveViewed
+                        })),
+                        switchMap(updated =>
+                            this.dataService.deleteAllOrders().pipe(
+                                map(() => ({
+                                    updated: updated,
+                                    deletionFailed: false
+                                })),
+                                catchError(() =>
+                                    of({
+                                        updated: updated,
+                                        deletionFailed: true
+                                    })
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            .subscribe({
+                next: ({ updated, deletionFailed }) => {
+                    this.dataService.setCurrentUser(updated);
+                    this.store$.dispatch(
+                        userUpdateCurrentUserSOA({ user: updated })
+                    );
+                    if (deletionFailed) {
+                        this.store$.dispatch(
+                            showBannerSOA({ predefined: 'defaultError' })
+                        );
+                    }
+                },
+                error: () => {
+                    this.store$.dispatch(
+                        showBannerSOA({ predefined: 'defaultError' })
+                    );
+                }
+            });
     }
 
     private saveConsent(dataSaveAgreed: boolean): void {
