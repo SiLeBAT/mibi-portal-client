@@ -50,6 +50,7 @@ import {
     ZomoPlanFileData,
     OrderEntryDTO,
     OrderCollectionDTO,
+    OrderDeletionResultDTO,
     SamplesWithResultsCollectionDTO
 } from '../model/response.model';
 import {
@@ -298,6 +299,10 @@ export class DataService {
     getOrderList(): Observable<OrderEntryDTO[]> {
         return this.httpClient.get<OrderCollectionDTO>(this.URL.orderList, this.PARSE_OPTIONS).pipe(
             map((dto: OrderCollectionDTO) => dto.orders));
+    }
+
+    deleteAllOrders(): Observable<OrderDeletionResultDTO> {
+        return this.httpClient.delete<OrderDeletionResultDTO>(this.URL.orderList, this.PARSE_OPTIONS);
     }
 
     getSamplesWithResults(orderId: string): Observable<SamplesWithResultsCollectionDTO> {

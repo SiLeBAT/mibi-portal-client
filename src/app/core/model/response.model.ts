@@ -40,6 +40,10 @@ export interface UserConsentResponseDTO {
     readonly dataSaveViewed: boolean;
 }
 
+export interface OrderDeletionResultDTO {
+    readonly deletedOrderCount: number;
+}
+
 export type UserEmailNotificationResponseDTO = EmailNotificationSettings;
 
 export interface SystemInformationResponseDTO {

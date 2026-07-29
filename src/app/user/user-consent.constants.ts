@@ -26,10 +26,16 @@ export const userConsentProfileStrings = {
 export const userConsentWithdrawStrings = {
     title: 'Einwilligung zur Speicherung der Daten zurückziehen',
     text:
-        'Es werden keine neuen Daten mehr im MiBi-Portal gespeichert. Bereits ' +
-        'gespeicherte Daten werden gelöscht. Es werden keine ' +
-        'E-Mail-Benachrichtigungen über vorhandene BfR-Analyseergebnisse mehr ' +
-        'versendet.',
+        'Es werden keine neuen Daten mehr im MiBi-Portal gespeichert. Es werden ' +
+        'keine E-Mail-Benachrichtigungen über vorhandene BfR-Analyseergebnisse ' +
+        'mehr versendet.',
+    deletionWarning:
+        'Alle hochgeladenen Daten, die in der Tabelle "Ihre bisherigen Aufträge ' +
+        'ans BfR" aufgelistet sind, werden nun gelöscht.',
+    confirmPrompt: 'Bitte bestätigen Sie:',
+    confirmInstruction: 'Schreiben Sie "delete", um alle Aufträge zu löschen.',
+    // The word the user must type to arm the withdraw button (case-sensitive).
+    confirmToken: 'delete',
     backButtonLabel: 'Zurück',
     withdrawButtonLabel: 'Einwilligung zurückziehen'
 };
