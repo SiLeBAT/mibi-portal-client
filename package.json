@@ -24,6 +24,8 @@
     "lint:code": "ng lint",
     "lint:styles": "stylelint \"src/**/*.scss\"",
     "cypress:open": "cypress open",
+    "gen:parsed-sheet:build": "tsc -p scripts/tsconfig.json",
+    "gen:parsed-sheet": "npm run gen:parsed-sheet:build && node .scripts-build/scripts/xlsx-to-parsed-sheet.js",
     "prepare": "(husky -v && husky ) || echo husky not installed",
     "lint:fix": "npm run lint:code -- --fix && npm run lint:styles -- --fix"
   },

@@ -1,0 +1,20 @@
+# Overlay for running mibi-portal-server's integration test suite (jest) against the
+# e2e stack. Use together with the base file:
+#
+#   docker compose -f e2e/docker-compose.yml -f e2e/docker-compose.integration.yml up -d --build --wait
+#
+# The base stack deliberately publishes no host port for the server — Cypress reaches
+# it through the client container over the Docker network, and not publishing avoids
+# clashing with a local dev server on :3000. The integration suite, however, runs as a
+# plain node process on the host, so it needs both ports reachable:
+#
+#   3000  the API the tests call (matches `apiUrl` in config/local-test.json)
+#   1337  Parse, mounted at /admin/parse — used by e2e/seed/seed-states.js
+#
+# Keep this out of the base file so a plain Cypress run stays port-conflict free.
+
+services:
+  server:
+    ports:
+      - "3000:3000"
+      - "1337:1337"
