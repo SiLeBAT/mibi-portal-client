@@ -28,11 +28,24 @@ on:
         description: "Cypress spec glob (blank = full suite)"
         default: "cypress/integration/ui/welcome.smoke.spec.ts"
         required: false
+      run_integration_tests:
+        description: "Also run mibi-portal-server's API integration suite (jest)"
+        type: boolean
+        default: true
+      run_cypress:
+        description: "Run the Cypress UI suite"
+        type: boolean
+        default: true
 
 jobs:
   e2e:
     runs-on: ubuntu-latest
     timeout-minutes: 45
+
+    env:
+      # Every `docker compose` call in this job uses the same file set, so teardown and
+      # log collection stay correct no matter which step failed.
+      COMPOSE_FILES: ${{ inputs.run_integration_tests && '-f e2e/docker-compose.yml -f e2e/docker-compose.integration.yml' || '-f e2e/docker-compose.yml' }}
 
     steps:
       # --- 1. Get all three services' source (client repo is the one running this workflow) ---
@@ -71,17 +84,56 @@ jobs:
           fi
 
       # --- 3. Build + start the whole stack (mongo seeded from the dump) ---
+      #     The integration overlay publishes the server's 3000/1337 on the host so the
+      #     jest suite and the states seeder — both plain node processes on the runner —
+      #     can reach the API and Parse. Cypress does not need it.
       - name: Bring up the stack
         working-directory: mibi-portal-client
         env:
           PARSE_APP_ID: ${{ secrets.PARSE_APP_ID || 'appId' }}
           PARSE_MASTER_KEY: ${{ secrets.PARSE_MASTER_KEY || 'masterKey' }}
         run: |
-          docker compose -f e2e/docker-compose.yml up -d --build --wait
-          docker compose -f e2e/docker-compose.yml ps
+          docker compose $COMPOSE_FILES up -d --build --wait
+          docker compose $COMPOSE_FILES ps
 
-      # --- 4. Run the Cypress E2E suite against the running stack ---
+      # --- 4. Seed the reference data the validation rules read at runtime ---
+      #     Without the `states` class the AVV id format rule (error 72) has an empty
+      #     regex list and silently checks nothing — see e2e/seed/seed-states.js.
+      - name: Seed states
+        if: ${{ inputs.run_integration_tests }}
+        working-directory: mibi-portal-client
+        env:
+          PARSE_URL: http://localhost:1337/admin/parse
+          PARSE_APP_ID: ${{ secrets.PARSE_APP_ID || 'appId' }}
+          PARSE_MASTER_KEY: ${{ secrets.PARSE_MASTER_KEY || 'masterKey' }}
+        run: node e2e/seed/seed-states.js
+
+      # --- 5. Run mibi-portal-server's API integration suite against the stack ---
+      - name: Set up Node for the integration suite
+        if: ${{ inputs.run_integration_tests }}
+        uses: actions/setup-node@v5
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: mibi-portal-server/package-lock.json
+
+      - name: Install server dependencies
+        if: ${{ inputs.run_integration_tests }}
+        working-directory: mibi-portal-server
+        run: npm ci
+
+      - name: Integration tests
+        if: ${{ inputs.run_integration_tests }}
+        working-directory: mibi-portal-server
+        env:
+          # jest sets NODE_ENV=test, so node-config picks up config/local-test.json,
+          # whose apiUrl is http://localhost:3000 — the port the overlay publishes.
+          NODE_ENV: test
+        run: npm run test:integration
+
+      # --- 6. Run the Cypress E2E suite against the running stack ---
       - name: Cypress run
+        if: ${{ inputs.run_cypress }}
         uses: cypress-io/github-action@v6
         with:
           working-directory: mibi-portal-client
@@ -93,7 +145,7 @@ jobs:
         env:
           CYPRESS_BASE_URL: http://localhost:4200
 
-      # --- 5. Always collect artifacts + logs, then tear the stack down ---
+      # --- 7. Always collect artifacts + logs, then tear the stack down ---
       - name: Upload Cypress report & screenshots
         if: always()
         uses: actions/upload-artifact@v4
@@ -107,9 +159,9 @@ jobs:
       - name: Stack logs (on failure)
         if: failure()
         working-directory: mibi-portal-client
-        run: docker compose -f e2e/docker-compose.yml logs --no-color
+        run: docker compose ${{ env.COMPOSE_FILES }} logs --no-color
 
       - name: Tear down
         if: always()
         working-directory: mibi-portal-client
-        run: docker compose -f e2e/docker-compose.yml down -v
+        run: docker compose ${{ env.COMPOSE_FILES }} down -v

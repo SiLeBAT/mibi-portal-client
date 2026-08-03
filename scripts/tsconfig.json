@@ -1,0 +1,24 @@
+{
+    // Standalone build for the node-side helper scripts. The app tsconfig targets a
+    // bundler + ES modules; these scripts run straight on node, so they need
+    // CommonJS + node resolution and must not inherit `types: ["jest"]`.
+    "compilerOptions": {
+        "module": "CommonJS",
+        "moduleResolution": "node",
+        "target": "ES2022",
+        "lib": ["es2022", "dom"],
+        "types": ["node"],
+        "outDir": "../.scripts-build",
+        "rootDir": "..",
+        "esModuleInterop": true,
+        "experimentalDecorators": true,
+        "useDefineForClassFields": false,
+        "resolveJsonModule": true,
+        "skipLibCheck": true,
+        "downlevelIteration": true,
+        "strictNullChecks": true,
+        "noImplicitAny": true,
+        "sourceMap": false
+    },
+    "include": ["./**/*.ts"]
+}

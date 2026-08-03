@@ -2,3 +2,8 @@
 # Keep this folder in git, ignore its contents.
 *
 !.gitignore
+# Exceptions: the states seed is public reference data (federal state names and AVV
+# id formats), not a dump, and the stack needs it — without it the AVV id format rule
+# has an empty regex list and validates nothing. See seed-states.js.
+!seed-states.js
+!states.json
