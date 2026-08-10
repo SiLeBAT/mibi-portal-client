@@ -1,0 +1,33 @@
+@use "@angular/material" as mat;
+@use "colors";
+
+.mibi-new-client-version-dialog {
+  display: flex;
+  flex-direction: column;
+  max-height: 85vh;
+
+  .mibi-new-client-version-header {
+    padding: 1rem 1.5rem;
+    background-color: mat.m2-get-color-from-palette(colors.$primary-palette, 600);
+    color: mat.m2-get-color-from-palette(colors.$primary-palette, "600-contrast");
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .mibi-new-client-version-body {
+    padding: 1.5rem;
+    overflow-y: auto;
+  }
+
+  .mibi-new-client-version-text {
+    margin: 0 0 1.5rem;
+    line-height: 1.4;
+    text-align: justify;
+  }
+
+  .mibi-new-client-version-actions {
+    display: flex;
+    justify-content: flex-end;
+  }
+}

@@ -1,0 +1,19 @@
+<div class="mibi-new-client-version-dialog">
+    <div class="mibi-new-client-version-header">{{ strings.title }}</div>
+
+    <div class="mibi-new-client-version-body">
+        <p class="mibi-new-client-version-text">{{ strings.text }}</p>
+        <p class="mibi-new-client-version-text">{{ strings.dataLossWarning }}</p>
+
+        <div class="mibi-new-client-version-actions">
+            <button
+                type="button"
+                mat-flat-button
+                color="primary"
+                (click)="onReload()"
+            >
+                {{ strings.reloadButtonLabel }}
+            </button>
+        </div>
+    </div>
+</div>
