@@ -30,6 +30,9 @@ import { FooterNavContainerComponent } from './container/footer-nav-container/fo
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { FooterNavComponent } from './presentation/footer-nav/footer-nav.component';
+import {
+    NewClientVersionDialogComponent
+} from './presentation/new-client-version-dialog/new-client-version-dialog.component';
 import { coreReducerMap, coreEffects } from './core.store';
 import { CORE_SLICE_NAME } from './core.state';
 import { MainModule } from '../main/main.module';
@@ -72,7 +75,8 @@ import { MarkdownModule } from 'ngx-markdown';
         PageFooterComponent,
         BannerComponent,
         BannerContainerComponent,
-        FooterNavComponent
+        FooterNavComponent,
+        NewClientVersionDialogComponent
     ],
     exports: [
         HomeComponent,

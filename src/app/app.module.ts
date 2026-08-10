@@ -13,6 +13,7 @@ import { ContentModule } from './content/content.module';
 import { CoreModule } from './core/core.module';
 import { HttpErrorMapperService } from './core/services/http-error-mapper.service';
 import { TokenInterceptor } from './core/services/token-interceptor.service';
+import { VersionCheckInterceptor } from './core/services/version-check-interceptor.service';
 import { MainModule } from './main/main.module';
 import { OrdersModule } from './orders/orders.module';
 import { SamplesModule } from './samples/samples.module';
@@ -83,6 +84,13 @@ function markedOptionsFactory(): object {
         AppRoutingModule
     ],
     providers: [
+        // Registered first so it wraps the rest of the chain: a client that the
+        // server has already replaced must not reach the API at all.
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: VersionCheckInterceptor,
+            multi: true
+        },
         // TokenInterceptor only attaches a Bearer header when a legacy token is
         // present in storage, so it is a no-op in Keycloak (cookie-session) mode
         // and can be registered unconditionally.
