@@ -73,7 +73,7 @@ export class BannerContainerComponent {
 
         },
         sendFailure: {
-            message: 'Es gab einen Fehler beim Versenden der Datei an das MiBi-Portal.',
+            message: 'Es wurde keine E-Mail ans BfR gesendet. Bitte versuchen Sie es später noch einmal.',
             type: AlertType.ERROR,
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
 
