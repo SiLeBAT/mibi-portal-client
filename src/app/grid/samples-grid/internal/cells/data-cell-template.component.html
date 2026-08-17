@@ -13,6 +13,5 @@
             'mibi-data-cell--correction-offer': hasCorrectionOffers(data),
             'mibi-data-cell--edited': isEdited(data)
         }"
-        [innerHTML]="data.value | softLineBreaks: ',\:;|-'">
-    </div>
+    ><span class="mibi-data-cell__value" [innerHTML]="data.value | softLineBreaks: ',\:;|-'"></span></div>
 </ng-template>

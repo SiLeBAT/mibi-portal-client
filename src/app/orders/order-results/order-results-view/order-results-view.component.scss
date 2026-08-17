@@ -152,6 +152,18 @@
     justify-content: center;
   }
 
+  // The cell value is wrapped in its own element so it can be a real flex item.
+  // Bare text inside a flex container becomes an *anonymous* flex item, which
+  // Firefox sizes to min-content instead of stretching it: the AVV codes in
+  // "Tiere"/"Matrix" then broke at every soft break opportunity (the commas and
+  // hyphens inserted by the softLineBreaks pipe) and left the rest of the column
+  // empty, while Chrome stretched it. An explicit `width: 100%` makes the value
+  // fill the column in both browsers, like the uploaded "Probendaten" table.
+  .mibi-data-cell__value,
+  .mibi-text-cell__value {
+    width: 100%;
+  }
+
   // Stretch the grid to the page width and let the BfR result columns (1fr)
   // share the remaining width equally. The data-grid sets grid-template-columns
   // inline (repeat auto), so it must be overridden here.
