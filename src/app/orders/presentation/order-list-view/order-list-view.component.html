@@ -73,7 +73,7 @@
             <ng-container matColumnDef="filter-createdAt">
                 <th mat-header-cell *matHeaderCellDef class="mibi-order-list__filter-cell">
                     <mibi-order-list-filter-input
-                        [value]="columnFilters.createdAt"
+                        [value]="activeFilter.columns.createdAt"
                         ariaLabel="Datum / Zeit filtern"
                         (valueChange)="onFilterChange('createdAt', $event)"
                     ></mibi-order-list-filter-input>
@@ -83,7 +83,7 @@
             <ng-container matColumnDef="filter-fileName">
                 <th mat-header-cell *matHeaderCellDef class="mibi-order-list__filter-cell">
                     <mibi-order-list-filter-input
-                        [value]="columnFilters.fileName"
+                        [value]="activeFilter.columns.fileName"
                         ariaLabel="Dateiname filtern"
                         (valueChange)="onFilterChange('fileName', $event)"
                     ></mibi-order-list-filter-input>
@@ -93,7 +93,7 @@
             <ng-container matColumnDef="filter-sampleIds">
                 <th mat-header-cell *matHeaderCellDef class="mibi-order-list__filter-cell">
                     <mibi-order-list-filter-input
-                        [value]="columnFilters.sampleIds"
+                        [value]="activeFilter.columns.sampleIds"
                         ariaLabel="Probenummer filtern"
                         (valueChange)="onFilterChange('sampleIds', $event)"
                     ></mibi-order-list-filter-input>
@@ -103,7 +103,7 @@
             <ng-container matColumnDef="filter-sampleIdsAVV">
                 <th mat-header-cell *matHeaderCellDef class="mibi-order-list__filter-cell">
                     <mibi-order-list-filter-input
-                        [value]="columnFilters.sampleIdsAVV"
+                        [value]="activeFilter.columns.sampleIdsAVV"
                         ariaLabel="Probenummer nach AVV DatA filtern"
                         (valueChange)="onFilterChange('sampleIdsAVV', $event)"
                     ></mibi-order-list-filter-input>
@@ -113,7 +113,7 @@
             <ng-container matColumnDef="filter-pathogens">
                 <th mat-header-cell *matHeaderCellDef class="mibi-order-list__filter-cell">
                     <mibi-order-list-filter-input
-                        [value]="columnFilters.pathogens"
+                        [value]="activeFilter.columns.pathogens"
                         ariaLabel="Enthaltene Erreger filtern"
                         (valueChange)="onFilterChange('pathogens', $event)"
                     ></mibi-order-list-filter-input>
@@ -123,7 +123,7 @@
             <ng-container matColumnDef="filter-nrls">
                 <th mat-header-cell *matHeaderCellDef class="mibi-order-list__filter-cell">
                     <mibi-order-list-filter-input
-                        [value]="columnFilters.nrls"
+                        [value]="activeFilter.columns.nrls"
                         ariaLabel="Auftrag an filtern"
                         (valueChange)="onFilterChange('nrls', $event)"
                     ></mibi-order-list-filter-input>
@@ -134,7 +134,7 @@
             <ng-container matColumnDef="filter-results">
                 <th mat-header-cell *matHeaderCellDef class="mibi-order-list__filter-cell">
                     <mibi-order-list-filter-select
-                        [value]="resultsFilter"
+                        [value]="activeFilter.results"
                         ariaLabel="BfR-Ergebnisse filtern"
                         (valueChange)="onResultsFilterChange($event)"
                     ></mibi-order-list-filter-select>

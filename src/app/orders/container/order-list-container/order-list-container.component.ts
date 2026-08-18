@@ -6,7 +6,9 @@ import { OrderEntryDTO } from '../../../core/model/response.model';
 import { UserMainSlice } from '../../../user/user.state';
 import { selectUserCurrentUser } from '../../../user/state/user.selectors';
 import { OrderRow } from '../../model/order-row.model';
+import { OrderListFilter } from '../../model/order-list-filter.model';
 import { parseOrderDate } from '../../model/order-date';
+import { OrderListFilterStorageService } from '../../services/order-list-filter-storage.service';
 import { OrdersMainSlice } from '../../orders.state';
 import { orderListUpdateSequenceSOA } from '../../state/order-list.actions';
 import { selectOrderList } from '../../state/order-list.selectors';
@@ -20,6 +22,8 @@ import { orderResultsPath } from '../../orders.paths';
         @if (isLoggedIn$ | async) {
             <mibi-order-list-view
                 [rows]="rows$ | async"
+                [filter]="filter"
+                (filterChange)="onFilterChange($event)"
                 (openOrderResults)="onOpenOrderResults($event)"
                 (sequenceChange)="onSequenceChange($event)"
             ></mibi-order-list-view>
@@ -29,10 +33,16 @@ import { orderResultsPath } from '../../orders.paths';
 export class OrderListContainerComponent {
     rows$: Observable<OrderRow[]>;
     isLoggedIn$: Observable<boolean>;
+    // Restored from the current browser session, so that a filter set before
+    // leaving the list (e.g. to view an order's results) is still active when
+    // the user returns.
+    filter: OrderListFilter;
 
     constructor(
-        private store$: Store<OrdersMainSlice & UserMainSlice>
+        private store$: Store<OrdersMainSlice & UserMainSlice>,
+        private filterStorage: OrderListFilterStorageService
     ) {
+        this.filter = this.filterStorage.load();
         this.rows$ = this.store$.pipe(
             select(selectOrderList),
             map(orders => orders.map(order => this.orderToRow(order)))
@@ -41,6 +51,11 @@ export class OrderListContainerComponent {
             select(selectUserCurrentUser),
             map(currentUser => !!currentUser)
         );
+    }
+
+    onFilterChange(filter: OrderListFilter): void {
+        this.filter = filter;
+        this.filterStorage.save(filter);
     }
 
     onOpenOrderResults(orderId: string): void {

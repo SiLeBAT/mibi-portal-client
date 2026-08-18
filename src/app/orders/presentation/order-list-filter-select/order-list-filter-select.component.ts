@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-
-export type ResultsFilterValue = '' | 'partial' | 'complete';
+import { ResultsFilterValue } from '../../model/order-list-filter.model';
 
 @Component({
     standalone: false,

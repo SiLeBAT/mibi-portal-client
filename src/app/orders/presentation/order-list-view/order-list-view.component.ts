@@ -5,9 +5,13 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { OrderRow } from '../../model/order-row.model';
-import { ResultsFilterValue } from '../order-list-filter-select/order-list-filter-select.component';
-
-type FilterableColumn = 'createdAt' | 'fileName' | 'sampleIds' | 'sampleIdsAVV' | 'pathogens' | 'nrls';
+import {
+    FilterableColumn,
+    OrderListFilter,
+    ResultsFilterValue,
+    emptyOrderListFilter,
+    filterableColumns
+} from '../../model/order-list-filter.model';
 
 type ResultsCategory = 'partial' | 'complete' | 'none';
 
@@ -32,6 +36,19 @@ export class OrderListViewComponent implements AfterViewInit, OnDestroy {
         }
         this.emitSequence();
     }
+    // The filter the table applies. It is owned by the container so that it
+    // outlives this component, which is destroyed whenever the user leaves the
+    // list. Treated as immutable here: a change always replaces the whole object.
+    @Input() set filter(value: OrderListFilter | null) {
+        const next = value ?? emptyOrderListFilter();
+        if (next === this.activeFilter) {
+            // The container merely echoes back what filterChange emitted.
+            return;
+        }
+        this.activeFilter = next;
+        this.applyFilter();
+    }
+    @Output() filterChange = new EventEmitter<OrderListFilter>();
     @Output() openOrderResults = new EventEmitter<string>();
     /** The order ids in the sequence the table currently displays. */
     @Output() sequenceChange = new EventEmitter<string[]>();
@@ -53,25 +70,7 @@ export class OrderListViewComponent implements AfterViewInit, OnDestroy {
         'actions'
     ];
 
-    readonly filterColumns: ReadonlyArray<FilterableColumn> = [
-        'createdAt',
-        'fileName',
-        'sampleIds',
-        'sampleIdsAVV',
-        'pathogens',
-        'nrls'
-    ];
-
-    columnFilters: Record<FilterableColumn, string> = {
-        createdAt: '',
-        fileName: '',
-        sampleIds: '',
-        sampleIdsAVV: '',
-        pathogens: '',
-        nrls: ''
-    };
-
-    resultsFilter: ResultsFilterValue = '';
+    activeFilter: OrderListFilter = emptyOrderListFilter();
 
     // Orders whose results the user has already opened (clicked the arrow in
     // "Auftrag ansehen"). Their results number is shown in normal weight; orders
@@ -86,13 +85,10 @@ export class OrderListViewComponent implements AfterViewInit, OnDestroy {
 
     constructor() {
         this.dataSource.filterPredicate = (row, filter) => {
-            const parsed = JSON.parse(filter) as {
-                columns: Record<FilterableColumn, string>;
-                results: ResultsFilterValue;
-            };
+            const parsed = JSON.parse(filter) as OrderListFilter;
 
-            const columnsMatch = (Object.keys(parsed.columns) as FilterableColumn[]).every(key => {
-                const searchTerm = parsed.columns[key].trim().toLowerCase();
+            const columnsMatch = filterableColumns.every(key => {
+                const searchTerm = (parsed.columns[key] ?? '').trim().toLowerCase();
                 if (!searchTerm) {
                     return true;
                 }
@@ -131,19 +127,24 @@ export class OrderListViewComponent implements AfterViewInit, OnDestroy {
         this.sortSubscription?.unsubscribe();
         this.openOrderResults.complete();
         this.sequenceChange.complete();
+        this.filterChange.complete();
     }
 
     onFilterChange(column: FilterableColumn, value: string): void {
-        this.columnFilters = {
-            ...this.columnFilters,
-            [column]: value
-        };
-        this.applyFilter();
+        this.updateFilter({
+            ...this.activeFilter,
+            columns: {
+                ...this.activeFilter.columns,
+                [column]: value
+            }
+        });
     }
 
     onResultsFilterChange(value: ResultsFilterValue): void {
-        this.resultsFilter = value;
-        this.applyFilter();
+        this.updateFilter({
+            ...this.activeFilter,
+            results: value
+        });
     }
 
     onOpenResults(row: OrderRow): void {
@@ -186,11 +187,14 @@ export class OrderListViewComponent implements AfterViewInit, OnDestroy {
         this.sequenceChange.emit(displayed.map(row => row.id));
     }
 
+    private updateFilter(next: OrderListFilter): void {
+        this.activeFilter = next;
+        this.applyFilter();
+        this.filterChange.emit(next);
+    }
+
     private applyFilter(): void {
-        this.dataSource.filter = JSON.stringify({
-            columns: this.columnFilters,
-            results: this.resultsFilter
-        });
+        this.dataSource.filter = JSON.stringify(this.activeFilter);
         if (this.dataSource.paginator) {
             this.dataSource.paginator.firstPage();
         }

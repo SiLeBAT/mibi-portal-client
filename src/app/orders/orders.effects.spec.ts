@@ -4,6 +4,7 @@ import { showBannerSOA } from '../core/state/core.actions';
 import { OrderListEffects } from './orders.effects';
 import {
     orderListAddSamplesWithResultsSOA,
+    orderListDestroySOA,
     orderListLoadSamplesWithResultsSOA
 } from './state/order-list.actions';
 
@@ -17,14 +18,21 @@ const buildEffects = (ordersInStore: Orders, dataService: unknown) => {
     (store$ as unknown as { select: () => unknown }).select = () =>
         of(ordersInStore);
     const logger = { error: jest.fn() };
+    const filterStorage = { clear: jest.fn() };
 
     const effects = new OrderListEffects(
         actions$ as never,
         store$ as never,
         dataService as never,
-        logger as never
+        logger as never,
+        filterStorage as never
     );
-    return { effects: effects, actions$: actions$, logger: logger };
+    return {
+        effects: effects,
+        actions$: actions$,
+        logger: logger,
+        filterStorage: filterStorage
+    };
 };
 
 describe('OrderListEffects.loadSamplesWithResults$', () => {
@@ -99,5 +107,20 @@ describe('OrderListEffects.loadSamplesWithResults$', () => {
         });
 
         actions$.next(orderListLoadSamplesWithResultsSOA({ orderId: 'o1' }));
+    });
+});
+
+describe('OrderListEffects.clearOrderListFilter$', () => {
+    it('discards the stored filter when the order list is destroyed', done => {
+        const { effects, actions$, filterStorage } = buildEffects([], {});
+
+        effects.clearOrderListFilter$.subscribe({
+            next: () => {
+                expect(filterStorage.clear).toHaveBeenCalled();
+                done();
+            }
+        });
+
+        actions$.next(orderListDestroySOA());
     });
 });

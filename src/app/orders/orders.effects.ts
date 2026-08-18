@@ -2,15 +2,17 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
-import { catchError, concatMap, filter, map, withLatestFrom } from 'rxjs/operators';
+import { catchError, concatMap, filter, map, tap, withLatestFrom } from 'rxjs/operators';
 import { showBannerSOA } from '../core/state/core.actions';
 import { DataService } from '../core/services/data.service';
 import { LogService } from '../core/services/log.service';
+import { OrderListFilterStorageService } from './services/order-list-filter-storage.service';
 import { sendSamplesAddSentFileSOA } from '../samples/send-samples/state/send-samples.actions';
 import { userUpdateCurrentUserSOA } from '../user/state/user.actions';
 import { OrdersMainSlice } from './orders.state';
 import {
     orderListAddSamplesWithResultsSOA,
+    orderListDestroySOA,
     orderListLoadSamplesWithResultsSOA,
     orderListUpdateSOA
 } from './state/order-list.actions';
@@ -23,7 +25,8 @@ export class OrderListEffects {
         private actions$: Actions,
         private store$: Store<OrdersMainSlice>,
         private dataService: DataService,
-        private logger: LogService
+        private logger: LogService,
+        private filterStorage: OrderListFilterStorageService
     ) { }
 
     loadOrderList$ = createEffect(() => this.actions$.pipe(
@@ -39,6 +42,13 @@ export class OrderListEffects {
         ),
         concatMap(([action]) => this.loadSamplesWithResults(action.orderId))
     ));
+
+    // Dropping the order list (on logout) must not leave a filter behind for
+    // whoever logs in next during the same browser session.
+    clearOrderListFilter$ = createEffect(() => this.actions$.pipe(
+        ofType(orderListDestroySOA),
+        tap(() => this.filterStorage.clear())
+    ), { dispatch: false });
 
     private loadOrderList(): Observable<Action> {
         return this.dataService.getOrderList().pipe(
