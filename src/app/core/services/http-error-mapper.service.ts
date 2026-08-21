@@ -49,6 +49,13 @@ export class HttpErrorMapperService implements HttpInterceptor {
                 throw new EndpointError(errorResponse.error, 'Invalid excel version error.');
             case 8:
                 throw new EndpointError(errorResponse.error, 'Invalid email address');
+            case 9:
+            case 10:
+                // Saving and submission failures carry the support phone number
+                // to show the sender. Falling through to ClientError below would
+                // drop the response body, and with it the only copy of that
+                // number the client ever sees.
+                throw new EndpointError(errorResponse.error, 'Order could not be submitted.');
             default:
                 throw new ClientError('Invalid Input error.');
         }

@@ -4,11 +4,15 @@ import { Action, Store } from '@ngrx/store';
 import _ from 'lodash';
 import { EMPTY, Observable, concat, of } from 'rxjs';
 import { catchError, concatMap, endWith, finalize, first, map, startWith, withLatestFrom } from 'rxjs/operators';
-import { AuthorizationError } from '../../core/model/client-error';
+import { AuthorizationError, EndpointError } from '../../core/model/client-error';
 import { InputChangedError, InvalidInputError } from '../../core/model/data-service-error';
+import { AlertType } from '../../core/model/alert.model';
+import { MAIL_DELIVERY_FAILED_CODE, sendOutcomeStrings } from '../../core/constants/send-outcome.constants';
 import { DataService } from '../../core/services/data.service';
 import { LogService } from '../../core/services/log.service';
-import { hideBannerSOA, showBannerSOA, updateIsBusySOA } from '../../core/state/core.actions';
+import { UserActionService } from '../../core/services/user-action.service';
+import { UserActionType } from '../../shared/model/user-action.model';
+import { hideBannerSOA, showBannerSOA, showCustomBannerSOA, updateIsBusySOA } from '../../core/state/core.actions';
 import { DialogWarning } from '../../shared/dialog/dialog.model';
 import { DialogService } from '../../shared/dialog/dialog.service';
 import { navigateMSA } from '../../shared/navigate/navigate.actions';
@@ -55,6 +59,7 @@ export class SendSamplesEffects {
         private dialogService: DialogService,
         private samplesLinks: SamplesLinkProviderService,
         private authService: KeycloakAuthService,
+        private userActionService: UserActionService,
         @Inject(KEYCLOAK_ENABLED) private keycloakEnabled: boolean
     ) { }
 
@@ -162,14 +167,20 @@ export class SendSamplesEffects {
 
     private sendSamplesSend(fileName: string, submission: SampleSubmission): Observable<Action> {
         return this.dataService.sendSampleSheet(submission).pipe(
-            concatMap(() => of(
+            concatMap(result => of(
                 sendSamplesAddSentFileSOA({ sentFile: fileName }),
                 navigateMSA({ path: this.samplesLinks.upload }),
                 // Clear the sent samples from memory (as if "Schließen" had been clicked),
                 // so the "Probendaten" tab points back to upload and clicking it does nothing.
                 // Sent samples are viewed via the order list, not by leaving them in the editor.
                 samplesDestroyMainDataSOA(),
-                showBannerSOA({ predefined: 'sendSuccess' })
+                // The order reached the BfR either way. When the sender's own
+                // copy was lost they still need a Probenbegleitschein, so they
+                // are told to print the file they uploaded instead of being
+                // pointed at a mail attachment that never arrived.
+                result.customerCopySent
+                    ? showBannerSOA({ predefined: 'sendSuccess' })
+                    : showBannerSOA({ predefined: 'sendSuccessNoCustomerCopy' })
             )),
             catchError((error) => {
                 this.logger.error('Failed to send samples from store', error.stack);
@@ -196,9 +207,40 @@ export class SendSamplesEffects {
                         showBannerSOA({ predefined: 'noAuthorizationOrActivation' })
                     );
                 }
-                return of(showBannerSOA({ predefined: 'sendFailure' }));
+                return of(this.createSendFailureBanner(error));
             })
         );
+    }
+
+    // Nothing reached the BfR. When the mail system is what failed and a phone
+    // number is configured, the sender is told to ring the responsible person -
+    // writing to us is pointless while mail is down. Any other failure, or a
+    // missing number, falls back to the plain "please try again later" banner
+    // rather than blaming mail for a problem that was not mail's.
+    //
+    // The number arrives on the error DTO rather than from the system-info
+    // endpoint: that endpoint is answered by the legacy server from its own
+    // configuration and knows nothing about this value.
+    private createSendFailureBanner(error: unknown): Action {
+        const errorDTO: { code?: unknown; supportPhone?: unknown } | undefined =
+            error instanceof EndpointError ? error.errorDTO : undefined;
+        const supportPhone = typeof errorDTO?.supportPhone === 'string'
+            ? errorDTO.supportPhone
+            : '';
+        const mailDeliveryFailed = errorDTO?.code === MAIL_DELIVERY_FAILED_CODE;
+
+        if (!mailDeliveryFailed || !supportPhone) {
+            return showBannerSOA({ predefined: 'sendFailure' });
+        }
+
+        return showCustomBannerSOA({
+            banner: {
+                message: sendOutcomeStrings.mailSystemDown(supportPhone),
+                type: AlertType.ERROR,
+                icon: 'error',
+                mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
+            }
+        });
     }
 
     // Utility

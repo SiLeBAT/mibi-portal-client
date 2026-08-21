@@ -27,6 +27,7 @@ export type BannerType =
     | 'invalidEmailFailure'
     | 'sendFailure'
     | 'sendSuccess'
+    | 'sendSuccessNoCustomerCopy'
     | 'validationErrors'
     | 'autocorrections'
     | 'wrongUploadDatatype'

@@ -131,3 +131,11 @@ export interface SampleSubmission {
     comment: string;
     receiveAs: ReceiveAs;
 }
+
+export interface SampleSubmissionResult {
+    samples: Sample[];
+    // False when the BfR received the order but the confirmation copy could not
+    // be mailed back to the sender. The submission counts as successful either
+    // way, so this only decides which message the sender is shown.
+    customerCopySent: boolean;
+}
