@@ -9,7 +9,8 @@ import {
     MarshalledData,
     Sample,
     SampleSet,
-    SampleSubmission
+    SampleSubmission,
+    SampleSubmissionResult
 } from '../../samples/model/sample-management.model';
 import { SamplesMainData } from '../../samples/state/samples.reducer';
 import { InstitutionDTO } from '../../user/model/institution.model';
@@ -159,15 +160,19 @@ export class DataService {
         );
     }
 
-    sendSampleSheet(sendableFormData: SampleSubmission) {
+    sendSampleSheet(sendableFormData: SampleSubmission): Observable<SampleSubmissionResult> {
         const requestDTO: PostSubmittedRequestDTO = {
             order: { sampleSet: this.dtoService.fromSampleSet(sendableFormData.order) },
             comment: sendableFormData.comment,
             receiveAs: sendableFormData.receiveAs.toString()
         };
         return this.httpClient.post<PostSubmittedResponseDTO>(this.URL.submit, requestDTO, this.PARSE_OPTIONS).pipe(
-            map((dto: PostSubmittedResponseDTO) =>
-                dto.order.sampleSet.samples.map(sample => this.entityFactoryService.toSample(sample))),
+            map((dto: PostSubmittedResponseDTO) => ({
+                samples: dto.order.sampleSet.samples.map(sample => this.entityFactoryService.toSample(sample)),
+                // A server that does not report on the copy is assumed to have
+                // sent it, which is how it behaved before the flag existed.
+                customerCopySent: dto.customerCopySent !== false
+            })),
             catchError((err) => {
                 if (err instanceof EndpointError) {
                     if (err.errorDTO.order) {

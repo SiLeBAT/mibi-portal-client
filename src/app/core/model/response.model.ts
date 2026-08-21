@@ -159,6 +159,9 @@ export interface PutValidatedResponseDTO {
 
 export interface PostSubmittedResponseDTO {
     order: AnnotatedOrderDTO;
+    // False when the BfR received the order but the confirmation copy could not
+    // be mailed back to the sender. Absent on responses from an older server.
+    customerCopySent?: boolean;
 }
 
 export interface FaqEntryDTO {

@@ -11,6 +11,7 @@ import { hideBannerSOA } from '../../state/core.actions';
 import { BannerData } from '../../state/core.reducer';
 import { Observable } from 'rxjs';
 import { UserLinkProviderService } from '../../../user/link-provider.service';
+import { sendOutcomeStrings } from '../../constants/send-outcome.constants';
 
 @Component({
     standalone: false,
@@ -73,8 +74,18 @@ export class BannerContainerComponent {
 
         },
         sendFailure: {
-            message: 'Es wurde keine E-Mail ans BfR gesendet. Bitte versuchen Sie es später noch einmal.',
+            // Used when no support phone is configured; the send effects
+            // dispatch a custom banner carrying the number when there is one.
+            message: sendOutcomeStrings.nothingSent,
             type: AlertType.ERROR,
+            mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
+
+        },
+        sendSuccessNoCustomerCopy: {
+            // The data did arrive, so this is a warning rather than an error:
+            // there is nothing for the sender to send again.
+            message: sendOutcomeStrings.noCustomerCopy,
+            type: AlertType.WARNING,
             mainAction: { ...this.userActionService.getConfigOfType(UserActionType.DISMISS_BANNER) }
 
         },
