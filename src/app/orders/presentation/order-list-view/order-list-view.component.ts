@@ -4,6 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
+import { UserLinkProviderService } from '../../../user/link-provider.service';
 import { OrderRow } from '../../model/order-row.model';
 import {
     FilterableColumn,
@@ -48,6 +49,9 @@ export class OrderListViewComponent implements AfterViewInit, OnDestroy {
         this.activeFilter = next;
         this.applyFilter();
     }
+    // Whether the user agreed to storing their data. Without that consent no
+    // order will ever appear in the list, which the hint below the table explains.
+    @Input() dataSaveAgreed: boolean | null = null;
     @Output() filterChange = new EventEmitter<OrderListFilter>();
     @Output() openOrderResults = new EventEmitter<string>();
     /** The order ids in the sequence the table currently displays. */
@@ -83,7 +87,7 @@ export class OrderListViewComponent implements AfterViewInit, OnDestroy {
 
     dataSource = new MatTableDataSource<OrderRow>([]);
 
-    constructor() {
+    constructor(public userLinks: UserLinkProviderService) {
         this.dataSource.filterPredicate = (row, filter) => {
             const parsed = JSON.parse(filter) as OrderListFilter;
 
@@ -154,6 +158,14 @@ export class OrderListViewComponent implements AfterViewInit, OnDestroy {
 
     get rowCount(): number {
         return this.dataSource.data.length;
+    }
+
+    // Both cases the hint addresses end up here: the user never agreed to storing
+    // their data, or withdrew the agreement (which deleted all their orders).
+    // Deliberately based on the unfiltered row count - an empty table caused by a
+    // filter has nothing to do with the missing consent.
+    get showConsentHint(): boolean {
+        return this.rowCount === 0 && !this.dataSaveAgreed;
     }
 
     resultsCategory(row: OrderRow): ResultsCategory {

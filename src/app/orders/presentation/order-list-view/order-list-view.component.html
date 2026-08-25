@@ -166,5 +166,13 @@
                 showFirstLastButtons
             ></mat-paginator>
         </div>
+
+        @if (showConsentHint) {
+            <p class="mibi-order-list__consent-hint">
+                Wenn Sie Ihre hochgeladenen Daten hier sehen und damit Zugang zu den
+                BfR-Analyseergebnissen erhalten möchten, stimmen Sie bitte auf der
+                <a [routerLink]="[userLinks.profile]">Profilseite</a> der Datenspeicherung zu.
+            </p>
+        }
     </div>
 </div>
