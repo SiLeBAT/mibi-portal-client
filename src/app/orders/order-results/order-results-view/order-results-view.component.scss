@@ -15,7 +15,7 @@
     // Same colouring and height as the upload page's secondary bar (.mibi-app-bar-bottom):
     // the bar height is content-driven; padding lives on the children, not the bar.
     min-height: calc(1rem + (2 * #{layout.$half-space}));
-    font-size: 1rem;
+    font-size: 0.9rem;
     line-height: 1rem;
     background-color: mat.m2-get-color-from-palette(colors.$primary-palette, "lighter");
     color: mat.m2-get-color-from-palette(colors.$primary-palette, "lighter-contrast");
@@ -38,11 +38,27 @@
     justify-content: flex-end;
   }
 
+  // The meta values carry their own padding so each can stretch over the full bar
+  // height, which is what lets the date/filename separator run edge to edge like
+  // the ones hugging the tabs.
   &__meta {
     display: flex;
+    align-self: stretch;
+    align-items: stretch;
+  }
+
+  // Date, filename and the pathogen tabs need breathing room (ticket #827): about
+  // the width of three underscores, on both sides of every separator.
+  &__date,
+  &__file {
+    display: flex;
     align-items: center;
-    gap: layout.$single-space;
-    padding: layout.$half-space layout.$single-space;
+    padding: layout.$half-space layout.$triple-space;
+  }
+
+  &__date {
+    padding-left: layout.$single-space;
+    border-right: 1px solid rgb(255 255 255 / 40%);
   }
 
   // Separators hug the tabs: one before the first, one directly after the last.
@@ -111,12 +127,14 @@
     color: colors.$bfr-accent-color;
   }
 
-  // Pinned to the right by the order-switch control's trailing auto margin.
+  // Pinned to the right by the equal-width bar side groups above. Note there is no
+  // `height: 100%` here: mat-icon[inline] resolves `height: inherit` against this
+  // button, so a full-height button stretched the icon boxes over the whole bar
+  // and pinned their glyphs to the top edge (ticket #827).
   &__download {
     display: flex;
     align-items: center;
     gap: layout.$half-space;
-    height: 100%;
     padding: layout.$half-space layout.$single-space;
     font: inherit;
     color: inherit;
@@ -124,6 +142,20 @@
     cursor: pointer;
     background: none;
     border: none;
+  }
+
+  // Both icons get the same square em box so the leading and the trailing one sit
+  // level with the label and are spaced alike. The `[inline]` attribute is part of
+  // the selector to outrank Angular Material's own `.mat-icon[inline]` rule.
+  /* stylelint-disable-next-line selector-class-pattern */
+  &__download-icon.mat-icon[inline] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1em;
+    height: 1em;
+    font-size: 1.25em;
+    line-height: 1;
   }
 
   &__download:hover {
@@ -150,6 +182,16 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+  }
+
+  // The shared grid gives every row-header cell a 50px floor, which is far more
+  // than the row number needs. Drop it here so the row-number track can shrink to
+  // the three-digit width set by gridColumnTemplate; the samples editor keeps it.
+  // Both classes are in the selector on purpose: emulated encapsulation appends
+  // `[_ngcontent-…]` to the cell component's own rule, which would otherwise tie
+  // this one on specificity and win on stylesheet order.
+  .mibi-text-cell.mibi-text-cell--row-header {
+    min-width: 0;
   }
 
   // The cell value is wrapped in its own element so it can be a real flex item.

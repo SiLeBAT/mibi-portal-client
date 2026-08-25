@@ -1,4 +1,5 @@
 import { ResultDTO, SampleWithResultsDTO } from '../../../core/model/response.model';
+import { NRL } from '../../../samples/model/sample.enums';
 import { DownloadColumn, buildResultsCsv, downloadColumnsForPathogen } from './results-csv';
 
 const result = (position: number, resultData: Record<string, string>): ResultDTO => ({
@@ -71,7 +72,7 @@ describe('buildResultsCsv', () => {
 
 describe('downloadColumnsForPathogen', () => {
     it('starts with the 4 uploaded columns then the pathogen result columns, in order', () => {
-        const columns = downloadColumnsForPathogen('salmonella');
+        const columns = downloadColumnsForPathogen(NRL.NRL_Salm);
         const resultHeaders = columns.slice(4).map(column => column.header);
 
         expect(columns).toHaveLength(6);
@@ -79,12 +80,12 @@ describe('downloadColumnsForPathogen', () => {
     });
 
     it('strips soft hyphens from the uploaded-column headers', () => {
-        const columns = downloadColumnsForPathogen('salmonella');
+        const columns = downloadColumnsForPathogen(NRL.NRL_Salm);
         columns.slice(0, 4).forEach(column => expect(column.header).not.toContain('\u00AD'));
     });
 
     it('reads sample-number/pathogen values from sampleData and result values from the result', () => {
-        const columns = downloadColumnsForPathogen('salmonella');
+        const columns = downloadColumnsForPathogen(NRL.NRL_Salm);
         const sampleRow = sample(
             { sample_id: 'S1', sample_id_avv: 'S2', partial_sample_id: 'S3', pathogen_avv: 'Salmonella' },
             [result(1, { Serovar: 'S. Typhimurium' })]
