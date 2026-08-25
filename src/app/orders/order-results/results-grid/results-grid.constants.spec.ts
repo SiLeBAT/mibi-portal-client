@@ -49,14 +49,22 @@ describe('createFullDataGridModel', () => {
     });
 });
 
+// The row-number column is capped to three digits (ticket #827) instead of
+// growing with its content like the other uploaded columns.
+const ROW_NUMBER_TRACK = 'minmax(2rem, max-content)';
+
 describe('gridColumnTemplate', () => {
-    it('gives the result columns 1fr and everything else auto', () => {
+    it('gives the result columns 1fr, the row number a fixed track and everything else auto', () => {
         const template = gridColumnTemplate(createResultsGridModel(['Serovar', 'Seroformel']));
-        expect(template).toBe(`${new Array(FIXED_COLUMN_COUNT + 1).fill('auto').join(' ')} 1fr 1fr`);
+        const autoColumns = new Array(FIXED_COLUMN_COUNT).fill('auto').join(' ');
+
+        expect(template).toBe(`${ROW_NUMBER_TRACK} ${autoColumns} 1fr 1fr`);
     });
 
-    it('is all auto for the full-data model (no result columns)', () => {
+    it('is the row-number track plus all auto for the full-data model (no result columns)', () => {
         const model = createFullDataGridModel();
-        expect(gridColumnTemplate(model)).toBe(new Array(model.columns.length).fill('auto').join(' '));
+        const autoColumns = new Array(model.columns.length - 1).fill('auto').join(' ');
+
+        expect(gridColumnTemplate(model)).toBe(`${ROW_NUMBER_TRACK} ${autoColumns}`);
     });
 });
