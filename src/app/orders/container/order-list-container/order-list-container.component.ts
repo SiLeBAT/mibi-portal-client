@@ -22,6 +22,7 @@ import { orderResultsPath } from '../../orders.paths';
         @if (isLoggedIn$ | async) {
             <mibi-order-list-view
                 [rows]="rows$ | async"
+                [dataSaveAgreed]="dataSaveAgreed$ | async"
                 [filter]="filter"
                 (filterChange)="onFilterChange($event)"
                 (openOrderResults)="onOpenOrderResults($event)"
@@ -33,6 +34,7 @@ import { orderResultsPath } from '../../orders.paths';
 export class OrderListContainerComponent {
     rows$: Observable<OrderRow[]>;
     isLoggedIn$: Observable<boolean>;
+    dataSaveAgreed$: Observable<boolean>;
     // Restored from the current browser session, so that a filter set before
     // leaving the list (e.g. to view an order's results) is still active when
     // the user returns.
@@ -50,6 +52,10 @@ export class OrderListContainerComponent {
         this.isLoggedIn$ = this.store$.pipe(
             select(selectUserCurrentUser),
             map(currentUser => !!currentUser)
+        );
+        this.dataSaveAgreed$ = this.store$.pipe(
+            select(selectUserCurrentUser),
+            map(currentUser => currentUser?.dataSaveAgreed === true)
         );
     }
 

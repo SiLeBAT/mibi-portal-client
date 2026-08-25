@@ -1,5 +1,6 @@
 @use "@angular/material" as mat;
 @use "colors";
+@use "fonts";
 @use "layout";
 
 :host {
@@ -184,4 +185,14 @@
 
 .mibi-order-list__paginator {
   flex: 1 1 auto;
+}
+
+// Hint below an empty list. Same typography level as the "Ihre bisherigen
+// Aufträge ans BfR" heading (an h2 under body.mat-typography), but not bold.
+.mibi-order-list__consent-hint {
+  @include mat.m2-typography-level(fonts.$typography, headline-6);
+
+  font-weight: 400;
+  text-align: center;
+  margin: layout.$double-space 0 0;
 }

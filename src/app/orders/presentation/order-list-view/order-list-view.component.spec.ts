@@ -1,3 +1,4 @@
+import { UserLinkProviderService } from '../../../user/link-provider.service';
 import { OrderRow } from '../../model/order-row.model';
 import { OrderListFilter, emptyOrderListFilter } from '../../model/order-list-filter.model';
 import { OrderListViewComponent } from './order-list-view.component';
@@ -24,11 +25,14 @@ const filterFor = (results: OrderListFilter['results']): OrderListFilter => ({
 const displayedIds = (component: OrderListViewComponent): string[] =>
     component.dataSource.filteredData.map(entry => entry.id);
 
+const createComponent = (): OrderListViewComponent =>
+    new OrderListViewComponent(new UserLinkProviderService());
+
 describe('OrderListViewComponent filtering', () => {
     let component: OrderListViewComponent;
 
     beforeEach(() => {
-        component = new OrderListViewComponent();
+        component = createComponent();
     });
 
     it('shows all orders without a filter', () => {
@@ -104,5 +108,49 @@ describe('OrderListViewComponent filtering', () => {
 
         expect(emitted.length).toBe(1);
         expect(displayedIds(component)).toEqual(['a']);
+    });
+});
+
+describe('OrderListViewComponent consent hint', () => {
+    let component: OrderListViewComponent;
+
+    beforeEach(() => {
+        component = createComponent();
+    });
+
+    it('shows the hint for an empty list without data-save consent', () => {
+        component.dataSaveAgreed = false;
+        component.rows = [];
+
+        expect(component.showConsentHint).toBe(true);
+    });
+
+    it('shows the hint while the consent state is still unknown', () => {
+        component.rows = [];
+
+        expect(component.showConsentHint).toBe(true);
+    });
+
+    it('hides the hint for an empty list when the user consented', () => {
+        component.dataSaveAgreed = true;
+        component.rows = [];
+
+        expect(component.showConsentHint).toBe(false);
+    });
+
+    it('hides the hint as soon as the list has orders', () => {
+        component.dataSaveAgreed = false;
+        component.rows = rows;
+
+        expect(component.showConsentHint).toBe(false);
+    });
+
+    it('hides the hint when only the filter empties the table', () => {
+        component.dataSaveAgreed = false;
+        component.rows = rows;
+        component.onFilterChange('fileName', 'no-such-file');
+
+        expect(displayedIds(component)).toEqual([]);
+        expect(component.showConsentHint).toBe(false);
     });
 });
