@@ -21,12 +21,12 @@ describe('createResultsGridModel', () => {
         expect(model.columns[5].headerText).toBe(samplesEditorDataHeaders.pathogen_avv);
     });
 
-    it('renders the toggle column as a TOGGLE bar labelled "Alle Auftragsdaten anzeigen"', () => {
+    it('renders the toggle column as a TOGGLE bar labelled "Alle Auftragsdaten anzeigen: Hier klicken"', () => {
         const toggle = createResultsGridModel([]).columns[FIXED_COLUMN_COUNT];
 
         expect(toggle.cellType).toBe(SamplesGridCellType.TOGGLE);
         expect(toggle.headerCellType).toBe(SamplesGridCellType.TOGGLE);
-        expect(toggle.getHeaderData?.()).toBe('Alle Auftragsdaten anzeigen');
+        expect(toggle.getHeaderData?.()).toBe('Alle Auftragsdaten anzeigen: Hier klicken');
     });
 
     it('renders each result column as a filling STACKED cell headed by its key', () => {
@@ -45,7 +45,7 @@ describe('createFullDataGridModel', () => {
 
         expect(model.columns).toHaveLength(2 + ALL_DATA_COLUMN_COUNT + 1);
         expect(toggle.cellType).toBe(SamplesGridCellType.TOGGLE);
-        expect(toggle.getHeaderData?.()).toBe('BfR-Ergebnisse anzeigen');
+        expect(toggle.getHeaderData?.()).toBe('BfR-Ergebnisse anzeigen: Hier klicken');
     });
 });
 

@@ -122,7 +122,7 @@ export function createResultsGridModel(resultColumnKeys: string[]): ResultsGridM
     return {
         columns: [
             ...fixedColumns,
-            toggleColumn(TOGGLE_COLUMN_ID, 'Alle Auftragsdaten anzeigen'),
+            toggleColumn(TOGGLE_COLUMN_ID, 'Alle Auftragsdaten anzeigen: Hier klicken'),
             ...resultColumns
         ],
         headerRowId: 0,
@@ -145,7 +145,7 @@ export function createFullDataGridModel(): ResultsGridModel {
             idColumn(),
             nrlColumn(),
             ...dataColumns,
-            toggleColumn(toggleColId, 'BfR-Ergebnisse anzeigen')
+            toggleColumn(toggleColId, 'BfR-Ergebnisse anzeigen: Hier klicken')
         ],
         headerRowId: 0,
         headerCellType: SamplesGridCellType.TEXT,
