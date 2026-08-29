@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { createSelector, select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { select, Store } from '@ngrx/store';
+import { Observable, of } from 'rxjs';
 import { User } from '../../user/model/user.model';
 import { selectUserCurrentUser } from '../../user/state/user.selectors';
 import { UserMainSlice } from '../../user/user.state';
@@ -9,26 +9,12 @@ import { AppAuthService } from '../../user/services/app-auth.service';
 import { navBarTabNames } from './nav-bar.constants';
 import { NavBarTab } from './nav-bar.model';
 import { map } from 'rxjs/operators';
-import { selectHasEntries } from '../../samples/state/samples.selectors';
-import { SamplesMainSlice } from '../../samples/samples.state';
 import { NavBarAvatarUser } from './components/tabs/avatar-user.model';
 import { MainLinkProviderService } from '../link-provider.service';
 import { UserLinkProviderService } from '../../user/link-provider.service';
 import { environment } from '../../../environments/environment';
-import { SamplesLinkProviderService } from '../../samples/link-provider.service';
 import { selectIsAlternativeWelcomePage } from '../../core/state/core.selectors';
 import { CoreMainSlice } from '../../core/core.state';
-
-interface NavTabsConfig {
-    hasEntries: boolean;
-}
-
-const selectNavTabsConfig = createSelector<SamplesMainSlice, boolean, NavTabsConfig>(
-    selectHasEntries,
-    (hasEntries) => ({
-        hasEntries: hasEntries
-    })
-);
 
 @Component({
     standalone: false,
@@ -63,10 +49,9 @@ const selectNavTabsConfig = createSelector<SamplesMainSlice, boolean, NavTabsCon
 })
 export class NavBarComponent {
 
-    navTabs$: Observable<NavBarTab[]> = this.store$.pipe(
-        select(selectNavTabsConfig),
-        map(config => this.getNavTabs(config))
-    );
+    // The "Probendaten" tab was removed — the portal now lives on a single
+    // page (welcome text + upload), so no center navigation tabs are shown.
+    navTabs$: Observable<NavBarTab[]> = of([]);
 
     avatarUser$: Observable<NavBarAvatarUser | null> = this.store$.pipe(
         select(selectUserCurrentUser),
@@ -84,20 +69,6 @@ export class NavBarComponent {
         };
     }
 
-    get samplesEditorTab(): NavBarTab {
-        return {
-            name: navBarTabNames.samples,
-            link: this.samplesLinks.editor
-        };
-    }
-
-    get samplesUploadTab(): NavBarTab {
-        return {
-            name: navBarTabNames.samples,
-            link: this.samplesLinks.upload
-        };
-    }
-
     get loginTab(): NavBarTab {
         return {
             name: navBarTabNames.login,
@@ -106,8 +77,7 @@ export class NavBarComponent {
     }
 
     constructor(
-        private store$: Store<SamplesMainSlice & UserMainSlice & CoreMainSlice>,
-        private samplesLinks: SamplesLinkProviderService,
+        private store$: Store<UserMainSlice & CoreMainSlice>,
         private mainLinks: MainLinkProviderService,
         private userLinks: UserLinkProviderService,
         private auth: AppAuthService
@@ -123,11 +93,6 @@ export class NavBarComponent {
 
     onAvatarProfile() {
         this.store$.dispatch(navigateMSA({ path: this.userLinks.profile }));
-    }
-
-    private getNavTabs(config: NavTabsConfig): NavBarTab[] {
-        const editorOrUploadTab = config.hasEntries ? this.samplesEditorTab : this.samplesUploadTab;
-        return [editorOrUploadTab];
     }
 
     private getAvatarUser(user: User | null): NavBarAvatarUser | null {

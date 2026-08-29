@@ -1,15 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './core/presentation/home/home.component';
-import { HomeResolver } from './core/services/home-resolver.service';
 
 const routes: Routes = [
-    {
-        path: '',
-        component: HomeComponent,
-        resolve: { isAlternativeWelcomePage: HomeResolver}
-    },
-    // otherwise redirect to home
+    // The welcome text and the upload field now share a single page (the upload
+    // view), so the landing route redirects there instead of a standalone home.
+    { path: '', redirectTo: 'samples/upload', pathMatch: 'full' },
+    // otherwise redirect to the landing page
     { path: '**', redirectTo: '' }
 ];
 

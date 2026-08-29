@@ -1,33 +1,39 @@
 <div class="mibi-upload-page">
-    <div class="mibi-upload-page__upload-card">
-        <div class="mibi-upload-page__upload-card-container">
-            <div class="mibi-upload-page__upload-card-box">
-                <div class="mibi-upload-page__upload-card-spacer">
-                    <div class="mibi-upload-page__upload-card-spacer-content"></div>
-                </div>
-                <h2 class="mibi-upload-page__upload-card-title">Untersuchungsauftrag hochladen</h2>
-                <div class="mibi-upload-page__upload-card-content">
-                    <mibi-upload-container (uploadFile)="fileUpload($event)">
-                        <mibi-upload #uploadChild>
-                            <div class="mibi-upload-container">
-                                <div class="mibi-upload mibi-upload-container__content">
-                                    <div class="mibi-upload-icon">
-                                        <mat-icon [inline]="true">save_alt</mat-icon>
+    <div class="mibi-upload-page__top">
+        <div class="mibi-upload-page__welcome">
+            <mibi-home></mibi-home>
+        </div>
+
+        <div class="mibi-upload-page__upload-card">
+            <div class="mibi-upload-page__upload-card-container">
+                <div class="mibi-upload-page__upload-card-box">
+                    <div class="mibi-upload-page__upload-card-spacer">
+                        <div class="mibi-upload-page__upload-card-spacer-content"></div>
+                    </div>
+                    <h2 class="mibi-upload-page__upload-card-title">Untersuchungsauftrag hochladen</h2>
+                    <div class="mibi-upload-page__upload-card-content">
+                        <mibi-upload-container (uploadFile)="fileUpload($event)">
+                            <mibi-upload #uploadChild>
+                                <div class="mibi-upload-container">
+                                    <div class="mibi-upload mibi-upload-container__content">
+                                        <div class="mibi-upload-icon">
+                                            <mat-icon [inline]="true">save_alt</mat-icon>
+                                        </div>
+                                        <div class="mibi-upload-text">
+                                            Per Drag&Drop in dieses Feld ziehen
+                                        </div>
+                                        <div class="mibi-upload-text">oder</div>
+                                        <button
+                                            class="mibi-upload-button"
+                                            type="button"
+                                            mat-raised-button
+                                            color="accent"
+                                        >Datei wählen</button>
                                     </div>
-                                    <div class="mibi-upload-text">
-                                        Per Drag&Drop in dieses Feld ziehen
-                                    </div>
-                                    <div class="mibi-upload-text">oder</div>
-                                    <button
-                                        class="mibi-upload-button"
-                                        type="button"
-                                        mat-raised-button
-                                        color="accent"
-                                    >Datei wählen</button>
                                 </div>
-                            </div>
-                        </mibi-upload>
-                    </mibi-upload-container>
+                            </mibi-upload>
+                        </mibi-upload-container>
+                    </div>
                 </div>
             </div>
         </div>
