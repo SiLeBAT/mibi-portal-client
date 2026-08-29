@@ -96,7 +96,7 @@
     "@types/zxcvbn": "4.4.1",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
-    "cypress": "^13.6.3",
+    "cypress": "^15.20.0",
     "cypress-multi-reporters": "^1.6.0",
     "eslint": "^8.57.0",
     "eslint-plugin-rxjs": "~5.0.2",
