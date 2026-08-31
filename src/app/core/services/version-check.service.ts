@@ -17,6 +17,26 @@ import {
  * the server (see VersionCheckInterceptor) the version baked into this bundle
  * is compared against the version the server currently serves. On a mismatch
  * the locally stored data is discarded and the user is forced to reload.
+ *
+ * Two versions are compared, and they reach this service on very different
+ * paths:
+ *
+ * 1. `environment.version` - the version of the bundle this tab is running.
+ *    default.environment.ts imports package.json and Angular compiles the value
+ *    into the JavaScript at build time, so it is frozen at whatever the release
+ *    was and travels with the tab. It never changes while the tab is open, and
+ *    that is the whole point: it identifies the code the user is looking at.
+ *
+ * 2. `systemInfo.clientVersion` - the version of the bundle currently deployed.
+ *    The client build writes it to assets/version.json (scripts/write-version.js),
+ *    that file is deployed into the server's public directory, the server reads
+ *    it at startup (client-version.ts in mibi-portal-server) and returns it from
+ *    GET /v2/info. So it always describes the release a fresh page load would
+ *    get right now.
+ *
+ * Equal means the tab is running what the server serves. Different means a
+ * release happened after this tab loaded its bundle. There is no version
+ * comparison ("newer"/"older"), only equality: any deviation is a mismatch.
  */
 @Injectable({
     providedIn: 'root'
