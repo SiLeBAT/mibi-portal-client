@@ -28,6 +28,7 @@ import {
     DataGridTemplateMap,
     DataGridEditorContext
 } from './data-grid.model';
+import { dataGridDefaultTrack, dataGridRowHeaderTrack } from './data-grid.constants';
 import { DataGridCellController, DataGridDirtyEmitter } from './internal/cell-controller.model';
 import { DataGridChangeDetector } from './internal/change-detector.class';
 import { DataGridDirtyEmitterMap } from './internal/dirty-emitter-map.class';
@@ -62,6 +63,11 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
     // TEMPLATE PROPERTIES
 
     readonly cellController: DataGridCellController;
+
+    // grid-template-columns for the whole grid. Cached instead of computed in a
+    // getter: this component detaches its change detector after the first render
+    // and the template list only changes together with the model.
+    gridTemplateColumns = '';
 
     get rows(): DataGridRowId[] {
         return this.model.rows;
@@ -130,6 +136,8 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
         if (modelChange) {
             const oldModel = modelChange.previousValue as DataGridViewModel;
             const newModel = modelChange.currentValue as DataGridViewModel;
+
+            this.gridTemplateColumns = this.buildGridTemplateColumns(newModel);
 
             if (modelChange.firstChange) {
                 this.cellDirtyEmitterMap.init(newModel.rows, newModel.cols);
@@ -414,6 +422,22 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
     }
 
     // PRIVATE UTILITY METHODS
+
+    // Every column is content-sized (auto) except the row-header column, which
+    // only ever holds the row number and gets the narrow shared track. Both view
+    // model builders flag the header-row cell of a row-header column as well, so
+    // the first row is enough to tell the two kinds of column apart.
+    private buildGridTemplateColumns(model: DataGridViewModel): string {
+        const headerRowId = model.rows[0];
+        if (headerRowId === undefined) {
+            return '';
+        }
+        return model.cols
+            .map(colId => model.cellModels[headerRowId][colId]?.isRowHeader
+                ? dataGridRowHeaderTrack
+                : dataGridDefaultTrack)
+            .join(' ');
+    }
 
     private getCellModel(row: number, col: number): DataGridCellViewModel {
         return this.cellModels[this.rows[row]][this.cols[col]];

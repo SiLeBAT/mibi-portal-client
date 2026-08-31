@@ -8,7 +8,7 @@
     <div class="mibi-panel__content">
         <div #grid class="mibi-grid"
             [ngStyle]="{
-                'grid-template-columns': 'repeat(' + colCount + ', auto)',
+                'grid-template-columns': gridTemplateColumns,
                 'grid-auto-rows': 'min-content'
             }"
             (mousedown)="onGridMouseDown($event)"

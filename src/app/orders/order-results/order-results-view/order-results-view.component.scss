@@ -184,16 +184,6 @@
     justify-content: center;
   }
 
-  // The shared grid gives every row-header cell a 50px floor, which is far more
-  // than the row number needs. Drop it here so the row-number track can shrink to
-  // the three-digit width set by gridColumnTemplate; the samples editor keeps it.
-  // Both classes are in the selector on purpose: emulated encapsulation appends
-  // `[_ngcontent-…]` to the cell component's own rule, which would otherwise tie
-  // this one on specificity and win on stylesheet order.
-  .mibi-text-cell.mibi-text-cell--row-header {
-    min-width: 0;
-  }
-
   // The cell value is wrapped in its own element so it can be a real flex item.
   // Bare text inside a flex container becomes an *anonymous* flex item, which
   // Firefox sizes to min-content instead of stretching it: the AVV codes in

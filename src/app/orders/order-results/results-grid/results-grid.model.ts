@@ -22,9 +22,6 @@ export interface ResultsGridColumnModel {
     // so the BfR result columns always span to the end of the page. Other columns
     // keep their content width (auto).
     fill?: boolean;
-    // Explicit grid track sizing for this column, overriding the fill/auto default
-    // (e.g. the narrow row-number column). Any grid-template-columns track value.
-    width?: string;
 }
 
 export interface ResultsGridModel {

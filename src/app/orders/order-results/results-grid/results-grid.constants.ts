@@ -1,6 +1,7 @@
 import { ResultDTO, SampleWithResultsDTO } from '../../../core/model/response.model';
 import { AnnotatedSampleDataEntryDTO } from '../../../core/model/shared-dto.model';
 import { AnnotatedSampleDataEntry, SampleProperty } from '../../../samples/model/sample-management.model';
+import { dataGridDefaultTrack, dataGridRowHeaderTrack } from '../../../grid/data-grid/data-grid.constants';
 import { SamplesGridCellData, SamplesGridCellType } from '../../../grid/samples-grid/samples-grid.model';
 import {
     samplesEditorDataHeaders,
@@ -35,13 +36,6 @@ function textColumn(
         getData: getValue
     };
 }
-
-// Just enough room for a three-digit row number (ticket #827): the shared grid's
-// 50px row-header floor is lifted in the results view, 2rem covers "333" at the
-// grid's 0.75rem Roboto plus the cell padding, and `max-content` (rather than
-// `auto`) keeps the column from being stretched by the free space that the
-// full-data view distributes over its auto columns.
-const ROW_NUMBER_COLUMN_WIDTH = 'minmax(2rem, max-content)';
 
 function dataColumn(colId: number, selector: SampleProperty, headerText: string): ResultsGridColumnModel {
     return {
@@ -86,10 +80,7 @@ function toggleColumn(colId: number, label: string): ResultsGridColumnModel {
 }
 
 function idColumn(): ResultsGridColumnModel {
-    return {
-        ...textColumn(1, true, samplesEditorIdHeader, (_sample, index) => (index + 1).toString()),
-        width: ROW_NUMBER_COLUMN_WIDTH
-    };
+    return textColumn(1, true, samplesEditorIdHeader, (_sample, index) => (index + 1).toString());
 }
 
 function nrlColumn(): ResultsGridColumnModel {
@@ -156,9 +147,12 @@ export function createFullDataGridModel(): ResultsGridModel {
 // grid-template-columns for the results grid: uploaded/toggle columns keep their
 // content width (auto), BfR result columns share the remaining width (1fr each)
 // so the results block always spans to the end of the page with equal widths.
-// A column may override both with an explicit track (see the row-number column).
+// The row-number column uses the shared data-grid track, so it is exactly as wide
+// here as in the samples editor (ticket #841).
 export function gridColumnTemplate(model: ResultsGridModel): string {
     return model.columns
-        .map(column => column.width ?? (column.fill ? '1fr' : 'auto'))
+        .map(column => column.isRowHeader
+            ? dataGridRowHeaderTrack
+            : (column.fill ? '1fr' : dataGridDefaultTrack))
         .join(' ');
 }

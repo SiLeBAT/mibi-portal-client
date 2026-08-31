@@ -19,7 +19,9 @@
   text-align: center;
 }
 
+// No min-width here: the row-header column's width comes from the grid track
+// (dataGridRowHeaderTrack), so it is the same in the samples editor and in the
+// results view (ticket #841).
 .mibi-text-cell--row-header {
-  min-width: 50px;
   line-height: 1.5;
 }

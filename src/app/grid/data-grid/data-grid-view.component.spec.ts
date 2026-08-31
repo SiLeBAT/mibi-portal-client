@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, SimpleChange } from '@angular/core';
 import { DataGridViewComponent } from './data-grid-view.component';
 import { DataGridViewModel } from './data-grid.model';
+import { dataGridDefaultTrack, dataGridRowHeaderTrack } from './data-grid.constants';
 
 function buildModel(rowCount: number): DataGridViewModel {
     const rows = Array.from({ length: rowCount }, (_, i) => i);
@@ -83,6 +84,29 @@ describe('DataGridViewComponent', () => {
             component.ngOnChanges({ model: new SimpleChange(oldModel, newModel, false) });
 
             expect(scrollEl.scrollTop).toBe(0);
+        });
+    });
+
+    // The row-number column is only as wide as a three-digit number, and it is
+    // the grid track - not a cell min-width - that says so, so the samples editor
+    // and the results view stay identical (ticket #841).
+    describe('grid template columns', () => {
+        it('gives the row-header column the narrow track and everything else auto', () => {
+            expect(component.gridTemplateColumns).toBe(`${dataGridRowHeaderTrack} ${dataGridDefaultTrack}`);
+        });
+
+        it('recomputes the track list when the column set changes', () => {
+            const oldModel = component.model;
+            const newModel: DataGridViewModel = {
+                ...oldModel,
+                cols: [1],
+                cellModels: { ...oldModel.cellModels }
+            };
+            component.model = newModel;
+
+            component.ngOnChanges({ model: new SimpleChange(oldModel, newModel, false) });
+
+            expect(component.gridTemplateColumns).toBe(dataGridDefaultTrack);
         });
     });
 });
