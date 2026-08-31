@@ -1,3 +1,4 @@
+import { dataGridRowHeaderTrack } from '../../../grid/data-grid/data-grid.constants';
 import { SamplesGridCellType } from '../../../grid/samples-grid/samples-grid.model';
 import { samplesEditorDataHeaders } from '../../../samples/samples-editor/constants/column-headers.constants';
 import {
@@ -49,9 +50,10 @@ describe('createFullDataGridModel', () => {
     });
 });
 
-// The row-number column is capped to three digits (ticket #827) instead of
-// growing with its content like the other uploaded columns.
-const ROW_NUMBER_TRACK = 'minmax(2rem, max-content)';
+// The row-number column is capped to three digits (tickets #827/#841) instead of
+// growing with its content like the other uploaded columns. Asserting against the
+// shared grid constant keeps it identical to the samples editor's row header.
+const ROW_NUMBER_TRACK = dataGridRowHeaderTrack;
 
 describe('gridColumnTemplate', () => {
     it('gives the result columns 1fr, the row number a fixed track and everything else auto', () => {
