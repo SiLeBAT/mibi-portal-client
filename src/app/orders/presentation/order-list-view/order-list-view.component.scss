@@ -13,7 +13,10 @@
 .mibi-order-list {
   width: 100%;
   box-sizing: border-box;
-  padding: layout.$double-space;
+
+  // No padding below the table: the sticky footer row rests directly on the
+  // bottom edge of the scroll area once the list is scrolled to its end.
+  padding: layout.$double-space layout.$double-space 0;
 }
 
 .mibi-order-list__title {
@@ -21,9 +24,12 @@
   margin: 0 0 layout.$quadruple-space;
 }
 
+// Deliberately without an `overflow` of its own: it is the containing block of
+// the sticky header and footer rows, and any overflow other than `visible`
+// would turn it into their scrollport and pin them to the table instead of to
+// the page.
 .mibi-order-list__content {
   padding: 0;
-  overflow: hidden;
 }
 
 .mibi-order-list__table {
@@ -170,12 +176,21 @@
   padding-bottom: layout.$half-space;
 }
 
+// Rests on the bottom edge of the page as long as the rows below it would be
+// off screen, so the page size selector stays reachable in a long list. Once
+// the list is scrolled to its end the row reaches its place below the table and
+// stops sticking - a list that fits on the screen never sticks at all.
+// Needs an opaque background: rows scroll underneath it.
 .mibi-order-list__footer-row {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: layout.$double-space;
   padding: layout.$single-space;
+  background-color: colors.$background-color;
 }
 
 .mibi-order-list__footer {

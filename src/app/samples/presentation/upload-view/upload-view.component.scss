@@ -2,18 +2,24 @@
 @use "colors";
 @use "layout";
 
+// This is the element the page scrolls in, so it is also what the order list's
+// sticky header and footer rows attach to. The border leaves the gap the header
+// keeps to the secondary menu bar while it is stuck: unlike a padding, a border
+// is not part of the scrollable area, so rows cannot show through it.
 :host {
   display: block;
   height: 100%;
   overflow: auto;
+  border-top: layout.$single-space solid colors.$background-color;
 }
 
+// No padding below the order list: its footer row sticks to the bottom edge of
+// the scroll area, and any padding would leave a gap there once scrolled down.
 .mibi-upload-page {
   display: flex;
   flex-direction: column;
   gap: layout.$octuple-space;
   min-height: 100%;
-  padding-bottom: layout.$double-space;
   box-sizing: border-box;
 }
 
