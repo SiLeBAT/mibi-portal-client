@@ -168,10 +168,17 @@
         </div>
 
         @if (showConsentHint) {
-            <p class="mibi-order-list__consent-hint">
+            <p class="mibi-order-list__empty-hint">
                 Wenn Sie Ihre hochgeladenen Daten hier sehen und damit Zugang zu den
                 BfR-Analyseergebnissen erhalten möchten, stimmen Sie bitte auf der
                 <a [routerLink]="[userLinks.profile]">Profilseite</a> der Datenspeicherung zu.
+            </p>
+        } @else if (showNoOrdersHint) {
+            <p class="mibi-order-list__empty-hint">
+                Sie haben dem Speichern Ihrer Isolatdaten zugestimmt. Sobald Sie einen
+                Untersuchungsauftrag ans BfR gesandt haben, wird er in dieser Tabelle
+                aufgeführt. Das Speichern sowie E-Mail-Einstellungen können auf der
+                <a [routerLink]="[userLinks.profile]">Profilseite</a> angepasst werden.
             </p>
         }
     </div>
