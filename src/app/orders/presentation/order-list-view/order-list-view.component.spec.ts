@@ -123,12 +123,14 @@ describe('OrderListViewComponent consent hint', () => {
         component.rows = [];
 
         expect(component.showConsentHint).toBe(true);
+        expect(component.showNoOrdersHint).toBe(false);
     });
 
     it('shows the hint while the consent state is still unknown', () => {
         component.rows = [];
 
         expect(component.showConsentHint).toBe(true);
+        expect(component.showNoOrdersHint).toBe(false);
     });
 
     it('hides the hint for an empty list when the user consented', () => {
@@ -143,6 +145,7 @@ describe('OrderListViewComponent consent hint', () => {
         component.rows = rows;
 
         expect(component.showConsentHint).toBe(false);
+        expect(component.showNoOrdersHint).toBe(false);
     });
 
     it('hides the hint when only the filter empties the table', () => {
@@ -152,5 +155,35 @@ describe('OrderListViewComponent consent hint', () => {
 
         expect(displayedIds(component)).toEqual([]);
         expect(component.showConsentHint).toBe(false);
+    });
+});
+
+describe('OrderListViewComponent no-orders hint', () => {
+    let component: OrderListViewComponent;
+
+    beforeEach(() => {
+        component = createComponent();
+        component.dataSaveAgreed = true;
+    });
+
+    it('shows the hint when the consenting user has not sent an order yet', () => {
+        component.rows = [];
+
+        expect(component.showNoOrdersHint).toBe(true);
+        expect(component.showConsentHint).toBe(false);
+    });
+
+    it('hides the hint as soon as the list has orders', () => {
+        component.rows = rows;
+
+        expect(component.showNoOrdersHint).toBe(false);
+    });
+
+    it('hides the hint when only the filter empties the table', () => {
+        component.rows = rows;
+        component.onFilterChange('fileName', 'no-such-file');
+
+        expect(displayedIds(component)).toEqual([]);
+        expect(component.showNoOrdersHint).toBe(false);
     });
 });

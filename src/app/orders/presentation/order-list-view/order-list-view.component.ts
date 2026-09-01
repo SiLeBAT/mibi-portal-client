@@ -168,6 +168,13 @@ export class OrderListViewComponent implements AfterViewInit, OnDestroy {
         return this.rowCount === 0 && !this.dataSaveAgreed;
     }
 
+    // The user consented to storing their data but has not sent an order yet.
+    // Complement of showConsentHint; requires the consent state to be known
+    // (=== true), so while it is still null neither hint flips to this one.
+    get showNoOrdersHint(): boolean {
+        return this.rowCount === 0 && this.dataSaveAgreed === true;
+    }
+
     resultsCategory(row: OrderRow): ResultsCategory {
         return OrderListViewComponent.classifyResults(row.results);
     }
