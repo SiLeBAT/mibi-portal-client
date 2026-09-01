@@ -50,6 +50,10 @@ export interface SystemInformationResponseDTO {
     readonly version: string;
     readonly lastChange: string;
     readonly supportContact: string;
+    // Version of the client bundle the server currently serves. Optional: it is
+    // empty when no bundle is deployed next to the server (development) and
+    // absent when talking to a server from before the field was introduced.
+    readonly clientVersion?: string;
 }
 export interface InstituteDTO {
     readonly id: string;
