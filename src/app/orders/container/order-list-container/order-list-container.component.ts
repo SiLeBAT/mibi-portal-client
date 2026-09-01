@@ -8,6 +8,7 @@ import { selectUserCurrentUser } from '../../../user/state/user.selectors';
 import { OrderRow } from '../../model/order-row.model';
 import { OrderListFilter } from '../../model/order-list-filter.model';
 import { parseOrderDate } from '../../model/order-date';
+import { joinValues, joinValuesTruncated } from '../../model/order-values';
 import { OrderListFilterStorageService } from '../../services/order-list-filter-storage.service';
 import { OrdersMainSlice } from '../../orders.state';
 import { orderListUpdateSequenceSOA } from '../../state/order-list.actions';
@@ -79,19 +80,16 @@ export class OrderListContainerComponent {
             id: order.id,
             createdAt: parseOrderDate(order.createdAt) ?? new Date(Number.NaN),
             fileName: order.fileName,
-            sampleIds: this.joinUnique(order.sampleIds),
-            sampleIdsAVV: this.joinUnique(order.sampleIdsAVV),
-            pathogens: this.joinUnique(order.pathogens),
-            nrls: this.joinUnique(order.nrls),
+            // The sample number columns keep the complete list, so that a filter
+            // still finds a sample number the cell no longer shows.
+            sampleIds: joinValues(order.sampleIds),
+            sampleIdsDisplay: joinValuesTruncated(order.sampleIds),
+            sampleIdsAVV: joinValues(order.sampleIdsAVV),
+            sampleIdsAVVDisplay: joinValuesTruncated(order.sampleIdsAVV),
+            pathogens: joinValues(order.pathogens),
+            nrls: joinValues(order.nrls),
             sampleCount: order.sampleCount,
             results: order.results
         };
-    }
-
-    private joinUnique(values: string[] | undefined): string {
-        if (!values?.length) {
-            return '';
-        }
-        return [...new Set(values)].join(', ');
     }
 }

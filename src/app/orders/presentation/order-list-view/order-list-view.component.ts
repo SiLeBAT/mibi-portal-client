@@ -2,8 +2,9 @@ import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, Output, ViewC
 import { DatePipe } from '@angular/common';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { Subscription } from 'rxjs';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { Subscription, fromEvent } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 import { UserLinkProviderService } from '../../../user/link-provider.service';
 import { OrderRow } from '../../model/order-row.model';
 import {
@@ -58,6 +59,7 @@ export class OrderListViewComponent implements AfterViewInit, OnDestroy {
     @Output() sequenceChange = new EventEmitter<string[]>();
     @ViewChild(MatSort) sort!: MatSort;
     @ViewChild(MatPaginator) paginator!: MatPaginator;
+    @ViewChild(MatTable) table!: MatTable<OrderRow>;
 
     private static readonly DATE_FORMAT = 'dd.MM.yyyy HH:mm';
     private readonly datePipe = new DatePipe('de-DE');
@@ -84,6 +86,7 @@ export class OrderListViewComponent implements AfterViewInit, OnDestroy {
     // Order ids of the list last received, to detect a freshly queried list.
     private knownOrderIds = '';
     private sortSubscription?: Subscription;
+    private resizeSubscription?: Subscription;
 
     dataSource = new MatTableDataSource<OrderRow>([]);
 
@@ -124,11 +127,18 @@ export class OrderListViewComponent implements AfterViewInit, OnDestroy {
         this.dataSource.paginator = this.paginator;
         this.applyDefaultSort();
         this.sortSubscription = this.sort.sortChange.subscribe(() => this.emitSequence());
+        // The filter row sticks below the title row, at an offset Material
+        // measures from the title row's height. A narrower window re-wraps the
+        // titles and changes that height, so the offset has to be measured anew.
+        this.resizeSubscription = fromEvent(window, 'resize')
+            .pipe(debounceTime(100))
+            .subscribe(() => this.table?.updateStickyHeaderRowStyles());
         this.emitSequence();
     }
 
     ngOnDestroy(): void {
         this.sortSubscription?.unsubscribe();
+        this.resizeSubscription?.unsubscribe();
         this.openOrderResults.complete();
         this.sequenceChange.complete();
         this.filterChange.complete();

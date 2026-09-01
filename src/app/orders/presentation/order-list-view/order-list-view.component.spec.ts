@@ -1,6 +1,7 @@
 import { UserLinkProviderService } from '../../../user/link-provider.service';
 import { OrderRow } from '../../model/order-row.model';
 import { OrderListFilter, emptyOrderListFilter } from '../../model/order-list-filter.model';
+import { joinValues, joinValuesTruncated } from '../../model/order-values';
 import { OrderListViewComponent } from './order-list-view.component';
 
 const row = (id: string, results: string, fileName = `${id}.xlsx`): OrderRow => ({
@@ -8,7 +9,9 @@ const row = (id: string, results: string, fileName = `${id}.xlsx`): OrderRow => 
     createdAt: new Date('2026-01-01T10:00:00Z'),
     fileName: fileName,
     sampleIds: '',
+    sampleIdsDisplay: '',
     sampleIdsAVV: '',
+    sampleIdsAVVDisplay: '',
     pathogens: '',
     nrls: '',
     sampleCount: 1,
@@ -95,6 +98,19 @@ describe('OrderListViewComponent filtering', () => {
         expect(emitted[0].results).toBe('complete');
         expect(emitted[0].columns.fileName).toBe('second');
         expect(displayedIds(component)).toEqual(['d']);
+    });
+
+    it('filters on a sample number the truncated cell no longer shows', () => {
+        const sampleIds = Array.from({ length: 12 }, (_, index) => `S-${index + 1}`);
+        component.rows = [{
+            ...row('a', '1/1'),
+            sampleIds: joinValues(sampleIds),
+            sampleIdsDisplay: joinValuesTruncated(sampleIds)
+        }];
+
+        component.onFilterChange('sampleIds', 'S-12');
+
+        expect(displayedIds(component)).toEqual(['a']);
     });
 
     it('does not re-apply the filter the container echoes back', () => {
