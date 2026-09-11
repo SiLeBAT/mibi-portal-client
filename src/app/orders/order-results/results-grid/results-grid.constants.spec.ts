@@ -1,3 +1,4 @@
+import { SampleWithResultsDTO } from '../../../core/model/response.model';
 import { dataGridRowHeaderTrack } from '../../../grid/data-grid/data-grid.constants';
 import { SamplesGridCellType } from '../../../grid/samples-grid/samples-grid.model';
 import { samplesEditorDataHeaders } from '../../../samples/samples-editor/constants/column-headers.constants';
@@ -8,6 +9,7 @@ import {
 } from './results-grid.constants';
 
 const FIXED_COLUMN_COUNT = 9; // row-number + NRL + 7 uploaded columns
+const sample = {} as SampleWithResultsDTO;
 const ALL_DATA_COLUMN_COUNT = Object.keys(samplesEditorDataHeaders).length;
 
 describe('createResultsGridModel', () => {
@@ -28,6 +30,8 @@ describe('createResultsGridModel', () => {
         expect(toggle.cellType).toBe(SamplesGridCellType.TOGGLE);
         expect(toggle.headerCellType).toBe(SamplesGridCellType.TOGGLE);
         expect(toggle.getHeaderData?.()).toBe('Alle Auftragsdaten anzeigen: Hier klicken');
+        // Every bar cell repeats the label so the tooltip covers the whole button (#836).
+        expect(toggle.getData(sample, 0)).toBe('Alle Auftragsdaten anzeigen: Hier klicken');
     });
 
     it('renders each result column as a filling STACKED cell headed by its key', () => {
@@ -47,6 +51,7 @@ describe('createFullDataGridModel', () => {
         expect(model.columns).toHaveLength(2 + ALL_DATA_COLUMN_COUNT + 1);
         expect(toggle.cellType).toBe(SamplesGridCellType.TOGGLE);
         expect(toggle.getHeaderData?.()).toBe('BfR-Ergebnisse anzeigen: Hier klicken');
+        expect(toggle.getData(sample, 0)).toBe('BfR-Ergebnisse anzeigen: Hier klicken');
     });
 });
 

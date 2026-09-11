@@ -1,13 +1,19 @@
 <ng-template #template
+    let-model="model"
     let-data="data"
 >
     <!-- Suppress the grid's own selection/hover so the bar behaves like a button.
          The click still bubbles and is handled by the results view via delegation. -->
+    <!-- Every cell of the bar carries the label as its tooltip, so the mouse-over
+         text shows anywhere on the button, not just over the label (ticket #836).
+         The label itself is only rendered in the (sticky header) cell; it keeps its
+         own title as the source of the full text for the truncation directive. -->
     <div class="mibi-toggle-cell"
+        [title]="data"
         (mousedown)="$event.stopPropagation()"
         (mouseover)="$event.stopPropagation()"
     >
-        @if (data) {
+        @if (model.isColHeader && data) {
             <span class="mibi-toggle-cell__label" [title]="data">{{ data }}</span>
         }
     </div>
