@@ -66,7 +66,9 @@ function resultColumn(colId: number, key: string): ResultsGridColumnModel {
 
 // The in-grid separator/toggle column (mockup #7/#9). It renders as a coloured
 // bar with the label in the sticky header cell; the results view turns clicks on
-// it into the show-all-data toggle.
+// it into the show-all-data toggle. Every cell of the column carries the label so
+// the bar shows the mouse-over text over its whole height (ticket #836); only the
+// header cell renders it as visible text.
 function toggleColumn(colId: number, label: string): ResultsGridColumnModel {
     return {
         colId: colId,
@@ -75,7 +77,7 @@ function toggleColumn(colId: number, label: string): ResultsGridColumnModel {
         headerText: '',
         headerCellType: SamplesGridCellType.TOGGLE,
         getHeaderData: () => label,
-        getData: () => ''
+        getData: () => label
     };
 }
 
