@@ -1,0 +1,63 @@
+# Code documentation — generated with CompoDoc and published to GitHub Pages.
+# https://silebat.github.io/mibi-portal-client/
+#
+# Requires GitHub Pages to be enabled once in the repo settings:
+# Settings -> Pages -> Source: "GitHub Actions".
+
+name: Code documentation
+
+on:
+  push:
+    branches:
+      - develop
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Only the newest push to develop needs to be published.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get code
+        uses: actions/checkout@v5
+
+      - name: Install NodeJS
+        uses: actions/setup-node@v5
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate documentation
+        run: npm run docs
+
+      - name: Upload documentation
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: documentation
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

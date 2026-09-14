@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "src/**/*.spec.ts",
+    "src/setup-jest.ts",
+    "src/jest-global-mocks.ts",
+    "src/polyfills.ts"
+  ]
+}

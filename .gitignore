@@ -41,6 +41,7 @@ CLAUDE.md
 /.sass-cache
 /connect.lock
 /coverage
+/documentation
 /libpeerconnection.log
 npm-debug.log
 yarn-error.log

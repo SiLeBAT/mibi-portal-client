@@ -18,6 +18,12 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
+## Code documentation
+
+The code documentation is generated with [CompoDoc](https://compodoc.app) and published to GitHub Pages on every push to `develop`: https://silebat.github.io/mibi-portal-client/
+
+Run `npm run docs` to generate it locally into `documentation/`, or `npm run docs:serve` to generate and serve it at `http://localhost:8080/`.
+
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).

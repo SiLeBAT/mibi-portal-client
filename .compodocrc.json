@@ -1,0 +1,6 @@
+{
+  "name": "MiBi Portal Client",
+  "tsconfig": "tsconfig.doc.json",
+  "output": "documentation",
+  "disableRoutesGraph": true
+}
