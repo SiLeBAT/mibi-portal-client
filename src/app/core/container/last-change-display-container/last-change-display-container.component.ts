@@ -8,6 +8,7 @@ import { Store } from '@ngrx/store';
 import { SystemInformation } from '../../model/system-information.model';
 import { updateSupportDetailSOA } from '../../../content/state/content.actions';
 import { SupportDetail } from '../../../content/model/support-detail.model';
+import { parseLastChange } from '../../model/last-change';
 
 @Component({
     standalone: false,
@@ -25,7 +26,6 @@ export class LastChangeDisplayContainerComponent implements OnInit {
     serverVersion: string;
     clientVersion: string;
     isDataAvailable: boolean;
-    private dateParseString = 'YYYY-MM-DD HH:mm:ss +-HHmm';
     private clientLastChange: moment.Moment;
     private serverLastChange: moment.Moment;
 
@@ -33,12 +33,12 @@ export class LastChangeDisplayContainerComponent implements OnInit {
 
     ngOnInit(): void {
         moment.locale('en');
-        this.clientLastChange = moment(environment.lastChange, this.dateParseString);
+        this.clientLastChange = parseLastChange(environment.lastChange);
         this.lastChange$ = new BehaviorSubject(this.clientLastChange);
         this.lastChangeObs = this.lastChange$.asObservable();
         this.dataService.getSystemInfo().toPromise().then(
             (sysInfo: SystemInformation) => {
-                this.serverLastChange = moment(sysInfo.lastChange, this.dateParseString);
+                this.serverLastChange = parseLastChange(sysInfo.lastChange);
                 const dateCompare = [];
                 if (this.serverLastChange.isValid()) {
                     dateCompare.push(this.serverLastChange);
