@@ -51,6 +51,10 @@ import {
  * job. The NRL enrichment job stays on the server, so this deliberately does NOT
  * assign per-sample nrl/analysis/urgency — the cloud fills those in.
  */
+// Excel keeps a date as a serial number: 1 is 1 January 1900, and anything
+// below 1 is a time of day, which xlsx reads as 31 December 1899.
+const EXCEL_FIRST_DAY = Date.UTC(1900, 0, 1);
+
 @Injectable({ providedIn: 'root' })
 export class ExcelParserService {
     async parse(file: File): Promise<ParsedSampleSheet> {
@@ -221,68 +225,40 @@ export class ExcelParserService {
     }
 
     private getStringFromDateCell(cell: CellObject): string {
-        const v = cell.v as Date;
-
         // date cells are formatted with english rules, so some conversion is necessary to get a german localized string
         // due to the complexity of this task all user defined date formats are ignored
-        const localMoment = this.getLocalizedMomentFromDate(v);
+        const cellMoment = this.getLocalizedMomentFromDate(cell.v as Date);
 
-        // to check if cell contains a time or a date reparse the cell to excel's serialized date format
-        const serializedDate = utils.aoa_to_sheet([[v]], { cellDates: false })[
-            'A1'
-        ].v as number;
-
-        // excel uses integer part for dates and fractional part for time
-        const isTime = serializedDate - Math.floor(serializedDate) !== 0;
-        const isDate = serializedDate >= 1;
+        // excel uses the integer part of the serial number for the day and the
+        // fraction for the time; both are read off the UTC parts, so no timezone
+        // takes part in the decision
+        const isDate = cellMoment.valueOf() >= EXCEL_FIRST_DAY;
+        const isTime =
+            cellMoment.hours() !== 0 ||
+            cellMoment.minutes() !== 0 ||
+            cellMoment.seconds() !== 0;
 
         // format the date accordingly
         if (isDate && !isTime) {
-            return localMoment.format('L');
+            return cellMoment.format('L');
         } else if (!isDate) {
-            return localMoment.format('LTS');
+            return cellMoment.format('LTS');
         } else {
-            return localMoment.format('L LTS');
+            return cellMoment.format('L LTS');
         }
     }
 
     private getLocalizedMomentFromDate(date: Date): moment.Moment {
-        // moment does not interpret timezones so some trickery is necessary
+        // xlsx puts the date the sheet shows into the UTC parts of this Date, so
+        // it has to be read in UTC. Read in local time it would be shifted by the
+        // browser offset - showing a time of 02:00 on a plain date in Berlin, and
+        // moving the day itself for a browser west of UTC.
+        //
+        // A serial number is a fraction of a day, so a time can come back a
+        // millisecond short (14:30:04.999); round to the second Excel shows.
+        const wholeSeconds = Math.round(date.getTime() / 1000) * 1000;
 
-        // create moment with given timezone offset
-        const offMoment = moment(date);
-
-        // get timezone offset of local timezone
-        const localOffset = moment().utcOffset();
-
-        // convert to utc time with offset to local timezone
-        let correctMoment = offMoment.utcOffset(localOffset);
-        correctMoment = this.correctMomentForXLSXSummerTimeBug(
-            correctMoment,
-            date
-        );
-
-        return correctMoment.locale('de');
-    }
-
-    private correctMomentForXLSXSummerTimeBug(
-        momentDate: moment.Moment,
-        date: Date
-    ): moment.Moment {
-        // since xlsx v0.16.0 date is in summer time if the date itself lies in summer, instead of local time is in summer
-
-        const localOffset = moment().utcOffset();
-
-        const gmtString = date.toString();
-        const gmtIndex = gmtString.indexOf('GMT');
-        const hours = Number(gmtString.slice(gmtIndex + 4, gmtIndex + 6));
-        const minutes = Number(gmtString.slice(gmtIndex + 6, gmtIndex + 8));
-        let parsedOffset = hours * 60 + minutes;
-        if (gmtString.slice(gmtIndex + 3, gmtIndex + 4) === '-') {
-            parsedOffset = -parsedOffset;
-        }
-
-        return momentDate.add(parsedOffset - localOffset, 'minutes');
+        return moment.utc(wholeSeconds).locale('de');
     }
 
     private fromWorksheetToData(workSheet: WorkSheet): ParsedSample[] {
@@ -295,7 +271,12 @@ export class ExcelParserService {
         const data = utils.sheet_to_json<Record<string, string>>(workSheet, {
             header: FORM_PROPERTIES,
             range: lineNumber,
-            defval: ''
+            defval: '',
+            // hand over date cells the way xlsx read them, with the date the
+            // sheet shows in their UTC parts. Without this they are shifted
+            // into the browser's timezone and would have to be read
+            // differently from the date cells outside the sample rows.
+            UTC: true
         });
 
         const cleanedData = this.fromDataToCleanedSamples(data);
@@ -334,8 +315,8 @@ export class ExcelParserService {
             let parsedMoment: moment.Moment;
 
             // date was given as Date object
-            if (date.includes('GMT')) {
-                parsedMoment = this.getLocalizedMomentFromDate(new Date(date));
+            if (stringOrDate instanceof Date) {
+                parsedMoment = this.getLocalizedMomentFromDate(stringOrDate);
                 // date was given as string
             } else {
                 const americanDF = /\d\d?\/\d\d?\/\d\d\d?\d?/;

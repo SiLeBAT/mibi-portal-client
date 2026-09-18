@@ -20,14 +20,23 @@ function cellToRowCol(address: string): [number, number] {
     return [decoded.r, decoded.c];
 }
 
-// Build a minimal but structurally-valid Einsendeformular sheet.
-function buildSampleSheetFile(): File {
+type CellValue = string | Date;
+
+// Address of a sample-data column in the first data row (row 42).
+function sampleCell(property: string): string {
+    return utils.encode_cell({ r: 41, c: FORM_PROPERTIES.indexOf(property) });
+}
+
+// Build a minimal but structurally-valid Einsendeformular sheet. `overrides`
+// sets further cells by address, e.g. a date cell holding a real Date.
+function buildSampleSheetFile(overrides: Record<string, CellValue> = {}): File {
     const rows = 45;
     const cols = 26;
-    const grid: (string | undefined)[][] = Array.from({ length: rows }, () =>
-        Array.from<string | undefined>({ length: cols })
+    const grid: (CellValue | undefined)[][] = Array.from(
+        { length: rows },
+        () => Array.from<CellValue | undefined>({ length: cols })
     );
-    const set = (address: string, value: string) => {
+    const set = (address: string, value: CellValue) => {
         const [r, c] = cellToRowCol(address);
         grid[r][c] = value;
     };
@@ -45,6 +54,10 @@ function buildSampleSheetFile(): File {
     set('A41', 'Ihre Probe-nummer');
     set('A42', 'sample-0001'); // sample_id
     set('D42', 'Salmonella'); // pathogen_avv (4th column)
+
+    Object.entries(overrides).forEach(([address, value]) =>
+        set(address, value)
+    );
 
     const ws = utils.aoa_to_sheet(grid);
     const wb = utils.book_new();
@@ -108,5 +121,82 @@ describe('ExcelParserService', () => {
         await expect(
             service.parse(buildForeignWorkbookFile())
         ).rejects.toThrow(/valid excel sheet/);
+    });
+});
+
+// ---------------------------------------------------------------------------
+// Date cells: the day Excel shows, in every timezone
+// ---------------------------------------------------------------------------
+
+describe('ExcelParserService date cells', () => {
+    let service: ExcelParserService;
+
+    beforeEach(() => {
+        service = new ExcelParserService();
+    });
+
+    const samplingDateOf = async (value: CellValue): Promise<string> => {
+        const result = await service.parse(
+            buildSampleSheetFile({ [sampleCell('sampling_date')]: value })
+        );
+        return result.samples[0].data['sampling_date'].value;
+    };
+
+    const signatureDateOf = async (value: CellValue): Promise<string> => {
+        const result = await service.parse(buildSampleSheetFile({ A27: value }));
+        return result.meta.signatureDate;
+    };
+
+    it('reads a date cell in winter time', async () => {
+        expect(await samplingDateOf(new Date(2026, 0, 15))).toBe('15.01.2026');
+    });
+
+    it('reads a date cell in summer time', async () => {
+        expect(await samplingDateOf(new Date(2026, 6, 15))).toBe('15.07.2026');
+    });
+
+    it('reads a date cell that also carries a time', async () => {
+        expect(await samplingDateOf(new Date(2026, 6, 15, 14, 30))).toBe(
+            '15.07.2026'
+        );
+    });
+
+    it('does not depend on how the browser writes Date.toString()', async () => {
+        const toString = Date.prototype.toString;
+        // eslint-disable-next-line no-extend-native
+        Date.prototype.toString = function () {
+            return 'Mittwoch, 15. Juli 2026';
+        };
+
+        try {
+            expect(await samplingDateOf(new Date(2026, 6, 15))).toBe(
+                '15.07.2026'
+            );
+        } finally {
+            // eslint-disable-next-line no-extend-native
+            Date.prototype.toString = toString;
+        }
+    });
+
+    it('reads a date written as German text', async () => {
+        expect(await samplingDateOf('5.6.2026')).toBe('05.06.2026');
+    });
+
+    it('reads a date written in the American order', async () => {
+        expect(await samplingDateOf('06/05/2026')).toBe('05.06.2026');
+    });
+
+    it('keeps a value it cannot read as a date', async () => {
+        expect(await samplingDateOf('not a date')).toBe('not a date');
+    });
+
+    it('writes a meta date cell as a German date', async () => {
+        expect(await signatureDateOf(new Date(2026, 6, 15))).toBe('15.07.2026');
+    });
+
+    it('writes a meta date cell carrying a time with that time', async () => {
+        expect(await signatureDateOf(new Date(2026, 6, 15, 14, 30, 5))).toBe(
+            '15.07.2026 14:30:05'
+        );
     });
 });
