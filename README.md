@@ -18,6 +18,8 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
+Before merging a change that touches dates, run `npm run test:timezones`. It runs the tests in UTC, in Berlin time and in a timezone behind UTC, because a date bug is easy to miss on a machine in Berlin.
+
 ## Code documentation
 
 The code documentation is generated with [CompoDoc](https://compodoc.app) and published to GitHub Pages on every push to `develop`: https://silebat.github.io/mibi-portal-client/
