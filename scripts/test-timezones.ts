@@ -15,7 +15,7 @@
  * a case - Git Bash rewrites values containing "/" before Node sees them - so
  * use this script instead.
  */
-const { spawnSync } = require('child_process');
+import { spawnSync } from 'child_process';
 
 const TIMEZONES = ['UTC', 'Europe/Berlin', 'America/New_York'];
 
@@ -26,7 +26,7 @@ const jestBin = require.resolve('jest/bin/jest');
 const jestArgs = ['--runInBand', ...process.argv.slice(2)];
 
 // The UTC offsets Node uses when it is started with TZ set to the zone.
-function offsetsNodeUses(timeZone) {
+function offsetsNodeUses(timeZone: string): string {
     const code =
         `const dates = ${JSON.stringify(PROBE_DATES)};` +
         'process.stdout.write(JSON.stringify(' +
@@ -39,15 +39,16 @@ function offsetsNodeUses(timeZone) {
 }
 
 // The UTC offsets the zone really has, taken from the timezone database.
-function offsetsOf(timeZone) {
+function offsetsOf(timeZone: string): string {
     const format = new Intl.DateTimeFormat('en-US', {
-        timeZone,
+        timeZone: timeZone,
         timeZoneName: 'longOffset'
     });
     const offsets = PROBE_DATES.map(date => {
-        const name = format
-            .formatToParts(new Date(date))
-            .find(part => part.type === 'timeZoneName').value;
+        const name =
+            format
+                .formatToParts(new Date(date))
+                .find(part => part.type === 'timeZoneName')?.value ?? '';
         const match = /GMT([+-])(\d\d):(\d\d)/.exec(name);
         if (!match) {
             return 0;
@@ -58,39 +59,41 @@ function offsetsOf(timeZone) {
     return JSON.stringify(offsets);
 }
 
-let failed = null;
+function main(): void {
+    let failed: string | null = null;
 
-for (const timeZone of TIMEZONES) {
-    const expected = offsetsOf(timeZone);
-    const used = offsetsNodeUses(timeZone);
+    for (const timeZone of TIMEZONES) {
+        const expected = offsetsOf(timeZone);
+        const used = offsetsNodeUses(timeZone);
 
-    console.log(
-        `\n=== ${timeZone} === (UTC offset winter/summer: ${expected} minutes)\n`
-    );
+        console.log(`\n=== ${timeZone} === (UTC offset winter/summer: ${expected} minutes)\n`);
 
-    if (used !== expected) {
-        console.log(
-            `Node does not apply TZ=${timeZone} on this machine: it uses ` +
-                `${used} instead of ${expected}. Stopping, because the run ` +
-                'would prove nothing.'
-        );
+        if (used !== expected) {
+            console.log(
+                `Node does not apply TZ=${timeZone} on this machine: it uses ` +
+                    `${used} instead of ${expected}. Stopping, because the run ` +
+                    'would prove nothing.'
+            );
+            process.exit(1);
+        }
+
+        const run = spawnSync(process.execPath, [jestBin, ...jestArgs], {
+            env: { ...process.env, TZ: timeZone },
+            stdio: 'inherit'
+        });
+
+        if (run.status !== 0) {
+            failed = failed ?? timeZone;
+            console.log(`\n!!! tests failed in ${timeZone}\n`);
+        }
+    }
+
+    if (failed) {
+        console.log(`\nTimezone run failed, first in ${failed}.`);
         process.exit(1);
     }
 
-    const run = spawnSync(process.execPath, [jestBin, ...jestArgs], {
-        env: { ...process.env, TZ: timeZone },
-        stdio: 'inherit'
-    });
-
-    if (run.status !== 0) {
-        failed = failed ?? timeZone;
-        console.log(`\n!!! tests failed in ${timeZone}\n`);
-    }
+    console.log('\nAll timezones passed.');
 }
 
-if (failed) {
-    console.log(`\nTimezone run failed, first in ${failed}.`);
-    process.exit(1);
-}
-
-console.log('\nAll timezones passed.');
+main();

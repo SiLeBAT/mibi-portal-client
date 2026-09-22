@@ -16,7 +16,7 @@
     "postbuild:qa": "npm run version:emit",
     "postbuild:production": "npm run version:emit",
     "test": "jest",
-    "test:timezones": "node scripts/test-timezones.js",
+    "test:timezones": "tsc -p scripts/tsconfig.json && node .scripts-build/scripts/test-timezones.js",
     "test:watch": "jest --watch",
     "test:ci": "jest --runInBand",
     "test:coverage": "jest --coverage",
