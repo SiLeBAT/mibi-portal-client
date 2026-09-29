@@ -4,7 +4,7 @@
     "firstName": "User1",
     "lastName": "User1",
     "email": "user1@test.com",
-    "instituteId": "1235",
+    "instituteId": "E2EINST001",
     "password": "user1secrettestpassword"
   },
   {
@@ -12,7 +12,7 @@
     "firstName": "User2",
     "lastName": "User2",
     "email": "not-admin-enabled@test.com",
-    "instituteId": "1235",
+    "instituteId": "E2EINST001",
     "password": "user2secrettestpassword"
   },
   {
@@ -20,7 +20,7 @@
     "firstName": "User3",
     "lastName": "User3",
     "email": "not-enabled@test.com",
-    "instituteId": "1235",
+    "instituteId": "E2EINST001",
     "password": "user3secrettestpassword"
   },
   {
@@ -28,7 +28,7 @@
     "firstName": "User4",
     "lastName": "User4",
     "email": "not-enabled-not-admin-enabled@test.com",
-    "instituteId": "1235",
+    "instituteId": "E2EINST001",
     "password": "user4secrettestpassword"
   },
   {
@@ -36,7 +36,7 @@
     "firstName": "User5",
     "lastName": "User5",
     "email": "newUser@test.com",
-    "instituteId": "1235",
+    "instituteId": "E2EINST001",
     "password": "user5secrettestpassword"
   }
 ]

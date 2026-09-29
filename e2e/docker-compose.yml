@@ -37,6 +37,13 @@ services:
     depends_on:
       mongo:
         condition: service_healthy
+    volumes:
+      # Parse stores file *contents* on disk (@parse/fs-files-adapter), not in Mongo, so
+      # the Excel templates that `Template_File` rows name are not part of the database
+      # seed. `node e2e/seed/make-seed.js` copies them here; without them submission and
+      # Excel creation fails with "No Excel data available.".
+      # Writable on purpose: Parse also writes new files into this directory at runtime.
+      - ./seed/files:/app/data
     environment:
       # Auth is stubbed (keycloak.enabled=false in the image config), but the composition
       # root still parses issuerUrl to derive the realm — so give it a well-formed dummy

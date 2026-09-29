@@ -1,10 +1,12 @@
 # End-to-end tests in GitHub Actions — Dockerized stack, MANUAL trigger.
 #
 # Design: bring the whole MiBi-Portal stack up as containers inside the runner,
-# seed MongoDB from a DB dump, then run the Cypress suite against localhost.
+# seed MongoDB from e2e/seed/seed-data.js.gz, then run the Cypress suite against localhost.
 # Nothing here touches the BfR intranet, so the firewall is not involved.
 #
-# STATUS: scaffold. See e2e/README.md "Open requirements" before expecting a green run.
+# The seed file is not in the repo. Set the repository secret E2E_SEED_URL to a URL that
+# serves it, otherwise Mongo starts empty and only the Welcome-page smoke test can pass.
+# See e2e/README.md, "Providing the seed to CI".
 
 name: E2E (Docker)
 
@@ -26,7 +28,10 @@ on:
         required: true
       spec:
         description: "Cypress spec glob (blank = full suite)"
-        default: "cypress/integration/ui/welcome.smoke.spec.ts"
+        # The specs the seed supports: the public Welcome page plus a real login.
+        # The remaining api/v2 and e2e specs still expect the pre-CSRF API — see the
+        # follow-up ticket before adding them here.
+        default: "cypress/integration/ui/welcome.smoke.spec.ts,cypress/integration/e2e/user/login_out.spec.ts"
         required: false
       run_integration_tests:
         description: "Also run mibi-portal-server's API integration suite (jest)"
@@ -45,7 +50,20 @@ jobs:
     env:
       # Every `docker compose` call in this job uses the same file set, so teardown and
       # log collection stay correct no matter which step failed.
-      COMPOSE_FILES: ${{ inputs.run_integration_tests && '-f e2e/docker-compose.yml -f e2e/docker-compose.integration.yml' || '-f e2e/docker-compose.yml' }}
+      #
+      # The integration overlay is always included: it only publishes the server's
+      # 3000/1337 on the host, and the seeders (seed-users.js, seed-states.js) are plain
+      # node processes on the runner that talk to Parse on 1337. Port clashes are a local
+      # concern, not a runner one — locally, add the overlay only while seeding.
+      COMPOSE_FILES: "-f e2e/docker-compose.yml -f e2e/docker-compose.integration.yml"
+
+      # Parse credentials for the seeders. These are NOT secrets and must not be taken
+      # from any: they have to match the values baked into e2e/docker/Dockerfile.server,
+      # which node-config cannot take from the environment. A mismatch means every
+      # seeding call gets a 403.
+      PARSE_URL: http://localhost:1337/admin/parse
+      PARSE_APP_ID: appId
+      PARSE_MASTER_KEY: masterKey
 
     steps:
       # --- 1. Get all three services' source (client repo is the one running this workflow) ---
@@ -71,42 +89,55 @@ jobs:
           path: mibi-parse-cloud
           # TODO: if private, add: token: ${{ secrets.GH_PAT }}
 
-      # --- 2. Fetch the DB dump (mibiportal) the manager provides ---
-      #     For the first Welcome-page smoke run this is OPTIONAL — Mongo just starts empty.
-      #     For real API/data tests, provide the dump. See e2e/README.md req #1 & #2.
-      - name: Fetch DB dump (optional)
+      # --- 2. The seed data (reference data + scrubbed institutions) ---
+      #     Committed at e2e/seed/seed-data.js.gz, so it arrives with the checkout and this
+      #     step only reports what is there. Setting the repository secret E2E_SEED_URL
+      #     overrides it with a download, which is a way to try a refreshed seed without
+      #     committing one. With no seed at all Mongo starts empty and only the
+      #     Welcome-page smoke test can pass. See e2e/README.md.
+      - name: Seed data
+        env:
+          E2E_SEED_URL: ${{ secrets.E2E_SEED_URL }}
         run: |
-          mkdir -p mibi-portal-client/e2e/seed
-          # TODO: pull the real dump, e.g.:
-          #   curl -sSL "${{ secrets.E2E_DB_DUMP_URL }}" -o mibi-portal-client/e2e/seed/dump.archive.gz
-          if [ ! -f mibi-portal-client/e2e/seed/dump.archive.gz ]; then
-            echo "::warning::No DB dump provided — starting Mongo empty (fine for the Welcome-page smoke test)."
+          cd mibi-portal-client
+          if [ -n "$E2E_SEED_URL" ]; then
+            curl -sSLf "$E2E_SEED_URL" -o e2e/seed/seed-data.js.gz
+            echo "Seed downloaded from E2E_SEED_URL: $(du -h e2e/seed/seed-data.js.gz | cut -f1)"
+          elif [ -f e2e/seed/seed-data.js.gz ]; then
+            echo "Seed from the repository: $(du -h e2e/seed/seed-data.js.gz | cut -f1)"
+            ls -la e2e/seed/files || echo "::warning::No e2e/seed/files — Excel/submission creation will fail."
+          else
+            echo "::warning::No seed data in the repository and no E2E_SEED_URL — starting Mongo empty. Only the Welcome-page smoke test can pass."
           fi
 
-      # --- 3. Build + start the whole stack (mongo seeded from the dump) ---
+      # --- 3. Build + start the whole stack ---
+      #     Mongo loads e2e/seed/seed-data.js.gz on first boot via its init hook
+      #     (e2e/mongo/restore.sh); the volume is fresh in CI, so the hook always runs.
       #     The integration overlay publishes the server's 3000/1337 on the host so the
-      #     jest suite and the states seeder — both plain node processes on the runner —
-      #     can reach the API and Parse. Cypress does not need it.
+      #     seeders and the jest suite — plain node processes on the runner — can reach
+      #     the API and Parse.
       - name: Bring up the stack
         working-directory: mibi-portal-client
-        env:
-          PARSE_APP_ID: ${{ secrets.PARSE_APP_ID || 'appId' }}
-          PARSE_MASTER_KEY: ${{ secrets.PARSE_MASTER_KEY || 'masterKey' }}
         run: |
           docker compose $COMPOSE_FILES up -d --build --wait
           docker compose $COMPOSE_FILES ps
 
       # --- 4. Seed the reference data the validation rules read at runtime ---
-      #     Without the `states` class the AVV id format rule (error 72) has an empty
-      #     regex list and silently checks nothing — see e2e/seed/seed-states.js.
+      #     The seed already contains `states`, in which case this is a no-op (the script
+      #     skips when rows exist). It still runs, so a seed-less run has at least the
+      #     AVV id format regexes: without the `states` class the format rule (error 72)
+      #     has an empty regex list and silently checks nothing.
       - name: Seed states
-        if: ${{ inputs.run_integration_tests }}
         working-directory: mibi-portal-client
-        env:
-          PARSE_URL: http://localhost:1337/admin/parse
-          PARSE_APP_ID: ${{ secrets.PARSE_APP_ID || 'appId' }}
-          PARSE_MASTER_KEY: ${{ secrets.PARSE_MASTER_KEY || 'masterKey' }}
         run: node e2e/seed/seed-states.js
+
+      # --- 4b. Seed the test accounts ---
+      #     Not part of the seed data: the `users` class stores argon2 password hashes,
+      #     and the specs log in with the plaintext passwords from
+      #     cypress/fixtures/users.json. See e2e/seed/seed-users.js.
+      - name: Seed users
+        working-directory: mibi-portal-client
+        run: node e2e/seed/seed-users.js
 
       # --- 5. Run mibi-portal-server's API integration suite against the stack ---
       - name: Set up Node for the integration suite
@@ -129,7 +160,11 @@ jobs:
           # jest sets NODE_ENV=test, so node-config picks up config/local-test.json,
           # whose apiUrl is http://localhost:3000 — the port the overlay publishes.
           NODE_ENV: test
-        run: npm run test:integration
+        # --runInBand: with jest's worker processes, a failing test that carries an axios
+        # error crashes the worker while serializing it ("Converting circular structure to
+        # JSON") and the real assertion never gets reported. A green run looks the same
+        # either way; a red one is only readable single-process.
+        run: npm run test:integration -- --runInBand
 
       # --- 6. Run the Cypress E2E suite against the running stack ---
       - name: Cypress run
