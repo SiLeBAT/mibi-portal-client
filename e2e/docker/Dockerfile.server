@@ -46,6 +46,19 @@ COPY --from=cloudbuild /cloud/package*.json ./_cloud/
 # Container config override. node-config loads config/local.json with high precedence,
 # so this wins over anything baked into the image. It points Parse at the Mongo
 # container and at the compiled cloud code, with Keycloak disabled (auth stubbed).
+#
+# The Parse appId/masterKey below are the throwaway dev values `appId`/`masterKey`. They
+# are NOT mapped from environment variables (config/custom-environment-variables.json in
+# mibi-portal-server maps no Parse keys), so they are fixed here — and the seeders
+# (e2e/seed/seed-states.js, seed-users.js) default to exactly these. Change them here and
+# you must change them for the seeders too, or every seeding call gets a 403.
+#
+# masterKeyIps is widened for the same reason: Parse Server 9 accepts the master key only
+# from 127.0.0.1/::1 by default, and the seeders run *outside* this container — so Parse
+# sees the Docker gateway address and answers 403 {"error":"unauthorized"}.
+#
+# Both settings are safe here and nowhere else: this stack lives for one CI run, Parse is
+# published on localhost only, and the credentials are throwaway values.
 RUN mkdir -p data && cat > config/local.json <<'JSON'
 {
   "application": { "appName": "MiBi-Portal-E2E", "clientUrl": "http://localhost:4200" },
@@ -54,10 +67,11 @@ RUN mkdir -p data && cat > config/local.json <<'JSON'
   "parseServer": {
     "publicServerURL": "http://127.0.0.1:1337/admin/parse",
     "serverURL": "http://127.0.0.1:1337/admin/parse",
-    "appId": "MIBI_E2E",
-    "masterKey": "e2e-master-key",
+    "appId": "appId",
+    "masterKey": "masterKey",
     "databaseURI": "mongodb://mongo:27017/mibiportal",
     "allowClientClassCreation": false,
+    "masterKeyIps": ["0.0.0.0/0", "::/0"],
     "cloud": "/app/_cloud/lib/src/main.js",
     "preserveFileName": true,
     "maxUploadSize": "100mb",
@@ -66,8 +80,8 @@ RUN mkdir -p data && cat > config/local.json <<'JSON'
   },
   "parseConnection": {
     "serverURL": "http://127.0.0.1:1337/admin/parse",
-    "appId": "MIBI_E2E",
-    "masterKey": "e2e-master-key",
+    "appId": "appId",
+    "masterKey": "masterKey",
     "host": "mongo:27017",
     "database": "mibiportal"
   },
@@ -78,6 +92,72 @@ RUN mkdir -p data && cat > config/local.json <<'JSON'
 }
 JSON
 
+# ---- Fake SMTP sink ----
+#
+# The portal sends mail on several paths that the tests walk through — logging in as an
+# unverified or not-yet-activated user triggers a reminder, registration a verification
+# mail. With nothing listening, nodemailer fails with ECONNREFUSED 127.0.0.1:25, the error
+# handler throws while reporting the original problem, and a clean 4xx turns into a 500.
+#
+# It has to live INSIDE this container: DefaultMailService (mibi-portal-server,
+# infrastructure/mail/mail.ts) hardcodes `host = 'localhost'` and `port = 25` and never
+# reads them from configuration, so a separate mail-catcher service cannot be targeted.
+#
+# The sink accepts and discards. If a spec ever needs to read a verification link, replace
+# this with a real catcher (mailpit) — which first needs a configurable SMTP host in
+# mibi-portal-server.
+RUN cat > /app/smtp-sink.js <<'SINK'
+// Minimal SMTP responder: enough of the protocol for nodemailer to consider a mail sent.
+const net = require('net');
+
+const server = net.createServer(socket => {
+    let inData = false;
+    let headers = '';
+
+    socket.setEncoding('utf8');
+    socket.write('220 localhost E2E mail sink\r\n');
+
+    socket.on('data', chunk => {
+        if (inData) {
+            headers += chunk;
+            if (headers.includes('\r\n.\r\n')) {
+                inData = false;
+                const subject = /^Subject: (.*)$/m.exec(headers);
+                console.log(
+                    `smtp-sink: accepted mail${subject ? ` subject="${subject[1].trim()}"` : ''}`
+                );
+                headers = '';
+                socket.write('250 2.0.0 Ok: queued\r\n');
+            }
+            return;
+        }
+
+        for (const line of chunk.split('\r\n').filter(Boolean)) {
+            const verb = line.slice(0, 4).toUpperCase();
+            if (verb === 'EHLO' || verb === 'HELO') {
+                socket.write('250 localhost\r\n');
+            } else if (verb === 'DATA') {
+                inData = true;
+                socket.write('354 End data with <CR><LF>.<CR><LF>\r\n');
+            } else if (verb === 'QUIT') {
+                socket.write('221 2.0.0 Bye\r\n');
+                socket.end();
+            } else {
+                // MAIL FROM, RCPT TO, RSET, NOOP and anything else: accept it.
+                socket.write('250 2.0.0 Ok\r\n');
+            }
+        }
+    });
+
+    socket.on('error', () => socket.destroy());
+});
+
+server.listen(25, '127.0.0.1', () =>
+    console.log('smtp-sink: listening on 127.0.0.1:25')
+);
+SINK
+
 ENV NODE_ENV=e2e
 EXPOSE 3000
-CMD ["node", "lib/main.js"]
+# The sink runs alongside the API; `exec` keeps the server as PID 1 so it still gets signals.
+CMD ["sh", "-c", "node /app/smtp-sink.js & exec node lib/main.js"]

@@ -1,27 +1,41 @@
 #!/bin/bash
-# Runs once on MongoDB's first boot (via /docker-entrypoint-initdb.d) to load the
-# provided "mibiportal" dump. See e2e/README.md requirements #1-#3.
+# Runs once on MongoDB's first boot (via /docker-entrypoint-initdb.d) and loads the
+# E2E seed into the "mibiportal" database. See e2e/README.md.
 #
 # IMPORTANT: the mongo entrypoint *sources* this file, so it must NOT use `set -e`
 # or `exit` — that would abort the entrypoint before the real mongod starts.
 #
-# Expects an archive at /seed/dump.archive.gz created with:
-#   mongodump --archive=dump.archive.gz --gzip --db mibiportal
+# The seed is a mongosh script produced by e2e/seed/make-seed.js:
 #
-# NOTE: the base mongo image does not ship `mongorestore`. When a real dump is added,
-# either use an image that includes mongodb-database-tools or restore from a sidecar
-# container. For the empty (smoke) case nothing below runs.
+#   node e2e/seed/make-seed.js        # writes e2e/seed/seed-data.js.gz
+#
+# It is a script rather than a mongodump archive because this image ships mongosh but
+# not mongorestore (mongodb-database-tools is a separate package), so nothing extra
+# has to be installed on either side. The seed names its own target database.
+#
+# With no seed present the database simply stays empty — enough for the Welcome-page
+# smoke test, not for anything that reads data.
 
-DUMP="/seed/dump.archive.gz"
+# /seed is the read-only mount of e2e/seed (see e2e/docker-compose.yml). SEED_DIR is
+# overridable so this hook can be exercised outside the container.
+SEED_DIR="${SEED_DIR:-/seed}"
+SEED_GZ="$SEED_DIR/seed-data.js.gz"
+SEED_PLAIN="$SEED_DIR/seed-data.js"
 
-if [ -f "$DUMP" ]; then
-  echo "restore.sh: restoring $DUMP ..."
-  if command -v mongorestore >/dev/null 2>&1; then
-    mongorestore --archive="$DUMP" --gzip --drop || echo "restore.sh: mongorestore reported an error"
-    echo "restore.sh: restore complete."
+if [ -f "$SEED_GZ" ]; then
+  echo "restore.sh: loading $SEED_GZ ..."
+  if gunzip -c "$SEED_GZ" > /tmp/seed-data.js; then
+    mongosh --quiet --file /tmp/seed-data.js ||
+      echo "restore.sh: mongosh reported an error while loading the seed"
+    rm -f /tmp/seed-data.js
   else
-    echo "restore.sh: mongorestore not found in this image — skipping (see e2e/README.md)."
+    echo "restore.sh: could not unpack $SEED_GZ — is it a gzip file?"
   fi
+elif [ -f "$SEED_PLAIN" ]; then
+  echo "restore.sh: loading $SEED_PLAIN ..."
+  mongosh --quiet --file "$SEED_PLAIN" ||
+    echo "restore.sh: mongosh reported an error while loading the seed"
 else
-  echo "restore.sh: no dump at $DUMP — starting with an empty database (fine for the smoke test)."
+  echo "restore.sh: no seed at $SEED_GZ — starting with an empty database."
+  echo "restore.sh: only the Welcome-page smoke test can pass like this."
 fi

@@ -1,9 +1,28 @@
-# Never commit the database dump — it may contain personal data (see e2e/README.md).
-# Keep this folder in git, ignore its contents.
+# Everything here is generated, so the folder is ignored by default and the files the
+# stack needs are listed back in explicitly.
 *
 !.gitignore
-# Exceptions: the states seed is public reference data (federal state names and AVV
-# id formats), not a dump, and the stack needs it — without it the AVV id format rule
-# has an empty regex list and validates nothing. See seed-states.js.
+
+# The seeding scripts.
+!make-seed.js
+!export-seed.mongosh.js
+!seed-users.js
 !seed-states.js
+
+# Canonical states master data (AVV id formats). Goes into the seed — see make-seed.js.
 !states.json
+
+# The seed itself IS committed: the data it contains is reference data plus institutions
+# with the contact fields overwritten, which the team approved for GitHub-hosted runners
+# (2026-09-29). Keeping it in the repo means a CI run needs no secret and no download.
+# Refresh it with `node e2e/seed/make-seed.js` and commit the result; re-run the person-name
+# check in e2e/README.md first.
+!seed-data.js.gz
+
+# The readable ~18 MB variant (`--keep-plain`) stays out of git; it is only for review.
+
+# Parse file contents (the Excel templates that Template_File rows name). Mounted as the
+# server's data directory, so the container may also write files here at runtime — only the
+# templates are tracked.
+!files/
+!files/*.xlsx
