@@ -89,18 +89,42 @@ function nrlColumn(): ResultsGridColumnModel {
     return textColumn(2, false, samplesEditorNrlHeader, sample => sample.sampleMeta.nrl);
 }
 
+// Unlike the other left-hand columns, the BfR order number is not part of the
+// uploaded order data: the LIMS delivers it with the results, so it arrives as a
+// property of resultData (ticket #856). A sample's results all belong to the
+// same BfR order, hence the first result's value stands for the whole sample.
+export const bfrOrderNumberKey = 'BfR-Auftragsnummer';
+export const bfrOrderNumberHeader = 'BfR-Auftrags­nummer';
+
+// The value shown for the whole sample, used by the grid cell and by the CSV
+// download so the file says what the screen says.
+export function bfrOrderNumber(sample: SampleWithResultsDTO): string {
+    return orderedResults(sample)[0]?.resultData[bfrOrderNumberKey] ?? '';
+}
+
+function bfrOrderNumberColumn(colId: number): ResultsGridColumnModel {
+    return textColumn(colId, false, bfrOrderNumberHeader, sample => bfrOrderNumber(sample));
+}
+
+// The Erreger column is headed differently in the two views: next to the BfR
+// results it says what the sample was submitted as, while the full-data view
+// keeps the samples-editor header (ticket #856).
+export const resultsViewPathogenHeader = 'Erreger: Eingesendet als';
+
 // Uploaded order columns to display in the results view (ticket #756), preceded
-// by the row-number row header and the NRL column, mirroring the samples editor.
+// by the row-number row header and the NRL column, mirroring the samples editor,
+// with the LIMS-supplied BfR order number in sixth place (ticket #856).
 const fixedColumns: ResultsGridColumnModel[] = [
     idColumn(),
     nrlColumn(),
     dataColumn(3, 'sample_id', samplesEditorDataHeaders.sample_id),
     dataColumn(4, 'sample_id_avv', samplesEditorDataHeaders.sample_id_avv),
     dataColumn(5, 'partial_sample_id', samplesEditorDataHeaders.partial_sample_id),
-    dataColumn(6, 'pathogen_avv', samplesEditorDataHeaders.pathogen_avv),
-    dataColumn(7, 'animal_avv', samplesEditorDataHeaders.animal_avv),
-    dataColumn(8, 'matrix_avv', samplesEditorDataHeaders.matrix_avv),
-    dataColumn(9, 'animal_matrix_text', samplesEditorDataHeaders.animal_matrix_text)
+    bfrOrderNumberColumn(6),
+    dataColumn(7, 'pathogen_avv', resultsViewPathogenHeader),
+    dataColumn(8, 'animal_avv', samplesEditorDataHeaders.animal_avv),
+    dataColumn(9, 'matrix_avv', samplesEditorDataHeaders.matrix_avv),
+    dataColumn(10, 'animal_matrix_text', samplesEditorDataHeaders.animal_matrix_text)
 ];
 
 const TOGGLE_COLUMN_ID = fixedColumns.length + 1;

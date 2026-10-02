@@ -71,17 +71,30 @@ describe('buildResultsCsv', () => {
 });
 
 describe('downloadColumnsForPathogen', () => {
-    it('starts with the 4 uploaded columns then the pathogen result columns, in order', () => {
-        const columns = downloadColumnsForPathogen(NRL.NRL_Salm);
-        const resultHeaders = columns.slice(4).map(column => column.header);
+    const SAMPLE_COLUMN_COUNT = 5; // 3 sample numbers + BfR order number + Erreger
 
-        expect(columns).toHaveLength(6);
+    it('starts with the 5 sample columns then the pathogen result columns, in order', () => {
+        const columns = downloadColumnsForPathogen(NRL.NRL_Salm);
+        const resultHeaders = columns.slice(SAMPLE_COLUMN_COUNT).map(column => column.header);
+
+        expect(columns).toHaveLength(SAMPLE_COLUMN_COUNT + 2);
         expect(resultHeaders).toEqual(['Serovar', 'Seroformel']);
     });
 
-    it('strips soft hyphens from the uploaded-column headers', () => {
+    // The file carries the columns the results view shows, in its order and with
+    // its headers: the BfR order number in sixth place on screen follows the
+    // three sample numbers here, and Erreger is headed as next to the results
+    // (tickets #786/#856).
+    it('heads the sample columns as the results view does, without soft hyphens', () => {
         const columns = downloadColumnsForPathogen(NRL.NRL_Salm);
-        columns.slice(0, 4).forEach(column => expect(column.header).not.toContain('\u00AD'));
+
+        expect(columns.slice(0, SAMPLE_COLUMN_COUNT).map(column => column.header)).toEqual([
+            'Ihre Probenummer',
+            'Probenummer nach AVV Data',
+            'AVV DatA-Teilproben-Nr.',
+            'BfR-Auftragsnummer',
+            'Erreger: Eingesendet als'
+        ]);
     });
 
     it('reads sample-number/pathogen values from sampleData and result values from the result', () => {
@@ -93,8 +106,23 @@ describe('downloadColumnsForPathogen', () => {
         const resultRow = sampleRow.results[0];
 
         expect(columns[0].getValue(sampleRow, resultRow)).toBe('S1');
-        expect(columns[3].getValue(sampleRow, resultRow)).toBe('Salmonella');
+        expect(columns[4].getValue(sampleRow, resultRow)).toBe('Salmonella');
         expect(columns.find(column => column.header === 'Serovar')?.getValue(sampleRow, resultRow))
             .toBe('S. Typhimurium');
+    });
+
+    // The BfR order number is one per sample, so each of a multi-result sample's
+    // rows repeats the value the results view shows for that sample (#856).
+    it('reads the BfR order number from the sample, repeating it across its result rows', () => {
+        const bfrColumn = downloadColumnsForPathogen(NRL.NRL_Salm)[3];
+        const sampleRow = sample({}, [
+            result(2, { 'BfR-Auftragsnummer': '2026-0815' }),
+            result(1, { 'BfR-Auftragsnummer': '2026-0815' })
+        ]);
+
+        expect(sampleRow.results.map(resultRow => bfrColumn.getValue(sampleRow, resultRow)))
+            .toEqual(['2026-0815', '2026-0815']);
+        const noResult: ResultDTO | undefined = undefined;
+        expect(bfrColumn.getValue(sample({}, []), noResult)).toBe('');
     });
 });

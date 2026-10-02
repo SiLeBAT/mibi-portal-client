@@ -8,20 +8,58 @@ import {
     gridColumnTemplate
 } from './results-grid.constants';
 
-const FIXED_COLUMN_COUNT = 9; // row-number + NRL + 7 uploaded columns
+const FIXED_COLUMN_COUNT = 10; // row-number + NRL + BfR order number + 7 uploaded columns
 const sample = {} as SampleWithResultsDTO;
 const ALL_DATA_COLUMN_COUNT = Object.keys(samplesEditorDataHeaders).length;
 
+function sampleWithResults(...resultData: Record<string, string>[]): SampleWithResultsDTO {
+    return {
+        results: resultData.map((data, index) => ({
+            id: `r${index + 1}`,
+            position: index + 1,
+            resultData: data
+        }))
+    } as SampleWithResultsDTO;
+}
+
 describe('createResultsGridModel', () => {
-    it('is the 9 fixed columns, then the toggle bar, then the result columns', () => {
+    it('is the 10 fixed columns, then the toggle bar, then the result columns', () => {
         const model = createResultsGridModel(['Serovar', 'Seroformel']);
 
         expect(model.columns).toHaveLength(FIXED_COLUMN_COUNT + 1 + 2);
         expect(model.headerRowId).toBe(0);
         expect(model.headerCellType).toBe(SamplesGridCellType.TEXT);
         expect(model.getSampleRowId(3)).toBe(4);
-        // The Erreger (pathogen) column keeps the samples-editor header.
-        expect(model.columns[5].headerText).toBe(samplesEditorDataHeaders.pathogen_avv);
+        // Next to the results the Erreger (pathogen) column is headed
+        // "Erreger: Eingesendet als" rather than with the AVV catalogue
+        // reference used in the samples editor (ticket #856).
+        expect(model.columns[6].headerText).toBe('Erreger: Eingesendet als');
+    });
+
+    // The BfR order number comes from the LIMS with the results, not from the
+    // uploaded order data, and sits in sixth place (ticket #856).
+    describe('the BfR order number column', () => {
+        const bfrColumn = () => createResultsGridModel([]).columns[5];
+
+        it('is the sixth column, headed "BfR-Auftragsnummer"', () => {
+            expect(bfrColumn().headerText).toBe('BfR-Auftrags­nummer');
+            expect(bfrColumn().cellType).toBe(SamplesGridCellType.TEXT);
+            expect(bfrColumn().fill).toBeUndefined();
+        });
+
+        it('reads the BfR-Auftragsnummer property of the sample\'s first result', () => {
+            const row = sampleWithResults(
+                { 'BfR-Auftragsnummer': '2026-0815' },
+                { 'BfR-Auftragsnummer': '2026-0816' }
+            );
+
+            expect(bfrColumn().getData(row, 0)).toBe('2026-0815');
+        });
+
+        it('is empty for a sample without results or without that property', () => {
+            expect(bfrColumn().getData(sampleWithResults(), 0)).toBe('');
+            expect(bfrColumn().getData(sampleWithResults({ Serovar: 'Enteritidis' }), 0)).toBe('');
+        });
     });
 
     it('renders the toggle column as a TOGGLE bar labelled "Alle Auftragsdaten anzeigen: Hier klicken"', () => {
@@ -52,6 +90,16 @@ describe('createFullDataGridModel', () => {
         expect(toggle.cellType).toBe(SamplesGridCellType.TOGGLE);
         expect(toggle.getHeaderData?.()).toBe('BfR-Ergebnisse anzeigen: Hier klicken');
         expect(toggle.getData(sample, 0)).toBe('BfR-Ergebnisse anzeigen: Hier klicken');
+    });
+
+    // Showing the uploaded data alone means showing it as it was uploaded: the
+    // Erreger column keeps its AVV catalogue reference and the LIMS-supplied BfR
+    // order number has no place among the uploaded columns (ticket #856).
+    it('keeps the samples-editor Erreger header and omits the BfR order number', () => {
+        const headers = createFullDataGridModel().columns.map(column => column.headerText);
+
+        expect(headers).toContain(samplesEditorDataHeaders.pathogen_avv);
+        expect(headers).not.toContain('BfR-Auftrags­nummer');
     });
 });
 
