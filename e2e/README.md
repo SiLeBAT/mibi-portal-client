@@ -6,11 +6,13 @@ reference data and test accounts. Because the whole stack runs inside the GitHub
 the tests never need to reach the BfR intranet — the firewall is simply out of the picture.
 
 > **Status:** verified end to end on a developer machine — from an empty volume the stack
-> boots, the seed loads, logins work, the Welcome-page and login/logout specs pass, and
-> mibi-portal-server's integration suite is green (10/10). The seed is committed
+> boots, the seed loads, and the **whole Cypress suite passes** (84 passing, 0 failing, 18
+> pending), twice in a row against the same database, alongside mibi-portal-server's
+> integration suite (10/10). The 18 pending tests are the upload blocks their authors
+> disabled with `xdescribe` ("FIXME: Upload is not working yet"), which still use the
+> `cy.server()` API removed in Cypress 12. The seed is committed
 > ([where the seed lives](#where-the-seed-lives)), so a run needs no further setup. What is
-> **not** done: a run of the workflow itself in GitHub Actions, and the older `api/v2` /
-> `e2e` specs, which still expect the pre-CSRF API (separate ticket).
+> **not** done: a run of the workflow itself in GitHub Actions.
 
 ---
 
@@ -143,6 +145,14 @@ node e2e/seed/make-seed.js
 #    host, which the two seeders need; drop it if you only want the Welcome-page smoke test.
 docker compose -f e2e/docker-compose.yml -f e2e/docker-compose.integration.yml up -d --build --wait
 
+#    Running a dev server at the same time? It already holds 3000/1337/4200. Copy
+#    e2e/.env.example to e2e/.env, set E2E_API_PORT / E2E_PARSE_PORT / E2E_CLIENT_PORT, and
+#    pass the file — Compose looks for .env in the working directory, not next to the
+#    compose file, so it has to be explicit:
+#      docker compose --env-file e2e/.env -f e2e/docker-compose.yml #          -f e2e/docker-compose.integration.yml up -d --wait
+#    Then point the seeders at the chosen Parse port via PARSE_URL, and the integration
+#    suite at the chosen API port via MIBI_API_URL.
+
 # 3. seed the reference regexes and the accounts
 PARSE_URL=http://localhost:1337/admin/parse PARSE_APP_ID=appId PARSE_MASTER_KEY=masterKey \
     node e2e/seed/seed-states.js
@@ -231,6 +241,7 @@ of using the committed one — useful for trying a refreshed seed without commit
 | Database | **`mibiportal` only.** |
 | Auth (Keycloak) | **Stubbed / not active** (`keycloak.enabled=false`). Login uses the portal's own `users` class. |
 | CMS (Strapi) | **Dropped** — not in the stack. |
-| Specs | Welcome-page smoke + login/logout. The `api/v2` and remaining `e2e` specs date from 2019–2022, predate the server's CSRF protection and the MPS-312 sample payload, and need their own ticket. |
+| Specs | The whole suite, `cypress/integration/**/*.spec.ts`. Three things make the older specs work against this stack: `cypress/support/commands.js` overwrites `cy.request` to perform the CSRF handshake (the server rejects any unaccompanied PUT/POST with 403); `api/v2/samples.spec.ts` sends the MPS-312 `parsedSampleSheet` payload, generated from a V18 sheet into `cypress/fixtures/parsed-sheet.json`; and the specs that need an institute pick the one the seed creates, via `cypress/fixtures/seeded-institute.json`. |
+| Repeatability | The suite can run twice against the same database. `e2e/user/register.spec.ts` registers a per-run address, because a registered e-mail cannot be registered again. |
 | Mail | Accepted and discarded by a **fake SMTP sink** inside the server container (see `Dockerfile.server`). It has to be in that container: `DefaultMailService` hardcodes `localhost:25` and never reads host/port from configuration, so a separate mail-catcher service cannot be targeted. Without the sink every mail path fails with `ECONNREFUSED 127.0.0.1:25` — which the login reminder, verification and activation flows all walk through. Mail contents cannot be read; a spec that needs a verification link out of an e-mail will need a real catcher (mailpit) and, first, a configurable SMTP host in mibi-portal-server. |
 | Login errors | Logging in as one of the three *non-enabled* accounts answers **500 / code 1**, because `users.controller.ts` `handleError` maps only `MalformedRequestError` and `AuthorizationError` — `UserNotVerifiedError` and `UserNotActivatedError` fall through to `fail()`. This is not a stack limitation and not caused by mail: `cypress/fixtures/error-responses.json` shows the existing specs expect exactly that response. Worth questioning as API design, but nothing here works around it. |

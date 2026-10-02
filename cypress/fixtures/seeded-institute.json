@@ -1,0 +1,6 @@
+{
+  "//": "The institute the E2E seed creates (e2e/seed/export-seed.mongosh.js, E2E_INSTITUTE_ID). `label` is how the client renders it in the institute autocomplete: name, addendum, zip city (see src/app/user/model/institution.model.ts toString). `search` is enough to narrow the list to this one entry.",
+  "id": "E2EINST001",
+  "search": "E2E",
+  "label": "E2E Test-Institut, Automatisierte Tests, 10589 Berlin"
+}

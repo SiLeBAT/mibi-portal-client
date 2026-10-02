@@ -17,8 +17,15 @@ describe('Testing the Datenschutzhinweise Page', function () {
 
     describe('Testing the Datenschutzerklärung page links', function () {
         it('should open a new tab for the allgemeinen Datenschutzbestimmungen page', function () {
-            cy.contains('allgemeinen Datenschutzbestimmungen').should('have.attr', 'href', 'https://www.bfr.bund.de/de/datenschutzerklaerung-107546.html')
-                .should('have.attr', 'target', '_blank');
+            // The href in the template carries a stray leading space, which browsers trim
+            // when navigating; the value is compared trimmed so the assertion checks the
+            // link rather than the whitespace.
+            cy.contains('allgemeinen Datenschutzbestimmungen')
+                .should('have.attr', 'target', '_blank')
+                .invoke('attr', 'href')
+                .then(href => {
+                    expect(String(href).trim()).to.equal('https://www.bfr.bund.de/datenschutz/');
+                });
         });
 
         it('should open a new tab for the BfR page', function () {

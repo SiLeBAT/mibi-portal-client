@@ -31,14 +31,10 @@ describe('Testing the Password Reset page', function () {
         });
 
         it('should allow User1 to reset password', function () {
-            cy.server();
-            cy.route({
-                method: 'PUT',
-                url: this.routes.resetPasswordRequest,
-                response: this.success[0].body,
-                status: this.success[0].status
-
-            });
+            cy.intercept(
+                { method: 'PUT', url: `**${this.routes.resetPasswordRequest}` },
+                { statusCode: this.success[0].status, body: this.success[0].body }
+            );
             cy.get('[name="email"]').type(this.users[0].email);
             cy.get('[type="submit"]').click();
             cy.contains(this.banner.passwordResetRequest);
@@ -56,25 +52,31 @@ describe('Testing the Password Reset page', function () {
 
         it('should require email', function () {
             cy.get('[name="email"]').focus().blur();
-            cy.get('.mat-form-field-label').should('have.css', 'color', 'rgb(228, 0, 57)');
+            // Angular Material MDC renamed the label element; scope to the field so the
+            // assertion cannot latch onto other text on the page.
+            cy.get('[name="email"]')
+                .closest('mat-form-field')
+                .contains('E-Mail')
+                .should('have.css', 'color', 'rgb(228, 0, 57)');
             cy.get('[type="submit"]').should('be.disabled');
         });
 
         it('should require valid email', function () {
             cy.get('[name="email"]').type('NonexistentUser').blur();
-            cy.get('.mat-form-field-label').should('have.css', 'color', 'rgb(228, 0, 57)');
+            // Angular Material MDC renamed the label element; scope to the field so the
+            // assertion cannot latch onto other text on the page.
+            cy.get('[name="email"]')
+                .closest('mat-form-field')
+                .contains('E-Mail')
+                .should('have.css', 'color', 'rgb(228, 0, 57)');
             cy.get('[type="submit"]').should('be.disabled');
         });
 
         it('should display banner on 500', function () {
-            cy.server();
-            cy.route({
-                method: 'PUT',
-                url: this.routes.resetPasswordRequest,
-                response: this.errors[0].body,
-                status: this.errors[0].status
-
-            });
+            cy.intercept(
+                { method: 'PUT', url: `**${this.routes.resetPasswordRequest}` },
+                { statusCode: this.errors[0].status, body: this.errors[0].body }
+            );
 
             cy.get('[name="email"]').type('NonexistentUser@none.com');
             cy.get('[type="submit"]').click();
@@ -83,14 +85,10 @@ describe('Testing the Password Reset page', function () {
         });
 
         it('should display banner for 400', function () {
-            cy.server();
-            cy.route({
-                method: 'PUT',
-                url: this.routes.resetPasswordRequest,
-                response: this.errors[3].body,
-                status: this.errors[3].status
-
-            }).as('login');
+            cy.intercept(
+                { method: 'PUT', url: `**${this.routes.resetPasswordRequest}` },
+                { statusCode: this.errors[3].status, body: this.errors[3].body }
+            ).as('login');
             cy.get('[name="email"]').type(this.users[0].email);
             cy.get('[type="submit"]').click();
             cy.contains(this.banner.passwordResetError);

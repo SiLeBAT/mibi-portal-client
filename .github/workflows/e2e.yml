@@ -28,10 +28,10 @@ on:
         required: true
       spec:
         description: "Cypress spec glob (blank = full suite)"
-        # The specs the seed supports: the public Welcome page plus a real login.
-        # The remaining api/v2 and e2e specs still expect the pre-CSRF API — see the
-        # follow-up ticket before adding them here.
-        default: "cypress/integration/ui/welcome.smoke.spec.ts,cypress/integration/e2e/user/login_out.spec.ts"
+        # Blank: the whole suite runs (package.json "test:e2e"). All specs pass against the
+        # seeded stack; the only pending ones are the upload blocks their authors disabled
+        # with xdescribe ("FIXME: Upload is not working yet").
+        default: ""
         required: false
       run_integration_tests:
         description: "Also run mibi-portal-server's API integration suite (jest)"

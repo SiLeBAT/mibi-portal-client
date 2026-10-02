@@ -1,0 +1,902 @@
+{
+    "samples": [
+        {
+            "data": {
+                "sample_id": {
+                    "value": "1",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sample_id_avv": {
+                    "value": "19-1234567-127",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "partial_sample_id": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "pathogen_avv": {
+                    "value": "Salmonella Agona",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "pathogen_text": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sequence_id": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sequence_status": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sampling_date": {
+                    "value": "13.03.2017",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "isolation_date": {
+                    "value": "14.03.2017",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sampling_location_avv": {
+                    "value": "45398|173159|",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sampling_location_zip": {
+                    "value": "10178",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sampling_location_text": {
+                    "value": "Berlin",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "animal_avv": {
+                    "value": "2464|186528|",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "matrix_avv": {
+                    "value": "182336|184855|183670-2296,185085-6986",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "animal_matrix_text": {
+                    "value": "Fleischteilstück roh; Pflanze/Tier/Stoff/relevante Zutat - Fleisch; Produktmerkmal - Roh",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "additional_marks_avv": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "control_program_avv": {
+                    "value": "70555|59517|",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sampling_reason_avv": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "program_reason_text": {
+                    "value": "Amtliche Kontrolle in Betrieben",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "operations_mode_avv": {
+                    "value": "62727|57609|2-2464,63421-1512",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "operations_mode_text": {
+                    "value": "Tierhaltung; Tiere - Hühner; Nutzungs- und Produktionsrichtung - Zur Mast",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "vvvo": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "program_avv": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "comment": {
+                    "value": "ERWARTET: Jahr-Meldung (Format ok, Jahr passt nicht)",
+                    "errors": [],
+                    "correctionOffer": []
+                }
+            }
+        },
+        {
+            "data": {
+                "sample_id": {
+                    "value": "2",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sample_id_avv": {
+                    "value": "19-1234567-127",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "partial_sample_id": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "pathogen_avv": {
+                    "value": "Campylobacter jejuni",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "pathogen_text": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sequence_id": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sequence_status": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sampling_date": {
+                    "value": "13.03.2019",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "isolation_date": {
+                    "value": "14.03.2019",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sampling_location_avv": {
+                    "value": "45398|173159|",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sampling_location_zip": {
+                    "value": "10178",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sampling_location_text": {
+                    "value": "Berlin",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "animal_avv": {
+                    "value": "2464|186528|",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "matrix_avv": {
+                    "value": "182336|184855|183670-2296,185085-6986",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "animal_matrix_text": {
+                    "value": "Fleischteilstück roh; Pflanze/Tier/Stoff/relevante Zutat - Fleisch; Produktmerkmal - Roh",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "additional_marks_avv": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "control_program_avv": {
+                    "value": "70555|59517|",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sampling_reason_avv": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "program_reason_text": {
+                    "value": "Amtliche Kontrolle in Betrieben",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "operations_mode_avv": {
+                    "value": "62727|57609|2-2464,63421-1512",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "operations_mode_text": {
+                    "value": "Tierhaltung; Tiere - Hühner; Nutzungs- und Produktionsrichtung - Zur Mast",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "vvvo": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "program_avv": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "comment": {
+                    "value": "ERWARTET: keine Meldung",
+                    "errors": [],
+                    "correctionOffer": []
+                }
+            }
+        },
+        {
+            "data": {
+                "sample_id": {
+                    "value": "3",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sample_id_avv": {
+                    "value": "abc-123-xyz",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "partial_sample_id": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "pathogen_avv": {
+                    "value": "Listeria monocytogenes",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "pathogen_text": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sequence_id": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sequence_status": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sampling_date": {
+                    "value": "13.03.2017",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "isolation_date": {
+                    "value": "14.03.2017",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sampling_location_avv": {
+                    "value": "45398|173159|",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sampling_location_zip": {
+                    "value": "10178",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sampling_location_text": {
+                    "value": "Berlin",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "animal_avv": {
+                    "value": "2464|186528|",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "matrix_avv": {
+                    "value": "182336|184855|183670-2296,185085-6986",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "animal_matrix_text": {
+                    "value": "Fleischteilstück roh; Pflanze/Tier/Stoff/relevante Zutat - Fleisch; Produktmerkmal - Roh",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "additional_marks_avv": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "control_program_avv": {
+                    "value": "70555|59517|",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sampling_reason_avv": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "program_reason_text": {
+                    "value": "Amtliche Kontrolle in Betrieben",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "operations_mode_avv": {
+                    "value": "62727|57609|2-2464,63421-1512",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "operations_mode_text": {
+                    "value": "Tierhaltung; Tiere - Hühner; Nutzungs- und Produktionsrichtung - Zur Mast",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "vvvo": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "program_avv": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "comment": {
+                    "value": "ERWARTET: alte Format-Meldung",
+                    "errors": [],
+                    "correctionOffer": []
+                }
+            }
+        },
+        {
+            "data": {
+                "sample_id": {
+                    "value": "4",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sample_id_avv": {
+                    "value": "19-1234567-127",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "partial_sample_id": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "pathogen_avv": {
+                    "value": "Staphylococcus aureus",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "pathogen_text": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sequence_id": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sequence_status": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sampling_date": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "isolation_date": {
+                    "value": "14.03.2017",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sampling_location_avv": {
+                    "value": "45398|173159|",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sampling_location_zip": {
+                    "value": "10178",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sampling_location_text": {
+                    "value": "Berlin",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "animal_avv": {
+                    "value": "2464|186528|",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "matrix_avv": {
+                    "value": "182336|184855|183670-2296,185085-6986",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "animal_matrix_text": {
+                    "value": "Fleischteilstück roh; Pflanze/Tier/Stoff/relevante Zutat - Fleisch; Produktmerkmal - Roh",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "additional_marks_avv": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "control_program_avv": {
+                    "value": "70555|59517|",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sampling_reason_avv": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "program_reason_text": {
+                    "value": "Amtliche Kontrolle in Betrieben",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "operations_mode_avv": {
+                    "value": "62727|57609|2-2464,63421-1512",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "operations_mode_text": {
+                    "value": "Tierhaltung; Tiere - Hühner; Nutzungs- und Produktionsrichtung - Zur Mast",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "vvvo": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "program_avv": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "comment": {
+                    "value": "ERWARTET: Jahr-Meldung (Jahr aus Isolierungsdatum)",
+                    "errors": [],
+                    "correctionOffer": []
+                }
+            }
+        },
+        {
+            "data": {
+                "sample_id": {
+                    "value": "5",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sample_id_avv": {
+                    "value": "19-1234567-127",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "partial_sample_id": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "pathogen_avv": {
+                    "value": "Escherichia coli O157",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "pathogen_text": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sequence_id": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sequence_status": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sampling_date": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "isolation_date": {
+                    "value": "14.03.2019",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sampling_location_avv": {
+                    "value": "45398|173159|",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sampling_location_zip": {
+                    "value": "10178",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sampling_location_text": {
+                    "value": "Berlin",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "animal_avv": {
+                    "value": "2464|186528|",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "matrix_avv": {
+                    "value": "182336|184855|183670-2296,185085-6986",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "animal_matrix_text": {
+                    "value": "Fleischteilstück roh; Pflanze/Tier/Stoff/relevante Zutat - Fleisch; Produktmerkmal - Roh",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "additional_marks_avv": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "control_program_avv": {
+                    "value": "70555|59517|",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sampling_reason_avv": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "program_reason_text": {
+                    "value": "Amtliche Kontrolle in Betrieben",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "operations_mode_avv": {
+                    "value": "62727|57609|2-2464,63421-1512",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "operations_mode_text": {
+                    "value": "Tierhaltung; Tiere - Hühner; Nutzungs- und Produktionsrichtung - Zur Mast",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "vvvo": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "program_avv": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "comment": {
+                    "value": "ERWARTET: keine Meldung (Jahr aus Isolierungsdatum)",
+                    "errors": [],
+                    "correctionOffer": []
+                }
+            }
+        },
+        {
+            "data": {
+                "sample_id": {
+                    "value": "6",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sample_id_avv": {
+                    "value": "18-1234567-127",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "partial_sample_id": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "pathogen_avv": {
+                    "value": "Bacillus cereus",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "pathogen_text": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sequence_id": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sequence_status": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sampling_date": {
+                    "value": "13.03.2019",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "isolation_date": {
+                    "value": "14.03.2019",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sampling_location_avv": {
+                    "value": "45398|173159|",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sampling_location_zip": {
+                    "value": "10178",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sampling_location_text": {
+                    "value": "Berlin",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "animal_avv": {
+                    "value": "2464|186528|",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "matrix_avv": {
+                    "value": "182336|184855|183670-2296,185085-6986",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "animal_matrix_text": {
+                    "value": "Fleischteilstück roh; Pflanze/Tier/Stoff/relevante Zutat - Fleisch; Produktmerkmal - Roh",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "additional_marks_avv": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "control_program_avv": {
+                    "value": "70555|59517|",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sampling_reason_avv": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "program_reason_text": {
+                    "value": "Amtliche Kontrolle in Betrieben",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "operations_mode_avv": {
+                    "value": "62727|57609|2-2464,63421-1512",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "operations_mode_text": {
+                    "value": "Tierhaltung; Tiere - Hühner; Nutzungs- und Produktionsrichtung - Zur Mast",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "vvvo": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "program_avv": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "comment": {
+                    "value": "ERWARTET: Jahr-Meldung (nur 1 Jahr Abweichung)",
+                    "errors": [],
+                    "correctionOffer": []
+                }
+            }
+        },
+        {
+            "data": {
+                "sample_id": {
+                    "value": "7",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sample_id_avv": {
+                    "value": "20-1234567-127",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "partial_sample_id": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "pathogen_avv": {
+                    "value": "Vibrio cholerae",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "pathogen_text": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sequence_id": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sequence_status": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sampling_date": {
+                    "value": "13.03.2019",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "isolation_date": {
+                    "value": "14.03.2019",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sampling_location_avv": {
+                    "value": "45398|173159|",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sampling_location_zip": {
+                    "value": "10178",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sampling_location_text": {
+                    "value": "Berlin",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "animal_avv": {
+                    "value": "2464|186528|",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "matrix_avv": {
+                    "value": "182336|184855|183670-2296,185085-6986",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "animal_matrix_text": {
+                    "value": "Fleischteilstück roh; Pflanze/Tier/Stoff/relevante Zutat - Fleisch; Produktmerkmal - Roh",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "additional_marks_avv": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "control_program_avv": {
+                    "value": "70555|59517|",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "sampling_reason_avv": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "program_reason_text": {
+                    "value": "Amtliche Kontrolle in Betrieben",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "operations_mode_avv": {
+                    "value": "62727|57609|2-2464,63421-1512",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "operations_mode_text": {
+                    "value": "Tierhaltung; Tiere - Hühner; Nutzungs- und Produktionsrichtung - Zur Mast",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "vvvo": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "program_avv": {
+                    "value": "",
+                    "errors": [],
+                    "correctionOffer": []
+                },
+                "comment": {
+                    "value": "ERWARTET: Jahr-Meldung (nur 1 Jahr Abweichung)",
+                    "errors": [],
+                    "correctionOffer": []
+                }
+            }
+        }
+    ],
+    "meta": {
+        "nrl": "Bitte Labor auswählen…",
+        "urgency": "NORMAL",
+        "sender": {
+            "instituteName": "Test-Institut MPC-291",
+            "department": "",
+            "street": "Teststrasse 1",
+            "zipCity": "12277 Berlin",
+            "contactPerson": "Test Person",
+            "telephone": "030 12345678",
+            "email": "test@test.de"
+        },
+        "analysis": {
+            "species": 1,
+            "serological": 1,
+            "resistance": 1,
+            "vaccination": 1,
+            "molecularTyping": 1,
+            "toxin": 1,
+            "esblAmpCCarbapenemasen": 1,
+            "other": 1,
+            "otherText": "",
+            "compareHuman": 1,
+            "compareHumanText": ""
+        },
+        "fileName": "einsendebogen-v18.xlsx",
+        "customerRefNumber": "",
+        "signatureDate": "",
+        "version": "18"
+    }
+}

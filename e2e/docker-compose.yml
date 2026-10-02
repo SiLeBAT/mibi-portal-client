@@ -72,7 +72,9 @@ services:
       server:
         condition: service_started
     ports:
-      - "4200:4200"
+      # Overridable so the stack can run next to a local `ng serve`, which takes 4200.
+      # Cypress inside the Docker network always uses http://client:4200 regardless.
+      - "${E2E_CLIENT_PORT:-4200}:4200"
     healthcheck:
       # Use 127.0.0.1, NOT localhost: in this Alpine image `localhost` resolves only to
       # IPv6 (::1) while `ng serve` binds IPv4 (0.0.0.0:4200), so wget to localhost is

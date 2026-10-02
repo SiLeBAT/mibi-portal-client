@@ -54,6 +54,8 @@ testem.log
 /cypress/screenshots
 /cypress/reports
 /cypress/examples
+# Local port overrides for the Dockerized E2E stack; e2e/.env.example is the template.
+/e2e/.env
 
 # System Files
 .DS_Store

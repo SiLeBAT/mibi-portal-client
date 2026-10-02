@@ -39,10 +39,13 @@ describe('Testing the Header', function () {
                 });
 
                 it('should have link to the Login page', function () {
+                    // The nav bar's sign-in control is a click handler rather than an
+                    // href (login-view.component.html), because it also has to be able to
+                    // start a Keycloak redirect — so the navigation is what gets asserted.
                     cy.get(navBarUserSelector).within(() => {
-                        cy.contains(signIn)
-                            .should('have.attr', 'href', this.paths.login);
+                        cy.contains(signIn).click();
                     });
+                    cy.url().should('equal', Cypress.config().baseUrl + this.paths.login);
                 });
             });
         });
