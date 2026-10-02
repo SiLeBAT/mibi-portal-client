@@ -17,6 +17,9 @@
 
 services:
   server:
+    # Host ports are overridable so the stack can run next to a local dev server, which
+    # occupies 3000/1337 itself. CI has nothing else running, hence the plain defaults.
+    #   E2E_API_PORT=3100 E2E_PARSE_PORT=1437 docker compose ... up -d --wait
     ports:
-      - "3000:3000"
-      - "1337:1337"
+      - "${E2E_API_PORT:-3000}:3000"
+      - "${E2E_PARSE_PORT:-1337}:1337"

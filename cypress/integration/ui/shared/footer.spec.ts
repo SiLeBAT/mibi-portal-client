@@ -25,25 +25,27 @@ describe('Testing the Footer', function () {
             });
         });
 
-        it('should open a new tab for the FoodRisk - Labs page', function () {
+        it('should open a new tab for the ZooNotify page', function () {
             cy.get('footer').within(() => {
-                cy.contains('FoodRisk - Labs')
-                    .should('have.attr', 'href', 'https://foodrisklabs.bfr.bund.de')
+                cy.contains('ZooNotify')
+                    .should('have.attr', 'href', 'https://zoonotify.bfr.berlin/')
                     .should('have.attr', 'target', '_blank');
             });
         });
 
-        it('should navigate to the FAQ page', function () {
+        it('should open a new tab for the FAQ page', function () {
             cy.get('footer').within(() => {
-                cy.contains('FAQ').click();
-                cy.url().should('equal', Cypress.config().baseUrl + this.paths.faq);
+                cy.contains('FAQ')
+                    .should('have.attr', 'href', this.paths.faq)
+                    .should('have.attr', 'target', '_blank');
             });
         });
 
-        it('should navigate to the Datenschutzerklärung page', function () {
+        it('should open a new tab for the Datenschutzerklärung page', function () {
             cy.get('footer').within(() => {
-                cy.contains('Datenschutzerklärung').click();
-                cy.url().should('equal', Cypress.config().baseUrl + this.paths.datenschutzerklaerung);
+                cy.contains('Datenschutzerklärung')
+                    .should('have.attr', 'href', this.paths.datenschutzerklaerung)
+                    .should('have.attr', 'target', '_blank');
             });
         });
 

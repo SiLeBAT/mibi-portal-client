@@ -24,6 +24,83 @@
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
+// ---------------------------------------------------------------------------
+// CSRF
+//
+// The server puts `doubleCsrfProtection` in front of every route (express.setup.ts) and
+// issues the `XSRF-TOKEN` cookie on GET requests only. Any PUT/POST/PATCH/DELETE without
+// the matching cookie *and* `x-xsrf-token` header is rejected with 403 before it reaches
+// a controller — which is what the browser does for the app itself, and what `cy.request`
+// does not do on its own.
+//
+// Rather than change every spec, `request` is overwritten to do what the browser does:
+// one GET to obtain the token, then echo it back on every mutating call. Cypress keeps
+// the cookie in its jar and sends it automatically, so only the header has to be added.
+//
+// Pass `csrf: false` in the request options to skip this — for a test that wants to assert
+// the 403 itself.
+// ---------------------------------------------------------------------------
+
+const CSRF_COOKIE = "XSRF-TOKEN";
+const CSRF_HEADER = "x-xsrf-token";
+// Any GET issues the cookie; /v2/info is public and cheap.
+const CSRF_BOOTSTRAP_URL = "/v2/info";
+
+// Held per spec. The token is fetched in the hook below rather than inside the overwritten
+// command, because a Cypress command may not run other cy commands from inside a returned
+// promise ("Cypress detected that you returned a promise from a command while also
+// invoking one or more cy commands in that promise"). So: async work in the hook,
+// synchronous header injection in the command.
+let csrfToken = null;
+
+beforeEach(() => {
+    csrfToken = null;
+    // Needs a reachable API — every spec in this suite runs against the stack anyway
+    // (e2e/README.md), and CI starts Cypress only once the stack reports healthy.
+    cy.request({ method: "GET", url: CSRF_BOOTSTRAP_URL, csrf: false })
+        .then(() => cy.getCookie(CSRF_COOKIE))
+        .then(cookie => {
+            if (cookie) {
+                // The cookie carries `token|hash` URL-encoded (the separator arrives as
+                // `%7C`). The server splits the header on a literal '|', so the decoded
+                // value has to be sent or the split yields the whole string and every
+                // mutating request comes back 403.
+                csrfToken = decodeURIComponent(cookie.value);
+            }
+        });
+});
+
+// cy.request accepts (options), (url), (url, body), (method, url) and (method, url, body).
+function toOptions(args) {
+    if (args.length === 1 && typeof args[0] === "object") {
+        return { ...args[0] };
+    }
+    if (args.length === 1) {
+        return { url: args[0] };
+    }
+    const looksLikeMethod = /^(get|post|put|patch|delete|head|options)$/i.test(args[0]);
+    return looksLikeMethod
+        ? { method: args[0], url: args[1], body: args[2] }
+        : { url: args[0], body: args[1] };
+}
+
+Cypress.Commands.overwrite("request", (originalFn, ...args) => {
+    const options = toOptions(args);
+    const method = String(options.method || "GET").toUpperCase();
+    const skip = options.csrf === false;
+    delete options.csrf;
+
+    const needsToken = !skip && method !== "GET" && method !== "HEAD";
+    if (!needsToken || !csrfToken) {
+        return originalFn(options);
+    }
+
+    return originalFn({
+        ...options,
+        headers: { ...options.headers, [CSRF_HEADER]: csrfToken }
+    });
+});
+
 Cypress.Commands.add("login", user => {
     return cy
         .request({
