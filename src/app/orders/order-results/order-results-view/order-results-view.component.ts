@@ -3,7 +3,7 @@ import { OrderEntryDTO } from '../../../core/model/response.model';
 import { parseOrderDate } from '../../model/order-date';
 import { OrderNeighbours } from '../../state/order-list.selectors';
 import { SamplesGridViewModel } from '../../../grid/samples-grid/samples-grid.model';
-import { PathogenTab } from '../results-grid/pathogen-catalog';
+import { NrlTab } from '../results-grid/nrl-results-catalog';
 
 @Component({
     standalone: false,
@@ -16,12 +16,12 @@ export class OrderResultsViewComponent {
     @Input() model: SamplesGridViewModel | null | undefined;
     // grid-template-columns for the reused grid (result columns as equal 1fr).
     @Input() columnTemplate: string | null | undefined;
-    @Input() pathogens: PathogenTab[] | null | undefined;
-    @Input() selectedPathogenId: string | null | undefined;
+    @Input() nrlTabs: NrlTab[] | null | undefined;
+    @Input() selectedNrlId: string | null | undefined;
     // Only used to force the grid to be recreated when the view mode changes.
     @Input() showFullData: boolean | null | undefined;
     @Input() neighbours: OrderNeighbours | null | undefined;
-    @Output() selectPathogen = new EventEmitter<string>();
+    @Output() selectNrl = new EventEmitter<string>();
     @Output() toggleFullData = new EventEmitter<void>();
     @Output() openOrder = new EventEmitter<string>();
     @Output() downloadDisplayed = new EventEmitter<void>();
@@ -61,8 +61,8 @@ export class OrderResultsViewComponent {
         this.downloadAll.emit();
     }
 
-    onSelectPathogen(pathogenId: string): void {
-        this.selectPathogen.emit(pathogenId);
+    onSelectNrl(nrlId: string): void {
+        this.selectNrl.emit(nrlId);
     }
 
     // The toggle bar is a column inside the grid; a click anywhere on it bubbles

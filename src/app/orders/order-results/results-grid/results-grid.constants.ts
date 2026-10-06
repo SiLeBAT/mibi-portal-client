@@ -9,6 +9,7 @@ import {
     samplesEditorNrlHeader
 } from '../../../samples/samples-editor/constants/column-headers.constants';
 import { ResultsGridColumnModel, ResultsGridModel } from './results-grid.model';
+import { ResultColumnDefinition } from './nrl-results-catalog';
 
 // The uploaded order data is already validated/submitted, so the read-only
 // results view shows plain values without the editor's validation decorations:
@@ -53,13 +54,13 @@ export function orderedResults(sample: SampleWithResultsDTO): ResultDTO[] {
     return [...sample.results].sort((a, b) => a.position - b.position);
 }
 
-function resultColumn(colId: number, key: string): ResultsGridColumnModel {
+function resultColumn(colId: number, definition: ResultColumnDefinition): ResultsGridColumnModel {
     return {
         colId: colId,
         cellType: SamplesGridCellType.STACKED,
         isRowHeader: false,
-        headerText: key,
-        getData: sample => orderedResults(sample).map(result => result.resultData[key] ?? ''),
+        headerText: definition.header,
+        getData: sample => orderedResults(sample).map(result => result.resultData[definition.key] ?? ''),
         fill: true
     };
 }
@@ -131,10 +132,10 @@ const TOGGLE_COLUMN_ID = fixedColumns.length + 1;
 const RESULT_COLUMN_ID_BASE = fixedColumns.length + 2;
 
 // Fixed uploaded columns, then the toggle bar (between the two blocks), then the
-// active pathogen's BfR result columns.
-export function createResultsGridModel(resultColumnKeys: string[]): ResultsGridModel {
-    const resultColumns = resultColumnKeys.map(
-        (key, index) => resultColumn(RESULT_COLUMN_ID_BASE + index, key)
+// active NRL's BfR result columns.
+export function createResultsGridModel(resultColumnDefinitions: ResultColumnDefinition[]): ResultsGridModel {
+    const resultColumns = resultColumnDefinitions.map(
+        (definition, index) => resultColumn(RESULT_COLUMN_ID_BASE + index, definition)
     );
     return {
         columns: [

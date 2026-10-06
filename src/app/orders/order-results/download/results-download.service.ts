@@ -4,8 +4,8 @@ import JSZip from 'jszip';
 import { OrderEntryDTO } from '../../../core/model/response.model';
 import { LogService } from '../../../core/services/log.service';
 import { parseOrderDate } from '../../model/order-date';
-import { derivePathogenTabs, filterSamplesByPathogen } from '../results-grid/pathogen-catalog';
-import { buildResultsCsv, downloadColumnsForPathogen } from './results-csv';
+import { NrlMatcher, deriveNrlTabs, filterSamplesByNrl } from '../results-grid/nrl-results-catalog';
+import { buildResultsCsv, downloadColumnsForNrl } from './results-csv';
 
 @Injectable({
     providedIn: 'root'
@@ -14,27 +14,27 @@ export class ResultsDownloadService {
 
     constructor(private readonly logger: LogService) {}
 
-    // "Angezeigter Erreger": the currently shown pathogen's results as one CSV.
-    downloadDisplayedPathogen(order: OrderEntryDTO, pathogenId: string): void {
+    // "Angezeigter Erreger": the currently shown NRL tab's results as one CSV.
+    downloadDisplayed(order: OrderEntryDTO, nrlId: string, matcher: NrlMatcher): void {
         const samples = order.samples ?? [];
         const csv = buildResultsCsv(
-            downloadColumnsForPathogen(pathogenId),
-            filterSamplesByPathogen(samples, pathogenId)
+            downloadColumnsForNrl(nrlId),
+            filterSamplesByNrl(samples, nrlId, matcher)
         );
-        const token = derivePathogenTabs(samples).find(tab => tab.id === pathogenId)?.fileToken ?? pathogenId;
+        const token = deriveNrlTabs(samples, matcher).find(tab => tab.id === nrlId)?.fileToken ?? nrlId;
         saveAs(this.csvBlob(csv), this.csvFileName(order, token));
     }
 
-    // "Alle Erreger dieses Auftrags": a ZIP with one CSV per present pathogen.
-    downloadAllPathogens(order: OrderEntryDTO): void {
+    // "Alle Erreger dieses Auftrags": a ZIP with one CSV per present NRL tab.
+    downloadAll(order: OrderEntryDTO, matcher: NrlMatcher): void {
         const samples = order.samples ?? [];
         const zip = new JSZip();
-        for (const pathogen of derivePathogenTabs(samples)) {
+        for (const tab of deriveNrlTabs(samples, matcher)) {
             const csv = buildResultsCsv(
-                downloadColumnsForPathogen(pathogen.id),
-                filterSamplesByPathogen(samples, pathogen.id)
+                downloadColumnsForNrl(tab.id),
+                filterSamplesByNrl(samples, tab.id, matcher)
             );
-            zip.file(this.csvFileName(order, pathogen.fileToken), csv);
+            zip.file(this.csvFileName(order, tab.fileToken), csv);
         }
         zip.generateAsync({ type: 'blob' })
             .then(blob => saveAs(blob, this.zipFileName(order)))

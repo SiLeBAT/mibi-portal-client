@@ -1,6 +1,6 @@
 <div class="mibi-order-results">
     <!-- Three-part bar: the side groups share the space equally, which keeps the
-         order-switch control in the true horizontal middle until the pathogen
+         order-switch control in the true horizontal middle until the NRL
          tabs outgrow their half and push it to the right. -->
     <div class="mibi-order-results__bar">
         <div class="mibi-order-results__bar-left">
@@ -10,13 +10,13 @@
             </div>
 
             <nav class="mibi-order-results__tabs">
-                @for (tab of pathogens; track tab.id) {
+                @for (tab of nrlTabs; track tab.id) {
                     <button
                         type="button"
                         class="mibi-order-results__tab"
-                        [class.mibi-order-results__tab--active]="tab.id === selectedPathogenId"
-                        (click)="onSelectPathogen(tab.id)"
-                    >{{ tab.id === selectedPathogenId ? tab.fullName : tab.abbreviation }}</button>
+                        [class.mibi-order-results__tab--active]="tab.id === selectedNrlId"
+                        (click)="onSelectNrl(tab.id)"
+                    >{{ tab.label }}</button>
                 }
             </nav>
         </div>

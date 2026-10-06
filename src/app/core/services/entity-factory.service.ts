@@ -24,6 +24,7 @@ import {
     SampleMetaDTO
 } from '../model/shared-dto.model';
 import { Urgency, NRL } from '../../samples/model/sample.enums';
+import { toNrl } from '../../samples/model/nrl';
 
 @Injectable({
     providedIn: 'root'
@@ -86,40 +87,10 @@ export class EntityFactoryService {
 
     private toSampleMeta(dto: SampleMetaDTO): SampleMeta {
         return {
-            nrl: dto.nrl ? this.fromNRLStringToEnum(dto.nrl) : NRL.UNKNOWN,
+            nrl: dto.nrl ? toNrl(dto.nrl) : NRL.UNKNOWN,
             analysis: dto.analysis,
             urgency: dto.urgency ? this.fromUrgencyStringToEnum(dto.urgency) : Urgency.NORMAL
         };
-    }
-
-    private fromNRLStringToEnum(nrlString: string): NRL {
-        switch (nrlString.trim()) {
-            case 'KL-Vibrio':
-                return NRL.KL_Vibrio;
-            case 'NRL-VTEC':
-                return NRL.NRL_VTEC;
-            case 'L-Bacillus':
-                return NRL.L_Bacillus;
-            case 'L-Clostridium':
-                return NRL.L_Clostridium;
-            case 'NRL-Staph':
-                return NRL.NRL_Staph;
-            case 'NRL-Salm':
-                return NRL.NRL_Salm;
-            case 'NRL-Listeria':
-                return NRL.NRL_Listeria;
-            case 'NRL-Campy':
-                return NRL.NRL_Campy;
-            case 'NRL-AR':
-                return NRL.NRL_AR;
-            case 'NRL-AR-Kleb':
-                return NRL.NRL_AR_Kleb;
-            case 'KL-Yersinia':
-                return NRL.KL_Yersinia;
-            case 'Labor nicht erkannt':
-            default:
-                return NRL.UNKNOWN;
-        }
     }
 
     private toSampleSetMetaData(dto: SampleSetMetaDTO): SampleSetMetaData {
