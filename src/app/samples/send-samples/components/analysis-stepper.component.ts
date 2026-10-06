@@ -42,12 +42,12 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
     warnings$: Observable<DialogWarning[]> = this.store$.select(selectSendSamplesDialogWarnings);
     showOther: Record<string, boolean> = {};
     showCompareHuman: Record<string, boolean> = {};
-    analysisForm: Record<string, UntypedFormGroup>;
-    analysis: Record<string, Analysis>;
+    analysisForm!: Record<string, UntypedFormGroup>;
+    analysis!: Record<string, Analysis>;
 
     isLinear = false;
 
-    stepperViewModel$: Observable<AnalysisStepViewModel[]>;
+    stepperViewModel$!: Observable<AnalysisStepViewModel[]>;
 
     textOther: string = '';
     textCompareHuman: string = '';
@@ -55,7 +55,11 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
 
     constructor(
         private dialogRef: MatDialogRef<AnalysisStepperComponent>,
-        private store$: Store<SamplesMainSlice & SamplesSlice<SendSamplesState>>,
+        private store$: Store<
+            SamplesMainSlice &
+                SharedSlice<NrlState> &
+                SamplesSlice<SendSamplesState>
+        >,
         private fb: UntypedFormBuilder
     ) { }
 
@@ -65,7 +69,7 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.stepperViewModel$ = this.store$.pipe(
-            select(createSelector<SamplesMainSlice | SharedSlice<NrlState> | SamplesSlice<SendSamplesState>,
+            select(createSelector<SamplesMainSlice & SharedSlice<NrlState> & SamplesSlice<SendSamplesState>,
                 Sample[], NRLDTO[],
                 { samples: Sample[]; nrls: NRLDTO[] }>(
                     selectSampleData,
@@ -90,22 +94,29 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
     }
 
     onChangeShowOther(nrl: string) {
-        if (!this.showOther[nrl]) {
-            this.textOther = this.analysisForm[nrl].controls.other.value;
-            this.analysisForm[nrl].controls.other.setValue('');
+        const other = this.analysisForm[nrl]?.controls.other;
+        if (!other) {
+            return;
+        }
+        if (this.showOther[nrl]) {
+            other.setValue(this.textOther);
         } else {
-            this.analysisForm[nrl].controls.other.setValue(this.textOther);
+            this.textOther = other.value;
+            other.setValue('');
         }
     }
 
     onChangeCompareHuman(nrl: string) {
-        if (!this.showCompareHuman[nrl]) {
-            this.textCompareHuman = this.analysisForm[nrl].controls.compareHuman.value;
-            this.analysisForm[nrl].controls.compareHuman.setValue('');
-        } else {
-            this.analysisForm[nrl].controls.compareHuman.setValue(this.textCompareHuman);
+        const compareHuman = this.analysisForm[nrl]?.controls.compareHuman;
+        if (!compareHuman) {
+            return;
         }
-
+        if (this.showCompareHuman[nrl]) {
+            compareHuman.setValue(this.textCompareHuman);
+        } else {
+            this.textCompareHuman = compareHuman.value;
+            compareHuman.setValue('');
+        }
     }
     private mapFormValues(nrl: string, values: any): Partial<SampleMeta> {
 
@@ -119,25 +130,24 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
                 urgencyEnum = Urgency.NORMAL;
         }
 
-        // eslint-disable-next-line
-        return Object.keys(values).reduce((acc: { analysis: Partial<Analysis>; urgency: Urgency }, v) => {
-
-            const prop: keyof Analysis = this.getPropertyForAnalysisKey(v);
-            if (v !== 'compareHuman' && v !== 'other' && v !== 'urgency') {
-                acc.analysis[prop] = values[v];
-            }
-
-            return acc;
-        }, {
+        const result: { analysis: Partial<Analysis>; urgency: Urgency } = {
             analysis: {
                 other: values.other,
                 compareHuman: {
                     value: values.compareHuman,
-                    active: this.showCompareHuman[nrl]
+                    active: this.showCompareHuman[nrl] ?? false
                 }
             },
             urgency: urgencyEnum
-        });
+        };
+        for (const v of Object.keys(values)) {
+            if (v === 'compareHuman' || v === 'other' || v === 'urgency') {
+                continue;
+            }
+            const prop: keyof Analysis = this.getPropertyForAnalysisKey(v);
+            result.analysis[prop] = values[v];
+        }
+        return result;
     }
 
     private close(): void {
@@ -169,17 +179,17 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
 
         return assignedNRLs.map(nrl => ({
             abbreviation: nrl.id as NRL,
-            standardProcedures: nrl ? nrl.standardProcedures.sort(comparFN).map(p => p.value) : [],
-            optionalProcedures: nrl ? nrl.optionalProcedures.sort(comparFN).map(p => ({
+            standardProcedures: nrl.standardProcedures.sort(comparFN).map(p => p.value),
+            optionalProcedures: nrl.optionalProcedures.sort(comparFN).map(p => ({
                 value: p.value,
                 controlName: p.key.toString()
-            })) : []
+            }))
         }));
     }
 
     private createFormControls(analysisStepVM: AnalysisStepViewModel[], samples: Sample[]) {
-        // eslint-disable-next-line unicorn/no-array-reduce, unicorn/prefer-object-from-entries
-        return analysisStepVM.reduce((accumulator: Record<string, UntypedFormGroup>, vm) => {
+        const controls: Record<string, UntypedFormGroup> = {};
+        for (const vm of analysisStepVM) {
             const exampleSample = _.find(samples, s => s.sampleMeta.nrl === vm.abbreviation);
 
             this.showCompareHuman[vm.abbreviation] = exampleSample ?
@@ -202,8 +212,9 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
             vm.optionalProcedures.forEach(p => {
                 controlsConfig[p.controlName] = currentAnalysisValues[this.getPropertyForAnalysisKey(p.controlName)];
             });
-            accumulator[vm.abbreviation] = this.fb.group(controlsConfig);
-            accumulator[vm.abbreviation].valueChanges
+            const group = this.fb.group(controlsConfig);
+            controls[vm.abbreviation] = group;
+            group.valueChanges
                 .pipe(takeWhile(() => this.componentActive))
                 .subscribe(val => {
                     this.store$.dispatch(
@@ -213,19 +224,19 @@ export class AnalysisStepperComponent implements OnInit, OnDestroy {
                             }
                         })
                     );
-                }, (error) => { throw error; });
+                });
             // put on event queue to prevent data change during change detection cycle
             setTimeout(() => {
                 this.store$.dispatch(
                     samplesUpdateSampleMetaDataSOA({
                         metaData: {
-                            [vm.abbreviation]: this.mapFormValues(vm.abbreviation, accumulator[vm.abbreviation].value)
+                            [vm.abbreviation]: this.mapFormValues(vm.abbreviation, group.value)
                         }
                     })
                 );
             });
-            return accumulator;
-        }, {});
+        }
+        return controls;
     }
 
     private getPropertyForAnalysisKey(key: string): keyof Analysis {

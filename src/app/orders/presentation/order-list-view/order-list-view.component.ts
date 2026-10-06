@@ -57,9 +57,9 @@ export class OrderListViewComponent implements AfterViewInit, OnDestroy {
     @Output() openOrderResults = new EventEmitter<string>();
     /** The order ids in the sequence the table currently displays. */
     @Output() sequenceChange = new EventEmitter<string[]>();
-    @ViewChild(MatSort) sort!: MatSort;
+    @ViewChild(MatSort) sort?: MatSort;
     @ViewChild(MatPaginator) paginator!: MatPaginator;
-    @ViewChild(MatTable) table!: MatTable<OrderRow>;
+    @ViewChild(MatTable) table?: MatTable<OrderRow>;
 
     private static readonly DATE_FORMAT = 'dd.MM.yyyy HH:mm';
     private readonly datePipe = new DatePipe('de-DE');
@@ -92,10 +92,10 @@ export class OrderListViewComponent implements AfterViewInit, OnDestroy {
 
     constructor(public userLinks: UserLinkProviderService) {
         this.dataSource.filterPredicate = (row, filter) => {
-            const parsed = JSON.parse(filter) as OrderListFilter;
+            const parsed = JSON.parse(filter) as Partial<OrderListFilter>;
 
             const columnsMatch = filterableColumns.every(key => {
-                const searchTerm = (parsed.columns[key] ?? '').trim().toLowerCase();
+                const searchTerm = (parsed.columns?.[key] ?? '').trim().toLowerCase();
                 if (!searchTerm) {
                     return true;
                 }
@@ -126,7 +126,9 @@ export class OrderListViewComponent implements AfterViewInit, OnDestroy {
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
         this.applyDefaultSort();
-        this.sortSubscription = this.sort.sortChange.subscribe(() => this.emitSequence());
+        if (this.sort) {
+            this.sortSubscription = this.sort.sortChange.subscribe(() => this.emitSequence());
+        }
         // The filter row sticks below the title row, at an offset Material
         // measures from the title row's height. A narrower window re-wraps the
         // titles and changes that height, so the offset has to be measured anew.
@@ -209,7 +211,7 @@ export class OrderListViewComponent implements AfterViewInit, OnDestroy {
     // Publishes the sequence the table displays (current sorting + filtering,
     // across all pages) so other views can step through the orders in that order.
     private emitSequence(): void {
-        const filtered = this.dataSource.filteredData ?? this.dataSource.data;
+        const filtered = this.dataSource.filteredData;
         const displayed = this.sort
             ? this.dataSource.sortData([...filtered], this.sort)
             : filtered;
@@ -234,14 +236,14 @@ export class OrderListViewComponent implements AfterViewInit, OnDestroy {
         if (column === 'createdAt') {
             return this.datePipe.transform(row.createdAt, OrderListViewComponent.DATE_FORMAT) ?? '';
         }
-        return row[column] ?? '';
+        return row[column];
     }
 
     // The order's "results" field is a "done/total" fraction (e.g. "3/5").
     // Map it to the categories used for cell colouring and the dropdown filter:
     // some (but not all) results -> partial (yellow), all results -> complete (green).
     private static classifyResults(results: string): ResultsCategory {
-        const match = /^(\d+)\s*\/\s*(\d+)$/.exec((results ?? '').trim());
+        const match = /^(\d+)\s*\/\s*(\d+)$/.exec(results.trim());
         if (!match) {
             return 'none';
         }

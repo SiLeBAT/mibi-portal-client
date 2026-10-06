@@ -50,7 +50,7 @@ describe('EmailSettingsComponent', () => {
 
     /** Trimmed text of every radio button in document order. */
     function radioLabels(): string[] {
-        return radioButtons().map(el => el.textContent?.trim() ?? '');
+        return radioButtons().map(el => el.textContent.trim());
     }
 
     function enable(): void {
@@ -112,7 +112,7 @@ describe('EmailSettingsComponent', () => {
         fixture.detectChanges();
 
         const dienstag = radioButtons().find(
-            el => el.textContent?.trim() === 'Dienstag'
+            el => el.textContent.trim() === 'Dienstag'
         ) as HTMLElement;
         (dienstag.querySelector('input') as HTMLInputElement).click();
         fixture.detectChanges();

@@ -51,7 +51,7 @@ export class AppBarTopContainerComponent {
                 if (enabledActions.length > 0) {
                     enabledActions.forEach(enabledAction => {
                         const config = _.filter(configuration, (c: UserActionViewModelConfiguration) => c.type === enabledAction);
-                        if (config) {
+                        if (config.length > 0) {
                             newConfig.push(...config);
                         }
                     });

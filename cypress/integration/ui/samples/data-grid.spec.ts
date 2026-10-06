@@ -1,4 +1,4 @@
-/// <reference types="Cypress" />
+/// <reference types="cypress" />
 
 const colTitles = [
 
@@ -26,7 +26,7 @@ const colTitles = [
 describe('Testing the Sample data grid', function () {
     beforeEach(() => {
         cy.fixture('ui-routes.json').as('paths').then(
-            (paths) => {
+            (paths: Record<string, string>) => {
                 cy.visit(paths.samples);
             }
         );
@@ -42,10 +42,9 @@ describe('Testing the Sample data grid', function () {
         beforeEach(() => {
             cy.fixture('ui-routes.json').as('paths')
                 .then(
-                    (paths) => {
+                    () => {
                         const fileName = 'einsendebogen.xlsx';
-                        // @ts-ignore
-                        cy.loadSamplesFile(fileName, paths.root);
+                        cy.loadSamplesFile(fileName);
                     }
                 );
         });

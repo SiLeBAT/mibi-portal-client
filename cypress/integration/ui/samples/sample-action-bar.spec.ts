@@ -1,4 +1,4 @@
-/// <reference types="Cypress" />
+/// <reference types="cypress" />
 /// <reference path="../../../support/index.d.ts" />
 
 describe('Testing the Sample Action Bar', function () {
@@ -7,7 +7,7 @@ describe('Testing the Sample Action Bar', function () {
 
             beforeEach(() => {
                 cy.fixture('ui-routes.json').as('paths').then(
-                    (paths) => {
+                    (paths: Record<string, string>) => {
                         cy.visit(paths.samples);
                     }
                 );
@@ -21,10 +21,9 @@ describe('Testing the Sample Action Bar', function () {
             beforeEach(() => {
                 cy.fixture('ui-routes.json').as('paths')
                     .then(
-                        (paths) => {
+                        () => {
                             const fileName = 'einsendebogen.xlsx';
-                            // @ts-ignore
-                            cy.loadSamplesFile(fileName, paths.root);
+                            cy.loadSamplesFile(fileName);
                         }
                     );
             });
@@ -41,14 +40,13 @@ describe('Testing the Sample Action Bar', function () {
             cy.fixture('users.json')
                 .then(
                     (users) => {
-                        // @ts-ignore
                         cy.login(users[0]);
                     }
                 );
 
             cy.fixture('ui-routes.json')
                 .then(
-                    (paths) => {
+                    (paths: Record<string, string>) => {
                         cy.visit(paths.samples);
                     }
                 );
@@ -64,10 +62,9 @@ describe('Testing the Sample Action Bar', function () {
             beforeEach(() => {
                 cy.fixture('ui-routes.json').as('paths')
                     .then(
-                        (paths) => {
+                        () => {
                             const fileName = 'einsendebogen.xlsx';
-                            // @ts-ignore
-                            cy.loadSamplesFile(fileName, paths.root);
+                            cy.loadSamplesFile(fileName);
                         }
                     );
             });

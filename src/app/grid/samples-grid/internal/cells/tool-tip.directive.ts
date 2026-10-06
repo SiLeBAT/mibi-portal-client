@@ -10,7 +10,7 @@ import { SampleValidationErrorLevel } from '../../../../samples/model/sample-man
     selector: '[mibiSamplesGridToolTip]'
 })
 export class SamplesGridToolTipDirective implements OnChanges {
-    @Input('mibiSamplesGridToolTip') data: SamplesGridDataCellData;
+    @Input('mibiSamplesGridToolTip') data!: SamplesGridDataCellData;
 
     constructor(private hostElement: ElementRef) {}
 
@@ -24,7 +24,6 @@ export class SamplesGridToolTipDirective implements OnChanges {
     }
 
     private destroyToolTips(): void {
-        // eslint-disable-next-line
         $.tooltipster.instances(this.hostElement.nativeElement).forEach(el => { el.destroy(); });
     }
 

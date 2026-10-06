@@ -9,7 +9,7 @@ import { UserLinkProviderService } from '../../link-provider.service';
     styleUrls: ['./recovery.component.scss']
 })
 export class RecoveryComponent implements OnInit {
-    recoveryForm: UntypedFormGroup;
+    recoveryForm!: UntypedFormGroup;
 
     @Output() recovery = new EventEmitter();
 

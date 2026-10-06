@@ -13,11 +13,11 @@ import { tap } from 'rxjs/operators';
 })
 export class PageBodyContainerComponent implements OnInit {
 
-    isBusy$: Observable<boolean>;
-    isBanner$: Observable<boolean>;
-    isBanner: boolean;
-    isAlternativeWelcomePageActive$: Observable<boolean>;
-    isAlternativeWelcomePageActive: boolean;
+    isBusy$!: Observable<boolean>;
+    isBanner$!: Observable<boolean>;
+    isBanner!: boolean;
+    isAlternativeWelcomePageActive$!: Observable<boolean>;
+    isAlternativeWelcomePageActive!: boolean;
     constructor(
         private store$: Store<CoreMainSlice>) { }
 

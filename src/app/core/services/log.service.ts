@@ -43,7 +43,6 @@ export class LogEntry {
             const retArry: string[] = [];
             for (const item of params) {
                 if (item.message) {
-                    // eslint-disable-next-line
                     retArry.push(item.message);
                 } else {
                     retArry.push(JSON.stringify(item));

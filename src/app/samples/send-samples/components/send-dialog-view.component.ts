@@ -9,7 +9,7 @@ import { DialogConfiguration } from '../../../shared/dialog/dialog.model';
     styleUrls: ['./send-dialog-view.component.scss']
 })
 export class SendDialogViewComponent {
-    @Input()config: DialogConfiguration;
+    @Input()config!: DialogConfiguration;
 
     @Output() confirm: EventEmitter<string> = new EventEmitter();
 
@@ -19,7 +19,6 @@ export class SendDialogViewComponent {
     commentControl = new UntypedFormControl('');
 
     onConfirm() {
-        // eslint-disable-next-line
         this.confirm.emit(this.commentControl.value);
     }
 

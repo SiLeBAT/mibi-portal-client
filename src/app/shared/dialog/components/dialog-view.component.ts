@@ -8,7 +8,7 @@ import { DialogConfiguration } from '../dialog.model';
     styleUrls: ['./dialog-view.component.scss']
 })
 export class DialogViewComponent {
-    @Input() config: DialogConfiguration;
+    @Input() config!: DialogConfiguration;
 
     @Output() confirm: EventEmitter<void> = new EventEmitter();
 

@@ -50,8 +50,7 @@ export class UploadViewComponent implements OnInit, OnDestroy {
                 auxilliaryAction: {
                     type: UserActionType.CUSTOM,
                     label: strings.cancelButtonLabel,
-                    // eslint-disable-next-line @typescript-eslint/no-empty-function
-                    onExecute: () => {},
+                    onExecute: () => { /* Abbrechen: nothing to do */ },
                     icon: ''
                 }
             }}));

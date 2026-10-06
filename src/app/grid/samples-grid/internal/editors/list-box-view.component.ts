@@ -15,7 +15,7 @@ interface FilteredValue {
 })
 export class SamplesGridListBoxViewComponent implements OnChanges {
 
-    @Input() values: string[];
+    @Input() values!: string[];
     @Input() filter: string | undefined;
 
     @Input() selection: number = -1;
@@ -45,7 +45,7 @@ export class SamplesGridListBoxViewComponent implements OnChanges {
     // PRIVATE PROPERTIES
 
     @ViewChild('listbox', { static: true })
-    private listBoxRef: ElementRef;
+    private listBoxRef!: ElementRef;
 
     private focusedItem: number = -1;
 
@@ -54,7 +54,7 @@ export class SamplesGridListBoxViewComponent implements OnChanges {
     ngOnChanges(changes: SimpleChanges): void {
         const selectionChange = changes['selection'];
         if (selectionChange) {
-            const currentValue = changes['selection'].currentValue as number;
+            const currentValue = selectionChange.currentValue as number;
             if (currentValue !== this.focusedItem) {
                 this.updateFocus(currentValue);
             }

@@ -6,6 +6,7 @@ import {
     orderListUpdateSequenceSOA
 } from './order-list.actions';
 import { OrderListState, orderListReducer } from './order-list.reducer';
+import { required } from '../../shared/model/invariant';
 
 const order = (id: string): OrderEntryDTO => ({
     id: id,
@@ -89,6 +90,6 @@ describe('orderListReducer', () => {
             })
         );
         expect(result).not.toBe(initial);
-        expect(initial.orders[0].samples).toBeUndefined();
+        expect(required(initial.orders[0], 'first order').samples).toBeUndefined();
     });
 });

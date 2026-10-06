@@ -10,6 +10,7 @@ import { WithdrawConsentDialogComponent } from '../presentation/withdraw-consent
 import { TokenizedUser } from '../model/user.model';
 import { userUpdateCurrentUserSOA } from '../state/user.actions';
 import { selectUserCurrentUser } from '../state/user.selectors';
+import { UserMainSlice } from '../user.state';
 
 /**
  * Drives the data-save consent popup. The decision to show the popup is taken
@@ -23,7 +24,7 @@ export class DataConsentService {
 
     constructor(
         private dialog: MatDialog,
-        private store$: Store,
+        private store$: Store<UserMainSlice>,
         private dataService: DataService
     ) {}
 

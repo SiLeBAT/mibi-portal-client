@@ -9,8 +9,8 @@ import { NavBarTab } from '../../nav-bar.model';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NavBarLoginViewComponent {
-    @Input() tab: NavBarTab;
-    @Input() isAlternativeWelcomePage: boolean;
+    @Input() tab!: NavBarTab;
+    @Input() isAlternativeWelcomePage!: boolean;
     @Output() login = new EventEmitter<void>();
 
     onLogin() {

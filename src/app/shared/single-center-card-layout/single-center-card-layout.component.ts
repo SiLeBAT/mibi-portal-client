@@ -9,7 +9,7 @@ import { MibiCardActionsDirective } from './mibi-card-actions.directive';
 })
 export class SingleCenterCardLayoutComponent {
     // Do not rename this to html reserved keyword "title" it will add title-tooltips to all child elements
-    @Input() cardTitle: string;
+    @Input() cardTitle!: string;
 
     // eslint-disable-next-line @angular-eslint/no-input-rename
     @Input('disable-content-overflow-handling') disableContentOverflowHandling?: '';

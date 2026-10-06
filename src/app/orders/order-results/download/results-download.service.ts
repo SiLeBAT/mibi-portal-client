@@ -38,7 +38,7 @@ export class ResultsDownloadService {
         }
         zip.generateAsync({ type: 'blob' })
             .then(blob => saveAs(blob, this.zipFileName(order)))
-            .catch((error: Error) => this.logger.error('Failed to build results ZIP file', error?.stack));
+            .catch((error: Error) => this.logger.error('Failed to build results ZIP file', error.stack));
     }
 
     private csvBlob(csv: string): Blob {
@@ -47,7 +47,7 @@ export class ResultsDownloadService {
 
     // BfR-Probenanalyse_Auftrag{YYYYMMDD}-{HHmm}_{filenameWithoutExt}
     private baseName(order: OrderEntryDTO): string {
-        return `BfR-Probenanalyse_Auftrag${this.formatTimestamp(order.createdAt)}_${this.stripExtension(order.fileName ?? '')}`;
+        return `BfR-Probenanalyse_Auftrag${this.formatTimestamp(order.createdAt)}_${this.stripExtension(order.fileName)}`;
     }
 
     private csvFileName(order: OrderEntryDTO, token: string): string {

@@ -9,7 +9,6 @@ const PasswordStrengthValidator = (control: AbstractControl): ValidationErrors |
         return null;
     }
 
-    // eslint-disable-next-line
     const score = zxcvbn(control.value).score;
 
     return score >= 0 && score < 2 ? { 'strengthError': true } : null;
@@ -17,7 +16,7 @@ const PasswordStrengthValidator = (control: AbstractControl): ValidationErrors |
 
 // PasswordConfirmationValidator
 
-const PasswordConfirmationValidator = (formGroup: UntypedFormGroup): ValidationErrors | null => {
+const PasswordConfirmationValidator = (formGroup: AbstractControl): ValidationErrors | null => {
     const pw1 = formGroup.get('password1');
     const pw2 = formGroup.get('password2');
 
@@ -41,8 +40,8 @@ const PasswordConfirmationValidator = (formGroup: UntypedFormGroup): ValidationE
     styleUrls: ['./password.component.scss']
 })
 export class PasswordComponent implements OnInit {
-    passwordForm: UntypedFormGroup;
-    passwordControl: UntypedFormControl;
+    passwordForm!: UntypedFormGroup;
+    passwordControl!: UntypedFormControl;
 
     ngOnInit() {
         this.passwordControl = new UntypedFormControl(null, [Validators.required, Validators.minLength(8), PasswordStrengthValidator]);

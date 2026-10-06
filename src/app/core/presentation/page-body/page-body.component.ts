@@ -13,9 +13,9 @@ import { AnimationsRouteData } from '../../../shared/animations/animations.model
     animations: [bannerSlideAnimation, routerTransitionFadeAnimation, routerTransitionAnimation]
 })
 export class PageBodyComponent {
-    @Input() isBusy: boolean;
-    @Input() isBanner: boolean;
-    @Input() isAlternativeWelcomePageActive: boolean;
+    @Input() isBusy!: boolean;
+    @Input() isBanner!: boolean;
+    @Input() isAlternativeWelcomePageActive!: boolean;
     @Output() animationDone = new EventEmitter<void>();
 
     getBannerAnimationState(): string {

@@ -12,8 +12,8 @@ export interface WelcomePageData {
 
 interface StrapiWelcomePageResponse {
     data: {
-        is_maintenance_mode: boolean;
-        content: string;
+        is_maintenance_mode?: boolean;
+        content?: string;
     };
 }
 
@@ -87,10 +87,12 @@ export class StrapiService {
         const sectionMap = new Map<number, { section: StrapiFaqSection; entries: StrapiFaqEntry[] }>();
         for (const entry of entries) {
             if (!entry.isTop && entry.section) {
-                if (!sectionMap.has(entry.section.id)) {
-                    sectionMap.set(entry.section.id, { section: entry.section, entries: [] });
+                let group = sectionMap.get(entry.section.id);
+                if (!group) {
+                    group = { section: entry.section, entries: [] };
+                    sectionMap.set(entry.section.id, group);
                 }
-                sectionMap.get(entry.section.id)!.entries.push(entry);
+                group.entries.push(entry);
             }
         }
 

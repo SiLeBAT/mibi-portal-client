@@ -213,9 +213,7 @@ export class BannerContainerComponent {
     }
 
     onMainAction(banner: Banner) {
-        if (banner.mainAction) {
-            banner.mainAction.onExecute();
-        }
+        banner.mainAction.onExecute();
         this.store$.dispatch(hideBannerSOA());
     }
 

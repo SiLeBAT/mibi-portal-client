@@ -1,6 +1,7 @@
 import { ResultDTO, SampleWithResultsDTO } from '../../../core/model/response.model';
 import { NRL } from '../../../samples/model/sample.enums';
 import { DownloadColumn, buildResultsCsv, downloadColumnsForNrl } from './results-csv';
+import { required } from '../../../shared/model/invariant';
 
 const result = (position: number, resultData: Record<string, string>): ResultDTO => ({
     id: `r${position}`,
@@ -14,7 +15,7 @@ const sample = (
 ): SampleWithResultsDTO => {
     const sampleData: Record<string, { value: string }> = {};
     for (const key of Object.keys(data)) {
-        sampleData[key] = { value: data[key] };
+        sampleData[key] = { value: data[key] ?? '' };
     }
     return {
         id: 's1',
@@ -105,8 +106,12 @@ describe('downloadColumnsForNrl', () => {
         );
         const resultRow = sampleRow.results[0];
 
-        expect(columns[0].getValue(sampleRow, resultRow)).toBe('S1');
-        expect(columns[4].getValue(sampleRow, resultRow)).toBe('Salmonella');
+        expect(
+            required(columns[0], 'column 0').getValue(sampleRow, resultRow)
+        ).toBe('S1');
+        expect(
+            required(columns[4], 'column 4').getValue(sampleRow, resultRow)
+        ).toBe('Salmonella');
         expect(columns.find(column => column.header === 'Serovar')?.getValue(sampleRow, resultRow))
             .toBe('S. Typhimurium');
     });
@@ -114,7 +119,10 @@ describe('downloadColumnsForNrl', () => {
     // The BfR order number is one per sample, so each of a multi-result sample's
     // rows repeats the value the results view shows for that sample (#856).
     it('reads the BfR order number from the sample, repeating it across its result rows', () => {
-        const bfrColumn = downloadColumnsForNrl(NRL.NRL_Salm)[3];
+        const bfrColumn = required(
+            downloadColumnsForNrl(NRL.NRL_Salm)[3],
+            'BfR order number column'
+        );
         const sampleRow = sample({}, [
             result(2, { 'BfR-Auftragsnummer': '2026-0815' }),
             result(1, { 'BfR-Auftragsnummer': '2026-0815' })

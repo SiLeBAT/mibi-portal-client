@@ -11,10 +11,10 @@ import 'tooltipster';
     styleUrls: ['./last-change-display.component.scss']
 })
 export class LastChangeDisplayComponent implements AfterViewInit {
-    @Input() lastChange$: Observable<moment.Moment>;
-    @Input() serverVersion: string;
-    @Input() clientVersion: string;
-    @ViewChild('entry', { read: ElementRef }) entry: ElementRef;
+    @Input() lastChange$!: Observable<moment.Moment>;
+    @Input() serverVersion!: string;
+    @Input() clientVersion!: string;
+    @ViewChild('entry', { read: ElementRef }) entry!: ElementRef;
     private toolTip: ToolTip;
 
     constructor() {

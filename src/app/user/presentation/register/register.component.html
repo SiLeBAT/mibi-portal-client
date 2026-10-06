@@ -66,7 +66,7 @@ when the submit button is clicked. On submit the register() method is called if 
                 formControlName="email"
                 required
             />
-            <mat-error *ngIf="registerForm.controls.email.errors?.email">
+            <mat-error *ngIf="registerForm.controls.email?.errors?.email">
                 Muss eine gültige E-Mail sein.
             </mat-error>
         </mat-form-field>

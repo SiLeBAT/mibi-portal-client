@@ -35,15 +35,12 @@
         "useDefineForClassFields": false,
 
         // Type Checking: strict mode
-        "alwaysStrict": true,
-        "noImplicitAny": true,
-        "noImplicitThis": true,
-        "strictBindCallApply": true,
-        // "strictFunctionTypes": true,
-        "strictNullChecks": true,
-        // "strictPropertyInitialization": true,
-        // "useUnknownInCatchVariables": true,
-        // "strict": true
+        "strict": true,
+        // Not part of `strict`. Without it TypeScript treats every index
+        // signature lookup as always present, so guards against a missing
+        // key (SimpleChanges entries, record and array lookups) read as dead
+        // code and real absences go unchecked.
+        "noUncheckedIndexedAccess": true,
 
         // Type Checking 
         "noFallthroughCasesInSwitch": true,

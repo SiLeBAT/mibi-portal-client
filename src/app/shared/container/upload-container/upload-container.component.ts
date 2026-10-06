@@ -18,7 +18,7 @@ import { showBannerSOA, showDialogMSA, hideBannerSOA } from '../../../core/state
 export class UploadContainerComponent implements OnInit, OnDestroy, AfterContentInit {
 
     @Output() uploadFile = new EventEmitter<File>();
-    @ContentChild('uploadChild') uploadChild: UploadAbstractComponent;
+    @ContentChild('uploadChild') uploadChild?: UploadAbstractComponent;
     private myTrigger: Subject<boolean> = new Subject();
     trigger$: Observable<boolean> = this.myTrigger.asObservable();
     private componentActive = true;
@@ -55,7 +55,7 @@ export class UploadContainerComponent implements OnInit, OnDestroy, AfterContent
                 }
             );
             this.uploadChild.errorHandler.asObservable().pipe(takeWhile(() => this.componentActive)).subscribe(
-                (error: UploadErrorType) => {
+                (error) => {
                     this.onError(error);
                 },
                 (error) => {
@@ -66,8 +66,17 @@ export class UploadContainerComponent implements OnInit, OnDestroy, AfterContent
         }
     }
 
-    onError(error: UploadErrorType) {
-        switch (error) {
+    // The upload component reports a raw string: either one of the known
+    // UploadErrorType values or whatever the file-drop library rejected the
+    // file for. Narrow it once so the cases below compare like with like.
+    private toUploadErrorType(error: string): UploadErrorType | undefined {
+        return (Object.values(UploadErrorType) as string[]).includes(error)
+            ? error as UploadErrorType
+            : undefined;
+    }
+
+    onError(error: string) {
+        switch (this.toUploadErrorType(error)) {
             case UploadErrorType.SIZE:
                 this.store$.dispatch(showBannerSOA({ predefined: 'wrongUploadFilesize' }));
                 break;
@@ -100,29 +109,26 @@ export class UploadContainerComponent implements OnInit, OnDestroy, AfterContent
             this.myTrigger.next(!this.isGuardActive);
             return;
         }
-        if (this.hasEntries) {
-            this.store$.dispatch(showDialogMSA({content: {
-                message: `Wenn Sie die Tabelle schließen, gehen Ihre Änderungen verloren. Wollen Sie das?`,
-                title: 'Schließen',
-                mainAction: {
-                    type: UserActionType.CUSTOM,
-                    label: 'Ok',
-                    onExecute: () => {
-                        this.isGuardActive = false;
-                        this.myTrigger.next(!this.isGuardActive);
-                    },
-                    icon: '',
-                    focused: true
+        this.store$.dispatch(showDialogMSA({content: {
+            message: `Wenn Sie die Tabelle schließen, gehen Ihre Änderungen verloren. Wollen Sie das?`,
+            title: 'Schließen',
+            mainAction: {
+                type: UserActionType.CUSTOM,
+                label: 'Ok',
+                onExecute: () => {
+                    this.isGuardActive = false;
+                    this.myTrigger.next(!this.isGuardActive);
                 },
-                auxilliaryAction: {
-                    type: UserActionType.CUSTOM,
-                    label: 'Abbrechen',
-                    // eslint-disable-next-line @typescript-eslint/no-empty-function
-                    onExecute: () => {},
-                    icon: ''
-                }
-            }}));
-        }
+                icon: '',
+                focused: true
+            },
+            auxilliaryAction: {
+                type: UserActionType.CUSTOM,
+                label: 'Abbrechen',
+                onExecute: () => { /* Abbrechen: nothing to do */ },
+                icon: ''
+            }
+        }}));
 
     }
 }

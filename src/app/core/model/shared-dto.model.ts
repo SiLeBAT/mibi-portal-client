@@ -2,8 +2,14 @@ import { SampleProperty } from '../../samples/model/sample-management.model';
 import { NRL } from '../../samples/model/sample.enums';
 
 export type SamplePropertyValuesDTO = Record<SampleProperty, string>;
-export type AnnotatedSampleDataDTO = Record<SampleProperty, AnnotatedSampleDataEntryDTO>;
-export type SampleDataDTO = Record<SampleProperty, SampleDataEntryDTO>;
+// Partial: a payload need not carry an entry for every sample property, which
+// the readers of this type already allow for.
+export type AnnotatedSampleDataDTO = Partial<
+    Record<SampleProperty, AnnotatedSampleDataEntryDTO>
+>;
+export type SampleDataDTO = Partial<
+    Record<SampleProperty, SampleDataEntryDTO>
+>;
 type UrgencyDTO = 'NORMAL' | 'EILT';
 
 interface AddressDTO {
@@ -47,13 +53,15 @@ interface SampleValidationErrorDTO {
 }
 
 export interface SampleMetaDTO {
-    nrl: NRL;
+    // The entity factory falls back to UNKNOWN / NORMAL, so neither field can
+    // be relied on to be present.
+    nrl?: NRL;
     analysis: AnalysisDTO;
-    urgency: UrgencyDTO;
+    urgency?: UrgencyDTO;
 }
 
 interface SampleBaseDTO {
-    sampleMeta: SampleMetaDTO;
+    sampleMeta?: SampleMetaDTO;
 }
 export interface AnnotatedSampleDTO extends SampleBaseDTO {
     sampleData: AnnotatedSampleDataDTO;

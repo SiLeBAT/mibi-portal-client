@@ -12,7 +12,7 @@ import { Banner } from '../../model/alert.model';
 })
 export class BannerComponent {
 
-    @Input() banner: Banner;
+    @Input() banner!: Banner;
     @Output() mainAction = new EventEmitter();
     @Output() auxilliaryAction = new EventEmitter();
 

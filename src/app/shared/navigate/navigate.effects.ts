@@ -23,7 +23,10 @@ export class NavigateEffects {
                     this.logger.error('Error during navigation.', error.stack);
                 });
             } catch (error) {
-                this.logger.error('Unable to navigate.', error.stack);
+                this.logger.error(
+                    'Unable to navigate.',
+                    error instanceof Error ? error.stack : String(error)
+                );
             }
             return EMPTY;
         })

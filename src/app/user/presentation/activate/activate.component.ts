@@ -8,8 +8,8 @@ import { UserLinkProviderService } from '../../link-provider.service';
     styleUrls: ['./activate.component.scss']
 })
 export class ActivateComponent {
-    @Input() tokenValid: boolean;
-    @Input() appName: string;
+    @Input() tokenValid!: boolean;
+    @Input() appName!: string;
 
     constructor(public userLinks: UserLinkProviderService) {}
 }

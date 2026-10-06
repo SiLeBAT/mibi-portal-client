@@ -9,8 +9,8 @@ import { ZomoPlanFileInfo } from '../../model/response.model';
     styleUrls: ['./action-item-list.component.scss']
 })
 export class ActionItemListComponent {
-    @Input() actionBarTitle: string;
-    @Input() actionConfigs: UserActionViewModelConfiguration[];
+    @Input() actionBarTitle!: string;
+    @Input() actionConfigs?: UserActionViewModelConfiguration[];
     @Output() zomoPlanFileInfoChangeEvent = new EventEmitter<ZomoPlanFileInfo>();
 
     isUpload(actionType: UserActionType): boolean {

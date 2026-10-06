@@ -31,7 +31,7 @@ function makeService(
     const http = { get: get, post: post } as unknown as HttpClient;
     const store = { dispatch: dispatch } as unknown as Store;
     const service = new KeycloakAuthService(http, store);
-    const navigateTo = jest.spyOn(service as any, 'navigateTo').mockImplementation(() => {});
+    const navigateTo = jest.spyOn(service as any, 'navigateTo').mockImplementation(() => { /* no-op */ });
     return { service: service, dispatch: dispatch, navigateTo: navigateTo };
 }
 

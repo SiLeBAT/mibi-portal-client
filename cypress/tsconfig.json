@@ -1,9 +1,18 @@
 {
   "compilerOptions": {
     "strict": true,
+    // Cypress bundles sinon types that do not match the installed
+    // @sinonjs/fake-timers; third-party definitions are not ours to check.
+    "skipLibCheck": true,
     "baseUrl": "../node_modules",
-    "target": "es5",
-    "lib": ["es5", "dom"],
+    // Needed so the type packages Cypress' own definitions import can be
+    // resolved; the default resolution for this target cannot find them.
+    "moduleResolution": "node",
+    // Cypress 13's own type definitions require ES2015 or later; the previous
+    // es5 target made this project uncompilable, which left the e2e specs
+    // without working type-aware linting.
+    "target": "es2018",
+    "lib": ["es2018", "dom"],
     "types": ["cypress"]
   },
   "include": ["**/*.ts"]

@@ -31,13 +31,13 @@ function makeService(
         afterClosed: () => ({
             subscribe: (next: () => void) => {
                 close = next;
-                return { unsubscribe: () => {} };
+                return { unsubscribe: () => { /* no-op */ } };
             }
         })
     }) as unknown as MatDialogRef<unknown>);
     const dialogService = { openDialog: openDialog } as unknown as DialogService;
     const service = new VersionCheckService(backend, dialogService);
-    const reloadPage = jest.spyOn(service as any, 'reloadPage').mockImplementation(() => {});
+    const reloadPage = jest.spyOn(service as any, 'reloadPage').mockImplementation(() => { /* no-op */ });
     return {
         service: service,
         respond: respond,

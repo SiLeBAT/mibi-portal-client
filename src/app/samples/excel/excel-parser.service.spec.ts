@@ -2,6 +2,7 @@ import { utils, write, WorkBook } from 'xlsx';
 import { ExcelParserService } from './excel-parser.service';
 import { FORM_PROPERTIES } from './excel-parser.constants';
 import { ParsedAnalysisOption, ParsedUrgency } from './excel-parser.model';
+import { required } from '../../shared/model/invariant';
 
 // jsdom's File does not implement arrayBuffer(), so use a light stub exposing just
 // the members the parser reads (`name` and `arrayBuffer()`).
@@ -38,7 +39,7 @@ function buildSampleSheetFile(overrides: Record<string, CellValue> = {}): File {
     );
     const set = (address: string, value: CellValue) => {
         const [r, c] = cellToRowCol(address);
-        grid[r][c] = value;
+        required(grid[r], `grid row ${r}`)[c] = value;
     };
 
     set('B3', 'V18'); // version -> '18' after stripping leading char
@@ -97,9 +98,9 @@ describe('ExcelParserService', () => {
     it('reads sample data values and annotates every field', async () => {
         const result = await service.parse(buildSampleSheetFile());
 
-        const sample = result.samples[0];
-        expect(sample.data['sample_id'].value).toBe('sample-0001');
-        expect(sample.data['pathogen_avv'].value).toBe('Salmonella');
+        const sample = required(result.samples[0], 'first parsed sample');
+        expect(sample.data['sample_id']?.value).toBe('sample-0001');
+        expect(sample.data['pathogen_avv']?.value).toBe('Salmonella');
 
         for (const prop of FORM_PROPERTIES) {
             expect(sample.data[prop]).toEqual(
@@ -139,7 +140,11 @@ describe('ExcelParserService date cells', () => {
         const result = await service.parse(
             buildSampleSheetFile({ [sampleCell('sampling_date')]: value })
         );
-        return result.samples[0].data['sampling_date'].value;
+        const sample = required(result.samples[0], 'first parsed sample');
+        return required(
+            sample.data['sampling_date'],
+            'sampling_date entry'
+        ).value;
     };
 
     const signatureDateOf = async (value: CellValue): Promise<string> => {

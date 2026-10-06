@@ -72,8 +72,8 @@ export const samplesMainReducer = createReducer(
     })),
     on(samplesUpdateSampleDataEntrySOA, (state, action) => {
         const { newValue, rowIndex, columnId } = action.changedField;
-        const oldEntry = state.sampleData[rowIndex].sampleData[columnId];
-        if (oldEntry.value === newValue) {
+        const oldEntry = state.sampleData[rowIndex]?.sampleData[columnId];
+        if (!oldEntry || oldEntry.value === newValue) {
             return state;
         }
 
@@ -130,7 +130,10 @@ function updateSampleDataFromSamples(oldSamples: Sample[], newSamples: Sample[])
     return newSamples.map((newSample, i) => {
         const oldSample = oldSamples[i];
         newSample = _.cloneDeep(newSample);
-        Object.keys(newSample.sampleData).forEach((prop: keyof SampleData) => {
+        if (!oldSample) {
+            return newSample;
+        }
+        (Object.keys(newSample.sampleData) as (keyof SampleData)[]).forEach(prop => {
             if (oldSample.sampleData[prop].oldValue && !newSample.sampleData[prop].oldValue) {
                 newSample.sampleData[prop].oldValue = oldSample.sampleData[prop].oldValue;
             }
@@ -146,7 +149,8 @@ function updateSampleDataEntryFromChangedData(
 ): AnnotatedSampleDataEntry {
     let oldValue = entry.oldValue;
     if (importedFile) {
-        const importedValue = importedFile.data[changedData.rowIndex][changedData.columnId];
+        const importedValue =
+            importedFile.data[changedData.rowIndex]?.[changedData.columnId];
         oldValue = changedData.newValue === importedValue ? undefined : importedValue;
     }
 

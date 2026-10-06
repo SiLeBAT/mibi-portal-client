@@ -9,9 +9,9 @@ import { ZomoPlanFileInfo } from '../../model/response.model';
     styleUrls: ['./app-bar-top.component.scss']
 })
 export class AppBarTopComponent {
-    @Input() actionBarEnabled: boolean;
-    @Input() actionBarTitle: string;
-    @Input() actionConfigs: UserActionViewModelConfiguration[];
+    @Input() actionBarEnabled!: boolean;
+    @Input() actionBarTitle!: string;
+    @Input() actionConfigs!: UserActionViewModelConfiguration[];
     @Output() zomoPlanFileInfoChangeEvent = new EventEmitter<ZomoPlanFileInfo>();
 
     onDownloadZomoPlanFile(zomoPlanFileInfo: ZomoPlanFileInfo) {

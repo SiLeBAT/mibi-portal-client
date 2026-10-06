@@ -87,7 +87,7 @@ function idColumn(): ResultsGridColumnModel {
 }
 
 function nrlColumn(): ResultsGridColumnModel {
-    return textColumn(2, false, samplesEditorNrlHeader, sample => sample.sampleMeta.nrl);
+    return textColumn(2, false, samplesEditorNrlHeader, sample => sample.sampleMeta?.nrl ?? '');
 }
 
 // Unlike the other left-hand columns, the BfR order number is not part of the

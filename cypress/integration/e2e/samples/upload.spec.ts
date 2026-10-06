@@ -1,4 +1,4 @@
-/// <reference types="Cypress" />
+/// <reference types="cypress" />
 
 describe('Use-cases Upload Page', function () {
     beforeEach(() => {
@@ -13,7 +13,6 @@ describe('Use-cases Upload Page', function () {
     xdescribe('Anonymous upload', function () {
         it('should upload einsendebogen', function () {
             const fileName = 'einsendebogen.xlsx';
-            // @ts-ignore
             cy.loadSamplesFile(fileName);
             cy.contains(fileName);
             cy.visit('/');

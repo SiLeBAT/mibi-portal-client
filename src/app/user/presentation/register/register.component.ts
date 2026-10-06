@@ -6,6 +6,7 @@ import { startWith, map } from 'rxjs/operators';
 import { RegistrationDetails } from '../../model/user.model';
 import { PasswordComponent } from '../../password/password.component';
 import { UserLinkProviderService } from '../../link-provider.service';
+import { required } from '../../../shared/model/invariant';
 
 // InstituteValidator
 
@@ -20,15 +21,15 @@ const instituteValidator = (control: AbstractControl): ValidationErrors | null =
     styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit, AfterViewInit {
-    registerForm: UntypedFormGroup;
-    filteredOptions$: Observable<Institution[]>;
+    registerForm!: UntypedFormGroup;
+    filteredOptions$!: Observable<Institution[]>;
 
-    @Input() institutions: Institution[];
-    @Input() supportContact: string;
+    @Input() institutions!: Institution[];
+    @Input() supportContact!: string;
 
     @Output() register = new EventEmitter();
 
-    @ViewChild(PasswordComponent) private passwordComponent: PasswordComponent;
+    @ViewChild(PasswordComponent) private passwordComponent!: PasswordComponent;
 
     constructor(public userLinks: UserLinkProviderService) {}
 
@@ -43,14 +44,16 @@ export class RegisterComponent implements OnInit, AfterViewInit {
             ])
         });
 
-        this.filteredOptions$ = this.registerForm.controls.institution.valueChanges
+        this.filteredOptions$ = required(
+            this.registerForm.controls.institution,
+            'institution control'
+        ).valueChanges
             .pipe(
                 startWith(''),
                 map(value => {
                     if (!value) {
                         return this.institutions;
                     }
-                    // eslint-disable-next-line
                     return this.filter(value);
                 })
             );

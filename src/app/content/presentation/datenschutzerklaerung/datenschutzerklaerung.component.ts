@@ -14,7 +14,7 @@ export interface DatenschutzerklaerungViewModel {
     styleUrls: ['./datenschutzerklaerung.component.scss']
 })
 export class DatenschutzerklaerungComponent {
-    @Input() model: DatenschutzerklaerungViewModel;
+    @Input() model!: DatenschutzerklaerungViewModel;
 
     get dataProtectionOfficerIdCard(): PersonellIdCard {
         return this.model.dataProtectionOfficerIdCard;

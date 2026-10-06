@@ -1,4 +1,4 @@
-/// <reference types="Cypress" />
+/// <reference types="cypress" />
 
 describe('Testing the /tokens endpoint', function () {
     const baseUrl = '/v2/tokens';

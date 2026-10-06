@@ -25,7 +25,7 @@ import { DataGridCellTool } from '../cell-tool.class';
 })
 export class DataGridEditorViewComponent {
 
-    @Input() controller: DataGridCellController;
+    @Input() controller!: DataGridCellController;
 
     @Output() dataChange = new EventEmitter<DataGridEditorData>();
     @Output() confirm = new EventEmitter<void>();

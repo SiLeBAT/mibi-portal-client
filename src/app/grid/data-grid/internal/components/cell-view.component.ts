@@ -23,10 +23,10 @@ import { DataGridSelectionManager } from '../selection-manager.class';
 })
 export class DataGridCellViewComponent {
 
-    @Input() controller: DataGridCellController;
+    @Input() controller!: DataGridCellController;
 
-    @Input() row: number;
-    @Input() col: number;
+    @Input() row!: number;
+    @Input() col!: number;
 
     // TEMPLATE PROPERTIES
 

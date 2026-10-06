@@ -9,9 +9,9 @@ import { tap } from 'rxjs/operators';
 })
 export class DataGridDirtyEmitterDirective implements OnInit, OnDestroy {
 
-    @Input('mibiDataGridDirtyEmitter') dirtyEmitter: Observable<DataGridDirtyEmitter>;
+    @Input('mibiDataGridDirtyEmitter') dirtyEmitter!: Observable<DataGridDirtyEmitter>;
 
-    private dirtyEmitterSubscription: Subscription;
+    private dirtyEmitterSubscription!: Subscription;
 
     constructor(private readonly changeDetectorRef: ChangeDetectorRef) { }
 

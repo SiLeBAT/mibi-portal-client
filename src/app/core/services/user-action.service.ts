@@ -63,8 +63,7 @@ export class UserActionService {
     {
         label: 'ZoMo-Plan',
         type: UserActionType.DOWNLOAD_ZOMO_PLAN_FILE,
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        onExecute: () => { }
+        onExecute: () => { /* resolved by the container that handles the action */ }
     }];
 
     constructor(

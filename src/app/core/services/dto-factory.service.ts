@@ -58,7 +58,7 @@ export class DTOFactoryService {
 
     private fromSampleData(sampleData: SampleData): SampleDataDTO {
         const dto: Partial<SampleDataDTO> = {};
-        Object.keys(sampleData).forEach((prop: keyof SampleData) => dto[prop] = {
+        (Object.keys(sampleData) as (keyof SampleData)[]).forEach(prop => dto[prop] = {
             value: sampleData[prop].value,
             oldValue: sampleData[prop].oldValue
         });
@@ -101,11 +101,11 @@ export class DTOFactoryService {
 
     private fromSampleDataToAnnotatedDTO(sampleData: SampleData): AnnotatedSampleDataDTO {
         const dto: Partial<AnnotatedSampleDataDTO> = {};
-        Object.keys(sampleData).forEach((prop: keyof SampleData) => dto[prop] = {
+        (Object.keys(sampleData) as (keyof SampleData)[]).forEach(prop => dto[prop] = {
             value: sampleData[prop].value,
             oldValue: sampleData[prop].oldValue,
-            errors: sampleData[prop].errors ? sampleData[prop].errors : [],
-            correctionOffer: sampleData[prop].correctionOffer ? sampleData[prop].correctionOffer : []
+            errors: sampleData[prop].errors,
+            correctionOffer: sampleData[prop].correctionOffer
         });
         return dto as AnnotatedSampleDataDTO;
     }

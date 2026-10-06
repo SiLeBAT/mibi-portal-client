@@ -12,7 +12,7 @@ export interface DatenschutzHinweiseViewModel {
     styleUrls: ['./datenschutzhinweise.component.scss']
 })
 export class DatenschutzHinweiseComponent {
-    @Input() model: DatenschutzHinweiseViewModel;
+    @Input() model!: DatenschutzHinweiseViewModel;
 
     get dataProtectionOfficerIdCard(): PersonellIdCard {
         return this.model.dataProtectionOfficerIdCard;

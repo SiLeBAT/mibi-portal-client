@@ -9,8 +9,8 @@ import { environment } from '../../../../environments/environment';
 })
 export class AdminActivateComponent {
 
-    @Input() adminTokenValid: boolean;
-    @Input() name: string;
+    @Input() adminTokenValid!: boolean;
+    @Input() name!: string;
     @Input() appName: string = environment.appName;
 
 }

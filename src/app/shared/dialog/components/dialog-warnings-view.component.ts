@@ -8,5 +8,5 @@ import { DialogWarning } from '../dialog.model';
     styleUrls: ['./dialog-warnings-view.component.scss']
 })
 export class DialogWarningsViewComponent {
-    @Input() warnings: DialogWarning[];
+    @Input() warnings!: DialogWarning[];
 }

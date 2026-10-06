@@ -1,4 +1,4 @@
-/// <reference types="Cypress" />
+/// <reference types="cypress" />
 /// <reference path="../../../support/index.d.ts" />
 
 describe('Testing the Profile page', function () {
@@ -22,7 +22,6 @@ describe('Testing the Profile page', function () {
             cy.fixture('users.json')
                 .then(
                     (users) => {
-                        // @ts-ignore
                         cy.login(users[0]);
                     }
                 );
@@ -42,11 +41,13 @@ describe('Testing the Profile page', function () {
             });
 
             xit('should display the user information', function () {
+                // Pending: no assertions written yet.
             });
         });
 
         describe('Testing the Profile page links', function () {
             xit('should allow the user to log out', function () {
+                // Pending: no assertions written yet.
             });
 
         });

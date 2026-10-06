@@ -10,6 +10,7 @@ import {
 } from '../presentation/new-client-version-dialog/new-client-version-dialog.component';
 import { VersionCheckInterceptor } from './version-check-interceptor.service';
 import { VersionCheckService } from './version-check.service';
+import { required } from '../../shared/model/invariant';
 
 /**
  * Drives the whole chain the way the app wires it up: a real HttpClient, the
@@ -47,7 +48,7 @@ describe('VersionCheckInterceptor', () => {
         dialog = TestBed.inject(MatDialog);
         reloadPage = jest
             .spyOn(TestBed.inject(VersionCheckService) as any, 'reloadPage')
-            .mockImplementation(() => {});
+            .mockImplementation(() => { /* no-op */ });
         localStorage.setItem('currentUser', '{"token":"abc"}');
     });
 
@@ -88,9 +89,11 @@ describe('VersionCheckInterceptor', () => {
 
         it('blocks the user with the reload dialog', () => {
             expect(dialog.openDialogs.length).toBe(1);
-            expect(dialog.openDialogs[0].componentInstance)
+            expect(required(dialog.openDialogs[0], 'open dialog').componentInstance)
                 .toBeInstanceOf(NewClientVersionDialogComponent);
-            expect(dialog.openDialogs[0].disableClose).toBe(true);
+            expect(
+                required(dialog.openDialogs[0], 'open dialog').disableClose
+            ).toBe(true);
         });
 
         it('invalidates the locally stored data', () => {
@@ -100,7 +103,7 @@ describe('VersionCheckInterceptor', () => {
         // The dialog closes asynchronously, so afterClosed only fires once the
         // pending tasks have run.
         it('reloads the page when the user confirms', fakeAsync(() => {
-            const dialogRef = dialog.openDialogs[0];
+            const dialogRef = required(dialog.openDialogs[0], 'open dialog');
             (dialogRef.componentInstance as NewClientVersionDialogComponent).onReload();
             flush();
 

@@ -1,4 +1,4 @@
-/// <reference types="Cypress" />
+/// <reference types="cypress" />
 
 /**
  * The /samples endpoints as they are since MPS-312: the browser parses the .xlsx and

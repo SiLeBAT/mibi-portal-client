@@ -13,10 +13,10 @@ export class UploadAbstractComponent implements OnDestroy, AfterViewInit {
     @Output() invokeValidation = new EventEmitter<File>();
     @Output() errorHandler = new EventEmitter<string>();
     @Output() guard = new EventEmitter();
-    @Input() trigger$: Observable<boolean>;
+    @Input() trigger$!: Observable<boolean>;
     private canUpload: boolean = false;
     private componentActive = true;
-    @ViewChild('selector', { read: ElementRef }) selector: ElementRef;
+    @ViewChild('selector', { read: ElementRef }) selector!: ElementRef;
 
     ngAfterViewInit(): void {
         this.trigger$.pipe(
@@ -24,9 +24,7 @@ export class UploadAbstractComponent implements OnDestroy, AfterViewInit {
             tap(trigger => {
                 if (trigger) {
                     this.canUpload = trigger;
-                    if (trigger) {
-                        this.selector.nativeElement.children[1].children[0].click();
-                    }
+                    this.selector.nativeElement.children[1].children[0].click();
                 }
             })
         ).subscribe();
@@ -42,9 +40,9 @@ export class UploadAbstractComponent implements OnDestroy, AfterViewInit {
 
     set lastInvalids(val: { file: File; type: string }[]) {
         this._lastInvalids = val;
-        if (val && val[0]) {
-            this.errorHandler.emit(val[0].type);
-
+        const firstInvalid = val[0];
+        if (firstInvalid) {
+            this.errorHandler.emit(firstInvalid.type);
         } else {
             this.errorHandler.emit(UploadErrorType.CLEAR);
         }

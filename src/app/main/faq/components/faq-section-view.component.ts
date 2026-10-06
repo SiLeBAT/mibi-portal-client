@@ -11,7 +11,7 @@ import { FaqEntry } from '../faq.model';
 export class FaqSectionViewComponent {
 
     @Input() title?: string;
-    @Input() entries: FaqEntry[];
+    @Input() entries!: FaqEntry[];
 
     onAnswerClick(event: MouseEvent): void {
         const anchor = (event.target as HTMLElement).closest('a');

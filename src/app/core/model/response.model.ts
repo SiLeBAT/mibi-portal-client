@@ -140,7 +140,7 @@ export interface SampleWithResultsDTO {
     id: string;
     position: number;
     sampleData: AnnotatedSampleDataDTO;
-    sampleMeta: SampleMetaDTO;
+    sampleMeta?: SampleMetaDTO;
     results: ResultDTO[];
 }
 
