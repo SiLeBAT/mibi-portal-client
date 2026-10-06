@@ -6,7 +6,7 @@ import _ from 'lodash';
 
 export function getDataValuesFromAnnotatedData(sampleData: SampleData): SamplePropertyValues {
     const result: Partial<SamplePropertyValues> = {};
-    Object.keys(sampleData).forEach((prop: keyof SampleData) => result[prop] = sampleData[prop].value);
+    (Object.keys(sampleData) as (keyof SampleData)[]).forEach(prop => result[prop] = sampleData[prop].value);
     return result as SamplePropertyValues;
 }
 

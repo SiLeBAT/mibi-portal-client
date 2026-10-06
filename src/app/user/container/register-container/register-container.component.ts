@@ -28,7 +28,7 @@ import { UserLinkProviderService } from '../../link-provider.service';
 })
 export class RegisterContainerComponent implements OnInit, OnDestroy {
 
-    institutions$: Observable<Institution[]>;
+    institutions$!: Observable<Institution[]>;
     supportContact: string = '';
     private componentActive: boolean = true;
     constructor(

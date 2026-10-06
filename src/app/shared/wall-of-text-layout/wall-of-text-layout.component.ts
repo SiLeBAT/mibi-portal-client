@@ -8,6 +8,6 @@ import { Component, Input } from '@angular/core';
 })
 export class WallOfTextLayoutComponent {
     // Do not rename this to html reserved keyword "title" it will add title-tooltips to all child elements
-    @Input() wotTitle: string;
+    @Input() wotTitle!: string;
 
 }

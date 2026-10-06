@@ -10,17 +10,17 @@ import { Faq } from '../../../main/faq/faq.model';
 })
 export class FaqViewComponent implements AfterViewInit, OnChanges {
 
-    @Input() faq: Faq;
-    @Input() activeFragment: string | null;
+    @Input() faq!: Faq;
+    @Input() activeFragment!: string | null;
 
     @ViewChildren('faqSection')
-    private faqSectionRefs: QueryList<ElementRef<{
+    private faqSectionRefs!: QueryList<ElementRef<{
         id: string;
         scrollIntoView: () => void;
     }>>;
 
     @ViewChild('scrollPanel')
-    private scrollPanel: ElementRef<{
+    private scrollPanel!: ElementRef<{
         scrollIntoView: (alignToTop: boolean) => void;
     }>;
 
@@ -31,7 +31,6 @@ export class FaqViewComponent implements AfterViewInit, OnChanges {
     ngOnChanges(changes: SimpleChanges): void {
         const fragmentChange = changes.activeFragment;
         if (fragmentChange && !fragmentChange.firstChange) {
-            // eslint-disable-next-line
             this.scrollToFragment(fragmentChange.currentValue);
         }
     }

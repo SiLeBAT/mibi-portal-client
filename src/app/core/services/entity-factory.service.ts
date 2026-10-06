@@ -81,7 +81,13 @@ export class EntityFactoryService {
 
     private toSampleData(dto: AnnotatedSampleDataDTO): SampleData {
         const annotatedSampleData: Partial<SampleData> = {};
-        Object.keys(dto).forEach((prop: SampleProperty) => annotatedSampleData[prop] = this.toAnnotatedSampleDataEntry(dto[prop]));
+        (Object.keys(dto) as SampleProperty[]).forEach(prop => {
+            const entry = dto[prop];
+            if (entry) {
+                annotatedSampleData[prop] =
+                    this.toAnnotatedSampleDataEntry(entry);
+            }
+        });
         return annotatedSampleData as SampleData;
     }
 

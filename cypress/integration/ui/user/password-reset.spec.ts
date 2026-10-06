@@ -1,4 +1,4 @@
-/// <reference types="Cypress" />
+/// <reference types="cypress" />
 
 describe('Testing the Password Reset page', function () {
     beforeEach(() => {

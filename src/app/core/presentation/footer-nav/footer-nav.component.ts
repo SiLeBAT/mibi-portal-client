@@ -10,7 +10,7 @@ import { MailConfiguration } from '../../model/mail.model';
     styleUrls: ['./footer-nav.component.scss']
 })
 export class FooterNavComponent {
-    @Input() supportMailConfig: MailConfiguration;
+    @Input() supportMailConfig!: MailConfiguration;
 
     constructor(
         public mainLinks: MainLinkProviderService,

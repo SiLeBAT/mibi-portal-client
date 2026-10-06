@@ -60,7 +60,9 @@ export class ExportSamplesEffects {
 
             const byteNumbers = new Array(slice.length);
             for (let i = 0; i < slice.length; i++) {
-                // eslint-disable-next-line unicorn/prefer-code-point
+                // charCodeAt is required here: these are raw base64 bytes,
+                // and codePointAt would combine surrogate pairs.
+                // eslint-disable-next-line unicorn/prefer-code-point -- see above
                 byteNumbers[i] = slice.charCodeAt(i);
             }
 

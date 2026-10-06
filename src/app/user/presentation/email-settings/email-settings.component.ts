@@ -19,7 +19,7 @@ import { EmailSettingsService } from '../../services/email-settings.service';
     styleUrls: ['./email-settings.component.scss']
 })
 export class EmailSettingsComponent implements OnInit {
-    @Input() currentUser!: User;
+    @Input() currentUser?: User;
 
     readonly strings = emailSettingsStrings;
     settings: EmailNotificationSettings = {

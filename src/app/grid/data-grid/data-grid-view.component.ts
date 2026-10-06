@@ -33,10 +33,10 @@ import { DataGridCellController, DataGridDirtyEmitter } from './internal/cell-co
 import { DataGridChangeDetector } from './internal/change-detector.class';
 import { DataGridDirtyEmitterMap } from './internal/dirty-emitter-map.class';
 import { Subject } from 'rxjs';
+import { required } from '../../shared/model/invariant';
 
-enum MouseButton {
-    PRIMARY = 0
-}
+// MouseEvent.button: 0 identifies the primary (usually left) button.
+const PRIMARY_MOUSE_BUTTON = 0;
 
 enum MouseButtons {
     NONE = 0,
@@ -54,9 +54,9 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
 
     // PUBLIC INTERFACE
 
-    @Input() model: DataGridViewModel;
-    @Input() cellTemplates: DataGridTemplateMap<DataGridCellContext>;
-    @Input() editorTemplates: DataGridTemplateMap<DataGridEditorContext>;
+    @Input() model!: DataGridViewModel;
+    @Input() cellTemplates!: DataGridTemplateMap<DataGridCellContext>;
+    @Input() editorTemplates!: DataGridTemplateMap<DataGridEditorContext>;
 
     @Output() editorConfirm = new EventEmitter<DataGridEditorEvent>();
 
@@ -86,10 +86,10 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
     // PRIVATE PROPERTIES
 
     @ViewChild('gridRefScroll', { static: true })
-    private gridRefScroll: ElementRef;
+    private gridRefScroll?: ElementRef;
 
     @ViewChild('grid', { static: true })
-    private gridRef: ElementRef;
+    private gridRef!: ElementRef;
 
     private get cellModels(): DataGridMap<DataGridCellViewModel> { return this.model.cellModels; }
     private get cellData(): DataGridMap<DataGridCellData> { return this.model.cellData; }
@@ -121,8 +121,10 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
             getCellModel: (row, col) => this.getCellModel(row, col),
             getCellData: (row, col) => this.getCellData(row, col),
             getClientRect: (row, col) => this.getClientRect(row, col),
-            getCellTemplate: (templateId) => this.cellTemplates[templateId],
-            getEditorTemplate: (templateId) => this.editorTemplates[templateId]
+            getCellTemplate: (templateId) =>
+                required(this.cellTemplates[templateId], `cell template ${templateId}`),
+            getEditorTemplate: (templateId) =>
+                required(this.editorTemplates[templateId], `editor template ${templateId}`)
         };
     }
 
@@ -252,21 +254,21 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
     // CLEARING EVENT HANDLERS
 
     onGridMouseDown(e: MouseEvent): void {
-        if ((e.button as MouseButton) !== MouseButton.PRIMARY) {
+        if (e.button !== PRIMARY_MOUSE_BUTTON) {
             return;
         }
         this.clearing.clickGrid();
     }
 
     onContainerMouseDown(e: MouseEvent): void {
-        if ((e.button as MouseButton) !== MouseButton.PRIMARY) {
+        if (e.button !== PRIMARY_MOUSE_BUTTON) {
             return;
         }
         this.clearing.clickContainer();
     }
 
     onScrollContainerMouseDown(e: MouseEvent): void {
-        if ((e.button as MouseButton) !== MouseButton.PRIMARY) {
+        if (e.button !== PRIMARY_MOUSE_BUTTON) {
             return;
         }
         this.clearing.clickScrollContainer();
@@ -274,7 +276,7 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
 
     @HostListener('window:mousedown', ['$event'])
     onWindowMouseDown(e: MouseEvent): void {
-        if ((e.button as MouseButton) !== MouseButton.PRIMARY) {
+        if (e.button !== PRIMARY_MOUSE_BUTTON) {
             return;
         }
 
@@ -335,7 +337,7 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
     }
 
     private onCellMouseDown(e: MouseEvent, row: number, col: number): void {
-        if ((e.button as MouseButton) !== MouseButton.PRIMARY) {
+        if (e.button !== PRIMARY_MOUSE_BUTTON) {
             return;
         }
 
@@ -363,7 +365,7 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
     }
 
     private onCellClick(e: MouseEvent, row: number, col: number): void {
-        if ((e.button as MouseButton) !== MouseButton.PRIMARY) {
+        if (e.button !== PRIMARY_MOUSE_BUTTON) {
             return;
         }
 
@@ -410,8 +412,8 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
     private confirmEditor(): void {
         this.editorConfirm.emit({
             data: this.editorData,
-            rowId: this.rows[this.editor.row],
-            colId: this.cols[this.editor.col]
+            rowId: required(this.rows[this.editor.row], `row ${this.editor.row}`),
+            colId: required(this.cols[this.editor.col], `column ${this.editor.col}`)
         });
         this.cancelEditor();
     }
@@ -433,17 +435,27 @@ export class DataGridViewComponent implements AfterViewInit, OnChanges {
             return '';
         }
         return model.cols
-            .map(colId => model.cellModels[headerRowId][colId]?.isRowHeader
+            .map(colId => model.cellModels[headerRowId]?.[colId]?.isRowHeader
                 ? dataGridRowHeaderTrack
                 : dataGridDefaultTrack)
             .join(' ');
     }
 
     private getCellModel(row: number, col: number): DataGridCellViewModel {
-        return this.cellModels[this.rows[row]][this.cols[col]];
+        const rowId = required(this.rows[row], `row ${row}`);
+        const colId = required(this.cols[col], `column ${col}`);
+        return required(
+            this.cellModels[rowId]?.[colId],
+            `cell model ${rowId}/${colId}`
+        );
     }
     private getCellData(row: number, col: number): DataGridCellData {
-        return this.cellData[this.rows[row]][this.cols[col]];
+        const rowId = required(this.rows[row], `row ${row}`);
+        const colId = required(this.cols[col], `column ${col}`);
+        return required(
+            this.cellData[rowId]?.[colId],
+            `cell data ${rowId}/${colId}`
+        );
     }
 
     private detectChildChanges(): void {

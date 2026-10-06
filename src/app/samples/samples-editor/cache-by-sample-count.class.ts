@@ -128,10 +128,16 @@ export class SamplesEditorCacheBySampleCount {
 
         samples.forEach((sample, index) => {
             const rowId = this.editorModel.getSampleRowId(index);
-            if (!oldSamples[index]) {
+            const oldSample = oldSamples[index];
+            if (!oldSample) {
                 dataMap[rowId] = this.createDataRow(sample, index);
             } else {
-                dataMap[rowId] = this.updateDataRow(oldSamples[index], sample, index, oldDataMap[rowId]);
+                dataMap[rowId] = this.updateDataRow(
+                    oldSample,
+                    sample,
+                    index,
+                    oldDataMap[rowId] ?? {}
+                );
             }
         });
 
@@ -160,7 +166,8 @@ export class SamplesEditorCacheBySampleCount {
             if (newData !== oldData) {
                 dataMap[colModel.colId] = newData;
             } else {
-                dataMap[colModel.colId] = oldDataMap[colModel.colId];
+                dataMap[colModel.colId] =
+                    oldDataMap[colModel.colId] ?? newData;
             }
         });
 

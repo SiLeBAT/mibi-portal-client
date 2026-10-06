@@ -6,6 +6,7 @@ import { DataService } from '../../core/services/data.service';
 import { TokenizedUser } from '../model/user.model';
 import { userUpdateCurrentUserSOA } from '../state/user.actions';
 import { selectUserCurrentUser } from '../state/user.selectors';
+import { UserMainSlice } from '../user.state';
 
 /**
  * Persists the user's email-notification settings and reflects the saved value
@@ -15,7 +16,7 @@ import { selectUserCurrentUser } from '../state/user.selectors';
 @Injectable({ providedIn: 'root' })
 export class EmailSettingsService {
     constructor(
-        private store$: Store,
+        private store$: Store<UserMainSlice>,
         private dataService: DataService
     ) {}
 

@@ -9,5 +9,5 @@ import { NavBarTab } from '../../nav-bar.model';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NavBarTitleViewComponent {
-    @Input() tab: NavBarTab;
+    @Input() tab!: NavBarTab;
 }

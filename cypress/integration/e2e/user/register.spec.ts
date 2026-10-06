@@ -1,4 +1,4 @@
-/// <reference types="Cypress" />
+/// <reference types="cypress" />
 
 describe('Use-cases Register Page', function () {
     beforeEach(() => {

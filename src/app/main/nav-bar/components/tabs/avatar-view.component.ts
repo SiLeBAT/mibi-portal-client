@@ -10,7 +10,7 @@ import { NavBarAvatarUser } from './avatar-user.model';
 })
 export class NavBarAvatarViewComponent {
 
-    @Input() user: NavBarAvatarUser;
+    @Input() user!: NavBarAvatarUser;
 
     @Output() logout = new EventEmitter();
     @Output() profile = new EventEmitter();

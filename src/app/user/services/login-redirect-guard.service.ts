@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { map, take } from 'rxjs/operators';
 import { selectIsAlternativeWelcomePage } from 'app/core/state/core.selectors';
 import { LogService } from '../../core/services/log.service';
+import { CoreMainSlice } from '../../core/core.state';
 
 @Injectable({
     providedIn: 'root'
@@ -11,7 +12,7 @@ import { LogService } from '../../core/services/log.service';
 export class LoginRedirectGuard  {
 
     constructor(
-        private store$: Store,
+        private store$: Store<CoreMainSlice>,
         private router: Router,
         private logger: LogService
     ) { }

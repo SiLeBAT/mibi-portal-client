@@ -10,7 +10,7 @@ import { SamplesGridDataCellData, SamplesGridEditorData } from '../../samples-gr
 })
 export class SamplesGridDataEditorViewComponent implements OnInit {
 
-    @Input() data: SamplesGridDataCellData;
+    @Input() data!: SamplesGridDataCellData;
     @Output() dataValueChange = new EventEmitter<SamplesGridEditorData>();
 
     @Output() confirm = new EventEmitter<void>();
@@ -19,7 +19,7 @@ export class SamplesGridDataEditorViewComponent implements OnInit {
 
     // TEMPLATE PROPERTIES
 
-    editorValue: string;
+    editorValue!: string;
 
     get listValues(): string[] {
         return this.data.correctionOffer;
@@ -29,14 +29,14 @@ export class SamplesGridDataEditorViewComponent implements OnInit {
     }
 
     listSelection: number = -1;
-    listFilter: string;
+    listFilter!: string;
 
     // PRIVATE PROPERTIES
 
     @ViewChild('editor', { static: true })
-    private editorRef: ElementRef;
+    private editorRef!: ElementRef;
 
-    private oldEditorValue: string;
+    private oldEditorValue!: string;
 
     // LIFE CYCLE
 
@@ -99,7 +99,7 @@ export class SamplesGridDataEditorViewComponent implements OnInit {
 
     onListHoverChange(index: number): void {
         if (index !== -1) {
-            this.listFilter = this.listValues[index];
+            this.listFilter = this.listValues[index] ?? this.editorValue;
         } else {
             this.listFilter = this.editorValue;
         }
@@ -134,7 +134,8 @@ export class SamplesGridDataEditorViewComponent implements OnInit {
         }
 
         if (this.listSelection !== -1) {
-            this.editorValue = this.listValues[this.listSelection];
+            this.editorValue =
+                this.listValues[this.listSelection] ?? this.oldEditorValue;
         } else {
             this.editorValue = this.oldEditorValue;
         }

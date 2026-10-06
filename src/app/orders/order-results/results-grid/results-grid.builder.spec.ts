@@ -2,6 +2,8 @@ import { SampleWithResultsDTO } from '../../../core/model/response.model';
 import { SamplesGridCellType } from '../../../grid/samples-grid/samples-grid.model';
 import { buildResultsGridViewModel } from './results-grid.builder';
 import { ResultsGridModel } from './results-grid.model';
+import { DataGridColId, DataGridRowId } from '../../../grid/data-grid/data-grid.model';
+import { required } from '../../../shared/model/invariant';
 
 const model: ResultsGridModel = {
     headerRowId: 0,
@@ -32,6 +34,13 @@ const samples = [{}, {}] as unknown as SampleWithResultsDTO[];
 describe('buildResultsGridViewModel', () => {
     const vm = buildResultsGridViewModel(model, samples);
 
+    // The builder is expected to produce every cell of the grid it describes,
+    // so a missing one is a test failure rather than a case to handle.
+    const cellModel = (row: DataGridRowId, col: DataGridColId) =>
+        required(vm.cellModels[row]?.[col], `cell model ${row}/${col}`);
+    const cellDatum = (row: DataGridRowId, col: DataGridColId) =>
+        required(vm.cellData[row]?.[col], `cell data ${row}/${col}`);
+
     it('lists the header row followed by one row per sample, and the model columns', () => {
         expect(vm.rows).toEqual([0, 1, 2]);
         expect(vm.cols).toEqual([1, 2]);
@@ -40,7 +49,7 @@ describe('buildResultsGridViewModel', () => {
     it('marks every cell read-only with no editor template', () => {
         vm.rows.forEach(rowId => {
             vm.cols.forEach(colId => {
-                const cell = vm.cellModels[rowId][colId];
+                const cell = cellModel(rowId, colId);
                 expect(cell.isReadOnly).toBe(true);
                 expect(cell.editorTemplateId).toBeUndefined();
             });
@@ -48,28 +57,28 @@ describe('buildResultsGridViewModel', () => {
     });
 
     it('builds header cells from headerCellType/getHeaderData (falling back to headerText)', () => {
-        expect(vm.cellModels[0][1]).toEqual({
+        expect(cellModel(0, 1)).toEqual({
             isRowHeader: true,
             isColHeader: true,
             isReadOnly: true,
             cellTemplateId: SamplesGridCellType.TEXT
         });
-        expect(vm.cellData[0][1]).toBe('H1');
+        expect(cellDatum(0, 1)).toBe('H1');
 
-        expect(vm.cellModels[0][2].cellTemplateId).toBe(SamplesGridCellType.TOGGLE);
-        expect(vm.cellData[0][2]).toBe('HD');
+        expect(cellModel(0, 2).cellTemplateId).toBe(SamplesGridCellType.TOGGLE);
+        expect(cellDatum(0, 2)).toBe('HD');
     });
 
     it('builds data cells from the column cellType and getData(sample, index)', () => {
-        expect(vm.cellModels[1][1]).toEqual({
+        expect(cellModel(1, 1)).toEqual({
             isRowHeader: true,
             isColHeader: false,
             isReadOnly: true,
             cellTemplateId: SamplesGridCellType.TEXT
         });
-        expect(vm.cellData[1][1]).toBe('v0');
-        expect(vm.cellData[2][1]).toBe('v1');
-        expect(vm.cellData[1][2]).toEqual(['a', 'b']);
+        expect(cellDatum(1, 1)).toBe('v0');
+        expect(cellDatum(2, 1)).toBe('v1');
+        expect(cellDatum(1, 2)).toEqual(['a', 'b']);
     });
 
     it('yields only the header row when there are no samples', () => {

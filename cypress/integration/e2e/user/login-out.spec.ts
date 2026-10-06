@@ -1,5 +1,5 @@
 import { User } from './../../../support/test.model';
-/// <reference types="Cypress" />
+/// <reference types="cypress" />
 
 describe('Use-cases Login Page', function () {
 
@@ -29,7 +29,7 @@ describe('Use-cases Login Page', function () {
                         'currentUser'
                     );
                     expect(userJSON).to.not.equal(null);
-                    const user: User = JSON.parse(userJSON!);
+                    const user: User = JSON.parse(userJSON ?? '{}');
                     expect(user.firstName).to.equal('User1');
                 }
             );

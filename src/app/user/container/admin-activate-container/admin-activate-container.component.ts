@@ -16,8 +16,8 @@ import { showBannerSOA } from '../../../core/state/core.actions';
 })
 export class AdminActivateContainerComponent implements OnInit {
 
-    adminTokenValid: UserActivation;
-    name: string;
+    adminTokenValid!: UserActivation;
+    name!: string;
     appName: string = environment.appName;
 
     constructor(

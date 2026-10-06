@@ -1,4 +1,4 @@
-/// <reference types="Cypress" />
+/// <reference types="cypress" />
 
 describe('Testing the Registration Page', function () {
     beforeEach(() => {

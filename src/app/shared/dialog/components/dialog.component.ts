@@ -28,7 +28,7 @@ export class NewDialogComponent {
         })
     );
 
-    private caller: string;
+    private caller!: string;
 
     constructor(
         private dialogRef: MatDialogRef<NewDialogComponent>,

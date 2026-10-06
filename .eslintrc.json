@@ -8,7 +8,8 @@
       ],
       "parserOptions": {
         "project": [
-          "tsconfig.json"
+          "tsconfig.json",
+          "cypress/tsconfig.json"
         ],
         "createDefaultProgram": true
       },
@@ -19,7 +20,8 @@
         "plugin:rxjs/recommended",
         "plugin:unicorn/recommended",
         "plugin:@angular-eslint/recommended",
-        "plugin:@angular-eslint/template/process-inline-templates"
+        "plugin:@angular-eslint/template/process-inline-templates",
+        "./eslint.base.cjs"
       ],
       "rules": {
         "no-duplicate-imports": "error",
@@ -54,7 +56,7 @@
           "error",
           "ForInStatement"
         ],
-        "no-return-await": "error",
+        "no-return-await": "off",
         "no-throw-literal": "error",
         "no-undef-init": "error",
         "no-underscore-dangle": [
@@ -142,6 +144,10 @@
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-inferrable-types": "off",
         "@typescript-eslint/no-unnecessary-qualifier": "error",
+        // The no-unsafe-* family is not enforced in this project; without
+        // no-unsafe-argument the rest of the family left 18 blanket
+        // eslint-disable comments behind to silence it.
+        "@typescript-eslint/no-unsafe-argument": "off",
         "@typescript-eslint/no-unsafe-assignment": "off",
         "@typescript-eslint/no-unsafe-call": "off",
         "@typescript-eslint/no-unsafe-member-access": "off",
@@ -227,6 +233,33 @@
             "type": "attribute"
           }
         ]
+      }
+    },
+    {
+      // The console log publisher cannot log through itself.
+      "files": [
+        "src/app/core/model/log-publishers.ts"
+      ],
+      "rules": {
+        "no-console": "off"
+      }
+    },
+    {
+      "files": [
+        "cypress/**/*.ts",
+        "src/**/*.spec.ts"
+      ],
+      // Unit, integration and e2e tests. The common rule set stays fully
+      // active here; only conventions that clash with Cypress idioms are
+      // relaxed.
+      "rules": {
+        // The Cypress type reference is the documented way to load its globals.
+        "@typescript-eslint/triple-slash-reference": "off",
+        // False positive in eslint-plugin-unicorn 40 for a spec whose only
+        // top-level statement is describe().
+        "unicorn/no-empty-file": "off",
+        // Brand-name casing in assertions is deliberate.
+        "unicorn/better-regex": "off"
       }
     },
     {

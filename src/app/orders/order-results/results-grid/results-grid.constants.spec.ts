@@ -2,6 +2,7 @@ import { SampleWithResultsDTO } from '../../../core/model/response.model';
 import { dataGridRowHeaderTrack } from '../../../grid/data-grid/data-grid.constants';
 import { SamplesGridCellType } from '../../../grid/samples-grid/samples-grid.model';
 import { samplesEditorDataHeaders } from '../../../samples/samples-editor/constants/column-headers.constants';
+import { required } from '../../../shared/model/invariant';
 import {
     createFullDataGridModel,
     createResultsGridModel,
@@ -38,13 +39,16 @@ describe('createResultsGridModel', () => {
         // Next to the results the Erreger (pathogen) column is headed
         // "Erreger: Eingesendet als" rather than with the AVV catalogue
         // reference used in the samples editor (ticket #856).
-        expect(model.columns[6].headerText).toBe('Erreger: Eingesendet als');
+        expect(required(model.columns[6], 'column 6').headerText).toBe(
+            'Erreger: Eingesendet als'
+        );
     });
 
     // The BfR order number comes from the LIMS with the results, not from the
     // uploaded order data, and sits in sixth place (ticket #856).
     describe('the BfR order number column', () => {
-        const bfrColumn = () => createResultsGridModel([]).columns[5];
+        const bfrColumn = () =>
+            required(createResultsGridModel([]).columns[5], 'BfR column');
 
         it('is the sixth column, headed "BfR-Auftragsnummer"', () => {
             expect(bfrColumn().headerText).toBe('BfR-Auftrags­nummer');
@@ -68,7 +72,10 @@ describe('createResultsGridModel', () => {
     });
 
     it('renders the toggle column as a TOGGLE bar labelled "Alle Auftragsdaten anzeigen: Hier klicken"', () => {
-        const toggle = createResultsGridModel([]).columns[FIXED_COLUMN_COUNT];
+        const toggle = required(
+            createResultsGridModel([]).columns[FIXED_COLUMN_COUNT],
+            'first toggle column'
+        );
 
         expect(toggle.cellType).toBe(SamplesGridCellType.TOGGLE);
         expect(toggle.headerCellType).toBe(SamplesGridCellType.TOGGLE);
@@ -89,7 +96,10 @@ describe('createResultsGridModel', () => {
     // without touching the data it reads (ticket #875).
     it('heads a result column with its header and reads the values by its key', () => {
         const model = createResultsGridModel([{ key: 'CIP', header: 'Ciprofloxacin' }]);
-        const [cip] = model.columns.slice(FIXED_COLUMN_COUNT + 1);
+        const cip = required(
+            model.columns.slice(FIXED_COLUMN_COUNT + 1)[0],
+            'Ciprofloxacin column'
+        );
 
         expect(cip.headerText).toBe('Ciprofloxacin');
         expect(cip.getData(sampleWithResults({ CIP: 'R' }, { CIP: 'S' }), 0)).toEqual(['R', 'S']);
@@ -99,7 +109,10 @@ describe('createResultsGridModel', () => {
 describe('createFullDataGridModel', () => {
     it('is row-number + NRL + all uploaded columns, then the toggle bar last', () => {
         const model = createFullDataGridModel();
-        const toggle = model.columns[model.columns.length - 1];
+        const toggle = required(
+            model.columns[model.columns.length - 1],
+            'last column'
+        );
 
         expect(model.columns).toHaveLength(2 + ALL_DATA_COLUMN_COUNT + 1);
         expect(toggle.cellType).toBe(SamplesGridCellType.TOGGLE);

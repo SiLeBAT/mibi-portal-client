@@ -1,5 +1,6 @@
 import { NRLDTO, SampleWithResultsDTO } from '../../../core/model/response.model';
 import { NRL } from '../../../samples/model/sample.enums';
+import { required } from '../../../shared/model/invariant';
 import {
     createNrlMatcher,
     deriveNrlTabs,
@@ -93,13 +94,13 @@ describe('deriveNrlTabs', () => {
     });
 
     it('assigns by the regex match rather than the NRL stored at upload', () => {
-        const [tab] = deriveNrlTabs([sample(NRL.UNKNOWN, 'Salmonella Enteritidis')], matcher);
+        const tab = required(deriveNrlTabs([sample(NRL.UNKNOWN, 'Salmonella Enteritidis')], matcher)[0], 'derived tab');
 
         expect(tab.id).toBe('NRL-Salm');
     });
 
     it('falls back to the stored NRL when no selector matches', () => {
-        const [tab] = deriveNrlTabs([sample(NRL.NRL_Listeria, 'Listeria monocytogenes')], matcher);
+        const tab = required(deriveNrlTabs([sample(NRL.NRL_Listeria, 'Listeria monocytogenes')], matcher)[0], 'derived tab');
 
         expect(tab).toEqual({ id: 'NRL-Listeria', label: 'NRL-Listeria', fileToken: 'List' });
     });
@@ -117,7 +118,7 @@ describe('deriveNrlTabs', () => {
     });
 
     it('gives a sample without a recognized laboratory a fallback tab from its Erreger value', () => {
-        const [tab] = deriveNrlTabs([sample(NRL.UNKNOWN, 'Aeromonas spp.')], matcher);
+        const tab = required(deriveNrlTabs([sample(NRL.UNKNOWN, 'Aeromonas spp.')], matcher)[0], 'derived tab');
 
         expect(tab).toEqual({
             id: 'other:aeromonas spp.',
@@ -127,7 +128,7 @@ describe('deriveNrlTabs', () => {
     });
 
     it('falls back to "Unbekannt" when neither laboratory nor Erreger value is known', () => {
-        const [tab] = deriveNrlTabs([sample('', '')], matcher);
+        const tab = required(deriveNrlTabs([sample('', '')], matcher)[0], 'derived tab');
 
         expect(tab.id).toBe('other:unbekannt');
         expect(tab.fileToken).toBe('Unbekannt');

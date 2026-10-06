@@ -88,7 +88,6 @@ const routes: Routes = [{
         MatDialogModule,
         MatRadioModule,
         MatCheckboxModule,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         PasswordStrengthMeterModule.forRoot(DEFAULT_PSM_OPTIONS),
         SharedModule,
         RouterModule.forChild(routes),

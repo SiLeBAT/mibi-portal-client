@@ -6,6 +6,7 @@ import { SamplesGridDataCellTemplateComponent } from './internal/cells/data-cell
 import { SamplesGridStackedCellTemplateComponent } from './internal/cells/stacked-cell-template.component';
 import { SamplesGridToggleCellTemplateComponent } from './internal/cells/toggle-cell-template.component';
 import { SamplesGridDataEditorTemplateComponent } from './internal/editors/data-editor-template.component';
+import { required } from '../../shared/model/invariant';
 
 @Component({
     standalone: false,
@@ -15,26 +16,26 @@ import { SamplesGridDataEditorTemplateComponent } from './internal/editors/data-
 })
 export class SamplesGridViewComponent implements OnInit {
 
-    @Input() model: SamplesGridViewModel;
+    @Input() model!: SamplesGridViewModel;
     @Output() dataChange = new EventEmitter<SamplesGridDataChangeEvent>();
 
-    cellTemplates: DataGridTemplateMap<DataGridCellContext, SamplesGridCellType>;
-    editorTemplates: DataGridTemplateMap<DataGridEditorContext, SamplesGridEditorType>;
+    cellTemplates!: DataGridTemplateMap<DataGridCellContext, SamplesGridCellType>;
+    editorTemplates!: DataGridTemplateMap<DataGridEditorContext, SamplesGridEditorType>;
 
     @ViewChild('textCellTemplate', { static: true })
-    private textCellTemplate: SamplesGridTextCellTemplateComponent;
+    private textCellTemplate!: SamplesGridTextCellTemplateComponent;
 
     @ViewChild('dataCellTemplate', { static: true })
-    private dataCellTemplate: SamplesGridDataCellTemplateComponent;
+    private dataCellTemplate!: SamplesGridDataCellTemplateComponent;
 
     @ViewChild('stackedCellTemplate', { static: true })
-    private stackedCellTemplate: SamplesGridStackedCellTemplateComponent;
+    private stackedCellTemplate!: SamplesGridStackedCellTemplateComponent;
 
     @ViewChild('toggleCellTemplate', { static: true })
-    private toggleCellTemplate: SamplesGridToggleCellTemplateComponent;
+    private toggleCellTemplate!: SamplesGridToggleCellTemplateComponent;
 
     @ViewChild('dataEditorTemplate', { static: true })
-    private dataEditorTemplate: SamplesGridDataEditorTemplateComponent;
+    private dataEditorTemplate!: SamplesGridDataEditorTemplateComponent;
 
     ngOnInit(): void {
         this.cellTemplates = {
@@ -53,7 +54,10 @@ export class SamplesGridViewComponent implements OnInit {
             return;
         }
 
-        const oldData = this.model.cellData[e.rowId][e.colId] as SamplesGridDataCellData;
+        const oldData = required(
+            this.model.cellData[e.rowId]?.[e.colId],
+            `cell data ${e.rowId}/${e.colId}`
+        ) as SamplesGridDataCellData;
 
         if(e.data === oldData.value) {
             return;

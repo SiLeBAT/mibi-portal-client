@@ -5,7 +5,6 @@ import moment from 'moment';
 import 'moment/locale/de';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { SystemInformation } from '../../model/system-information.model';
 import { updateSupportDetailSOA } from '../../../content/state/content.actions';
 import { SupportDetail } from '../../../content/model/support-detail.model';
 import { parseLastChange } from '../../model/last-change';
@@ -21,13 +20,13 @@ import { parseLastChange } from '../../model/last-change';
 })
 export class LastChangeDisplayContainerComponent implements OnInit {
 
-    private lastChange$: BehaviorSubject<moment.Moment>;
-    lastChangeObs: Observable<moment.Moment>;
-    serverVersion: string;
-    clientVersion: string;
-    isDataAvailable: boolean;
-    private clientLastChange: moment.Moment;
-    private serverLastChange: moment.Moment;
+    private lastChange$!: BehaviorSubject<moment.Moment>;
+    lastChangeObs!: Observable<moment.Moment>;
+    serverVersion!: string;
+    clientVersion!: string;
+    isDataAvailable!: boolean;
+    private clientLastChange!: moment.Moment;
+    private serverLastChange!: moment.Moment;
 
     constructor(private store$: Store, private dataService: DataService) { }
 
@@ -37,7 +36,10 @@ export class LastChangeDisplayContainerComponent implements OnInit {
         this.lastChange$ = new BehaviorSubject(this.clientLastChange);
         this.lastChangeObs = this.lastChange$.asObservable();
         this.dataService.getSystemInfo().toPromise().then(
-            (sysInfo: SystemInformation) => {
+            sysInfo => {
+                if (!sysInfo) {
+                    return;
+                }
                 this.serverLastChange = parseLastChange(sysInfo.lastChange);
                 const dateCompare = [];
                 if (this.serverLastChange.isValid()) {

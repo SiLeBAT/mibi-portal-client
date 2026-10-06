@@ -74,9 +74,12 @@ export class ExcelParserService {
             cellStyles: false, // write style to 's' field
             cellNF: false // write number format string to 'z' field
         });
-        const worksheetName: string = workbook.SheetNames[0];
-        const workSheet: WorkSheet = workbook.Sheets[worksheetName];
-        if (worksheetName !== VALID_SHEET_NAME) {
+        const worksheetName = workbook.SheetNames[0];
+        const workSheet =
+            worksheetName === undefined
+                ? undefined
+                : workbook.Sheets[worksheetName];
+        if (worksheetName !== VALID_SHEET_NAME || workSheet === undefined) {
             throw new Error(
                 `Not a valid excel sheet, name of first sheet must be ${VALID_SHEET_NAME}`
             );
@@ -86,8 +89,11 @@ export class ExcelParserService {
 
     // Typed accessor for a single cell. Indexing a WorkSheet yields `any`, so this
     // narrows it once and keeps the call sites type-safe.
-    private getCell(workSheet: WorkSheet, ref: string): CellObject {
-        return workSheet[ref] as CellObject;
+    private getCell(
+        workSheet: WorkSheet,
+        ref: string
+    ): CellObject | undefined {
+        return workSheet[ref] as CellObject | undefined;
     }
 
     private getMetaDataFromFileData(
@@ -186,7 +192,7 @@ export class ExcelParserService {
         return this.getStringFromCell(this.getCell(workSheet, META_NRL_CELL));
     }
 
-    private getStringFromCell(cell: CellObject): string {
+    private getStringFromCell(cell: CellObject | undefined): string {
         if (!cell || cell.v === undefined) {
             return '';
         }
@@ -214,7 +220,7 @@ export class ExcelParserService {
 
     private getStringFromErrorCell(cell: CellObject): string {
         // returns the english error strings
-        return cell.w!;
+        return cell.w ?? '';
     }
 
     private getStringFromNumberCell(cell: CellObject): string {
@@ -289,12 +295,13 @@ export class ExcelParserService {
                 {};
 
             Object.keys(sample).forEach(props => {
-                if (this.isDateField(props)) {
-                    sample[props] = this.parseDate(sample[props]);
-                }
-                annotatedSampleData[props] = this.createAnnotatedSampleEntry(
-                    sample[props]
-                );
+                const rawValue = sample[props] ?? '';
+                const value = this.isDateField(props)
+                    ? this.parseDate(rawValue)
+                    : rawValue;
+                sample[props] = value;
+                annotatedSampleData[props] =
+                    this.createAnnotatedSampleEntry(value);
             });
 
             return { data: annotatedSampleData };
@@ -345,7 +352,7 @@ export class ExcelParserService {
     private getSampleDataHeaderRow(workSheet: WorkSheet): number {
         const markerKey = Object.keys(workSheet).find(
             key =>
-                this.getCell(workSheet, key).v === SAMPLE_DATA_HEADER_ROW_MARKER
+                this.getCell(workSheet, key)?.v === SAMPLE_DATA_HEADER_ROW_MARKER
         );
         if (markerKey !== undefined) {
             const row = utils.encode_row(utils.decode_cell(markerKey).r);

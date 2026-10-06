@@ -9,7 +9,7 @@ import { supportMailConfiguration } from '../../constants/support-contact.consta
 })
 export class FooterNavContainerComponent implements OnInit {
 
-    supportMailConfig: MailConfiguration;
+    supportMailConfig!: MailConfiguration;
 
     ngOnInit() {
         this.supportMailConfig = supportMailConfiguration;

@@ -3,6 +3,7 @@ import { OrderRow } from '../../model/order-row.model';
 import { OrderListFilter, emptyOrderListFilter } from '../../model/order-list-filter.model';
 import { joinValues, joinValuesTruncated } from '../../model/order-values';
 import { OrderListViewComponent } from './order-list-view.component';
+import { required } from '../../../shared/model/invariant';
 
 const row = (id: string, results: string, fileName = `${id}.xlsx`): OrderRow => ({
     id: id,
@@ -95,8 +96,9 @@ describe('OrderListViewComponent filtering', () => {
 
         component.onFilterChange('fileName', 'second');
 
-        expect(emitted[0].results).toBe('complete');
-        expect(emitted[0].columns.fileName).toBe('second');
+        const emittedFilter = required(emitted[0], 'emitted filter');
+        expect(emittedFilter.results).toBe('complete');
+        expect(emittedFilter.columns.fileName).toBe('second');
         expect(displayedIds(component)).toEqual(['d']);
     });
 
@@ -120,7 +122,7 @@ describe('OrderListViewComponent filtering', () => {
 
         component.onResultsFilterChange('complete');
         // What the container binds back is the very object that was emitted.
-        component.filter = emitted[0];
+        component.filter = required(emitted[0], 'emitted filter');
 
         expect(emitted.length).toBe(1);
         expect(displayedIds(component)).toEqual(['a']);

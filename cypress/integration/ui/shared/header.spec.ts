@@ -1,4 +1,4 @@
-/// <reference types="Cypress" />
+/// <reference types="cypress" />
 /// <reference path="../../../support/index.d.ts" />
 
 import { User } from '../../../support/test.model';
@@ -17,7 +17,7 @@ describe('Testing the Header', function () {
         describe('without loaded data', function () {
             beforeEach(() => {
                 cy.fixture('ui-routes.json').as('paths').then(
-                    (paths) => {
+                    (paths: Record<string, string>) => {
                         cy.visit(paths.root);
                     }
                 );
@@ -56,10 +56,9 @@ describe('Testing the Header', function () {
 
                 cy.fixture('ui-routes.json').as('paths')
                     .then(
-                        (paths) => {
+                        () => {
                             const fileName = 'einsendebogen.xlsx';
-                            // @ts-ignore
-                            cy.loadSamplesFile(fileName, paths.root);
+                            cy.loadSamplesFile(fileName);
                         }
                     );
             });
@@ -82,14 +81,13 @@ describe('Testing the Header', function () {
             cy.fixture('users.json')
                 .then(
                     (users: User[]) => {
-                        // @ts-ignore
                         cy.login(users[0]);
                     }
                 );
 
             cy.fixture('ui-routes.json').as('paths')
                 .then(
-                    (paths) => {
+                    (paths: Record<string, string>) => {
                         cy.visit(paths.root);
                     }
                 );

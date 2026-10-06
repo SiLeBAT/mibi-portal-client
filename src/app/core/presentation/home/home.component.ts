@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { ActivatedRoute } from '@angular/router';
 import { selectWelcomePageContent, selectWelcomePageIsMaintenance } from '../../state/core.selectors';
+import { CoreMainSlice } from '../../core.state';
 
 @Component({
     standalone: false,
@@ -15,11 +16,11 @@ export class HomeComponent implements OnInit {
 
     appName: string = environment.appName;
     supportContact: string = environment.supportContact;
-    isAlternativeWelcomePage: boolean;
-    isMaintenance$: Observable<boolean>;
-    maintenanceContent$: Observable<string>;
+    isAlternativeWelcomePage!: boolean;
+    isMaintenance$!: Observable<boolean>;
+    maintenanceContent$!: Observable<string>;
 
-    constructor(private route: ActivatedRoute, private store$: Store) {}
+    constructor(private route: ActivatedRoute, private store$: Store<CoreMainSlice>) {}
 
     ngOnInit() {
         this.isAlternativeWelcomePage = this.route.snapshot.data['isAlternativeWelcomePage'];

@@ -10,11 +10,11 @@ import { UserLinkProviderService } from '../../link-provider.service';
     styleUrls: ['./reset.component.scss']
 })
 export class ResetComponent implements OnInit, AfterViewInit {
-    resetForm: UntypedFormGroup;
+    resetForm!: UntypedFormGroup;
 
     @Output() resetPassword = new EventEmitter();
 
-    @ViewChild(PasswordComponent) private passwordComponent: PasswordComponent;
+    @ViewChild(PasswordComponent) private passwordComponent!: PasswordComponent;
 
     constructor(public userLinks: UserLinkProviderService) {}
 

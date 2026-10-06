@@ -1,5 +1,6 @@
 import { DataGridRowId, DataGridColId, DataGridMap } from '../data-grid.model';
 import { DataGridDirtyEmitterMap } from './dirty-emitter-map.class';
+import { required } from '../../../shared/model/invariant';
 
 export class DataGridChangeDetector {
     private dirtyMarks: true[][] = [];
@@ -28,17 +29,22 @@ export class DataGridChangeDetector {
         cols: DataGridColId[]
     ): void {
         this.checkDirtyMap(oldMap, newMap, rows, (rowId, row) => {
-            this.checkDirtyMap(oldMap[rowId], newMap[rowId], cols, (_colId, col) => {
-                this.markDirty(row, col);
-            });
+            this.checkDirtyMap(
+                oldMap[rowId] ?? {},
+                newMap[rowId] ?? {},
+                cols,
+                (_colId, col) => {
+                    this.markDirty(row, col);
+                }
+            );
         });
     }
 
     detectChanges(rows: DataGridRowId[], cols: DataGridColId[]): void {
         this.dirtyMarks.forEach((rowDirtyMarks, row) => {
             rowDirtyMarks.forEach((_cellDirtyMark, col) => {
-                const rowId = rows[row];
-                const colId = cols[col];
+                const rowId = required(rows[row], `row ${row}`);
+                const colId = required(cols[col], `column ${col}`);
                 this.dirtyEmitterMap.emit(rowId, colId);
             });
         });
