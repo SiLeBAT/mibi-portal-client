@@ -1,6 +1,6 @@
 import { ResultDTO, SampleWithResultsDTO } from '../../../core/model/response.model';
 import { NRL } from '../../../samples/model/sample.enums';
-import { DownloadColumn, buildResultsCsv, downloadColumnsForPathogen } from './results-csv';
+import { DownloadColumn, buildResultsCsv, downloadColumnsForNrl } from './results-csv';
 
 const result = (position: number, resultData: Record<string, string>): ResultDTO => ({
     id: `r${position}`,
@@ -70,11 +70,11 @@ describe('buildResultsCsv', () => {
     });
 });
 
-describe('downloadColumnsForPathogen', () => {
+describe('downloadColumnsForNrl', () => {
     const SAMPLE_COLUMN_COUNT = 5; // 3 sample numbers + BfR order number + Erreger
 
-    it('starts with the 5 sample columns then the pathogen result columns, in order', () => {
-        const columns = downloadColumnsForPathogen(NRL.NRL_Salm);
+    it('starts with the 5 sample columns then the NRL result columns, in order', () => {
+        const columns = downloadColumnsForNrl(NRL.NRL_Salm);
         const resultHeaders = columns.slice(SAMPLE_COLUMN_COUNT).map(column => column.header);
 
         expect(columns).toHaveLength(SAMPLE_COLUMN_COUNT + 2);
@@ -86,7 +86,7 @@ describe('downloadColumnsForPathogen', () => {
     // three sample numbers here, and Erreger is headed as next to the results
     // (tickets #786/#856).
     it('heads the sample columns as the results view does, without soft hyphens', () => {
-        const columns = downloadColumnsForPathogen(NRL.NRL_Salm);
+        const columns = downloadColumnsForNrl(NRL.NRL_Salm);
 
         expect(columns.slice(0, SAMPLE_COLUMN_COUNT).map(column => column.header)).toEqual([
             'Ihre Probenummer',
@@ -98,7 +98,7 @@ describe('downloadColumnsForPathogen', () => {
     });
 
     it('reads sample-number/pathogen values from sampleData and result values from the result', () => {
-        const columns = downloadColumnsForPathogen(NRL.NRL_Salm);
+        const columns = downloadColumnsForNrl(NRL.NRL_Salm);
         const sampleRow = sample(
             { sample_id: 'S1', sample_id_avv: 'S2', partial_sample_id: 'S3', pathogen_avv: 'Salmonella' },
             [result(1, { Serovar: 'S. Typhimurium' })]
@@ -114,7 +114,7 @@ describe('downloadColumnsForPathogen', () => {
     // The BfR order number is one per sample, so each of a multi-result sample's
     // rows repeats the value the results view shows for that sample (#856).
     it('reads the BfR order number from the sample, repeating it across its result rows', () => {
-        const bfrColumn = downloadColumnsForPathogen(NRL.NRL_Salm)[3];
+        const bfrColumn = downloadColumnsForNrl(NRL.NRL_Salm)[3];
         const sampleRow = sample({}, [
             result(2, { 'BfR-Auftragsnummer': '2026-0815' }),
             result(1, { 'BfR-Auftragsnummer': '2026-0815' })

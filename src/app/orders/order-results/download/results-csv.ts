@@ -1,7 +1,7 @@
 import { ResultDTO, SampleWithResultsDTO } from '../../../core/model/response.model';
 import { SampleProperty } from '../../../samples/model/sample-management.model';
 import { samplesEditorDataHeaders } from '../../../samples/samples-editor/constants/column-headers.constants';
-import { getResultColumnKeys } from '../results-grid/pathogen-catalog';
+import { ResultColumnDefinition, getResultColumns } from '../results-grid/nrl-results-catalog';
 import {
     bfrOrderNumber,
     bfrOrderNumberHeader,
@@ -43,26 +43,26 @@ const bfrOrderNumberDownloadColumn: DownloadColumn = {
     getValue: sample => bfrOrderNumber(sample)
 };
 
-function resultDownloadColumn(key: string): DownloadColumn {
+function resultDownloadColumn(definition: ResultColumnDefinition): DownloadColumn {
     return {
-        header: key,
-        getValue: (_sample, result) => result?.resultData[key] ?? ''
+        header: definition.header,
+        getValue: (_sample, result) => result?.resultData[definition.key] ?? ''
     };
 }
 
 /**
- * CSV columns for a pathogen: the sample-number columns, the BfR order number
- * and the pathogen column, then that pathogen's result columns — matching the
+ * CSV columns for an NRL: the sample-number columns, the BfR order number
+ * and the pathogen column, then that NRL's result columns — matching the
  * on-screen results order and headers.
  */
-export function downloadColumnsForPathogen(pathogenId: string): DownloadColumn[] {
+export function downloadColumnsForNrl(nrlId: string): DownloadColumn[] {
     return [
         ...SAMPLE_COLUMN_SELECTORS.map(
             selector => sampleColumn(selector, samplesEditorDataHeaders[selector])
         ),
         bfrOrderNumberDownloadColumn,
         sampleColumn('pathogen_avv', resultsViewPathogenHeader),
-        ...getResultColumnKeys(pathogenId).map(key => resultDownloadColumn(key))
+        ...getResultColumns(nrlId).map(definition => resultDownloadColumn(definition))
     ];
 }
 

@@ -7,10 +7,15 @@ import {
     createResultsGridModel,
     gridColumnTemplate
 } from './results-grid.constants';
+import { ResultColumnDefinition } from './nrl-results-catalog';
 
 const FIXED_COLUMN_COUNT = 10; // row-number + NRL + BfR order number + 7 uploaded columns
 const sample = {} as SampleWithResultsDTO;
 const ALL_DATA_COLUMN_COUNT = Object.keys(samplesEditorDataHeaders).length;
+const SALM_COLUMNS: ResultColumnDefinition[] = [
+    { key: 'Serovar', header: 'Serovar' },
+    { key: 'Seroformel', header: 'Seroformel' }
+];
 
 function sampleWithResults(...resultData: Record<string, string>[]): SampleWithResultsDTO {
     return {
@@ -24,7 +29,7 @@ function sampleWithResults(...resultData: Record<string, string>[]): SampleWithR
 
 describe('createResultsGridModel', () => {
     it('is the 10 fixed columns, then the toggle bar, then the result columns', () => {
-        const model = createResultsGridModel(['Serovar', 'Seroformel']);
+        const model = createResultsGridModel(SALM_COLUMNS);
 
         expect(model.columns).toHaveLength(FIXED_COLUMN_COUNT + 1 + 2);
         expect(model.headerRowId).toBe(0);
@@ -72,12 +77,22 @@ describe('createResultsGridModel', () => {
         expect(toggle.getData(sample, 0)).toBe('Alle Auftragsdaten anzeigen: Hier klicken');
     });
 
-    it('renders each result column as a filling STACKED cell headed by its key', () => {
-        const model = createResultsGridModel(['Serovar', 'Seroformel']);
+    it('renders each result column as a filling STACKED cell headed by its header', () => {
+        const model = createResultsGridModel(SALM_COLUMNS);
         const [serovar, seroformel] = model.columns.slice(FIXED_COLUMN_COUNT + 1);
 
         expect(serovar).toMatchObject({ cellType: SamplesGridCellType.STACKED, headerText: 'Serovar', fill: true });
         expect(seroformel).toMatchObject({ headerText: 'Seroformel', fill: true });
+    });
+
+    // Header and resultData key are separate so a column can be relabelled
+    // without touching the data it reads (ticket #875).
+    it('heads a result column with its header and reads the values by its key', () => {
+        const model = createResultsGridModel([{ key: 'CIP', header: 'Ciprofloxacin' }]);
+        const [cip] = model.columns.slice(FIXED_COLUMN_COUNT + 1);
+
+        expect(cip.headerText).toBe('Ciprofloxacin');
+        expect(cip.getData(sampleWithResults({ CIP: 'R' }, { CIP: 'S' }), 0)).toEqual(['R', 'S']);
     });
 });
 
@@ -110,7 +125,7 @@ const ROW_NUMBER_TRACK = dataGridRowHeaderTrack;
 
 describe('gridColumnTemplate', () => {
     it('gives the result columns 1fr, the row number a fixed track and everything else auto', () => {
-        const template = gridColumnTemplate(createResultsGridModel(['Serovar', 'Seroformel']));
+        const template = gridColumnTemplate(createResultsGridModel(SALM_COLUMNS));
         const autoColumns = new Array(FIXED_COLUMN_COUNT).fill('auto').join(' ');
 
         expect(template).toBe(`${ROW_NUMBER_TRACK} ${autoColumns} 1fr 1fr`);

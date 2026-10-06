@@ -47,7 +47,7 @@
     align-items: stretch;
   }
 
-  // Date, filename and the pathogen tabs need breathing room (ticket #827): about
+  // Date, filename and the NRL tabs need breathing room (ticket #827): about
   // the width of three underscores, on both sides of every separator.
   &__date,
   &__file {
@@ -88,7 +88,7 @@
     color: colors.$bfr-accent-color;
   }
 
-  // Selected pathogen tab: full name, white background, blue font (mockup #3).
+  // Selected NRL tab: white background, blue font (mockup #3).
   &__tab--active {
     color: mat.m2-get-color-from-palette(colors.$primary-palette, "default");
     cursor: default;
