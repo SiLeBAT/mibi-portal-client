@@ -55,6 +55,18 @@ export class ActionBarComponent {
         this.store$.dispatch(actionBarFileSelectedMSA({ id: id, file: file }));
     }
 
+    /**
+     * A menu with a single entry is shown as a plain link. Resolving the entry
+     * here keeps the undefined case out of the template, which cannot narrow
+     * an index lookup.
+     */
+    onSingleMenuEntrySelected(item: ActionBarItem): void {
+        const entry = this.menuEntries(item)[0];
+        if (entry) {
+            this.onMenuEntrySelected(item.id, entry.entryId);
+        }
+    }
+
     onMenuEntrySelected(id: ActionBarItemId, entryId: string): void {
         this.store$.dispatch(
             actionBarMenuEntrySelectedMSA({ id: id, entryId: entryId })

@@ -32,7 +32,7 @@
                         <!-- A single entry needs no menu. -->
                         <a *ngIf="menuEntries(item).length === 1"
                             class="mibi-action-link"
-                            (click)="onMenuEntrySelected(item.id, menuEntries(item)[0].entryId)">
+                            (click)="onSingleMenuEntrySelected(item)">
                             <ng-container *ngTemplateOutlet="itemLabel; context: { $implicit: item }"></ng-container>
                         </a>
 
