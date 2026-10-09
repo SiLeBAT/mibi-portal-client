@@ -29,7 +29,7 @@ describe('deriveNrlTabs', () => {
 
     // The server assigned the NRL at upload; the Erreger is not evaluated again.
     it('assigns by the NRL stored at upload, whatever the Erreger says', () => {
-        const [tab] = deriveNrlTabs([sample(NRL.NRL_VTEC, 'Escherichia coli')]);
+        const tab = required(deriveNrlTabs([sample(NRL.NRL_VTEC, 'Escherichia coli')])[0], 'tab');
 
         expect(tab.id).toBe('NRL-VTEC');
     });
@@ -63,7 +63,7 @@ describe('deriveNrlTabs', () => {
     });
 
     it('falls back to "Unbekannt" when neither laboratory nor Erreger value is known', () => {
-        const [tab] = deriveNrlTabs([sample('', '')]);
+        const tab = required(deriveNrlTabs([sample('', '')])[0], 'tab');
 
         expect(tab.id).toBe('other:unbekannt');
         expect(tab.fileToken).toBe('Unbekannt');
@@ -99,8 +99,8 @@ describe('getResultColumns', () => {
         const columns = getResultColumns(nrl);
 
         expect(columns).toHaveLength(count);
-        expect(columns[0].key).toBe(firstKey);
-        expect(columns[count - 1].key).toBe(lastKey);
+        expect(required(columns[0], 'first column').key).toBe(firstKey);
+        expect(required(columns[count - 1], 'last column').key).toBe(lastKey);
     });
 
     // A resultData property exists only once per result, so a repeated key

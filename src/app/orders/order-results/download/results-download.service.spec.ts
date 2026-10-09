@@ -38,15 +38,15 @@ describe('ResultsDownloadService.downloadDisplayed', () => {
 
     it('zero-pads the month, day, hour and minute', () => {
         service.downloadDisplayed(order(new Date(2026, 0, 5, 7, 3), 'V18_Test.xlsx'), NRL.NRL_Salm);
-        expect(saveAsMock.mock.calls[0][1]).toBe('BfR-Probenanalyse_Auftrag20260105-0703_V18_Test_Salmonella.csv');
+        expect(required(saveAsMock.mock.calls[0], 'saveAs call')[1]).toBe('BfR-Probenanalyse_Auftrag20260105-0703_V18_Test_Salmonella.csv');
     });
 
     it('strips only the last file extension, and leaves a name without an extension untouched', () => {
         service.downloadDisplayed(order(new Date(2026, 5, 25, 9, 24), 'my.report.xlsx'), NRL.NRL_Salm);
-        expect(saveAsMock.mock.calls[0][1]).toContain('_my.report_Salmonella.csv');
+        expect(required(saveAsMock.mock.calls[0], 'saveAs call')[1]).toContain('_my.report_Salmonella.csv');
 
         saveAsMock.mockClear();
         service.downloadDisplayed(order(new Date(2026, 5, 25, 9, 24), 'report'), NRL.NRL_Salm);
-        expect(saveAsMock.mock.calls[0][1]).toContain('_report_Salmonella.csv');
+        expect(required(saveAsMock.mock.calls[0], 'saveAs call')[1]).toContain('_report_Salmonella.csv');
     });
 });
