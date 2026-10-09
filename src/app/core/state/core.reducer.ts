@@ -1,18 +1,15 @@
 import {
     destroyBannerSOA,
     hideBannerSOA,
-    showActionBarSOA,
     showBannerSOA,
     showCustomBannerSOA,
-    updateActionBarTitleSOA,
     updateClientDashboardInfoSOA,
     updateZomoPlanFilesSOA,
     updateIsBusySOA,
     updateWelcomePageSOA
 } from './core.actions';
 import { Banner, BannerType } from '../model/alert.model';
-import { routerNavigationAction, routerRequestAction } from '@ngrx/router-store';
-import { UserActionType } from '../../shared/model/user-action.model';
+import { routerRequestAction } from '@ngrx/router-store';
 import { createReducer, on } from '@ngrx/store';
 import { ZomoPlanFileInfo } from '../model/response.model';
 
@@ -24,7 +21,6 @@ export interface WelcomePageState {
 }
 
 export interface CoreMainState {
-    actionBarConfig: CoreActionBarConfig;
     isBusy: boolean;
     banner: BannerData;
     alternativeWelcomePage: boolean;
@@ -32,23 +28,11 @@ export interface CoreMainState {
     welcomePage: WelcomePageState;
 }
 
-export interface CoreActionBarConfig {
-    isEnabled: boolean;
-    enabledActions: UserActionType[];
-    title: string;
-}
-
 export interface BannerData {
     show: boolean;
     predefined?: BannerType;
     custom?: Banner;
 }
-
-const initialActionBarConfig: CoreActionBarConfig = {
-    isEnabled: false,
-    enabledActions: [],
-    title: ''
-};
 
 const initialBanner: BannerData = {
     show: false
@@ -77,20 +61,6 @@ export const coreWelcomePageReducer = createReducer<WelcomePageState>(
         isMaintenance: action.isMaintenance,
         content: action.content
     }))
-);
-
-export const coreActionBarConfigReducer = createReducer(
-    initialActionBarConfig,
-    on(showActionBarSOA, (_state, action) => ({
-        isEnabled: true,
-        title: action.title,
-        enabledActions: action.enabledActions
-    })),
-    on(updateActionBarTitleSOA, (state, action) => ({
-        ...state,
-        title: action.title
-    })),
-    on(routerNavigationAction, _state => initialActionBarConfig)
 );
 
 export const coreBannerReducer = createReducer(

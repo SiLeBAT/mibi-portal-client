@@ -1,16 +1,21 @@
-import { ZomoPlanFileInfo } from '../../core/model/response.model';
-
+/**
+ * A button placed by a banner or a dialog.
+ *
+ * These carry a callback because they act in the context that raised them. The
+ * action bar does not use this model: its items are declared as data by the
+ * feature that owns the page (see main/action-bar/action-bar.model).
+ */
 export interface UserActionViewModelConfiguration {
     label: string;
-    // Invoked from the action-item template with its $event: a File for the
-    // upload action, a MouseEvent for the others, which handlers may ignore.
-    onExecute: (...args: any[]) => void;
+    // Invoked with no arguments by the banner and dialog components. The
+    // action bar used to push its $event through here, which is why this was
+    // previously widened to accept any argument; it no longer does.
+    onExecute: () => void;
     type: UserActionType;
     icon?: string;
     focused?: boolean;
-    zomoPlanFiles?: ZomoPlanFileInfo[];
 }
 
 export enum UserActionType {
-    VALIDATE, UPLOAD, EXPORT, SEND, DISMISS_BANNER, NAVIGATE, CUSTOM, DOWNLOAD_TEMPLATE, CLOSE, DOWNLOAD_ZOMO_PLAN_FILE
+    SEND, DISMISS_BANNER, NAVIGATE, CUSTOM
 }

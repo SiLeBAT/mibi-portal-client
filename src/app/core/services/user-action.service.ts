@@ -2,68 +2,35 @@ import { Injectable } from '@angular/core';
 import _ from 'lodash';
 import { UserActionViewModelConfiguration, UserActionType } from '../../shared/model/user-action.model';
 import { Store } from '@ngrx/store';
-import { validateSamplesSSA } from '../../samples/validate-samples/validate-samples.actions';
 import { CoreMainSlice } from '../core.state';
-import { environment } from '../../../environments/environment';
-import { closeSamplesSSA } from '../../samples/close-samples/close-samples.actions';
-import { importSamplesMSA } from '../../samples/import-samples/import-samples.actions';
-import { exportSamplesSSA } from '../../samples/export-samples/export-samples.actions';
 import { sendSamplesSSA } from '../../samples/send-samples/state/send-samples.actions';
 import { navigateMSA } from '../../shared/navigate/navigate.actions';
 
+/**
+ * Builds the button configurations used by banners and dialogs.
+ *
+ * The action bar no longer goes through here: its items are declared by the
+ * feature that owns the page and dispatched back by id (see
+ * main/action-bar). What remains are the buttons that banners and dialogs
+ * place, which carry a callback because they act in the context that raised
+ * them.
+ */
 @Injectable({
     providedIn: 'root'
 })
 export class UserActionService {
 
     userActionConfiguration: UserActionViewModelConfiguration[] = [{
-        label: 'Validieren',
-        type: UserActionType.VALIDATE,
-        onExecute: this.validate.bind(this),
-        icon: 'spellcheck'
-    },
-    {
-        label: 'Hochladen',
-        type: UserActionType.UPLOAD,
-        onExecute: this.import.bind(this),
-        icon: 'publish'
-    },
-    {
-        label: 'Exportieren',
-        type: UserActionType.EXPORT,
-        onExecute: this.export.bind(this),
-        icon: 'file_copy'
-    },
-    {
-        label: 'Senden',
-        type: UserActionType.SEND,
-        onExecute: this.send.bind(this),
-        icon: 'send'
-    },
-    {
         label: 'Schließen',
         type: UserActionType.DISMISS_BANNER,
         onExecute: () => null,
         icon: ''
     },
     {
-        label: 'Schließen',
-        type: UserActionType.CLOSE,
-        onExecute: this.close.bind(this),
-        icon: 'clear'
-    },
-    {
-        label: 'Excel-Vorlage',
-        type: UserActionType.DOWNLOAD_TEMPLATE,
-        onExecute: () => {
-            window.open(environment.sampleSheetURL, '_blank');
-        },
-        icon: 'assignment_returned'
-    },
-    {
-        label: 'ZoMo-Plan',
-        type: UserActionType.DOWNLOAD_ZOMO_PLAN_FILE,
-        onExecute: () => { /* resolved by the container that handles the action */ }
+        label: 'Senden',
+        type: UserActionType.SEND,
+        onExecute: this.send.bind(this),
+        icon: 'send'
     }];
 
     constructor(
@@ -92,23 +59,7 @@ export class UserActionService {
         this.store$.dispatch(navigateMSA({ path: path }));
     }
 
-    private validate() {
-        this.store$.dispatch(validateSamplesSSA());
-    }
-
-    private export() {
-        this.store$.dispatch(exportSamplesSSA());
-    }
-
-    private import(file: File) {
-        this.store$.dispatch(importSamplesMSA({ excelFile: { file: file } }));
-    }
-
     private send() {
         this.store$.dispatch(sendSamplesSSA());
-    }
-
-    private close() {
-        this.store$.dispatch(closeSamplesSSA());
     }
 }
