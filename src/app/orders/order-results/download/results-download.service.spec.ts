@@ -2,16 +2,12 @@ import { saveAs } from 'file-saver';
 import { OrderEntryDTO, SampleWithResultsDTO } from '../../../core/model/response.model';
 import { LogService } from '../../../core/services/log.service';
 import { NRL } from '../../../samples/model/sample.enums';
-import { createNrlMatcher } from '../results-grid/nrl-results-catalog';
 import { ResultsDownloadService } from './results-download.service';
 import { required } from '../../../shared/model/invariant';
 
 jest.mock('file-saver');
 
 const saveAsMock = saveAs as jest.MockedFunction<typeof saveAs>;
-const matcher = createNrlMatcher([
-    { id: 'NRL-Salm', selector: ['^.*Salmonella.*$'], standardProcedures: [], optionalProcedures: [] }
-]);
 
 const salmonellaSample = (): SampleWithResultsDTO =>
     ({
@@ -33,7 +29,7 @@ describe('ResultsDownloadService.downloadDisplayed', () => {
 
     it('saves the CSV with the ticket #786 filename (date-time, filename, NRL file token)', () => {
         // Local components so the formatting is timezone-independent.
-        service.downloadDisplayed(order(new Date(2026, 5, 25, 9, 24), 'V18_Test.xlsx'), NRL.NRL_Salm, matcher);
+        service.downloadDisplayed(order(new Date(2026, 5, 25, 9, 24), 'V18_Test.xlsx'), NRL.NRL_Salm);
 
         expect(saveAsMock).toHaveBeenCalledTimes(1);
         expect(required(saveAsMock.mock.calls[0], 'saveAs call')[0]).toBeInstanceOf(Blob);
@@ -41,16 +37,16 @@ describe('ResultsDownloadService.downloadDisplayed', () => {
     });
 
     it('zero-pads the month, day, hour and minute', () => {
-        service.downloadDisplayed(order(new Date(2026, 0, 5, 7, 3), 'V18_Test.xlsx'), NRL.NRL_Salm, matcher);
+        service.downloadDisplayed(order(new Date(2026, 0, 5, 7, 3), 'V18_Test.xlsx'), NRL.NRL_Salm);
         expect(required(saveAsMock.mock.calls[0], 'saveAs call')[1]).toBe('BfR-Probenanalyse_Auftrag20260105-0703_V18_Test_Salmonella.csv');
     });
 
     it('strips only the last file extension, and leaves a name without an extension untouched', () => {
-        service.downloadDisplayed(order(new Date(2026, 5, 25, 9, 24), 'my.report.xlsx'), NRL.NRL_Salm, matcher);
+        service.downloadDisplayed(order(new Date(2026, 5, 25, 9, 24), 'my.report.xlsx'), NRL.NRL_Salm);
         expect(required(saveAsMock.mock.calls[0], 'saveAs call')[1]).toContain('_my.report_Salmonella.csv');
 
         saveAsMock.mockClear();
-        service.downloadDisplayed(order(new Date(2026, 5, 25, 9, 24), 'report'), NRL.NRL_Salm, matcher);
+        service.downloadDisplayed(order(new Date(2026, 5, 25, 9, 24), 'report'), NRL.NRL_Salm);
         expect(required(saveAsMock.mock.calls[0], 'saveAs call')[1]).toContain('_report_Salmonella.csv');
     });
 });

@@ -4,7 +4,7 @@ import JSZip from 'jszip';
 import { OrderEntryDTO } from '../../../core/model/response.model';
 import { LogService } from '../../../core/services/log.service';
 import { parseOrderDate } from '../../model/order-date';
-import { NrlMatcher, deriveNrlTabs, filterSamplesByNrl } from '../results-grid/nrl-results-catalog';
+import { deriveNrlTabs, filterSamplesByNrl } from '../results-grid/nrl-results-catalog';
 import { buildResultsCsv, downloadColumnsForNrl } from './results-csv';
 
 @Injectable({
@@ -15,24 +15,24 @@ export class ResultsDownloadService {
     constructor(private readonly logger: LogService) {}
 
     // "Angezeigter Erreger": the currently shown NRL tab's results as one CSV.
-    downloadDisplayed(order: OrderEntryDTO, nrlId: string, matcher: NrlMatcher): void {
+    downloadDisplayed(order: OrderEntryDTO, nrlId: string): void {
         const samples = order.samples ?? [];
         const csv = buildResultsCsv(
             downloadColumnsForNrl(nrlId),
-            filterSamplesByNrl(samples, nrlId, matcher)
+            filterSamplesByNrl(samples, nrlId)
         );
-        const token = deriveNrlTabs(samples, matcher).find(tab => tab.id === nrlId)?.fileToken ?? nrlId;
+        const token = deriveNrlTabs(samples).find(tab => tab.id === nrlId)?.fileToken ?? nrlId;
         saveAs(this.csvBlob(csv), this.csvFileName(order, token));
     }
 
     // "Alle Erreger dieses Auftrags": a ZIP with one CSV per present NRL tab.
-    downloadAll(order: OrderEntryDTO, matcher: NrlMatcher): void {
+    downloadAll(order: OrderEntryDTO): void {
         const samples = order.samples ?? [];
         const zip = new JSZip();
-        for (const tab of deriveNrlTabs(samples, matcher)) {
+        for (const tab of deriveNrlTabs(samples)) {
             const csv = buildResultsCsv(
                 downloadColumnsForNrl(tab.id),
-                filterSamplesByNrl(samples, tab.id, matcher)
+                filterSamplesByNrl(samples, tab.id)
             );
             zip.file(this.csvFileName(order, tab.fileToken), csv);
         }
