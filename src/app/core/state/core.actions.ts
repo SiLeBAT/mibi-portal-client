@@ -1,6 +1,5 @@
 import { createAction, props } from '@ngrx/store';
 import { DialogContent } from '../model/dialog.model';
-import { UserActionType } from '../../shared/model/user-action.model';
 import { Banner, BannerType } from '../model/alert.model';
 import { ZomoPlanFileInfo } from '../model/response.model';
 
@@ -21,16 +20,6 @@ export const hideBannerSOA = createAction(
 
 export const destroyBannerSOA = createAction(
     '[Core] Destroy Banner'
-);
-
-export const showActionBarSOA = createAction(
-    '[Core] Show Action Bar',
-    props<{ title: string; enabledActions: UserActionType[] }>()
-);
-
-export const updateActionBarTitleSOA = createAction(
-    '[Core] Update Action Bar Title',
-    props<{ title: string }>()
 );
 
 export const showDialogMSA = createAction(

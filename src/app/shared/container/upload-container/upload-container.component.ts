@@ -1,13 +1,11 @@
-import { Component, Output, EventEmitter, OnInit, OnDestroy, ContentChild, AfterContentInit } from '@angular/core';
-import { Store, select } from '@ngrx/store';
-import { takeWhile, tap } from 'rxjs/operators';
+import { Component, Input, Output, EventEmitter, OnDestroy, ContentChild, AfterContentInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { takeWhile } from 'rxjs/operators';
 import { UserActionType } from '../../model/user-action.model';
 import { Observable, Subject } from 'rxjs';
 import { UploadAbstractComponent } from '../../presentation/upload/upload.abstract';
 import { UploadErrorType } from '../../model/upload.model';
 import { ClientError } from '../../../core/model/client-error';
-import { SamplesMainSlice } from '../../../samples/samples.state';
-import { selectHasEntries } from '../../../samples/state/samples.selectors';
 import { showBannerSOA, showDialogMSA, hideBannerSOA } from '../../../core/state/core.actions';
 
 @Component({
@@ -15,25 +13,21 @@ import { showBannerSOA, showDialogMSA, hideBannerSOA } from '../../../core/state
     selector: 'mibi-upload-container',
     template: '<ng-content></ng-content>'
 })
-export class UploadContainerComponent implements OnInit, OnDestroy, AfterContentInit {
+export class UploadContainerComponent implements OnDestroy, AfterContentInit {
 
+    /**
+     * When set, the user is asked to confirm before the file chooser opens.
+     * Whoever places this component decides whether anything would be lost;
+     * this component only asks.
+     */
+    @Input() confirmMessage?: string;
     @Output() uploadFile = new EventEmitter<File>();
     @ContentChild('uploadChild') uploadChild?: UploadAbstractComponent;
     private myTrigger: Subject<boolean> = new Subject();
     trigger$: Observable<boolean> = this.myTrigger.asObservable();
     private componentActive = true;
-    private hasEntries = false;
     private isGuardActive = true;
-    constructor(private store$: Store<SamplesMainSlice>) { }
-
-    ngOnInit() {
-        this.store$.pipe(select(selectHasEntries),
-            takeWhile(() => this.componentActive),
-            tap(
-                entries => this.hasEntries = entries
-            )).subscribe();
-
-    }
+    constructor(private store$: Store) { }
 
     ngAfterContentInit(): void {
         if (this.uploadChild) {
@@ -104,31 +98,31 @@ export class UploadContainerComponent implements OnInit, OnDestroy, AfterContent
             this.isGuardActive = true;
             return;
         }
-        if (!this.hasEntries) {
-            this.isGuardActive = false;
-            this.myTrigger.next(!this.isGuardActive);
+        if (!this.confirmMessage) {
+            this.openFileChooser();
             return;
         }
         this.store$.dispatch(showDialogMSA({content: {
-            message: `Wenn Sie die Tabelle schließen, gehen Ihre Änderungen verloren. Wollen Sie das?`,
+            message: this.confirmMessage,
             title: 'Schließen',
             mainAction: {
                 type: UserActionType.CUSTOM,
                 label: 'Ok',
-                onExecute: () => {
-                    this.isGuardActive = false;
-                    this.myTrigger.next(!this.isGuardActive);
-                },
+                onExecute: () => this.openFileChooser(),
                 icon: '',
                 focused: true
             },
             auxilliaryAction: {
                 type: UserActionType.CUSTOM,
                 label: 'Abbrechen',
-                onExecute: () => { /* Abbrechen: nothing to do */ },
+                onExecute: () => { /* nothing to do: the upload is abandoned */ },
                 icon: ''
             }
         }}));
+    }
 
+    private openFileChooser() {
+        this.isGuardActive = false;
+        this.myTrigger.next(!this.isGuardActive);
     }
 }

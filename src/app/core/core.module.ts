@@ -16,9 +16,6 @@ import { MomentModule } from 'ngx-moment';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
-import { AppBarTopComponent } from './presentation/app-bar-top/app-bar-top.component';
-import { AppBarTopContainerComponent } from './container/app-bar-top-container/app-bar-top-container.component';
-import { ActionItemListComponent } from './presentation/action-item-list/action-item-list.component';
 import { BannerComponent } from './presentation/banner/banner.component';
 import { BannerContainerComponent } from './container/banner-container/banner-container.component';
 import { MatButtonModule } from '@angular/material/button';
@@ -63,9 +60,6 @@ import { MarkdownModule } from 'ngx-markdown';
     ],
     declarations: [
         FooterNavContainerComponent,
-        AppBarTopContainerComponent,
-        ActionItemListComponent,
-        AppBarTopComponent,
         LastChangeDisplayContainerComponent,
         LastChangeDisplayComponent,
         HomeComponent,

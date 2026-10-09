@@ -1,11 +1,10 @@
-import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Observable } from 'rxjs';
 import { select, Store } from '@ngrx/store';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { ChangedDataGridField } from '../model/sample-management.model';
-import { selectSampleData, selectImportedFileName } from '../state/samples.selectors';
+import { selectSampleData } from '../state/samples.selectors';
 import { SamplesMainSlice } from '../samples.state';
-import { updateActionBarTitleSOA } from '../../core/state/core.actions';
 import { samplesUpdateSampleDataEntrySOA } from '../state/samples.actions';
 import { samplesEditorModel } from './constants/model.constants';
 import { SamplesEditorCacheBySampleCount } from './cache-by-sample-count.class';
@@ -23,7 +22,7 @@ import { SamplesGridDataChangeEvent, SamplesGridViewModel } from '../../grid/sam
     `,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SamplesEditorComponent implements OnDestroy {
+export class SamplesEditorComponent {
 
     readonly samplesGridModel$: Observable<SamplesGridViewModel> = this.store$.pipe(
         select(selectSampleData),
@@ -35,24 +34,13 @@ export class SamplesEditorComponent implements OnDestroy {
 
     private readonly samplesGridModelCache = new SamplesEditorCacheBySampleCount(this.model);
 
-    private fileNameSubscription: Subscription;
-
+    // The action bar's title follows the imported file name, which
+    // SamplesActionBarEffects already watches, so this component no longer
+    // reports it.
     constructor(private readonly store$: Store<SamplesMainSlice>) {
-
         this.model.columns.forEach(colModel => {
             this.columnModelMap[colModel.colId] = colModel;
         });
-
-        this.fileNameSubscription = this.store$.pipe(
-            select(selectImportedFileName),
-            tap(fileName => {
-                this.store$.dispatch(updateActionBarTitleSOA({ title: fileName }));
-            })
-        ).subscribe();
-    }
-
-    ngOnDestroy(): void {
-        this.fileNameSubscription.unsubscribe();
     }
 
     onDataChange(e: SamplesGridDataChangeEvent): void {
