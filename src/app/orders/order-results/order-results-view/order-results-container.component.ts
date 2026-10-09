@@ -18,16 +18,11 @@ import { SamplesGridViewModel } from '../../../grid/samples-grid/samples-grid.mo
 import { buildResultsGridViewModel } from '../results-grid/results-grid.builder';
 import { createFullDataGridModel, createResultsGridModel, gridColumnTemplate } from '../results-grid/results-grid.constants';
 import {
-    NrlMatcher,
     NrlTab,
-    createNrlMatcher,
     deriveNrlTabs,
     filterSamplesByNrl,
     getResultColumns
 } from '../results-grid/nrl-results-catalog';
-import { SharedSlice } from '../../../shared/shared.state';
-import { NrlState } from '../../../shared/nrl/state/nrl.reducer';
-import { selectNrls } from '../../../shared/nrl/state/nrl.selectors';
 
 @Component({
     standalone: false,
@@ -64,11 +59,10 @@ export class OrderResultsContainerComponent implements OnDestroy {
 
     private readonly orderId$: Observable<string>;
     private readonly selectedNrl$ = new BehaviorSubject<string | null>(null);
-    private readonly nrlMatcher$: Observable<NrlMatcher>;
     private readonly loadSubscription: Subscription;
 
     constructor(
-        private readonly store$: Store<OrdersMainSlice & SharedSlice<NrlState>>,
+        private readonly store$: Store<OrdersMainSlice>,
         private readonly download: ResultsDownloadService,
         route: ActivatedRoute
     ) {
@@ -96,16 +90,10 @@ export class OrderResultsContainerComponent implements OnDestroy {
             switchMap(orderId => this.store$.pipe(select(selectOrderNeighbours(orderId))))
         );
 
-        // Samples are assigned to NRL tabs via the NRL regex selectors (ticket #875),
-        // compiled once per NRL list.
-        this.nrlMatcher$ = this.store$.pipe(
-            select(selectNrls),
-            map(nrls => createNrlMatcher(nrls)),
-            shareReplay({ bufferSize: 1, refCount: true })
-        );
-
-        this.nrlTabs$ = combineLatest([this.order$, this.nrlMatcher$]).pipe(
-            map(([order, matcher]) => deriveNrlTabs(order?.samples ?? [], matcher)),
+        // Samples are assigned to NRL tabs by the NRL the server stored for them
+        // at upload (sampleMeta.nrl).
+        this.nrlTabs$ = this.order$.pipe(
+            map(order => deriveNrlTabs(order?.samples ?? [])),
             shareReplay({ bufferSize: 1, refCount: true })
         );
 
@@ -117,10 +105,10 @@ export class OrderResultsContainerComponent implements OnDestroy {
             shareReplay({ bufferSize: 1, refCount: true })
         );
 
-        this.grid$ = combineLatest([this.order$, this.selectedNrlId$, this.showFullData$, this.nrlMatcher$]).pipe(
-            map(([order, nrlId, showFullData, matcher]) => {
+        this.grid$ = combineLatest([this.order$, this.selectedNrlId$, this.showFullData$]).pipe(
+            map(([order, nrlId, showFullData]) => {
                 const samples = order?.samples ?? [];
-                const rows = nrlId ? filterSamplesByNrl(samples, nrlId, matcher) : samples;
+                const rows = nrlId ? filterSamplesByNrl(samples, nrlId) : samples;
                 const resultsModel = showFullData
                     ? createFullDataGridModel()
                     : createResultsGridModel(nrlId ? getResultColumns(nrlId) : []);
@@ -150,19 +138,17 @@ export class OrderResultsContainerComponent implements OnDestroy {
     }
 
     onDownloadDisplayed(): void {
-        combineLatest([this.order$, this.selectedNrlId$, this.nrlMatcher$]).pipe(take(1)).subscribe(
-            ([order, nrlId, matcher]) => {
-                if (order && nrlId) {
-                    this.download.downloadDisplayed(order, nrlId, matcher);
-                }
+        combineLatest([this.order$, this.selectedNrlId$]).pipe(take(1)).subscribe(([order, nrlId]) => {
+            if (order && nrlId) {
+                this.download.downloadDisplayed(order, nrlId);
             }
-        );
+        });
     }
 
     onDownloadAll(): void {
-        combineLatest([this.order$, this.nrlMatcher$]).pipe(take(1)).subscribe(([order, matcher]) => {
+        this.order$.pipe(take(1)).subscribe(order => {
             if (order) {
-                this.download.downloadAll(order, matcher);
+                this.download.downloadAll(order);
             }
         });
     }

@@ -92,8 +92,6 @@ export interface ZomoPlanFileData {
 
 export interface NRLDTO {
     readonly id: string;
-    // Anchored regex patterns matched against a sample's Erreger to find its NRL.
-    readonly selector: string[];
     readonly standardProcedures: AnalysisProcedureDTO[];
     readonly optionalProcedures: AnalysisProcedureDTO[];
 }
