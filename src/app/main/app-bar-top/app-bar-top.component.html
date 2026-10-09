@@ -1,0 +1,10 @@
+<mibi-box-layout x-overflow-handling>
+
+<div class="mibi-app-bar">
+    <div class="mibi-app-bar__top">
+        <mibi-nav-bar></mibi-nav-bar>
+    </div>
+    <mibi-action-bar *ngIf="actionBarEnabled$ | async" class="mibi-app-bar__bottom"></mibi-action-bar>
+</div>
+
+</mibi-box-layout>
