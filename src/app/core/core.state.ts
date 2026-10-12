@@ -1,5 +1,6 @@
 import { CoreMainState } from './state/core.reducer';
-import { createFeatureSelector } from '@ngrx/store';
+import { MemoizedSelector } from '@ngrx/store';
+import { createSliceSelector } from '../shared/model/state-slice';
 
 export const CORE_SLICE_NAME = 'core';
 
@@ -9,6 +10,6 @@ export interface CoreSlice<T> {
 
 export type CoreMainSlice = CoreSlice<CoreMainState>;
 
-export function selectCoreSlice<T>() {
-    return createFeatureSelector<CoreSlice<T>, T>(CORE_SLICE_NAME);
+export function selectCoreSlice<T>(): MemoizedSelector<CoreSlice<T>, T> {
+    return createSliceSelector<CoreSlice<T>, T>(CORE_SLICE_NAME);
 }

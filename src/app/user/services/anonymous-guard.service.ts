@@ -5,7 +5,6 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SamplesMainSlice } from '../../samples/samples.state';
-import { UserMainState } from '../state/user.reducer';
 import { selectHasEntries } from '../../samples/state/samples.selectors';
 import { selectUserCurrentUser } from '../state/user.selectors';
 import { UserMainSlice } from '../user.state';
@@ -19,7 +18,7 @@ import { SamplesLinkProviderService } from '../../samples/link-provider.service'
 export class AnonymousGuard  {
 
     constructor(
-        private store$: Store<UserMainState & SamplesMainSlice & UserMainSlice>,
+        private store$: Store<SamplesMainSlice & UserMainSlice>,
         private samplesLinks: SamplesLinkProviderService
     ) { }
 

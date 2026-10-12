@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { Store } from '@ngrx/store';
 import { UserActivation } from '../../model/user.model';
-import { UserMainState } from '../../state/user.reducer';
 import { showBannerSOA } from '../../../core/state/core.actions';
 
 @Component({
@@ -22,7 +21,7 @@ export class AdminActivateContainerComponent implements OnInit {
 
     constructor(
         private activatedRoute: ActivatedRoute,
-        private store$: Store<UserMainState>
+        private store$: Store
     ) { }
 
     ngOnInit(): void {

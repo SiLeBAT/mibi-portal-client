@@ -4,7 +4,6 @@ import { Store } from '@ngrx/store';
 import { DataService } from '../../../core/services/data.service';
 import { showBannerSOA, updateIsBusySOA } from '../../../core/state/core.actions';
 import { navigateMSA } from '../../../shared/navigate/navigate.actions';
-import { UserMainState } from '../../state/user.reducer';
 import { UserLinkProviderService } from '../../link-provider.service';
 
 @Component({
@@ -17,7 +16,7 @@ export class ResetContainerComponent {
 
     constructor(
         private activatedRoute: ActivatedRoute,
-        private store$: Store<UserMainState>,
+        private store$: Store,
         private dataService: DataService,
         private userLinks: UserLinkProviderService
     ) { }
