@@ -9,9 +9,8 @@ import { firstValueFrom } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
 import { ClientError } from '../../../core/model/client-error';
 import { updateIsBusySOA, showCustomBannerSOA } from '../../../core/state/core.actions';
-import { ContentMainState } from '../../../content/state/content.reducer';
 import { selectSupportContact } from '../../../content/state/content.selectors';
-import { ContentSlice } from '../../../content/content.state';
+import { ContentMainSlice } from '../../../content/content.state';
 import { navigateMSA } from '../../../shared/navigate/navigate.actions';
 import { UserLinkProviderService } from '../../link-provider.service';
 
@@ -25,7 +24,7 @@ export class RecoveryContainerComponent implements OnInit, OnDestroy {
     private componentActive: boolean = true;
 
     constructor(
-        private store$: Store<ContentSlice<ContentMainState>>,
+        private store$: Store<ContentMainSlice>,
         private dataService: DataService,
         private userActionService: UserActionService,
         private userLinks: UserLinkProviderService
