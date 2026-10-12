@@ -53,7 +53,8 @@ const KL_VIBRIO_RESULT_COLUMNS: ResultColumnDefinition[] = [
     column('tdh (425bp)'),
     column('trh (500bp)'),
     column('737bp, Identifikation als V. alginolyticus like sp.'),
-    column('Spezies')
+    column('Spezies'),
+    column('Befund')
 ];
 
 // Shared by NRL-AR and NRL-AR-Kleb, which report the same results.
@@ -68,8 +69,9 @@ const NRL_AR_RESULT_COLUMNS: ResultColumnDefinition[] = [
 const NRL_STAPH_RESULT_COLUMNS: ResultColumnDefinition[] = [
     column('CHROMagar MRSA Koloniemorphologie'),
     column('Hämolyse'),
-    column('nuc/mecA/PVL/seb'),
     column('spa-Typ'),
+    column('SCCmec-Typ'),
+    column('nuc/mecA/PVL/seb'),
     column('Diagnose'),
     column('MHK CHL'),
     column('MHK CIP'),
@@ -105,6 +107,7 @@ const NRL_STAPH_RESULT_COLUMNS: ResultColumnDefinition[] = [
     column('seh'),
     column('sei'),
     column('sep'),
+    column('ser'),
     column('Serotyp'),
     column('Bemerkung')
 ];

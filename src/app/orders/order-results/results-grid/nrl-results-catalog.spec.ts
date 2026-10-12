@@ -85,10 +85,10 @@ describe('getResultColumns', () => {
     // Column count, first and last key per NRL as specified in ticket #876.
     const specifiedSets: [NRL, number, string, string][] = [
         [NRL.NRL_VTEC, 9, 'ehxA-Gen', 'Bemerkung'],
-        [NRL.KL_Vibrio, 5, 'VptoxR (297bp)', 'Spezies'],
+        [NRL.KL_Vibrio, 6, 'VptoxR (297bp)', 'Befund'],
         [NRL.NRL_AR, 5, 'Wachstum MC+1FOT', 'Bemerkung'],
         [NRL.NRL_AR_Kleb, 5, 'Wachstum MC+1FOT', 'Bemerkung'],
-        [NRL.NRL_Staph, 41, 'CHROMagar MRSA Koloniemorphologie', 'Bemerkung'],
+        [NRL.NRL_Staph, 43, 'CHROMagar MRSA Koloniemorphologie', 'Bemerkung'],
         [NRL.L_Bacillus, 12, 'Phänotypie', 'Bemerkung'],
         [NRL.L_Clostridium, 12, 'Phänotypie', 'iap-Gen'],
         [NRL.KL_Yersinia, 9, 'Gattung', 'O:9 (837bp)'],
