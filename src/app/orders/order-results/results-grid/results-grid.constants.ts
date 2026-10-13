@@ -5,8 +5,7 @@ import { dataGridDefaultTrack, dataGridRowHeaderTrack } from '../../../grid/data
 import { SamplesGridCellData, SamplesGridCellType } from '../../../grid/samples-grid/samples-grid.model';
 import {
     samplesEditorDataHeaders,
-    samplesEditorIdHeader,
-    samplesEditorNrlHeader
+    samplesEditorIdHeader
 } from '../../../samples/samples-editor/constants/column-headers.constants';
 import { ResultsGridColumnModel, ResultsGridModel } from './results-grid.model';
 import { ResultColumnDefinition } from './nrl-results-catalog';
@@ -86,10 +85,6 @@ function idColumn(): ResultsGridColumnModel {
     return textColumn(1, true, samplesEditorIdHeader, (_sample, index) => (index + 1).toString());
 }
 
-function nrlColumn(): ResultsGridColumnModel {
-    return textColumn(2, false, samplesEditorNrlHeader, sample => sample.sampleMeta?.nrl ?? '');
-}
-
 // Unlike the other left-hand columns, the BfR order number is not part of the
 // uploaded order data: the LIMS delivers it with the results, so it arrives as a
 // property of resultData (ticket #856). A sample's results all belong to the
@@ -113,19 +108,19 @@ function bfrOrderNumberColumn(colId: number): ResultsGridColumnModel {
 export const resultsViewPathogenHeader = 'Erreger: Eingesendet als';
 
 // Uploaded order columns to display in the results view (ticket #756), preceded
-// by the row-number row header and the NRL column, mirroring the samples editor,
-// with the LIMS-supplied BfR order number in sixth place (ticket #856).
+// by the row-number row header, with the LIMS-supplied BfR order number in fifth
+// place (ticket #856). Unlike the samples editor there is no NRL column: the
+// active NRL tab already names the lab (ticket #883).
 const fixedColumns: ResultsGridColumnModel[] = [
     idColumn(),
-    nrlColumn(),
-    dataColumn(3, 'sample_id', samplesEditorDataHeaders.sample_id),
-    dataColumn(4, 'sample_id_avv', samplesEditorDataHeaders.sample_id_avv),
-    dataColumn(5, 'partial_sample_id', samplesEditorDataHeaders.partial_sample_id),
-    bfrOrderNumberColumn(6),
-    dataColumn(7, 'pathogen_avv', resultsViewPathogenHeader),
-    dataColumn(8, 'animal_avv', samplesEditorDataHeaders.animal_avv),
-    dataColumn(9, 'matrix_avv', samplesEditorDataHeaders.matrix_avv),
-    dataColumn(10, 'animal_matrix_text', samplesEditorDataHeaders.animal_matrix_text)
+    dataColumn(2, 'sample_id', samplesEditorDataHeaders.sample_id),
+    dataColumn(3, 'sample_id_avv', samplesEditorDataHeaders.sample_id_avv),
+    dataColumn(4, 'partial_sample_id', samplesEditorDataHeaders.partial_sample_id),
+    bfrOrderNumberColumn(5),
+    dataColumn(6, 'pathogen_avv', resultsViewPathogenHeader),
+    dataColumn(7, 'animal_avv', samplesEditorDataHeaders.animal_avv),
+    dataColumn(8, 'matrix_avv', samplesEditorDataHeaders.matrix_avv),
+    dataColumn(9, 'animal_matrix_text', samplesEditorDataHeaders.animal_matrix_text)
 ];
 
 const TOGGLE_COLUMN_ID = fixedColumns.length + 1;
@@ -150,18 +145,18 @@ export function createResultsGridModel(resultColumnDefinitions: ResultColumnDefi
 }
 
 // All uploaded order columns in samples-editor order, for the full-data view
-// (mockup #7 "Alle Auftragsdaten anzeigen"). No BfR result columns.
+// (mockup #7 "Alle Auftragsdaten anzeigen"). No BfR result columns, and as in
+// the results view no NRL column, since the active tab names the lab (#883).
 const allDataSelectors = Object.keys(samplesEditorDataHeaders) as SampleProperty[];
 
 export function createFullDataGridModel(): ResultsGridModel {
     const dataColumns = allDataSelectors.map(
-        (selector, index) => dataColumn(3 + index, selector, samplesEditorDataHeaders[selector])
+        (selector, index) => dataColumn(2 + index, selector, samplesEditorDataHeaders[selector])
     );
-    const toggleColId = 3 + dataColumns.length;
+    const toggleColId = 2 + dataColumns.length;
     return {
         columns: [
             idColumn(),
-            nrlColumn(),
             ...dataColumns,
             toggleColumn(toggleColId, 'BfR-Ergebnisse anzeigen: Hier klicken')
         ],

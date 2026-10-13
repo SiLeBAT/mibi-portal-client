@@ -10,7 +10,7 @@ import {
 } from './results-grid.constants';
 import { ResultColumnDefinition } from './nrl-results-catalog';
 
-const FIXED_COLUMN_COUNT = 10; // row-number + NRL + BfR order number + 7 uploaded columns
+const FIXED_COLUMN_COUNT = 9; // row-number + BfR order number + 7 uploaded columns
 const sample = {} as SampleWithResultsDTO;
 const ALL_DATA_COLUMN_COUNT = Object.keys(samplesEditorDataHeaders).length;
 const SALM_COLUMNS: ResultColumnDefinition[] = [
@@ -29,7 +29,7 @@ function sampleWithResults(...resultData: Record<string, string>[]): SampleWithR
 }
 
 describe('createResultsGridModel', () => {
-    it('is the 10 fixed columns, then the toggle bar, then the result columns', () => {
+    it('is the 9 fixed columns, then the toggle bar, then the result columns', () => {
         const model = createResultsGridModel(SALM_COLUMNS);
 
         expect(model.columns).toHaveLength(FIXED_COLUMN_COUNT + 1 + 2);
@@ -39,18 +39,26 @@ describe('createResultsGridModel', () => {
         // Next to the results the Erreger (pathogen) column is headed
         // "Erreger: Eingesendet als" rather than with the AVV catalogue
         // reference used in the samples editor (ticket #856).
-        expect(required(model.columns[6], 'column 6').headerText).toBe(
+        expect(required(model.columns[5], 'column 5').headerText).toBe(
             'Erreger: Eingesendet als'
         );
     });
 
+    // The NRL tab already names the lab, so the results grid has no NRL column
+    // (ticket #883).
+    it('has no NRL column', () => {
+        const headers = createResultsGridModel(SALM_COLUMNS).columns.map(column => column.headerText);
+
+        expect(headers).not.toContain('NRL');
+    });
+
     // The BfR order number comes from the LIMS with the results, not from the
-    // uploaded order data, and sits in sixth place (ticket #856).
+    // uploaded order data, and sits in fifth place (ticket #856).
     describe('the BfR order number column', () => {
         const bfrColumn = () =>
-            required(createResultsGridModel([]).columns[5], 'BfR column');
+            required(createResultsGridModel([]).columns[4], 'BfR column');
 
-        it('is the sixth column, headed "BfR-Auftragsnummer"', () => {
+        it('is the fifth column, headed "BfR-Auftragsnummer"', () => {
             expect(bfrColumn().headerText).toBe('BfR-Auftrags­nummer');
             expect(bfrColumn().cellType).toBe(SamplesGridCellType.TEXT);
             expect(bfrColumn().fill).toBeUndefined();
@@ -107,17 +115,24 @@ describe('createResultsGridModel', () => {
 });
 
 describe('createFullDataGridModel', () => {
-    it('is row-number + NRL + all uploaded columns, then the toggle bar last', () => {
+    it('is row-number + all uploaded columns, then the toggle bar last', () => {
         const model = createFullDataGridModel();
         const toggle = required(
             model.columns[model.columns.length - 1],
             'last column'
         );
 
-        expect(model.columns).toHaveLength(2 + ALL_DATA_COLUMN_COUNT + 1);
+        expect(model.columns).toHaveLength(1 + ALL_DATA_COLUMN_COUNT + 1);
         expect(toggle.cellType).toBe(SamplesGridCellType.TOGGLE);
         expect(toggle.getHeaderData?.()).toBe('BfR-Ergebnisse anzeigen: Hier klicken');
         expect(toggle.getData(sample, 0)).toBe('BfR-Ergebnisse anzeigen: Hier klicken');
+    });
+
+    // As in the results view, the active NRL tab already names the lab (#883).
+    it('has no NRL column', () => {
+        const headers = createFullDataGridModel().columns.map(column => column.headerText);
+
+        expect(headers).not.toContain('NRL');
     });
 
     // Showing the uploaded data alone means showing it as it was uploaded: the
