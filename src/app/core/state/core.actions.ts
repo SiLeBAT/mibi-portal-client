@@ -1,5 +1,4 @@
 import { createAction, props } from '@ngrx/store';
-import { DialogContent } from '../model/dialog.model';
 import { Banner, BannerType } from '../model/alert.model';
 import { ZomoPlanFileInfo } from '../model/response.model';
 
@@ -20,11 +19,6 @@ export const hideBannerSOA = createAction(
 
 export const destroyBannerSOA = createAction(
     '[Core] Destroy Banner'
-);
-
-export const showDialogMSA = createAction(
-    '[Core] Display Dialog',
-    props<{ content: DialogContent }>()
 );
 
 export const updateIsBusySOA = createAction(

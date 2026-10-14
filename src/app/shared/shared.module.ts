@@ -13,14 +13,13 @@ import { UploadComponent } from './presentation/upload/upload.component';
 import { UploadContainerComponent } from './container/upload-container/upload-container.component';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatDialogModule } from '@angular/material/dialog';
-import { DialogComponent } from './presentation/dialog/dialog.component';
 import { UploadActionItemComponent } from './presentation/upload-action-item/upload-action-item.component';
 import { BoxLayoutComponent } from './box-layout/box-layout.component';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { SHARED_SLICE_NAME } from './shared.state';
 import { sharedReducerMap, sharedEffects } from './shared.store';
-import { NewDialogComponent } from './dialog/components/dialog.component';
+import { DialogComponent } from './dialog/components/dialog.component';
 import { DialogViewComponent } from './dialog/components/dialog-view.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
@@ -50,7 +49,6 @@ import { DialogWarningsViewComponent } from './dialog/components/dialog-warnings
         EffectsModule.forFeature(sharedEffects)
     ],
     declarations: [
-        DialogComponent,
         UploadComponent,
         UploadContainerComponent,
         UploadActionItemComponent,
@@ -60,10 +58,9 @@ import { DialogWarningsViewComponent } from './dialog/components/dialog-warnings
         BoxLayoutComponent,
         DialogWarningsViewComponent,
         DialogViewComponent,
-        NewDialogComponent
+        DialogComponent
     ],
     exports: [
-        DialogComponent,
         UploadActionItemComponent,
         UploadComponent,
         UploadContainerComponent,
@@ -73,7 +70,7 @@ import { DialogWarningsViewComponent } from './dialog/components/dialog-warnings
         BoxLayoutComponent,
         DialogWarningsViewComponent,
         DialogViewComponent,
-        NewDialogComponent
+        DialogComponent
     ]
 })
 export class SharedModule { }

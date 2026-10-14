@@ -1,19 +1,36 @@
-import { Component, Input, Output, EventEmitter, OnDestroy, ContentChild, AfterContentInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnDestroy, OnInit, ContentChild, AfterContentInit } from '@angular/core';
+import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { takeWhile } from 'rxjs/operators';
-import { UserActionType } from '../../model/user-action.model';
 import { Observable, Subject } from 'rxjs';
 import { UploadAbstractComponent } from '../../presentation/upload/upload.abstract';
 import { UploadErrorType } from '../../model/upload.model';
 import { ClientError } from '../../../core/model/client-error';
-import { showBannerSOA, showDialogMSA, hideBannerSOA } from '../../../core/state/core.actions';
+import { showBannerSOA, hideBannerSOA } from '../../../core/state/core.actions';
+import { DialogConfiguration } from '../../dialog/dialog.model';
+import { dialogConfirmMTA, dialogOpenMTA } from '../../dialog/state/dialog.actions';
+import { ofTarget } from '../../ngrx/multi-target-action';
+
+const confirmDialogStrings = {
+    title: 'Schließen',
+    confirmButtonLabel: 'Ok',
+    cancelButtonLabel: 'Abbrechen'
+};
+
+/**
+ * Several upload containers can be on screen at once -- the action bar has one
+ * and the upload page another -- and they all listen for the same confirm
+ * action. Giving each instance its own target keeps one container's dialog from
+ * opening another container's file chooser.
+ */
+let nextConfirmDialogTargetId = 0;
 
 @Component({
     standalone: false,
     selector: 'mibi-upload-container',
     template: '<ng-content></ng-content>'
 })
-export class UploadContainerComponent implements OnDestroy, AfterContentInit {
+export class UploadContainerComponent implements OnInit, OnDestroy, AfterContentInit {
 
     /**
      * When set, the user is asked to confirm before the file chooser opens.
@@ -27,7 +44,21 @@ export class UploadContainerComponent implements OnDestroy, AfterContentInit {
     trigger$: Observable<boolean> = this.myTrigger.asObservable();
     private componentActive = true;
     private isGuardActive = true;
-    constructor(private store$: Store) { }
+    private readonly confirmDialogTarget =
+        `Shared/UploadContainer/Confirm/${nextConfirmDialogTargetId++}`;
+
+    constructor(
+        private store$: Store,
+        private actions$: Actions
+    ) { }
+
+    ngOnInit(): void {
+        this.actions$.pipe(
+            ofType(dialogConfirmMTA),
+            ofTarget(this.confirmDialogTarget),
+            takeWhile(() => this.componentActive)
+        ).subscribe(() => this.openFileChooser());
+    }
 
     ngAfterContentInit(): void {
         if (this.uploadChild) {
@@ -102,23 +133,25 @@ export class UploadContainerComponent implements OnDestroy, AfterContentInit {
             this.openFileChooser();
             return;
         }
-        this.store$.dispatch(showDialogMSA({content: {
-            message: this.confirmMessage,
-            title: 'Schließen',
-            mainAction: {
-                type: UserActionType.CUSTOM,
-                label: 'Ok',
-                onExecute: () => this.openFileChooser(),
-                icon: '',
-                focused: true
+        this.store$.dispatch(dialogOpenMTA({
+            target: this.confirmDialogTarget,
+            configuration: this.createConfirmDialogConfiguration(this.confirmMessage)
+        }));
+    }
+
+    // Cancelling needs no handler: the upload is simply abandoned.
+    private createConfirmDialogConfiguration(message: string): DialogConfiguration {
+        return {
+            title: confirmDialogStrings.title,
+            message: message,
+            confirmButtonConfig: {
+                label: confirmDialogStrings.confirmButtonLabel
             },
-            auxilliaryAction: {
-                type: UserActionType.CUSTOM,
-                label: 'Abbrechen',
-                onExecute: () => { /* nothing to do: the upload is abandoned */ },
-                icon: ''
-            }
-        }}));
+            cancelButtonConfig: {
+                label: confirmDialogStrings.cancelButtonLabel
+            },
+            warnings: []
+        };
     }
 
     private openFileChooser() {
