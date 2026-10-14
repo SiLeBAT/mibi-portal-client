@@ -14,7 +14,7 @@ export class ResultsDownloadService {
 
     constructor(private readonly logger: LogService) {}
 
-    // "Angezeigter Erreger": the currently shown NRL tab's results as one CSV.
+    // "Ergebnisse des angezeigten Labors herunterladen": the currently shown NRL tab's results as one CSV.
     downloadDisplayed(order: OrderEntryDTO, nrlId: string): void {
         const samples = order.samples ?? [];
         const csv = buildResultsCsv(
@@ -25,7 +25,7 @@ export class ResultsDownloadService {
         saveAs(this.csvBlob(csv), this.csvFileName(order, token));
     }
 
-    // "Alle Erreger dieses Auftrags": a ZIP with one CSV per present NRL tab.
+    // "Ergebnisse aller Labore zu diesem Auftrag herunterladen": a ZIP with one CSV per present NRL tab.
     downloadAll(order: OrderEntryDTO): void {
         const samples = order.samples ?? [];
         const zip = new JSZip();

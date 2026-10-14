@@ -1,9 +1,10 @@
-import { ResultDTO, SampleWithResultsDTO } from '../../../core/model/response.model';
+import { ResultDataDTO, ResultDTO, SampleWithResultsDTO } from '../../../core/model/response.model';
 import { NRL } from '../../../samples/model/sample.enums';
 import { DownloadColumn, buildResultsCsv, downloadColumnsForNrl } from './results-csv';
 import { required } from '../../../shared/model/invariant';
+import { resultValue } from '../results-grid/results-grid.constants';
 
-const result = (position: number, resultData: Record<string, string>): ResultDTO => ({
+const result = (position: number, resultData: ResultDataDTO): ResultDTO => ({
     id: `r${position}`,
     position: position,
     resultData: resultData
@@ -32,7 +33,7 @@ describe('buildResultsCsv', () => {
     const idColumn: DownloadColumn = { header: 'Id', getValue: sampleRow => sampleRow.id };
     const serovarColumn: DownloadColumn = {
         header: 'Serovar',
-        getValue: (_sampleRow, resultRow) => resultRow?.resultData['Serovar'] ?? ''
+        getValue: (_sampleRow, resultRow) => resultValue(resultRow, 'Serovar')
     };
 
     it('starts with a UTF-8 BOM and a quoted header row', () => {
@@ -65,7 +66,7 @@ describe('buildResultsCsv', () => {
     });
 
     it('preserves comma decimals unchanged', () => {
-        const column: DownloadColumn = { header: 'CIP', getValue: (_s, r) => r?.resultData['CIP'] ?? '' };
+        const column: DownloadColumn = { header: 'CIP', getValue: (_s, r) => resultValue(r, 'CIP') };
         const csv = buildResultsCsv([column], [sample({}, [result(1, { CIP: '0,015' })])]);
         expect(csv.slice(BOM.length)).toBe('"CIP"\r\n"0,015"');
     });
@@ -83,7 +84,7 @@ describe('downloadColumnsForNrl', () => {
     });
 
     // The file carries the columns the results view shows, in its order and with
-    // its headers: the BfR order number in sixth place on screen follows the
+    // its headers: the BfR order number in fifth place on screen follows the
     // three sample numbers here, and Erreger is headed as next to the results
     // (tickets #786/#856).
     it('heads the sample columns as the results view does, without soft hyphens', () => {
@@ -114,6 +115,22 @@ describe('downloadColumnsForNrl', () => {
         ).toBe('Salmonella');
         expect(columns.find(column => column.header === 'Serovar')?.getValue(sampleRow, resultRow))
             .toBe('S. Typhimurium');
+    });
+
+    // The LIMS delivers some values as JSON numbers or null (e.g. KL-Yersinia
+    // "Biotyp": 4, NRL-Staph "MHK CIP": 0.5); these used to break the download.
+    it('writes numeric result values as text and null as empty', () => {
+        const columns = downloadColumnsForNrl(NRL.NRL_Staph);
+        const samples = [sample({}, [result(1, { 'MHK CIP': 0.5, 'MHK CHL': 8, 'MHK LZD': null })])];
+
+        const [header, row] = buildResultsCsv(columns, samples).slice(BOM.length).split('\r\n');
+        const cells = required(row, 'data row').split(',');
+        const cellOf = (name: string): string | undefined =>
+            cells[required(header, 'header row').split(',').indexOf(`"${name}"`)];
+
+        expect(cellOf('MHK CIP')).toBe('"0.5"');
+        expect(cellOf('MHK CHL')).toBe('"8"');
+        expect(cellOf('MHK LZD')).toBe('""');
     });
 
     // The BfR order number is one per sample, so each of a multi-result sample's

@@ -128,7 +128,10 @@ export interface OrderEntryDTO {
     samples?: SampleWithResultsDTO[];
 }
 
-export type ResultDataDTO = Record<string, string>;
+// The LIMS delivers result values as JSON as they are: text, but also numbers
+// (e.g. "Biotyp": 4, "MHK CIP": 0.5) and null for an empty measurement.
+export type ResultDataValueDTO = string | number | boolean | null;
+export type ResultDataDTO = Record<string, ResultDataValueDTO>;
 
 export interface ResultDTO {
     id: string;

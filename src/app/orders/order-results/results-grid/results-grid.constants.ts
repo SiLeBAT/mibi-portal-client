@@ -53,13 +53,20 @@ export function orderedResults(sample: SampleWithResultsDTO): ResultDTO[] {
     return [...sample.results].sort((a, b) => a.position - b.position);
 }
 
+// A result value as text, for the grid and the CSV download alike. Numbers are
+// written as delivered (0.5 stays "0.5"); a missing value or null is empty.
+export function resultValue(result: ResultDTO | undefined, key: string): string {
+    const value = result?.resultData[key];
+    return value === undefined || value === null ? '' : String(value);
+}
+
 function resultColumn(colId: number, definition: ResultColumnDefinition): ResultsGridColumnModel {
     return {
         colId: colId,
         cellType: SamplesGridCellType.STACKED,
         isRowHeader: false,
         headerText: definition.header,
-        getData: sample => orderedResults(sample).map(result => result.resultData[definition.key] ?? ''),
+        getData: sample => orderedResults(sample).map(result => resultValue(result, definition.key)),
         fill: true
     };
 }
@@ -95,7 +102,7 @@ export const bfrOrderNumberHeader = 'BfR-Auftrags­nummer';
 // The value shown for the whole sample, used by the grid cell and by the CSV
 // download so the file says what the screen says.
 export function bfrOrderNumber(sample: SampleWithResultsDTO): string {
-    return orderedResults(sample)[0]?.resultData[bfrOrderNumberKey] ?? '';
+    return resultValue(orderedResults(sample)[0], bfrOrderNumberKey);
 }
 
 function bfrOrderNumberColumn(colId: number): ResultsGridColumnModel {

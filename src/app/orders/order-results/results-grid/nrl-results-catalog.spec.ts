@@ -15,15 +15,15 @@ const sample = (nrl: string, erreger: string = ''): SampleWithResultsDTO =>
     }) as unknown as SampleWithResultsDTO;
 
 describe('deriveNrlTabs', () => {
-    it('labels each tab with its NRL id and keeps the former file tokens', () => {
+    it('labels each tab and names its download file after the NRL (#886)', () => {
         const tabs = deriveNrlTabs([
             sample(NRL.NRL_AR, 'Escherichia coli'),
             sample(NRL.NRL_Salm, 'Salmonella Brandenburg')
         ]);
 
         expect(tabs).toEqual([
-            { id: 'NRL-AR', label: 'NRL-AR', fileToken: 'Ecoli' },
-            { id: 'NRL-Salm', label: 'NRL-Salm', fileToken: 'Salmonella' }
+            { id: 'NRL-AR', label: 'NRL-AR', fileToken: 'NRL-AR' },
+            { id: 'NRL-Salm', label: 'NRL-Salm', fileToken: 'NRL-Salm' }
         ]);
     });
 
@@ -37,7 +37,7 @@ describe('deriveNrlTabs', () => {
     it('accepts the long laboratory name as stored NRL', () => {
         const [tab] = deriveNrlTabs([sample('NRL für Salmonella', 'Salmonella')]);
 
-        expect(tab).toEqual({ id: 'NRL-Salm', label: 'NRL-Salm', fileToken: 'Salmonella' });
+        expect(tab).toEqual({ id: 'NRL-Salm', label: 'NRL-Salm', fileToken: 'NRL-Salm' });
     });
 
     it('returns one distinct tab per NRL, sorted alphabetically by label', () => {
