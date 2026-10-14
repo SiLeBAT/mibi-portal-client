@@ -11,7 +11,7 @@ import { DialogConfiguration } from '../dialog.model';
 
 @Component({
     standalone: false,
-    selector: 'mibi-new-dialog',
+    selector: 'mibi-dialog',
     template: `
         <mibi-dialog-view
             [config]="config$ | async"
@@ -19,7 +19,7 @@ import { DialogConfiguration } from '../dialog.model';
             (cancel) = "onCancel()"
         ></mibi-dialog-view>`
 })
-export class NewDialogComponent {
+export class DialogComponent {
     config$: Observable<DialogConfiguration> = this.store$.pipe(
         select(selectDialogData),
         map(data => {
@@ -31,7 +31,7 @@ export class NewDialogComponent {
     private caller!: string;
 
     constructor(
-        private dialogRef: MatDialogRef<NewDialogComponent>,
+        private dialogRef: MatDialogRef<DialogComponent>,
         private store$: Store<SharedSlice<DialogState>>) { }
 
     onConfirm() {
