@@ -12,17 +12,14 @@ export interface ResultColumnDefinition {
 export interface NrlTab {
     id: string;
     label: string;
-    // Filename-safe token used in the CSV download names (ticket #786), e.g.
-    // "Ecoli", "Salmonella".
+    // Filename-safe token used in the CSV download names (ticket #786): the NRL
+    // name, e.g. "NRL-AR", "KL-Vibrio" (ticket #886).
     fileToken: string;
 }
 
 type KnownNrl = Exclude<NRL, NRL.UNKNOWN>;
 
 interface NrlResultsConfig {
-    // Kept from the former pathogen tabs so the download filenames stay unchanged
-    // until the PO decides on NRL-based names.
-    fileToken: string;
     resultColumns: ResultColumnDefinition[];
 }
 
@@ -163,17 +160,17 @@ const NRL_SALM_RESULT_COLUMNS: ResultColumnDefinition[] = [
 // the compiler demand an entry for every NRL. The result sets of NRL-Campy and
 // NRL-Listeria are not specified yet, so they carry no result columns.
 const nrlResultsConfig: Record<KnownNrl, NrlResultsConfig> = {
-    [NRL.KL_Vibrio]: { fileToken: 'Vibrio', resultColumns: KL_VIBRIO_RESULT_COLUMNS },
-    [NRL.NRL_VTEC]: { fileToken: 'VTEC', resultColumns: NRL_VTEC_RESULT_COLUMNS },
-    [NRL.L_Bacillus]: { fileToken: 'Bacillus', resultColumns: L_BACILLUS_RESULT_COLUMNS },
-    [NRL.NRL_AR]: { fileToken: 'Ecoli', resultColumns: NRL_AR_RESULT_COLUMNS },
-    [NRL.NRL_AR_Kleb]: { fileToken: 'Kleb', resultColumns: NRL_AR_RESULT_COLUMNS },
-    [NRL.NRL_Campy]: { fileToken: 'Campy', resultColumns: [] },
-    [NRL.NRL_Staph]: { fileToken: 'Staph', resultColumns: NRL_STAPH_RESULT_COLUMNS },
-    [NRL.NRL_Listeria]: { fileToken: 'List', resultColumns: [] },
-    [NRL.NRL_Salm]: { fileToken: 'Salmonella', resultColumns: NRL_SALM_RESULT_COLUMNS },
-    [NRL.L_Clostridium]: { fileToken: 'Clost', resultColumns: L_CLOSTRIDIUM_RESULT_COLUMNS },
-    [NRL.KL_Yersinia]: { fileToken: 'Yers', resultColumns: KL_YERSINIA_RESULT_COLUMNS }
+    [NRL.KL_Vibrio]: { resultColumns: KL_VIBRIO_RESULT_COLUMNS },
+    [NRL.NRL_VTEC]: { resultColumns: NRL_VTEC_RESULT_COLUMNS },
+    [NRL.L_Bacillus]: { resultColumns: L_BACILLUS_RESULT_COLUMNS },
+    [NRL.NRL_AR]: { resultColumns: NRL_AR_RESULT_COLUMNS },
+    [NRL.NRL_AR_Kleb]: { resultColumns: NRL_AR_RESULT_COLUMNS },
+    [NRL.NRL_Campy]: { resultColumns: [] },
+    [NRL.NRL_Staph]: { resultColumns: NRL_STAPH_RESULT_COLUMNS },
+    [NRL.NRL_Listeria]: { resultColumns: [] },
+    [NRL.NRL_Salm]: { resultColumns: NRL_SALM_RESULT_COLUMNS },
+    [NRL.L_Clostridium]: { resultColumns: L_CLOSTRIDIUM_RESULT_COLUMNS },
+    [NRL.KL_Yersinia]: { resultColumns: KL_YERSINIA_RESULT_COLUMNS }
 };
 
 function isKnownNrl(value: string): value is KnownNrl {
@@ -195,7 +192,7 @@ function erregerOf(sample: SampleWithResultsDTO): string {
 function resolveNrlTab(sample: SampleWithResultsDTO): NrlTab {
     const nrl = toNrl(sample.sampleMeta?.nrl ?? '');
     if (isKnownNrl(nrl)) {
-        return { id: nrl, label: nrl, fileToken: nrlResultsConfig[nrl].fileToken };
+        return { id: nrl, label: nrl, fileToken: nrl };
     }
     const label = erregerOf(sample) || 'Unbekannt';
     return {

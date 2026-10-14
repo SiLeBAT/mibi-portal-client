@@ -6,6 +6,7 @@ import {
     bfrOrderNumber,
     bfrOrderNumberHeader,
     orderedResults,
+    resultValue,
     resultsViewPathogenHeader
 } from '../results-grid/results-grid.constants';
 
@@ -46,7 +47,7 @@ const bfrOrderNumberDownloadColumn: DownloadColumn = {
 function resultDownloadColumn(definition: ResultColumnDefinition): DownloadColumn {
     return {
         header: definition.header,
-        getValue: (_sample, result) => result?.resultData[definition.key] ?? ''
+        getValue: (_sample, result) => resultValue(result, definition.key)
     };
 }
 
