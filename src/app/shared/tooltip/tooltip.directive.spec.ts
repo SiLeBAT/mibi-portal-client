@@ -43,6 +43,15 @@ describe('ToolTipDirective', () => {
         expect(lastAttached()).toEqual([error]);
     });
 
+    it('keeps a tooltip that has only a title', () => {
+        const titled = createToolTip(ToolTipTheme.NRL, 'bottom', [], 'Heading');
+        directive.toolTips = [titled];
+
+        directive.ngOnChanges();
+
+        expect(lastAttached()).toEqual([titled]);
+    });
+
     it('attaches nothing when there is no tooltip at all', () => {
         directive.toolTips = [createToolTip(ToolTipTheme.TIP, 'right', [])];
 

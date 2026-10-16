@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import 'tooltipster';
-import { ToolTip, ToolTipTheme } from './tooltip.model';
+import { ToolTip, ToolTipTheme, hasToolTipContent } from './tooltip.model';
 
 /**
  * The only place in the application that talks to tooltipster.
@@ -21,17 +21,18 @@ export class ToolTipService {
         [ToolTipTheme.WARNING]: 'tooltipster-warning',
         [ToolTipTheme.ERROR]: 'tooltipster-error',
         [ToolTipTheme.INFO]: 'tooltipster-info',
-        [ToolTipTheme.TIP]: 'tooltipster-tip'
+        [ToolTipTheme.TIP]: 'tooltipster-tip',
+        [ToolTipTheme.NRL]: 'tooltipster-nrl'
     };
 
     /**
-     * Attaches one tooltip per entry to the element. Entries without messages
-     * are skipped, so callers can hand over a fixed set of themes and leave the
+     * Attaches one tooltip per entry to the element. Entries without a title
+     * or messages are skipped, so callers can hand over a fixed set of themes and leave the
      * ones that have nothing to say empty.
      */
     attach(element: HTMLElement, toolTips: ToolTip[]): void {
         toolTips
-            .filter(toolTip => toolTip.messages.length > 0)
+            .filter(toolTip => hasToolTipContent(toolTip))
             .forEach(toolTip => {
                 $(element).tooltipster(this.toOptions(toolTip));
             });
@@ -51,14 +52,21 @@ export class ToolTipService {
             touchDevices: false,
             trigger: 'hover',
             contentAsHTML: true,
-            content: this.toHtml(toolTip.messages),
+            content: this.toHtml(toolTip),
             side: toolTip.alignment,
             // Several tooltips, each with its own theme and side, share one element.
             multiple: true
         };
     }
 
-    private toHtml(messages: string[]): string {
-        return `<ul>${messages.map(message => `<li>${message}</li>`).join('')}</ul>`;
+    private toHtml(toolTip: ToolTip): string {
+        // The titled layout (tooltip.scss) keeps the title on one line and wraps
+        // the messages to the title's width, or to a bounded width if wider.
+        if (toolTip.title) {
+            const lines = toolTip.messages.map(message => `<div>${message}</div>`).join('');
+            return '<div class="mibi-tool-tip-titled">'
+                + `<strong class="mibi-tool-tip-titled__title">${toolTip.title}</strong>${lines}</div>`;
+        }
+        return `<ul>${toolTip.messages.map(message => `<li>${message}</li>`).join('')}</ul>`;
     }
 }

@@ -94,6 +94,10 @@ export interface NRLDTO {
     readonly id: string;
     // Anchored regex patterns matched against a sample's Erreger to find its NRL.
     readonly selector: string[];
+    // Display texts for the results-view tab tooltip (ticket #885); editable in
+    // the dashboard, optional in the DB.
+    readonly full_name?: string;
+    readonly pathogen?: string;
     readonly standardProcedures: AnalysisProcedureDTO[];
     readonly optionalProcedures: AnalysisProcedureDTO[];
 }

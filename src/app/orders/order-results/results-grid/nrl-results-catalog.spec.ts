@@ -1,4 +1,4 @@
-import { SampleWithResultsDTO } from '../../../core/model/response.model';
+import { NRLDTO, SampleWithResultsDTO } from '../../../core/model/response.model';
 import { NRL } from '../../../samples/model/sample.enums';
 import { required } from '../../../shared/model/invariant';
 import {
@@ -40,6 +40,16 @@ describe('deriveNrlTabs', () => {
         expect(tab).toEqual({ id: 'NRL-Salm', label: 'NRL-Salm', fileToken: 'NRL-Salm' });
     });
 
+    it('shows NRL-AR-Kleb samples on the NRL-AR tab instead of a tab of their own', () => {
+        expect(deriveNrlTabs([sample(NRL.NRL_AR_Kleb, 'Klebsiella pneumoniae')])).toEqual([
+            { id: 'NRL-AR', label: 'NRL-AR', fileToken: 'NRL-AR' }
+        ]);
+        expect(deriveNrlTabs([
+            sample(NRL.NRL_AR_Kleb, 'Klebsiella pneumoniae'),
+            sample(NRL.NRL_AR, 'Escherichia coli')
+        ]).map(tab => tab.id)).toEqual(['NRL-AR']);
+    });
+
     it('returns one distinct tab per NRL, sorted alphabetically by label', () => {
         const tabs = deriveNrlTabs([
             sample(NRL.KL_Yersinia, 'Yersinia enterocolitica'),
@@ -68,6 +78,47 @@ describe('deriveNrlTabs', () => {
         expect(tab.id).toBe('other:unbekannt');
         expect(tab.fileToken).toBe('Unbekannt');
     });
+
+    describe('tooltip info from the NRL store (#885)', () => {
+        const nrl = (id: string, fullName?: string, pathogen?: string): NRLDTO =>
+            ({ id: id, full_name: fullName, pathogen: pathogen }) as unknown as NRLDTO;
+
+        it('attaches the full name and pathogen texts of the matching NRL', () => {
+            const [tab] = deriveNrlTabs(
+                [sample(NRL.NRL_AR, 'Escherichia coli')],
+                [nrl('NRL-Salm', 'NRL für Salmonellen'), nrl('NRL-AR', ' NRL für Antibiotikaresistenz ', 'Erreger: Enterokokken')]
+            );
+
+            expect(tab?.info).toEqual({ fullName: 'NRL für Antibiotikaresistenz', pathogen: 'Erreger: Enterokokken' });
+        });
+
+        it('keeps a single text and leaves the missing one empty', () => {
+            const [tab] = deriveNrlTabs([sample(NRL.NRL_AR)], [nrl('NRL-AR', 'NRL für Antibiotikaresistenz')]);
+
+            expect(tab?.info).toEqual({ fullName: 'NRL für Antibiotikaresistenz', pathogen: '' });
+        });
+
+        it('sets no info when the NRL has no texts or is not in the store', () => {
+            const tabs = deriveNrlTabs([sample(NRL.NRL_AR), sample(NRL.NRL_Salm)], [nrl('NRL-AR', ' ', '')]);
+
+            expect(tabs.map(tab => tab.info)).toEqual([undefined, undefined]);
+        });
+
+        it('gives an NRL-AR tab with only NRL-AR-Kleb samples the NRL-AR texts', () => {
+            const [tab] = deriveNrlTabs(
+                [sample(NRL.NRL_AR_Kleb)],
+                [nrl('NRL-AR', 'NRL für Antibiotikaresistenz', 'Erreger: Enterokokken')]
+            );
+
+            expect(tab?.info).toEqual({ fullName: 'NRL für Antibiotikaresistenz', pathogen: 'Erreger: Enterokokken' });
+        });
+
+        it('sets no info on a fallback tab', () => {
+            const [tab] = deriveNrlTabs([sample(NRL.UNKNOWN, 'Aeromonas spp.')], [nrl('other:aeromonas spp.', 'x', 'y')]);
+
+            expect(tab?.info).toBeUndefined();
+        });
+    });
 });
 
 describe('filterSamplesByNrl', () => {
@@ -78,6 +129,15 @@ describe('filterSamplesByNrl', () => {
 
         expect(filterSamplesByNrl([ecoli1, salm, ecoli2], 'NRL-AR')).toEqual([ecoli1, ecoli2]);
         expect(filterSamplesByNrl([ecoli1, salm, ecoli2], 'NRL-Salm')).toEqual([salm]);
+    });
+
+    it('includes the NRL-AR-Kleb samples in the NRL-AR tab, preserving order', () => {
+        const ecoli = sample(NRL.NRL_AR, 'Escherichia coli');
+        const kleb = sample(NRL.NRL_AR_Kleb, 'Klebsiella pneumoniae');
+        const salm = sample(NRL.NRL_Salm, 'Salmonella');
+
+        expect(filterSamplesByNrl([kleb, salm, ecoli], 'NRL-AR')).toEqual([kleb, ecoli]);
+        expect(filterSamplesByNrl([kleb, salm, ecoli], 'NRL-AR-Kleb')).toEqual([]);
     });
 });
 
