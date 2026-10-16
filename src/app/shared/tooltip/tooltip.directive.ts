@@ -1,6 +1,6 @@
 import { Directive, ElementRef, Input, OnChanges, OnDestroy } from '@angular/core';
 import _ from 'lodash';
-import { ToolTip } from './tooltip.model';
+import { ToolTip, hasToolTipContent } from './tooltip.model';
 import { ToolTipService } from './tooltip.service';
 
 /**
@@ -28,7 +28,7 @@ export class ToolTipDirective implements OnChanges, OnDestroy {
 
     ngOnChanges(): void {
         const wanted = (this.toolTips ?? []).filter(
-            toolTip => toolTip.messages.length > 0
+            toolTip => hasToolTipContent(toolTip)
         );
 
         // Callers build this list in the template, so an unchanged list still

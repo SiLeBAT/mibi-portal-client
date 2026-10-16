@@ -20,6 +20,7 @@ import { OrderListContainerComponent } from './container/order-list-container/or
 import { createOrderPaginatorIntl } from './presentation/order-list-paginator/order-list-paginator.intl';
 import { OrderResultsContainerComponent } from './order-results/order-results-view/order-results-container.component';
 import { OrderResultsViewComponent } from './order-results/order-results-view/order-results-view.component';
+import { ToolTipModule } from '../shared/tooltip/tooltip.module';
 import { ToggleBarHeightDirective } from './order-results/order-results-view/toggle-bar-height.directive';
 import { NoOrderGuard } from './services/no-order-guard.service';
 import { ordersPathsSegments } from './orders.paths';
@@ -49,6 +50,7 @@ const routes: Routes = [
         MatSortModule,
         MatTableModule,
         GridModule,
+        ToolTipModule,
         RouterModule.forChild(routes),
         StoreModule.forFeature(ORDERS_SLICE_NAME, ordersReducer),
         EffectsModule.forFeature(ordersEffects)

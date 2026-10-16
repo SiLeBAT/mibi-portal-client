@@ -51,7 +51,8 @@ describe('ToolTipService', () => {
         [ToolTipTheme.WARNING, 'tooltipster-warning'],
         [ToolTipTheme.ERROR, 'tooltipster-error'],
         [ToolTipTheme.INFO, 'tooltipster-info'],
-        [ToolTipTheme.TIP, 'tooltipster-tip']
+        [ToolTipTheme.TIP, 'tooltipster-tip'],
+        [ToolTipTheme.NRL, 'tooltipster-nrl']
     ])('renders the %s theme with the tooltipster class %s', (theme, expected) => {
         service.attach(element, [createToolTip(theme, 'top', ['a message'])]);
 
@@ -65,6 +66,33 @@ describe('ToolTipService', () => {
 
         expect(optionsOf(0).content).toBe('<ul><li>first</li><li>second</li></ul>');
         expect(optionsOf(0).contentAsHTML).toBe(true);
+    });
+
+    it('shows a title in bold with the messages as plain lines below it', () => {
+        service.attach(element, [
+            createToolTip(ToolTipTheme.NRL, 'bottom', ['first', 'second'], 'Heading')
+        ]);
+
+        expect(optionsOf(0).content).toBe(
+            '<div class="mibi-tool-tip-titled"><strong class="mibi-tool-tip-titled__title">Heading</strong>'
+            + '<div>first</div><div>second</div></div>'
+        );
+    });
+
+    it('attaches a tooltip that has a title but no messages', () => {
+        service.attach(element, [createToolTip(ToolTipTheme.NRL, 'bottom', [], 'Heading')]);
+
+        expect(optionsOf(0).content).toBe(
+            '<div class="mibi-tool-tip-titled"><strong class="mibi-tool-tip-titled__title">Heading</strong></div>'
+        );
+    });
+
+    // The width of a titled tooltip is left to its CSS layout, which keeps the
+    // title on one line; a tooltipster maxWidth would wrap it again.
+    it('sets no tooltipster width limit', () => {
+        service.attach(element, [createToolTip(ToolTipTheme.NRL, 'bottom', ['a message'], 'Heading')]);
+
+        expect(optionsOf(0).maxWidth).toBeUndefined();
     });
 
     it('puts the tooltip on the side it asked for', () => {

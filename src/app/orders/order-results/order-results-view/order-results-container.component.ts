@@ -13,6 +13,9 @@ import {
 } from '../../state/order-list.selectors';
 import { navigateMSA } from '../../../shared/navigate/navigate.actions';
 import { orderResultsPath } from '../../orders.paths';
+import { SharedSlice } from '../../../shared/shared.state';
+import { NrlState } from '../../../shared/nrl/state/nrl.reducer';
+import { selectNrls } from '../../../shared/nrl/state/nrl.selectors';
 import { ResultsDownloadService } from '../download/results-download.service';
 import { SamplesGridViewModel } from '../../../grid/samples-grid/samples-grid.model';
 import { buildResultsGridViewModel } from '../results-grid/results-grid.builder';
@@ -62,7 +65,7 @@ export class OrderResultsContainerComponent implements OnDestroy {
     private readonly loadSubscription: Subscription;
 
     constructor(
-        private readonly store$: Store<OrdersMainSlice>,
+        private readonly store$: Store<OrdersMainSlice & SharedSlice<NrlState>>,
         private readonly download: ResultsDownloadService,
         route: ActivatedRoute
     ) {
@@ -91,9 +94,9 @@ export class OrderResultsContainerComponent implements OnDestroy {
         );
 
         // Samples are assigned to NRL tabs by the NRL the server stored for them
-        // at upload (sampleMeta.nrl).
-        this.nrlTabs$ = this.order$.pipe(
-            map(order => deriveNrlTabs(order?.samples ?? [])),
+        // at upload (sampleMeta.nrl). The NRL store entries add the tab tooltips.
+        this.nrlTabs$ = combineLatest([this.order$, this.store$.pipe(select(selectNrls))]).pipe(
+            map(([order, nrls]) => deriveNrlTabs(order?.samples ?? [], nrls)),
             shareReplay({ bufferSize: 1, refCount: true })
         );
 

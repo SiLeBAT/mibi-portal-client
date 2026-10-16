@@ -1,4 +1,4 @@
-import { SampleWithResultsDTO } from '../../../core/model/response.model';
+import { NRLDTO, SampleWithResultsDTO } from '../../../core/model/response.model';
 import { NRL } from '../../../samples/model/sample.enums';
 import { toNrl } from '../../../samples/model/nrl';
 
@@ -15,6 +15,15 @@ export interface NrlTab {
     // Filename-safe token used in the CSV download names (ticket #786): the NRL
     // name, e.g. "NRL-AR", "KL-Vibrio" (ticket #886).
     fileToken: string;
+    // Mouseover texts from the NRL store entry (ticket #885); only set for a
+    // known NRL that has at least one of the texts.
+    info?: NrlTabInfo;
+}
+
+/** Tooltip texts of an NRL tab; an empty string means the text is missing. */
+export interface NrlTabInfo {
+    fullName: string;
+    pathogen: string;
 }
 
 type KnownNrl = Exclude<NRL, NRL.UNKNOWN>;
@@ -177,6 +186,12 @@ function isKnownNrl(value: string): value is KnownNrl {
     return Object.prototype.hasOwnProperty.call(nrlResultsConfig, value);
 }
 
+// NRL-AR-Kleb has no tab (and no tooltip texts) of its own: its samples are
+// shown on, and downloaded with, the NRL-AR tab.
+function tabNrlOf(nrl: NRL): NRL {
+    return nrl === NRL.NRL_AR_Kleb ? NRL.NRL_AR : nrl;
+}
+
 function normalize(value: string): string {
     return value.trim().toLowerCase();
 }
@@ -190,7 +205,7 @@ function erregerOf(sample: SampleWithResultsDTO): string {
 // ("Labor nicht erkannt") get a tab labelled with their raw Erreger value so no
 // data is hidden; they carry no result columns.
 function resolveNrlTab(sample: SampleWithResultsDTO): NrlTab {
-    const nrl = toNrl(sample.sampleMeta?.nrl ?? '');
+    const nrl = tabNrlOf(toNrl(sample.sampleMeta?.nrl ?? ''));
     if (isKnownNrl(nrl)) {
         return { id: nrl, label: nrl, fileToken: nrl };
     }
@@ -204,7 +219,7 @@ function resolveNrlTab(sample: SampleWithResultsDTO): NrlTab {
 }
 
 /** Distinct NRLs present in the order, sorted alphabetically by label. */
-export function deriveNrlTabs(samples: SampleWithResultsDTO[]): NrlTab[] {
+export function deriveNrlTabs(samples: SampleWithResultsDTO[], nrls: NRLDTO[] = []): NrlTab[] {
     const byId = new Map<string, NrlTab>();
     samples.forEach(sample => {
         const tab = resolveNrlTab(sample);
@@ -212,7 +227,21 @@ export function deriveNrlTabs(samples: SampleWithResultsDTO[]): NrlTab[] {
             byId.set(tab.id, tab);
         }
     });
-    return [...byId.values()].sort((a, b) => a.label.localeCompare(b.label));
+    return [...byId.values()]
+        .map(tab => withNrlInfo(tab, nrls))
+        .sort((a, b) => a.label.localeCompare(b.label));
+}
+
+// The NRL store entries are keyed by the NRL name (NRLDTO.id), which is also the
+// id of a known-NRL tab; fallback tabs never match.
+function withNrlInfo(tab: NrlTab, nrls: NRLDTO[]): NrlTab {
+    const nrl = nrls.find(entry => entry.id === tab.id);
+    const fullName = nrl?.full_name?.trim() ?? '';
+    const pathogen = nrl?.pathogen?.trim() ?? '';
+    if (!isKnownNrl(tab.id) || (!fullName && !pathogen)) {
+        return tab;
+    }
+    return { ...tab, info: { fullName: fullName, pathogen: pathogen } };
 }
 
 /** Samples belonging to the given NRL tab, preserving order. */

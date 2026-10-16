@@ -15,6 +15,7 @@
                         type="button"
                         class="mibi-order-results__tab"
                         [class.mibi-order-results__tab--active]="tab.id === selectedNrlId"
+                        [mibiToolTip]="toolTipsOf(tab)"
                         (click)="onSelectNrl(tab.id)"
                     >{{ tab.label }}</button>
                 }

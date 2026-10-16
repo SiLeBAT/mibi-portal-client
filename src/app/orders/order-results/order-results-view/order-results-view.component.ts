@@ -4,6 +4,8 @@ import { parseOrderDate } from '../../model/order-date';
 import { OrderNeighbours } from '../../state/order-list.selectors';
 import { SamplesGridViewModel } from '../../../grid/samples-grid/samples-grid.model';
 import { NrlTab } from '../results-grid/nrl-results-catalog';
+import { ToolTip } from '../../../shared/tooltip/tooltip.model';
+import { nrlTabToolTips } from './nrl-tab-tool-tips';
 
 @Component({
     standalone: false,
@@ -59,6 +61,12 @@ export class OrderResultsViewComponent {
 
     onDownloadAll(): void {
         this.downloadAll.emit();
+    }
+
+    // Built on every change detection pass; the tooltip directive compares by
+    // value, so an unchanged tab keeps its tooltip.
+    toolTipsOf(tab: NrlTab): ToolTip[] {
+        return nrlTabToolTips(tab.info);
     }
 
     onSelectNrl(nrlId: string): void {
