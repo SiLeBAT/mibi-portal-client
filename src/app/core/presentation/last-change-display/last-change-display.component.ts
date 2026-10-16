@@ -1,8 +1,11 @@
-import { Component, Input, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import moment from 'moment';
 import { Observable } from 'rxjs';
-import { ToolTip, createToolTip, ToolTipTheme } from '../../../shared/model/tooltip.model';
-import 'tooltipster';
+import {
+    ToolTip,
+    ToolTipTheme,
+    createToolTip
+} from '../../../shared/tooltip/tooltip.model';
 
 @Component({
     standalone: false,
@@ -10,27 +13,24 @@ import 'tooltipster';
     templateUrl: './last-change-display.component.html',
     styleUrls: ['./last-change-display.component.scss']
 })
-export class LastChangeDisplayComponent implements AfterViewInit {
+export class LastChangeDisplayComponent {
     @Input() lastChange$!: Observable<moment.Moment>;
     @Input() serverVersion!: string;
     @Input() clientVersion!: string;
-    @ViewChild('entry', { read: ElementRef }) entry!: ElementRef;
-    private toolTip: ToolTip;
 
-    constructor() {
-        this.toolTip = createToolTip(ToolTipTheme.INFO, 'top');
-    }
-
-    ngAfterViewInit(): void {
-
-        const display: string[] = [];
+    /**
+     * The versions behind the "last change" line, shown on hover. Read from the
+     * template on every change detection pass; the tooltip directive compares
+     * the list by value, so an unchanged one costs nothing.
+     */
+    get versionToolTips(): ToolTip[] {
+        const messages: string[] = [];
         if (this.serverVersion) {
-            display.push('server version@' + this.serverVersion);
+            messages.push('server version@' + this.serverVersion);
         }
         if (this.clientVersion) {
-            display.push('client version@' + this.clientVersion);
+            messages.push('client version@' + this.clientVersion);
         }
-        $(this.entry.nativeElement).tooltipster(this.toolTip.getOptions(
-            display));
+        return [createToolTip(ToolTipTheme.INFO, 'top', messages)];
     }
 }

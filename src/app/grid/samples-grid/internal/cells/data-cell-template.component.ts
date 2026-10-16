@@ -3,6 +3,8 @@ import { DataGridCellContext } from '../../../data-grid/data-grid.model';
 import { SamplesGridTemplateContainer } from '../template-container';
 import { SamplesGridDataCellData } from '../../samples-grid.model';
 import { SampleValidationErrorLevel } from '../../../../samples/model/sample-management.model';
+import { ToolTip } from '../../../../shared/tooltip/tooltip.model';
+import { samplesGridDataCellToolTips } from './data-cell-tool-tips';
 // import { SoftLineBreaksPipe } from '../../../../shared/presentation/pipes/soft-line-breaks.pipe';
 
 @Component({
@@ -13,6 +15,10 @@ import { SampleValidationErrorLevel } from '../../../../samples/model/sample-man
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SamplesGridDataCellTemplateComponent extends SamplesGridTemplateContainer<DataGridCellContext> {
+
+    toolTipsOf(data: SamplesGridDataCellData): ToolTip[] {
+        return samplesGridDataCellToolTips(data);
+    }
 
     hasError(data: SamplesGridDataCellData): boolean {
         return this.hasErrorLevel(data, SampleValidationErrorLevel.ERROR);

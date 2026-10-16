@@ -1,7 +1,7 @@
 <mibi-box-layout>
 
     <div class="mibi-last-change">
-        <div #entry class="mibi-last-change__content">Letzte Änderung:
+        <div class="mibi-last-change__content" [mibiToolTip]="versionToolTips">Letzte Änderung:
             {{lastChange$ | async | amDateFormat:'DD.MM.YYYY' }}</div>
     </div>
 

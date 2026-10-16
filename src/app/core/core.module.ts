@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared/shared.module';
+import { ToolTipModule } from '../shared/tooltip/tooltip.module';
 import { RouterModule } from '@angular/router';
 import { HomeComponent } from './presentation/home/home.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -46,6 +47,7 @@ import { MarkdownModule } from 'ngx-markdown';
         FormsModule,
         ReactiveFormsModule,
         SharedModule,
+        ToolTipModule,
         MainModule,
         MomentModule,
         MatMenuModule,

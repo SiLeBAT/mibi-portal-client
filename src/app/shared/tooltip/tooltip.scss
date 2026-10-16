@@ -1,5 +1,14 @@
 /* stylelint-disable selector-class-pattern */
 
+// Styles for the tooltips rendered by tooltipster, kept beside the tooltip
+// component they belong to.
+// These have to stay GLOBAL and cannot become a component stylesheet:
+// tooltipster renders each tooltip into `body`, outside any component's view,
+// so Angular's style encapsulation would scope these rules away from the
+// elements they target. src/styles.scss pulls the file in for that reason.
+// The `tooltipster-*` class names are tooltipster's own; ToolTipService maps
+// our ToolTipTheme onto them.
+
 @use "@angular/material" as mat;
 @use "colors";
 @use "layout";
