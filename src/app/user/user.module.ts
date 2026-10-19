@@ -1,10 +1,8 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginViewComponent } from './presentation/login-view/login-view.component';
 import { LoginComponent } from './presentation/login/login.component';
 import { LoginContainerComponent } from './container/login-container/login-container.component';
-import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { RegisterComponent } from './presentation/register/register.component';
 import { PasswordStrengthMeterModule } from 'angular-password-strength-meter';
@@ -29,13 +27,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { DatenschutzHinweiseComponent } from './presentation/datenschutzhinweise/datenschutzhinweise.component';
 import { DatenSchutzHinweiseViewComponent } from './presentation/datenschutzhinweise-view/datenschutzhinweise-view.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatDialogModule } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { PasswordComponent } from './password/password.component';
@@ -77,15 +69,7 @@ const routes: Routes = [{
 
 @NgModule({
     imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        BrowserAnimationsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatCardModule,
-        MatButtonModule,
         MatAutocompleteModule,
-        MatDialogModule,
         MatRadioModule,
         MatCheckboxModule,
         PasswordStrengthMeterModule.forRoot(DEFAULT_PSM_OPTIONS),

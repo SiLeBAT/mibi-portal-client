@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EffectsModule } from '@ngrx/effects';
 import { routerReducer } from '@ngrx/router-store';
@@ -12,6 +13,10 @@ describe('AppComponent', () => {
         await TestBed.configureTestingModule({
             imports: [
                 RouterTestingModule,
+                // The banner animates. In the running app the animation module
+                // comes from AppModule, which a test that assembles its own
+                // module does not get -- so it brings the no-op one itself.
+                NoopAnimationsModule,
                 StoreModule.forRoot({
                     router: routerReducer
                 }, {
