@@ -1,18 +1,11 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { StoreModule } from '@ngrx/store';
 import { SharedModule } from '../shared/shared.module';
 import { UploadViewComponent } from './presentation/upload-view/upload-view.component';
 import { EffectsModule } from '@ngrx/effects';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatMenuModule } from '@angular/material/menu';
 import { CoreModule } from '../core/core.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatStepperModule } from '@angular/material/stepper';
 import { SAMPLES_SLICE_NAME } from './samples.state';
@@ -50,16 +43,9 @@ const routes: Routes = [
 
 @NgModule({
     imports: [
-        CommonModule,
-        MatIconModule,
-        MatButtonModule,
-        MatDialogModule,
-        MatMenuModule,
-        MatInputModule,
         MatStepperModule,
         MatRadioModule,
         MatCheckboxModule,
-        MatFormFieldModule,
         RouterModule.forChild(routes),
         StoreModule.forFeature(SAMPLES_SLICE_NAME, samplesReducerMap),
         EffectsModule.forFeature(samplesEffects),
