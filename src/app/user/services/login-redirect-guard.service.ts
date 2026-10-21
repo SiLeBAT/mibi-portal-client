@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
+import { Router, UrlTree } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
-import { selectIsAlternativeWelcomePage } from 'app/core/state/core.selectors';
-import { LogService } from '../../core/services/log.service';
+import { selectIsAlternativeWelcomePage } from '../../core/state/core.selectors';
 import { CoreMainSlice } from '../../core/core.state';
 
 @Injectable({
@@ -13,25 +13,13 @@ export class LoginRedirectGuard  {
 
     constructor(
         private store$: Store<CoreMainSlice>,
-        private router: Router,
-        private logger: LogService
+        private router: Router
     ) { }
 
-    canActivate(_activated: ActivatedRouteSnapshot, _snap: RouterStateSnapshot) {
-
+    canActivate(): Observable<true | UrlTree> {
         return this.store$.select(selectIsAlternativeWelcomePage).pipe(
             take(1),
-            map(isAlternativeWelcomePage => {
-                if (isAlternativeWelcomePage) {
-                    this.router.navigate(['/'])
-                        .catch(error => {
-                            this.logger.error('Error during navigation.', error.stack);
-                        });
-
-                    return false;
-                }
-                return true;
-            })
+            map(isAlternativeWelcomePage => isAlternativeWelcomePage ? this.router.parseUrl('/') : true)
         );
     }
 }
