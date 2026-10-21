@@ -1,13 +1,15 @@
 <mibi-dialog-view [config]="config" (confirm)="onConfirm()" (cancel)="onCancel()">
     <mibi-box-layout>
-      <mat-form-field class="mibi-comment" appearance="outline" color="accent" subscriptSizing="dynamic">
-          <mat-label>
-            Kommentar für das NRL
-          </mat-label>
-        <textarea #commentInput matInput [formControl]="commentControl" rows="5" cdkFocusInitial type="text" maxlength="2000" placeholder=""></textarea>
-        <mat-hint align="start" [class.mibi-comment-hint--max-chars-reached]="(commentInput.value?.length || 0) === 2000">          
-          {{commentInput.value?.length || 0}}/2000
-        </mat-hint>
-      </mat-form-field>
+      <mibi-form-field>
+          <mat-form-field appearance="outline" subscriptSizing="dynamic">
+              <mat-label>
+                Kommentar für das NRL
+              </mat-label>
+            <textarea #commentInput matInput [formControl]="commentControl" rows="5" cdkFocusInitial type="text" maxlength="2000" placeholder=""></textarea>
+            <mat-hint align="start" [class.mibi-comment-hint--max-chars-reached]="(commentInput.value?.length || 0) === 2000">          
+              {{commentInput.value?.length || 0}}/2000
+            </mat-hint>
+          </mat-form-field>
+      </mibi-form-field>
     </mibi-box-layout>
   </mibi-dialog-view>

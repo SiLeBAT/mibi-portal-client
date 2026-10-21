@@ -11,29 +11,33 @@
     <ng-template #legacyForm>
         <form [formGroup]="loginForm" (ngSubmit)="onLoginLegacy()">
             <div class="mibi-form-group">
-                <mat-form-field class="mibi-form-field" appearance="fill" color="accent">
-                    <mat-label>E-Mail</mat-label>
-                    <input
-                        matInput
-                        placeholder="Geben Sie Ihre E-Mail-Adresse ein"
-                        name="email"
-                        formControlName="email"
-                        required
-                    >
-                </mat-form-field>
+                <mibi-form-field>
+                    <mat-form-field>
+                        <mat-label>E-Mail</mat-label>
+                        <input
+                            matInput
+                            placeholder="Geben Sie Ihre E-Mail-Adresse ein"
+                            name="email"
+                            formControlName="email"
+                            required
+                        >
+                    </mat-form-field>
+                </mibi-form-field>
             </div>
             <div class="mibi-form-group">
-                <mat-form-field class="mibi-form-field" appearance="fill" color="accent">
-                    <mat-label>Passwort</mat-label>
-                    <input
-                        matInput
-                        placeholder="Geben Sie Ihr Passwort ein"
-                        type="password"
-                        name="password"
-                        formControlName="password"
-                        required
-                    >
-                </mat-form-field>
+                <mibi-form-field>
+                    <mat-form-field>
+                        <mat-label>Passwort</mat-label>
+                        <input
+                            matInput
+                            placeholder="Geben Sie Ihr Passwort ein"
+                            type="password"
+                            name="password"
+                            formControlName="password"
+                            required
+                        >
+                    </mat-form-field>
+                </mibi-form-field>
             </div>
             <button
                 class="mibi-login-submit-button"

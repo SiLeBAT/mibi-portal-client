@@ -23,6 +23,7 @@ import { UploadComponent } from './presentation/upload/upload.component';
 import { UploadContainerComponent } from './container/upload-container/upload-container.component';
 import { UploadActionItemComponent } from './presentation/upload-action-item/upload-action-item.component';
 import { BoxLayoutComponent } from './box-layout/box-layout.component';
+import { FormFieldComponent } from './form-field/form-field.component';
 import { DialogComponent } from './dialog/components/dialog.component';
 import { DialogViewComponent } from './dialog/components/dialog-view.component';
 import { DialogWarningsViewComponent } from './dialog/components/dialog-warnings-view.component';
@@ -67,6 +68,7 @@ const sharedDeclarations = [
     MibiCardActionsDirective,
     WallOfTextLayoutComponent,
     BoxLayoutComponent,
+    FormFieldComponent,
     DialogWarningsViewComponent,
     DialogViewComponent,
     DialogComponent

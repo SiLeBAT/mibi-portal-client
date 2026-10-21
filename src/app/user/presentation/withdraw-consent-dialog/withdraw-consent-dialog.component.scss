@@ -50,6 +50,7 @@
 
   .mibi-withdraw-consent-confirm-field {
     flex: 1 1 0;
+    min-width: 0; // narrower than the shared form field minimum, so both halves fit the dialog
   }
 
   .mibi-withdraw-consent-actions {
