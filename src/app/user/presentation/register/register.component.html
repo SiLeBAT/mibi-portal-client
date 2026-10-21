@@ -10,66 +10,74 @@ when the submit button is clicked. On submit the register() method is called if 
     </p>
 
     <div class="mibi-form-group">
-        <mat-form-field class="mibi-form-field" appearance="outline" color="accent">
-            <mat-label>Institut</mat-label>
-            <input
-                type="text"
-                matInput
-                placeholder="Wählen Sie Ihr Institut"
-                formControlName="institution"
-                autocomplete="off"
-                required
-                [matAutocomplete]="autoGroup"
-            />
-            <mat-error>Muss ein gültiges Institut sein.</mat-error>
-            <mat-autocomplete #autoGroup="matAutocomplete">
-                <mat-option
-                    class="mibi-register-mat-option"
-                    *ngFor="let institution of filteredOptions$ | async"
-                    [value]="institution"
-                >{{ institution }}</mat-option>
-            </mat-autocomplete>
-        </mat-form-field>
+        <mibi-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Institut</mat-label>
+                <input
+                    type="text"
+                    matInput
+                    placeholder="Wählen Sie Ihr Institut"
+                    formControlName="institution"
+                    autocomplete="off"
+                    required
+                    [matAutocomplete]="autoGroup"
+                />
+                <mat-error>Muss ein gültiges Institut sein.</mat-error>
+                <mat-autocomplete #autoGroup="matAutocomplete">
+                    <mat-option
+                        class="mibi-register-mat-option"
+                        *ngFor="let institution of filteredOptions$ | async"
+                        [value]="institution"
+                    >{{ institution }}</mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+        </mibi-form-field>
     </div>
 
     <div class="mibi-form-group">
-        <mat-form-field class="mibi-form-field" appearance="fill" color="accent">
-            <mat-label>Vorname</mat-label>
-            <input
-                matInput
-                placeholder="Geben Sie Ihren Vornamen ein"
-                name="firstName"
-                formControlName="firstName"
-                required
-            />
-        </mat-form-field>
+        <mibi-form-field>
+            <mat-form-field>
+                <mat-label>Vorname</mat-label>
+                <input
+                    matInput
+                    placeholder="Geben Sie Ihren Vornamen ein"
+                    name="firstName"
+                    formControlName="firstName"
+                    required
+                />
+            </mat-form-field>
+        </mibi-form-field>
 
-        <mat-form-field class="mibi-form-field" appearance="fill" color="accent">
-            <mat-label>Nachname</mat-label>
-            <input
-                matInput
-                placeholder="Geben Sie Ihren Nachnamen ein"
-                name="lastName"
-                formControlName="lastName"
-                required
-            />
-        </mat-form-field>
+        <mibi-form-field>
+            <mat-form-field>
+                <mat-label>Nachname</mat-label>
+                <input
+                    matInput
+                    placeholder="Geben Sie Ihren Nachnamen ein"
+                    name="lastName"
+                    formControlName="lastName"
+                    required
+                />
+            </mat-form-field>
+        </mibi-form-field>
     </div>
 
     <div class="mibi-form-group">
-        <mat-form-field class="mibi-form-field" appearance="fill" color="accent">
-            <mat-label>E-Mail</mat-label>
-            <input 
-                matInput
-                placeholder="Geben Sie Ihre E-Mail-Adresse ein"
-                name="email"
-                formControlName="email"
-                required
-            />
-            <mat-error *ngIf="registerForm.controls.email?.errors?.email">
-                Muss eine gültige E-Mail sein.
-            </mat-error>
-        </mat-form-field>
+        <mibi-form-field>
+            <mat-form-field>
+                <mat-label>E-Mail</mat-label>
+                <input 
+                    matInput
+                    placeholder="Geben Sie Ihre E-Mail-Adresse ein"
+                    name="email"
+                    formControlName="email"
+                    required
+                />
+                <mat-error *ngIf="registerForm.controls.email?.errors?.email">
+                    Muss eine gültige E-Mail sein.
+                </mat-error>
+            </mat-form-field>
+        </mibi-form-field>
     </div>
 
     <mibi-password></mibi-password>

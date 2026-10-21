@@ -41,46 +41,50 @@
                         (change)="onChangeShowOther(nrl.abbreviation)"
                         >Sonstiges (nach Absprache)</mat-checkbox
                     >
-                    <mat-form-field *ngIf="showOther[nrl.abbreviation]" color="accent" appearance="outline" class="mibi-other-input">
-                        <textarea
-                            #otherInput
-                            matInput
-                            type="text"
-                            rows="1"
-                            placeholder="Kommentar für das NRL"
-                            formControlName="other"
-                            maxlength="{{ maxCharacters }}"
-                        ></textarea>
-                        <mat-hint
-                            align="start"
-                            [class.mibi-other-hint--max-chars-reached]="(otherInput.value?.length || 0) >= maxCharacters"
-                        >
-                            {{otherInput.value?.length || 0}}/{{ maxCharacters }}
-                        </mat-hint>
-                    </mat-form-field>
+                    <mibi-form-field *ngIf="showOther[nrl.abbreviation]">
+                        <mat-form-field appearance="outline" class="mibi-other-input">
+                            <textarea
+                                #otherInput
+                                matInput
+                                type="text"
+                                rows="1"
+                                placeholder="Kommentar für das NRL"
+                                formControlName="other"
+                                maxlength="{{ maxCharacters }}"
+                            ></textarea>
+                            <mat-hint
+                                align="start"
+                                [class.mibi-other-hint--max-chars-reached]="(otherInput.value?.length || 0) >= maxCharacters"
+                            >
+                                {{otherInput.value?.length || 0}}/{{ maxCharacters }}
+                            </mat-hint>
+                        </mat-form-field>
+                    </mibi-form-field>
                     <mat-checkbox
                         [(ngModel)]="showCompareHuman[nrl.abbreviation]"
                         [ngModelOptions]="{ standalone: true }"
                         (change)="onChangeCompareHuman(nrl.abbreviation)"
                         >Vergleiche mit humanen Isolaten</mat-checkbox
                     >
-                    <mat-form-field *ngIf="showCompareHuman[nrl.abbreviation]" color="accent" appearance="outline">
-                        <textarea
-                            #compareHumanInput
-                            matInput
-                            type="text"
-                            rows="1"
-                            placeholder="Kommentar für das NRL"
-                            formControlName="compareHuman"
-                            maxlength="{{ maxCharacters }}"
-                        ></textarea>
-                        <mat-hint
-                            align="start"
-                            [class.mibi-comparehuman-hint--max-chars-reached]="(compareHumanInput.value?.length || 0) >= maxCharacters"
-                        >
-                            {{compareHumanInput.value?.length || 0}}/{{ maxCharacters }}
-                        </mat-hint>
-                    </mat-form-field>
+                    <mibi-form-field *ngIf="showCompareHuman[nrl.abbreviation]">
+                        <mat-form-field appearance="outline">
+                            <textarea
+                                #compareHumanInput
+                                matInput
+                                type="text"
+                                rows="1"
+                                placeholder="Kommentar für das NRL"
+                                formControlName="compareHuman"
+                                maxlength="{{ maxCharacters }}"
+                            ></textarea>
+                            <mat-hint
+                                align="start"
+                                [class.mibi-comparehuman-hint--max-chars-reached]="(compareHumanInput.value?.length || 0) >= maxCharacters"
+                            >
+                                {{compareHumanInput.value?.length || 0}}/{{ maxCharacters }}
+                            </mat-hint>
+                        </mat-form-field>
+                    </mibi-form-field>
                     <div class="mibi-urgency-selection">
                         <label>Dringlichkeit:</label>
                         <mat-radio-group

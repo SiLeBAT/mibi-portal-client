@@ -17,20 +17,19 @@
                     </p>
                 </div>
 
-                <mat-form-field
-                    class="mibi-withdraw-consent-confirm-field"
-                    appearance="outline"
-                >
-                    <input
-                        matInput
-                        type="text"
-                        [formControl]="confirmControl"
-                        [placeholder]="strings.confirmToken"
-                        autocomplete="off"
-                        autocapitalize="off"
-                        spellcheck="false"
-                    />
-                </mat-form-field>
+                <mibi-form-field class="mibi-withdraw-consent-confirm-field">
+                    <mat-form-field appearance="outline" color="primary">
+                        <input
+                            matInput
+                            type="text"
+                            [formControl]="confirmControl"
+                            [placeholder]="strings.confirmToken"
+                            autocomplete="off"
+                            autocapitalize="off"
+                            spellcheck="false"
+                        />
+                    </mat-form-field>
+                </mibi-form-field>
             </div>
         }
 

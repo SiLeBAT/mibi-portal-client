@@ -4,10 +4,6 @@
   @include layout.form-group;
 }
 
-.mibi-form-field {
-  @include layout.form-field;
-}
-
 .mibi-recocery-actions {
   display: flex;
   justify-content: space-between;
