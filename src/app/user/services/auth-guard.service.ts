@@ -1,16 +1,19 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { RedirectCommand, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 import { selectUserCurrentUser } from '../state/user.selectors';
 import { UserMainSlice } from '../user.state';
-import { userForceLogoutMSA } from '../state/user.actions';
-import { showBannerSOA } from '../../core/state/core.actions';
-import { navigateMSA } from '../../shared/navigate/navigate.actions';
 import { UserLinkProviderService } from '../link-provider.service';
-import { Observable } from 'rxjs';
+import { AUTH_GUARD_REJECTED_STATE } from '../auth-guard/auth-guard.constants';
 
+/**
+ * Accepts a route only for a user with a valid token. A rejection redirects to
+ * the login page; logging out the user and showing the banner are done by
+ * UserAuthGuardEffects.
+ */
 @Injectable({
     providedIn: 'root'
 })
@@ -20,22 +23,22 @@ export class AuthGuard  {
 
     constructor(
         private store$: Store<UserMainSlice>,
+        private router: Router,
         private userLinks: UserLinkProviderService
     ) { }
 
-    canActivate(_activated: ActivatedRouteSnapshot, _snap: RouterStateSnapshot): Observable<boolean> {
+    canActivate(): Observable<true | RedirectCommand> {
         return this.store$.pipe(
             select(selectUserCurrentUser),
+            take(1),
             map(currentUser => {
-                if(currentUser !== null) {
-                    if(!this.isExpired(currentUser.token)) {
-                        return true;
-                    }
+                if (currentUser !== null && !this.isExpired(currentUser.token)) {
+                    return true;
                 }
-                this.store$.dispatch(userForceLogoutMSA());
-                this.store$.dispatch(navigateMSA({ path: this.userLinks.login }));
-                this.store$.dispatch(showBannerSOA({ predefined: 'loginUnauthorized' }));
-                return false;
+                return new RedirectCommand(
+                    this.router.parseUrl(this.userLinks.login),
+                    { state: { [AUTH_GUARD_REJECTED_STATE]: true } }
+                );
             })
         );
     }

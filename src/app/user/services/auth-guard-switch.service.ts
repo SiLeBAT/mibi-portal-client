@@ -1,9 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import {
-    ActivatedRouteSnapshot,
-    RouterStateSnapshot,
-    UrlTree
-} from '@angular/router';
+import { GuardResult } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthGuard } from './auth-guard.service';
 import { KeycloakAuthGuard } from './keycloak-auth.guard';
@@ -21,12 +17,9 @@ export class AuthGuardSwitch {
         private legacyGuard: AuthGuard
     ) {}
 
-    canActivate(
-        route: ActivatedRouteSnapshot,
-        state: RouterStateSnapshot
-    ): Observable<boolean | UrlTree> {
+    canActivate(): Observable<GuardResult> {
         return this.keycloakEnabled
             ? this.keycloakGuard.canActivate()
-            : this.legacyGuard.canActivate(route, state);
+            : this.legacyGuard.canActivate();
     }
 }
