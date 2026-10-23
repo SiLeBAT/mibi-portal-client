@@ -5,14 +5,12 @@ Run the portal's Cypress E2E suite **entirely inside GitHub Actions**, started *
 reference data and test accounts. Because the whole stack runs inside the GitHub runner,
 the tests never need to reach the BfR intranet — the firewall is simply out of the picture.
 
-> **Status:** verified end to end on a developer machine — from an empty volume the stack
-> boots, the seed loads, and the **whole Cypress suite passes** (84 passing, 0 failing, 18
-> pending), twice in a row against the same database, alongside mibi-portal-server's
-> integration suite (10/10). The 18 pending tests are the upload blocks their authors
-> disabled with `xdescribe` ("FIXME: Upload is not working yet"), which still use the
-> `cy.server()` API removed in Cypress 12. The seed is committed
-> ([where the seed lives](#where-the-seed-lives)), so a run needs no further setup. What is
-> **not** done: a run of the workflow itself in GitHub Actions.
+> **Status:** verified on a developer machine — from an empty volume the stack boots, the
+> seed loads, and the **whole Cypress suite passes** (100 passing, 0 failing, 1 pending)
+> over four consecutive runs against the same database, alongside mibi-portal-server's
+> integration suite (10/10). The single pending test is documented in
+> `api/v2/samples.spec.ts` and waits on a server-side fix. The seed is committed
+> ([where the seed lives](#where-the-seed-lives)), so a run needs no further setup.
 
 ---
 
@@ -241,6 +239,7 @@ of using the committed one — useful for trying a refreshed seed without commit
 | Database | **`mibiportal` only.** |
 | Auth (Keycloak) | **Stubbed / not active** (`keycloak.enabled=false`). Login uses the portal's own `users` class. |
 | CMS (Strapi) | **Dropped** — not in the stack. |
+| Upload specs | The specs that upload a sheet go through `cy.loadSamplesFile` (`cypress/support/commands.js`): `cy.selectFile` on the upload page, then a wait for the two calls an upload triggers (`PUT /v2/samples` and `/v2/samples/validated`). It defaults to `cypress/fixtures/einsendebogen-v18.xlsx` — the older `einsendebogen.xlsx` is a version 14 sheet and the API's excel version check rejects it. |
 | Specs | The whole suite, `cypress/integration/**/*.spec.ts`. Three things make the older specs work against this stack: `cypress/support/commands.js` overwrites `cy.request` to perform the CSRF handshake (the server rejects any unaccompanied PUT/POST with 403); `api/v2/samples.spec.ts` sends the MPS-312 `parsedSampleSheet` payload, generated from a V18 sheet into `cypress/fixtures/parsed-sheet.json`; and the specs that need an institute pick the one the seed creates, via `cypress/fixtures/seeded-institute.json`. |
 | Repeatability | The suite can run twice against the same database. `e2e/user/register.spec.ts` registers a per-run address, because a registered e-mail cannot be registered again. |
 | Mail | Accepted and discarded by a **fake SMTP sink** inside the server container (see `Dockerfile.server`). It has to be in that container: `DefaultMailService` hardcodes `localhost:25` and never reads host/port from configuration, so a separate mail-catcher service cannot be targeted. Without the sink every mail path fails with `ECONNREFUSED 127.0.0.1:25` — which the login reminder, verification and activation flows all walk through. Mail contents cannot be read; a spec that needs a verification link out of an e-mail will need a real catcher (mailpit) and, first, a configurable SMTP host in mibi-portal-server. |

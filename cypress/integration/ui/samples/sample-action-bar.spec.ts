@@ -15,14 +15,13 @@ describe('Testing the Sample Action Bar', function () {
             describe('Testing the Sample Action Bar Standard content', standardContent);
 
         });
-        // FIXME: Upload is not working yet
-        xdescribe('Testing with Sample loaded', function () {
+        describe('Testing with Sample loaded', function () {
 
             beforeEach(() => {
                 cy.fixture('ui-routes.json').as('paths')
                     .then(
                         () => {
-                            const fileName = 'einsendebogen.xlsx';
+                            const fileName = 'einsendebogen-v18.xlsx';
                             cy.loadSamplesFile(fileName);
                         }
                     );
@@ -57,13 +56,13 @@ describe('Testing the Sample Action Bar', function () {
 
         });
 
-        xdescribe('Testing with Sample loaded', function () {
+        describe('Testing with Sample loaded', function () {
 
             beforeEach(() => {
                 cy.fixture('ui-routes.json').as('paths')
                     .then(
                         () => {
-                            const fileName = 'einsendebogen.xlsx';
+                            const fileName = 'einsendebogen-v18.xlsx';
                             cy.loadSamplesFile(fileName);
                         }
                     );
@@ -74,9 +73,7 @@ describe('Testing the Sample Action Bar', function () {
 
             describe('Testing the Sample Action Bar Sample loaded content with authenticated user', function () {
                 it('should contain the sample send action ', function () {
-                    cy.get('.mibi-action-link').within(() => {
-                        cy.contains('Senden');
-                    });
+                    cy.get('.mibi-action-link').contains('Senden');
                 });
             });
 
@@ -114,8 +111,8 @@ function sampleLoadedContent() {
     });
 
     it('should contain the sample close action ', function () {
-        cy.get('.mibi-action-link').within(() => {
-            cy.contains('Schließen');
-        });
+        // `.mibi-action-link` matches each link in the bar, not a container, and
+        // cy.within() only accepts a single element.
+        cy.get('.mibi-action-link').contains('Schließen');
     });
 }
