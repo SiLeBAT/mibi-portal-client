@@ -9,10 +9,9 @@ describe('Use-cases Upload Page', function () {
         );
     });
 
-    // FIXME: Upload is not working yet
-    xdescribe('Anonymous upload', function () {
+    describe('Anonymous upload', function () {
         it('should upload einsendebogen', function () {
-            const fileName = 'einsendebogen.xlsx';
+            const fileName = 'einsendebogen-v18.xlsx';
             cy.loadSamplesFile(fileName);
             cy.contains(fileName);
             cy.visit('/');

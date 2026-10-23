@@ -119,36 +119,33 @@ Cypress.Commands.add("login", user => {
         });
 });
 
-// Not working in Headless mode
-Cypress.Commands.add("loadSamplesFile", fileName => {
-    cy.server();
-    cy.route("PUT", "/v2/samples").as("samples");
-    cy.route("PUT", "/v2/samples/validated").as("validated");
-    cy.visit("/upload");
-    const fileType =
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-    const fileInput = "input[type=file]";
-    return cy.fixture(fileName, "base64").then(fileContent => {
-        // @ts-ignore
-        const res = cy
-            .get(fileInput)
-            .first()
-            .upload(
-                {
-                    fileContent,
-                    fileName,
-                    mimeType: fileType,
-                    encoding: "base64"
-                },
-                {
-                    force: true
-                }
-            );
+/**
+ * Uploads a sample sheet on the upload page and waits until the app has sent it through
+ * both calls the upload triggers: PUT /v2/samples (parse) and PUT /v2/samples/validated.
+ *
+ * Previously unusable, for three independent reasons:
+ *   - it called cy.server()/cy.route(), removed in Cypress 12;
+ *   - it uploaded through a .upload() command from a file-upload plugin that is no longer
+ *     a dependency (Cypress 13 has cy.selectFile built in);
+ *   - it visited "/upload", while the route is "/samples/upload" (samples.paths.ts).
+ * It also defaults to the V18 fixture now: the API's excel version check rejects the old
+ * einsendebogen.xlsx, which is a version 14 sheet.
+ */
+Cypress.Commands.add("loadSamplesFile", (fileName = "einsendebogen-v18.xlsx") => {
+    cy.intercept("PUT", "**/v2/samples").as("samples");
+    cy.intercept("PUT", "**/v2/samples/validated").as("validated");
 
-        cy.wait("@samples");
-        cy.wait("@validated");
-        return res;
+    cy.fixture("ui-routes.json").then(paths => {
+        cy.visit(paths.upload);
     });
+
+    // The file input is hidden behind a styled button, hence `force`.
+    cy.get("input[type=file]")
+        .first()
+        .selectFile(`cypress/fixtures/${fileName}`, { force: true });
+
+    cy.wait("@samples");
+    return cy.wait("@validated");
 });
 
 // Cypress.Commands.add("loadSamples", () => {

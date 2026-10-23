@@ -49,15 +49,14 @@ describe('Testing the Header', function () {
                 });
             });
         });
-        // FIXME: Upload is not working yet
-        xdescribe('with loaded data', function () {
+        describe('with loaded data', function () {
 
             beforeEach(() => {
 
                 cy.fixture('ui-routes.json').as('paths')
                     .then(
                         () => {
-                            const fileName = 'einsendebogen.xlsx';
+                            const fileName = 'einsendebogen-v18.xlsx';
                             cy.loadSamplesFile(fileName);
                         }
                     );
@@ -66,8 +65,11 @@ describe('Testing the Header', function () {
             describe('Testing the Header links', function () {
 
                 it('should have link to the Samples page', function () {
-                    cy.get(navBarTabsSelector).not('.hidden').should('have.attr', 'href', this.paths.samples).within(() => {
-                        cy.contains(samplesTab);
+                    // With samples loaded the Probendaten tab points at the editor rather
+                    // than the upload page. The href is on the link, not on the container.
+                    cy.get(navBarTabsSelector).within(() => {
+                        cy.contains(samplesTab)
+                            .should('have.attr', 'href', this.paths.samples);
                     });
                 });
 
