@@ -16,10 +16,11 @@ declare global {
 
             /**
              * Uploads an Einsendebogen fixture on the upload page and waits for
-             * the sample and validation requests to come back.
-             * @example cy.loadSamplesFile('einsendebogen.xlsx')
+             * the sample and validation requests to come back. Defaults to the V18
+             * fixture; older sheet versions are rejected by the API's version check.
+             * @example cy.loadSamplesFile()
              */
-            loadSamplesFile(fileName: string): Chainable<Element>;
+            loadSamplesFile(fileName?: string): Chainable<unknown>;
         }
     }
 }

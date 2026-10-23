@@ -1,28 +1,10 @@
 /// <reference types="cypress" />
 
-const colTitles = [
+import { samplesEditorDataHeaders } from '../../../../src/app/samples/samples-editor/constants/column-headers.constants';
 
-    'Ihre Proben­ummer',
-    'Probe­nummer nach AVVData',
-    'Erreger (Text aus ADV-Kat-Nr.16)',
-    'Erreger (Textfeld / Ergänzung)',
-    'Datum der Probe­nahme',
-    'Datum der Isolierung',
-    'Ort der Probe­nahme (Code aus ADV-Kat-Nr.9)',
-    'Ort der Probe­nahme (PLZ)',
-    'Ort der Probe­nahme (Text)',
-    'Oberbe­griff (Kodier­system) der Matrizes (Code aus ADV-Kat-Nr.2)',
-    'Matrix Code (Code aus ADV­Kat­Nr.3)',
-    'Matrix (Textfeld / Ergänzung)',
-    'Ver­arbeitungs­zustand (Code aus ADV-Kat­Nr.12)',
-    'Grund der Probe­nahme (Code aus ADV-Kat­Nr.4)',
-    'Grund der Probe­nahme (Textfeld / Ergänzung)',
-    'Betriebsart (Code aus ADV-Kat-Nr.8)',
-    'Betriebsart (Textfeld / Ergänzung)',
-    'VVVO-Nr / Herde',
-    'Bemerkung (u.a. Untersuchungs­programm)'
-
-];
+// The grid's column titles, taken from the app rather than copied: the previous hardcoded
+// list had drifted to the ADV catalogue names the portal no longer uses.
+const colTitles = Object.values(samplesEditorDataHeaders);
 describe('Testing the Sample data grid', function () {
     beforeEach(() => {
         cy.fixture('ui-routes.json').as('paths').then(
@@ -37,21 +19,20 @@ describe('Testing the Sample data grid', function () {
             cy.url().should('equal', Cypress.config().baseUrl + this.paths.upload);
         });
     });
-    // FIXME: Upload is not working yet
-    xdescribe('Testing with uploaded data', function () {
+    describe('Testing with uploaded data', function () {
         beforeEach(() => {
             cy.fixture('ui-routes.json').as('paths')
                 .then(
                     () => {
-                        const fileName = 'einsendebogen.xlsx';
+                        const fileName = 'einsendebogen-v18.xlsx';
                         cy.loadSamplesFile(fileName);
                     }
                 );
         });
-        it('should redirect to upload page', function () {
-            colTitles.map(
-                e => cy.contains(e)
-            );
+        it('should display every sample data column', function () {
+            // Every cell is rendered (the grid does not virtualise), so an off-screen
+            // column is still in the DOM — hence no visibility assertion here.
+            colTitles.forEach(title => cy.contains(title));
         });
     });
 });

@@ -51,7 +51,15 @@ describe('Testing the Password Reset page', function () {
         });
 
         it('should require email', function () {
-            cy.get('[name="email"]').focus().blur();
+            // Typing and clearing, rather than focus().blur(): a bare blur can land before
+            // Angular has wired the control up, leaving it untouched and the label grey —
+            // which made this test fail about one run in two.
+            cy.get('[name="email"]').type('x').clear().blur();
+            // Wait for the control to actually be in its error state before looking at the
+            // colour, so a failure says "never became invalid" instead of "wrong colour".
+            cy.get('[name="email"]')
+                .closest('mat-form-field')
+                .should('have.class', 'mat-form-field-invalid');
             // Angular Material MDC renamed the label element; scope to the field so the
             // assertion cannot latch onto other text on the page.
             cy.get('[name="email"]')
