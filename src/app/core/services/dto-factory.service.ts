@@ -7,15 +7,11 @@ import {
     SampleMeta
 } from '../../samples/model/sample-management.model';
 import {
-    AnnotatedSampleSetDTO,
-    AnnotatedOrderDTO,
     SampleSetMetaDTO,
     SampleSetDTO,
     SampleDataDTO,
     OrderDTO,
     SampleDTO,
-    AnnotatedSampleDTO,
-    AnnotatedSampleDataDTO,
     SampleMetaDTO
 } from '../model/shared-dto.model';
 import { SamplesMainData } from '../../samples/state/samples.reducer';
@@ -31,14 +27,6 @@ export class DTOFactoryService {
             samples: sampleSet.samples.map(sample => this.fromSample(sample))
         };
         return dto;
-    }
-
-    fromSamplesMainDataToAnnotatedOrderDTO({ meta, sampleData }: SamplesMainData): AnnotatedOrderDTO {
-        const dto: AnnotatedSampleSetDTO = this.fromSampleSetToAnnotatedDTO({
-            meta: meta,
-            samples: sampleData
-        });
-        return { sampleSet: dto };
     }
 
     fromSamplesMainDataToOrderDTO({ meta, sampleData }: SamplesMainData): OrderDTO {
@@ -81,32 +69,5 @@ export class DTOFactoryService {
             signatureDate: meta.signatureDate,
             version: meta.version
         };
-    }
-
-    private fromSampleSetToAnnotatedDTO(sampleSet: SampleSet): AnnotatedSampleSetDTO {
-        return {
-            samples: sampleSet.samples.map(
-                sample => this.fromSampleToAnnotatedDTO(sample)
-            ),
-            meta: this.fromSampleSetMeta(sampleSet.meta)
-        };
-    }
-
-    private fromSampleToAnnotatedDTO(sample: Sample): AnnotatedSampleDTO {
-        return {
-            sampleData: this.fromSampleDataToAnnotatedDTO(sample.sampleData),
-            sampleMeta: this.fromSampleMeta(sample.sampleMeta)
-        };
-    }
-
-    private fromSampleDataToAnnotatedDTO(sampleData: SampleData): AnnotatedSampleDataDTO {
-        const dto: Partial<AnnotatedSampleDataDTO> = {};
-        (Object.keys(sampleData) as (keyof SampleData)[]).forEach(prop => dto[prop] = {
-            value: sampleData[prop].value,
-            oldValue: sampleData[prop].oldValue,
-            errors: sampleData[prop].errors,
-            correctionOffer: sampleData[prop].correctionOffer
-        });
-        return dto as AnnotatedSampleDataDTO;
     }
 }

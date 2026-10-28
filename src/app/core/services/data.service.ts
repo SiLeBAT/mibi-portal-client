@@ -251,7 +251,7 @@ export class DataService {
     }
 
     marshalJSON(requestData: SamplesMainData): Observable<MarshalledData> {
-        const requestBody: PutSamplesJSONRequestDTO = { order: this.dtoService.fromSamplesMainDataToAnnotatedOrderDTO(requestData) };
+        const requestBody: PutSamplesJSONRequestDTO = { order: this.dtoService.fromSamplesMainDataToOrderDTO(requestData) };
         const httpOptions = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
