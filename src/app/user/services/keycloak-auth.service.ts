@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { LogoutResponse, MeResponse } from '../model/auth.model';
+import { environment } from '../../../environments/environment';
 import { TokenizedUser } from '../model/user.model';
 import {
     userDestroyCurrentUserSOA,
@@ -13,13 +14,15 @@ import {
 @Injectable({ providedIn: 'root' })
 export class KeycloakAuthService {
 
+    private static readonly AUTH_URL = `/${environment.apiVersion}/auth`;
+
     private readonly currentUserSubject = new BehaviorSubject<MeResponse | null>(null);
     readonly currentUser$ = this.currentUserSubject.asObservable();
 
     constructor(private http: HttpClient, private store$: Store) {}
 
     login(): void {
-        this.navigateTo('/v2/auth/login');
+        this.navigateTo(`${KeycloakAuthService.AUTH_URL}/login`);
     }
 
     protected navigateTo(url: string): void {
@@ -27,7 +30,7 @@ export class KeycloakAuthService {
     }
 
     me(): Observable<MeResponse> {
-        return this.http.get<MeResponse>('/v2/auth/me').pipe(
+        return this.http.get<MeResponse>(`${KeycloakAuthService.AUTH_URL}/me`).pipe(
             tap(user => {
                 this.currentUserSubject.next(user);
                 this.store$.dispatch(userUpdateCurrentUserSOA({ user: toTokenizedUser(user) }));
@@ -36,7 +39,7 @@ export class KeycloakAuthService {
     }
 
     logout(): Observable<void> {
-        return this.http.post<LogoutResponse>('/v2/auth/logout', {}).pipe(
+        return this.http.post<LogoutResponse>(`${KeycloakAuthService.AUTH_URL}/logout`, {}).pipe(
             tap(response => {
                 this.currentUserSubject.next(null);
                 this.store$.dispatch(userDestroyCurrentUserSOA());
