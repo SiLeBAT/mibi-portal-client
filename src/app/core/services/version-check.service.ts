@@ -31,7 +31,7 @@ import {
  *    The client build writes it to assets/version.json (scripts/write-version.js),
  *    that file is deployed into the server's public directory, the server reads
  *    it at startup (client-version.ts in mibi-portal-server) and returns it from
- *    GET /v2/info. So it always describes the release a fresh page load would
+ *    GET /<apiVersion>/info. So it always describes the release a fresh page load would
  *    get right now.
  *
  * Equal means the tab is running what the server serves. Different means a
@@ -47,7 +47,7 @@ export class VersionCheckService {
     // each of them. A release does not have to be noticed within seconds.
     private static readonly MIN_CHECK_INTERVAL_MS = 60_000;
 
-    private static readonly SYSTEM_INFO_URL = '/v2/info';
+    private static readonly SYSTEM_INFO_URL = `/${environment.apiVersion}/info`;
 
     private readonly httpClient: HttpClient;
     private lastCheck = 0;

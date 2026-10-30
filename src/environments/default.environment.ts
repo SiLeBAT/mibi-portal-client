@@ -9,6 +9,8 @@ export interface Environment {
     sampleSheetURL: string;
     appId: string;
     cmsApiUrl: string;
+    // Version segment of every server API route, e.g. 'v2' -> /v2/info.
+    apiVersion: string;
 }
 
 export const defaultEnvironment: Environment = {
@@ -24,5 +26,6 @@ export const defaultEnvironment: Environment = {
     lastChange: packageJson.mibiConfig.lastChange,
     sampleSheetURL: 'https://www.bfr.bund.de/assets/02_Service/01_Einsendeformulare/Untersuchungsauftrag-V18.xlsx',
     appId: 'app_blub',
-    cmsApiUrl: 'https://fg43-support.bfr.berlin/cms/api'
+    cmsApiUrl: 'https://fg43-support.bfr.berlin/cms/api',
+    apiVersion: 'v2'
 };

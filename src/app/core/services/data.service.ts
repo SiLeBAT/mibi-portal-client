@@ -66,7 +66,7 @@ import { EntityFactoryService } from './entity-factory.service';
 })
 export class DataService {
 
-    private API_VERSION = 'v2';
+    private API_VERSION = environment.apiVersion;
     private USER = 'users';
     private SAMPLE = 'samples';
     private TOKEN = 'tokens';

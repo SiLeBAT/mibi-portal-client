@@ -9,11 +9,11 @@ if (environment.production) {
 }
 
 // Resolve the backend auth mode before bootstrapping so the app can branch
-// synchronously between legacy login and Keycloak SSO. /v2/info is public, so
+// synchronously between legacy login and Keycloak SSO. The info endpoint is public, so
 // this works pre-authentication. Any failure falls back to legacy auth.
 async function resolveKeycloakEnabled(): Promise<boolean> {
     try {
-        const res = await fetch('/v2/info', { cache: 'no-store' });
+        const res = await fetch(`/${environment.apiVersion}/info`, { cache: 'no-store' });
         if (!res.ok) {
             return false;
         }
