@@ -37,14 +37,17 @@ $tooltip-on-nrl-color: mat.m2-get-color-from-palette(colors.$primary-palette, "l
 $tooltip-border-color: black;
 
 // A tooltip with a title: the title always stays on one line, and the lines
-// below it wrap. fit-content() makes the box as wide as the title, but at least
-// as wide as the text below -- up to a bounded width at which that wraps.
-.mibi-tool-tip-titled {
-  display: grid;
-  grid-template-columns: fit-content(400px);
+// below it wrap at a bounded width. The box is as wide as the title, but at
+// least as wide as the text below -- up to that bounded width.
+// No grid with fit-content() here (ticket #912): tooltipster measures the
+// tooltip's natural width and then fixes the box to it, and Firefox measures a
+// fit-content() grid without the limit, so the box got as wide as the unwrapped text.
+.mibi-tool-tip-titled > div {
+  max-width: 400px;
 }
 
 .mibi-tool-tip-titled__title {
+  display: block;
   white-space: nowrap;
 }
 

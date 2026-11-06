@@ -32,7 +32,9 @@ describe('Testing the Sample data grid', function () {
         it('should display every sample data column', function () {
             // Every cell is rendered (the grid does not virtualise), so an off-screen
             // column is still in the DOM — hence no visibility assertion here.
-            colTitles.forEach(title => cy.contains(title));
+            colTitles.forEach(title => {
+                cy.contains(title);
+            });
         });
     });
 });

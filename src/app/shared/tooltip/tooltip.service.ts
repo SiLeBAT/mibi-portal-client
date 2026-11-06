@@ -61,7 +61,7 @@ export class ToolTipService {
 
     private toHtml(toolTip: ToolTip): string {
         // The titled layout (tooltip.scss) keeps the title on one line and wraps
-        // the messages to the title's width, or to a bounded width if wider.
+        // the messages to a bounded width.
         if (toolTip.title) {
             const lines = toolTip.messages.map(message => `<div>${message}</div>`).join('');
             return '<div class="mibi-tool-tip-titled">'
