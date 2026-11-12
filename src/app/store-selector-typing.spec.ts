@@ -1,24 +1,24 @@
 import { Selector } from '@ngrx/store';
-import { ContentMainSlice } from '../../content/content.state';
-import { selectMasterData } from '../../content/state/content.selectors';
-import { CoreMainSlice } from '../../core/core.state';
-import { selectIsBusy } from '../../core/state/core.selectors';
-import { MainMainSlice } from '../../main/main.state';
-import { selectActionBarConfig } from '../../main/state/action-bar.selectors';
-import { OrdersMainSlice } from '../../orders/orders.state';
-import { selectOrderList } from '../../orders/state/order-list.selectors';
-import { SamplesMainSlice, SamplesSlice } from '../../samples/samples.state';
-import { SendSamplesState } from '../../samples/send-samples/state/send-samples.reducer';
-import { selectSendSamplesIsFileAlreadySent } from '../../samples/send-samples/state/send-samples.selectors';
-import { samplesMainReducer } from '../../samples/state/samples.reducer';
-import { selectSampleData, selectSamplesMainState } from '../../samples/state/samples.selectors';
-import { UserMainSlice } from '../../user/user.state';
-import { selectUserCurrentUser } from '../../user/state/user.selectors';
-import { SharedSlice } from '../shared.state';
-import { DialogState } from '../dialog/state/dialog.reducer';
-import { selectDialogData } from '../dialog/state/dialog.selectors';
-import { NrlState } from '../nrl/state/nrl.reducer';
-import { selectNrls } from '../nrl/state/nrl.selectors';
+import { ContentMainSlice } from './content/content.state';
+import { selectMasterData } from './content/state/content.selectors';
+import { CoreMainSlice } from './core/core.state';
+import { selectIsBusy } from './core/state/core.selectors';
+import { MainMainSlice } from './main/main.state';
+import { selectActionBarConfig } from './main/state/action-bar.selectors';
+import { OrdersMainSlice } from './orders/orders.state';
+import { selectOrderList } from './orders/state/order-list.selectors';
+import { SamplesMainSlice, SamplesSlice } from './samples/samples.state';
+import { SendSamplesState } from './samples/send-samples/state/send-samples.reducer';
+import { selectSendSamplesIsFileAlreadySent } from './samples/send-samples/state/send-samples.selectors';
+import { samplesMainReducer } from './samples/state/samples.reducer';
+import { selectSampleData, selectSamplesMainState } from './samples/state/samples.selectors';
+import { UserMainSlice } from './user/user.state';
+import { selectUserCurrentUser } from './user/state/user.selectors';
+import { SharedSlice } from './shared/shared.state';
+import { DialogState } from './shared/dialog/state/dialog.reducer';
+import { selectDialogData } from './shared/dialog/state/dialog.selectors';
+import { NrlState } from './shared/nrl/state/nrl.reducer';
+import { selectNrls } from './shared/nrl/state/nrl.selectors';
 
 /**
  * Compile-time guard for MPC-182.
