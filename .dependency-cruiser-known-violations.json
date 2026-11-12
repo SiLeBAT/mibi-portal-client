@@ -1,0 +1,1577 @@
+[
+  {
+    "type": "dependency",
+    "from": "src/app/core/container/banner-container/banner-container.component.ts",
+    "to": "src/app/user/link-provider.service.ts",
+    "unresolvedTo": "../../../user/link-provider.service",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "core-only-uses-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/core/container/last-change-display-container/last-change-display-container.component.ts",
+    "to": "src/app/content/model/support-detail.model.ts",
+    "unresolvedTo": "../../../content/model/support-detail.model",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "core-only-uses-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/core/container/last-change-display-container/last-change-display-container.component.ts",
+    "to": "src/app/content/state/content.actions.ts",
+    "unresolvedTo": "../../../content/state/content.actions",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "core-only-uses-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/core/core.module.ts",
+    "to": "src/app/main/main.module.ts",
+    "unresolvedTo": "../main/main.module",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "core-only-uses-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/core/download-zomo-plan-file/download-zomo-plan-file.action-bar.effects.spec.ts",
+    "to": "src/app/main/state/action-bar.actions.ts",
+    "unresolvedTo": "../../main/state/action-bar.actions",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "core-only-uses-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/core/download-zomo-plan-file/download-zomo-plan-file.action-bar.effects.ts",
+    "to": "src/app/main/state/action-bar.actions.ts",
+    "unresolvedTo": "../../main/state/action-bar.actions",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "core-only-uses-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/core/download-zomo-plan-file/download-zomo-plan-file.action-bar.ts",
+    "to": "src/app/main/action-bar/action-bar.model.ts",
+    "unresolvedTo": "../../main/action-bar/action-bar.model",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "core-only-uses-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/core/model/data-service-error.ts",
+    "to": "src/app/samples/model/sample-management.model.ts",
+    "unresolvedTo": "../../samples/model/sample-management.model",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "core-only-uses-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/core/model/shared-dto.model.ts",
+    "to": "src/app/samples/model/sample-management.model.ts",
+    "unresolvedTo": "../../samples/model/sample-management.model",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "core-only-uses-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/core/model/shared-dto.model.ts",
+    "to": "src/app/samples/model/sample.enums.ts",
+    "unresolvedTo": "../../samples/model/sample.enums",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "core-only-uses-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/core/presentation/footer-nav/footer-nav.component.ts",
+    "to": "src/app/content/link-provider.service.ts",
+    "unresolvedTo": "../../../content/link-provider.service",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "core-only-uses-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/core/presentation/footer-nav/footer-nav.component.ts",
+    "to": "src/app/main/link-provider.service.ts",
+    "unresolvedTo": "../../../main/link-provider.service",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "core-only-uses-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/core/services/data.service.ts",
+    "to": "src/app/samples/excel/excel-parser.model.ts",
+    "unresolvedTo": "../../samples/excel/excel-parser.model",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "core-only-uses-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/core/services/data.service.ts",
+    "to": "src/app/samples/excel/excel-parser.service.ts",
+    "unresolvedTo": "../../samples/excel/excel-parser.service",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "core-only-uses-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/core/services/data.service.ts",
+    "to": "src/app/samples/model/sample-management.model.ts",
+    "unresolvedTo": "../../samples/model/sample-management.model",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "core-only-uses-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/core/services/data.service.ts",
+    "to": "src/app/samples/state/samples.reducer.ts",
+    "unresolvedTo": "../../samples/state/samples.reducer",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "core-only-uses-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/core/services/data.service.ts",
+    "to": "src/app/user/model/institution.model.ts",
+    "unresolvedTo": "../../user/model/institution.model",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "core-only-uses-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/core/services/data.service.ts",
+    "to": "src/app/user/model/user.model.ts",
+    "unresolvedTo": "../../user/model/user.model",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "core-only-uses-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/core/services/dto-factory.service.ts",
+    "to": "src/app/samples/model/sample-management.model.ts",
+    "unresolvedTo": "../../samples/model/sample-management.model",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "core-only-uses-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/core/services/dto-factory.service.ts",
+    "to": "src/app/samples/state/samples.reducer.ts",
+    "unresolvedTo": "../../samples/state/samples.reducer",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "core-only-uses-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/core/services/entity-factory.service.ts",
+    "to": "src/app/samples/model/nrl.ts",
+    "unresolvedTo": "../../samples/model/nrl",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "core-only-uses-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/core/services/entity-factory.service.ts",
+    "to": "src/app/samples/model/sample-management.model.ts",
+    "unresolvedTo": "../../samples/model/sample-management.model",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "core-only-uses-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/core/services/entity-factory.service.ts",
+    "to": "src/app/samples/model/sample.enums.ts",
+    "unresolvedTo": "../../samples/model/sample.enums",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "core-only-uses-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/core/services/strapi.service.ts",
+    "to": "src/app/main/faq/faq.model.ts",
+    "unresolvedTo": "../../main/faq/faq.model",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "core-only-uses-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/core/services/user-action.service.ts",
+    "to": "src/app/samples/send-samples/state/send-samples.actions.ts",
+    "unresolvedTo": "../../samples/send-samples/state/send-samples.actions",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "core-only-uses-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/grid/samples-grid/internal/cells/data-cell-template.component.ts",
+    "to": "src/app/samples/model/sample-management.model.ts",
+    "unresolvedTo": "../../../../samples/model/sample-management.model",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "grid-only-uses-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/grid/samples-grid/internal/cells/data-cell-tool-tips.spec.ts",
+    "to": "src/app/samples/model/sample-management.model.ts",
+    "unresolvedTo": "../../../../samples/model/sample-management.model",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "grid-only-uses-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/grid/samples-grid/internal/cells/data-cell-tool-tips.ts",
+    "to": "src/app/samples/model/sample-management.model.ts",
+    "unresolvedTo": "../../../../samples/model/sample-management.model",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "grid-only-uses-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/grid/samples-grid/samples-grid.model.ts",
+    "to": "src/app/samples/model/sample-management.model.ts",
+    "unresolvedTo": "../../samples/model/sample-management.model",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "grid-only-uses-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/content/presentation/datenschutzerklaerung/datenschutzerklaerung.component.ts",
+    "to": "src/app/user/link-provider.service.ts",
+    "unresolvedTo": "../../../user/link-provider.service",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/main/init/init.effects.spec.ts",
+    "to": "src/app/user/model/user.model.ts",
+    "unresolvedTo": "../../user/model/user.model",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/main/init/init.effects.spec.ts",
+    "to": "src/app/user/state/user.actions.ts",
+    "unresolvedTo": "../../user/state/user.actions",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/main/init/init.effects.ts",
+    "to": "src/app/user/model/user.model.ts",
+    "unresolvedTo": "../../user/model/user.model",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/main/init/init.effects.ts",
+    "to": "src/app/user/state/user.actions.ts",
+    "unresolvedTo": "../../user/state/user.actions",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/main/nav-bar/nav-bar.component.ts",
+    "to": "src/app/samples/link-provider.service.ts",
+    "unresolvedTo": "../../samples/link-provider.service",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/main/nav-bar/nav-bar.component.ts",
+    "to": "src/app/samples/samples.state.ts",
+    "unresolvedTo": "../../samples/samples.state",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/main/nav-bar/nav-bar.component.ts",
+    "to": "src/app/samples/state/samples.selectors.ts",
+    "unresolvedTo": "../../samples/state/samples.selectors",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/main/nav-bar/nav-bar.component.ts",
+    "to": "src/app/user/link-provider.service.ts",
+    "unresolvedTo": "../../user/link-provider.service",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/main/nav-bar/nav-bar.component.ts",
+    "to": "src/app/user/model/user.model.ts",
+    "unresolvedTo": "../../user/model/user.model",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/main/nav-bar/nav-bar.component.ts",
+    "to": "src/app/user/services/app-auth.service.ts",
+    "unresolvedTo": "../../user/services/app-auth.service",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/main/nav-bar/nav-bar.component.ts",
+    "to": "src/app/user/state/user.selectors.ts",
+    "unresolvedTo": "../../user/state/user.selectors",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/main/nav-bar/nav-bar.component.ts",
+    "to": "src/app/user/user.state.ts",
+    "unresolvedTo": "../../user/user.state",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/orders/container/order-list-container/order-list-container.component.ts",
+    "to": "src/app/user/state/user.selectors.ts",
+    "unresolvedTo": "../../../user/state/user.selectors",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/orders/container/order-list-container/order-list-container.component.ts",
+    "to": "src/app/user/user.state.ts",
+    "unresolvedTo": "../../../user/user.state",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/orders/order-results/download/results-csv.spec.ts",
+    "to": "src/app/samples/model/sample.enums.ts",
+    "unresolvedTo": "../../../samples/model/sample.enums",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/orders/order-results/download/results-csv.ts",
+    "to": "src/app/samples/model/sample-management.model.ts",
+    "unresolvedTo": "../../../samples/model/sample-management.model",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/orders/order-results/download/results-csv.ts",
+    "to": "src/app/samples/samples-editor/constants/column-headers.constants.ts",
+    "unresolvedTo": "../../../samples/samples-editor/constants/column-headers.constants",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/orders/order-results/download/results-download.service.spec.ts",
+    "to": "src/app/samples/model/sample.enums.ts",
+    "unresolvedTo": "../../../samples/model/sample.enums",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/orders/order-results/results-grid/nrl-results-catalog.spec.ts",
+    "to": "src/app/samples/model/sample.enums.ts",
+    "unresolvedTo": "../../../samples/model/sample.enums",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/orders/order-results/results-grid/nrl-results-catalog.ts",
+    "to": "src/app/samples/model/nrl.ts",
+    "unresolvedTo": "../../../samples/model/nrl",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/orders/order-results/results-grid/nrl-results-catalog.ts",
+    "to": "src/app/samples/model/sample.enums.ts",
+    "unresolvedTo": "../../../samples/model/sample.enums",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/orders/order-results/results-grid/results-grid.constants.spec.ts",
+    "to": "src/app/samples/samples-editor/constants/column-headers.constants.ts",
+    "unresolvedTo": "../../../samples/samples-editor/constants/column-headers.constants",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/orders/order-results/results-grid/results-grid.constants.ts",
+    "to": "src/app/samples/model/sample-management.model.ts",
+    "unresolvedTo": "../../../samples/model/sample-management.model",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/orders/order-results/results-grid/results-grid.constants.ts",
+    "to": "src/app/samples/samples-editor/constants/column-headers.constants.ts",
+    "unresolvedTo": "../../../samples/samples-editor/constants/column-headers.constants",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/orders/orders.effects.ts",
+    "to": "src/app/samples/send-samples/state/send-samples.actions.ts",
+    "unresolvedTo": "../samples/send-samples/state/send-samples.actions",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/orders/orders.effects.ts",
+    "to": "src/app/user/state/user.actions.ts",
+    "unresolvedTo": "../user/state/user.actions",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/orders/presentation/order-list-view/order-list-view.component.spec.ts",
+    "to": "src/app/user/link-provider.service.ts",
+    "unresolvedTo": "../../../user/link-provider.service",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/orders/presentation/order-list-view/order-list-view.component.ts",
+    "to": "src/app/user/link-provider.service.ts",
+    "unresolvedTo": "../../../user/link-provider.service",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/orders/services/no-order-guard.service.spec.ts",
+    "to": "src/app/samples/samples.paths.ts",
+    "unresolvedTo": "../../samples/samples.paths",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/orders/services/no-order-guard.service.ts",
+    "to": "src/app/samples/link-provider.service.ts",
+    "unresolvedTo": "../../samples/link-provider.service",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/samples/samples-action-bar.effects.spec.ts",
+    "to": "src/app/main/state/action-bar.actions.ts",
+    "unresolvedTo": "../main/state/action-bar.actions",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/samples/samples-action-bar.effects.ts",
+    "to": "src/app/main/action-bar/action-bar.model.ts",
+    "unresolvedTo": "../main/action-bar/action-bar.model",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/samples/samples-action-bar.effects.ts",
+    "to": "src/app/main/state/action-bar.actions.ts",
+    "unresolvedTo": "../main/state/action-bar.actions",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/samples/samples-action-bar.effects.ts",
+    "to": "src/app/user/state/user.selectors.ts",
+    "unresolvedTo": "../user/state/user.selectors",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/samples/samples-action-bar.effects.ts",
+    "to": "src/app/user/user.state.ts",
+    "unresolvedTo": "../user/user.state",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/samples/samples-action-bar.items.spec.ts",
+    "to": "src/app/main/action-bar/action-bar.model.ts",
+    "unresolvedTo": "../main/action-bar/action-bar.model",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/samples/samples-action-bar.items.ts",
+    "to": "src/app/main/action-bar/action-bar.model.ts",
+    "unresolvedTo": "../main/action-bar/action-bar.model",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/samples/samples.module.ts",
+    "to": "src/app/orders/orders.module.ts",
+    "unresolvedTo": "../orders/orders.module",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/samples/send-samples/send-samples.effects.ts",
+    "to": "src/app/user/services/auth.tokens.ts",
+    "unresolvedTo": "../../user/services/auth.tokens",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/samples/send-samples/send-samples.effects.ts",
+    "to": "src/app/user/services/keycloak-auth.service.ts",
+    "unresolvedTo": "../../user/services/keycloak-auth.service",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/samples/send-samples/send-samples.effects.ts",
+    "to": "src/app/user/state/user.actions.ts",
+    "unresolvedTo": "../../user/state/user.actions",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/user/container/login-container/login-container.component.ts",
+    "to": "src/app/samples/link-provider.service.ts",
+    "unresolvedTo": "../../../samples/link-provider.service",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/user/container/login-container/login-container.component.ts",
+    "to": "src/app/samples/samples.state.ts",
+    "unresolvedTo": "../../../samples/samples.state",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/user/container/login-container/login-container.component.ts",
+    "to": "src/app/samples/state/samples.selectors.ts",
+    "unresolvedTo": "../../../samples/state/samples.selectors",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/user/container/login-container/login-container.component.ts",
+    "to": "src/app/samples/validate-samples/validate-samples.actions.ts",
+    "unresolvedTo": "../../../samples/validate-samples/validate-samples.actions",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/user/container/register-container/register-container.component.ts",
+    "to": "src/app/content/content.state.ts",
+    "unresolvedTo": "../../../content/content.state",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/user/container/register-container/register-container.component.ts",
+    "to": "src/app/content/state/content.selectors.ts",
+    "unresolvedTo": "../../../content/state/content.selectors",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/user/presentation/datenschutzhinweise-view/datenschutzhinweise-view.component.ts",
+    "to": "src/app/content/data-protection/data-protection.constants.ts",
+    "unresolvedTo": "../../../content/data-protection/data-protection.constants",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/user/presentation/datenschutzhinweise/datenschutzhinweise.component.ts",
+    "to": "src/app/content/personnel/personnel.model.ts",
+    "unresolvedTo": "../../../content/personnel/personnel.model",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/user/presentation/register-view/register-view.component.ts",
+    "to": "src/app/content/link-provider.service.ts",
+    "unresolvedTo": "../../../content/link-provider.service",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/user/recover-password/recover-password.effects.ts",
+    "to": "src/app/content/content.state.ts",
+    "unresolvedTo": "../../content/content.state",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/user/recover-password/recover-password.effects.ts",
+    "to": "src/app/content/state/content.selectors.ts",
+    "unresolvedTo": "../../content/state/content.selectors",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/user/register/register.effects.ts",
+    "to": "src/app/content/content.state.ts",
+    "unresolvedTo": "../../content/content.state",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/user/register/register.effects.ts",
+    "to": "src/app/content/state/content.selectors.ts",
+    "unresolvedTo": "../../content/state/content.selectors",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/user/user.effects.ts",
+    "to": "src/app/orders/state/order-list.actions.ts",
+    "unresolvedTo": "../orders/state/order-list.actions",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/user/user.effects.ts",
+    "to": "src/app/samples/samples.state.ts",
+    "unresolvedTo": "../samples/samples.state",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/user/user.effects.ts",
+    "to": "src/app/samples/state/samples.actions.ts",
+    "unresolvedTo": "../samples/state/samples.actions",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/user/user.effects.ts",
+    "to": "src/app/samples/state/samples.selectors.ts",
+    "unresolvedTo": "../samples/state/samples.selectors",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-feature-to-feature"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/shared/container/upload-container/upload-container.component.ts",
+    "to": "src/app/core/model/client-error.ts",
+    "unresolvedTo": "../../../core/model/client-error",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "shared-is-standalone"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/shared/container/upload-container/upload-container.component.ts",
+    "to": "src/app/core/state/core.actions.ts",
+    "unresolvedTo": "../../../core/state/core.actions",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "shared-is-standalone"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/shared/navigate/navigate.effects.ts",
+    "to": "src/app/core/services/log.service.ts",
+    "unresolvedTo": "../../core/services/log.service",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "shared-is-standalone"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/shared/nrl/state/nrl.actions.ts",
+    "to": "src/app/core/model/response.model.ts",
+    "unresolvedTo": "../../../core/model/response.model",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "shared-is-standalone"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/app/shared/nrl/state/nrl.reducer.ts",
+    "to": "src/app/core/model/response.model.ts",
+    "unresolvedTo": "../../../core/model/response.model",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "shared-is-standalone"
+    }
+  },
+  {
+    "type": "cycle",
+    "from": "src/app/core/model/log-publishers.ts",
+    "to": "src/app/core/services/log.service.ts",
+    "unresolvedTo": "../services/log.service",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "warn",
+      "name": "no-circular"
+    },
+    "cycle": [
+      {
+        "name": "src/app/core/services/log.service.ts",
+        "dependencyTypes": [
+          "local",
+          "import"
+        ]
+      },
+      {
+        "name": "src/app/core/model/log-publishers.ts",
+        "dependencyTypes": [
+          "local",
+          "import"
+        ]
+      }
+    ]
+  },
+  {
+    "type": "cycle",
+    "from": "src/app/core/services/log-publishers.service.ts",
+    "to": "src/app/core/model/log-publishers.ts",
+    "unresolvedTo": "../model/log-publishers",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "warn",
+      "name": "no-circular"
+    },
+    "cycle": [
+      {
+        "name": "src/app/core/model/log-publishers.ts",
+        "dependencyTypes": [
+          "local",
+          "import"
+        ]
+      },
+      {
+        "name": "src/app/core/services/log.service.ts",
+        "dependencyTypes": [
+          "local",
+          "import"
+        ]
+      },
+      {
+        "name": "src/app/core/services/log-publishers.service.ts",
+        "dependencyTypes": [
+          "local",
+          "import"
+        ]
+      }
+    ]
+  },
+  {
+    "type": "cycle",
+    "from": "src/app/grid/data-grid/internal/cell-controller.model.ts",
+    "to": "src/app/grid/data-grid/internal/cell-tool.class.ts",
+    "unresolvedTo": "./cell-tool.class",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "warn",
+      "name": "no-circular"
+    },
+    "cycle": [
+      {
+        "name": "src/app/grid/data-grid/internal/cell-tool.class.ts",
+        "dependencyTypes": [
+          "local",
+          "import"
+        ]
+      },
+      {
+        "name": "src/app/grid/data-grid/internal/change-detector.class.ts",
+        "dependencyTypes": [
+          "local",
+          "import"
+        ]
+      },
+      {
+        "name": "src/app/grid/data-grid/internal/dirty-emitter-map.class.ts",
+        "dependencyTypes": [
+          "local",
+          "import"
+        ]
+      },
+      {
+        "name": "src/app/grid/data-grid/internal/cell-controller.model.ts",
+        "dependencyTypes": [
+          "local",
+          "import"
+        ]
+      }
+    ]
+  },
+  {
+    "type": "cycle",
+    "from": "src/app/grid/data-grid/internal/cell-controller.model.ts",
+    "to": "src/app/grid/data-grid/internal/selection-manager.class.ts",
+    "unresolvedTo": "./selection-manager.class",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "warn",
+      "name": "no-circular"
+    },
+    "cycle": [
+      {
+        "name": "src/app/grid/data-grid/internal/selection-manager.class.ts",
+        "dependencyTypes": [
+          "local",
+          "import"
+        ]
+      },
+      {
+        "name": "src/app/grid/data-grid/internal/cell-tool.class.ts",
+        "dependencyTypes": [
+          "local",
+          "import"
+        ]
+      },
+      {
+        "name": "src/app/grid/data-grid/internal/change-detector.class.ts",
+        "dependencyTypes": [
+          "local",
+          "import"
+        ]
+      },
+      {
+        "name": "src/app/grid/data-grid/internal/dirty-emitter-map.class.ts",
+        "dependencyTypes": [
+          "local",
+          "import"
+        ]
+      },
+      {
+        "name": "src/app/grid/data-grid/internal/cell-controller.model.ts",
+        "dependencyTypes": [
+          "local",
+          "import"
+        ]
+      }
+    ]
+  },
+  {
+    "type": "cycle",
+    "from": "src/app/grid/data-grid/internal/selection-manager.class.ts",
+    "to": "src/app/grid/data-grid/internal/change-detector.class.ts",
+    "unresolvedTo": "./change-detector.class",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "warn",
+      "name": "no-circular"
+    },
+    "cycle": [
+      {
+        "name": "src/app/grid/data-grid/internal/change-detector.class.ts",
+        "dependencyTypes": [
+          "local",
+          "import"
+        ]
+      },
+      {
+        "name": "src/app/grid/data-grid/internal/dirty-emitter-map.class.ts",
+        "dependencyTypes": [
+          "local",
+          "import"
+        ]
+      },
+      {
+        "name": "src/app/grid/data-grid/internal/cell-controller.model.ts",
+        "dependencyTypes": [
+          "local",
+          "import"
+        ]
+      },
+      {
+        "name": "src/app/grid/data-grid/internal/selection-manager.class.ts",
+        "dependencyTypes": [
+          "local",
+          "import"
+        ]
+      }
+    ]
+  },
+  {
+    "type": "cycle",
+    "from": "src/app/samples/samples.state.ts",
+    "to": "src/app/samples/state/samples.reducer.ts",
+    "unresolvedTo": "./state/samples.reducer",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "warn",
+      "name": "no-circular"
+    },
+    "cycle": [
+      {
+        "name": "src/app/samples/state/samples.reducer.ts",
+        "dependencyTypes": [
+          "local",
+          "import"
+        ]
+      },
+      {
+        "name": "src/app/samples/state/samples.selectors.ts",
+        "dependencyTypes": [
+          "local",
+          "import"
+        ]
+      },
+      {
+        "name": "src/app/samples/samples.state.ts",
+        "dependencyTypes": [
+          "local",
+          "import"
+        ]
+      }
+    ]
+  },
+  {
+    "type": "cycle",
+    "from": "src/app/samples/state/samples.reducer.ts",
+    "to": "src/app/samples/state/samples.selectors.ts",
+    "unresolvedTo": "./samples.selectors",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "warn",
+      "name": "no-circular"
+    },
+    "cycle": [
+      {
+        "name": "src/app/samples/state/samples.selectors.ts",
+        "dependencyTypes": [
+          "local",
+          "import"
+        ]
+      },
+      {
+        "name": "src/app/samples/state/samples.reducer.ts",
+        "dependencyTypes": [
+          "local",
+          "import"
+        ]
+      }
+    ]
+  }
+]
