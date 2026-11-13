@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 import { ReplaySubject, firstValueFrom, of, throwError } from 'rxjs';
 import { take, toArray } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 import { AlertType } from '../../core/model/alert.model';
 import { updateIsBusySOA } from '../../core/state/core.actions';
 import { navigateMSA } from '../../shared/navigate/navigate.actions';
@@ -8,7 +9,6 @@ import { RegistrationDetails } from '../model/user.model';
 import { userRegisterSSA } from './register.actions';
 import { UserRegisterEffects } from './register.effects';
 
-const SUPPORT = 'support@example.org';
 const LOGIN_PATH = '/users/login';
 
 const details: RegistrationDetails = {
@@ -35,7 +35,6 @@ describe('UserRegisterEffects', () => {
     function effects(): UserRegisterEffects {
         return new UserRegisterEffects(
             actions$ as never,
-            { select: () => of(SUPPORT) } as never,
             { registrationRequest: registrationRequest } as never,
             { getConfigOfType: () => ({ label: 'OK' }) } as never,
             logger as never,
@@ -114,7 +113,7 @@ describe('UserRegisterEffects', () => {
             expect(banner.banner.message).toBe(
                 'Fehler beim Registrieren. Eine E-mail mit weiteren Informationen wurde an '
                 + 'user@example.org gesendet. Wenn Sie keine E-mail erhalten, wenden Sie sich '
-                + `bitte direkt per E-mail an uns: ${SUPPORT}.`
+                + `bitte direkt per E-mail an uns: ${environment.supportContact}.`
             );
         });
 

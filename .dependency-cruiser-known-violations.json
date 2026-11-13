@@ -15,34 +15,6 @@
   },
   {
     "type": "dependency",
-    "from": "src/app/core/container/last-change-display-container/last-change-display-container.component.ts",
-    "to": "src/app/content/model/support-detail.model.ts",
-    "unresolvedTo": "../../../content/model/support-detail.model",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "core-only-uses-shared"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/app/core/container/last-change-display-container/last-change-display-container.component.ts",
-    "to": "src/app/content/state/content.actions.ts",
-    "unresolvedTo": "../../../content/state/content.actions",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "core-only-uses-shared"
-    }
-  },
-  {
-    "type": "dependency",
     "from": "src/app/core/core.module.ts",
     "to": "src/app/main/main.module.ts",
     "unresolvedTo": "../main/main.module",
@@ -1051,34 +1023,6 @@
   },
   {
     "type": "dependency",
-    "from": "src/app/user/container/register-container/register-container.component.ts",
-    "to": "src/app/content/content.state.ts",
-    "unresolvedTo": "../../../content/content.state",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-feature-to-feature"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/app/user/container/register-container/register-container.component.ts",
-    "to": "src/app/content/state/content.selectors.ts",
-    "unresolvedTo": "../../../content/state/content.selectors",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-feature-to-feature"
-    }
-  },
-  {
-    "type": "dependency",
     "from": "src/app/user/presentation/datenschutzhinweise-view/datenschutzhinweise-view.component.ts",
     "to": "src/app/content/data-protection/data-protection.constants.ts",
     "unresolvedTo": "../../../content/data-protection/data-protection.constants",
@@ -1110,62 +1054,6 @@
     "from": "src/app/user/presentation/register-view/register-view.component.ts",
     "to": "src/app/content/link-provider.service.ts",
     "unresolvedTo": "../../../content/link-provider.service",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-feature-to-feature"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/app/user/recover-password/recover-password.effects.ts",
-    "to": "src/app/content/content.state.ts",
-    "unresolvedTo": "../../content/content.state",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-feature-to-feature"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/app/user/recover-password/recover-password.effects.ts",
-    "to": "src/app/content/state/content.selectors.ts",
-    "unresolvedTo": "../../content/state/content.selectors",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-feature-to-feature"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/app/user/register/register.effects.ts",
-    "to": "src/app/content/content.state.ts",
-    "unresolvedTo": "../../content/content.state",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-feature-to-feature"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/app/user/register/register.effects.ts",
-    "to": "src/app/content/state/content.selectors.ts",
-    "unresolvedTo": "../../content/state/content.selectors",
     "dependencyTypes": [
       "local",
       "import"

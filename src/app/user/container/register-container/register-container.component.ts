@@ -1,15 +1,13 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { fromDTOToInstitution, Institution, InstitutionDTO } from '../../../user/model/institution.model';
 import { RegistrationDetails } from '../../model/user.model';
-import { takeWhile, map, filter } from 'rxjs/operators';
-import { ClientError } from '../../../core/model/client-error';
+import { map, filter } from 'rxjs/operators';
 import { selectUserInstitutions } from '../../state/user.selectors';
-import { selectSupportContact } from '../../../content/state/content.selectors';
-import { ContentMainSlice } from '../../../content/content.state';
 import { UserMainSlice } from '../../user.state';
 import { Observable } from 'rxjs';
 import { userRegisterSSA } from '../../register/register.actions';
+import { environment } from '../../../../environments/environment';
 
 @Component({
     standalone: false,
@@ -20,29 +18,17 @@ import { userRegisterSSA } from '../../register/register.actions';
         [supportContact]="supportContact">
         </mibi-register>`
 })
-export class RegisterContainerComponent implements OnInit, OnDestroy {
+export class RegisterContainerComponent implements OnInit {
 
     institutions$!: Observable<Institution[]>;
-    /** Shown on the form itself; the registration effect reads its own copy. */
-    supportContact: string = '';
-    private componentActive: boolean = true;
+    supportContact: string = environment.supportContact;
 
     constructor(
-        private store$: Store<ContentMainSlice & UserMainSlice>
+        private store$: Store<UserMainSlice>
     ) { }
 
     ngOnInit() {
         this.loadInstitutions();
-        this.store$.pipe(select(selectSupportContact),
-            takeWhile(() => this.componentActive)
-        ).subscribe(contact => this.supportContact = contact,
-            (error) => {
-                throw new ClientError(`Can't determine Support contact detail. error=${error}`);
-            });
-    }
-
-    ngOnDestroy(): void {
-        this.componentActive = false;
     }
 
     register(details: RegistrationDetails) {

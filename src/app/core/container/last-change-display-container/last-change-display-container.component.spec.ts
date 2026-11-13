@@ -6,7 +6,6 @@ import { LastChangeDisplayContainerComponent } from './last-change-display-conta
 
 const lastChangeShownFor = async (serverLastChange: string): Promise<moment.Moment> => {
     const component = new LastChangeDisplayContainerComponent(
-        { dispatch: jest.fn() } as never,
         { getSystemInfo: () => of({ version: '1.0.0', lastChange: serverLastChange, supportContact: '' }) } as never
     );
 

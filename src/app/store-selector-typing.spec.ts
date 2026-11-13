@@ -1,6 +1,4 @@
 import { Selector } from '@ngrx/store';
-import { ContentMainSlice } from './content/content.state';
-import { selectMasterData } from './content/state/content.selectors';
 import { CoreMainSlice } from './core/core.state';
 import { selectIsBusy } from './core/state/core.selectors';
 import { MainMainSlice } from './main/main.state';
@@ -65,7 +63,6 @@ export type AssertDerivedKeepsSource = Expect<
 
 // --- A selector type checks against the store that carries its slice... ---
 
-usableOn<ContentMainSlice>(selectMasterData);
 usableOn<CoreMainSlice>(selectIsBusy);
 usableOn<MainMainSlice>(selectActionBarConfig);
 usableOn<OrdersMainSlice>(selectOrderList);
