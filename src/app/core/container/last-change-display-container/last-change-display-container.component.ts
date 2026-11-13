@@ -4,9 +4,6 @@ import { DataService } from '../../../core/services/data.service';
 import moment from 'moment';
 import 'moment/locale/de';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Store } from '@ngrx/store';
-import { updateSupportDetailSOA } from '../../../content/state/content.actions';
-import { SupportDetail } from '../../../content/model/support-detail.model';
 import { parseLastChange } from '../../model/last-change';
 
 @Component({
@@ -28,7 +25,7 @@ export class LastChangeDisplayContainerComponent implements OnInit {
     private clientLastChange!: moment.Moment;
     private serverLastChange!: moment.Moment;
 
-    constructor(private store$: Store, private dataService: DataService) { }
+    constructor(private dataService: DataService) { }
 
     ngOnInit(): void {
         moment.locale('en');
@@ -51,10 +48,6 @@ export class LastChangeDisplayContainerComponent implements OnInit {
                 this.lastChange$.next(moment.max(dateCompare));
                 this.serverVersion = sysInfo.version;
                 this.isDataAvailable = true;
-                const supportDetail: SupportDetail = {
-                    supportContact: sysInfo.supportContact
-                };
-                this.store$.dispatch(updateSupportDetailSOA({ supportDetail: supportDetail }));
             }
         ).catch(
             () => {

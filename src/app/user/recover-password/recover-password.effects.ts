@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Action, Store } from '@ngrx/store';
+import { Action } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
-import { catchError, concatMap, endWith, startWith, withLatestFrom } from 'rxjs/operators';
-import { ContentMainSlice } from '../../content/content.state';
-import { selectSupportContact } from '../../content/state/content.selectors';
+import { catchError, concatMap, endWith, startWith } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 import { AlertType } from '../../core/model/alert.model';
 import { PasswordResetRequestResponseDTO } from '../../core/model/response.model';
 import { DataService } from '../../core/services/data.service';
@@ -22,7 +21,6 @@ export class UserRecoverPasswordEffects {
 
     constructor(
         private actions$: Actions,
-        private store$: Store<ContentMainSlice>,
         private dataService: DataService,
         private userActionService: UserActionService,
         private logger: LogService,
@@ -31,11 +29,8 @@ export class UserRecoverPasswordEffects {
 
     recoverPassword$ = createEffect(() => this.actions$.pipe(
         ofType(userRecoverPasswordSSA),
-        // The failure message names the support address, so it is read when the
-        // request starts rather than kept on the component.
-        withLatestFrom(this.store$.select(selectSupportContact)),
-        concatMap(([action, supportContact]) =>
-            this.recoverPassword(action.email, supportContact).pipe(
+        concatMap(action =>
+            this.recoverPassword(action.email).pipe(
                 startWith(
                     updateIsBusySOA({ isBusy: true })
                 ),
@@ -45,7 +40,7 @@ export class UserRecoverPasswordEffects {
             ))
     ));
 
-    private recoverPassword(email: string, supportContact: string): Observable<Action> {
+    private recoverPassword(email: string): Observable<Action> {
         return this.dataService.resetPasswordRequest(email).pipe(
             concatMap((response: PasswordResetRequestResponseDTO) => of(
                 navigateMSA({ path: this.userLinks.login }),
@@ -57,7 +52,7 @@ export class UserRecoverPasswordEffects {
             catchError((error) => {
                 this.logger.error('Failed to request a password reset.', error.stack);
                 return of(this.banner(
-                    userRecoverPasswordStrings.failure(email, supportContact),
+                    userRecoverPasswordStrings.failure(email, environment.supportContact),
                     AlertType.ERROR
                 ));
             })

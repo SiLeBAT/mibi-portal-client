@@ -1,13 +1,13 @@
 import { Action } from '@ngrx/store';
 import { ReplaySubject, firstValueFrom, of, throwError } from 'rxjs';
 import { take, toArray } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 import { AlertType } from '../../core/model/alert.model';
 import { updateIsBusySOA } from '../../core/state/core.actions';
 import { navigateMSA } from '../../shared/navigate/navigate.actions';
 import { userRecoverPasswordSSA } from './recover-password.actions';
 import { UserRecoverPasswordEffects } from './recover-password.effects';
 
-const SUPPORT = 'support@example.org';
 const LOGIN_PATH = '/users/login';
 
 interface BannerAction extends Action {
@@ -26,7 +26,6 @@ describe('UserRecoverPasswordEffects', () => {
     function effects(): UserRecoverPasswordEffects {
         return new UserRecoverPasswordEffects(
             actions$ as never,
-            { select: () => of(SUPPORT) } as never,
             { resetPasswordRequest: resetPasswordRequest } as never,
             { getConfigOfType: () => ({ label: 'OK' }) } as never,
             logger as never,
@@ -101,7 +100,7 @@ describe('UserRecoverPasswordEffects', () => {
             expect(banner.banner.message).toBe(
                 'Fehler beim Passwort-Zurücksetzen. Eine E-mail mit weiteren Informationen '
                 + 'wurde an user@example.org gesendet. Wenn Sie keine E-mail erhalten, wenden '
-                + `Sie sich bitte direkt per E-mail an uns: ${SUPPORT}.`
+                + `Sie sich bitte direkt per E-mail an uns: ${environment.supportContact}.`
             );
         });
 

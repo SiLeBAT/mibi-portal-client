@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Action, Store } from '@ngrx/store';
+import { Action } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
-import { catchError, concatMap, endWith, startWith, withLatestFrom } from 'rxjs/operators';
-import { ContentMainSlice } from '../../content/content.state';
-import { selectSupportContact } from '../../content/state/content.selectors';
+import { catchError, concatMap, endWith, startWith } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 import { AlertType } from '../../core/model/alert.model';
 import { RegistrationRequestResponseDTO } from '../../core/model/response.model';
 import { DataService } from '../../core/services/data.service';
@@ -23,7 +22,6 @@ export class UserRegisterEffects {
 
     constructor(
         private actions$: Actions,
-        private store$: Store<ContentMainSlice>,
         private dataService: DataService,
         private userActionService: UserActionService,
         private logger: LogService,
@@ -32,11 +30,8 @@ export class UserRegisterEffects {
 
     register$ = createEffect(() => this.actions$.pipe(
         ofType(userRegisterSSA),
-        // The failure message names the support address, so it is read when the
-        // request starts rather than kept on the component.
-        withLatestFrom(this.store$.select(selectSupportContact)),
-        concatMap(([action, supportContact]) =>
-            this.register(action.details, supportContact).pipe(
+        concatMap(action =>
+            this.register(action.details).pipe(
                 startWith(
                     updateIsBusySOA({ isBusy: true })
                 ),
@@ -46,10 +41,7 @@ export class UserRegisterEffects {
             ))
     ));
 
-    private register(
-        details: RegistrationDetails,
-        supportContact: string
-    ): Observable<Action> {
+    private register(details: RegistrationDetails): Observable<Action> {
         return this.dataService.registrationRequest({
             email: details.email,
             password: details.password,
@@ -67,7 +59,7 @@ export class UserRegisterEffects {
             catchError((error) => {
                 this.logger.error('User registration failed.', error.stack);
                 return of(this.banner(
-                    userRegisterStrings.failure(details.email, supportContact),
+                    userRegisterStrings.failure(details.email, environment.supportContact),
                     AlertType.ERROR
                 ));
             })
