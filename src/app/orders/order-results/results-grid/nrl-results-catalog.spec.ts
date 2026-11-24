@@ -152,7 +152,8 @@ describe('getResultColumns', () => {
         [NRL.L_Bacillus, 12, 'Phänotypie', 'Bemerkung'],
         [NRL.L_Clostridium, 12, 'Phänotypie', 'iap-Gen'],
         [NRL.KL_Yersinia, 9, 'Gattung', 'O:9 (837bp)'],
-        [NRL.NRL_Salm, 2, 'Serovar', 'Seroformel']
+        [NRL.NRL_Salm, 2, 'Serovar', 'Seroformel'],
+        [NRL.NRL_Campy, 11, 'Prüfbericht Spezies', 'Bemerkung zur Probe']
     ];
 
     it.each(specifiedSets)('returns the %s result columns in display order', (nrl, count, firstKey, lastKey) => {
@@ -183,9 +184,25 @@ describe('getResultColumns', () => {
         expect(getResultColumns('NRL-AR-Kleb')).toEqual(getResultColumns('NRL-AR'));
     });
 
-    // These column sets are not specified yet (ticket #876).
+    // The keys must match the LIMS resultData properties exactly (ticket #915).
+    it('returns the NRL-Campy columns without the trailing spaces of the specification', () => {
+        expect(getResultColumns('NRL-Campy').map(column => column.key)).toEqual([
+            'Prüfbericht Spezies',
+            'ResTyp_EUCAMP3',
+            'ResProfil_EUCAMP3',
+            'CIP',
+            'ERY',
+            'TET',
+            'CHL',
+            'GEN',
+            'ETP',
+            'Bemerkung zum Auftrag',
+            'Bemerkung zur Probe'
+        ]);
+    });
+
+    // This column set is not specified yet.
     it('returns no columns for an NRL without a known result set', () => {
-        expect(getResultColumns('NRL-Campy')).toEqual([]);
         expect(getResultColumns('NRL-Listeria')).toEqual([]);
     });
 
