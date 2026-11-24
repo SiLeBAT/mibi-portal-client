@@ -165,16 +165,32 @@ const NRL_SALM_RESULT_COLUMNS: ResultColumnDefinition[] = [
     column('Seroformel')
 ];
 
+// Specified in ticket #915. The specification listed some names with trailing
+// spaces; they are trimmed here like every other key.
+const NRL_CAMPY_RESULT_COLUMNS: ResultColumnDefinition[] = [
+    column('Prüfbericht Spezies'),
+    column('ResTyp_EUCAMP3'),
+    column('ResProfil_EUCAMP3'),
+    column('CIP'),
+    column('ERY'),
+    column('TET'),
+    column('CHL'),
+    column('GEN'),
+    column('ETP'),
+    column('Bemerkung zum Auftrag'),
+    column('Bemerkung zur Probe')
+];
+
 // The single place that maps an NRL to its result columns. The Record type makes
-// the compiler demand an entry for every NRL. The result sets of NRL-Campy and
-// NRL-Listeria are not specified yet, so they carry no result columns.
+// the compiler demand an entry for every NRL. The result set of NRL-Listeria is
+// not specified yet, so it carries no result columns.
 const nrlResultsConfig: Record<KnownNrl, NrlResultsConfig> = {
     [NRL.KL_Vibrio]: { resultColumns: KL_VIBRIO_RESULT_COLUMNS },
     [NRL.NRL_VTEC]: { resultColumns: NRL_VTEC_RESULT_COLUMNS },
     [NRL.L_Bacillus]: { resultColumns: L_BACILLUS_RESULT_COLUMNS },
     [NRL.NRL_AR]: { resultColumns: NRL_AR_RESULT_COLUMNS },
     [NRL.NRL_AR_Kleb]: { resultColumns: NRL_AR_RESULT_COLUMNS },
-    [NRL.NRL_Campy]: { resultColumns: [] },
+    [NRL.NRL_Campy]: { resultColumns: NRL_CAMPY_RESULT_COLUMNS },
     [NRL.NRL_Staph]: { resultColumns: NRL_STAPH_RESULT_COLUMNS },
     [NRL.NRL_Listeria]: { resultColumns: [] },
     [NRL.NRL_Salm]: { resultColumns: NRL_SALM_RESULT_COLUMNS },
